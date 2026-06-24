@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://hrmforce.com/sitemap-index.xml

@@ -1,0 +1,48 @@
+---
+import { routes } from "../i18n/ui.js";
+import { getLangFromUrl, useTranslations, localizePath } from "../i18n/utils.js";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+const L = (p) => localizePath(p, lang);
+---
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <div class="flogo">hrmforce</div>
+        <p>{t("footer.tagline")}</p>
+      </div>
+      <div>
+        <h4>{t("footer.quick")}</h4>
+        <ul>
+          <li><a href={routes.assessments}>{t("footer.assessments")}</a></li>
+          <li><a href={L("/voorbereiding/")}>{t("footer.prep")}</a></li>
+          <li><a href={L("/kenniscentrum/")}>{t("footer.knowledge")}</a></li>
+          <li><a href={L("/advies/")}>{t("footer.training")}</a></li>
+          <li><a href={L(routes.shop)}>{t("nav.shop")}</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>{t("footer.more")}</h4>
+        <ul>
+          <li><a href={L(routes.about)}>{t("footer.about")}</a></li>
+          <li><a href={L("/partners/")}>{t("footer.partners")}</a></li>
+          <li><a href={L("/tarieven/")}>{t("footer.pricing")}</a></li>
+          <li><a href={L(routes.support)}>{t("footer.support")}</a></li>
+          <li><a href={L("/vacatures/")}>{t("footer.vacancies")}</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>{t("footer.contact")}</h4>
+        <p>Solitudolaan 396<br />1096 DS Amsterdam<br />The Netherlands</p>
+        <p style="margin-top:10px">T: +31 (0)88 88 321 88<br />E: service@hrmforce.com</p>
+      </div>
+    </div>
+    <div class="fbottom">
+      <span>Copyright hrmforce &copy; 2009&ndash;{year}</span>
+      <span>{t("footer.rights")}</span>
+    </div>
+  </div>
+</footer>

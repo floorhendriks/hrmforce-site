@@ -1,0 +1,23 @@
+---
+import Base from "../layouts/Base.astro";
+import { assessments } from "../data/assessments.js";
+---
+<Base title="Online Assessments | Hrmforce" description="Bekijk alle online assessments van hrmforce voor selectie en ontwikkeling." active="assessments">
+  <div class="crumb"><div class="wrap"><a href="/">Home</a> › <span>Online Assessments</span></div></div>
+  <section class="ahero"><div class="wrap" style="display:block">
+    <div class="eyebrow" style="color:var(--gold)">Online assessments</div>
+    <h1>Alle assessments</h1>
+    <p style="color:#c4d2e6;font-size:19px;max-width:760px;margin-top:8px">Wetenschappelijk onderbouwde vragenlijsten en testen voor selectie, ontwikkeling en teamdynamiek.</p>
+  </div></section>
+  <section><div class="wrap">
+    <div class="cards">
+      {assessments.map((a) => (
+        <a class="card" href={`/assessments/${a.slug}/`} style="text-decoration:none">
+          <h3>{a.title}</h3>
+          <p>{a.goal}</p>
+          <span style="color:var(--blue);font-weight:600;font-size:15px">Bekijk &rarr;</span>
+        </a>
+      ))}
+    </div>
+  </div></section>
+</Base>

@@ -1,0 +1,34 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { getLangFromUrl } from "../i18n/utils.js";
+
+const {
+  title = "Hrmforce",
+  description = "Talentmanagement software en online assessments van hrmforce.",
+  active = "",
+} = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+---
+<!DOCTYPE html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <Header active={active} />
+    <slot />
+    <Footer />
+    <script>
+      // Uitklapbare FAQ-items
+      document.querySelectorAll(".faq-q").forEach((q) => {
+        q.addEventListener("click", () => q.parentElement.classList.toggle("open"));
+      });
+    </script>
+  </body>
+</html>

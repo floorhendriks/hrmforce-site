@@ -1,0 +1,76 @@
+---
+import Base from "../layouts/Base.astro";
+import { routes } from "../i18n/ui.js";
+import { getLangFromUrl, localizePath } from "../i18n/utils.js";
+
+const { page, active = "" } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+
+const CTA = {
+  nl: { title: "Ontdek welke aanpak past bij jouw HR-vraagstuk", text: "Bespreek je situatie met een hrmforce-specialist. In 30 minuten krijg je concreet advies.", primary: "Plan een demo", secondary: "Bekijk de assessments" },
+  en: { title: "Discover the approach that fits your HR challenge", text: "Discuss your situation with an hrmforce specialist. In 30 minutes you get concrete advice.", primary: "Book a demo", secondary: "View the assessments" },
+  de: { title: "Entdecken Sie den passenden Ansatz für Ihre HR-Frage", text: "Besprechen Sie Ihre Situation mit einem hrmforce-Spezialisten. In 30 Minuten erhalten Sie konkrete Beratung.", primary: "Demo planen", secondary: "Assessments ansehen" },
+  fr: { title: "Découvrez l'approche adaptée à votre enjeu RH", text: "Discutez de votre situation avec un spécialiste hrmforce. En 30 minutes, vous obtenez des conseils concrets.", primary: "Planifier une démo", secondary: "Voir les évaluations" },
+  es: { title: "Descubra el enfoque que se ajusta a su reto de RR. HH.", text: "Comente su situación con un especialista de hrmforce. En 30 minutos obtiene asesoramiento concreto.", primary: "Reservar una demo", secondary: "Ver las evaluaciones" },
+  ro: { title: "Descoperiți abordarea potrivită pentru provocarea dvs. HR", text: "Discutați situația cu un specialist hrmforce. În 30 de minute primiți sfaturi concrete.", primary: "Programați o demonstrație", secondary: "Vedeți evaluările" },
+};
+const cta = CTA[lang] || CTA.en;
+const homeHref = localizePath("/", lang);
+const contactHref = localizePath(routes.contact, lang);
+const assessHref = routes.assessments;
+---
+<Base title={page.metaTitle} description={page.metaDescription} active={active}>
+  <div class="crumb">
+    <div class="wrap"><a href={homeHref}>Home</a> › <span>{page.title}</span></div>
+  </div>
+
+  <section class="ahero">
+    <div class="wrap" style="display:block">
+      <div class="eyebrow" style="color:var(--gold)">{page.eyebrow}</div>
+      <h1>{page.title}</h1>
+      <p style="color:#c4d2e6;font-size:19px;max-width:760px;margin-top:8px">{page.lead}</p>
+    </div>
+  </section>
+
+  {page.isContact ? (
+    <section class="formsec">
+      <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start">
+        <div>
+          <h2 class="section-title" style="font-size:24px">Hrmforce</h2>
+          <p style="color:var(--muted)">Solitudolaan 396<br />1096 DS Amsterdam<br />The Netherlands</p>
+          <p style="margin-top:14px;color:var(--muted)">T: +31 (0)88 88 321 88<br />E: service@hrmforce.com</p>
+        </div>
+        <form class="formcard" action="https://formspree.io/f/JOUW_FORM_ID" method="POST">
+          <div class="fg"><label>{page.form.name} *</label><input type="text" name="naam" required /></div>
+          <div class="fg"><label>{page.form.company}</label><input type="text" name="bedrijf" /></div>
+          <div class="frow">
+            <div class="fg"><label>{page.form.email} *</label><input type="email" name="email" required /></div>
+            <div class="fg"><label>{page.form.phone}</label><input type="tel" name="telefoon" /></div>
+          </div>
+          <div class="fg"><label>{page.form.message} *</label><textarea name="bericht" rows="4" required></textarea></div>
+          <button type="submit" class="btn btn-primary">{page.form.submit}</button>
+        </form>
+      </div>
+    </section>
+  ) : (
+    <section>
+      <div class="wrap">
+        {page.intro?.map((p) => <p style="color:var(--text);font-size:17px;max-width:820px;margin-bottom:14px">{p}</p>)}
+        <div class="cards" style="margin-top:34px">
+          {page.cards?.map((c) => (<div class="card"><h3>{c.h}</h3><p>{c.p}</p></div>))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="cta">
+    <div class="wrap">
+      <h2>{cta.title}</h2>
+      <p>{cta.text}</p>
+      <div class="btns">
+        <a href={contactHref} class="btn btn-primary">{cta.primary}</a>
+        <a href={assessHref} class="btn btn-light">{cta.secondary}</a>
+      </div>
+    </div>
+  </section>
+</Base>

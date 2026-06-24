@@ -1,0 +1,39 @@
+---
+import Base from "../../layouts/Base.astro";
+import { posts as localPosts } from "../../data/blog.js";
+import { getLangFromUrl, localizePath } from "../../i18n/utils.js";
+
+export async function getStaticPaths() {
+  if (import.meta.env.SANITY_PROJECT_ID) {
+    const { sanity } = await import("../../lib/sanity.js");
+    const { allPostSlugs } = await import("../../lib/queries.js");
+    const slugs = await sanity.fetch(allPostSlugs);
+    return slugs.map((slug) => ({ params: { slug } }));
+  }
+  return localPosts.map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+
+const lang = getLangFromUrl(Astro.url);
+let p = Astro.props.p;
+if (!p) {
+  const { sanity, pick } = await import("../../lib/sanity.js");
+  const { postBySlug } = await import("../../lib/queries.js");
+  const r = await sanity.fetch(postBySlug, { slug: Astro.params.slug });
+  p = { title: pick(r.title, lang), category: pick(r.category, lang), date: r.date,
+        excerpt: pick(r.excerpt, lang), body: (r.body || []).map((b) => pick(b, lang)),
+        metaDescription: pick(r.metaDescription, lang) };
+}
+const fmt = (d) => new Date(d).toLocaleDateString("nl-NL");
+---
+<Base title={`${p.title} | Hrmforce`} description={p.metaDescription || p.excerpt} active="">
+  <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={localizePath("/kenniscentrum/", lang)}>Kenniscentrum</a> › <span>{p.title}</span></div></div>
+  <section class="ahero"><div class="wrap" style="display:block">
+    <div class="eyebrow" style="color:var(--gold)">{p.category} · {fmt(p.date)}</div>
+    <h1>{p.title}</h1>
+  </div></section>
+  <section><div class="wrap" style="max-width:760px">
+    <p class="lead" style="margin-bottom:24px">{p.excerpt}</p>
+    {(p.body || []).map((para) => <p style="margin-bottom:16px;font-size:17px;color:var(--text)">{para}</p>)}
+    <div style="margin-top:32px"><a href={localizePath("/kenniscentrum/", lang)} class="btn btn-ghost">← Naar het kenniscentrum</a></div>
+  </div></section>
+</Base>

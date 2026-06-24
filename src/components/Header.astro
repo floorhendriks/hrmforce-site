@@ -1,0 +1,43 @@
+---
+import { routes, languages } from "../i18n/ui.js";
+import { getLangFromUrl, useTranslations, localizePath, switchLocalePath } from "../i18n/utils.js";
+
+const { active = "" } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const logo = "https://hrmforce.com/wp-content/uploads/2022/03/HRM-LOGO.svg";
+
+// Assessments-content is voorlopig alleen NL; die link blijft daarom op de NL-route.
+const assessmentsHref = routes.assessments;
+---
+<div class="topbar">
+  <div class="wrap">
+    <a href="https://assessment.hrmforce.com/Login.aspx?LanguageCode=nl-NL">{t("topbar.login")}</a>
+    <span class="langs">
+      {Object.keys(languages).map((code) => (
+        <a
+          href={switchLocalePath(Astro.url, code)}
+          style={`margin-left:8px;opacity:${code === lang ? "1" : ".7"};color:#fff`}
+        >{languages[code]}</a>
+      ))}
+    </span>
+    <a href={localizePath(routes.contact, lang)} style="color:#fff;font-weight:600">{t("topbar.demo")} &rarr;</a>
+  </div>
+</div>
+<header>
+  <div class="wrap nav">
+    <a class="logo" href={lang === "nl" ? "/" : "/en/"}><img src={logo} alt="hrmforce" /></a>
+    <nav class="menu">
+      <a href={localizePath(routes.shop, lang)} class={active === "shop" ? "active" : ""}>{t("nav.shop")}</a>
+      <a href={assessmentsHref} class={active === "assessments" ? "active" : ""}>{t("nav.assessments")}</a>
+      <a href={localizePath(routes.solutions, lang)} class={active === "solutions" ? "active" : ""}>{t("nav.solutions")}</a>
+      <a href={localizePath(routes.advice, lang)} class={active === "advice" ? "active" : ""}>{t("nav.advice")}</a>
+      <a href={localizePath(routes.about, lang)} class={active === "about" ? "active" : ""}>{t("nav.about")}</a>
+      <a href={localizePath(routes.contact, lang)} class={active === "contact" ? "active" : ""}>{t("nav.contact")}</a>
+    </nav>
+    <div class="nav-cta">
+      <a href={localizePath(routes.shop, lang)} class="btn btn-ghost">{t("cta.shop")}</a>
+      <a href={localizePath(routes.contact, lang)} class="btn btn-primary">{t("cta.demo")}</a>
+    </div>
+  </div>
+</header>

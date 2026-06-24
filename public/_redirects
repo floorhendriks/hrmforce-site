@@ -1,0 +1,67 @@
+# 301-redirects voor hrmforce - gegenereerd uit de Yoast-sitemap + nieuwe structuur.
+# Formaat: <oud>  <nieuw>  301   |   werkt op Cloudflare Pages en Netlify.
+
+# --- Assessments (NL) ---
+/assessments/big-fifty/                              /assessments/big-five/             301
+/assessments/ability-scan/                           /assessments/cognitieve-test/      301
+/assessments/cognitieve-capaciteitentest/            /assessments/cognitieve-test/      301
+/assessments/preselectie/disc-test/                  /assessments/disc-test/            301
+/assessments/ontwikkelmatrix/                        /assessments/ontwikkelassessment/  301
+/assessments/referentie-check/                       /online-assessments/               301
+/assessments/verkoopvaardigheden/                    /online-assessments/               301
+/assessments/job-profiler/                           /online-assessments/               301
+/assessments/intake-candidate/                       /online-assessments/               301
+/assessments/exit-assessment/                        /online-assessments/               301
+/assessments/groepsrollen/                           /online-assessments/               301
+/assessments/typology/                               /online-assessments/               301
+/assessments/appraisal/                              /online-assessments/               301
+/assessments/canmeds/                                /online-assessments/               301
+/assessments/beroepskeuze-test/                      /online-assessments/               301
+/assessments/loopbaanwaarden/                        /online-assessments/               301
+/assessments/communicatiestijlen-test/               /online-assessments/               301
+/assessments/competentie-check/                      /online-assessments/               301
+/assessments/conflictstijlen-test/                   /online-assessments/               301
+/assessments/tevredenheidsonderzoek-medewerkers/     /online-assessments/               301
+/assessments/leerstijlen/                            /online-assessments/               301
+/assessments/15pf/                                   /online-assessments/               301
+/assessments/pulse-survey/                           /online-assessments/               301
+/assessments/levensloop-scan/                        /online-assessments/               301
+/assessments/lean-scan/                              /online-assessments/               301
+/assessments/interesse-scan/                         /online-assessments/               301
+/assessments/duurzame-inzetbaarheid-scan/            /online-assessments/               301
+/assessments/coaching-screener-scan/                 /online-assessments/               301
+/assessments/value-drives/                           /online-assessments/               301
+/assessments/teamanalyse/                            /online-assessments/               301
+
+# --- Assessments: gelokaliseerde Big Five ---
+/en/assessments/big-fifty-personality-test/                    /en/assessments/big-five/   301
+/de/assessments/entwicklung/persoenlichkeitstest-big-five/     /de/assessments/big-five/   301
+/es/assessments/preseleccion/perfil-big-fifty/                 /es/assessments/big-five/   301
+
+# --- Gelokaliseerde paginaslugs -> uniforme slugs ---
+/de/hrm-loesungen/           /de/hrm-oplossingen/       301
+/de/hrm-loesungen-2/         /de/hrm-oplossingen/       301
+/de/hrmforce/                /de/over-ons/              301
+/de/kontakt/                 /de/contact/               301
+/de/wissenszentrum/          /de/kenniscentrum/         301
+/fr/hrm-solutions/           /fr/hrm-oplossingen/       301
+/fr/hrmforce/                /fr/over-ons/              301
+/es/soluciones-de-grh/       /es/hrm-oplossingen/       301
+/es/asesoria-de-hrmforce/    /es/advies/                301
+/es/lo-que-hacemos/          /es/over-ons/              301
+/es/contacto/                /es/contact/               301
+/es/ayuda/                   /es/support/               301
+/ro/solutii/                 /ro/hrm-oplossingen/       301
+/ro/ce-facem-noi/            /ro/over-ons/              301
+/ro/asistenta/               /ro/support/               301
+
+# --- Webshop: oude WooCommerce-URL's -> nieuwe shop (alle producten) ---
+/winkel/*                 /shop/                 301
+/en/winkel/*              /en/shop/              301
+/de/einkaufswagen/        /shop/                 301
+/fr/boutique/*            /fr/shop/              301
+/es/cesta-de-la-compra/   /es/shop/              301
+/winkelwagen/             /shop/                 301
+/mijn-account/            /shop/                 301
+
+# Let op: per-product redirects naar Shopify-handles voeg je toe zodra de shop in Shopify staat.
