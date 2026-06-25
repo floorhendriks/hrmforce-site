@@ -1,0 +1,49 @@
+---
+import Base from "../layouts/Base.astro";
+
+// Gemigreerde kenniscentrum-artikelen uit WordPress. Elk artikel-document
+// in Sanity heeft een volledig 'path' (bv. /kenniscentrum/<categorie>/<slug>/);
+// deze catch-all route rendert ze op exact dat pad.
+export async function getStaticPaths() {
+  if (!import.meta.env.SANITY_PROJECT_ID) return [];
+  const { sanity } = await import("../lib/sanity.js");
+  const arts = await sanity.fetch(
+    `*[_type == "article" && defined(path) && defined(body)]{path, title, body, date}`
+  );
+  return arts
+    .filter((a) => a.path && a.path.includes("/"))
+    .map((a) => ({
+      params: { path: a.path.replace(/^\/+|\/+$/g, "") },
+      props: { article: a },
+    }));
+}
+
+const { article } = Astro.props;
+const fmt = (d) => (d ? new Date(d).toLocaleDateString("nl-NL") : "");
+---
+<Base title={`${article.title} | Hrmforce`} description={article.title}>
+  <article class="kc-article">
+    <div class="wrap">
+      <h1>{article.title}</h1>
+      {article.date && <p class="kc-date">{fmt(article.date)}</p>}
+      <div class="kc-body" set:html={article.body}></div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .kc-article { padding: 48px 0; }
+  .kc-article .wrap { max-width: 820px; margin: 0 auto; padding: 0 20px; }
+  .kc-article h1 { font-size: 2rem; line-height: 1.2; color: var(--navy, #0E468C); margin-bottom: 8px; }
+  .kc-date { color: #888; font-size: .9rem; margin-bottom: 28px; }
+  .kc-body { font-size: 1.05rem; line-height: 1.7; color: #343434; }
+  .kc-body :global(h2) { font-size: 1.5rem; color: var(--navy, #0E468C); margin: 32px 0 12px; }
+  .kc-body :global(h3) { font-size: 1.2rem; color: var(--navy, #0E468C); margin: 24px 0 10px; }
+  .kc-body :global(p) { margin: 0 0 16px; }
+  .kc-body :global(ul), .kc-body :global(ol) { margin: 0 0 16px 22px; }
+  .kc-body :global(li) { margin: 6px 0; }
+  .kc-body :global(img) { max-width: 100%; height: auto; border-radius: 8px; margin: 16px 0; }
+  .kc-body :global(a) { color: var(--blue, #4691CE); }
+  .kc-body :global(table) { width: 100%; border-collapse: collapse; margin: 16px 0; }
+  .kc-body :global(td), .kc-body :global(th) { border: 1px solid #e2e2e2; padding: 8px; text-align: left; }
+</style>
