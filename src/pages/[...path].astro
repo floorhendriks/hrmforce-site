@@ -4,26 +4,22 @@ import { createClient } from "@sanity/client";
 
 // Gemigreerde kenniscentrum-artikelen uit WordPress. Elk artikel-document in
 // Sanity heeft een volledig 'path'; deze catch-all route rendert ze op dat pad.
-// Belangrijk: op Cloudflare staan de Sanity-variabelen in process.env (niet in
-// import.meta.env, want die bevat alleen PUBLIC_-variabelen tijdens de build).
-const PID =
-  (typeof process !== "undefined" && process.env && process.env.SANITY_PROJECT_ID) ||
-  import.meta.env.SANITY_PROJECT_ID;
-const DATASET =
-  (typeof process !== "undefined" && process.env && process.env.SANITY_DATASET) ||
-  import.meta.env.SANITY_DATASET ||
-  "production";
+// Project-ID en dataset staan hier vast (publiek, niet-geheim) zodat de build
+// de artikelen altijd ophaalt, los van omgevingsvariabelen.
+const sanityArticles = createClient({
+  projectId: "hqo56w28",
+  dataset: "production",
+  apiVersion: "2024-01-01",
+  useCdn: false,
+});
 
 export async function getStaticPaths() {
-  const pid =
-    (typeof process !== "undefined" && process.env && process.env.SANITY_PROJECT_ID) ||
-    import.meta.env.SANITY_PROJECT_ID;
-  const dataset =
-    (typeof process !== "undefined" && process.env && process.env.SANITY_DATASET) ||
-    import.meta.env.SANITY_DATASET ||
-    "production";
-  if (!pid) return [];
-  const client = createClient({ projectId: pid, dataset, apiVersion: "2024-01-01", useCdn: false });
+  const client = createClient({
+    projectId: "hqo56w28",
+    dataset: "production",
+    apiVersion: "2024-01-01",
+    useCdn: false,
+  });
   const arts = await client.fetch(
     `*[_type == "article" && defined(path) && defined(body)]{path, title, body, date}`
   );
