@@ -7,37 +7,63 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const logo = "https://hrmforce.com/wp-content/uploads/2022/03/HRM-LOGO.svg";
 
-// Assessments-content is voorlopig alleen NL; die link blijft daarom op de NL-route.
 const assessmentsHref = routes.assessments;
+const shopHref = routes.shop;
+const otherLangs = Object.keys(languages).filter((c) => c !== lang);
 ---
 <div class="topbar">
   <div class="wrap">
     <a href="https://assessment.hrmforce.com/Login.aspx?LanguageCode=nl-NL">{t("topbar.login")}</a>
-    <span class="langs">
-      {Object.keys(languages).map((code) => (
-        <a
-          href={switchLocalePath(Astro.url, code)}
-          style={`margin-left:8px;opacity:${code === lang ? "1" : ".7"};color:#fff`}
-        >{languages[code]}</a>
-      ))}
-    </span>
-    <a href={localizePath(routes.contact, lang)} style="color:#fff;font-weight:600">{t("topbar.demo")} &rarr;</a>
+    <details class="langdd">
+      <summary>{languages[lang]}<span class="caret">&#9662;</span></summary>
+      <div class="langdd-menu">
+        {otherLangs.map((code) => (
+          <a href={switchLocalePath(Astro.url, code)}>{languages[code]}</a>
+        ))}
+      </div>
+    </details>
+    <a class="demo-link" href={localizePath(routes.contact, lang)}>{t("topbar.demo")} &rarr;</a>
   </div>
 </div>
 <header>
   <div class="wrap nav">
     <a class="logo" href={lang === "nl" ? "/" : "/en/"}><img src={logo} alt="hrmforce" /></a>
     <nav class="menu">
-      <a href={localizePath(routes.shop, lang)} class={active === "shop" ? "active" : ""}>{t("nav.shop")}</a>
-      <a href={assessmentsHref} class={active === "assessments" ? "active" : ""}>{t("nav.assessments")}</a>
+      <div class={`has-dd ${active === "assessments" ? "active" : ""}`}>
+        <a href={assessmentsHref}>{t("nav.assessments")}<span class="caret">&#9662;</span></a>
+        <div class="dd">
+          <a href={assessmentsHref}>{t("nav.assessments")}</a>
+          <a href={shopHref}>{t("nav.shop")}</a>
+        </div>
+      </div>
       <a href={localizePath(routes.solutions, lang)} class={active === "solutions" ? "active" : ""}>{t("nav.solutions")}</a>
       <a href={localizePath(routes.advice, lang)} class={active === "advice" ? "active" : ""}>{t("nav.advice")}</a>
       <a href={localizePath(routes.about, lang)} class={active === "about" ? "active" : ""}>{t("nav.about")}</a>
       <a href={localizePath(routes.contact, lang)} class={active === "contact" ? "active" : ""}>{t("nav.contact")}</a>
     </nav>
     <div class="nav-cta">
-      <a href={localizePath(routes.shop, lang)} class="btn btn-ghost">{t("cta.shop")}</a>
+      <a href={shopHref} class="btn btn-ghost">{t("cta.shop")}</a>
       <a href={localizePath(routes.contact, lang)} class="btn btn-primary">{t("cta.demo")}</a>
     </div>
   </div>
 </header>
+
+<style>
+  .langdd { position: relative; display: inline-block; margin: 0 14px; }
+  .langdd > summary { list-style: none; cursor: pointer; color: #fff; opacity: .9; display: inline-flex; align-items: center; gap: 4px; font-weight: 600; }
+  .langdd > summary::-webkit-details-marker { display: none; }
+  .langdd .caret { font-size: .7em; }
+  .langdd[open] > summary { opacity: 1; }
+  .langdd-menu { position: absolute; top: 130%; left: 0; z-index: 60; background: #fff; border: 1px solid #e2e2e2; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.12); min-width: 70px; padding: 4px; }
+  .langdd-menu a { display: block; padding: 7px 14px; color: #343434; text-decoration: none; font-weight: 600; border-radius: 6px; }
+  .langdd-menu a:hover { background: #f1f5fb; color: var(--navy, #0E468C); }
+
+  .has-dd { position: relative; display: inline-flex; align-items: center; }
+  .has-dd > a .caret { font-size: .7em; margin-left: 4px; }
+  .has-dd .dd { position: absolute; top: 100%; left: 0; z-index: 60; display: none; background: #fff; border: 1px solid #e2e2e2; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.12); min-width: 200px; padding: 6px; }
+  .has-dd:hover .dd, .has-dd:focus-within .dd { display: block; }
+  .has-dd .dd a { display: block; padding: 9px 14px; color: #343434; text-decoration: none; font-weight: 600; border-radius: 6px; white-space: nowrap; }
+  .has-dd .dd a:hover { background: #f1f5fb; color: var(--navy, #0E468C); }
+
+  .topbar .demo-link { color: #fff; font-weight: 600; }
+</style>
