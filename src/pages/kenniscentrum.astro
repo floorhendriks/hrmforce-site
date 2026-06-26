@@ -1,17 +1,22 @@
 ---
 import Base from "../layouts/Base.astro";
-import { posts as localPosts } from "../data/blog.js";
+import { createClient } from "@sanity/client";
 import { getLangFromUrl, localizePath } from "../i18n/utils.js";
 
 const lang = getLangFromUrl(Astro.url);
-let list = localPosts.map((p) => ({ slug: p.slug, category: p.category, date: p.date, title: p.title, excerpt: p.excerpt }));
-if (import.meta.env.SANITY_PROJECT_ID) {
-  const { sanity, pick } = await import("../lib/sanity.js");
-  const { allPosts } = await import("../lib/queries.js");
-  const raw = await sanity.fetch(allPosts);
-  list = raw.map((p) => ({ slug: p.slug?.current, category: pick(p.category, lang), date: p.date, title: pick(p.title, lang), excerpt: pick(p.excerpt, lang) }));
-}
-const fmt = (d) => new Date(d).toLocaleDateString("nl-NL");
+
+// Gemigreerde kenniscentrum-artikelen uit Sanity (vaste, publieke client).
+const client = createClient({
+  projectId: "hqo56w28",
+  dataset: "production",
+  apiVersion: "2024-01-01",
+  useCdn: false,
+});
+const raw = await client.fetch(
+  `*[_type == "article" && defined(path) && defined(body) && path match "/kenniscentrum/*"] | order(date desc){title, path, date}`
+);
+const list = raw.filter((p) => p.path && p.title);
+const fmt = (d) => (d ? new Date(d).toLocaleDateString("nl-NL") : "");
 ---
 <Base title="Kenniscentrum | Hrmforce" description="Artikelen over HR, assessments, capaciteiten en ontwikkeling." active="">
   <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>Kenniscentrum</span></div></div>
@@ -23,9 +28,9 @@ const fmt = (d) => new Date(d).toLocaleDateString("nl-NL");
   <section class="blog"><div class="wrap">
     <div class="posts">
       {list.map((p) => (
-        <a class="post" href={`${localizePath("/kenniscentrum/", lang)}${p.slug}/`} style="text-decoration:none">
+        <a class="post" href={p.path} style="text-decoration:none">
           <div class="img"></div>
-          <div class="body"><span class="tag">{p.category}</span><h3>{p.title}</h3><span class="date">{fmt(p.date)}</span></div>
+          <div class="body"><h3>{p.title}</h3><span class="date">{fmt(p.date)}</span></div>
         </a>
       ))}
     </div>
