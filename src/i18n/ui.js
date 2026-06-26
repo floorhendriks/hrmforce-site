@@ -3,8 +3,8 @@ export const defaultLang = "nl";
 export const languages = { nl: "NL", en: "EN", de: "DE", fr: "FR", es: "ES", ro: "RO" };
 
 export const routes = {
-  shop: "/shop/",
-  assessments: "/assessments/big-five/",
+  shop: "https://shop.hrmforce.com",
+  assessments: "/online-assessments/,
   solutions: "/hrm-oplossingen/",
   advice: "/advies/",
   about: "/over-ons/",
