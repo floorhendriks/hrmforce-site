@@ -9,8 +9,8 @@ export const routes = {
   advice: "/advies/",
   about: "/over-ons/",
   contact: "/contact/",
-  support: "/support/",
-};
+  support: "https://support.hrmforce.com",
+  };
 
 export const ui = {
   nl: {
