@@ -1,0 +1,80 @@
+---
+import Base from "../layouts/Base.astro";
+
+const items = [
+  { title: "DISC test", slug: "disc-test", cats: ["(Pre)Selectie", "Evalueren", "Ontwikkeling"], goal: "Inzicht in gedrag, communicatie en samenwerking, zodat je weet hoe iemand het beste presteert, samenwerkt en aangestuurd wil worden." },
+  { title: "360 Graden Feedback", slug: "360-graden-feedback", cats: ["Evalueren", "Ontwikkeling"], goal: "Feedback ontvangen m.b.t. vaardigheden, capaciteiten, persoonlijkheid en motivatie." },
+  { title: "Persoonlijkheidstest: Big Five", slug: "big-five", cats: ["(Pre)Selectie", "Evalueren", "Ontwikkeling"], goal: "Persoonlijkheidskenmerken omzetten naar vaardigheden en zo ontdekken waar iemand kan groeien." },
+  { title: "Drijfverentest", slug: "drijfverentest", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Duidelijk helpen begrijpen wat motivatie verhoogt en verlaagt." },
+  { title: "Ability Scan | Cognitieve capaciteitentest", slug: "ability-scan", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Hoe snel kan je problemen begrijpen, een mening vormen en nieuwe dingen aanleren. Daaruit gemiddelde niveau opmaken: mbo, hbo of Master." },
+  { title: "Ontwikkelassessment", slug: "ontwikkelassessment", cats: ["Ontwikkeling"], goal: "Valide overzicht van welke competenties ontwikkeling behoeven en welke al goed gaan." },
+  { title: "Studiekeuzetest", slug: "studiekeuzetest", cats: ["Ontwikkeling", "Studiekeuze"], goal: "Op basis van interesses scholieren, studenten en werknemers inzicht geven in de best passende opleidingen." },
+  { title: "Lencioni Teamdynamiek", slug: "lencioni-teamdynamiek", cats: ["Ontwikkeling"], goal: "De Lencioni vragenlijst is ontworpen om teams te helpen de teamdynamiek te begrijpen en te evalueren door de aanwezigheid en impact van de vijf disfuncties in teamwork te meten." },
+  { title: "Pulse Survey", slug: "pulse-survey", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "De mogelijkheid bieden aan organisaties om met behulp van onze standaard vragenlijsten en vragendatabase zelf vragenlijsten te ontwerpen en deze te versturen naar sollicitanten en medewerkers." },
+  { title: "Mentale Veerkracht Scan", slug: "mentale-veerkracht-scan", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Inzicht verkrijgen in de mate waarin men effectief blijft werken bij hoge druk en/of tegenslag" },
+  { title: "Levensloop Scan", slug: "levensloop-scan", cats: ["Ontwikkeling"], goal: "Inzicht krijgen in de levensloop van een kandidaat om daarmee aanknopingspunten voor coaching en ontwikkeling bloot te leggen." },
+  { title: "Lean Scan", slug: "lean-scan", cats: ["Evalueren", "Ontwikkeling"], goal: "Inzicht verkrijgen in de gap tussen huidige en ideale situatie om zo behoefte en noodzaak van Lean management aan te tonen." },
+  { title: "Interesse test", slug: "interesse-scan", cats: ["Ontwikkeling"], goal: "Inzicht verkrijgen in welke sectoren een scholier, student of medewerker de meest interesse heeft om deze resultaten te koppelen aan relevante opleidingen en beroepen" },
+  { title: "Duurzame Inzetbaarheid Scan", slug: "duurzame-inzetbaarheid-scan", cats: ["Ontwikkeling"], goal: "Snel inzicht verkrijgen of een medewerker en/of organisatie nog voldoende duurzaam inzetbaar zijn." },
+  { title: "Coaching Screener Scan", slug: "coaching-screener-scan", cats: ["Ontwikkeling"], goal: "Inzicht krijgen in welke klachten en problemen een kandidaat ervaart en hoe hij/zij hiermee omgaat." },
+  { title: "Value Drives", slug: "value-drives", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Voor bedrijven is verandering een belangrijk thema. Binnen die kaders zijn het de waarden van mensen die een rol spelen. Met de Value Drives vragenlijst worden deze waarden gesorteerd op kleur en in kaart gebracht." },
+  { title: "Teamanalyse", slug: "teamanalyse", cats: ["Ontwikkeling"], goal: "Inzicht geven in welke onderwerpen en thema's binnen het team (extra) aandacht nodig hebben om deze op te nemen in het team ontwikkel plan." },
+  { title: "Job Profiler", slug: "job-profiler", cats: ["(Pre)Selectie", "Evalueren", "Ontwikkeling"], goal: "Inzicht verkrijgen welke competenties en gedragingen de verschillende respondentgroepen relevant vinden voor een functie als input voor selectie, ontwikkeling en beoordeling." },
+  { title: "Intake Candidate", slug: "intake-candidate", cats: ["(Pre)Selectie"], goal: "Alle vragen die in de ideale situatie in het eerste interview aan de orde moeten komen alvast online stellen, zodat het interview echt inhoud kan krijgen." },
+  { title: "Exit Assessment", slug: "exit-assessment", cats: ["Evalueren", "Ontwikkeling"], goal: "Verschaffen van inzicht in redenen en oorzaken voor vertrek medewerkers alsmede tips ontvangen voor verbetering." },
+  { title: "Cognitieve Capaciteitentest", slug: "cognitieve-test", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Meten hoe snel een persoon problemen kan begrijpen, zich een mening kan vormen en/of nieuwe dingen kan aanleren." },
+  { title: "Appraisal", slug: "appraisal", cats: ["Evalueren", "Ontwikkeling"], goal: "Verschaffen feedback (90 graden) vanuit een aantal verschillende perspectieven. Ideaal als input voor de functionerings- en beoordelingscyclus." },
+  { title: "CanMeds", slug: "canmeds", cats: ["(Pre)Selectie", "Evalueren", "Ontwikkeling"], goal: "Aangeven hoe makkelijk een medewerker met een bepaald persoonlijkheidsprofiel specifieke competenties kan laten zien of kan ontwikkelen. Daarnaast wordt het presteren op een specifieke rol gescoord." },
+  { title: "Beroepskeuzetest", slug: "beroepskeuze-test", cats: ["Evalueren", "Ontwikkeling"], goal: "Betrouwbaar advies omtrent passende en minder passende beroepsgroepen." },
+  { title: "Loopbaanwaarden", slug: "loopbaanwaarden", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Bieden van ondersteuning bij het beantwoorden van de vraag of bepaalde functies, rollen of organisties passen bij de loopbaanwaarden van de persoon." },
+  { title: "Communicatiestijl test", slug: "communicatiestijlen-test", cats: ["Evalueren", "Ontwikkeling"], goal: "Vergelijken aanwezigheid essentiële omgangsfactoren (macht/invloed en persoonlijke afstand/nabijheid) en het vertalen hiervan naar specifieke communicatiestijlen." },
+  { title: "Competentietest", slug: "competentie-check", cats: ["Evalueren", "Ontwikkeling"], goal: "Verschaffen feedback (0 graden) over eigen gedrag van medewerker. Antwoord op de vraag hoe men zichzelf ziet." },
+  { title: "Conflictstijlen test", slug: "conflictstijlen-test", cats: ["Evalueren", "Ontwikkeling"], goal: "Analyseren van het individuele gedrag in conflict situaties. De test geeft aan in welke mate een bepaalde conflictstijl iemand tot nut kan zijn." },
+  { title: "Tevredenheidsonderzoek", slug: "tevredenheidsonderzoek-medewerkers", cats: ["Evalueren", "Ontwikkeling"], goal: "Creëren van een overzicht van de tevredenheid van medewerkers over factoren als werkprocessen, cultuur, management, arbeidsomstandigheden, loopbaanontwikkeling en loyaliteit." },
+  { title: "Leiderschapstest", slug: "leiderschapstest", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Overzicht van de managementrollen en leiderschapsstijlen die een medewerker zal aannemen in verschillende situaties." },
+  { title: "Leerstijlen test", slug: "leerstijlen", cats: ["Evalueren", "Ontwikkeling"], goal: "Inzicht in de wijze waarop een medewerker met leeractiviteiten omgaat en wat zijn/haar leervoorkeur is." },
+  { title: "15PF", slug: "15pf", cats: ["Ontwikkeling"], goal: "Inzicht in de manier waarop een medewerker zich in verschillende situaties zal gedragen of reageren." },
+  { title: "Referentie Check", slug: "referentie-check", cats: ["(Pre)Selectie"], goal: "Adequaat opvragen referenties ten behoeve van een sollicitatie- of selectieprocedure." },
+  { title: "Verkoopvaardigheden", slug: "verkoopvaardigheden", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Inzicht in de verkoopvaardigheden van uw topverkoper. Tevens kan inzicht verkregen worden in het inkoopgedrag van de klant en de communicatiestijl van uw verkopers." },
+  { title: "Groepsrollen", slug: "groepsrollen", cats: ["Evalueren", "Ontwikkeling"], goal: "Overzicht van de groepsrollen, die een medewerker al dan niet zal aannemen in bepaalde situaties." },
+  { title: "Typology", slug: "typology", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Inzicht in het type medewerkers, gebaseerd op hoe we omgaan met dominantie (invloed versus samenwerken) en emotie (gevoel versus ratio)." },
+];
+---
+<Base
+  title="Assessment Overzicht - hrmforce"
+  description="Bekijk het assessment overzicht met meer dan 23 online assessments waarmee u het talent binnen uw organisatie kunt meten en inzichtelijk maakt."
+  active="assessments"
+>
+  <div class="crumb">
+    <div class="wrap"><a href="/">Home</a> › <span>Assessment overzicht</span></div>
+  </div>
+
+  <section class="ahero">
+    <div class="wrap" style="display:block">
+      <div class="eyebrow" style="color:var(--gold)">online assessments</div>
+      <h1>Overzicht</h1>
+      <p style="color:#c4d2e6;font-size:19px;max-width:840px;margin-top:8px">Met hrmforce heeft u de beschikking over een groot aantal <strong>online assessments</strong>. Krijg inzicht in de kennis, capaciteiten, persoonlijkheid, tevredenheid en motivatie van uw personeel. Er zijn tests voor iedere HR fase: (pre)selectie, ontwikkeling, functioneren en beoordelen.</p>
+      <div class="btns"><a class="btn btn-primary" href="/contact/">Gratis demo aanvragen</a></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cards">
+        {items.map((a) => (
+          <a class="card" href={`/assessments/${a.slug}/`} style="text-decoration:none;color:inherit;display:block">
+            <span class="tag-row">{a.cats.map((c) => <span class="tag">{c}</span>)}</span>
+            <h3>{a.title}</h3>
+            <p><strong>Doel:</strong> {a.goal}</p>
+            <span style="color:var(--blue);font-weight:600;font-size:15px">Lees meer &rarr;</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .tag { background: #e8f0fe; color: var(--navy); font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+</style>
