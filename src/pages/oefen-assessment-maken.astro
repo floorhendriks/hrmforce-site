@@ -1,0 +1,46 @@
+---
+import Base from "../layouts/Base.astro";
+
+const oefenUrl = "https://assessment.hrmforce.com/AbilitySampleDetails.aspx?LanguageID=33#b";
+---
+<Base
+  title="Gratis oefen assessment maken | Hrmforce"
+  description="Wil je eerst oefenen voordat je een assessment maakt? Maak dit gratis oefen assessment en bereid je optimaal voor."
+  active=""
+>
+  <div class="crumb"><div class="wrap"><a href="/">Home</a> › <span>Oefen assessment maken</span></div></div>
+
+  <section class="ahero"><div class="wrap" style="display:block">
+    <div class="eyebrow" style="color:var(--gold)">Voorbereiding</div>
+    <h1>Gratis oefen assessment maken</h1>
+    <p style="color:#dbe6f5;font-size:19px;max-width:760px;margin-top:8px">
+      Wil je eerst oefenen voordat je een assessment gaat maken? Doe dan dit gratis oefen assessment. Zo weet je wat je kunt verwachten en ben je optimaal voorbereid.
+    </p>
+    <div class="btns" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px">
+      <a href={oefenUrl} class="btn btn-primary" target="_blank" rel="noopener">Start het oefen assessment</a>
+    </div>
+  </div></section>
+
+  <section><div class="wrap">
+    <div class="eyebrow">Waarom oefenen?</div>
+    <h2 class="section-title">Optimaal voorbereid aan de start</h2>
+    <div class="explain">
+      <div>
+        <p>Een assessment maken kan spannend zijn, zeker als je niet weet wat je te wachten staat. Met dit gratis oefen assessment ervaar je vooraf hoe de vragen zijn opgebouwd en hoe het maken van een test werkt.</p>
+        <p>Door te oefenen raak je vertrouwd met de vraagvormen en de tijdsdruk. Zo kun je je tijdens het echte assessment volledig richten op de inhoud in plaats van op de techniek.</p>
+        <a href={oefenUrl} class="btn btn-primary" target="_blank" rel="noopener" style="margin-top:8px">Naar het oefen assessment</a>
+      </div>
+      <div class="pentagon">
+        <ul class="traits" style="text-align:left">
+          <li>Ervaar de vraagvormen vooraf</li>
+          <li>Wen aan het werken met tijdslimiet</li>
+          <li>Verminder spanning op de testdag</li>
+          <li>Volledig gratis en vrijblijvend</li>
+        </ul>
+      </div>
+    </div>
+    <p style="color:var(--muted);font-size:14px;margin-top:20px">
+      Kom je er niet uit of heb je vragen over je assessment? <a href="/contact/" style="color:var(--blue);font-weight:600">Neem contact met ons op</a> of bekijk de <a href="/support/" style="color:var(--blue);font-weight:600">support-pagina</a>.
+    </p>
+  </div></section>
+</Base>
