@@ -223,4 +223,17 @@ export const home = {
   },
 };
 
-export const clients = ["Rabobank","Siemens","Fugro","Athlon","Cordaan","Mitsubishi","ArcelorMittal","Royal HaskoningDHV","Office Depot","vidaXL","Wageningen Univ.","City of Amsterdam"];
+export const clients = [
+  { name: "Rabobank", logo: "https://hrmforce.com/wp-content/uploads/2025/06/logo-Rabobank.png" },
+  { name: "Siemens", logo: "https://hrmforce.com/wp-content/uploads/2025/06/logo-siemens.jpg" },
+  { name: "Fugro", logo: "https://hrmforce.com/wp-content/uploads/2025/06/logo-fugro.jpg" },
+  { name: "Athlon", logo: "https://hrmforce.com/wp-content/uploads/2025/06/logo-athlon.jpg" },
+  { name: "Cordaan", logo: "https://hrmforce.com/wp-content/uploads/2025/06/logo-cordaan.jpg" },
+  { name: "Mitsubishi", logo: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Mitsubishi.png" },
+  { name: "ArcelorMittal", logo: "https://hrmforce.com/wp-content/uploads/2025/06/logo-arcelorMittal.jpg" },
+  { name: "Royal HaskoningDHV", logo: "https://hrmforce.com/wp-content/uploads/2025/06/logo-RHDHV.jpg" },
+  { name: "Office Depot", logo: "https://hrmforce.com/wp-content/uploads/2025/07/logo-officedepot.png" },
+  { name: "vidaXL", logo: "https://hrmforce.com/wp-content/uploads/2025/06/logo-vidaXL.jpg" },
+  { name: "Wageningen Univ.", logo: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Wageningen-University.jpg" },
+  { name: "City of Amsterdam", logo: "https://hrmforce.com/wp-content/uploads/2025/06/logo-cityofamsterdam.jpg" },
+];
