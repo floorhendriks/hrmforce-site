@@ -5,6 +5,7 @@ const quoteFH = { heading: "Betrouwbaar inzicht", text: "Onze instrumenten zijn 
 
 export const assessments = [
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "big-five", title: "Persoonlijkheidstest: Big Five",
     metaTitle: "Persoonlijkheidstest doen? | BIG FIVE TEST | Valide | Hrmforce",
     metaDescription: "De Big Fifty (5) Persoonlijkheidstest biedt inzicht in het persoonsprofiel van de werknemer en zet dit om naar werkgerelateerde competenties.",
@@ -26,6 +27,7 @@ export const assessments = [
     related: ["Drijfverentest", "Leiderschapstest", "DISC Test"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "360-graden-feedback", title: "360 graden feedback",
     metaTitle: "360 graden feedback | Hrmforce", metaDescription: "Verzamel gestructureerde feedback van collega's, leidinggevenden en klanten rond competenties en gedrag.",
     phase: "Ontwikkeling → functioneren", goal: "Inzicht geven in hoe iemand wordt ervaren door de omgeving, als basis voor ontwikkeling.",
@@ -38,6 +40,7 @@ export const assessments = [
     related: ["Lencioni Teamdynamiek", "Leiderschapstest"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "drijfverentest", title: "Drijfverentest",
     metaTitle: "Drijfverentest | Wat motiveert je medewerkers? | Hrmforce", metaDescription: "Breng de drijfveren en motivatie van medewerkers in kaart als basis voor duurzame inzet.",
     phase: "Ontwikkeling → functioneren", goal: "Ontdekken wat iemand motiveert en energie geeft in het werk.",
@@ -50,6 +53,7 @@ export const assessments = [
     related: ["Persoonlijkheidstest: Big Five", "360 graden feedback"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "cognitieve-test", title: "Cognitieve test (Ability Scan)",
     metaTitle: "Cognitieve capaciteitentest | Ability Scan | Hrmforce", metaDescription: "Meet het cognitief vermogen en voorspel hoe snel iemand nieuwe taken oppakt.",
     phase: "Selectie", goal: "Het werk- en denkniveau en het leervermogen objectief in kaart brengen.",
@@ -62,6 +66,7 @@ export const assessments = [
     related: ["Persoonlijkheidstest: Big Five"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "disc-test", title: "DISC Test",
     metaTitle: "DISC persoonlijkheidstest | Gedrag & communicatie | Hrmforce", metaDescription: "Breng communicatie- en gedragsstijl in kaart met de DISC-vragenlijst.",
     phase: "Ontwikkeling", goal: "Inzicht in gedragsvoorkeuren en communicatiestijl voor betere samenwerking.",
@@ -74,6 +79,7 @@ export const assessments = [
     related: ["Persoonlijkheidstest: Big Five", "Lencioni Teamdynamiek"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "studiekeuzetest", title: "Studiekeuzetest",
     metaTitle: "Studiekeuzetest | Onderbouwde studie- en loopbaankeuze | Hrmforce", metaDescription: "Helpt bij het maken van een onderbouwde studie- of loopbaankeuze.",
     phase: "Mobiliteit", goal: "Interesses, capaciteiten en voorkeuren koppelen aan passende opleidingen of loopbanen.",
@@ -86,6 +92,7 @@ export const assessments = [
     related: ["Drijfverentest"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "mentale-veerkracht-scan", title: "Mentale veerkracht scan",
     metaTitle: "Mentale veerkracht scan | Duurzame inzetbaarheid | Hrmforce", metaDescription: "Meet mentale veerkracht en helpt duurzame inzetbaarheid te bevorderen.",
     phase: "Employability", goal: "Inzicht in stressbestendigheid en herstelvermogen.",
@@ -98,6 +105,7 @@ export const assessments = [
     related: ["360 graden feedback"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "lencioni-teamdynamiek", title: "Lencioni Teamdynamiek",
     metaTitle: "Lencioni Teamdynamiek | Teamontwikkeling | Hrmforce", metaDescription: "Meet de vijf frustraties van teamwork volgens het model van Patrick Lencioni.",
     phase: "Ontwikkeling", goal: "Inzicht in de samenwerking en valkuilen binnen een team.",
@@ -110,6 +118,7 @@ export const assessments = [
     related: ["360 graden feedback", "DISC Test"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "leiderschapstest", title: "Leiderschapstest",
     metaTitle: "Leiderschapstest | Leiderschapsstijl & ontwikkeling | Hrmforce", metaDescription: "Brengt leiderschapsstijl en ontwikkelpunten van (aankomende) leidinggevenden in kaart.",
     phase: "Ontwikkeling → selectie", goal: "Leiderschapsgedrag en -potentieel inzichtelijk maken.",
@@ -122,6 +131,7 @@ export const assessments = [
     related: ["Persoonlijkheidstest: Big Five", "360 graden feedback"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "ontwikkelassessment", title: "Ontwikkelassessment",
     metaTitle: "Ontwikkelassessment | Groei en ontwikkeling | Hrmforce", metaDescription: "Een systematische methode om ontwikkelpotentieel en groeirichting in kaart te brengen.",
     phase: "Ontwikkeling", goal: "Sterktes, ontwikkelpunten en groeirichting bepalen.",
@@ -134,6 +144,7 @@ export const assessments = [
     related: ["Persoonlijkheidstest: Big Five", "Drijfverentest"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "15pf", title: "15PF",
     metaTitle: "15PF | Persoonlijkheidsvragenlijst | Hrmforce",
     metaDescription: "De 15PF test van hrmforce geeft inzicht in de manier waarop een medewerker zich in verschillende situaties zal gedragen of reageren.",
@@ -150,6 +161,7 @@ export const assessments = [
     related: ["Persoonlijkheidstest: Big Five", "Typology", "Leerstijlen test"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "ability-scan", title: "Ability Scan | Cognitieve capaciteitentest",
     metaTitle: "Cognitieve capaciteitentest | 4,9 sterren | Ability Scan",
     metaDescription: "Meet objectief het denk- en leervermogen van kandidaten met de Ability Scan. Capaciteitentest van mbo tot master, beoordeeld met 4,9 sterren.",
@@ -166,6 +178,7 @@ export const assessments = [
     related: ["Persoonlijkheidstest: Big Five", "Mentale veerkracht scan", "Levensloop Scan"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "appraisal", title: "Appraisal",
     metaTitle: "Appraisal | 90 graden feedback | Hrmforce",
     metaDescription: "Appraisal: de kandidaat krijgt gestructureerde feedback over hoe hij/zij zichzelf ziet, maar tevens over hoe de kandidaat op zijn/haar manager overkomt.",
@@ -182,6 +195,7 @@ export const assessments = [
     related: ["360 graden feedback", "Competentietest", "Typology"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "beroepskeuze-test", title: "Beroepskeuzetest",
     metaTitle: "Beroepskeuze test afnemen? Dit beroep past bij jou | Gratis demo",
     metaDescription: "Ontvang een betrouwbaar advies omtrent passende en minder passende beroepsgroepen. Inclusief duidelijke uitleg en rapportage.",
@@ -198,6 +212,7 @@ export const assessments = [
     related: ["Loopbaanwaarden", "Studiekeuzetest", "Interesse test"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "canmeds", title: "CanMeds",
     metaTitle: "CanMeds | 360 Graden Feedback voor de zorg | Hrmforce",
     metaDescription: "Krijg inzicht in hoe makkelijk een medewerker met een bepaald persoonlijkheidsprofiel CanMeds competenties kan laten zien of kan ontwikkelen.",
@@ -214,6 +229,7 @@ export const assessments = [
     related: ["Persoonlijkheidstest: Big Five", "360 graden feedback", "Competentietest"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "coaching-screener-scan", title: "Coaching Screener Scan",
     metaTitle: "Coaching Screener Scan | Hrmforce",
     metaDescription: "Inzicht krijgen in welke klachten en problemen een kandidaat ervaart en hoe hij/zij hiermee omgaat, met name goed te benutten bij coaching.",
@@ -230,6 +246,7 @@ export const assessments = [
     related: ["Mentale veerkracht scan", "Levensloop Scan", "Duurzame Inzetbaarheid Scan"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "communicatiestijlen-test", title: "Communicatiestijl test",
     metaTitle: "Communicatiestijl test afnemen? | Start met gratis demo | Hrmforce",
     metaDescription: "Vergelijk met de Communicatiestijlen test de aanwezigheid van essentiele omgangsfactoren en vertaal ze naar specifieke communicatiestijlen.",
@@ -246,6 +263,7 @@ export const assessments = [
     related: ["DISC Test", "Conflictstijlen test", "Leerstijlen test"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "competentie-check", title: "Competentietest",
     metaTitle: "Competentietest | Hoe ziet de medewerker zichzelf? | Hrmforce",
     metaDescription: "De competentietest verschaft feedback (0 graden) over het eigen gedrag van de medewerker. Een antwoord op de vraag hoe men zichzelf ziet.",
@@ -262,6 +280,7 @@ export const assessments = [
     related: ["360 graden feedback", "Appraisal", "Typology"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "conflictstijlen-test", title: "Conflictstijlen test",
     metaTitle: "Conflictstijlen test | Hrmforce",
     metaDescription: "Analyseer het individuele gedrag in conflictsituaties. De Conflictstijlen test geeft aan in welke mate een bepaalde conflictstijl iemand tot nut kan zijn.",
@@ -278,6 +297,7 @@ export const assessments = [
     related: ["Communicatiestijl test", "DISC Test", "Interesse test"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "duurzame-inzetbaarheid-scan", title: "Duurzame Inzetbaarheid Scan",
     metaTitle: "Duurzame Inzetbaarheid Scan | Hrmforce",
     metaDescription: "Met de Duurzame Inzetbaarheid Scan verkrijg je snel inzicht of een medewerker en/of organisatie nog voldoende duurzaam inzetbaar zijn.",
@@ -294,6 +314,7 @@ export const assessments = [
     related: ["Mentale veerkracht scan", "Levensloop Scan", "Lean Scan"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "exit-assessment", title: "Exit Assessment",
     metaTitle: "Exit gesprek voeren? | Zorg voor een exit assessment | Hrmforce",
     metaDescription: "Een Exit Assessment verschaft inzicht in redenen en oorzaken voor vertrek van medewerkers. Eerlijk, oprecht en extreem nuttig.",
@@ -310,6 +331,7 @@ export const assessments = [
     related: ["Tevredenheidsonderzoek", "Drijfverentest", "Pulse Survey"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "groepsrollen", title: "Groepsrollen",
     metaTitle: "Groepsrollen | Hrmforce",
     metaDescription: "Met de Groepsrollen Assessment krijg je een overzicht van de groepsrollen die een medewerker al dan niet zal aannemen in bepaalde situaties.",
@@ -326,6 +348,7 @@ export const assessments = [
     related: ["Teamanalyse", "Lencioni Teamdynamiek", "Typology"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "intake-candidate", title: "Intake Candidate",
     metaTitle: "Kandidaat intake | Bereid je interview slim voor | Hrmforce",
     metaDescription: "Laat kandidaten de standaardvragen vooraf invullen, zodat je tijdens het interview meer tijd hebt voor soft skills, competenties en de match.",
@@ -342,6 +365,7 @@ export const assessments = [
     related: ["Referentie Check", "Job Profiler", "Typology"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "interesse-scan", title: "Interesse test",
     metaTitle: "Interessetest doen? | Voor scholieren & personeel | Hrmforce",
     metaDescription: "Met de interesse scan verkrijgt een scholier of medewerker inzicht in welke sectoren hij/zij de meeste interesse heeft.",
@@ -358,6 +382,7 @@ export const assessments = [
     related: ["Beroepskeuzetest", "Studiekeuzetest", "Loopbaanwaarden"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "job-profiler", title: "Job Profiler",
     metaTitle: "Job Profiler | Hrmforce",
     metaDescription: "Inzicht verkrijgen welke competenties en gedragingen respondentgroepen relevant vinden voor een functie, als input voor selectie, ontwikkeling en beoordeling.",
@@ -374,6 +399,7 @@ export const assessments = [
     related: ["Competentietest", "Intake Candidate", "Typology"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "lean-scan", title: "Lean Scan",
     metaTitle: "Lean Scan doen? | Lean Methode | Ontdek Hrmforce",
     metaDescription: "Met de Lean Scan verkrijgen bedrijven inzicht in de gap tussen huidige en ideale situatie om zo behoefte en noodzaak van Lean management aan te tonen.",
@@ -390,6 +416,7 @@ export const assessments = [
     related: ["Teamanalyse", "Duurzame Inzetbaarheid Scan", "Tevredenheidsonderzoek"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "leerstijlen", title: "Leerstijlen test",
     metaTitle: "Leerstijlen test afnemen? | Gratis demo | Hrmforce",
     metaDescription: "De Leerstijlen test geeft inzicht in de wijze waarop een medewerker met leeractiviteiten omgaat en wat zijn/haar leervoorkeur is.",
@@ -406,6 +433,7 @@ export const assessments = [
     related: ["DISC Test", "Interesse test", "Conflictstijlen test"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "levensloop-scan", title: "Levensloop Scan",
     metaTitle: "Levensloop Scan | Hrmforce",
     metaDescription: "Een Levensloop Scan verschaft inzicht in de levensloop van een kandidaat, om zo aanknopingspunten voor coaching en ontwikkeling bloot te leggen.",
@@ -422,6 +450,7 @@ export const assessments = [
     related: ["Coaching Screener Scan", "Mentale veerkracht scan", "Duurzame Inzetbaarheid Scan"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "loopbaanwaarden", title: "Loopbaanwaarden",
     metaTitle: "Loopbaanwaarden | Hrmforce",
     metaDescription: "Loopbaanwaarden helpt bij de vraag welke functies of organisaties passen bij de waarden die iemand van belang vindt om in de loopbaan te realiseren.",
@@ -438,6 +467,7 @@ export const assessments = [
     related: ["Drijfverentest", "Beroepskeuzetest", "Interesse test"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "pulse-survey", title: "Pulse Survey",
     metaTitle: "Pulse Survey | Zelf vragenlijsten maken voor personeel | Hrmforce",
     metaDescription: "Maak met de Pulse Survey zelf vragenlijsten voor je personeel uit 1000+ items en 40 voorbeeldlijsten. Van tevredenheid tot mentale weerbaarheid.",
@@ -454,6 +484,7 @@ export const assessments = [
     related: ["Tevredenheidsonderzoek", "Teamanalyse", "Exit Assessment"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "referentie-check", title: "Referentie Check",
     metaTitle: "Referentie Check | Hrmforce",
     metaDescription: "De referentie check helpt je om navraag te doen over de sollicitant en na te gaan of de persoon kundig is en past binnen jouw organisatie.",
@@ -470,6 +501,7 @@ export const assessments = [
     related: ["Intake Candidate", "Job Profiler", "Typology"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "teamanalyse", title: "Teamanalyse",
     metaTitle: "Teamanalyse maken? | Gebruik een vragenlijst | Hrmforce",
     metaDescription: "Teamanalyse: inzicht geven in welke onderwerpen en thema's binnen het team (extra) aandacht nodig hebben.",
@@ -486,6 +518,7 @@ export const assessments = [
     related: ["Lencioni Teamdynamiek", "Groepsrollen", "Pulse Survey"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "tevredenheidsonderzoek-medewerkers", title: "Tevredenheidsonderzoek",
     metaTitle: "Tevredenheidsonderzoek voor medewerkers | Start je gratis demo",
     metaDescription: "Tevredenheidsonderzoek: krijg een overzicht van de tevredenheid van medewerkers over factoren als werkprocessen, cultuur en management.",
@@ -502,6 +535,7 @@ export const assessments = [
     related: ["Pulse Survey", "Teamanalyse", "Exit Assessment"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "typology", title: "Typology",
     metaTitle: "Typology test | Ontdek je kleurtype in enkele minuten | Hrmforce",
     metaDescription: "Doe de op Jung gebaseerde Typology test en ontdek in ongeveer 10 minuten je gedragsstijl aan de hand van vier kleurtypen.",
@@ -518,6 +552,7 @@ export const assessments = [
     related: ["Persoonlijkheidstest: Big Five", "DISC Test", "Groepsrollen"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "value-drives", title: "Value Drives",
     metaTitle: "Value Drives vragenlijst | Hrmforce",
     metaDescription: "Met de Value Drives vragenlijst worden de persoonlijke waarden van medewerkers gesorteerd op kleur en in kaart gebracht.",
@@ -534,6 +569,7 @@ export const assessments = [
     related: ["Drijfverentest", "Loopbaanwaarden", "Typology"],
   },
   {
+    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
     slug: "verkoopvaardigheden", title: "Verkoopvaardigheden",
     metaTitle: "Verkoopvaardigheden | Hrmforce",
     metaDescription: "De Verkoopvaardigheden test geeft een helder beeld van de vaardigheden waarmee een topverkoper zich onderscheidt van de rest.",
