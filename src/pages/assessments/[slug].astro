@@ -53,9 +53,13 @@ const assessHref = localizePath("/online-assessments/", lang);
       <div class="device">
         <div class="screen">
           <span class="chip">Voorbeeldrapport</span>
-          {a.traits.map((t, i) => (
-            <div class="traitbar"><span>{t}</span><div class="track"><div class="fill" style={`width:${40 + ((i * 13) % 50)}%`}></div></div></div>
-          ))}
+          {a.image ? (
+            <img class="report-img" src={a.image} alt={a.title} loading="lazy" />
+          ) : (
+            a.traits.map((t, i) => (
+              <div class="traitbar"><span>{t}</span><div class="track"><div class="fill" style={`width:${40 + ((i * 13) % 50)}%`}></div></div></div>
+            ))
+          )}
         </div>
       </div>
     </div>
@@ -139,3 +143,13 @@ const assessHref = localizePath("/online-assessments/", lang);
     </div>
   </section>
 </Base>
+
+<style>
+  .device .screen .report-img{
+    display:block;
+    width:100%;
+    height:auto;
+    border-radius:8px;
+    margin-top:10px;
+  }
+</style>
