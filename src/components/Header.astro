@@ -9,11 +9,29 @@ const logo = "https://hrmforce.com/wp-content/uploads/2022/03/HRM-LOGO.svg";
 
 const assessmentsHref = routes.assessments;
 const shopHref = routes.shop;
+const solutionsHref = localizePath(routes.solutions, lang);
+const adviceHref = localizePath(routes.advice, lang);
 const otherLangs = Object.keys(languages).filter((c) => c !== lang);
+
+const solutionItems = [
+  { label: t("nav.solutions") + " (overzicht)", path: "/hrm-oplossingen/" },
+  { label: "Matching & selectie", path: "/hrm-oplossingen/matching/" },
+  { label: "HR Gesprekscyclus", path: "/hrm-oplossingen/development/" },
+  { label: "Employability", path: "/hrm-oplossingen/employability/" },
+  { label: "HR Analytics", path: "/hrm-oplossingen/hr-analytics/" },
+];
+const adviceItems = [
+  { label: t("nav.advice") + " (overzicht)", path: "/advies/" },
+  { label: "Loopbaan-assessment", path: "/advies/loopbaan-assessment/" },
+  { label: "Teamtraining", path: "/advies/team-training/" },
+  { label: "Certificatietraining", path: "/advies/certificatietraining/" },
+  { label: "Training 'Het goede gesprek'", path: "/advies/training-het-goede-gesprek/" },
+  { label: "Medezeggenschapstraining", path: "/advies/medezeggenschap/" },
+];
 ---
 <div class="topbar">
   <div class="wrap">
-    <a href="https://assessment.hrmforce.com/Login.aspx?LanguageCode=nl-NL">{t("topbar.login")}</a>
+    <a class="login-btn" href="https://assessment.hrmforce.com/Login.aspx?LanguageCode=nl-NL">{t("topbar.login")}</a>
     <details class="langdd">
       <summary>{languages[lang]}<span class="caret">&#9662;</span></summary>
       <div class="langdd-menu">
@@ -36,8 +54,18 @@ const otherLangs = Object.keys(languages).filter((c) => c !== lang);
           <a href={shopHref}>{t("nav.shop")}</a>
         </div>
       </div>
-      <a href={localizePath(routes.solutions, lang)} class={active === "solutions" ? "active" : ""}>{t("nav.solutions")}</a>
-      <a href={localizePath(routes.advice, lang)} class={active === "advice" ? "active" : ""}>{t("nav.advice")}</a>
+      <div class={`has-dd ${active === "solutions" ? "active" : ""}`}>
+        <a href={solutionsHref}>{t("nav.solutions")}<span class="caret">&#9662;</span></a>
+        <div class="dd">
+          {solutionItems.map((it) => (<a href={localizePath(it.path, lang)}>{it.label}</a>))}
+        </div>
+      </div>
+      <div class={`has-dd ${active === "advice" ? "active" : ""}`}>
+        <a href={adviceHref}>{t("nav.advice")}<span class="caret">&#9662;</span></a>
+        <div class="dd">
+          {adviceItems.map((it) => (<a href={localizePath(it.path, lang)}>{it.label}</a>))}
+        </div>
+      </div>
       <a href={localizePath(routes.about, lang)} class={active === "about" ? "active" : ""}>{t("nav.about")}</a>
       <a href={localizePath(routes.contact, lang)} class={active === "contact" ? "active" : ""}>{t("nav.contact")}</a>
     </nav>
@@ -66,4 +94,16 @@ const otherLangs = Object.keys(languages).filter((c) => c !== lang);
   .has-dd .dd a:hover { background: #f1f5fb; color: var(--navy, #0E468C); }
 
   .topbar .demo-link { color: #fff; font-weight: 600; }
+
+  .topbar .login-btn {
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 6px 16px;
+    border: 1px solid rgba(255,255,255,.55);
+    border-radius: 8px;
+    line-height: 1;
+    transition: background .15s, border-color .15s;
+  }
+  .topbar .login-btn:hover { background: rgba(255,255,255,.15); border-color: #fff; }
 </style>
