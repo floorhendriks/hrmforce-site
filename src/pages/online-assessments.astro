@@ -1,23 +1,208 @@
 ---
 import Base from "../layouts/Base.astro";
-import { assessments } from "../data/assessments.js";
+
+const featured = [
+  { title: "DISC test", slug: "disc-test", cats: ["(Pre)Selectie", "Evalueren", "Ontwikkeling"], goal: "Inzicht in gedrag, communicatie en samenwerking, zodat je weet hoe iemand het beste presteert, samenwerkt en aangestuurd wil worden." },
+  { title: "360 Graden Feedback", slug: "360-graden-feedback", cats: ["Evalueren", "Ontwikkeling"], goal: "Feedback ontvangen m.b.t. vaardigheden, capaciteiten, persoonlijkheid en motivatie." },
+  { title: "Persoonlijkheidstest: Big Five", slug: "big-five", cats: ["(Pre)Selectie", "Evalueren", "Ontwikkeling"], goal: "Persoonlijkheidskenmerken omzetten naar vaardigheden en zo ontdekken waar iemand kan groeien." },
+  { title: "Drijfverentest", slug: "drijfverentest", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Duidelijk helpen begrijpen wat motivatie verhoogt en verlaagt." },
+  { title: "Ability Scan | Cognitieve capaciteitentest", slug: "ability-scan", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Hoe snel kan je problemen begrijpen, een mening vormen en nieuwe dingen aanleren. Daaruit gemiddelde niveau opmaken: mbo, hbo of Master." },
+  { title: "Ontwikkelassessment", slug: "ontwikkelassessment", cats: ["Ontwikkeling"], goal: "Valide overzicht van welke competenties ontwikkeling behoeven en welke al goed gaan." },
+  { title: "Studiekeuzetest", slug: "studiekeuzetest", cats: ["Ontwikkeling", "Studiekeuze"], goal: "Op basis van interesses scholieren, studenten en werknemers inzicht geven in de best passende opleidingen." },
+  { title: "Lencioni Teamdynamiek", slug: "lencioni-teamdynamiek", cats: ["Ontwikkeling"], goal: "De Lencioni vragenlijst is ontworpen om teams te helpen de teamdynamiek te begrijpen en te evalueren door de aanwezigheid en impact van de vijf disfuncties in teamwork te meten." },
+  { title: "Pulse Survey", slug: "pulse-survey", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "De mogelijkheid bieden aan organisaties om met behulp van onze standaard vragenlijsten en vragendatabase zelf vragenlijsten te ontwerpen en deze te versturen naar sollicitanten en medewerkers." },
+  { title: "Mentale Veerkracht Scan", slug: "mentale-veerkracht-scan", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Inzicht verkrijgen in de mate waarin men effectief blijft werken bij hoge druk en/of tegenslag" },
+];
+
+const logos = [
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-cityofamsterdam.jpg", alt: "City of Amsterdam" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-Rabobank.png", alt: "Rabobank" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-prinsesmaximacenter.jpg", alt: "Prinses maxima center" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-fairtrade.jpg", alt: "Fairtrade Original" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-uniqa.jpg", alt: "Uniqa" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-TCR.jpg", alt: "TCR" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-tacomundo.png", alt: "Taco Mundo" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-skidata.jpg", alt: "Skidata" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-siemens.jpg", alt: "Siemens" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-Rijnland.jpg", alt: "Rijnland" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-RHDHV.jpg", alt: "Royal Haskoning DHV" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-rentokil.jpg", alt: "Rentokil Initial" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-Raifeissen-bank.jpg", alt: "Raifeissen bank" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-ministery.jpg", alt: "Ministery of Safety and Justice" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-greenyard.jpg", alt: "Greenyard" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-fugro.jpg", alt: "Fugro" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-eboekhouden.jpg", alt: "E-boekhouden.nl" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-dekey.jpg", alt: "deKey" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-cordaan.jpg", alt: "Cordaan" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-computacenter.jpg", alt: "Computacenter" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-CA.jpg", alt: "Crédit Agricole" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-baywa.jpg", alt: "BayWa" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-athlon.jpg", alt: "Athlon" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-arvato.jpg", alt: "Arvato" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-arcelorMittal.jpg", alt: "Acelor Mittal" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-AmsterdamUniversity.jpg", alt: "Amsterdam University" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-amsterdam-2.jpg", alt: "Amsterdam" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-ACES.jpg", alt: "Aces international" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Asgro.jpg", alt: "Asgro" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-astara.jpg", alt: "Astara" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Bootman.jpg", alt: "Bootman" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Brand-Energy-Infrastructure.jpg", alt: "Brand Energy & Infrastructure" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Circle8.jpg", alt: "Circle8" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Copaco.jpg", alt: "Copaco" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-DHB-Bank.jpg", alt: "DHB Bank" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Egis-Parking-services.jpg", alt: "Egis Parking services" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-EP-Tummers.jpg", alt: "EP Tummers" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Flowpeople.jpg", alt: "Flowpeople" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Hallo.jpg", alt: "Hallo" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Hexspoor.jpg", alt: "Hexspoor" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-IBFD.jpg", alt: "IBFD" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-insign.jpg", alt: "Insign" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-interselect.jpg", alt: "Interselect" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Jinc.jpg", alt: "Jinc" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Levs-architecten.jpg", alt: "Levs architecten" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Mitsubishi.png", alt: "Mitsubishi" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Mostware.jpg", alt: "Mostware" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-platmation.jpg", alt: "Plat4mation" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-ScanGlobal-Logistics.jpg", alt: "ScanGlobal Logistics" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Scope-scholengroep.jpg", alt: "Scope scholengroep" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Space-applications.jpg", alt: "Space Applications Services" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Stichting-VO-Amsterdam.jpg", alt: "Stichting VO Amsterdam" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Summa-College.jpg", alt: "Summa College" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Thaeles.jpg", alt: "Thaeles" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Tosserams.jpg", alt: "Tosserams" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Unikidz.jpg", alt: "Unikidz" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Valuemetrics.jpg", alt: "Valuemetrics" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Verstraten-Bergkamp.jpg", alt: "Verstraten & Bergkamp" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Wageningen-University.jpg", alt: "Wageningen University" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Xantion.jpg", alt: "Xantion" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Zaamzorg.jpg", alt: "Zaamzorg" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-Zuuvr.jpg", alt: "Zuuvr" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/07/logo-officedepot.png", alt: "Office depot" },
+  { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-vidaXL.jpg", alt: "VidaXL.com" },
+];
+
+const reviews = [
+  { name: "Eric Hoogeweg", text: "Goede dienstverlener met uitstekende tools voor talentontwikkeling. Zo help je organisaties vooruit." },
+  { name: "Esther Moolenaar", text: "Enorm klantvriendelijk en meedenkend. HRMforce heeft mij geholpen talenten en ontwikkelpunten van mijn medewerkers in kaart te brengen, wat heeft gezorgd voor een enorm boost voor het bedrijf." },
+  { name: "Juliëtte Kamphuis", text: "Leuke gratis kleurentest gedaan !" },
+];
 ---
-<Base title="Online Assessments | Hrmforce" description="Bekijk alle online assessments van hrmforce voor selectie en ontwikkeling." active="assessments">
-  <div class="crumb"><div class="wrap"><a href="/">Home</a> › <span>Online Assessments</span></div></div>
-  <section class="ahero"><div class="wrap" style="display:block">
-    <div class="eyebrow" style="color:var(--gold)">Online assessments</div>
-    <h1>Alle assessments</h1>
-    <p style="color:#c4d2e6;font-size:19px;max-width:760px;margin-top:8px">Wetenschappelijk onderbouwde vragenlijsten en testen voor selectie, ontwikkeling en teamdynamiek.</p>
-  </div></section>
-  <section><div class="wrap">
-    <div class="cards">
-      {assessments.map((a) => (
-        <a class="card" href={`/assessments/${a.slug}/`} style="text-decoration:none">
-          <h3>{a.title}</h3>
-          <p>{a.goal}</p>
-          <span style="color:var(--blue);font-weight:600;font-size:15px">Bekijk &rarr;</span>
-        </a>
-      ))}
+<Base
+  title="Online assessments | 10.000+ deelnemers, 4,9 sterren"
+  description="Gevalideerde online assessments voor selectie en ontwikkeling. Beoordeeld met 4,9 sterren door 10.000+ deelnemers. Bekijk het volledige aanbod."
+  active="assessments"
+>
+  <div class="crumb">
+    <div class="wrap"><a href="/">Home</a> › <span>Online Assessments</span></div>
+  </div>
+
+  <section class="ahero">
+    <div class="wrap" style="display:block">
+      <div class="eyebrow" style="color:var(--gold)">Online assessments</div>
+      <h1>Online assessments voor SELECTIE en ONTWIKKELING</h1>
+      <p style="color:#c4d2e6;font-size:19px;max-width:840px;margin-top:8px">hrmforce biedt gevalideerde online assessments waarmee HR-professionals en recruiters selectie- en ontwikkelbeslissingen objectiveren. Van persoonlijkheids- en capaciteitentests tot 360-graden feedback, je kiest het instrument dat past bij je vraag en zet het binnen een uur in. Onze assessments meten intelligentie, persoonlijkheid, drijfveren en gedrag, en vertalen dat naar concrete competenties.</p>
+      <div class="btns"><a class="btn btn-primary" href="/assessment-overzicht/">Bekijk alle assessments</a></div>
     </div>
-  </div></section>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="explain">
+        <div>
+          <div class="eyebrow">Waarom assessments</div>
+          <h2 class="section-title">Waarom assessments</h2>
+          <p>Objectiveer de selectie en ontwikkeling van sollicitanten en medewerkers. Door de inzet van objectieve meetinstrumenten met een gevalideerde, hoge voorspellende waarde, kun je (grote groepen) sollicitanten vooraf screenen om de kans op succes in de functie te vergroten. Je interviewt alleen potentieel geschikte kandidaten en bespaart hiermee tijd en geld. Een bovengemiddeld presterende medewerker kan tot 40% meer rendement behalen dan een gemiddelde medewerker. Door vragenlijsten in te zetten voor ontwikkeling, stimuleer je de groei van medewerkers, behoudt je talent en laat je de organisatie en resultaten groeien.</p>
+        </div>
+        <div>
+          <img src="https://hrmforce.com/wp-content/uploads/2020/12/ass-afb3.png" alt="gesprekscyclus hrmforce" loading="lazy" />
+          <img src="https://hrmforce.com/wp-content/uploads/2020/12/ass-afb2.png" alt="online assessment portal hrmforce" loading="lazy" style="margin-top:16px" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--bg)">
+    <div class="wrap">
+      <div class="eyebrow">Hoe werkt het?</div>
+      <h2 class="section-title">Hoe werkt het?</h2>
+      <p style="max-width:900px;color:var(--text);font-size:17px">Binnen één uur zet een van onze implementatie specialisten een online portal voor je klaar in de look &amp; feel van jouw organisatie. Maak gebruik van onze gratis competentietaal van 50 competenties uitgewerkt op 4 niveaus (beginner, operationeel, tactisch en strategisch) en onze benchmarks om sollicitanten en medewerkers te testen. Met je eigen testmanager login kan je direct kandidaten uitnodigen. Kandidaten ontvangen vervolgens een email met link naar de portal en kunnen de vragenlijsten direct invullen. Nadat de vragenlijsten zijn ingevuld, zijn de resultaten conform de laatste AVG richtlijnen binnen 1 minuut in de portal beschikbaar. Betalen doe je achteraf op basis van daadwerkelijk afgeronde vragenlijsten of middels een licentie voor onbeperkt gebruik.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">Onze klanten</div>
+      <h2 class="section-title">Organisaties waarmee wij samenwerken</h2>
+      <div class="logos">
+        {logos.map((l) => <img src={l.src} alt={l.alt} title={l.alt} loading="lazy" />)}
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--bg)">
+    <div class="wrap">
+      <div class="eyebrow">Uitgelichte assessments</div>
+      <h2 class="section-title">Uitgelichte assessments</h2>
+      <div class="cards">
+        {featured.map((a) => (
+          <a class="card" href={`/assessments/${a.slug}/`} style="text-decoration:none;color:inherit;display:block">
+            <span class="tag-row">{a.cats.map((c) => <span class="tag">{c}</span>)}</span>
+            <h3>{a.title}</h3>
+            <p><strong>Doel:</strong> {a.goal}</p>
+            <span style="color:var(--blue);font-weight:600;font-size:15px">Lees meer &rarr;</span>
+          </a>
+        ))}
+      </div>
+      <div style="margin-top:28px"><a class="btn btn-primary" href="/assessment-overzicht/">Bekijk alle assessments</a></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <a href="https://www.youtube.com/watch?v=50gYB0KjtMw&ab_channel=hrmforce" target="_blank" rel="noopener">
+        <img src="https://hrmforce.com/wp-content/uploads/2022/03/youtube-afbeelding2.png" alt="Bekijk de video: van talent naar resultaat" loading="lazy" style="max-width:100%;height:auto;border-radius:var(--radius)" />
+      </a>
+      <div class="eyebrow" style="margin-top:28px">Van talent naar resultaat</div>
+      <h2 class="section-title">Van talent naar resultaat</h2>
+      <p style="max-width:900px;color:var(--text);font-size:17px">Als manager van mensen heb je altijd veel te doen. Het assessen van nieuwe en huidige medewerkers, het ontwikkelen van medewerkers en teams, functionerings- en beoordelingsgesprekken voeren én data analyseren om beleid te bepalen &amp; visie te ontwikkelen. De talentmanagement-software van <strong>hrmforce helpt je bij elk onderdeel van het HR-proces</strong>. Ontwikkel je medewerkers, laat je organisatie groeien en behaal het maximale rendement. Hrmforce, van talent naar resultaat.</p>
+      <div class="btns" style="margin-top:8px"><a class="btn btn-primary" href="/contact/">Neem contact op</a></div>
+    </div>
+  </section>
+
+  <section style="background:var(--bg)">
+    <div class="wrap">
+      <div class="eyebrow">Reviews</div>
+      <h2 class="section-title">hrmforce werkt</h2>
+      <p style="max-width:900px;color:var(--text);font-size:17px">Het oordeel van onze tevreden klanten en de 242.000 afgenomen tests spreken voor zich. Vertrouw op onze jarenlange ervaring en het meest complete aanbod van assessments in Nederland.</p>
+      <div class="cards" style="margin-top:28px">
+        {reviews.map((r) => (
+          <div class="card">
+            <p style="color:var(--text)">{r.text}</p>
+            <strong style="color:var(--navy)">{r.name}</strong>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <h2>Vraag een gratis demo aan</h2>
+      <p>Wij zijn overtuigd van de kwaliteit van onze assessments en HRM oplossingen. Wil je het graag zelf ervaren? Vul dan het formulier in. Een van onze adviseurs neemt dan (vrijblijvend) contact met je op voor een gratis hrmforce demo.</p>
+      <div class="btns">
+        <a href="/contact/" class="btn btn-primary">Demo aanvragen</a>
+        <a href="/assessment-overzicht/" class="btn btn-light">Bekijk alle assessments</a>
+      </div>
+    </div>
+  </section>
 </Base>
+
+<style>
+  section img { max-width: 100%; height: auto; }
+  .logos { display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; align-items: center; margin-top: 24px; }
+  .logos img { width: 100%; height: 70px; object-fit: contain; filter: grayscale(1); opacity: .8; transition: .2s; }
+  .logos img:hover { filter: none; opacity: 1; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .tag { background: #e8f0fe; color: var(--navy); font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+  @media (max-width: 880px) { .logos { grid-template-columns: repeat(3, 1fr); } }
+</style>
