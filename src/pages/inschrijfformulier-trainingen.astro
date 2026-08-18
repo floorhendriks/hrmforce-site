@@ -1,0 +1,94 @@
+---
+import Base from "../layouts/Base.astro";
+
+const trainingen = [
+  "19-02-2026 Certificatietraining",
+  "25-06-2026 Certificatietraining",
+  "24-09-2026 Certificatietraining",
+  "19-11-2026 Certificatietraining",
+];
+---
+<Base
+  title="Inschrijfformulier trainingen | Hrmforce"
+  description="Schrijf je in voor een van de hrmforce-trainingen. Vul het formulier in en wij nemen contact met je op."
+  active=""
+>
+  <div class="crumb"><div class="wrap"><a href="/">Home</a> › <span>Inschrijfformulier trainingen</span></div></div>
+
+  <section class="ahero"><div class="wrap" style="display:block">
+    <div class="eyebrow" style="color:var(--gold)">Trainingen</div>
+    <h1>Inschrijfformulier trainingen</h1>
+    <p style="color:#dbe6f5;font-size:19px;max-width:760px;margin-top:8px">
+      Vul onderstaande gegevens in om je aan te melden voor een van onze trainingen. Heb je hulp nodig of nog vragen? Neem gerust contact met ons op.
+    </p>
+  </div></section>
+
+  <section class="formsec"><div class="wrap">
+    <form id="training-form" class="formcard" action="/contact/" method="POST" novalidate>
+      <div class="fg">
+        <label for="aanhef">Aanhef *</label>
+        <select id="aanhef" name="aanhef" required>
+          <option value="">Kies...</option>
+          <option>Meneer</option>
+          <option>Mevrouw</option>
+          <option>Anders / geen voorkeur</option>
+        </select>
+      </div>
+      <div class="frow">
+        <div class="fg"><label for="voornaam">Voornaam *</label><input type="text" id="voornaam" name="voornaam" required /></div>
+        <div class="fg"><label for="achternaam">Achternaam *</label><input type="text" id="achternaam" name="achternaam" required /></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label for="organisatie">Organisatie *</label><input type="text" id="organisatie" name="organisatie" required /></div>
+        <div class="fg"><label for="email">E-mailadres *</label><input type="email" id="email" name="email" required /></div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label for="training">Selecteer een training *</label>
+          <select id="training" name="training" required>
+            <option value="">Kies een trainingsdatum...</option>
+            {trainingen.map((t) => <option>{t}</option>)}
+          </select>
+        </div>
+        <div class="fg"><label for="deelnemers">Aantal deelnemers *</label><input type="number" id="deelnemers" name="deelnemers" min="1" value="1" required /></div>
+      </div>
+      <div class="fg"><label for="opmerking">Opmerking</label><textarea id="opmerking" name="opmerking" rows="4"></textarea></div>
+      <div id="form-msg" style="display:none;margin-bottom:16px;padding:12px 14px;border-radius:10px;font-size:14px"></div>
+      <button type="submit" class="btn btn-primary">Verzenden</button>
+      <p style="color:var(--muted);font-size:13px;margin-top:14px">Velden met een * zijn verplicht. Na verzending nemen wij zo snel mogelijk contact met je op.</p>
+    </form>
+  </div></section>
+
+  <script>
+    (function () {
+      const form = document.getElementById("training-form");
+      const msg = document.getElementById("form-msg");
+      if (!form) return;
+      form.addEventListener("submit", function (e) {
+        const required = form.querySelectorAll("[required]");
+        let ok = true;
+        required.forEach((el) => {
+          el.style.borderColor = "";
+          if (!el.value || !el.value.trim()) { ok = false; el.style.borderColor = "var(--accent)"; }
+        });
+        const email = document.getElementById("email");
+        if (email && email.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+          ok = false; email.style.borderColor = "var(--accent)";
+        }
+        if (!ok) {
+          e.preventDefault();
+          msg.style.display = "block";
+          msg.style.background = "#fdecea";
+          msg.style.color = "#a12";
+          msg.textContent = "Controleer de gemarkeerde velden en vul een geldig e-mailadres in.";
+          msg.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else {
+          msg.style.display = "block";
+          msg.style.background = "#eaf7ec";
+          msg.style.color = "#1b6b2a";
+          msg.textContent = "Bedankt! Je aanmelding wordt verzonden.";
+        }
+      });
+    })();
+  </script>
+</Base>
