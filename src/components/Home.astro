@@ -58,7 +58,9 @@ const knowledgeHref = localizePath("/kenniscentrum/", lang);
       <div class="wrap">
         {h.logos.eyebrow && <div class="eyebrow">{h.logos.eyebrow}</div>}
         <h2 class="section-title">{h.logos.title}</h2>
-        <div class="logo-grid">{clients.map((c) => <div>{c}</div>)}</div>
+        <div class="logo-grid">{clients.map((c) => (
+          <div>{c.logo ? <img src={c.logo} alt={c.name} loading="lazy" /> : c.name}</div>
+        ))}</div>
       </div>
     </section>
   )}
@@ -122,3 +124,20 @@ const knowledgeHref = localizePath("/kenniscentrum/", lang);
   </section>
 
 </Base>
+
+<style>
+  .logo-grid img{
+    max-width:80%;
+    max-height:40px;
+    width:auto;
+    height:auto;
+    object-fit:contain;
+    filter:grayscale(100%);
+    opacity:.72;
+    transition:filter .2s ease, opacity .2s ease;
+  }
+  .logo-grid div:hover img{
+    filter:grayscale(0);
+    opacity:1;
+  }
+</style>
