@@ -1,5 +1,50 @@
 ---
-import SubPage from "../components/SubPage.astro";
+import Base from "../layouts/Base.astro";
 import { pages } from "../data/pages.js";
+import { routes } from "../i18n/ui.js";
+import { getLangFromUrl, localizePath } from "../i18n/utils.js";
+
+const lang = getLangFromUrl(Astro.url);
+const page = pages.nl["hrm-oplossingen"];
+const active = "solutions";
+
+const cta = { title: "Ontdek welke aanpak past bij jouw HR-vraagstuk", text: "Bespreek je situatie met een hrmforce-specialist. In 30 minuten krijg je concreet advies.", primary: "Plan een demo", secondary: "Bekijk de assessments" };
+const homeHref = localizePath("/", lang);
+const contactHref = localizePath(routes.contact, lang);
+const assessHref = routes.assessments;
 ---
-<SubPage page={pages.nl["hrm-oplossingen"]} active="solutions" />
+<Base title={page.metaTitle} description={page.metaDescription} active={active}>
+  <div class="crumb">
+    <div class="wrap"><a href={homeHref}>Home</a> › <span>{page.title}</span></div>
+  </div>
+
+  <section class="ahero">
+    <div class="wrap" style="display:block">
+      <div class="eyebrow" style="color:var(--gold)">{page.eyebrow}</div>
+      <h1>{page.title}</h1>
+      <p style="color:#c4d2e6;font-size:19px;max-width:760px;margin-top:8px">{page.lead}</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      {page.intro?.map((p) => <p style="color:var(--text);font-size:17px;max-width:820px;margin-bottom:14px">{p}</p>)}
+      <div class="cards" style="margin-top:34px">
+        {page.cards?.map((c) => (c.href
+          ? <a class="card" href={localizePath(c.href, lang)} style="text-decoration:none;color:inherit;display:block"><h3>{c.h}</h3><p>{c.p}</p></a>
+          : <div class="card"><h3>{c.h}</h3><p>{c.p}</p></div>))}
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <h2>{cta.title}</h2>
+      <p>{cta.text}</p>
+      <div class="btns">
+        <a href={contactHref} class="btn btn-primary">{cta.primary}</a>
+        <a href={assessHref} class="btn btn-light">{cta.secondary}</a>
+      </div>
+    </div>
+  </section>
+</Base>
