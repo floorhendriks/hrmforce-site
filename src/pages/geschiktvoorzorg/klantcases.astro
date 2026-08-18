@@ -1,0 +1,86 @@
+---
+import Base from "../../layouts/Base.astro";
+
+const cases = [
+  {
+    naam: "Icare",
+    tekst: "Icare is een grote ouderenzorgorganisatie, actief in 5 provincies met 5000 medewerkers. Met onze Geschikt voor Zorg-test verrichtten wij werving en selectie voor niet-opgeleide zij-instromers die direct aan de slag wilden als cliëntondersteuner. Door gerichte campagnes en een landingspagina bereikten we tienduizenden mensen, met meer dan 350 geschikte matches. 150+ mensen zijn aangenomen en de teller loopt nog steeds.",
+    quote: "Door Geschikt voor Zorg hebben we geleerd dat er geen tekort is aan arbeid maar een tekort aan match. De match maken, dat doet Geschikt voor Zorg en hoe... wat een succes!",
+    auteur: "Sietske Ras",
+    rol: "Relatiemanager en Projectleider Icare GewoonThuis",
+  },
+  {
+    naam: "SEIN",
+    tekst: "SEIN is een expertisecentrum voor epilepsie en slaapgeneeskunde met circa 1500 werknemers. De organisatie kampte met moeilijk vervulbare vacatures, met name voor begeleiders. Met onze test en gerichte campagnes vullen zij hun jaarlijkse zij-instroomklassen (WelSEINklas, i.s.m. ROC van Amsterdam) en hun Nachtzorgklassen. De combinatie van hun werk-leertraject en onze matching zorgt voor consistente werving van vast personeel.",
+    quote: "In heel korte tijd een topresultaat neergezet en SEIN heel goed geholpen bij het werven en selecteren van onze WelSEIN Topklassers. Prettige samenwerking, duidelijke en snelle terugkoppeling en een fijn team!",
+    auteur: "Marjolijn Vijverberg",
+    rol: "Adviseur recruitment bij SEIN",
+  },
+  {
+    naam: "Odion",
+    tekst: "Odion is actief in de regio's Zaanstreek, Kennemerland en Waterland met 63 locaties, 1500 medewerkers en vrijwilligers, en helpt zo'n 1750 kinderen en volwassenen met een beperking. Voor Odion richtten wij de werving en selectie in voor zij-instroomklassen en zorgprofessionals. Met een test- en landingspagina op maat krijgen latent werkzoekenden een goed beeld van de organisatie en kan Odion putten uit een database met relevante leads.",
+    quote: "Geschikt voor Zorg biedt data-gedreven diensten en blijft toch persoonlijk. Je merkt dat de mensen hier een zorghart hebben. Het is geen marketingpraatje, ze zijn echt zo. Dat maakt de samenwerking heel fijn!",
+    auteur: "Sietske Ras",
+    rol: "Relatiemanager en Projectleider Icare GewoonThuis",
+  },
+  {
+    naam: "Zonboog",
+    tekst: "Stichting Zonboog biedt met 15 gezondheidscentra in de regio Rotterdam Rijnmond eerstelijnszorg aan 105.000 patiënten en wijkbewoners. Zonboog gebruikt onze test en online campagnes voor openstaande vacatures van doktersassistent(e). Door de gerichte werving vullen zij niet alleen vacatures op verschillende locaties, maar bouwen ze ook een database aan interessante leads op voor toekomstige vacatures.",
+    quote: "",
+    auteur: "",
+    rol: "",
+  },
+  {
+    naam: "ABN AMRO",
+    tekst: "ABN AMRO gebruikt onze test in hun Werk-naar-Zorgtrajecten. Medewerkers die de overstap naar de zorg willen maken, gebruiken de test als assessment in hun Zelfonderzoek-portal. ABN AMRO voelt de maatschappelijke verantwoordelijkheid om het zorgtekort te helpen oplossen en werkt daarvoor samen met Geschikt voor Zorg om de drempel naar een andere sector te verkleinen.",
+    quote: "",
+    auteur: "",
+    rol: "",
+  },
+  {
+    naam: "PFZW",
+    tekst: "Pensioenfonds Zorg en Welzijn (PFZW) is hét pensioenfonds van, voor en door de sector zorg en welzijn. Samen met Geschikt voor Zorg doet PFZW ledenonderzoek en beschikt het over een reflectieportaal voor alle leden, ter verrijking van het dataportal.",
+    quote: "",
+    auteur: "",
+    rol: "",
+  },
+];
+---
+<Base
+  title="Klantcases Geschikt voor de Zorg | Hrmforce"
+  description="Klantcases van Geschikt voor Zorg: Icare, SEIN, Odion, Zonboog, ABN AMRO en PFZW over data-gedreven matching in de zorg."
+  active=""
+>
+  <div class="crumb"><div class="wrap">
+    <a href="/">Home</a> › <a href="/geschiktvoorzorg/">Geschikt voor de Zorg</a> › <span>Klantcases</span>
+  </div></div>
+
+  <section class="ahero"><div class="wrap" style="display:block">
+    <div class="eyebrow" style="color:var(--gold)">Klantcases</div>
+    <h1>Klantcases</h1>
+    <p style="color:#dbe6f5;font-size:19px;max-width:760px;margin-top:8px">
+      Geschikt voor Zorg is trots op de vele organisaties waarvoor wij nieuwe medewerkers hebben gematcht. Hieronder een greep uit de opdrachtgevers die gebruikmaken van de Geschikt voor Zorg-methode.
+    </p>
+  </div></section>
+
+  <section><div class="wrap">
+    {cases.map((c) => (
+      <div class="card" style="margin-bottom:24px">
+        <h3>{c.naam}</h3>
+        <p style="color:var(--text)">{c.tekst}</p>
+        {c.quote && (
+          <blockquote style="font-style:italic;color:var(--navy);border-left:3px solid var(--gold);padding-left:16px;margin-top:10px">
+            "{c.quote}"
+            <div style="font-style:normal;margin-top:8px;font-size:14px;color:var(--muted)"><b>{c.auteur}</b> — {c.rol}</div>
+          </blockquote>
+        )}
+      </div>
+    ))}
+  </div></section>
+
+  <section class="cta"><div class="wrap">
+    <h2>Ook data-gedreven werven voor de zorg?</h2>
+    <p>Ontdek wat de Geschikt voor Zorg-test voor jouw organisatie kan betekenen.</p>
+    <div class="btns"><a href="/contact/" class="btn btn-primary">Vraag een gratis demo aan</a></div>
+  </div></section>
+</Base>
