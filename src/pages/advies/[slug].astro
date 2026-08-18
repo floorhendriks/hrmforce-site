@@ -1,0 +1,51 @@
+---
+import Base from "../../layouts/Base.astro";
+import { adviesDetail } from "../../data/advies-detail.js";
+import { getLangFromUrl, localizePath } from "../../i18n/utils.js";
+
+export async function getStaticPaths() {
+  return adviesDetail.map((a) => ({ params: { slug: a.slug }, props: { a } }));
+}
+
+const lang = getLangFromUrl(Astro.url);
+const { a } = Astro.props;
+const adviesHref = localizePath("/advies/", lang);
+---
+<Base title={a.metaTitle} description={a.metaDescription} active="advice">
+  <div class="crumb">
+    <div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={adviesHref}>Advies</a> › <span>{a.title}</span></div>
+  </div>
+
+  <section class="ahero">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">Advies</div>
+        <h1>{a.title}</h1>
+        {a.intro.map((p) => <p style="color:rgba(255,255,255,.85);font-size:17px;margin-bottom:14px">{p}</p>)}
+        <div class="btns">
+          <a href={localizePath("/contact/", lang)} class="btn btn-primary">{a.cta}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">Toelichting</div>
+      <h2 class="section-title">{a.title}</h2>
+      <div class="explain">
+        <div>
+          {a.body.map((p) => <p>{p}</p>)}
+          {a.bullets && a.bullets.length > 0 && (
+            <ul class="traits">{a.bullets.map((b) => <li>{b}</li>)}</ul>
+          )}
+          <a href={localizePath("/contact/", lang)} class="btn btn-primary" style="margin-top:14px">{a.cta}</a>
+        </div>
+        <div class="pentagon">
+          <div class="ring"></div>
+          <p style="color:var(--muted);font-size:14px">Wij stellen samen met jou een traject op maat samen dat past bij jouw vraagstuk.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
