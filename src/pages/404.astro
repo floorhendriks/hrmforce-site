@@ -1,0 +1,27 @@
+---
+import Base from "../layouts/Base.astro";
+---
+<Base title="Pagina niet gevonden (404) | Hrmforce" description="De opgevraagde pagina bestaat niet of is verplaatst." active="">
+  <section class="nf">
+    <div class="wrap">
+      <div class="code">404</div>
+      <h1>Deze pagina bestaat niet (meer)</h1>
+      <p>De pagina die je zoekt is verplaatst of bestaat niet. Gebruik onderstaande links om verder te gaan.</p>
+      <div class="links">
+        <a class="btn btn-primary" href="/">Naar de homepage</a>
+        <a class="btn btn-ghost" href="/online-assessments/">Alle assessments</a>
+        <a class="btn btn-ghost" href="/kenniscentrum/">Kenniscentrum</a>
+        <a class="btn btn-ghost" href="/contact/">Contact</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { padding: 88px 0 96px; text-align: center; }
+  .nf .wrap { max-width: 640px; margin: 0 auto; padding: 0 20px; }
+  .nf .code { font-size: 5rem; font-weight: 800; line-height: 1; color: var(--navy, #0E468C); letter-spacing: -.02em; }
+  .nf h1 { font-size: 1.8rem; margin: 12px 0 10px; color: #1a1a1a; }
+  .nf p { color: #555; font-size: 1.05rem; margin: 0 0 28px; }
+  .nf .links { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+</style>
