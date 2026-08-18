@@ -13,20 +13,48 @@ const solutionsHref = localizePath(routes.solutions, lang);
 const adviceHref = localizePath(routes.advice, lang);
 const otherLangs = Object.keys(languages).filter((c) => c !== lang);
 
+// Submenu's exact overgenomen van de oude live site hrmforce.com (menu-top-menu-dutch).
+const assessmentItems = [
+  { label: "360 graden feedback", path: "/assessments/360-graden-feedback/" },
+  { label: "Persoonlijkheidstest (Big 5)", path: "/assessments/big-fifty/" },
+  { label: "Drijfverentest", path: "/assessments/drijfverentest/" },
+  { label: "Cognitieve test", path: "/assessments/ability-scan/" },
+  { label: "DISC Test", path: "/assessments/preselectie/disc-test/" },
+  { label: "Studiekeuzetest", path: "/assessments/studiekeuzetest/" },
+  { label: "Mentale veerkracht scan", path: "/assessments/mentale-veerkracht-scan/" },
+  { label: "Lencioni Teamdynamiek", path: "/assessments/lencioni-teamdynamiek/" },
+  { label: "Leiderschapstest", path: "/assessments/leiderschapstest/" },
+  { label: "Ontwikkelassessment", path: "/assessments/ontwikkelmatrix/" },
+  { label: "Ontdek alle assessments", path: "/assessment-overzicht/" },
+];
 const solutionItems = [
-  { label: t("nav.solutions") + " (overzicht)", path: "/hrm-oplossingen/" },
   { label: "Matching & selectie", path: "/hrm-oplossingen/matching/" },
-  { label: "HR Gesprekscyclus", path: "/hrm-oplossingen/development/" },
+  { label: "HR Gesprekcyclus", path: "/hrm-oplossingen/development/" },
   { label: "Employability", path: "/hrm-oplossingen/employability/" },
   { label: "HR Analytics", path: "/hrm-oplossingen/hr-analytics/" },
+  { label: "Sectoren", path: "/sectoren/" },
 ];
 const adviceItems = [
-  { label: t("nav.advice") + " (overzicht)", path: "/advies/" },
-  { label: "Loopbaan-assessment", path: "/advies/loopbaan-assessment/" },
-  { label: "Teamtraining", path: "/advies/team-training/" },
-  { label: "Certificatietraining", path: "/advies/certificatietraining/" },
-  { label: "Training 'Het goede gesprek'", path: "/advies/training-het-goede-gesprek/" },
-  { label: "Medezeggenschapstraining", path: "/advies/medezeggenschap/" },
+  { label: "Overzicht", path: "/advies/overzicht/" },
+  { label: "Assessments", path: "/advies/assessments/" },
+  { label: "Trainingen", path: "/advies/trainingen/" },
+  { label: "Competentie management", path: "/advies/competentie-management/" },
+  { label: "Talent management", path: "/advies/talent-management/" },
+];
+const aboutItems = [
+  { label: "Over Hrmforce", path: "/over-ons/" },
+  { label: "Tarieven", path: "/tarieven/" },
+  { label: "Kenniscentrum", path: "/kenniscentrum/" },
+  { label: "Wat levert het concreet op?", path: "/hrmforce/voordelen/" },
+  { label: "Partners", path: "/partners/" },
+  { label: "Vacatures", path: "/vacatures/" },
+];
+const contactItems = [
+  { label: "Contact opnemen", path: "/contact/" },
+  { label: "Support", path: "/support/" },
+  { label: "Voorbereiding", path: "/voorbereiding/" },
+  { label: "FAQ", path: "/support/f-a-q/" },
+  { label: "Vacatures", path: "/vacatures/" },
 ];
 ---
 <div class="topbar">
@@ -50,8 +78,7 @@ const adviceItems = [
       <div class={`has-dd ${active === "assessments" ? "active" : ""}`}>
         <a href={assessmentsHref}>{t("nav.assessments")}<span class="caret">&#9662;</span></a>
         <div class="dd">
-          <a href={assessmentsHref}>{t("nav.assessments")}</a>
-          <a href={shopHref}>{t("nav.shop")}</a>
+          {assessmentItems.map((it) => (<a href={localizePath(it.path, lang)}>{it.label}</a>))}
         </div>
       </div>
       <div class={`has-dd ${active === "solutions" ? "active" : ""}`}>
@@ -66,8 +93,18 @@ const adviceItems = [
           {adviceItems.map((it) => (<a href={localizePath(it.path, lang)}>{it.label}</a>))}
         </div>
       </div>
-      <a href={localizePath(routes.about, lang)} class={active === "about" ? "active" : ""}>{t("nav.about")}</a>
-      <a href={localizePath(routes.contact, lang)} class={active === "contact" ? "active" : ""}>{t("nav.contact")}</a>
+      <div class={`has-dd ${active === "about" ? "active" : ""}`}>
+        <a href={localizePath(routes.about, lang)}>{t("nav.about")}<span class="caret">&#9662;</span></a>
+        <div class="dd">
+          {aboutItems.map((it) => (<a href={localizePath(it.path, lang)}>{it.label}</a>))}
+        </div>
+      </div>
+      <div class={`has-dd ${active === "contact" ? "active" : ""}`}>
+        <a href={localizePath(routes.contact, lang)}>{t("nav.contact")}<span class="caret">&#9662;</span></a>
+        <div class="dd">
+          {contactItems.map((it) => (<a href={localizePath(it.path, lang)}>{it.label}</a>))}
+        </div>
+      </div>
     </nav>
     <div class="nav-cta">
       <a href={shopHref} class="btn btn-ghost">{t("cta.shop")}</a>
