@@ -4,7 +4,7 @@ export const languages = { nl: "NL", en: "EN", de: "DE", fr: "FR", es: "ES", ro:
 
 export const routes = {
   shop: "https://shop.hrmforce.com",
-  assessments: "/online-assessments/,
+  assessments: "/online-assessments/",
   solutions: "/hrm-oplossingen/",
   advice: "/advies/",
   about: "/over-ons/",
