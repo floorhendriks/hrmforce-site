@@ -1,37 +1,11 @@
 # 301-redirects voor hrmforce - gegenereerd uit de Yoast-sitemap + nieuwe structuur.
 # Formaat: <oud>  <nieuw>  301   |   werkt op Cloudflare Pages en Netlify.
 
-# --- Assessments (NL) ---
+# --- Assessments (NL): alleen echte hernoemingen; de overige assessments hebben nu een eigen pagina ---
 /assessments/big-fifty/                              /assessments/big-five/             301
-/assessments/ability-scan/                           /assessments/cognitieve-test/      301
 /assessments/cognitieve-capaciteitentest/            /assessments/cognitieve-test/      301
 /assessments/preselectie/disc-test/                  /assessments/disc-test/            301
 /assessments/ontwikkelmatrix/                        /assessments/ontwikkelassessment/  301
-/assessments/referentie-check/                       /online-assessments/               301
-/assessments/verkoopvaardigheden/                    /online-assessments/               301
-/assessments/job-profiler/                           /online-assessments/               301
-/assessments/intake-candidate/                       /online-assessments/               301
-/assessments/exit-assessment/                        /online-assessments/               301
-/assessments/groepsrollen/                           /online-assessments/               301
-/assessments/typology/                               /online-assessments/               301
-/assessments/appraisal/                              /online-assessments/               301
-/assessments/canmeds/                                /online-assessments/               301
-/assessments/beroepskeuze-test/                      /online-assessments/               301
-/assessments/loopbaanwaarden/                        /online-assessments/               301
-/assessments/communicatiestijlen-test/               /online-assessments/               301
-/assessments/competentie-check/                      /online-assessments/               301
-/assessments/conflictstijlen-test/                   /online-assessments/               301
-/assessments/tevredenheidsonderzoek-medewerkers/     /online-assessments/               301
-/assessments/leerstijlen/                            /online-assessments/               301
-/assessments/15pf/                                   /online-assessments/               301
-/assessments/pulse-survey/                           /online-assessments/               301
-/assessments/levensloop-scan/                        /online-assessments/               301
-/assessments/lean-scan/                              /online-assessments/               301
-/assessments/interesse-scan/                         /online-assessments/               301
-/assessments/duurzame-inzetbaarheid-scan/            /online-assessments/               301
-/assessments/coaching-screener-scan/                 /online-assessments/               301
-/assessments/value-drives/                           /online-assessments/               301
-/assessments/teamanalyse/                            /online-assessments/               301
 
 # --- Assessments: gelokaliseerde Big Five ---
 /en/assessments/big-fifty-personality-test/                    /en/assessments/big-five/   301
