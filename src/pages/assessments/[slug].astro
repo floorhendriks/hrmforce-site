@@ -3,14 +3,9 @@ import Base from "../../layouts/Base.astro";
 import { assessments } from "../../data/assessments.js";
 import { getLangFromUrl, localizePath } from "../../i18n/utils.js";
 
-// Bron: Sanity als SANITY_PROJECT_ID is gezet, anders de lokale databestanden (build werkt altijd).
+// Alle assessments komen uit het lokale databestand (36 stuks), zodat álle
+// detailpagina's gegenereerd worden ongeacht de Sanity-inhoud.
 export async function getStaticPaths() {
-  if (import.meta.env.SANITY_PROJECT_ID) {
-    const { sanity } = await import("../../lib/sanity.js");
-    const { allAssessmentSlugs } = await import("../../lib/queries.js");
-    const slugs = await sanity.fetch(allAssessmentSlugs);
-    return slugs.map((slug) => ({ params: { slug } }));
-  }
   return assessments.map((a) => ({ params: { slug: a.slug }, props: { a } }));
 }
 
