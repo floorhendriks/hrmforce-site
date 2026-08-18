@@ -1,50 +1,49 @@
 ---
 import Base from "../layouts/Base.astro";
-import { pages } from "../data/pages.js";
-import { routes } from "../i18n/ui.js";
-import { getLangFromUrl, localizePath } from "../i18n/utils.js";
 
-const lang = getLangFromUrl(Astro.url);
-const page = pages.nl["hrm-oplossingen"];
-const active = "solutions";
-
-const cta = { title: "Ontdek welke aanpak past bij jouw HR-vraagstuk", text: "Bespreek je situatie met een hrmforce-specialist. In 30 minuten krijg je concreet advies.", primary: "Plan een demo", secondary: "Bekijk de assessments" };
-const homeHref = localizePath("/", lang);
-const contactHref = localizePath(routes.contact, lang);
-const assessHref = routes.assessments;
+const blocks = [
+  { h: "Matching & selectie", p: "Vind de best passende kandidaat door het in-en extern selecteren van medewerkers op basis van het gewenste matchprofiel. Dit doen we aan de hand van selectieassessments.", href: "/hrm-oplossingen/matching/" },
+  { h: "HR Gesprekscyclus", p: "Het maken van een persoonlijk ontwikkelplan voor de kandidaat. Met stap voor stap begeleiding in het proces om ontwikkel- en resultaat afspraken te maken.", href: "/hrm-oplossingen/development/" },
+  { h: "Employability", p: "De kandidaten laten zoeken naar mogelijke beroepen en actueel beschikbare vacatures op basis van hun persoonlijkheid, motivatie en gedrag.", href: "/hrm-oplossingen/employability/" },
+  { h: "HR Analytics", p: "Voor het genereren van geautomatiseerde team-, afdeling- en organisatie overzichten. Deze zijn voor elke vragenlijst beschikbaar.", href: "/hrm-oplossingen/hr-analytics/" },
+];
 ---
-<Base title={page.metaTitle} description={page.metaDescription} active={active}>
+<Base
+  title="HR oplossingen nodig? O.a. matching | Selectie | Gesprekscycli"
+  description="Onze vragenlijsten zijn verwerkt in workflows voor (pre)selectie, ontwikkeling en beoordeling van sollicitanten en medewerkers."
+  active="solutions"
+>
   <div class="crumb">
-    <div class="wrap"><a href={homeHref}>Home</a> › <span>{page.title}</span></div>
+    <div class="wrap"><a href="/">Home</a> › <span>HRM oplossingen</span></div>
   </div>
 
   <section class="ahero">
     <div class="wrap" style="display:block">
-      <div class="eyebrow" style="color:var(--gold)">{page.eyebrow}</div>
-      <h1>{page.title}</h1>
-      <p style="color:#c4d2e6;font-size:19px;max-width:760px;margin-top:8px">{page.lead}</p>
+      <div class="eyebrow" style="color:var(--gold)">HRM oplossingen</div>
+      <h1>HRM oplossingen</h1>
+      <p style="color:#c4d2e6;font-size:19px;max-width:780px;margin-top:8px">Hrmforce biedt naast het afnemen van online assessments nog veel meer functionaliteiten. De vragenlijsten zijn verwerkt in workflows voor (pre)selectie, ontwikkeling en beoordeling van sollicitanten en medewerkers.</p>
     </div>
   </section>
 
   <section>
     <div class="wrap">
-      {page.intro?.map((p) => <p style="color:var(--text);font-size:17px;max-width:820px;margin-bottom:14px">{p}</p>)}
-      <div class="cards" style="margin-top:34px">
-        {page.cards?.map((c) => (c.href
-          ? <a class="card" href={localizePath(c.href, lang)} style="text-decoration:none;color:inherit;display:block"><h3>{c.h}</h3><p>{c.p}</p></a>
-          : <div class="card"><h3>{c.h}</h3><p>{c.p}</p></div>))}
-      </div>
-    </div>
-  </section>
-
-  <section class="cta">
-    <div class="wrap">
-      <h2>{cta.title}</h2>
-      <p>{cta.text}</p>
-      <div class="btns">
-        <a href={contactHref} class="btn btn-primary">{cta.primary}</a>
-        <a href={assessHref} class="btn btn-light">{cta.secondary}</a>
+      <div class="sol">
+        {blocks.map((b) => (
+          <div class="sol-block">
+            <h2>{b.h}</h2>
+            <p>{b.p}</p>
+            <a class="btn btn-primary" href={b.href}>Meer informatie</a>
+          </div>
+        ))}
       </div>
     </div>
   </section>
 </Base>
+
+<style>
+  .sol { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .sol-block { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow); }
+  .sol-block h2 { color: var(--navy); font-size: 24px; font-weight: 800; margin-bottom: 12px; }
+  .sol-block p { color: var(--muted); font-size: 16px; margin-bottom: 20px; }
+  @media (max-width: 880px) { .sol { grid-template-columns: 1fr; } }
+</style>
