@@ -1,50 +1,57 @@
 ---
 import Base from "../layouts/Base.astro";
-import { pages } from "../data/pages.js";
-import { routes } from "../i18n/ui.js";
-import { getLangFromUrl, localizePath } from "../i18n/utils.js";
 
-const lang = getLangFromUrl(Astro.url);
-const page = pages.nl["advies"];
-const active = "advice";
-
-const cta = { title: "Ontdek welke aanpak past bij jouw HR-vraagstuk", text: "Bespreek je situatie met een hrmforce-specialist. In 30 minuten krijg je concreet advies.", primary: "Plan een demo", secondary: "Bekijk de assessments" };
-const homeHref = localizePath("/", lang);
-const contactHref = localizePath(routes.contact, lang);
-const assessHref = routes.assessments;
+const items = [
+  { h: "Assessments", p: "In elke organisatie beslissen mensen over mensen. Een sollicitant aannemen of afwijzen, een zittende medewerker wel of niet laten doorgroeien of interveniëren in een (stagnerende) loopbaan. Deze besluiten raken individu én organisatie. Uiteindelijk bepalen personele beslissingen hoe succesvol je organisatie is.", href: "/advies/assessments/" },
+  { h: "Talent Management", p: "Als men de 80-20-regel toepast op recruitment, blijkt dat 20% van de aangeworven kandidaten voor 80% van de resultaten zorgt. Meer dan ooit ligt de focus van bedrijven op het werven van deze talenten. Door de huidige economische omstandigheden is het echter ook noodzakelijk om talent in de organisatie te herkennen en te benutten.", href: "/advies/talent-management/" },
+  { h: "Competentie Management", p: "Bij het invoeren van competentiemanagement worden de visie & strategie van uw organisatie vertaald in doelstellingen. Goed geïmplementeerd competentiemanagement verdient zich dubbel en dwars terug. Het zorgt voor helderheid en structuur in alle functies van de organisatie.", href: "/advies/competentie-management/" },
+  { h: "Consultancy", p: "Uw organisatie verandert. Zij groeit, vernieuwt of past zich aan. Niet meegaan en veranderen betekent stilstaan. In tijden waarin de technologische innovatie zo snel gaat, betekent het zelfs achteruitgaan. U kiest voor een ambitieuze strategie en zoals altijd is de realisatie van de strategie de grootste uitdaging.", href: null },
+  { h: "Training", p: "Samen formuleren we de juiste probleemstelling en de best passende aanpak. We kunnen hiervoor een breed scala aan interventies inzetten. De werkvormen die we toepassen zijn vernieuwend en gebaseerd op wetenschappelijk onderzoek, maar bovenal verrassend en inspirerend. Voor een optimaal leerrendement laten we onze interventies aansluiten op jouw werksituatie.", href: "/advies/trainingen/" },
+  { h: "Loopbaan", p: "Een loopbaantraject van hrmforce is gericht op de toekomst en het verlangen: ‘Wat wil ik?’. De deelnemer wil iets met zijn of haar loopbaan maar heeft moeite met het richting geven, weet niet precies wat hij of zij wil of kan interesses niet goed vertalen naar mogelijke functies. Daarnaast spelen op de achtergrond de vragen ‘Wie ben ik?’ en ‘Wat kan ik?’ vaak mee.", href: "/advies/loopbaan/" },
+  { h: "Coaching", p: "kunt u benutten om de kandidaten te laten zoeken naar mogelijke beroepen en actueel beschikbare vacatures op basis van hun persoonlijkheid, motivatie en gedrag.", href: null },
+  { h: "Selectie Begeleiding", p: "Een nieuw persoon binnen de organisatie inlijven voor impactvolle functies is voor een organisatie geen dagelijkse bezigheid. Als assessoren bieden wij met onze expertise in gedragsonderzoeken de mogelijkheid om objectief geschiktheid te beoordelen tijdens alles fases van het werving en selectieproces.", href: null },
+];
 ---
-<Base title={page.metaTitle} description={page.metaDescription} active={active}>
+<Base
+  title="Hrmforce advies | Waarmee wij jouw bedrijf helpen"
+  description="Naast onze online assessments en HRM oplossingen kun je bij ons terecht voor adviestrajecten op maat en verschillende trainingen."
+  active="advice"
+>
   <div class="crumb">
-    <div class="wrap"><a href={homeHref}>Home</a> › <span>{page.title}</span></div>
+    <div class="wrap"><a href="/">Home</a> › <span>Advies</span></div>
   </div>
 
   <section class="ahero">
     <div class="wrap" style="display:block">
-      <div class="eyebrow" style="color:var(--gold)">{page.eyebrow}</div>
-      <h1>{page.title}</h1>
-      <p style="color:#c4d2e6;font-size:19px;max-width:760px;margin-top:8px">{page.lead}</p>
+      <div class="eyebrow" style="color:var(--gold)">Advies</div>
+      <h1>Hrmforce advies</h1>
+      <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">Naast onze online assessments en HRM oplossingen kun je bij ons terecht voor <strong>adviestrajecten op maat</strong> en verschillende trainingen. We helpen met het implementeren en optimaliseren van de HR-processen binnen je organisatie.</p>
     </div>
   </section>
 
   <section>
     <div class="wrap">
-      {page.intro?.map((p) => <p style="color:var(--text);font-size:17px;max-width:820px;margin-bottom:14px">{p}</p>)}
-      <div class="cards" style="margin-top:34px">
-        {page.cards?.map((c) => (c.href
-          ? <a class="card" href={localizePath(c.href, lang)} style="text-decoration:none;color:inherit;display:block"><h3>{c.h}</h3><p>{c.p}</p></a>
-          : <div class="card"><h3>{c.h}</h3><p>{c.p}</p></div>))}
-      </div>
-    </div>
-  </section>
+      <p style="color:var(--text);font-size:17px;max-width:820px;margin-bottom:14px">Naast onze <a href="/online-assessments/">online assessments</a> en <a href="/hrm-oplossingen/">HRM oplossingen</a> kun je bij ons terecht voor <strong>adviestrajecten op maat</strong> en verschillende trainingen. We helpen met het implementeren en optimaliseren van de HR-processen binnen je organisatie.</p>
 
-  <section class="cta">
-    <div class="wrap">
-      <h2>{cta.title}</h2>
-      <p>{cta.text}</p>
-      <div class="btns">
-        <a href={contactHref} class="btn btn-primary">{cta.primary}</a>
-        <a href={assessHref} class="btn btn-light">{cta.secondary}</a>
+      <div class="adv">
+        {items.map((it) => (
+          <div class="adv-block">
+            <h2>{it.h}</h2>
+            <p>{it.p}</p>
+            {it.href && <a class="btn btn-primary" href={it.href}>Meer informatie</a>}
+          </div>
+        ))}
       </div>
     </div>
   </section>
 </Base>
+
+<style>
+  .adv { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 28px; }
+  .adv-block { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+  .adv-block h2 { color: var(--navy); font-size: 22px; font-weight: 800; margin-bottom: 12px; }
+  .adv-block p { color: var(--muted); font-size: 16px; margin-bottom: 20px; flex: 1; }
+  .adv-block .btn { align-self: flex-start; }
+  section p a { color: var(--blue); font-weight: 600; }
+  @media (max-width: 880px) { .adv { grid-template-columns: 1fr; } }
+</style>
