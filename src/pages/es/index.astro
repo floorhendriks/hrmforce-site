@@ -1,4 +1,51 @@
 ---
-import Home from "../../components/Home.astro";
+import Base from "../../layouts/Base.astro";
+
+const cards = [
+  { h: "Evaluaciones", p: "Ideal para el reclutamiento y la selección de nuevos talentos…", href: "/es/hrm-oplossingen/", cta: "Ver las evaluaciones" },
+  { h: "Soluciones de GRH", p: "Contratación, Desarrollo, Empleabilidad, TeamView …", href: "/es/hrm-oplossingen/", cta: "Ver las soluciones" },
+  { h: "Sobre nosotros", p: "Conozca más sobre nosotros y cómo trabajamos…", href: "/es/over-ons/", cta: "Más sobre nosotros" },
+];
 ---
-<Home />
+<Base
+  title="Home - hrmforce"
+  description="hrmforce es la plataforma de desarrollo en línea de mayor crecimiento para la gestión del talento con la gama más completa de evaluaciones en los Países Bajos."
+  active=""
+>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow" style="color:var(--gold)">hrmforce</div>
+        <h1>Saque el máximo partido a sus empleados con nuestro software de gestión del talento</h1>
+        <p class="sub">Ponga a prueba a sus candidatos con nuestros cuestionarios</p>
+        <p class="sub">Impulse el crecimiento de sus empleados con nuestras herramientas de desarrollo</p>
+        <a class="btn btn-primary" href="/es/hrm-oplossingen/">Más información</a>
+      </div>
+      <div class="hero-img">
+        <img src="https://hrmforce.com/wp-content/uploads/2022/08/Hrmforce-homepage-mobiel-ENG.webp" alt="hrmforce home ENG" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Integral y confiable -->
+  <section>
+    <div class="wrap" style="display:block">
+      <h2 class="section-title center">Integral y confiable</h2>
+      <p class="lead center">hrmforce es la plataforma de desarrollo en línea de mayor crecimiento para la gestión del talento con la gama más completa de evaluaciones en los Países Bajos. Siempre único, con base científica y con nuevas evaluaciones cada mes. Asesoramiento personal, formación y transparencia en cada paso.</p>
+      <div class="cards">
+        {cards.map((c) => (
+          <div class="card">
+            <h3>{c.h}</h3>
+            <p>{c.p}</p>
+            <a href={c.href}>{c.cta} →</a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero-img img { max-width: 100%; height: auto; border-radius: 18px; display: block; margin: 0 auto; }
+</style>
