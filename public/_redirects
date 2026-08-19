@@ -7,6 +7,10 @@
 /assessments/preselectie/disc-test/                  /assessments/disc-test/            301
 /assessments/ontwikkelmatrix/                        /assessments/ontwikkelassessment/  301
 
+# --- HRM-oplossingen: oude slugs uit letterlijke teksten ---
+/hrm-oplossingen/recruitment/                        /hrm-oplossingen/matching/         301
+/voorbereiden-assessment/                            /voorbereiding/                    301
+
 # --- Assessments: gelokaliseerde Big Five ---
 /en/assessments/big-fifty-personality-test/                    /en/assessments/big-five/   301
 /de/assessments/entwicklung/persoenlichkeitstest-big-five/     /de/assessments/big-five/   301
