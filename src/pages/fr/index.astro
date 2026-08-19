@@ -1,4 +1,63 @@
 ---
-import Home from "../../components/Home.astro";
+import Base from "../../layouts/Base.astro";
+
+const cards = [
+  { h: "Évaluations", p: "Idéal pour le recrutement et la sélection de nouveaux talents…", href: "/online-assessments/", cta: "Plus d'informations" },
+  { h: "Solutions de GRH", p: "Recrutement, Développement, Employabilité, TeamView …", href: "/fr/hrm-oplossingen/", cta: "Plus d'informations" },
+  { h: "A propos de nous", p: "En savoir plus sur nous et notre mode de fonctionnement…", href: "/fr/over-ons/", cta: "Plus d'informations" },
+];
 ---
-<Home />
+<Base
+  title="Home - hrmforce"
+  description="hrmforce est la plateforme de développement pour la gestion des talents qui connaît la croissance la plus rapide, avec la gamme d'évaluations la plus complète des Pays-Bas."
+  active=""
+>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow" style="color:var(--gold)">hrmforce</div>
+        <h1>hrmforce</h1>
+        <p class="sub">Améliorez les performances de vos employés grâce à notre logiciel de gestion des talents</p>
+        <p class="sub">Testez vos candidats avec nos évaluations</p>
+        <p class="sub">Faites évoluer vos employés grâce à nos outils de développement</p>
+        <a class="btn btn-primary" href="/online-assessments/">Plus d'informations</a>
+      </div>
+      <div class="hero-img">
+        <img src="https://hrmforce.com/wp-content/uploads/2022/08/Hrmforce-homepage-mobiel-ENG.webp" alt="hrmforce home ENG" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Complet et fiable -->
+  <section>
+    <div class="wrap" style="display:block">
+      <h2 class="section-title center">Complet et fiable</h2>
+      <p class="lead center">hrmforce est la plateforme de développement pour la gestion des talents qui connaît la croissance la plus rapide, avec la gamme d'évaluations la plus complète des Pays-Bas. Toujours unique, basée sur la science et avec de nouvelles évaluations chaque mois. Accompagnement personnel, formation et transparence à toutes les étapes.</p>
+      <div class="cards">
+        {cards.map((c) => (
+          <div class="card">
+            <h3>{c.h}</h3>
+            <p>{c.p}</p>
+            <a href={c.href}>{c.cta} →</a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- HRMFORCE tekstblok -->
+  <section>
+    <div class="wrap ov" style="display:block">
+      <h2 class="section-title">HRMFORCE</h2>
+      <p>Le logiciel de gestion des talents hrmforce vous accompagne dans toutes les étapes du processus RH.</p>
+      <p>Formez vos employés, laissez votre organisation se développer et tirez-en le meilleur parti. Hrmforce, depuis le talent jusqu'au résultat.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero-img img { max-width: 100%; height: auto; border-radius: 18px; display: block; margin: 0 auto; }
+  .ov { max-width: 900px; }
+  .ov p { color: var(--text); font-size: 17px; margin-bottom: 16px; }
+</style>
