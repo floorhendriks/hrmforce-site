@@ -1,5 +1,48 @@
 ---
-import SubPage from "../../components/SubPage.astro";
-import { pages } from "../../data/pages.js";
+import Base from "../../layouts/Base.astro";
+
+const blocks = [
+  { h: "Recrutare", p: "Găsiți cel mai potrivit candidat prin selectarea angajaților pe plan intern și extern, pe baza profilului de potrivire dorit." },
+  { h: "Dezvoltare", p: "Erstellung eines persönlichen Entwicklungsplans für den Kandidaten. Mit schrittweiser Anleitung zum Abschluss von Entwicklungs- und Ergebnisvereinbarungen." },
+  { h: "Capacitatea de angajare", p: "Permite candidaților să caute posibile ocupații și posturi vacante în prezent, pe baza personalității, motivației și comportamentului lor." },
+  { h: "Analize", p: "Generarea automată de imagini de ansamblu ale echipei, departamentului și organizației. Acestea sunt disponibile pentru fiecare chestionar." },
+];
 ---
-<SubPage page={pages.ro["hrm-oplossingen"]} active="solutions" />
+<Base
+  title="SOLUŢII HRM - hrmforce"
+  description="Chestionarele sunt încorporate în fluxurile de lucru pentru (pre)selecția, dezvoltarea și evaluarea candidaților și angajaților."
+  active="solutions"
+>
+  <div class="crumb">
+    <div class="wrap"><a href="/ro/">Home</a> › <span>Soluții HRM</span></div>
+  </div>
+
+  <section class="ahero">
+    <div class="wrap" style="display:block">
+      <div class="eyebrow" style="color:var(--gold)">Soluții HRM</div>
+      <h1>Soluții HRM</h1>
+      <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">Hrmforce oferă multe alte funcționalități în afară de evaluările online. Chestionarele sunt încorporate în fluxurile de lucru pentru (pre)selecția, dezvoltarea și evaluarea candidaților și angajaților.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sol">
+        {blocks.map((b) => (
+          <div class="sol-block">
+            <h2>{b.h}</h2>
+            <p>{b.p}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .sol { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .sol-block { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow); }
+  .sol-block h2 { color: var(--navy); font-size: 24px; font-weight: 800; margin-bottom: 12px; }
+  .sol-block p { color: var(--muted); font-size: 16px; margin-bottom: 0; }
+  @media (max-width: 880px) { .sol { grid-template-columns: 1fr; } }
+</style>
