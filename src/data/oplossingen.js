@@ -25,6 +25,7 @@ export const oplossingen = [
       "Gedetailleerde matchinformatie per kandidaat",
       "Rapportages die inhoudelijkere selectiegesprekken opleveren",
     ],
+    image: "https://hrmforce.com/wp-content/uploads/2023/05/NLP-recruitment-development.webp",
     cta: "Vraag een gratis demo aan",
   },
   {
@@ -49,6 +50,7 @@ export const oplossingen = [
       "Jaargesprek en volledige jaarcyclus",
       "Automatische voortgangsbewaking en concrete actielijsten",
     ],
+    image: "https://hrmforce.com/wp-content/uploads/2017/02/appraisal-hrmforce.jpg",
     cta: "Vraag een gratis demo aan",
   },
   {
@@ -73,6 +75,7 @@ export const oplossingen = [
       "Meet persoonlijkheid, motivatie, gedrag en interesses",
       "Borgt kennis en vergroot de loyaliteit van medewerkers",
     ],
+    image: "https://hrmforce.com/wp-content/uploads/2021/05/pulse-survey-hrmforce.jpg",
     cta: "Vraag een gratis demo aan",
   },
   {
@@ -97,6 +100,7 @@ export const oplossingen = [
       "Koppel medewerkers aan de juiste functieprofielen",
       "Onderbouw HR-beslissingen met feiten in plaats van aannames",
     ],
+    image: "https://hrmforce.com/wp-content/uploads/2022/02/ass-afb3.png",
     cta: "Vraag een gratis demo aan",
   },
 ];
