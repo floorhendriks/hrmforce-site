@@ -1,5 +1,49 @@
 ---
-import SubPage from "../../components/SubPage.astro";
-import { pages } from "../../data/pages.js";
+import Base from "../../layouts/Base.astro";
+
+const blocks = [
+  { h: "Recruitment", p: "Find the best-fit candidate by selecting employees internally and externally based on the desired match profile.", href: "/en/hrm-oplossingen/" },
+  { h: "Development", p: "Creating a personal development plan for the candidate. With step by step guidance in the process of making development and result agreements.", href: "/en/hrm-oplossingen/" },
+  { h: "Employability", p: "Having the candidates search for possible occupations and currently available jobs based on their personality, motivation and behavior.", href: "/en/hrm-oplossingen/" },
+  { h: "Analytics", p: "For generating automated team, department and organization overviews. These are available for each questionnaire.", href: "/en/hrm-oplossingen/" },
+];
 ---
-<SubPage page={pages.en["hrm-oplossingen"]} active="solutions" />
+<Base
+  title="Solutions - hrmforce"
+  description="In addition to conducting online assessments, hrmforce offers many more functionalities. The questionnaires have been incorporated into workflows for recruitment, development and assessment."
+  active="solutions"
+>
+  <div class="crumb">
+    <div class="wrap"><a href="/en/">Home</a> › <span>HRM solutions</span></div>
+  </div>
+
+  <section class="ahero">
+    <div class="wrap" style="display:block">
+      <div class="eyebrow" style="color:var(--gold)">HRM solutions</div>
+      <h1>HRM solutions</h1>
+      <p style="color:#c4d2e6;font-size:19px;max-width:780px;margin-top:8px">In addition to conducting <a href="/en/online-assessments/" style="color:#fff;text-decoration:underline">online assessments</a>, hrmforce offers many more functionalities. The questionnaires have been incorporated into workflows for recruitment, development and assessment of applicants and employees.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sol">
+        {blocks.map((b) => (
+          <div class="sol-block">
+            <h2>{b.h}</h2>
+            <p>{b.p}</p>
+            <a class="btn btn-primary" href={b.href}>Read more</a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .sol { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .sol-block { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow); }
+  .sol-block h2 { color: var(--navy); font-size: 24px; font-weight: 800; margin-bottom: 12px; }
+  .sol-block p { color: var(--muted); font-size: 16px; margin-bottom: 20px; }
+  @media (max-width: 880px) { .sol { grid-template-columns: 1fr; } }
+</style>
