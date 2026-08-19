@@ -17,7 +17,7 @@ const solutionsHref = localizePath("/hrm-oplossingen/", lang);
   </div>
 
   <section class="ahero">
-    <div class="wrap">
+    <div class="wrap" style={o.image ? "display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center" : ""}>
       <div>
         <div class="eyebrow">HRM Oplossingen</div>
         <h1>{o.title}</h1>
@@ -26,6 +26,11 @@ const solutionsHref = localizePath("/hrm-oplossingen/", lang);
           <a href={localizePath("/contact/", lang)} class="btn btn-primary">{o.cta}</a>
         </div>
       </div>
+      {o.image && (
+        <div class="ahero-media">
+          <img src={o.image} alt={o.title} loading="lazy" />
+        </div>
+      )}
     </div>
   </section>
 
@@ -49,3 +54,16 @@ const solutionsHref = localizePath("/hrm-oplossingen/", lang);
     </div>
   </section>
 </Base>
+<style>
+  .ahero-media img {
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, .28);
+    display: block;
+  }
+  @media (max-width: 860px) {
+    .ahero .wrap { grid-template-columns: 1fr !important; }
+    .ahero-media { order: -1; }
+  }
+</style>
