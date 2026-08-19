@@ -1,5 +1,51 @@
 ---
-import SubPage from "../../components/SubPage.astro";
-import { pages } from "../../data/pages.js";
+import Base from "../../layouts/Base.astro";
+
+const domains = [
+  { h: "Recrutement", p: "Trouvez le candidat le mieux adapté en sélectionnant les employés en interne et en externe sur la base du profil de correspondance souhaité." },
+  { h: "Développement", p: "Création d'un plan de développement personnel pour le candidat. Avec un accompagnement pas à pas dans le processus d'élaboration des accords de développement et de résultats." },
+  { h: "Employabilité", p: "Faire rechercher par les candidats des professions possibles et des emplois actuellement disponibles en fonction de leur personnalité, de leur motivation et de leur comportement." },
+  { h: "Analytique", p: "Pour générer des aperçus automatisés des équipes, des départements et des organisations. Celles-ci sont disponibles pour chaque questionnaire." },
+];
 ---
-<SubPage page={pages.fr["hrm-oplossingen"]} active="solutions" />
+<Base
+  title="HRM Solutions - hrmforce"
+  description="Outre la réalisation d'évaluations en ligne, hrmforce offre de nombreuses autres fonctionnalités pour le recrutement, le développement et l'évaluation."
+  active="solutions"
+>
+  <div class="crumb">
+    <div class="wrap"><a href="/fr/">Home</a> › <span>Solutions de GRH</span></div>
+  </div>
+
+  <section class="ahero">
+    <div class="wrap" style="display:block">
+      <div class="eyebrow" style="color:var(--gold)">Solutions de GRH</div>
+      <h1>Solutions de GRH</h1>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap ov">
+      <p>Outre la réalisation d'évaluations en ligne, hrmforce offre de nombreuses autres fonctionnalités. Les questionnaires ont été intégrés aux flux de travail pour le recrutement, le développement et l'évaluation des candidats et des employés.</p>
+
+      <div class="dom">
+        {domains.map((d) => (
+          <div class="dom-item">
+            <h3>{d.h}</h3>
+            <p>{d.p}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ov { max-width: 900px; }
+  .ov p { color: var(--text); font-size: 17px; margin-bottom: 16px; }
+  .dom { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 28px 0 8px; }
+  .dom-item { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+  .dom-item h3 { color: var(--navy); font-size: 20px; margin-bottom: 8px; }
+  .dom-item p { margin-bottom: 0; font-size: 16px; color: var(--muted); }
+  @media (max-width: 720px) { .dom { grid-template-columns: 1fr; } }
+</style>
