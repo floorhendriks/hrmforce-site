@@ -1,5 +1,79 @@
 ---
-import SubPage from "../../components/SubPage.astro";
-import { pages } from "../../data/pages.js";
+import Base from "../../layouts/Base.astro";
+
+const offices = [
+  { h: "hrmforce head office", lines: ["Solitudolaan 396", "1096 DS Amsterdam", "The Netherlands"], tel: "+31 (0)88 88 321 88", telHref: "tel:+31888832188", mail: "service@hrmforce.com", extra: ["CoC Amsterdam: 34369982", "Bank: NL31RABO0155758411", "VAT: NL821671480B01"] },
+  { h: "hrmforce Germany", lines: ["Theodorstrasse 105", "40472 Dusseldorf", "Germany"], tel: "+31888832188", telHref: "tel:+31888832188", mail: "service@hrmforce.com" },
+  { h: "hrmforce Belgium", lines: ["Bridge Building", "Keizer Karellaan 584", "1082 Sint-Agatha-Berchem", "Belgium"], tel: "+31 (0)88 88 321 88", telHref: "tel:+31888832188", mail: "service@hrmforce.com" },
+  { h: "hrmforce France", lines: ["5 Place de la Pyramide Tour Ariane", "92800, Paris, Hauts-de-Seine", "France"], tel: "+31 (0)88 88 321 88", telHref: "tel:+31888832188", mail: "service@hrmforce.com" },
+  { h: "hrmforce India", lines: ["Plot #27, 1-4-190/27/1/A, Phase-I,", "Bhaskara Rao Nagar Sainikpuri P.O.", "Secunderabad – 500 094", "Telangana", "India"], tel: "+91 89787 86121", telHref: "tel:+918978786121", mail: "service@hrmforce.com" },
+  { h: "hrmforce Romania", lines: ["Ploiesti Street, No 9", "400157 Cluj-Napoca", "Romania"], tel: "+31 (0)88 88 321 88", telHref: "tel:+31888832188", mail: "office@hrmforce.com", extra: ["CoC: J12/1828/2011", "Bank: RO11BRMA099910004661926", "VAT: RO 28852231"] },
+  { h: "hrmforce Spain", lines: ["Carrer de les Barques 2 – 2nd floor", "46002 València", "Valencia", "Spain"], tel: "+31 (0)88 88 321 88", telHref: "tel:+31888832188", mail: "atencioncliente@hrmforce.com" },
+];
 ---
-<SubPage page={pages.fr["contact"]} active="contact" />
+<Base
+  title="Contact - hrmforce"
+  description="Seriez-vous intéressés ou avez-vous des questions ? Remplissez le formulaire de contact ou appelez-nous pour parler directement à nos conseillers."
+  active="contact"
+>
+  <div class="crumb">
+    <div class="wrap"><a href="/fr/">Home</a> › <span>Contact</span></div>
+  </div>
+
+  <section class="ahero">
+    <div class="wrap" style="display:block">
+      <div class="eyebrow" style="color:var(--gold)">Contact</div>
+      <h1>Seriez-vous intéressés ou avez-vous des questions ?</h1>
+    </div>
+  </section>
+
+  <section class="formsec">
+    <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start">
+      <div>
+        <p style="color:var(--text);font-size:17px">Nous serons heureux de vous aider et de réfléchir avec vous pour trouver une solution adaptée. Aussi, n'hésitez pas à poser votre question à nos conseillers ou à partager votre idée avec eux. Il suffit de remplir le formulaire de contact ou de nous appeler pour parler directement à nos conseillers.</p>
+        <p style="margin-top:14px;color:var(--muted)"><strong>T :</strong> <a href="tel:+31888832188">+31 (0)88 88 321 88</a><br /><strong>E :</strong> <a href="mailto:service@hrmforce.com">service@hrmforce.com</a></p>
+        <p style="color:var(--muted)">Nos conseillers sont disponibles du lundi au vendredi de 08h00 à 18h00.</p>
+      </div>
+      <form class="formcard" action="https://formspree.io/f/JOUW_FORM_ID" method="POST">
+        <h2 class="section-title" style="font-size:22px;margin-top:0">Formulaire de contact</h2>
+        <div class="frow">
+          <div class="fg"><label>Prénom *</label><input type="text" name="prenom" required /></div>
+          <div class="fg"><label>Nom *</label><input type="text" name="nom" required /></div>
+        </div>
+        <div class="fg"><label>Société *</label><input type="text" name="societe" required /></div>
+        <div class="frow">
+          <div class="fg"><label>Numéro de téléphone *</label><input type="tel" name="telephone" required /></div>
+          <div class="fg"><label>Adresse e-mail *</label><input type="email" name="email" required /></div>
+        </div>
+        <div class="fg"><label>Sujet *</label><input type="text" name="sujet" required /></div>
+        <div class="fg"><label>Votre message *</label><textarea name="message" rows="4" required></textarea></div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap" style="display:block">
+      <div class="offices">
+        {offices.map((o) => (
+          <div class="office">
+            <h3>{o.h}</h3>
+            <p>{o.lines.map((l) => (<>{l}<br /></>))}</p>
+            <p>Tel: <a href={o.telHref}>{o.tel}</a><br />Mail: <a href={`mailto:${o.mail}`}>{o.mail}</a></p>
+            {o.extra && <p class="extra">{o.extra.map((e) => (<>{e}<br /></>))}</p>}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .offices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .office { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px; }
+  .office h3 { color: var(--navy); font-size: 18px; margin-bottom: 10px; }
+  .office p { color: var(--muted); font-size: 15px; margin-bottom: 10px; }
+  .office .extra { font-size: 14px; }
+  .office a { color: var(--blue); font-weight: 600; }
+  @media (max-width: 880px) { .offices { grid-template-columns: 1fr; } }
+</style>
