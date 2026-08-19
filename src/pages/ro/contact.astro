@@ -1,5 +1,225 @@
 ---
-import SubPage from "../../components/SubPage.astro";
-import { pages } from "../../data/pages.js";
+import Base from "../../layouts/Base.astro";
+
+const offices = [
+  {
+    naam: "hrmforce Germany",
+    regels: ["Theodorstrasse 105", "40472 Dusseldorf", "Germany"],
+    tel: "+31 (0)88 88 321 88",
+    telHref: "tel:+31888832188",
+    mail: "service@hrmforce.com",
+  },
+  {
+    naam: "hrmforce Belgium",
+    regels: ["Bridge Building", "Keizer Karellaan 584", "1082 Sint-Agatha-Berchem", "Belgium"],
+    tel: "+31 (0)88 88 321 88",
+    telHref: "tel:+31888832188",
+    mail: "service@hrmforce.com",
+  },
+  {
+    naam: "hrmforce France",
+    regels: ["5 Place de la Pyramide Tour Ariane", "92800, Paris, Hauts-de-Seine", "France"],
+    tel: "+31 (0)88 88 321 88",
+    telHref: "tel:+31888832188",
+    mail: "service@hrmforce.com",
+  },
+  {
+    naam: "hrmforce India",
+    regels: ["Plot #27, 1-4-190/27/1/A, Phase-I", "Bhaskara Rao Nagar Sainikpuri P.O.", "Secunderabad – 500 094", "Telangana, India"],
+    tel: "+91 89787 86121",
+    telHref: "tel:+918978786121",
+    mail: "service@hrmforce.com",
+  },
+  {
+    naam: "hrmforce Romania",
+    regels: ["Ploiesti Street, No 9", "400157 Cluj-Napoca", "Romania"],
+    tel: "+31 (0)88 88 321 88",
+    telHref: "tel:+31888832188",
+    mail: "office@hrmforce.com",
+  },
+  {
+    naam: "hrmforce Spain",
+    regels: ["Carrer de les Barques 2 – 2nd floor", "46002 València", "Valencia, Spain"],
+    tel: "+31 (0)88 88 321 88",
+    telHref: "tel:+31888832188",
+    mail: "atencioncliente@hrmforce.com",
+  },
+];
 ---
-<SubPage page={pages.ro["contact"]} active="contact" />
+<Base
+  title="Contact - hrmforce"
+  description="Sunteți interesat(ă) sau aveți o întrebare? Completați formularul de contact sau sunați-ne și vorbiți imediat cu consilierii noștri."
+  active="contact"
+>
+  <div class="crumb">
+    <div class="wrap"><a href="/ro/">Home</a> › <span>Contact</span></div>
+  </div>
+
+  <section class="ahero">
+    <div class="wrap" style="display:block">
+      <div class="eyebrow" style="color:var(--gold)">Contact</div>
+      <h1>Sunteți interesat(ă) sau aveți o întrebare?</h1>
+      <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">
+        Vă vom ajuta cu plăcere și ne vom gândi împreună cu dumneavoastră să găsim o soluție potrivită.
+        Așadar, nu ezitați să le adresați imediat consilierilor noștri întrebarea sau ideea dumneavoastră.
+        Completați formularul de contact sau sunați-ne și vorbiți imediat cu consilierii noștri.
+      </p>
+    </div>
+  </section>
+
+  <section class="formsec">
+    <div class="wrap contact-grid">
+      <div class="contact-info">
+        <div class="eyebrow">hrmforce head office</div>
+        <h2 class="section-title" style="font-size:26px">Amsterdam</h2>
+        <p class="addr">
+          Solitudolaan 396<br />
+          1096 DS Amsterdam<br />
+          The Netherlands
+        </p>
+
+        <ul class="contact-list">
+          <li><span class="lbl">Telefon</span> <a href="tel:+31888832188">+31 (0)88 88 321 88</a></li>
+          <li><span class="lbl">E-mail</span> <a href="mailto:service@hrmforce.com">service@hrmforce.com</a></li>
+        </ul>
+
+        <p class="hours">
+          <strong>Disponibilitate</strong><br />
+          Consilierii noștri sunt disponibili de luni până vineri, între orele 08:00 – 18:00.
+        </p>
+
+        <ul class="legal">
+          <li><span class="lbl">CoC Amsterdam</span> 34369982</li>
+          <li><span class="lbl">VAT</span> NL821671480B01</li>
+          <li><span class="lbl">Bank</span> NL31RABO0155758411</li>
+        </ul>
+
+        <div class="map">
+          <iframe
+            title="Locație hrmforce Amsterdam"
+            src="https://maps.google.com/maps?q=Solitudolaan%20396%2C%201096%20DS%20Amsterdam&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </div>
+
+      <div>
+        <div class="eyebrow">Formular de contact</div>
+        <h2 class="section-title" style="font-size:26px">Trimiteți-ne un mesaj</h2>
+        <form
+          id="contactForm"
+          class="formcard"
+          action="mailto:service@hrmforce.com"
+          method="POST"
+          enctype="text/plain"
+          novalidate
+        >
+          <div class="frow">
+            <div class="fg">
+              <label for="prenume">Prenume *</label>
+              <input type="text" id="prenume" name="prenume" required />
+            </div>
+            <div class="fg">
+              <label for="nume">Nume *</label>
+              <input type="text" id="nume" name="nume" required />
+            </div>
+          </div>
+          <div class="fg">
+            <label for="organizatie">Organizație *</label>
+            <input type="text" id="organizatie" name="organizatie" required />
+          </div>
+          <div class="frow">
+            <div class="fg">
+              <label for="telefon">Telefon *</label>
+              <input type="tel" id="telefon" name="telefon" required />
+            </div>
+            <div class="fg">
+              <label for="email">Adresă de Email *</label>
+              <input type="email" id="email" name="email" required />
+            </div>
+          </div>
+          <div class="fg">
+            <label for="subiect">Subiect *</label>
+            <input type="text" id="subiect" name="subiect" required />
+          </div>
+          <div class="fg">
+            <label for="mesaj">Mesajul d-voastră *</label>
+            <textarea id="mesaj" name="mesaj" rows="5" required></textarea>
+          </div>
+          <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">Sediile noastre</div>
+      <h2 class="section-title">hrmforce în lume</h2>
+      <div class="office-grid">
+        {offices.map((o) => (
+          <div class="office-card">
+            <h3>{o.naam}</h3>
+            <p class="addr">{o.regels.map((r, i) => (<>{r}{i < o.regels.length - 1 && <br />}</>))}</p>
+            <p class="office-contact">
+              <a href={o.telHref}>{o.tel}</a><br />
+              <a href={`mailto:${o.mail}`}>{o.mail}</a>
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .contact-info .addr { color: var(--muted); font-size: 16px; margin-bottom: 18px; }
+    .contact-list, .legal { list-style: none; margin: 0 0 18px; }
+    .contact-list li, .legal li { padding: 8px 0; border-bottom: 1px dashed var(--line); color: var(--text); font-size: 15px; }
+    .contact-list a { color: var(--blue); font-weight: 600; }
+    .contact-list a:hover { text-decoration: underline; }
+    .lbl { display: inline-block; min-width: 130px; color: var(--navy); font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: .4px; }
+    .hours { background: var(--bg); border-left: 3px solid var(--gold); padding: 14px 16px; border-radius: 8px; color: var(--muted); font-size: 15px; margin-bottom: 18px; }
+    .hours strong { color: var(--navy); }
+    .map { margin-top: 8px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow); }
+    .map iframe { width: 100%; height: 260px; border: 0; display: block; }
+    .form-msg { display: none; margin-bottom: 16px; padding: 12px 14px; border-radius: 10px; font-size: 14px; font-weight: 600; }
+    .form-msg.error { display: block; background: #fff3f0; border: 1px solid var(--accent); color: #8a4a25; }
+    .form-msg.success { display: block; background: #eef7ee; border: 1px solid #57a05a; color: #2f6b32; }
+    .office-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 34px; }
+    .office-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; box-shadow: var(--shadow); }
+    .office-card h3 { font-size: 18px; margin-bottom: 10px; }
+    .office-card .addr { color: var(--muted); font-size: 15px; margin-bottom: 12px; }
+    .office-contact a { color: var(--blue); font-weight: 600; font-size: 15px; }
+    .office-contact a:hover { text-decoration: underline; }
+    @media (max-width: 880px) { .contact-grid { grid-template-columns: 1fr; } .office-grid { grid-template-columns: 1fr; } }
+  </style>
+
+  <script is:inline>
+    (function () {
+      var form = document.getElementById("contactForm");
+      if (!form) return;
+      var msg = document.getElementById("formMsg");
+      form.addEventListener("submit", function (e) {
+        var required = form.querySelectorAll("[required]");
+        var missing = [];
+        required.forEach(function (el) { if (!el.value.trim()) missing.push(el); });
+        var email = form.querySelector("#email");
+        var emailOk = email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+        if (missing.length > 0 || !emailOk) {
+          e.preventDefault();
+          msg.className = "form-msg error";
+          msg.textContent = missing.length > 0
+            ? "Vă rugăm să completați toate câmpurile obligatorii înainte de a trimite."
+            : "Vă rugăm să introduceți o adresă de e-mail validă.";
+          (missing[0] || email).focus();
+          return;
+        }
+        msg.className = "form-msg success";
+        msg.textContent = "Vă mulțumim! Mesajul dumneavoastră se va deschide în programul de e-mail. Vă vom contacta cât mai curând posibil.";
+      });
+    })();
+  </script>
+</Base>
