@@ -1,5 +1,89 @@
 ---
-import SubPage from "../../components/SubPage.astro";
-import { pages } from "../../data/pages.js";
+import Base from "../../layouts/Base.astro";
+
+const beneficii = [
+  "ajutor imediat în caz de întrebări sau probleme",
+  "acces la asistenţă şi informare online",
+  "notificarea actualizărilor disponibile pentru software",
+  "informarea dumneavoastră continuă cu privire la cele mai recente modificări legislative",
+  "oferte avantajoase pentru noile linii de produse.",
+];
+
+const optiuni = [
+  "asistenţa telefonică",
+  "dreptul dumneavoastră de a păstra software-ul când folosiţi un hardware nou",
+  "oferte de noi linii de produse",
+  "notificarea actualizărilor programelor informatice",
+  "opţiuni de asistenţă a clientului",
+  "explicarea facturii dumneavoastră",
+  "solicitarea unei copii a facturii emise",
+];
+
+const portal = [
+  "informaţii",
+  "texte de ajutor",
+  "actualizări ale produselor",
+  "ştiri despre produse",
+  "manualul utilizatorului",
+];
+
+const criterii = [
+  "Primim acelaşi feedback şi de la alţi clienţi?",
+  "Vor beneficia şi alţi clienţi de sugestia dumneavoastră?",
+  "Care sunt tendinţele actuale ale pieţei şi tehnologiei?",
+  "Este posibilă procesarea feedback-ului dumneavoastră în conformitate cu regulamentele şi legislaţia în vigoare?",
+];
 ---
-<SubPage page={pages.ro["support"]} active="" />
+<Base
+  title="ASISTENŢĂ - hrmforce"
+  description="Soluţia HrmForce reprezintă un aspect important al afacerii dumneavoastră şi de aceea vă oferim asistenţă de calitate pentru investiţia dumneavoastră."
+  active=""
+>
+  <div class="crumb">
+    <div class="wrap"><a href="/ro/">Home</a> › <span>Asistenţă</span></div>
+  </div>
+
+  <section class="ahero">
+    <div class="wrap" style="display:block">
+      <div class="eyebrow" style="color:var(--gold)">Asistenţă</div>
+      <h1>ASISTENŢĂ</h1>
+      <p style="color:#c4d2e6;font-size:19px;max-width:900px;margin-top:8px">Soluţia HrmForce reprezintă un aspect important al afacerii dumneavoastră şi de aceea vă oferim asistenţă de calitate pentru investiţia dumneavoastră. În cazul în care aveţi o întrebare sau o problemă, suntem pregătiţi să vă ajutăm imediat. În cazul în care nu beneficiaţi încă de asistenţă din partea noastră, departamentul nostru de relaţii cu clienţii vă stă la dispoziţie. Ne puteţi contacta la numărul de telefon +40 728 909 301, de luni până vineri, între orele 09:00 – 17:30.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap ov">
+      <h2 class="section-title">Asistenţa clienţilor</h2>
+      <p>Soluţia HrmForce reprezintă un aspect important al afacerii dumneavoastră şi de aceea vă oferim asistenţă de calitate pentru investiţia dumneavoastră. În cazul în care aveţi o întrebare sau o problemă, suntem pregătiţi să vă ajutăm imediat.</p>
+      <p><strong>Beneficii ale asistenţei</strong></p>
+      <ul>{beneficii.map((b) => <li>{b}</li>)}</ul>
+      <p><strong>Opţiuni de asistenţă</strong><br />Odată cu achiziţionarea pachetului HrmForce, dumneavoastră încheiaţi, în mod automat, un contract HrmForce de mentenanţă. Acest contract are menirea de a adapta, la perfecţie, soluţia noastră la nevoile organizaţiei dumneavoastră. Contractul se referă la:</p>
+      <ul>{optiuni.map((o) => <li>{o}</li>)}</ul>
+
+      <h2 class="section-title">Asistenţă online</h2>
+      <p>Testaţi accesibilitatea noastră online. 24 de ore pe zi aveţi acces la asistenţă şi informaţii despre produse. În acelaşi timp, în afara orelor de program ale departamentului nostru de relaţii cu clienţi, puteţi găsi online o soluţie pentru întrebările sau problemele dumneavoastră.</p>
+      <p><strong>Portalul de asistenţă</strong><br />Clienţii care au încheiat un contact cu noi, pot accesa oricând portalul de asistenţă HrmForce. Acest portal vă oferă:</p>
+      <ul>{portal.map((p) => <li>{p}</li>)}</ul>
+
+      <h2 class="section-title">Actualizările produselor</h2>
+      <p>Afacerea dumneavoastră nu stă niciodată pe loc. Nici HrmForce nu o face. De aceea, ne actualizăm în permanenţă programele informatice de soluţii în afaceri. Acest fapt vă permite să fiţi la curent cu acestea, folosindu-vă programul informatic la nivel optim. Vă punem la dispoziţie actualizări regulate a produselor noastre, de mai multe ori pe an.</p>
+      <p><strong>Funcţii noi şi îmbunătăţite</strong><br />Cu fiecare actualizare, îmbunătăţim modul de utilizare a programului deţinut de dumneavoastră. Funcţiile actuale sunt deja îmbunătăţite şi, în majoritatea cazurilor, sunt adăugate deja altele noi.</p>
+      <p><strong>Etapa de lansare controlată</strong><br />Înainte de a pune la dispoziţie o actualizare pentru toţi clienţii, un grup selecţionat dintre aceştia lucrează pentru un interval considerabil de timp cu respectiva actualizare, sub supravegherea noastră. În această etapă de lansare controlată, monitorizăm dacă actualizarea se ridică la cerinţele pieţei.</p>
+
+      <h2 class="section-title">Dezvoltarea produselor</h2>
+      <p>Aici, la HrmForce, dezvoltăm programul pentru managementul resurselor umane pe baza feedback-ului primit de la clienţii noştri. Pe lângă acesta, ţinem cont şi de evoluţiile relevante ale pieţei. Pentru a vă menţine la curent sau pentru a da chiar dumneavoastră feedback, puteţi face următoarele:</p>
+      <p><strong>Daţi feedback !</strong><br />În procesul de creare a software-ului, suntem foarte atenţi la dorinţele şi experienţele clienţilor noştri. Astfel, le putem oferi o soluţie adaptată nevoilor acestora. De aceea, ne-am bucura să vă auzim sugestiile şi experienţele. În calitate de client, ne puteţi contacta prin opţiunea de feedback al clientului: transmiteţi feedback-ul dumneavoastră unui angajat HrmForce. Acesta va demara procesul pentru dumneavoastră, creând o cerere de feedback pentru o soluţie. Cererea dumneavoastră va fi înregistrată şi înaintată specialiştilor noştri. Aceştia vor analiza cererea şi rezultatul vi se va aduce la cunoştinţă. În acest fel, veţi şti exact ce se întâmplă cu sugestia dumneavoastră.</p>
+      <p><strong>Criteriile de implementare a feedback-ului</strong><br />Pentru a stabili ce sugestii vom folosi pentru software-ul viitor, am identificat următoarele criterii:</p>
+      <ul>{criterii.map((c) => <li>{c}</li>)}</ul>
+      <p>În acest fel, putem evalua modul în care sugestia dumneavoastră va fi utilă şi pentru restul clienţilor noştri.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ov { max-width: 900px; }
+  .ov h2.section-title { color: var(--navy); margin-top: 40px; }
+  .ov p { color: var(--text); font-size: 17px; margin-bottom: 16px; }
+  .ov ul { margin: 0 0 18px 22px; color: var(--text); font-size: 17px; }
+  .ov li { margin-bottom: 6px; }
+</style>
