@@ -1,5 +1,53 @@
 ---
-import SubPage from "../../components/SubPage.astro";
-import { pages } from "../../data/pages.js";
+import Base from "../../layouts/Base.astro";
+
+const cards = [
+  { h: "Personalbeschaffung", p: "Finden Sie den am besten geeigneten Kandidaten, indem Sie interne und externe Mitarbeiter auf der Grundlage des gewünschten Profils auswählen.", href: "/de/hrm-loesungen-2/matching/" },
+  { h: "Entwicklung", p: "Erstellung eines persönlichen Entwicklungsplans für den Kandidaten. Mit schrittweiser Anleitung zum Abschluss von Entwicklungs- und Ergebnisvereinbarungen.", href: "/de/hrm-loesungen-2/entwicklung/" },
+  { h: "Beschäftigungsfähigkeit", p: "Ermöglicht es den Kandidaten, auf der Grundlage ihrer Persönlichkeit, ihrer Motivation und ihres Verhaltens nach möglichen Berufen und aktuellen Stellenangeboten zu suchen.", href: "/de/hrm-loesungen-2/beschaftigungsfahigkeit/" },
+  { h: "Analytik", p: "Automatische Erstellung von Team-, Abteilungs- und Organisationsübersichten. Diese sind für jeden Fragebogen verfügbar.", href: "/de/hrm-loesungen-2/hr-analytics/" },
+];
 ---
-<SubPage page={pages.de["hrm-oplossingen"]} active="solutions" />
+<Base
+  title="HRM-Lösungen - hrmforce"
+  description="Hrmforce bietet neben den Online-Assessments noch viele weitere Funktionalitäten. Die Fragebögen werden in Arbeitsabläufe zur (Vor-)Auswahl, Entwicklung und Beurteilung von Bewerbern und Mitarbeitern eingebunden."
+  active="solutions"
+>
+  <div class="crumb">
+    <div class="wrap"><a href="/de/">Home</a> › <span>HRM-Lösungen</span></div>
+  </div>
+
+  <section class="ahero">
+    <div class="wrap" style="display:block">
+      <div class="eyebrow" style="color:var(--gold)">HRM-Lösungen</div>
+      <h1>HRM-Lösungen</h1>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap ov" style="display:block">
+      <p class="lead">Hrmforce bietet neben den Online-Assessments noch viele weitere Funktionalitäten. Die Fragebögen werden in Arbeitsabläufe zur (Vor-)Auswahl, Entwicklung und Beurteilung von Bewerbern und Mitarbeitern eingebunden.</p>
+
+      <div class="sol-cards">
+        {cards.map((c) => (
+          <div class="sol-card">
+            <h3>{c.h}</h3>
+            <p>{c.p}</p>
+            <a href={c.href}>Weitere Informationen →</a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ov { max-width: 980px; }
+  .ov .lead { color: var(--text); font-size: 18px; margin-bottom: 8px; }
+  .sol-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin: 32px 0 8px; }
+  .sol-card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; }
+  .sol-card h3 { color: var(--navy); font-size: 21px; margin-bottom: 10px; }
+  .sol-card p { color: var(--muted); font-size: 16px; margin-bottom: 14px; }
+  .sol-card a { color: var(--blue); font-weight: 700; font-size: 15px; }
+  @media (max-width: 880px) { .sol-cards { grid-template-columns: 1fr; } }
+</style>
