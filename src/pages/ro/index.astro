@@ -1,4 +1,51 @@
 ---
-import Home from "../../components/Home.astro";
+import Base from "../../layouts/Base.astro";
+
+const cards = [
+  { h: "Evaluări", p: "Ideal pentru recrutarea și selecția de noi talente…", href: "/ro/evaluare-online/", cta: "Vizualizați evaluările" },
+  { h: "Soluții HRM", p: "Recrutare, Dezvoltare, Capacitate de angajare, TeamView …", href: "/ro/hrm-oplossingen/", cta: "Vedeți soluțiile" },
+  { h: "Despre noi", p: "Citiți mai multe despre noi și despre cum lucrăm…", href: "/ro/over-ons/", cta: "Mai multe despre noi" },
+];
 ---
-<Home />
+<Base
+  title="Home - hrmforce"
+  description="Profitați la maximum de angajații dvs. cu software-ul nostru de gestionare a talentelor."
+  active=""
+>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow" style="color:var(--gold)">hrmforce</div>
+        <h1>Profitați la maximum de angajații dvs. cu software-ul nostru de gestionare a talentelor</h1>
+        <p class="sub">Testați-vă candidații cu ajutorul chestionarelor noastre</p>
+        <p class="sub">Dezvoltați-vă angajații cu instrumentele noastre de dezvoltare</p>
+        <a class="btn btn-primary" href="/ro/evaluare-online/">Mai multe informații</a>
+      </div>
+      <div class="hero-img">
+        <img src="https://hrmforce.com/wp-content/uploads/2022/08/Hrmforce-homepage-mobiel-ENG.webp" alt="hrmforce home ENG" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Complet și fiabil -->
+  <section>
+    <div class="wrap" style="display:block">
+      <h2 class="section-title center">Complet și fiabil</h2>
+      <p class="lead center">hrmforce este platforma de dezvoltare online cu cea mai rapidă creștere pentru managementul talentelor, cu cea mai completă gamă de evaluări din Țările de Jos. Întotdeauna unică, susținută științific și cu evaluări noi în fiecare lună. Coaching personal, formare și transparență la fiecare pas.</p>
+      <div class="cards">
+        {cards.map((c) => (
+          <div class="card">
+            <h3>{c.h}</h3>
+            <p>{c.p}</p>
+            <a href={c.href}>{c.cta} →</a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero-img img { max-width: 100%; height: auto; border-radius: 18px; display: block; margin: 0 auto; }
+</style>
