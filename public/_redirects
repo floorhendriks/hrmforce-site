@@ -1,124 +1,70 @@
-# 301-redirects voor hrmforce - gegenereerd uit de Yoast-sitemap + nieuwe structuur.
-# Formaat: <oud>  <nieuw>  301   |   werkt op Cloudflare Pages en Netlify.
+# 301-redirects voor hrmforce. Alleen EXACTE regels + wildcards op oude-slug-prefixes
+# die GEEN echte pagina op de nieuwe site hebben. GEEN brede /xx/* of /advies/* etc.
+# (splat-redirects overschrijven in Cloudflare Pages ook bestaande statische pagina's).
 
-# --- Assessments (NL): alleen echte hernoemingen; de overige assessments hebben nu een eigen pagina ---
-/assessments/big-fifty/                              /assessments/big-five/             301
-/assessments/cognitieve-capaciteitentest/            /assessments/cognitieve-test/      301
-/assessments/preselectie/disc-test/                  /assessments/disc-test/            301
-/assessments/ontwikkelmatrix/                        /assessments/ontwikkelassessment/  301
+# --- Assessments: hernoemingen ---
+/assessments/big-fifty/                    /assessments/big-five/             301
+/assessments/cognitieve-capaciteitentest/  /assessments/cognitieve-test/      301
+/assessments/preselectie/disc-test/        /assessments/disc-test/            301
+/assessments/ontwikkelmatrix/              /assessments/ontwikkelassessment/  301
+/hrm-oplossingen/recruitment/              /hrm-oplossingen/matching/         301
+/voorbereiden-assessment/                  /voorbereiding/                    301
 
-# --- HRM-oplossingen: oude slugs uit letterlijke teksten ---
-/hrm-oplossingen/recruitment/                        /hrm-oplossingen/matching/         301
-/voorbereiden-assessment/                            /voorbereiding/                    301
+# --- Gelokaliseerde Big Five ---
+/en/assessments/big-fifty-personality-test/                 /en/assessments/big-five/  301
+/de/assessments/entwicklung/persoenlichkeitstest-big-five/  /de/assessments/big-five/  301
+/es/assessments/preseleccion/perfil-big-fifty/              /es/assessments/big-five/  301
 
-# --- Assessments: gelokaliseerde Big Five ---
-/en/assessments/big-fifty-personality-test/                    /en/assessments/big-five/   301
-/de/assessments/entwicklung/persoenlichkeitstest-big-five/     /de/assessments/big-five/   301
-/es/assessments/preseleccion/perfil-big-fifty/                 /es/assessments/big-five/   301
+# --- Gelokaliseerde oude paginaslugs -> uniforme slugs (exact) ---
+/de/hrm-loesungen/     /de/hrm-oplossingen/   301
+/de/hrm-loesungen-2/   /de/hrm-oplossingen/   301
+/de/hrmforce/          /de/over-ons/          301
+/de/kontakt/           /de/contact/           301
+/de/wissenszentrum/    /de/kenniscentrum/     301
+/de/impressum/         /de/over-ons/          301
+/fr/hrm-solutions/     /fr/hrm-oplossingen/   301
+/fr/hrmforce/          /fr/over-ons/          301
+/es/soluciones-de-grh/ /es/hrm-oplossingen/   301
+/es/asesoria-de-hrmforce/ /es/advies/         301
+/es/lo-que-hacemos/    /es/over-ons/          301
+/es/contacto/          /es/contact/           301
+/es/ayuda/             /es/support/           301
+/es/evaluaciones-vision-general/ /es/online-assessments/ 301
+/ro/solutii/           /ro/hrm-oplossingen/   301
+/ro/ce-facem-noi/      /ro/over-ons/          301
+/ro/asistenta/         /ro/support/           301
 
-# --- Gelokaliseerde paginaslugs -> uniforme slugs ---
-/de/hrm-loesungen/           /de/hrm-oplossingen/       301
-/de/hrm-loesungen-2/         /de/hrm-oplossingen/       301
-/de/hrmforce/                /de/over-ons/              301
-/de/kontakt/                 /de/contact/               301
-/de/wissenszentrum/          /de/kenniscentrum/         301
-/fr/hrm-solutions/           /fr/hrm-oplossingen/       301
-/fr/hrmforce/                /fr/over-ons/              301
-/es/soluciones-de-grh/       /es/hrm-oplossingen/       301
-/es/asesoria-de-hrmforce/    /es/advies/                301
-/es/lo-que-hacemos/          /es/over-ons/              301
-/es/contacto/                /es/contact/               301
-/es/ayuda/                   /es/support/               301
-/ro/solutii/                 /ro/hrm-oplossingen/       301
-/ro/ce-facem-noi/            /ro/over-ons/              301
-/ro/asistenta/               /ro/support/               301
+# --- Webshop: oude WooCommerce-URL's -> Shopify ---
+/shop/                    https://shop.hrmforce.com  301
+/product/*                https://shop.hrmforce.com  301
+/winkel/*                 https://shop.hrmforce.com  301
+/winkelwagen/             https://shop.hrmforce.com  301
+/mijn-account/            https://shop.hrmforce.com  301
+/afrekenen/               https://shop.hrmforce.com  301
+/de/einkaufswagen/        https://shop.hrmforce.com  301
+/es/cesta-de-la-compra/   https://shop.hrmforce.com  301
+/boutique/                https://shop.hrmforce.com  301
 
-# --- Webshop: oude WooCommerce-URL's -> nieuwe shop (alle producten) ---
-/winkel/*                 /shop/                 301
-/en/winkel/*              /en/shop/              301
-/de/einkaufswagen/        /shop/                 301
-/fr/boutique/*            /fr/shop/              301
-/es/cesta-de-la-compra/   /es/shop/              301
-/winkelwagen/             /shop/                 301
-/mijn-account/            /shop/                 301
-
-# Let op: per-product redirects naar Shopify-handles voeg je toe zodra de shop in Shopify staat.
-
-# --- Letterlijke localized oude slugs -> juiste nieuwe pagina (vóór de brede taal-fallback) ---
-/de/hrm-loesungen-2/*     /de/hrm-oplossingen/   301
-/en/solutions/*           /en/hrm-oplossingen/   301
-/en/consulting/*          /en/advies/            301
-# --- NL kenniscentrum genest / advies genest -> overzicht (deep WP cross-links) ---
-/kenniscentrum/beoordeling/*         /kenniscentrum/   301
-/kenniscentrum/ontwikkeling/*        /kenniscentrum/   301
-/kenniscentrum/competenties/*        /kenniscentrum/   301
-/kenniscentrum/capaciteiten/*        /kenniscentrum/   301
-/kenniscentrum/persoonlijkheid/*     /kenniscentrum/   301
-/kenniscentrum/cultuur/*             /kenniscentrum/   301
-/kenniscentrum/beleid/*              /kenniscentrum/   301
-/kenniscentrum/recruitment/*         /kenniscentrum/   301
-/kenniscentrum/leiding-geven/*       /kenniscentrum/   301
-/kenniscentrum/onderwijs/*           /kenniscentrum/   301
-/kenniscentrum/vragen-vlog-vrijdag/* /kenniscentrum/   301
-/kenniscentrum/vragen-vlog-vrijdag/  /kenniscentrum/   301
-/kenniscentrum/wekelijkse-update/    /kenniscentrum/   301
-/kenniscentrum/heerlijk-helder-hrmforce/  /kenniscentrum/   301
-/advies/trainingen/*      /advies/               301
-/hrm-oplossingen/recruitment/   /hrm-oplossingen/matching/   301
-
-# --- Brede taal-fallback: ontbrekende gelokaliseerde pagina's -> NL-equivalent (statische pagina's winnen hiervan) ---
-/en/*   /:splat   301
-/de/*   /:splat   301
-/fr/*   /:splat   301
-/es/*   /:splat   301
-/ro/*   /:splat   301
-
-# --- Overige oude NL/algemene slugs uit gemigreerde content ---
-/shop/                    https://shop.hrmforce.com   301
-/product/*                https://shop.hrmforce.com   301
+# --- Oude NL/algemene slugs (exact of veilige prefix zonder echte pagina) ---
 /home/                    /                      301
+/home-new/                /                      301
 /home-new-ro/             /                      301
 /about-us-new-translations/  /over-ons/          301
 /hrmforce/                /over-ons/             301
-/contact/register-now/    /contact/              301
 /assessment/*             /assessment-overzicht/ 301
 /assessment-locaties/     /contact/              301
+/assessment-ubersicht/    /de/assessment-overzicht/ 301
 /competentieboek/         /                      301
 /competentiespel/         /                      301
-/advies/*                 /advies/               301
-/kenniscentrum/*          /kenniscentrum/        301
+/big-five-persoonlijkheidsmodel/   /kenniscentrum/   301
+/training-360-graden-feedback/     /advies/          301
+/expertsessie-jho/                 /                 301
+/contact/register-now/    /contact/              301
+/contact/inregistreaza-te-acum/  /contact/         301
+/general-terms-privacy-statement/  /support/algemene-voorwaarden/  301
+/support/general-terms-privacy-statement/  /support/algemene-voorwaarden/  301
 
-# --- Oude Spaanse root-slugs uit gemigreerde ES-content ---
-/ayuda/*                        /es/support/            301
-/precios/                       /es/tarieven/           301
-/vacantes/*                     /es/vacatures/          301
-/socios/                        /es/partners/           301
-/evaluaciones-vision-general/   /es/online-assessments/ 301
-/gestion-por-competencias/      /es/advies/             301
-/centro-de-conocimiento/*       /es/kenniscentrum/      301
-/beneficios-clave/              /es/hrmforce/voordelen/ 301
-
-# --- Oude ES-slugs (root) uit gemigreerde content ---
-/asesoria-de-hrmforce/*   /es/advies/             301
-/lo-que-hacemos/          /es/over-ons/           301
-/gestion-del-talento/     /es/advies/             301
-/sectores/                /es/sectoren/           301
-/evaluacion-online/       /es/online-assessments/ 301
-/soluciones-de-grh/*      /es/hrm-oplossingen/    301
-/contacto/                /es/contact/            301
-/socios/*                 /es/partners/           301
-# --- Oude RO-slugs (root) uit gemigreerde content ---
-/evaluare-online/         /ro/online-assessments/ 301
-/colaboratorii-nostri/    /ro/partners/           301
-/solutii/                 /ro/hrm-oplossingen/    301
-/ce-facem-noi/            /ro/over-ons/           301
-/beneficii/               /ro/hrmforce/voordelen/ 301
-/asistenta/*              /ro/support/            301
-/contact/inregistreaza-te-acum/  /contact/        301
-# --- Sectoren genest -> overzicht (static sectorpagina's winnen) ---
-/sectoren/*               /sectoren/              301
-
-# --- Oude DE-slugs (root) uit gemigreerde content ---
+# --- Oude DE-slugs (root, geen echte pagina) ---
 /kontakt/                 /de/contact/            301
 /preise/                  /de/tarieven/           301
 /partner/                 /de/partners/           301
@@ -128,9 +74,9 @@
 /wissenszentrum/*         /de/kenniscentrum/      301
 /branchen/                /de/sectoren/           301
 /vorbereitung-auf-ein-assessment/  /de/voorbereiding/  301
-/assessment-ubersicht/    /de/assessment-overzicht/  301
 /datenshutzpagina/        /de/over-ons/           301
-# --- Oude EN-slugs (root) uit gemigreerde content ---
+
+# --- Oude EN-slugs (root, geen echte pagina) ---
 /about-us/                /en/over-ons/           301
 /solutions/*              /en/hrm-oplossingen/    301
 /tests/                   /en/online-assessments/ 301
@@ -141,19 +87,36 @@
 /vavcancies/*             /en/vacatures/          301
 /knowledge-center/*       /en/kenniscentrum/      301
 /preparing-for-assessment/  /en/voorbereiding/    301
-/home-new/                /en/                    301
-/partners/*               /partners/              301
-/general-terms-privacy-statement/  /support/algemene-voorwaarden/  301
-/support/general-terms-privacy-statement/  /support/algemene-voorwaarden/  301
-# --- Oude FR-slugs (root) uit gemigreerde content ---
-/boutique/                https://shop.hrmforce.com  301
+/independent-hr-business-partner-value-added-reseller-distributor-in-spain/  /en/vacatures/  301
+
+# --- Oude FR-slugs (root, geen echte pagina) ---
+/hrm-solutions/           /fr/hrm-oplossingen/    301
 /evaluation-en-ligne/     /fr/online-assessments/ 301
 /demander-une-demo/       /fr/contact/            301
 /centre-de-connaissances/*  /fr/kenniscentrum/    301
-/hrm-solutions/           /fr/hrm-oplossingen/    301
 
-# --- Laatste losse oude pagina's ---
-/big-five-persoonlijkheidsmodel/   /kenniscentrum/   301
-/training-360-graden-feedback/     /advies/          301
-/expertsessie-jho/                 /                 301
-/independent-hr-business-partner-value-added-reseller-distributor-in-spain/   /en/vacatures/   301
+# --- Oude ES-slugs (root, geen echte pagina) ---
+/asesoria-de-hrmforce/*   /es/advies/             301
+/lo-que-hacemos/          /es/over-ons/           301
+/gestion-del-talento/     /es/advies/             301
+/gestion-por-competencias/  /es/advies/           301
+/sectores/                /es/sectoren/           301
+/evaluacion-online/       /es/online-assessments/ 301
+/soluciones-de-grh/*      /es/hrm-oplossingen/    301
+/contacto/                /es/contact/            301
+/socios/*                 /es/partners/           301
+/ayuda/*                  /es/support/            301
+/centro-de-conocimiento/* /es/kenniscentrum/      301
+/beneficios-clave/        /es/hrmforce/voordelen/ 301
+/precios/                 /es/tarieven/           301
+/vacantes/*               /es/vacatures/          301
+
+# --- Oude RO-slugs (root, geen echte pagina) ---
+/evaluare-online/         /ro/online-assessments/ 301
+/colaboratorii-nostri/    /ro/partners/           301
+/solutii/                 /ro/hrm-oplossingen/    301
+/ce-facem-noi/            /ro/over-ons/           301
+/beneficii/               /ro/hrmforce/voordelen/ 301
+/asistenta/*              /ro/support/            301
+
+# Let op: per-product redirects naar Shopify-handles later toevoegen.
