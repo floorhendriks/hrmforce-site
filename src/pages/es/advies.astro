@@ -1,5 +1,57 @@
 ---
-import SubPage from "../../components/SubPage.astro";
-import { pages } from "../../data/pages.js";
+import Base from "../../layouts/Base.astro";
+
+const items = [
+  { h: "Evaluaciones", p: "En toda organización, las personas toman decisiones sobre personas: contratar o rechazar a un candidato, permitir o no que un empleado actual crezca, o intervenir en una carrera que se ha estancado. Estas decisiones afectan tanto al individuo como a la organización. Al final, las decisiones sobre el personal determinan el éxito de tu organización.", href: "/es/advies/" },
+  { h: "Gestión del Talento", p: "Si aplicamos la regla 80/20 al reclutamiento, descubrimos que el 20 % de los candidatos contratados genera el 80 % de los resultados. Más que nunca, las empresas se centran en captar estos talentos. Sin embargo, debido a las condiciones económicas actuales, también es necesario identificar y aprovechar el talento dentro de la organización.", href: "/es/advies/" },
+  { h: "Gestión de Competencias", p: "Al implementar la gestión por competencias, la visión y la estrategia de tu organización se traducen en objetivos claros. Una gestión de competencias bien implementada se amortiza con creces: aporta claridad y estructura a todas las funciones de la organización.", href: "/es/advies/" },
+  { h: "Consultoría", p: "Tu organización cambia: crece, se renueva o se adapta. No evolucionar significa quedarse quieto, y en una época en la que la innovación tecnológica avanza tan rápido, incluso retroceder. Si eliges una estrategia ambiciosa, como siempre, la mayor dificultad será su ejecución.", href: null },
+  { h: "Formación", p: "Juntos formulamos el problema adecuado y el enfoque más apropiado. Podemos emplear para ello una amplia gama de intervenciones. Las metodologías que aplicamos son innovadoras y se basan en investigaciones científicas, pero, sobre todo, son sorprendentes e inspiradoras. Para un rendimiento óptimo del aprendizaje, adaptamos nuestras intervenciones a tu situación laboral.", href: "/es/advies/" },
+  { h: "Carrera profesional", p: "Un itinerario profesional de hrmforce está orientado al futuro y a la motivación: “¿Qué quiero?”. El participante desea avanzar en su carrera, pero le cuesta definir una dirección, no sabe exactamente qué quiere o no logra traducir sus intereses en posibles funciones. Además, en segundo plano suelen aparecer las preguntas “¿Quién soy?” y “¿Qué puedo hacer?”.", href: null },
+  { h: "Coaching", p: "Puedes utilizarlo para que los candidatos exploren posibles profesiones y vacantes actuales en función de su personalidad, motivación y comportamiento.", href: null },
+  { h: "Acompañamiento en selección", p: "Incorporar a una nueva persona en la organización para funciones de gran impacto no es una tarea cotidiana. Como asesores, ofrecemos con nuestra experiencia en estudios de comportamiento la posibilidad de evaluar objetivamente la idoneidad durante todas las fases del proceso de reclutamiento y selección.", href: null },
+];
 ---
-<SubPage page={pages.es["advies"]} active="advice" />
+<Base
+  title="Asesoría de Hrmforce - hrmforce"
+  description="Además de nuestras evaluaciones en línea y soluciones de RR. HH., puedes contar con nosotros para proyectos de asesoría a medida y diversas formaciones."
+  active="advice"
+>
+  <div class="crumb">
+    <div class="wrap"><a href="/es/">Home</a> › <span>Asesoría de Hrmforce</span></div>
+  </div>
+
+  <section class="ahero">
+    <div class="wrap" style="display:block">
+      <div class="eyebrow" style="color:var(--gold)">Asesoría de Hrmforce</div>
+      <h1>Asesoría de Hrmforce</h1>
+      <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">Además de nuestras <strong>evaluaciones en línea</strong> y soluciones de RR. HH., puedes contar con nosotros para <strong>proyectos de asesoría a medida</strong> y diversas formaciones. Te ayudamos a implementar y optimizar los procesos de RR. HH. dentro de tu organización.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p style="color:var(--text);font-size:17px;max-width:820px;margin-bottom:14px">Además de nuestras <a href="/es/hrm-oplossingen/">evaluaciones en línea</a> y <a href="/es/hrm-oplossingen/">soluciones de RR. HH.</a>, puedes contar con nosotros para <strong>proyectos de asesoría a medida</strong> y diversas formaciones. Te ayudamos a implementar y optimizar los procesos de RR. HH. dentro de tu organización.</p>
+
+      <div class="adv">
+        {items.map((it) => (
+          <div class="adv-block">
+            <h2>{it.h}</h2>
+            <p>{it.p}</p>
+            {it.href && <a class="btn btn-primary" href={it.href}>Más información</a>}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .adv { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 28px; }
+  .adv-block { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+  .adv-block h2 { color: var(--navy); font-size: 22px; font-weight: 800; margin-bottom: 12px; }
+  .adv-block p { color: var(--muted); font-size: 16px; margin-bottom: 20px; flex: 1; }
+  .adv-block .btn { align-self: flex-start; }
+  section p a { color: var(--blue); font-weight: 600; }
+  @media (max-width: 880px) { .adv { grid-template-columns: 1fr; } }
+</style>
