@@ -1,5 +1,67 @@
 ---
-import SubPage from "../../components/SubPage.astro";
-import { pages } from "../../data/pages.js";
+import Base from "../../layouts/Base.astro";
 ---
-<SubPage page={pages.es["support"]} active="" />
+<Base
+  title="Ayuda - hrmforce"
+  description="¿Tiene alguna pregunta sobre el uso de hrmforce? Nuestro equipo de soporte estará encantado de ayudarle."
+  active=""
+>
+  <div class="crumb">
+    <div class="wrap"><a href="/es/">Home</a> › <span>Ayuda</span></div>
+  </div>
+
+  <section class="ahero">
+    <div class="wrap" style="display:block">
+      <div class="eyebrow" style="color:var(--gold)">Ayuda</div>
+      <h1>Ayuda</h1>
+      <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">¿Tiene alguna pregunta sobre el uso de hrmforce? Nuestro equipo de soporte estará encantado de ayudarle. Puede contactarnos al +31 88 88 321 88, de lunes a viernes, en horario de oficina, de 8:30 a 18:00.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap ov">
+      <h2 class="section-title">Atención al Cliente</h2>
+      <p>Su solución de HrmForce es una parte importante de su negocio, y por ello es por lo que puede esperar una atención y soporte de calidad parar su inversión. En caso de que tenga alguna pregunta o problema, estamos dispuestos a ayudarle inmediatamente.</p>
+      <p>Cuando adquiere HrmForce accede automáticamente a un acuerdo de mantenimiento HrmForce. Este contrato de mantenimiento se adapta para ajustar perfectamente nuestra solución con las necesidades de su organización.</p>
+      <p>El acuerdo cubre:</p>
+      <ul>
+        <li>Soporte telefónico.</li>
+        <li>Su derecho a mantener el software cuando utilice nuevo hardware.</li>
+        <li>Beneficios en la migración a nuevas líneas de producto.</li>
+        <li>Diferentes opciones de Atención al Cliente.</li>
+        <li>Explicación de sus facturas.</li>
+        <li>Solicitud de copia de facturas.</li>
+      </ul>
+
+      <h2 class="section-title">Ayuda online</h2>
+      <p>Experimente la libertad de trabajar con nuestra ayuda online. Dispondrá de acceso a soporte online e información de producto durante las 24 horas del día. También fuera de las horas de oficina de HrmForce, podrá encontrar una solución a sus preguntas o problemas online.</p>
+      <p>Portal de Ayuda<br />Los clientes que hayan llegado a un acuerdo podrán acceder al Portal de Ayuda de HrmForce en cualquier momento. Este portal web le proporcionará:</p>
+      <ul>
+        <li>Información de Ayuda.</li>
+        <li>Textos de ayuda.</li>
+        <li>Actualizaciones de producto</li>
+        <li>Noticias sobre nuestros productos.</li>
+        <li>Guías de Usuario</li>
+      </ul>
+
+      <h2 class="section-title">Actualizaciones de producto</h2>
+      <p>Su negocio nunca se detiene. Tampoco lo hace HrmForce. Este es el motivo por el que estamos continuamente actualizando nuestras soluciones. Esto le permitirá seguir utilizando su software de manera óptima. Le proporcionamos actualizaciones regularmente para nuestros productos varias veces al año.</p>
+      <p>Nuevas y mejoradas funcionalidades<br />Con cada actualización mejoramos el uso de nuestro software. Las actuales funcionalidades son mejoradas y, en la mayor parte de las ocasiones, se añade alguna más.</p>
+      <p>Fase de Lanzamiento Controlado<br />Antes de que una actualización se ponga a disposición de nuestros clientes, un grupo elegido de los mismos trabaja durante un tiempo considerable con esta actualización bajo nuestra supervisión. Durante esta Fase de Lanzamiento Controlado monitorizamos si la actualización alcanza los deseos de nuestros clientes y si cumple las necesidades de los mismos.</p>
+
+      <h2 class="section-title">Desarrollo de Producto</h2>
+      <p>En HrmForce desarrollamos nuestro software HRM basándonos en el feedback de nuestros clientes. Además de ello, también tenemos en cuenta los desarrollos más relevantes que aparecen en el mercado.</p>
+      <p>Cuando desarrollamos nuestro software tenemos muy en consideración los deseos y experiencias de nuestros clientes. Haciendo esto, podemos alinear nuestras soluciones s sus necesidades. Este es el motivo por el que nos gusta oír sus sugerencias y experiencias.</p>
+      <p>De cara a decidir qué sugerencias se emplearán en futuras soluciones de software, hemos determinado los siguientes criterios: ¿Hemos recibido el mismo feedback de otros clientes? ¿Se beneficiarán otros clientes de su sugerencia? ¿Cuáles son las actuales tendencias del mercado y en el campo de la tecnología? ¿Es posible desarrollar su feedback de acuerdo con la legislación?</p>
+      <p>De esta manera podemos tomar una decisión acerca de cuáles de sus sugerencias supondrán un beneficio para todos nuestros clientes.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ov { max-width: 900px; }
+  .ov h2.section-title { color: var(--navy); margin-top: 40px; }
+  .ov p { color: var(--text); font-size: 17px; margin-bottom: 16px; }
+  .ov ul { color: var(--text); font-size: 17px; margin: 0 0 16px 22px; }
+  .ov li { margin-bottom: 6px; }
+</style>
