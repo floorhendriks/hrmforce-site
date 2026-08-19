@@ -1,5 +1,316 @@
 ---
-import SubPage from "../../components/SubPage.astro";
-import { pages } from "../../data/pages.js";
+import Base from "../../layouts/Base.astro";
+
+const offices = [
+  {
+    naam: "hrmforce head office",
+    regels: ["Solitudolaan 396", "1096 DS Amsterdam", "The Netherlands"],
+    tel: "+31 (0)88 88 321 88",
+    telHref: "tel:+31888832188",
+    mail: "service@hrmforce.com",
+    extra: ["CoC Amsterdam: 34369982", "Bank: NL31RABO0155758411", "VAT: NL821671480B01"],
+  },
+  {
+    naam: "hrmforce Germany",
+    regels: ["Theodorstrasse 105", "40472 Düsseldorf", "Germany"],
+    tel: "+31 (0)88 88 321 88",
+    telHref: "tel:+31888832188",
+    mail: "service@hrmforce.com",
+  },
+  {
+    naam: "hrmforce Belgium",
+    regels: ["Bridge Building", "Keizer Karellaan 584", "1082 Sint-Agatha-Berchem", "Belgium"],
+    tel: "+31 (0)88 88 321 88",
+    telHref: "tel:+31888832188",
+    mail: "service@hrmforce.com",
+  },
+  {
+    naam: "hrmforce France",
+    regels: ["5 Place de la Pyramide Tour Ariane", "92800, Paris, Hauts-de-Seine", "France"],
+    tel: "+31 (0)88 88 321 88",
+    telHref: "tel:+31888832188",
+    mail: "service@hrmforce.com",
+  },
+  {
+    naam: "hrmforce India",
+    regels: ["Plot #27, 1-4-190/27/1/A, Phase-I,", "Bhaskara Rao Nagar Sainikpuri P.O.", "Secunderabad – 500 094", "Telangana, India"],
+    tel: "+91 89787 86121",
+    telHref: "tel:+918978786121",
+    mail: "service@hrmforce.com",
+  },
+  {
+    naam: "hrmforce Romania",
+    regels: ["Ploiesti Street, No 9", "400157 Cluj-Napoca", "Romania"],
+    tel: "+31 (0)88 88 321 88",
+    telHref: "tel:+31888832188",
+    mail: "office@hrmforce.com",
+    extra: ["CoC: J12/1828/2011", "Bank: RO11BRMA099910004661926", "VAT: RO 28852231"],
+  },
+  {
+    naam: "hrmforce Spain",
+    regels: ["Carrer de les Barques 2 – 2nd floor", "46002 València", "Valencia, Spain"],
+    tel: "+31 (0)88 88 321 88",
+    telHref: "tel:+31888832188",
+    mail: "atencioncliente@hrmforce.com",
+  },
+];
 ---
-<SubPage page={pages.de["contact"]} active="contact" />
+<Base
+  title="Kontakt - hrmforce"
+  description="Sind Sie interessiert oder haben Sie eine Frage? Wir helfen Ihnen gerne und denken mit Ihnen mit. Rufen Sie +31 (0)88 88 321 88 an oder mailen Sie service@hrmforce.com."
+  active="contact"
+>
+  <div class="crumb">
+    <div class="wrap"><a href="/de/">Home</a> › <span>Kontakt</span></div>
+  </div>
+
+  <section class="ahero">
+    <div class="wrap" style="display:block">
+      <div class="eyebrow" style="color:var(--gold)">Kontakt</div>
+      <h1>Sind Sie interessiert oder haben Sie eine Frage?</h1>
+      <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">
+        Wir helfen Ihnen gerne und denken mit Ihnen mit, um gemeinsam eine passende Lösung zu finden.
+        Zögern Sie also nicht, sich mit Ihrer Frage oder Idee sofort an unsere Berater zu wenden.
+        Füllen Sie das Kontaktformular aus oder rufen Sie uns an und sprechen Sie gleich mit unseren Beratern.
+      </p>
+    </div>
+  </section>
+
+  <section class="formsec">
+    <div class="wrap contact-grid">
+      <div class="contact-info">
+        <div class="eyebrow">hrmforce head office</div>
+        <h2 class="section-title" style="font-size:26px">Amsterdam</h2>
+        <p class="addr">
+          Solitudolaan 396<br />
+          1096 DS Amsterdam<br />
+          The Netherlands
+        </p>
+
+        <ul class="contact-list">
+          <li><span class="lbl">Telefon</span> <a href="tel:+31888832188">+31 (0)88 88 321 88</a></li>
+          <li><span class="lbl">E-Mail</span> <a href="mailto:service@hrmforce.com">service@hrmforce.com</a></li>
+        </ul>
+
+        <p class="hours">
+          <strong>Erreichbarkeit</strong><br />
+          Unsere Berater sind von Montag bis Freitag von 08:00 bis 18:00 Uhr erreichbar.
+        </p>
+
+        <ul class="legal">
+          <li><span class="lbl">CoC Amsterdam</span> 34369982</li>
+          <li><span class="lbl">VAT</span> NL821671480B01</li>
+          <li><span class="lbl">Bank</span> NL31 RABO 0155 7584 11</li>
+        </ul>
+
+        <div class="map">
+          <iframe
+            title="Standort hrmforce Amsterdam"
+            src="https://maps.google.com/maps?q=Solitudolaan%20396%2C%201096%20DS%20Amsterdam&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </div>
+
+      <div>
+        <div class="eyebrow">Kontakt-Formular</div>
+        <h2 class="section-title" style="font-size:26px">Senden Sie uns eine Nachricht</h2>
+        <form
+          id="contactForm"
+          class="formcard"
+          action="mailto:service@hrmforce.com"
+          method="POST"
+          enctype="text/plain"
+          novalidate
+        >
+          <div class="fg">
+            <label for="voornaam">Vorname *</label>
+            <input type="text" id="voornaam" name="voornaam" required />
+          </div>
+          <div class="fg">
+            <label for="bedrijf">Firmenname *</label>
+            <input type="text" id="bedrijf" name="bedrijf" required />
+          </div>
+          <div class="frow">
+            <div class="fg">
+              <label for="email">E-Mail-Adresse *</label>
+              <input type="email" id="email" name="email" required />
+            </div>
+            <div class="fg">
+              <label for="telefoon">Telefonnummer *</label>
+              <input type="tel" id="telefoon" name="telefoon" required />
+            </div>
+          </div>
+          <div class="fg">
+            <label for="bericht">Womit können wir Ihnen helfen? *</label>
+            <textarea id="bericht" name="bericht" rows="5" required></textarea>
+          </div>
+          <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
+          <button type="submit" class="btn btn-primary">Senden</button>
+          <p class="privacy-note">
+            Durch das Absenden dieses Formulars stimmen Sie unserer
+            <a href="/de/datenshutzpagina/">Datenschutzerklärung</a> zu.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">Unsere Standorte</div>
+      <h2 class="section-title">hrmforce weltweit</h2>
+      <p class="lead">Neben unserem Hauptsitz in Amsterdam sind wir auch international vertreten.</p>
+      <div class="office-grid">
+        {offices.map((o) => (
+          <div class="office-card">
+            <h3>{o.naam}</h3>
+            <p class="addr">{o.regels.map((r, i) => (<>{r}{i < o.regels.length - 1 && <br />}</>))}</p>
+            <p class="office-contact">
+              <a href={o.telHref}>{o.tel}</a><br />
+              <a href={`mailto:${o.mail}`}>{o.mail}</a>
+            </p>
+            {o.extra && <p class="office-extra">{o.extra.map((e, i) => (<>{e}{i < o.extra.length - 1 && <br />}</>))}</p>}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    .contact-info .addr {
+      color: var(--muted);
+      font-size: 16px;
+      margin-bottom: 18px;
+    }
+    .contact-list,
+    .legal {
+      list-style: none;
+      margin: 0 0 18px;
+    }
+    .contact-list li,
+    .legal li {
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--line);
+      color: var(--text);
+      font-size: 15px;
+    }
+    .contact-list a { color: var(--blue); font-weight: 600; }
+    .contact-list a:hover { text-decoration: underline; }
+    .lbl {
+      display: inline-block;
+      min-width: 130px;
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+    .hours {
+      background: var(--bg);
+      border-left: 3px solid var(--gold);
+      padding: 14px 16px;
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 18px;
+    }
+    .hours strong { color: var(--navy); }
+    .map {
+      margin-top: 8px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+    .map iframe {
+      width: 100%;
+      height: 260px;
+      border: 0;
+      display: block;
+    }
+    .form-msg {
+      display: none;
+      margin-bottom: 16px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .form-msg.error {
+      display: block;
+      background: #fff3f0;
+      border: 1px solid var(--accent);
+      color: #8a4a25;
+    }
+    .form-msg.success {
+      display: block;
+      background: #eef7ee;
+      border: 1px solid #57a05a;
+      color: #2f6b32;
+    }
+    .privacy-note {
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .privacy-note a { color: var(--blue); }
+    .office-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 34px;
+    }
+    .office-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 26px;
+      box-shadow: var(--shadow);
+    }
+    .office-card h3 { font-size: 18px; margin-bottom: 10px; }
+    .office-card .addr { color: var(--muted); font-size: 15px; margin-bottom: 12px; }
+    .office-contact a { color: var(--blue); font-weight: 600; font-size: 15px; }
+    .office-contact a:hover { text-decoration: underline; }
+    .office-extra { color: var(--muted); font-size: 13px; margin-top: 12px; }
+    @media (max-width: 880px) {
+      .contact-grid { grid-template-columns: 1fr; }
+      .office-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+
+  <script is:inline>
+    (function () {
+      var form = document.getElementById("contactForm");
+      if (!form) return;
+      var msg = document.getElementById("formMsg");
+      form.addEventListener("submit", function (e) {
+        var required = form.querySelectorAll("[required]");
+        var missing = [];
+        required.forEach(function (el) {
+          if (!el.value.trim()) missing.push(el);
+        });
+        var email = form.querySelector("#email");
+        var emailOk = email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+        if (missing.length > 0 || !emailOk) {
+          e.preventDefault();
+          msg.className = "form-msg error";
+          msg.textContent = missing.length > 0
+            ? "Bitte füllen Sie alle Pflichtfelder aus, bevor Sie absenden."
+            : "Bitte geben Sie eine gültige E-Mail-Adresse ein.";
+          (missing[0] || email).focus();
+          return;
+        }
+        msg.className = "form-msg success";
+        msg.textContent = "Vielen Dank! Ihre Nachricht wird in Ihrem E-Mail-Programm geöffnet. Wir melden uns so schnell wie möglich bei Ihnen.";
+      });
+    })();
+  </script>
+</Base>
