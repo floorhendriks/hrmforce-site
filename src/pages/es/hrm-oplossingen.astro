@@ -1,5 +1,49 @@
 ---
-import SubPage from "../../components/SubPage.astro";
-import { pages } from "../../data/pages.js";
+import Base from "../../layouts/Base.astro";
+
+const blocks = [
+  { h: "Emparejamiento y selección", p: "Encuentre al candidato más adecuado seleccionando empleados internos y externos según el perfil deseado. Para ello, utilizamos evaluaciones de selección.", href: "/es/hrm-oplossingen/" },
+  { h: "Ciclo de entrevistas de RR.HH.", p: "Creación de un plan de desarrollo personal para el candidato. Con guía paso a paso en el proceso de establecer acuerdos de desarrollo y resultados.", href: "/es/hrm-oplossingen/" },
+  { h: "Empleabilidad", p: "Permitir a los candidatos buscar posibles ocupaciones y vacantes actualmente disponibles en función de su personalidad, motivación y comportamiento.", href: "/es/hrm-oplossingen/" },
+  { h: "Analítica", p: "Generar resúmenes automatizados de equipos, departamentos y organizaciones. Están disponibles para cada cuestionario.", href: "/es/hrm-oplossingen/" },
+];
 ---
-<SubPage page={pages.es["hrm-oplossingen"]} active="solutions" />
+<Base
+  title="Soluciones de GRH - hrmforce"
+  description="Hrmforce ofrece muchas más funcionalidades además de las evaluaciones en línea. Los cuestionarios se incorporan a los flujos de trabajo para la (pre)selección, el desarrollo y la evaluación de candidatos y empleados."
+  active="solutions"
+>
+  <div class="crumb">
+    <div class="wrap"><a href="/es/">Home</a> › <span>Soluciones de GRH</span></div>
+  </div>
+
+  <section class="ahero">
+    <div class="wrap" style="display:block">
+      <div class="eyebrow" style="color:var(--gold)">Soluciones de GRH</div>
+      <h1>Soluciones de gestión de recursos humanos</h1>
+      <p style="color:#c4d2e6;font-size:19px;max-width:780px;margin-top:8px">Hrmforce ofrece muchas más funcionalidades además de las evaluaciones en línea. Los cuestionarios se incorporan a los flujos de trabajo para la (pre)selección, el desarrollo y la evaluación de candidatos y empleados.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sol">
+        {blocks.map((b) => (
+          <div class="sol-block">
+            <h2>{b.h}</h2>
+            <p>{b.p}</p>
+            <a class="btn btn-primary" href={b.href}>Más información</a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .sol { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .sol-block { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow); }
+  .sol-block h2 { color: var(--navy); font-size: 24px; font-weight: 800; margin-bottom: 12px; }
+  .sol-block p { color: var(--muted); font-size: 16px; margin-bottom: 20px; }
+  @media (max-width: 880px) { .sol { grid-template-columns: 1fr; } }
+</style>
