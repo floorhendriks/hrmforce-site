@@ -1,0 +1,176 @@
+---
+import Base from "../layouts/Base.astro";
+
+const plans = [
+  {
+    name: "Pay-as-you-go",
+    tagline: "Betaal per kandidaat per rapportage. Geen vaste kosten, maar koop in naar behoefte.",
+    price: "€19,- tot €99,-",
+    priceNote: "per test",
+    featured: false,
+    groups: [
+      { title: "Vragenlijsten", items: ["37 vragenlijsten", "Onbeperkt competentieprofielen", "50 competenties", "Big50 Personality", "360 Feedback"] },
+      { title: "Hrmforce portal", items: ["Standaard Look & Feel", "Volledig online", "Kandidatenbeheer", "Management reporting"] },
+      { title: "Support", items: ["Online kennisbank", "Training open inschrijving"] },
+    ],
+  },
+  {
+    name: "Advanced",
+    tagline: "Onbeperkt gebruik van vragenlijsten. Jaarlijkse licentie op basis van het aantal medewerkers of consultants.",
+    price: "Op aanvraag",
+    priceNote: "jaarlicentie",
+    featured: true,
+    groups: [
+      { title: "Vragenlijsten", items: ["37 vragenlijsten", "Maatwerk vragenlijst Onderwijs", "Maatwerk vragenlijst Zorg", "CanMeds vragenlijst", "Onderwijs competentietaal", "Onbeperkt competentieprofielen", "Big50 Personality", "360 Feedback + Extra open vragen"] },
+      { title: "HRM Tools", items: ["Analytics", "Recruitment", "BiLa"] },
+      { title: "Hrmforce portal", items: ["Dashboard", "Eigen bedrijfslogo", "Management Reporting", "Kandidatenbeheer", "Mass upload & Edit"] },
+      { title: "Support", items: ["Telefonische helpdesk", "Nieuwe talen", "Certificatietraining voor 1 deelnemer", "API (bestaande koppelingen)"] },
+    ],
+  },
+  {
+    name: "Pro",
+    tagline: "Onbeperkt gebruik van vragenlijsten en alle hrmforce functionaliteiten. Jaarlijkse licentie op basis van het aantal medewerkers of consultants.",
+    price: "Op aanvraag",
+    priceNote: "jaarlicentie",
+    featured: false,
+    groups: [
+      { title: "Vragenlijsten", items: ["Alle vragenlijsten", "Vragenlijsten op maat", "Extra open vragen", "Onbeperkt competentieprofielen", "Maatwerk competenties"] },
+      { title: "HRM Tools", items: ["Recruitment", "Development", "Employability", "Teamview", "Analytics", "Ontwikkelflow op maat"] },
+      { title: "Hrmforce portal", items: ["Dashboard+", "Eigen huisstijl in portal en rapportages", "Management Reporting", "Kandidatenbeheer", "Mass upload & Edit"] },
+      { title: "Support", items: ["Eigen accountmanager", "Direct toegang tot nieuwe functionaliteiten", "Maatwerk API", "Autosync", "Certificatietraining tot 8 deelnemers"] },
+    ],
+  },
+];
+
+const included = [
+  "AVG / GDPR Compliant",
+  "2-staps Authenticatie",
+  "Beschikbaar in meerdere talen",
+  "Volledig Online",
+  "Competentiebibliotheek",
+  "Standaard functieprofielen",
+];
+
+const onboarding = [
+  { name: "Light", zelf: "5/5", detail: "1/5", price: "Gratis*", items: ["Basic inrichting", "Online instructieportal", "Online support portal", "Zelf aanvullend inrichten"] },
+  { name: "Basic", zelf: "3/5", detail: "3/5", price: "1750,-*", items: ["LIGHT +", "Inrichten Competentieprofielen", "Inrichten Functies", "Inrichten Matchprofielen", "E-learning psychometrie", "Live certificatietraining open inschrijving"] },
+  { name: "Pro", zelf: "1/5", detail: "5/5", price: "3750,-*", items: ["BASIC +", "Contact consultant", "Inrichten maatwerk API", "Inrichten Ontwikkelcyclus", "Begeleiding interne communicatie", "Kickoff"] },
+];
+
+const faqs = [
+  { q: "Wat voor soort vragenlijsten biedt hrmforce aan?", a: "hrmforce biedt een breed scala aan vragenlijsten, waaronder persoonlijkheidstests, competentie-assessments, 360 graden feedback en medewerkerstevredenheidsonderzoeken, allemaal ontworpen om de HR-processen te versterken." },
+  { q: "Kunnen de vragenlijsten worden aangepast aan de specifieke behoeften van ons bedrijf?", a: "Ja, we bieden maatwerkoplossingen waarbij onze vragenlijsten kunnen worden aangepast om te voldoen aan de specifieke behoeften en doelen van uw organisatie." },
+  { q: "Hoe integreert hrmforce met onze bestaande HR-systemen?", a: "Onze software kan eenvoudig worden geïntegreerd met de meeste HRIS-, LMS- en ERP-systemen, waardoor u een naadloze ervaring en dataflow binnen uw organisatie heeft." },
+  { q: "Welke ondersteuning biedt hrmforce bij de implementatie en het gebruik van de vragenlijsten?", a: "Wij bieden uitgebreide ondersteuning en training tijdens de implementatie en daarna, inclusief een klantenservice en technische ondersteuning om uw ervaring soepel en effectief te maken." },
+  { q: "Hoe betrouwbaar en valide zijn de vragenlijsten?", a: "Onze vragenlijsten zijn wetenschappelijk onderbouwd en getest om hoge niveaus van betrouwbaarheid en validiteit te garanderen, zodat u kunt vertrouwen op de resultaten." },
+  { q: "Hoe wordt de privacy en gegevensbescherming van onze werknemers gewaarborgd?", a: "hrmforce houdt zich strikt aan de GDPR en andere privacywetten. Wij garanderen dat alle medewerkersgegevens veilig worden behandeld en opgeslagen met de hoogste standaarden van gegevensbeveiliging." },
+  { q: "Wat zijn de ervaringen van andere bedrijven met hrmforce?", a: "Veel bedrijven, van MKB tot grote multinationals, vertrouwen op onze oplossingen en hebben significante verbeteringen gezien in hun HR-processen. Referenties en case studies zijn beschikbaar op onze website." },
+  { q: "Wat zijn de kosten van de vragenlijsten?", a: "De kosten variëren afhankelijk van de specifieke behoeften en de schaal van implementatie. We bieden flexibele prijsmodellen die passen bij verschillende soorten en maten organisaties." },
+];
+---
+<Base title="Tarieven - hrmforce" description="Er zijn verschillende manieren om gebruik te maken van de online tests en HRM tools binnen hrmforce. Bekijk hier de mogelijkheden en tarieven." active="">
+  <div class="crumb"><div class="wrap"><a href="/">Home</a> › <span>Tarieven</span></div></div>
+
+  <section class="ahero"><div class="wrap" style="display:block">
+    <div class="eyebrow" style="color:var(--gold)">Tarieven</div>
+    <h1>Haal het maximale uit medewerkers met onze talentmanagement-software</h1>
+    <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px">Er zijn verschillende manieren om gebruik te maken van de online tests en HRM-tools binnen hrmforce. Kies pay-as-you-go of een jaarlicentie die past bij jouw organisatie.</p>
+    <div class="btns" style="margin-top:18px"><a href="/contact/" class="btn btn-primary">Plan een demo</a></div>
+  </div></section>
+
+  <section><div class="wrap">
+    <div class="eyebrow">Licenties</div>
+    <h2 class="section-title">Onze pakketten</h2>
+    <div class="price-grid">
+      {plans.map((p) => (
+        <div class={`price-card${p.featured ? " featured" : ""}`}>
+          {p.featured && <span class="badge">Meest gekozen</span>}
+          <h3>{p.name}</h3>
+          <p class="price-tag">{p.price}<span>{p.priceNote}</span></p>
+          <p class="price-desc">{p.tagline}</p>
+          <a href="/contact/" class="btn btn-primary" style="width:100%;text-align:center">Plan een demo</a>
+          {p.groups.map((g) => (
+            <div class="price-group">
+              <h4>{g.title}</h4>
+              <ul>{g.items.map((i) => <li>{i}</li>)}</ul>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+    <p class="muted" style="margin-top:16px;font-size:14px">Prijzen pay-as-you-go variëren van €19,- tot €99,- per test. Jaarlicenties zijn gebaseerd op het aantal medewerkers of consultants; vraag een offerte aan voor een prijs op maat.</p>
+  </div></section>
+
+  <section class="bg-soft"><div class="wrap">
+    <div class="eyebrow">Standaard</div>
+    <h2 class="section-title">Ieder pakket is inclusief</h2>
+    <ul class="incl-grid">
+      {included.map((i) => <li>{i}</li>)}
+    </ul>
+  </div></section>
+
+  <section><div class="wrap">
+    <div class="eyebrow">Implementatie</div>
+    <h2 class="section-title">Onboarden was nog nooit zo makkelijk</h2>
+    <div class="price-grid">
+      {onboarding.map((o) => (
+        <div class="price-card">
+          <h3>{o.name}</h3>
+          <p class="onb-meta">Zelfstandigheidsniveau: {o.zelf} · Detailniveau: {o.detail}</p>
+          <p class="price-tag">vanaf {o.price}</p>
+          <div class="price-group"><ul>{o.items.map((i) => <li>{i}</li>)}</ul></div>
+        </div>
+      ))}
+    </div>
+    <p class="muted" style="margin-top:14px;font-size:14px">* Eenmalige kosten.</p>
+  </div></section>
+
+  <section class="bg-soft"><div class="wrap">
+    <div class="eyebrow">Veelgestelde vragen</div>
+    <h2 class="section-title">Veelgestelde vragen over tarieven</h2>
+    <div style="max-width:820px">
+      {faqs.map((f) => (
+        <div class="faq-item">
+          <div class="faq-q">{f.q}<span class="pl">+</span></div>
+          <div class="faq-a"><p>{f.a}</p></div>
+        </div>
+      ))}
+    </div>
+  </div></section>
+
+  <section class="cta"><div class="wrap" style="padding:56px 0">
+    <h2 style="color:#fff">Heb je een andere vraag?</h2>
+    <p style="color:rgba(255,255,255,.9);max-width:620px;margin:12px auto 0">Ons team staat voor je klaar. Vraag een offerte of demo aan en we stemmen de juiste vorm af op jouw situatie.</p>
+    <div class="btns" style="justify-content:center;margin-top:20px">
+      <a href="/contact/" class="btn btn-light">Neem contact op</a>
+      <a href="/hrmforce/over-ons/" class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">Lees meer over hrmforce</a>
+    </div>
+    <p style="color:rgba(255,255,255,.9);margin-top:22px">
+      <strong>T:</strong> <a href="tel:+31888832188" style="color:#fff;text-decoration:underline">+31 (0)88 88 321 88</a>
+      &nbsp;·&nbsp;
+      <strong>E:</strong> <a href="mailto:service@hrmforce.com" style="color:#fff;text-decoration:underline">service@hrmforce.com</a>
+    </p>
+    <p style="color:rgba(255,255,255,.75);font-size:14px;margin-top:6px">Onze adviseurs zijn bereikbaar op maandag t/m vrijdag van 08:00 – 18:00 uur.</p>
+  </div></section>
+</Base>
+<style>
+  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:32px;align-items:start}
+  @media(max-width:900px){.price-grid{grid-template-columns:1fr}}
+  .price-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow-sm)}
+  .price-card.featured{border-color:var(--blue);box-shadow:var(--shadow-md);position:relative}
+  .price-card h3{font-size:1.4rem;color:var(--navy);margin-bottom:6px}
+  .price-tag{font-size:1.6rem;font-weight:800;color:var(--navy);margin:6px 0 4px}
+  .price-tag span{display:block;font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .price-desc{color:var(--muted);font-size:15px;margin:8px 0 18px;line-height:1.6}
+  .onb-meta{color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+  .price-group{margin-top:18px}
+  .price-group h4{font-size:13px;text-transform:uppercase;letter-spacing:.8px;color:var(--blue);margin-bottom:8px}
+  .price-group ul{list-style:none;margin:0;padding:0}
+  .price-group li{position:relative;padding:7px 0 7px 26px;border-bottom:1px dashed var(--line);color:var(--navy);font-size:15px}
+  .price-group li:before{content:"✓";position:absolute;left:0;color:var(--gold);font-weight:800}
+  .incl-grid{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:760px){.incl-grid{grid-template-columns:1fr}}
+  .incl-grid li{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;font-weight:700;color:var(--navy);position:relative;padding-left:44px;box-shadow:var(--shadow-xs)}
+  .incl-grid li:before{content:"✓";position:absolute;left:18px;color:var(--gold);font-weight:800}
+  .cta .wrap{text-align:center}
+</style>
