@@ -1,4 +1,199 @@
 ---
-import Home from "../../components/Home.astro";
+import Base from "../../layouts/Base.astro";
+
+const cards = [
+  { h: "Assessments", p: "Ideal für die Rekrutierung und Auswahl von neuen Talenten…", href: "/de/online-assessments/", cta: "Assessments anzeigen" },
+  { h: "HRM-Lösungen", p: "Personalbeschaffung, Entwicklung, Beschäftigungsfähigkeit, TeamView …", href: "/de/hrm-oplossingen/", cta: "Lösungen anzeigen" },
+  { h: "Über uns", p: "Lesen Sie mehr über uns und unsere Arbeitsweise…", href: "/de/over-ons/", cta: "Mehr über uns" },
+];
+
+const steps = [
+  { h: "Scan", p: "Wir streben stets nach maximalen (Wachstums-)Ergebnissen. Unsere langjährige Erfahrung hat uns gelehrt, dass dabei ein maßgeschneiderter Ansatz entscheidend ist. Mit unserem Scan ermitteln wir den Bedarf Ihres Unternehmens. Betrachten Sie den Scan als Ausgangspunkt für eine Reise der Entwicklung und Entdeckung." },
+  { h: "Einblick", p: "Die Ergebnisse des Scans liefern ein gutes Bild Ihrer Organisation. Die Ergebnisse bilden eine Grundlage für unsere Fachleute, auf der sie aufbauen können. In Absprache wird ein Aktionsplan festgelegt. Dies ist der Auftakt für Wachstum." },
+  { h: "Maßgeschneidert", p: "Nachdem wir den Scan durchgeführt und nützliche Erkenntnisse gewonnen haben, können wir einen geeigneten Plan für das beste Ergebnis erstellen. Denn mit „ausreichend” geben wir uns keineswegs zufrieden. Nur echte Ergebnisse sind für uns gut genug. Maßarbeit, dafür stehen wir. Mit den besten Fachleuten in unserem Haus erstellen wir gerne ein passendes Angebot." },
+  { h: "Assessment", p: "Nachdem wir den Scan durchgeführt und nützliche Erkenntnisse gewonnen haben, können wir einen geeigneten Plan für das beste Ergebnis erstellen. Denn mit „ausreichend” geben wir uns keineswegs zufrieden. Nur echte Ergebnisse sind für uns gut genug. Maßarbeit, dafür stehen wir. Mit den besten Fachleuten in unserem Haus erstellen wir gerne ein passendes Angebot." },
+  { h: "Ergebnis", p: "Wenn Sie auf dem Weg zu optimalen Leistungen sind, sind Assessment-Ergebnisse die idealen Beschleuniger. Sie geben Richtung vor und führen zu Erfolg und Ergebnissen. Das richtige Potenzial am richtigen Ort, zur richtigen Zeit, im richtigen Team. Wenn wir Ergebnisse haben, ist uns der Erfolg garantiert." },
+  { h: "Workflow", p: "Indem wir auf der Grundlage der Ergebnisse weiter an der Steigerung der Ergebnisse und der Entwicklung des Verhaltens arbeiten, können optimale Leistungen und (Arbeits-)Zufriedenheit erreicht werden. Mithilfe eines digitalen Entwicklungszyklus wird jeder Mitarbeiter und damit auch das Unternehmen garantiert erfolgreich sein. Das ist einer der Gründe, warum wir unsere Zufriedenheit und unsere Arbeitsfreude daraus beziehen! Und bald auch Sie!" },
+];
+
+const posts = [
+  {
+    img: "https://hrmforce.com/wp-content/uploads/2022/04/hrmforce-illustratie-6.webp",
+    title: "Big50-Persönlichkeitstest: Booster für verbindende Führung",
+    href: "https://hrmforce.com/de/wissenszentrum/big50-persoenlichkeitstest-booster-fuer-verbindende-fuehrung/",
+    date: "23/08/2023",
+    tags: "Kapazitäten",
+    excerpt: "Immer mehr Organisationen und Führungskräfte setzen auf die Kraft...",
+  },
+];
+
+const reviews = [
+  { name: "Rob van Haren", href: "https://www.google.com/maps/contrib/104772062601451229626/reviews", avatar: "https://lh3.googleusercontent.com/a/ACg8ocJEUQiib2fcjgNRe4Y_348hF2SLNM8MXbJrNVq2QHscFp5LlA=s128-c0x00000000-cc-rp-mo", ago: "09:22 14 Apr 25", text: "" },
+  { name: "J.", href: "https://www.google.com/maps/contrib/104155734753365055969/reviews", avatar: "https://lh3.googleusercontent.com/a/ACg8ocIlafpl8tK-AzjYfYOgYR841lOM_Nd4h2G_m_5qVcUrqTVj93o=s128-c0x00000000-cc-rp-mo", ago: "14:27 11 Apr 25", text: "" },
+  { name: "Stan van Haren", href: "https://www.google.com/maps/contrib/108674138156891063389/reviews", avatar: "https://lh3.googleusercontent.com/a/ACg8ocLM4OEJOwTu0fvv15IQ5h9t4PbBaXYw_e31udr_c6KjjIYFfA=s128-c0x00000000-cc-rp-mo", ago: "08:09 11 Apr 25", text: "" },
+  { name: "Eric Hoogeweg", href: "https://www.google.com/maps/contrib/103157241363380674799/reviews", avatar: "https://lh3.googleusercontent.com/a-/ALV-UjWrAxJ0maIGi5Z1EyHdGPMCO-qcqcM2t-pCd8Hj_hpyD6boNqDM=s128-c0x00000000-cc-rp-mo-ba2", ago: "12:19 03 Apr 25", text: "Goede dienstverlener met uitstekende tools voor talentontwikkeling. Zo help je organisaties vooruit." },
+  { name: "Matthijs Honig", href: "https://www.google.com/maps/contrib/115146506330640819696/reviews", avatar: "https://lh3.googleusercontent.com/a/ACg8ocI0f0Mta1ZJaG13HI6HGYwp2qeKBhFIQz7-zm0m9Asf-NmwPA=s128-c0x00000000-cc-rp-mo", ago: "20:18 08 May 23", text: "" },
+  { name: "Esther Moolenaar", href: "https://www.google.com/maps/contrib/115910511765005052442/reviews", avatar: "https://lh3.googleusercontent.com/a/ACg8ocIhKQ63iBmiXYhMAhfrrkFkQaxjlYW2KO2B8gdpuQjOtNvXFQ=s128-c0x00000000-cc-rp-mo", ago: "17:28 01 May 23", text: "Enorm klantvriendelijk en meedenkend. HRMforce heeft mij geholpen talenten en ontwikkelpunten van mijn medewerkers in kaart te brengen, wat heeft gezorgd voor een enorm boost voor het bedrijf." },
+  { name: "Juliëtte Kamphuis", href: "https://www.google.com/maps/contrib/103151884185464760911/reviews", avatar: "https://lh3.googleusercontent.com/a-/ALV-UjWzNKARK4Sotv0Pu1cRYYw1lEBsdx1-ocrtfJ08Vu1qLn15rQ_w=s128-c0x00000000-cc-rp-mo", ago: "16:43 01 May 23", text: "Leuke gratis kleurentest gedaan !" },
+];
 ---
-<Home />
+<Base
+  title="Talent Management Software | Assessments & Tests | Hrmforce"
+  description="Holen Sie mit der Talentmanagement-Software von hrmforce das Beste aus Ihren Mitarbeitern heraus. Testen Sie Bewerber mit unseren Fragebögen und entwickeln Sie Ihre Mitarbeiter."
+  active="home"
+>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow" style="color:var(--gold)">hrmforce</div>
+        <h1>Holen Sie mit unserer <em>Talentmanagement-Software</em> das Beste aus Ihren Mitarbeitern heraus</h1>
+        <p class="sub">Testen Sie Ihre Bewerber mit unseren <strong>Fragebögen</strong></p>
+        <p class="sub">Entwickeln Sie Ihre Mitarbeiter mit unseren Entwicklungstools</p>
+        <a class="btn btn-primary" href="/de/online-assessments/">Mehr Infos</a>
+      </div>
+      <div class="hero-img">
+        <img src="https://hrmforce.com/wp-content/uploads/2022/08/Hrmforce-homepage-mobiel-ENG.webp" alt="Hrmforce homepage mobiel ENG" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Vollständig und zuverlässig -->
+  <section>
+    <div class="wrap" style="display:block">
+      <h2 class="section-title center">Vollständig und zuverlässig</h2>
+      <p class="lead center">hrmforce ist die am schnellsten wachsende Online-Entwicklungsplattform für Talentmanagement mit dem umfassendsten Angebot an Assessments in den Niederlanden. Immer einzigartig, <strong>wissenschaftlich untermauert</strong> und jeden Monat mit neuen Assessments. Persönliches Coaching, Training und Transparenz bei jedem Schritt.</p>
+      <div class="cards">
+        {cards.map((c) => (
+          <div class="card">
+            <h3>{c.h}</h3>
+            <p>{c.p}</p>
+            <a href={c.href}>{c.cta} →</a>
+          </div>
+        ))}
+      </div>
+      <div class="video">
+        <a href="https://www.youtube.com/watch?v=50gYB0KjtMw&ab_channel=hrmforce">
+          <img src="https://hrmforce.com/wp-content/uploads/2022/03/youtube-afbeelding2.png" alt="hrmforce video" loading="lazy" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Holen Sie das Beste aus Ihren Talenten heraus -->
+  <section>
+    <div class="wrap ov" style="display:block">
+      <h2 class="section-title">Holen Sie das Beste aus Ihren Talenten heraus</h2>
+      <p>Als Personalmanager haben Sie immer viel zu tun. Sie müssen neue und bestehende Mitarbeiter beurteilen, Mitarbeiter und Teams weiterentwickeln, Leistungs- und Beurteilungsgespräche führen und Daten analysieren, um Strategien festzulegen und Visionen zu entwickeln.</p>
+      <p>Die <strong>Talentmanagement-Software</strong> von <strong>hrmforce unterstützt Sie bei jedem Schritt des HR-Prozesses</strong>. Entwickeln Sie Ihre Mitarbeiter weiter, lassen Sie Ihr Unternehmen wachsen und erzielen Sie maximale Rendite.</p>
+      <p><a class="btn btn-primary" href="/de/contact/">Kontaktieren Sie uns</a></p>
+    </div>
+  </section>
+
+  <!-- Kostenlos testen -->
+  <section class="cta">
+    <div class="wrap" style="display:block">
+      <h2>Hrmforce kostenlos testen?</h2>
+      <p>Wir sind von der Qualität unserer Assessments und HRM-Lösungen überzeugt. Möchten Sie sich selbst davon überzeugen? Dann fordern Sie eine kostenlose Demo an. Einer unserer Berater wird sich (unverbindlich) mit Ihnen in Verbindung setzen, um Ihnen die Funktionen und Möglichkeiten zu erläutern.</p>
+      <div class="btns">
+        <a class="btn btn-light" href="/de/contact/">👉 Kostenlose Demo anfordern</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vorgehensweise -->
+  <section>
+    <div class="wrap ov" style="display:block">
+      <h2 class="section-title">Vorgehensweise</h2>
+      <p>Möchten Sie das Potenzial Ihrer Bewerber und Mitarbeiter ermitteln? Wir verfügen über das nötige Know-how und benötigen nur <strong>6 feste Schritte, um eine optimale Leistung zu erzielen</strong>. Wir sind überzeugt, dass diese Schritte zu optimalen Ergebnissen und (beruflicher) Zufriedenheit führen.</p>
+      <div class="work-steps">
+        {steps.map((s, i) => (
+          <div class="step">
+            <span class="num">{i + 1}</span>
+            <div>
+              <h3>{s.h}</h3>
+              <p>{s.p}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Wissenszentrum -->
+  <section class="blog">
+    <div class="wrap" style="display:block">
+      <h2 class="section-title center">Aus unserem Wissenszentrum</h2>
+      <div class="posts">
+        {posts.map((p) => (
+          <a class="post" href={p.href}>
+            <img class="post-img" src={p.img} alt={p.title} loading="lazy" />
+            <div class="body">
+              <div class="tag">{p.tags}</div>
+              <h3>{p.title}</h3>
+              <p class="excerpt">{p.excerpt}</p>
+              <div class="date">{p.date}</div>
+              <span class="readmore">Lees meer &gt;</span>
+            </div>
+          </a>
+        ))}
+      </div>
+      <div class="center" style="margin-top:32px">
+        <a class="btn btn-ghost" href="/de/wissenszentrum/">Zum Wissenszentrum</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hrmforce funktioniert -->
+  <section>
+    <div class="wrap" style="display:block">
+      <h2 class="section-title center">Hrmforce funktioniert</h2>
+      <p class="lead center">Die Meinung unserer <strong>zufriedenen Kunden</strong> und die jährlich mehr als 100.000 durchgeführten Tests sprechen für sich. Vertrauen Sie auf unsere langjährige Erfahrung und das umfassendste Angebot an Assessments in den Niederlanden.</p>
+      <div class="reviews">
+        {reviews.map((r) => (
+          <div class="review">
+            <div class="rhead">
+              <img src={r.avatar} alt={r.name} loading="lazy" />
+              <div>
+                <a href={r.href} class="rname">{r.name}</a>
+                <div class="rago">{r.ago}</div>
+              </div>
+            </div>
+            {r.text && <p class="rtext">{r.text}</p>}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero-img img { max-width: 100%; height: auto; border-radius: 18px; display: block; margin: 0 auto; }
+
+  .video { text-align: center; margin-top: 32px; }
+  .video img { max-width: 640px; width: 100%; height: auto; border-radius: var(--radius); }
+
+  .ov { max-width: 900px; }
+  .ov p { color: var(--text); font-size: 17px; margin-bottom: 16px; }
+  .ov a:not(.btn) { color: var(--blue); font-weight: 600; }
+
+  .work-steps { display: grid; gap: 18px; margin: 28px 0 8px; }
+  .work-steps .step { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px; }
+  .work-steps .step .num { width: 40px; height: 40px; border-radius: 50%; background: var(--navy); color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+  .work-steps .step h3 { color: var(--navy); font-size: 20px; margin-bottom: 6px; }
+  .work-steps .step p { margin-bottom: 0; font-size: 16px; color: var(--muted); }
+
+  .post { display: block; color: inherit; }
+  .post-img { width: 100%; height: 170px; object-fit: cover; display: block; }
+  .post .excerpt { color: var(--muted); font-size: 14px; margin: 6px 0 10px; }
+  .post .readmore { color: var(--blue); font-weight: 700; font-size: 14px; }
+
+  .reviews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 42px; }
+  .review { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+  .rhead { display: flex; align-items: center; gap: 12px; }
+  .rhead img { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; }
+  .rname { color: var(--navy); font-weight: 700; font-size: 15px; }
+  .rago { color: var(--muted); font-size: 13px; }
+  .rtext { color: var(--text); font-size: 15px; margin-top: 12px; }
+  @media (max-width: 880px) { .reviews { grid-template-columns: 1fr; } }
+</style>
