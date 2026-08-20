@@ -111,14 +111,13 @@ const cfg = {
       }).then(function (r) { return r.json(); });
     }
 
-    function parseTaxo(tags) {
-      var o = { cyclus: [], segment: [], uitgever: null };
-      (tags || []).forEach(function (t) {
-        if (t.indexOf("HR-cyclus:") === 0) o.cyclus.push(t.split(":")[1].trim());
-        else if (t.indexOf("Segment:") === 0) o.segment.push(t.split(":")[1].trim());
-        else if (t.indexOf("Uitgever:") === 0) o.uitgever = t.split(":")[1].trim();
-      });
-      return o;
+    // De live-shop legt de facetten vast in: vendor (=uitgever), productType
+    // (=segment) en tags (waarvan een deel HR-cyclus-fases zijn).
+    var CYCLUS_TAGS = ["Voorselectie", "Selectie", "Ontwikkeling", "Doorstroom", "Mobiliteit", "Employability", "Functioneren", "Beoordelen"];
+    function parseTaxo(node) {
+      var cyclus = (node.tags || []).filter(function (t) { return CYCLUS_TAGS.indexOf(t) > -1; });
+      var uit = node.vendor && node.vendor !== "My Store" ? node.vendor : null;
+      return { cyclus: cyclus, segment: node.productType ? [node.productType] : [], uitgever: uit };
     }
     function money(a, c) {
       var n = parseFloat(a);
@@ -131,7 +130,7 @@ const cfg = {
     }
 
     var PRODUCTS_Q =
-      "{ products(first: 100, sortKey: TITLE) { edges { node { title handle tags availableForSale " +
+      "{ products(first: 250, sortKey: TITLE) { edges { node { title handle tags vendor productType availableForSale " +
       "featuredImage { url altText } priceRange { minVariantPrice { amount currencyCode } } " +
       "variants(first: 1) { edges { node { id availableForSale } } } } } } }";
 
@@ -184,7 +183,7 @@ const cfg = {
       if (!edges) throw new Error("no products");
       var cycSet = {}, segSet = {}, uitSet = {};
       products = edges.map(function (e) {
-        var n = e.node, taxo = parseTaxo(n.tags);
+        var n = e.node, taxo = parseTaxo(n);
         taxo.cyclus.forEach(function (x) { cycSet[x] = 1; });
         taxo.segment.forEach(function (x) { segSet[x] = 1; });
         if (taxo.uitgever) uitSet[taxo.uitgever] = 1;
