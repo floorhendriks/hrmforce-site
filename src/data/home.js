@@ -24,7 +24,7 @@ export const home = {
       { ic: "2", h: "HRM oplossingen", p: "Recruitment, Development, Employability, TeamView.", route: "solutions", cta: "Bekijk de oplossingen" },
       { ic: "3", h: "Advies op maat", p: "Adviestrajecten op maat en verschillende trainingen.", route: "advice", cta: "Bekijk de mogelijkheden" },
     ],
-    logos: { eyebrow: "Vertrouwd door 1.500+ organisaties", title: "Organisaties waarmee wij samenwerken" },
+    logos: { eyebrow: "Vertrouwd door 1.200+ organisaties", title: "Organisaties waarmee wij samenwerken" },
     works: {
       eyebrow: "Werkwijze", title: "In 3 stappen naar inzicht",
       lead: "Het potentieel van je sollicitanten en medewerkers in kaart brengen - eenvoudig en bewezen.",
@@ -55,7 +55,7 @@ export const home = {
       title: "Ontdek welke aanpak past bij jouw HR-vraagstuk",
       text: "Bespreek je situatie met een hrmforce-specialist. In 30 minuten krijg je concreet advies over welke vragenlijsten of tooling waarde toevoegen.",
       primary: "Plan een demo", secondary: "Bekijk de assessments",
-      trust: ["Bewezen modellen, transparante onderbouwing", "NIP-geregistreerde psychologen", "1.500+ organisaties gingen je voor"],
+      trust: ["Bewezen modellen, transparante onderbouwing", "NIP-geregistreerde psychologen", "1.200+ organisaties gingen je voor"],
     },
   },
 
@@ -83,7 +83,7 @@ export const home = {
       { ic: "2", h: "HRM solutions", p: "Recruitment, Development, Employability, TeamView.", route: "solutions", cta: "View the solutions" },
       { ic: "3", h: "Tailored advice", p: "Bespoke advisory tracks and various training.", route: "advice", cta: "View the options" },
     ],
-    logos: { eyebrow: "Trusted by 1,500+ organisations", title: "Organisations we work with" },
+    logos: { eyebrow: "Trusted by 1,200+ organisations", title: "Organisations we work with" },
     works: {
       eyebrow: "How it works", title: "Insight in 3 steps",
       lead: "Map the potential of your applicants and employees - simple and proven.",
@@ -114,7 +114,7 @@ export const home = {
       title: "Discover the approach that fits your HR challenge",
       text: "Discuss your situation with an hrmforce specialist. In 30 minutes you get concrete advice on which questionnaires or tooling add value.",
       primary: "Book a demo", secondary: "View the assessments",
-      trust: ["Proven models, transparent grounding", "NIP-registered psychologists", "1,500+ organisations went before you"],
+      trust: ["Proven models, transparent grounding", "NIP-registered psychologists", "1,200+ organisations went before you"],
     },
   },
 
