@@ -190,5 +190,14 @@ const allUitgevers = [...new Set(items.map((i) => i.uitgever).filter(Boolean))].
   }
   document.getElementById("reset").addEventListener("click", reset);
   document.getElementById("reset2").addEventListener("click", reset);
+
+  // Voorfilter via ?fase= (vanuit de keuze-CTA's op de homepage)
+  var faseParam = new URLSearchParams(location.search).get("fase");
+  var faseMap = { selectie: "(Pre)Selectie", ontwikkeling: "Ontwikkeling", evalueren: "Evalueren", studiekeuze: "Studiekeuze" };
+  if (faseParam && faseMap[faseParam]) {
+    var target = faseMap[faseParam];
+    var match = chips.filter(function (c) { return c.dataset.cyclus === target; })[0];
+    if (match) { chips.forEach(function (x) { x.classList.remove("is-active"); }); match.classList.add("is-active"); cyclus = target; }
+  }
   apply();
 </script>
