@@ -1,7 +1,11 @@
 ---
 import Base from "../../layouts/Base.astro";
 import { assessments } from "../../data/assessments.js";
+import { shopInfo } from "../../data/assessment-shop.js";
+import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../data/site-config.js";
 import { getLangFromUrl, localizePath } from "../../i18n/utils.js";
+
+const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
 
 // Alle assessments komen uit het lokale databestand (36 stuks), zodat álle
 // detailpagina's gegenereerd worden ongeacht de Sanity-inhoud.
@@ -28,6 +32,17 @@ if (!a) {
   };
 }
 const assessHref = localizePath("/online-assessments/", lang);
+
+// Shop-info (prijs + bestellink) op basis van de huidige slug.
+const shop = shopInfo(Astro.params.slug);
+
+// Gerelateerde assessments: koppel de titels uit a.related aan echte pagina's.
+const byTitle = new Map(assessments.map((x) => [x.title, x]));
+const related = (a.related || [])
+  .map((t) => byTitle.get(t))
+  .filter(Boolean)
+  .slice(0, 3)
+  .map((x) => ({ title: x.title, slug: x.slug, image: x.image, goal: x.goal }));
 ---
 <Base title={a.metaTitle} description={a.metaDescription} active="assessments">
   <div class="crumb">
@@ -41,9 +56,18 @@ const assessHref = localizePath("/online-assessments/", lang);
         <h1>{a.title}</h1>
         <div class="meta-row"><span class="lbl">Fase</span><span class="val">{a.phase}</span></div>
         <div class="meta-row"><span class="lbl">Doel</span><span class="val">{a.goal}</span></div>
+        {shop.price && (
+          <div class="pricebox">
+            <span class="pricebox-label">Direct afnemen vanaf</span>
+            <span class="pricebox-amt">&euro;{shop.price}</span>
+            <span class="pricebox-note">per assessment &middot; betaal achteraf</span>
+          </div>
+        )}
         <div class="btns">
-          <a href={localizePath("/contact/", lang)} class="btn btn-primary">Gratis demo</a>
-          <a href="#request" class="btn btn-light">Direct starten</a>
+          <a href={shop.url} class="btn btn-primary" rel="noopener">
+            {shop.price ? "Direct bestellen" : "Bekijk in de shop"} &rarr;
+          </a>
+          <a href={localizePath("/contact/", lang)} class="btn btn-light">Gratis demo</a>
         </div>
         <div class="guarantee">
           <strong style="color:#fff">Niet tevreden? Geld terug!</strong>
@@ -125,6 +149,27 @@ const assessHref = localizePath("/online-assessments/", lang);
     </div>
   </section>
 
+  {related.length > 0 && (
+    <section style="background:var(--bg)">
+      <div class="wrap">
+        <div class="center">
+          <div class="eyebrow">Ook interessant</div>
+          <h2 class="section-title" style="margin-bottom:36px">Gerelateerde assessments</h2>
+        </div>
+        <div class="cards">
+          {related.map((r) => (
+            <a class="card" href={localizePath(`/assessments/${r.slug}/`, lang)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+              {r.image && <img class="rel-img" src={r.image} alt={r.title} loading="lazy" />}
+              <h3>{r.title}</h3>
+              <p style="flex:1">{r.goal}</p>
+              <span class="readmore">Bekijk assessment &rarr;</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
   <section class="formsec" id="request">
     <div class="wrap">
       <div class="center">
@@ -132,7 +177,7 @@ const assessHref = localizePath("/online-assessments/", lang);
         <h2 class="section-title">{a.title} aanvragen</h2>
         <p class="lead" style="margin-bottom:36px">Vul het formulier in en krijg binnen 24 uur toegang.</p>
       </div>
-      <form class="formcard" action="https://formspree.io/f/JOUW_FORM_ID" method="POST">
+      <form class="formcard" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
         <div class="frow">
           <div class="fg"><label>Voornaam *</label><input type="text" name="voornaam" required /></div>
           <div class="fg"><label>Werk e-mail *</label><input type="email" name="email" required /></div>
@@ -152,4 +197,15 @@ const assessHref = localizePath("/online-assessments/", lang);
     border-radius:8px;
     margin-top:10px;
   }
+  .pricebox{
+    display:inline-flex;flex-direction:column;gap:2px;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
+    border-left:3px solid var(--gold);
+    padding:12px 18px;border-radius:10px;margin:18px 0 6px;
+  }
+  .pricebox-label{color:#c4d2e6;font-size:12.5px;text-transform:uppercase;letter-spacing:.6px;font-weight:700}
+  .pricebox-amt{color:#fff;font-size:1.9rem;font-weight:800;line-height:1.1}
+  .pricebox-note{color:#aebfd4;font-size:13px}
+  .rel-img{display:block;width:100%;height:150px;object-fit:contain;background:#fff;border-radius:8px;margin-bottom:14px;padding:10px}
+  .readmore{color:var(--blue);font-weight:600;font-size:15px;margin-top:12px}
 </style>
