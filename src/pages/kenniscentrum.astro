@@ -13,26 +13,169 @@ const client = createClient({
   useCdn: false,
 });
 const raw = await client.fetch(
-  `*[_type == "article" && defined(path) && defined(body) && path match "/kenniscentrum/*"] | order(date desc){title, path, date}`
+  `*[_type == "article" && defined(path) && defined(body) && path match "/kenniscentrum/*"] | order(date desc){title, path, date, body}`
 );
-const list = raw.filter((p) => p.path && p.title);
-const fmt = (d) => (d ? new Date(d).toLocaleDateString("nl-NL") : "");
+
+// Thema-buckets afgeleid uit de titel (er is geen categorie-veld in de data).
+const CATS = [
+  { key: "persoonlijkheid", label: "Persoonlijkheid & drijfveren", kw: ["persoonlijk", "big five", "big 5", "big fifty", "disc", "drijfveer", "motivat", "karakter", "temperament", "waarden"] },
+  { key: "leiderschap", label: "Leiderschap & teams", kw: ["leider", "team", "manage", "samenwerk", "conflict", "groepsrol", "lencioni"] },
+  { key: "assessment", label: "Assessments & tests", kw: ["assessment", "test", "vragenlijst", "meten", "capaciteit", "cognit", "intelligentie", "scan", "iq", "abstract"] },
+  { key: "ontwikkeling", label: "Ontwikkeling & loopbaan", kw: ["ontwikkel", "loopbaan", "coaching", "opleiding", "studiekeuze", "talent", "groei", "leren", "leerstijl", "carriere", "carrière"] },
+  { key: "hr", label: "HR & organisatie", kw: ["recruitment", "selectie", "werving", "cultuur", "organisatie", "verzuim", "functioneren", "beoordel", "competentie", "onboarding", "arbeids"] },
+  { key: "modellen", label: "Modellen & theorie", kw: ["model", "theorie", "piramide", "ijsberg", "methode", "wet van", "effect", "principe"] },
+];
+function categorize(title) {
+  const t = (title || "").toLowerCase();
+  for (const c of CATS) if (c.kw.some((k) => t.includes(k))) return c;
+  return { key: "overig", label: "Overig" };
+}
+function firstImage(body) {
+  const m = (body || "").match(/<img[^>]+src=["']([^"']+)["']/i);
+  return m ? m[1] : null;
+}
+function excerpt(body) {
+  const text = (body || "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length > 150 ? text.slice(0, 150).trim() + "…" : text;
+}
+
+const list = raw
+  .filter((p) => p.path && p.title)
+  .map((p) => {
+    const c = categorize(p.title);
+    return { title: p.title, path: p.path, date: p.date, cat: c.key, catLabel: c.label, img: firstImage(p.body), excerpt: excerpt(p.body) };
+  });
+
+const featured = list[0];
+const rest = list.slice(1);
+
+// Categorie-tellingen voor de filterchips (over de grid-artikelen = rest).
+const catCounts = {};
+rest.forEach((p) => { catCounts[p.cat] = (catCounts[p.cat] || 0) + 1; });
+const activeCats = [...CATS, { key: "overig", label: "Overig" }].filter((c) => catCounts[c.key]);
+
+const fmt = (d) => (d ? new Date(d).toLocaleDateString("nl-NL", { day: "numeric", month: "long", year: "numeric" }) : "");
 ---
-<Base title="Kenniscentrum | Hrmforce" description="Artikelen over HR, assessments, capaciteiten en ontwikkeling." active="">
+<Base title="Kenniscentrum | Hrmforce" description="Artikelen over HR, assessments, capaciteiten en ontwikkeling. Filter op thema of zoek direct in ons kenniscentrum." active="">
   <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>Kenniscentrum</span></div></div>
+
   <section class="ahero"><div class="wrap" style="display:block">
     <div class="eyebrow" style="color:var(--gold)">Kenniscentrum</div>
     <h1>Kennis & inzichten</h1>
-    <p style="color:#c4d2e6;font-size:19px;max-width:760px;margin-top:8px">Artikelen over talentmanagement, assessments, capaciteiten en ontwikkeling.</p>
+    <p style="color:#c4d2e6;font-size:19px;max-width:760px;margin-top:8px">Artikelen over talentmanagement, assessments, capaciteiten en ontwikkeling. Filter op thema of zoek direct.</p>
   </div></section>
-  <section class="blog"><div class="wrap">
-    <div class="posts">
-      {list.map((p) => (
-        <a class="post" href={p.path} style="text-decoration:none">
-          <div class="img"></div>
-          <div class="body"><h3>{p.title}</h3><span class="date">{fmt(p.date)}</span></div>
+
+  {featured && (
+    <section><div class="wrap">
+      <a class="feature" href={featured.path}>
+        <div class="feature-img" style={featured.img ? `background-image:url('${featured.img}')` : ""}></div>
+        <div class="feature-body">
+          <span class="eyebrow">Uitgelicht · {featured.catLabel}</span>
+          <h2>{featured.title}</h2>
+          <p>{featured.excerpt}</p>
+          <span class="date">{fmt(featured.date)}</span>
+          <span class="readmore">Lees artikel &rarr;</span>
+        </div>
+      </a>
+    </div></section>
+  )}
+
+  <section class="bg-soft"><div class="wrap">
+    <div class="kc-filterbar">
+      <div class="kc-search"><input type="search" id="kcq" placeholder="Zoek in het kenniscentrum…" aria-label="Zoek artikelen" /></div>
+      <div class="kc-chips" role="group" aria-label="Filter op thema">
+        <button class="chip is-active" data-cat="">Alle thema's ({rest.length})</button>
+        {activeCats.map((c) => <button class="chip" data-cat={c.key}>{c.label} ({catCounts[c.key]})</button>)}
+      </div>
+    </div>
+    <p class="result-count" id="kccount"></p>
+
+    <div class="posts" id="kcgrid">
+      {rest.map((p) => (
+        <a class="post" href={p.path} data-cat={p.cat} data-title={p.title.toLowerCase()}>
+          <div class="img" style={p.img ? `background-image:url('${p.img}')` : ""}></div>
+          <div class="body">
+            <span class="post-cat">{p.catLabel}</span>
+            <h3>{p.title}</h3>
+            <p class="post-ex">{p.excerpt}</p>
+            <span class="date">{fmt(p.date)}</span>
+          </div>
         </a>
       ))}
     </div>
+    <p class="noresult" id="kcnoresult" hidden>Geen artikelen gevonden. <button class="linklike" id="kcreset" type="button">Wis de filters</button></p>
   </div></section>
 </Base>
+
+<style>
+  .feature{display:grid;grid-template-columns:1.1fr 1fr;gap:0;background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm);text-decoration:none;transition:box-shadow .2s,transform .2s}
+  .feature:hover{box-shadow:var(--shadow-md);transform:translateY(-3px)}
+  .feature-img{min-height:280px;background:linear-gradient(135deg,#e8f0fe,#dbe9fb) center/cover no-repeat}
+  .feature-body{padding:34px}
+  .feature-body h2{color:var(--navy);font-size:1.7rem;margin:6px 0 12px}
+  .feature-body p{color:var(--text);font-size:16px;line-height:1.6}
+  .feature-body .date{display:block;color:var(--muted);font-size:13px;margin:14px 0 8px}
+  .feature-body .readmore{color:var(--accent);font-weight:700}
+  @media(max-width:820px){.feature{grid-template-columns:1fr}.feature-img{min-height:180px}}
+
+  .kc-filterbar{display:grid;gap:14px;margin-bottom:14px}
+  .kc-search input{width:100%;max-width:420px;padding:12px 16px;border:1px solid var(--line-strong);border-radius:var(--radius-pill);font-size:15px;font-family:inherit}
+  .kc-search input:focus{outline:2px solid var(--blue);border-color:var(--blue)}
+  .kc-chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:1px solid var(--line-strong);background:#fff;color:var(--navy);font-weight:700;font-size:13.5px;padding:8px 14px;border-radius:var(--radius-pill);cursor:pointer;transition:.15s;font-family:inherit}
+  .chip:hover{border-color:var(--navy)}
+  .chip.is-active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .result-count{color:var(--muted);font-size:14px;margin:0 2px 18px}
+
+  .posts{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  @media(max-width:900px){.posts{grid-template-columns:1fr 1fr}}
+  @media(max-width:620px){.posts{grid-template-columns:1fr}}
+  .post{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;text-decoration:none;box-shadow:var(--shadow-xs);transition:box-shadow .2s,transform .2s}
+  .post:hover{box-shadow:var(--shadow-md);transform:translateY(-4px)}
+  .post .img{height:160px;background:linear-gradient(135deg,#e8f0fe,#dbe9fb) center/cover no-repeat}
+  .post .body{padding:18px 20px 22px;display:flex;flex-direction:column;flex:1}
+  .post-cat{color:var(--blue);font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
+  .post h3{color:var(--navy);font-size:1.05rem;line-height:1.35;margin:0 0 8px}
+  .post-ex{color:var(--muted);font-size:14px;line-height:1.55;flex:1}
+  .post .date{color:var(--muted);font-size:12.5px;margin-top:12px}
+  .noresult{text-align:center;color:var(--muted);padding:30px 0}
+  .linklike{background:none;border:none;color:var(--accent);font-weight:700;cursor:pointer;text-decoration:underline;font-family:inherit}
+</style>
+
+<script>
+  const grid = document.getElementById("kcgrid");
+  const posts = Array.from(grid.querySelectorAll(".post"));
+  const q = document.getElementById("kcq");
+  const chips = Array.from(document.querySelectorAll(".chip[data-cat]"));
+  const countEl = document.getElementById("kccount");
+  const noResult = document.getElementById("kcnoresult");
+  let cat = "";
+  function apply() {
+    const term = (q.value || "").trim().toLowerCase();
+    let shown = 0;
+    posts.forEach((p) => {
+      const okCat = !cat || p.dataset.cat === cat;
+      const okTerm = !term || p.dataset.title.includes(term);
+      const show = okCat && okTerm;
+      p.style.display = show ? "flex" : "none";
+      if (show) shown++;
+    });
+    countEl.textContent = shown + " artikelen";
+    noResult.hidden = shown !== 0;
+  }
+  chips.forEach((ch) => ch.addEventListener("click", () => {
+    chips.forEach((x) => x.classList.remove("is-active"));
+    ch.classList.add("is-active");
+    cat = ch.dataset.cat;
+    apply();
+  }));
+  q.addEventListener("input", apply);
+  document.getElementById("kcreset").addEventListener("click", () => {
+    q.value = ""; cat = ""; chips.forEach((x) => x.classList.remove("is-active")); chips[0].classList.add("is-active"); apply();
+  });
+  apply();
+</script>
