@@ -57,6 +57,20 @@ const onboarding = [
   { name: "Pro", zelf: "1/5", detail: "5/5", price: "3750,-*", items: ["BASIC +", "Contact consultant", "Inrichten maatwerk API", "Inrichten Ontwikkelcyclus", "Begeleiding interne communicatie", "Kickoff"] },
 ];
 
+// Vergelijkingstabel — kernverschillen tussen de pakketten.
+const compareRows = [
+  { label: "Aantal vragenlijsten", pay: "37", adv: "37 + maatwerk", pro: "Alle + op maat" },
+  { label: "Big50 Personality & 360 Feedback", pay: true, adv: "+ extra open vragen", pro: "+ extra open vragen" },
+  { label: "CanMeds & maatwerk vragenlijsten (Zorg/Onderwijs)", pay: false, adv: true, pro: true },
+  { label: "HRM Tools (Analytics, Recruitment, Development)", pay: false, adv: "Analytics, Recruitment, BiLa", pro: "Volledige suite + Teamview" },
+  { label: "Eigen huisstijl in portal & rapportages", pay: false, adv: "Eigen bedrijfslogo", pro: true },
+  { label: "Management reporting & kandidatenbeheer", pay: true, adv: true, pro: true },
+  { label: "Support", pay: "Online kennisbank", adv: "Telefonische helpdesk", pro: "Eigen accountmanager" },
+  { label: "Certificatietraining", pay: "Open inschrijving", adv: "1 deelnemer", pro: "Tot 8 deelnemers" },
+  { label: "API-koppelingen", pay: false, adv: "Bestaande koppelingen", pro: "Maatwerk API + autosync" },
+  { label: "Prijsmodel", pay: "Betaal per test", adv: "Jaarlicentie", pro: "Jaarlicentie" },
+];
+
 const faqs = [
   { q: "Wat voor soort vragenlijsten biedt hrmforce aan?", a: "hrmforce biedt een breed scala aan vragenlijsten, waaronder persoonlijkheidstests, competentie-assessments, 360 graden feedback en medewerkerstevredenheidsonderzoeken, allemaal ontworpen om de HR-processen te versterken." },
   { q: "Kunnen de vragenlijsten worden aangepast aan de specifieke behoeften van ons bedrijf?", a: "Ja, we bieden maatwerkoplossingen waarbij onze vragenlijsten kunnen worden aangepast om te voldoen aan de specifieke behoeften en doelen van uw organisatie." },
@@ -102,6 +116,36 @@ const faqs = [
   </div></section>
 
   <section class="bg-soft"><div class="wrap">
+    <div class="eyebrow">Vergelijken</div>
+    <h2 class="section-title">Pakketten vergelijken</h2>
+    <div class="compare-scroll">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th class="feat-col">Functionaliteit</th>
+            <th>Pay-as-you-go</th>
+            <th class="col-featured">Advanced <span class="th-badge">Meest gekozen</span></th>
+            <th>Pro</th>
+          </tr>
+        </thead>
+        <tbody>
+          {compareRows.map((r) => (
+            <tr>
+              <th scope="row">{r.label}</th>
+              {[r.pay, r.adv, r.pro].map((v, i) => (
+                <td class={i === 1 ? "col-featured" : ""}>
+                  {v === true ? <span class="yes">✓</span> : v === false ? <span class="no">–</span> : <span class="txt">{v}</span>}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <div class="btns" style="margin-top:20px"><a href="/contact/" class="btn btn-primary">Vraag een offerte op maat aan</a></div>
+  </div></section>
+
+  <section><div class="wrap">
     <div class="eyebrow">Standaard</div>
     <h2 class="section-title">Ieder pakket is inclusief</h2>
     <ul class="incl-grid">
@@ -173,4 +217,17 @@ const faqs = [
   .incl-grid li{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;font-weight:700;color:var(--navy);position:relative;padding-left:44px;box-shadow:var(--shadow-xs)}
   .incl-grid li:before{content:"✓";position:absolute;left:18px;color:var(--gold);font-weight:800}
   .cta .wrap{text-align:center}
+  .compare-scroll{overflow-x:auto;margin-top:28px;border-radius:var(--radius);border:1px solid var(--line);background:#fff}
+  table.compare{width:100%;border-collapse:collapse;min-width:720px}
+  table.compare th,table.compare td{padding:14px 16px;text-align:center;border-bottom:1px solid var(--line);font-size:14.5px}
+  table.compare thead th{background:var(--navy);color:#fff;font-weight:700;font-size:14px;position:sticky;top:0}
+  table.compare thead th.feat-col{text-align:left}
+  table.compare tbody th[scope=row]{text-align:left;color:var(--navy);font-weight:700;background:var(--bg-soft)}
+  table.compare .col-featured{background:#fff8f2}
+  table.compare thead th.col-featured{background:var(--accent);color:#fff}
+  .th-badge{display:block;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;opacity:.95;margin-top:2px}
+  table.compare .yes{color:#1a8a3d;font-weight:800;font-size:1.1rem}
+  table.compare .no{color:var(--muted);font-weight:700}
+  table.compare .txt{color:var(--navy);font-weight:600}
+  table.compare tbody tr:last-child td,table.compare tbody tr:last-child th{border-bottom:none}
 </style>
