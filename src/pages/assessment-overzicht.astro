@@ -1,7 +1,8 @@
 ---
 import Base from "../layouts/Base.astro";
+import { shopMap, SHOP_BASE } from "../data/assessment-shop.js";
 
-const items = [
+const rawItems = [
   { title: "DISC test", slug: "disc-test", cats: ["(Pre)Selectie", "Evalueren", "Ontwikkeling"], goal: "Inzicht in gedrag, communicatie en samenwerking, zodat je weet hoe iemand het beste presteert, samenwerkt en aangestuurd wil worden." },
   { title: "360 Graden Feedback", slug: "360-graden-feedback", cats: ["Evalueren", "Ontwikkeling"], goal: "Feedback ontvangen m.b.t. vaardigheden, capaciteiten, persoonlijkheid en motivatie." },
   { title: "Persoonlijkheidstest: Big Five", slug: "big-five", cats: ["(Pre)Selectie", "Evalueren", "Ontwikkeling"], goal: "Persoonlijkheidskenmerken omzetten naar vaardigheden en zo ontdekken waar iemand kan groeien." },
@@ -39,10 +40,21 @@ const items = [
   { title: "Groepsrollen", slug: "groepsrollen", cats: ["Evalueren", "Ontwikkeling"], goal: "Overzicht van de groepsrollen, die een medewerker al dan niet zal aannemen in bepaalde situaties." },
   { title: "Typology", slug: "typology", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Inzicht in het type medewerkers, gebaseerd op hoe we omgaan met dominantie (invloed versus samenwerken) en emotie (gevoel versus ratio)." },
 ];
+
+// Verrijk elk item met shop-info (prijs, segment, uitgever).
+const items = rawItems.map((a) => {
+  const s = shopMap[a.slug] || { price: null, segments: [], uitgever: null };
+  return { ...a, price: s.price, segments: s.segments || [], uitgever: s.uitgever || null };
+});
+
+// Filterwaarden verzamelen (gesorteerd, uniek).
+const allCyclus = ["(Pre)Selectie", "Evalueren", "Ontwikkeling", "Studiekeuze"];
+const allSegments = [...new Set(items.flatMap((i) => i.segments))].sort();
+const allUitgevers = [...new Set(items.map((i) => i.uitgever).filter(Boolean))].sort();
 ---
 <Base
   title="Assessment Overzicht - hrmforce"
-  description="Bekijk het assessment overzicht met meer dan 23 online assessments waarmee u het talent binnen uw organisatie kunt meten en inzichtelijk maakt."
+  description="Bekijk het assessment overzicht met meer dan 35 online assessments. Filter op HR-cyclus, segment en uitgever en vind direct het juiste instrument."
   active="assessments"
 >
   <div class="crumb">
@@ -60,21 +72,123 @@ const items = [
 
   <section>
     <div class="wrap">
-      <div class="cards">
+      <div class="filterbar" id="filterbar">
+        <div class="fb-search">
+          <input type="search" id="q" placeholder="Zoek een assessment…" aria-label="Zoek een assessment" />
+        </div>
+        <div class="fb-group" role="group" aria-label="Filter op HR-cyclus">
+          <button class="chip is-active" data-cyclus="">Alle fases</button>
+          {allCyclus.map((c) => <button class="chip" data-cyclus={c}>{c}</button>)}
+        </div>
+        <div class="fb-selects">
+          <label class="sr-only" for="segsel">Segment</label>
+          <select id="segsel">
+            <option value="">Alle segmenten</option>
+            {allSegments.map((s) => <option value={s}>{s}</option>)}
+          </select>
+          <label class="sr-only" for="uitsel">Uitgever</label>
+          <select id="uitsel">
+            <option value="">Alle uitgevers</option>
+            {allUitgevers.map((u) => <option value={u}>{u}</option>)}
+          </select>
+          <button class="chip chip-reset" id="reset" type="button">Wissen</button>
+        </div>
+      </div>
+      <p class="result-count" id="count"></p>
+
+      <div class="cards" id="grid">
         {items.map((a) => (
-          <a class="card" href={`/assessments/${a.slug}/`} style="text-decoration:none;color:inherit;display:block">
+          <a
+            class="card acard"
+            href={`/assessments/${a.slug}/`}
+            data-cyclus={a.cats.join("|")}
+            data-seg={a.segments.join("|")}
+            data-uit={a.uitgever || ""}
+            data-title={a.title.toLowerCase()}
+            style="text-decoration:none;color:inherit;display:flex;flex-direction:column"
+          >
             <span class="tag-row">{a.cats.map((c) => <span class="tag">{c}</span>)}</span>
             <h3>{a.title}</h3>
-            <p><strong>Doel:</strong> {a.goal}</p>
-            <span style="color:var(--blue);font-weight:600;font-size:15px">Lees meer &rarr;</span>
+            <p style="flex:1"><strong>Doel:</strong> {a.goal}</p>
+            <div class="card-foot">
+              {a.price ? <span class="price">€{a.price}</span> : <span class="price price-muted">In de shop</span>}
+              <span class="readmore">Lees meer &rarr;</span>
+            </div>
           </a>
         ))}
       </div>
+      <p class="noresult" id="noresult" hidden>Geen assessments gevonden. <button class="linklike" id="reset2" type="button">Wis de filters</button></p>
     </div>
   </section>
 </Base>
 
 <style>
+  .filterbar { display: grid; gap: 14px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm); margin-bottom: 18px; }
+  .fb-search input { width: 100%; padding: 12px 16px; border: 1px solid var(--line-strong); border-radius: var(--radius-pill); font-size: 15px; font-family: inherit; }
+  .fb-search input:focus { outline: 2px solid var(--blue); border-color: var(--blue); }
+  .fb-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { border: 1px solid var(--line-strong); background: #fff; color: var(--navy); font-weight: 700; font-size: 13.5px; padding: 8px 14px; border-radius: var(--radius-pill); cursor: pointer; transition: .15s; font-family: inherit; }
+  .chip:hover { border-color: var(--navy); }
+  .chip.is-active { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .fb-selects { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .fb-selects select { padding: 10px 14px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); font-size: 14px; font-family: inherit; background: #fff; color: var(--navy); font-weight: 600; }
+  .chip-reset { border-style: dashed; }
+  .result-count { color: var(--muted); font-size: 14px; margin: 0 2px 14px; }
+  .card-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .price { font-weight: 800; color: var(--navy); font-size: 1.05rem; }
+  .price-muted { color: var(--muted); font-weight: 700; font-size: .95rem; }
+  .readmore { color: var(--blue); font-weight: 600; font-size: 15px; }
+  .noresult { text-align: center; color: var(--muted); padding: 30px 0; }
+  .linklike { background: none; border: none; color: var(--accent); font-weight: 700; cursor: pointer; text-decoration: underline; font-family: inherit; }
   .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
   .tag { background: #e8f0fe; color: var(--navy); font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
 </style>
+
+<script>
+  const grid = document.getElementById("grid");
+  const cards = Array.from(grid.querySelectorAll(".acard"));
+  const q = document.getElementById("q");
+  const segsel = document.getElementById("segsel");
+  const uitsel = document.getElementById("uitsel");
+  const countEl = document.getElementById("count");
+  const noResult = document.getElementById("noresult");
+  const chips = Array.from(document.querySelectorAll(".chip[data-cyclus]"));
+  let cyclus = "";
+
+  function apply() {
+    const term = (q.value || "").trim().toLowerCase();
+    const seg = segsel.value;
+    const uit = uitsel.value;
+    let shown = 0;
+    cards.forEach((c) => {
+      const okCyc = !cyclus || c.dataset.cyclus.split("|").includes(cyclus);
+      const okSeg = !seg || c.dataset.seg.split("|").includes(seg);
+      const okUit = !uit || c.dataset.uit === uit;
+      const okTerm = !term || c.dataset.title.includes(term);
+      const show = okCyc && okSeg && okUit && okTerm;
+      c.style.display = show ? "flex" : "none";
+      if (show) shown++;
+    });
+    countEl.textContent = shown + " van " + cards.length + " assessments";
+    noResult.hidden = shown !== 0;
+  }
+  chips.forEach((ch) => ch.addEventListener("click", () => {
+    chips.forEach((x) => x.classList.remove("is-active"));
+    ch.classList.add("is-active");
+    cyclus = ch.dataset.cyclus;
+    apply();
+  }));
+  q.addEventListener("input", apply);
+  segsel.addEventListener("change", apply);
+  uitsel.addEventListener("change", apply);
+  function reset() {
+    q.value = ""; segsel.value = ""; uitsel.value = ""; cyclus = "";
+    chips.forEach((x) => x.classList.remove("is-active"));
+    chips[0].classList.add("is-active");
+    apply();
+  }
+  document.getElementById("reset").addEventListener("click", reset);
+  document.getElementById("reset2").addEventListener("click", reset);
+  apply();
+</script>
