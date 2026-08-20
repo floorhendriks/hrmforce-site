@@ -23,7 +23,7 @@ const featured = featuredSlugs
 const valueProps = [
   { icon: "shield", h: "Wetenschappelijk gevalideerd", p: "Gebouwd op bewezen modellen (Big Five, klassieke testtheorie) en gereviewd door NIP-geregistreerde psychologen." },
   { icon: "bolt", h: "Binnen een uur live", p: "Portal in jouw huisstijl klaar, kandidaten in één klik uitgenodigd, rapport automatisch in je inbox." },
-  { icon: "globe", h: "6 talen, één platform", p: "Kandidaten testen in NL, EN, DE, FR, ES of RO. Eén omgeving voor de complete HR-cyclus." },
+  { icon: "globe", h: "14 talen, één platform", p: "Kandidaten testen in hun eigen taal. Eén omgeving voor de complete HR-cyclus." },
   { icon: "lock", h: "AVG-proof & veilig", p: "Verwerking binnen de EU, versleutelde verbindingen en instelbare bewaartermijnen per assessment." },
 ];
 
@@ -110,19 +110,19 @@ const posts = [
 // Reviews (echte reviewteksten uit bestaande content)
 const reviews = [
   {
-    name: "Esther Moolenaar",
+    name: "Esther M.",
     href: "https://www.google.com/maps/contrib/115910511765005052442/reviews",
     avatar: "https://lh3.googleusercontent.com/a/ACg8ocIhKQ63iBmiXYhMAhfrrkFkQaxjlYW2KO2B8gdpuQjOtNvXFQ=s128-c0x00000000-cc-rp-mo",
     text: "Enorm klantvriendelijk en meedenkend. HRMforce heeft mij geholpen talenten en ontwikkelpunten van mijn medewerkers in kaart te brengen, wat heeft gezorgd voor een enorm boost voor het bedrijf.",
   },
   {
-    name: "Eric Hoogeweg",
+    name: "Eric H.",
     href: "https://www.google.com/maps/contrib/103157241363380674799/reviews",
     avatar: "https://lh3.googleusercontent.com/a-/ALV-UjWrAxJ0maIGi5Z1EyHdGPMCO-qcqcM2t-pCd8Hj_hpyD6boNqDM=s128-c0x00000000-cc-rp-mo-ba2",
     text: "Goede dienstverlener met uitstekende tools voor talentontwikkeling. Zo help je organisaties vooruit.",
   },
   {
-    name: "Juliëtte Kamphuis",
+    name: "Juliëtte K.",
     href: "https://www.google.com/maps/contrib/103151884185464760911/reviews",
     avatar: "https://lh3.googleusercontent.com/a-/ALV-UjWzNKARK4Sotv0Pu1cRYYw1lEBsdx1-ocrtfJ08Vu1qLn15rQ_w=s128-c0x00000000-cc-rp-mo",
     text: "Leuke gratis kleurentest gedaan! Prettige en professionele dienstverlening.",
@@ -182,7 +182,7 @@ const faqs = [
           <a class="btn btn-primary" href="/contact/">Plan een gratis demo →</a>
           <a class="btn btn-ghost hero-ghost" href="/online-assessments/">Bekijk alle assessments</a>
         </div>
-        <p class="hero-micro">Binnen 24 uur reactie · geen verkoopdruk · niet tevreden, geld terug</p>
+        <p class="hero-micro">Binnen 24 uur reactie · geen verkoopdruk · vrijblijvend advies</p>
         <div class="hero-badges">
           <span class="hb"><span class="hb-ic">✓</span> COTAN-beoordeeld</span>
           <span class="hb"><span class="hb-ic">✓</span> NIP-psychologen</span>
@@ -234,11 +234,12 @@ const faqs = [
 
       <figure class="spotlight">
         <div class="stars">★★★★★</div>
-        <blockquote>“{reviews[0].text}”</blockquote>
-        <figcaption>
-          <img src={reviews[0].avatar} alt={reviews[0].name} loading="lazy" />
-          <span><a href={reviews[0].href} class="sp-name">{reviews[0].name}</a><small>Tevreden klant · Google-review</small></span>
+        <blockquote id="sp-text">“{reviews[0].text}”</blockquote>
+        <figcaption id="sp-cap">
+          <img id="sp-avatar" src={reviews[0].avatar} alt={reviews[0].name} loading="lazy" />
+          <span><a id="sp-name" href={reviews[0].href} class="sp-name">{reviews[0].name}</a><small>Tevreden klant · Google-review</small></span>
         </figcaption>
+        <div class="sp-dots" id="sp-dots" role="tablist" aria-label="Reviews"></div>
       </figure>
     </div>
   </section>
@@ -341,47 +342,6 @@ const faqs = [
     </div>
   </section>
 
-  <!-- 5a. Haal rendement uit je talent (behouden, nu met beeld) -->
-  <section>
-    <div class="wrap rendement">
-      <div class="rendement-text">
-        <span class="eyebrow">Van talent naar resultaat</span>
-        <h2 class="section-title">Haal rendement uit je talent</h2>
-        <p>Als manager van mensen heb je altijd veel te doen. Het assessen van nieuwe en huidige medewerkers, ontwikkelen van medewerkers en teams, functionerings- en beoordelingsgesprekken voeren én data analyseren om beleid te bepalen &amp; visie te ontwikkelen.</p>
-        <p>De <strong>talentmanagement software</strong> van <strong>hrmforce helpt je bij elk onderdeel van het HR-proces</strong>. Ontwikkel je medewerkers, laat je organisatie groeien en behaal het maximale rendement.</p>
-        <p style="margin-top:8px"><a class="btn btn-primary" href="/contact/">Neem contact op</a></p>
-      </div>
-      <div class="rendement-img">
-        <img src="https://hrmforce.com/wp-content/uploads/2020/12/ass-afb3.png" alt="hrmforce gesprekscyclus dashboard" loading="lazy" />
-        <img src="https://hrmforce.com/wp-content/uploads/2020/12/ass-afb2.png" alt="hrmforce online assessment portal" loading="lazy" />
-      </div>
-    </div>
-  </section>
-
-  <!-- 5b. Kenniscentrum (behouden) -->
-  <section class="blog">
-    <div class="wrap" style="display:block">
-      <h2 class="section-title center">Uit ons kenniscentrum</h2>
-      <div class="posts">
-        {posts.map((p) => (
-          <a class="post" href={p.href}>
-            <img class="post-img" src={p.img} alt={p.title} loading="lazy" />
-            <div class="body">
-              <div class="tag">{p.tags}</div>
-              <h3>{p.title}</h3>
-              <p class="excerpt">{p.excerpt}</p>
-              <div class="date">{p.date}</div>
-              <span class="readmore">Lees meer &gt;</span>
-            </div>
-          </a>
-        ))}
-      </div>
-      <div class="center" style="margin-top:32px">
-        <a class="btn btn-ghost" href="/kenniscentrum/">Naar het kenniscentrum</a>
-      </div>
-    </div>
-  </section>
-
   <!-- 5c. FAQ (behouden) -->
   <section class="blog">
     <div class="wrap" style="display:block;max-width:900px">
@@ -415,6 +375,38 @@ const faqs = [
       </div>
     </div>
   </section>
+
+  <script define:vars={{ reviews }}>
+    (function () {
+      var text = document.getElementById("sp-text");
+      var av = document.getElementById("sp-avatar");
+      var nm = document.getElementById("sp-name");
+      var dots = document.getElementById("sp-dots");
+      if (!text || !dots || !reviews || reviews.length < 2) return;
+      var fig = text.closest(".spotlight");
+      var i = 0, timer;
+      reviews.forEach(function (_, idx) {
+        var b = document.createElement("button");
+        b.className = "sp-dot" + (idx === 0 ? " on" : "");
+        b.setAttribute("aria-label", "Review " + (idx + 1));
+        b.addEventListener("click", function () { show(idx); restart(); });
+        dots.appendChild(b);
+      });
+      function show(n) {
+        i = n; var r = reviews[n];
+        fig.style.opacity = 0;
+        setTimeout(function () {
+          text.textContent = "“" + r.text + "”";
+          av.src = r.avatar; av.alt = r.name;
+          nm.textContent = r.name; nm.href = r.href;
+          Array.prototype.forEach.call(dots.children, function (d, idx) { d.classList.toggle("on", idx === n); });
+          fig.style.opacity = 1;
+        }, 260);
+      }
+      function restart() { clearInterval(timer); timer = setInterval(function () { show((i + 1) % reviews.length); }, 6000); }
+      restart();
+    })();
+  </script>
 </Base>
 
 <style>
@@ -484,6 +476,10 @@ const faqs = [
   .spotlight figcaption span { text-align: left; display: flex; flex-direction: column; }
   .sp-name { color: var(--navy); font-weight: 700; font-size: 15px; }
   .spotlight figcaption small { color: var(--muted); font-size: 13px; }
+  .spotlight { transition: opacity .26s ease; }
+  .sp-dots { display: flex; justify-content: center; gap: 8px; margin-top: 22px; }
+  .sp-dot { width: 8px; height: 8px; border-radius: 50%; border: 0; padding: 0; background: var(--line-strong); cursor: pointer; transition: .2s; }
+  .sp-dot.on { background: var(--accent); width: 22px; border-radius: 999px; }
 
   /* ---------- UITGELICHTE ASSESSMENTS ---------- */
   .assess-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
