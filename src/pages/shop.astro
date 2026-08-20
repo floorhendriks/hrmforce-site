@@ -1,0 +1,216 @@
+---
+import Base from "../layouts/Base.astro";
+import { SHOPIFY } from "../data/site-config.js";
+
+const configured = Boolean(SHOPIFY.STOREFRONT_TOKEN);
+const cfg = {
+  domain: SHOPIFY.DOMAIN,
+  token: SHOPIFY.STOREFRONT_TOKEN,
+  version: SHOPIFY.API_VERSION,
+  publicUrl: SHOPIFY.PUBLIC_SHOP_URL,
+};
+---
+<Base
+  title="Shop | Online assessments direct afnemen | Hrmforce"
+  description="Bestel losse online assessments direct in de hrmforce-shop. Filter op HR-cyclus, segment en uitgever. Betaal veilig en start binnen een uur."
+  active="shop"
+>
+  <div class="crumb"><div class="wrap"><a href="/">Home</a> › <span>Shop</span></div></div>
+
+  <section class="ahero"><div class="wrap" style="display:block">
+    <div class="eyebrow" style="color:var(--gold)">Shop</div>
+    <h1>Assessments direct afnemen</h1>
+    <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">Bestel losse assessments zonder abonnement. Filter op HR-cyclus, segment of uitgever, reken veilig af en start binnen een uur. Ook instrumenten van partners als SHL, Talogy en PiCompany.</p>
+  </div></section>
+
+  <section><div class="wrap">
+    {configured ? (
+      <div id="shopApp" data-domain={cfg.domain} data-token={cfg.token} data-version={cfg.version} data-publicurl={cfg.publicUrl}>
+        <div class="shop-toolbar">
+          <div class="shop-search"><input type="search" id="shopq" placeholder="Zoek een product…" aria-label="Zoek een product" /></div>
+          <div class="shop-selects">
+            <select id="fCyclus"><option value="">Alle HR-cyclus</option></select>
+            <select id="fSegment"><option value="">Alle segmenten</option></select>
+            <select id="fUitgever"><option value="">Alle uitgevers</option></select>
+            <button class="chip chip-reset" id="shopReset" type="button">Wissen</button>
+          </div>
+        </div>
+        <p class="result-count" id="shopCount">Producten laden…</p>
+        <div class="shop-grid" id="shopGrid"></div>
+        <p class="shop-status" id="shopStatus" hidden></p>
+      </div>
+    ) : (
+      <div class="shop-placeholder">
+        <h2 class="section-title">De ingebouwde shop wordt geactiveerd</h2>
+        <p class="lead" style="max-width:640px;margin:0 auto 22px">De volledige shop verschijnt hier binnen website.hrmforce.com zodra de Shopify-koppeling is geactiveerd. Bekijk in de tussentijd het volledige aanbod in onze webshop.</p>
+        <a class="btn btn-primary" href={cfg.publicUrl} rel="noopener">Naar de shop &rarr;</a>
+      </div>
+    )}
+  </div></section>
+
+  <section class="bg-soft"><div class="wrap">
+    <div class="shop-usps">
+      <div class="usp"><strong>Veilig betalen</strong><span>Afrekenen via de beveiligde Shopify-checkout.</span></div>
+      <div class="usp"><strong>Direct starten</strong><span>Na aankoop ontvang je de uitnodigingslink per e-mail.</span></div>
+      <div class="usp"><strong>Geen abonnement</strong><span>Betaal alleen voor wat je afneemt, per assessment.</span></div>
+      <div class="usp"><strong>Validated instrumenten</strong><span>Wetenschappelijk onderbouwd en NIP-gereviewd.</span></div>
+    </div>
+  </div></section>
+</Base>
+
+<style>
+  .shop-toolbar { display: grid; gap: 14px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+  .shop-search input { width: 100%; max-width: 420px; padding: 12px 16px; border: 1px solid var(--line-strong); border-radius: var(--radius-pill); font-size: 15px; font-family: inherit; }
+  .shop-search input:focus { outline: 2px solid var(--blue); border-color: var(--blue); }
+  .shop-selects { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .shop-selects select { padding: 10px 14px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); font-size: 14px; font-family: inherit; background: #fff; color: var(--navy); font-weight: 600; }
+  .chip-reset { border: 1px dashed var(--line-strong); background: #fff; color: var(--navy); font-weight: 700; font-size: 13.5px; padding: 9px 14px; border-radius: var(--radius-pill); cursor: pointer; font-family: inherit; }
+  .result-count { color: var(--muted); font-size: 14px; margin: 0 2px 16px; }
+  .shop-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  @media (max-width: 1000px) { .shop-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 760px) { .shop-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .shop-grid { grid-template-columns: 1fr; } }
+  .sp-card { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-xs); transition: transform .2s, box-shadow .2s; }
+  .sp-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+  .sp-img { height: 150px; background: var(--bg-soft) center/contain no-repeat; }
+  .sp-body { padding: 16px 18px 18px; display: flex; flex-direction: column; flex: 1; }
+  .sp-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+  .sp-tag { background: #e8f0fe; color: var(--navy); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+  .sp-title { color: var(--navy); font-size: 1rem; font-weight: 700; line-height: 1.35; margin-bottom: 8px; flex: 1; }
+  .sp-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
+  .sp-price { color: var(--navy); font-weight: 800; font-size: 1.05rem; }
+  .sp-buy { background: var(--accent); color: #fff; border: none; font-weight: 700; font-size: 13.5px; padding: 9px 14px; border-radius: var(--radius-pill); cursor: pointer; font-family: inherit; transition: background .15s; }
+  .sp-buy:hover { background: var(--accent-hover); }
+  .sp-buy:disabled { opacity: .6; cursor: default; }
+  .shop-status { text-align: center; color: var(--muted); padding: 24px 0; }
+  .shop-placeholder { text-align: center; padding: 30px 0 10px; }
+  .shop-usps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .usp { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; border-left: 3px solid var(--gold); }
+  .usp strong { display: block; color: var(--navy); margin-bottom: 4px; }
+  .usp span { color: var(--muted); font-size: 14px; }
+  @media (max-width: 880px) { .shop-usps { grid-template-columns: 1fr 1fr; } }
+</style>
+
+<script is:inline>
+  (function () {
+    var app = document.getElementById("shopApp");
+    if (!app) return; // shop nog niet geconfigureerd (placeholder-modus)
+    var DOMAIN = app.dataset.domain, TOKEN = app.dataset.token, VER = app.dataset.version, PUBLIC = app.dataset.publicurl;
+    var grid = document.getElementById("shopGrid");
+    var countEl = document.getElementById("shopCount");
+    var statusEl = document.getElementById("shopStatus");
+    var q = document.getElementById("shopq");
+    var fCyclus = document.getElementById("fCyclus"), fSegment = document.getElementById("fSegment"), fUitgever = document.getElementById("fUitgever");
+    var products = [];
+
+    function gql(query, variables) {
+      return fetch("https://" + DOMAIN + "/api/" + VER + "/graphql.json", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Shopify-Storefront-Access-Token": TOKEN },
+        body: JSON.stringify({ query: query, variables: variables || {} }),
+      }).then(function (r) { return r.json(); });
+    }
+
+    function parseTaxo(tags) {
+      var o = { cyclus: [], segment: [], uitgever: null };
+      (tags || []).forEach(function (t) {
+        if (t.indexOf("HR-cyclus:") === 0) o.cyclus.push(t.split(":")[1].trim());
+        else if (t.indexOf("Segment:") === 0) o.segment.push(t.split(":")[1].trim());
+        else if (t.indexOf("Uitgever:") === 0) o.uitgever = t.split(":")[1].trim();
+      });
+      return o;
+    }
+    function money(a, c) {
+      var n = parseFloat(a);
+      return (c === "EUR" ? "€" : (c + " ")) + n.toFixed(2).replace(".", ",");
+    }
+    function fillSelect(sel, values) {
+      values.sort().forEach(function (v) {
+        var o = document.createElement("option"); o.value = v; o.textContent = v; sel.appendChild(o);
+      });
+    }
+
+    var PRODUCTS_Q =
+      "{ products(first: 100, sortKey: TITLE) { edges { node { title handle tags availableForSale " +
+      "featuredImage { url altText } priceRange { minVariantPrice { amount currencyCode } } " +
+      "variants(first: 1) { edges { node { id availableForSale } } } } } } }";
+
+    function render() {
+      var term = (q.value || "").trim().toLowerCase();
+      var c = fCyclus.value, s = fSegment.value, u = fUitgever.value;
+      var html = "", shown = 0;
+      products.forEach(function (p) {
+        var okC = !c || p.taxo.cyclus.indexOf(c) > -1;
+        var okS = !s || p.taxo.segment.indexOf(s) > -1;
+        var okU = !u || p.taxo.uitgever === u;
+        var okT = !term || p.title.toLowerCase().indexOf(term) > -1;
+        if (!(okC && okS && okU && okT)) return;
+        shown++;
+        var chips = p.taxo.cyclus.concat(p.taxo.segment).slice(0, 3).map(function (x) { return '<span class="sp-tag">' + x + "</span>"; }).join("");
+        var img = p.image ? 'style="background-image:url(\'' + p.image + "')\"" : "";
+        var buy = p.variantId && p.available
+          ? '<button class="sp-buy" data-vid="' + p.variantId + '">In winkelmand</button>'
+          : '<a class="sp-buy" href="' + PUBLIC + "/products/" + p.handle + '">Bekijk</a>';
+        html +=
+          '<div class="sp-card">' +
+          '<a class="sp-img" ' + img + ' href="' + PUBLIC + "/products/" + p.handle + '" aria-label="' + p.title + '"></a>' +
+          '<div class="sp-body"><div class="sp-tags">' + chips + "</div>" +
+          '<div class="sp-title">' + p.title + "</div>" +
+          '<div class="sp-foot"><span class="sp-price">' + p.price + "</span>" + buy + "</div></div></div>";
+      });
+      grid.innerHTML = html;
+      countEl.textContent = shown + " van " + products.length + " producten";
+      grid.querySelectorAll(".sp-buy[data-vid]").forEach(function (b) {
+        b.addEventListener("click", function () { checkout(b.dataset.vid, b); });
+      });
+    }
+
+    function checkout(variantId, btn) {
+      btn.disabled = true; btn.textContent = "Bezig…";
+      var M = 'mutation($id: ID!){ cartCreate(input:{lines:[{quantity:1, merchandiseId:$id}]}){ cart { checkoutUrl } userErrors { message } } }';
+      gql(M, { id: variantId }).then(function (res) {
+        var url = res && res.data && res.data.cartCreate && res.data.cartCreate.cart && res.data.cartCreate.cart.checkoutUrl;
+        if (url) { window.location.href = url; }
+        else { throw new Error("no checkout url"); }
+      }).catch(function () {
+        btn.disabled = false; btn.textContent = "In winkelmand";
+        statusEl.hidden = false; statusEl.textContent = "Kon de winkelmand niet openen. Probeer het opnieuw of ga naar de shop.";
+      });
+    }
+
+    countEl.textContent = "Producten laden…";
+    gql(PRODUCTS_Q).then(function (res) {
+      var edges = res && res.data && res.data.products && res.data.products.edges;
+      if (!edges) throw new Error("no products");
+      var cycSet = {}, segSet = {}, uitSet = {};
+      products = edges.map(function (e) {
+        var n = e.node, taxo = parseTaxo(n.tags);
+        taxo.cyclus.forEach(function (x) { cycSet[x] = 1; });
+        taxo.segment.forEach(function (x) { segSet[x] = 1; });
+        if (taxo.uitgever) uitSet[taxo.uitgever] = 1;
+        var v = n.variants && n.variants.edges && n.variants.edges[0] && n.variants.edges[0].node;
+        return {
+          title: n.title, handle: n.handle, taxo: taxo,
+          image: n.featuredImage ? n.featuredImage.url : null,
+          price: n.priceRange ? money(n.priceRange.minVariantPrice.amount, n.priceRange.minVariantPrice.currencyCode) : "",
+          variantId: v ? v.id : null, available: v ? v.availableForSale : false,
+        };
+      });
+      fillSelect(fCyclus, Object.keys(cycSet));
+      fillSelect(fSegment, Object.keys(segSet));
+      fillSelect(fUitgever, Object.keys(uitSet));
+      render();
+    }).catch(function () {
+      countEl.textContent = "";
+      statusEl.hidden = false;
+      statusEl.innerHTML = 'De producten konden niet worden geladen. <a href="' + PUBLIC + '">Ga naar de shop &rarr;</a>';
+    });
+
+    [q, fCyclus, fSegment, fUitgever].forEach(function (el) {
+      el.addEventListener(el === q ? "input" : "change", render);
+    });
+    document.getElementById("shopReset").addEventListener("click", function () {
+      q.value = ""; fCyclus.value = ""; fSegment.value = ""; fUitgever.value = ""; render();
+    });
+  })();
+</script>
