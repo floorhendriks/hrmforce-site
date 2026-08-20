@@ -34,6 +34,20 @@ const vpIcons = {
   lock: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>`,
 };
 
+// Vergelijking: oude manier vs. hrmforce
+const compareOld = [
+  "Beslissen op cv en onderbuikgevoel",
+  "Dure mismatch bij een verkeerde hire",
+  "Ontwikkeling zonder richting",
+  "Losse tools, geen overzicht",
+];
+const compareNew = [
+  "Objectieve, gevalideerde inzichten",
+  "Hogere kans op de juiste match",
+  "Gerichte groei met concrete rapporten",
+  "Eén platform voor de hele HR-cyclus",
+];
+
 // Hoe het werkt (3 stappen)
 const howSteps = [
   { h: "Kies wat past", p: "Selecteer een wetenschappelijk gevalideerde vragenlijst voor selectie, ontwikkeling of teams. Twijfel je? Onze specialisten adviseren vrijblijvend." },
@@ -157,76 +171,41 @@ const faqs = [
 >
   <!-- 1. HERO -->
   <section class="hero">
+    <span class="hero-blob gold" aria-hidden="true"></span>
+    <span class="hero-blob blue" aria-hidden="true"></span>
     <div class="wrap">
       <div>
         <span class="eyebrow" style="color:var(--gold)">Talentmanagement software</span>
         <h1>Neem betere beslissingen over <em>mensen</em></h1>
         <p class="sub">Onderbouwd, snel en objectief. Wetenschappelijk gevalideerde assessments voor selectie, ontwikkeling en teams.</p>
         <div class="hero-btns">
-          <a class="btn btn-primary" href="/contact/">Plan een gratis demo</a>
+          <a class="btn btn-primary" href="/contact/">Plan een gratis demo →</a>
           <a class="btn btn-ghost hero-ghost" href="/online-assessments/">Bekijk alle assessments</a>
         </div>
-        <div class="hero-trust">
-          <span><span class="stars">★★★★★</span> 4,9/5</span>
-          <span>240.000+ tests per jaar</span>
-          <span>1.500+ organisaties</span>
+        <p class="hero-micro">Binnen 24 uur reactie · geen verkoopdruk · niet tevreden, geld terug</p>
+        <div class="hero-badges">
+          <span class="hb"><span class="hb-ic">✓</span> COTAN-beoordeeld</span>
+          <span class="hb"><span class="hb-ic">✓</span> NIP-psychologen</span>
+          <span class="hb"><span class="hb-ic">✓</span> AVG-proof (EU)</span>
         </div>
       </div>
 
-      <!-- Grafisch beeld: competentie-radar + sparkline + metric-tegels -->
+      <!-- Glazen statspaneel: kerncijfers + competentiebalken + trend -->
       <div class="hero-graphic">
-        <div class="radar-card">
-          <div class="radar-head">Competentieprofiel</div>
-          <svg viewBox="0 0 220 210" class="radar-svg" role="img" aria-label="Competentie-radar met vijf assen">
-            <!-- pentagon-ringen -->
-            <g fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1">
-              <polygon points="110,20 196,82 163,182 57,182 24,82" />
-              <polygon points="110,50 169,93 146,162 74,162 51,93" />
-              <polygon points="110,80 141,103 130,141 90,141 79,103" />
-            </g>
-            <!-- assen -->
-            <g stroke="rgba(255,255,255,.18)" stroke-width="1">
-              <line x1="110" y1="110" x2="110" y2="20" />
-              <line x1="110" y1="110" x2="196" y2="82" />
-              <line x1="110" y1="110" x2="163" y2="182" />
-              <line x1="110" y1="110" x2="57" y2="182" />
-              <line x1="110" y1="110" x2="24" y2="82" />
-            </g>
-            <!-- data-vorm -->
-            <polygon points="110,32 180,88 150,168 66,172 44,86"
-              fill="rgba(217,93,21,.38)" stroke="var(--accent)" stroke-width="2.5" />
-            <g fill="var(--gold)">
-              <circle cx="110" cy="32" r="3.5" /><circle cx="180" cy="88" r="3.5" />
-              <circle cx="150" cy="168" r="3.5" /><circle cx="66" cy="172" r="3.5" />
-              <circle cx="44" cy="86" r="3.5" />
-            </g>
-          </svg>
-          <div class="radar-legend">
-            <span>Persoonlijkheid</span><span>Drijfveren</span><span>Cognitief</span><span>Gedrag</span><span>Potentieel</span>
+        <div class="glass-card">
+          <div class="glass-head"><span>Competentieprofiel</span><span class="live">live data</span></div>
+          <div class="glass-stats">
+            <div class="gs"><b>240.000+</b><span>tests / jaar</span></div>
+            <div class="gs"><b>1.500+</b><span>organisaties</span></div>
+            <div class="gs"><b>4,9★</b><span>beoordeling</span></div>
           </div>
-
-          <!-- sparkline (trend) -->
-          <div class="spark">
-            <svg viewBox="0 0 180 44" preserveAspectRatio="none" aria-hidden="true">
-              <polyline points="0,36 26,30 52,32 78,22 104,25 130,14 156,10 180,4"
-                fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            <span class="spark-label">Ontwikkeltrend ↑</span>
+          <div class="glass-bars">
+            <div class="gbar"><em>Persoonlijkheid</em><div class="gtrack"><div class="gfill" style="--w:86%"></div></div></div>
+            <div class="gbar"><em>Drijfveren</em><div class="gtrack"><div class="gfill" style="--w:72%"></div></div></div>
+            <div class="gbar"><em>Cognitief</em><div class="gtrack"><div class="gfill" style="--w:64%"></div></div></div>
+            <div class="gbar"><em>Potentieel</em><div class="gtrack"><div class="gfill" style="--w:91%"></div></div></div>
           </div>
-        </div>
-
-        <!-- mini metric-tegels -->
-        <div class="metric-tile tile-a">
-          <div class="mt-big">88%</div>
-          <div class="mt-lab">Match met functie</div>
-        </div>
-        <div class="metric-tile tile-b">
-          <div class="mt-big">hbo+</div>
-          <div class="mt-lab">Cognitief niveau</div>
-        </div>
-        <div class="metric-tile tile-c">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>Wetenschappelijk gevalideerd</span>
+          <div class="glass-foot">↑ Ontwikkeltrend · match met functie <b>88%</b></div>
         </div>
       </div>
     </div>
@@ -245,24 +224,22 @@ const faqs = [
       </div>
 
       <p class="lead center" style="margin:44px auto 0">Vertrouwd door 1.500+ organisaties</p>
-      <div class="client-logos">
-        {clients.map((c) => (
-          <div class="client-cell"><img src={c.logo} alt={c.name} loading="lazy" /></div>
-        ))}
+      <div class="logo-marquee" aria-label="Klanten van hrmforce">
+        <div class="lm-track">
+          {[...clients, ...clients].map((c) => (
+            <div class="lm-cell"><img src={c.logo} alt={c.name} loading="lazy" /></div>
+          ))}
+        </div>
       </div>
 
-      <div class="reviews">
-        {reviews.map((r) => (
-          <div class="review">
-            <div class="stars">★★★★★</div>
-            <p class="rtext">{r.text}</p>
-            <div class="rhead">
-              <img src={r.avatar} alt={r.name} loading="lazy" />
-              <a href={r.href} class="rname">{r.name}</a>
-            </div>
-          </div>
-        ))}
-      </div>
+      <figure class="spotlight">
+        <div class="stars">★★★★★</div>
+        <blockquote>“{reviews[0].text}”</blockquote>
+        <figcaption>
+          <img src={reviews[0].avatar} alt={reviews[0].name} loading="lazy" />
+          <span><a href={reviews[0].href} class="sp-name">{reviews[0].name}</a><small>Tevreden klant · Google-review</small></span>
+        </figcaption>
+      </figure>
     </div>
   </section>
 
@@ -280,6 +257,30 @@ const faqs = [
             <p>{v.p}</p>
           </div>
         ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 2c. VERGELIJKING -->
+  <section class="bg-soft">
+    <div class="wrap" style="display:block">
+      <span class="eyebrow center">Het verschil</span>
+      <h2 class="section-title center">Van onderbuik naar onderbouwd</h2>
+      <p class="lead center" style="margin:0 auto 40px">Stop met gokken op cv en gevoel. Beslis op basis van gevalideerde data.</p>
+      <div class="vs-grid">
+        <div class="vs-card old">
+          <h3>De oude manier</h3>
+          <ul>
+            {compareOld.map((t) => <li><span class="vs-ic x">✕</span>{t}</li>)}
+          </ul>
+        </div>
+        <div class="vs-card new">
+          <span class="vs-tag">Met hrmforce</span>
+          <h3>De onderbouwde manier</h3>
+          <ul>
+            {compareNew.map((t) => <li><span class="vs-ic v">✓</span>{t}</li>)}
+          </ul>
+        </div>
       </div>
     </div>
   </section>
@@ -418,34 +419,45 @@ const faqs = [
 
 <style>
   /* ---------- HERO ---------- */
+  .hero {
+    position: relative; overflow: hidden;
+    background:
+      radial-gradient(1200px 520px at 12% -10%, #1a5bb0 0%, transparent 60%),
+      radial-gradient(900px 520px at 100% 0%, #12539f 0%, transparent 55%),
+      linear-gradient(160deg, var(--navy) 0%, var(--navy-deep) 100%);
+  }
+  .hero-blob { position: absolute; border-radius: 50%; filter: blur(70px); pointer-events: none; z-index: 0; }
+  .hero-blob.gold { width: 300px; height: 300px; background: var(--gold); top: -70px; right: 8%; opacity: .24; }
+  .hero-blob.blue { width: 360px; height: 360px; background: var(--blue); bottom: -140px; left: -50px; opacity: .3; }
+  .hero .wrap { position: relative; z-index: 1; }
+
   .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin: 28px 0 8px; }
   .hero-ghost { background: rgba(255,255,255,.06); color: #fff; border-color: rgba(255,255,255,.45); }
   .hero-ghost:hover { background: rgba(255,255,255,.14); color: #fff; border-color: #fff; }
-  .hero-trust { display: flex; gap: 26px; flex-wrap: wrap; margin-top: 26px; color: #dbe6f5; font-size: 14px; font-weight: 600; align-items: center; }
-  .hero-trust .stars { font-size: 15px; }
+  .hero-micro { color: #a9c0e0; font-size: 13.5px; margin-top: 12px; }
+  .hero-badges { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 24px; }
+  .hb { display: inline-flex; align-items: center; gap: 8px; color: #dbe7f7; font-size: 13.5px; font-weight: 600; }
+  .hb-ic { width: 24px; height: 24px; border-radius: 7px; background: rgba(255,255,255,.12); color: var(--gold); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; }
 
   .hero-graphic { position: relative; }
-  .radar-card { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.16); border-radius: var(--radius-lg); padding: 22px 24px 20px; backdrop-filter: blur(6px); box-shadow: var(--shadow-lg); }
-  .radar-head { color: #fff; font-weight: 700; font-size: 15px; margin-bottom: 6px; }
-  .radar-svg { width: 100%; max-width: 260px; height: auto; display: block; margin: 0 auto; }
-  .radar-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 14px; margin-top: 10px; }
-  .radar-legend span { color: #c4d2e6; font-size: 11px; font-weight: 600; }
-  .spark { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.14); }
-  .spark svg { width: 130px; height: 34px; flex: 1; }
-  .spark-label { color: var(--gold); font-size: 12px; font-weight: 700; white-space: nowrap; }
-
-  .metric-tile { position: absolute; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow-lg); padding: 12px 16px; }
-  .metric-tile .mt-big { color: var(--navy); font-weight: 800; font-size: 22px; line-height: 1; }
-  .metric-tile .mt-lab { color: var(--muted); font-size: 12px; margin-top: 4px; }
-  .tile-a { top: -18px; right: -14px; }
-  .tile-b { bottom: 64px; left: -22px; }
-  .tile-c { bottom: -18px; right: 8px; display: flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; font-weight: 700; font-size: 13px; padding: 10px 14px; }
-  .tile-c svg path { stroke: #fff; }
-  @media (max-width: 980px) {
-    .metric-tile { position: static; display: inline-flex; flex-direction: column; margin: 12px 10px 0 0; }
-    .tile-c { flex-direction: row; }
-    .hero-graphic { margin-top: 8px; }
-  }
+  .glass-card { background: rgba(255,255,255,.09); border: 1px solid rgba(255,255,255,.18); border-radius: 22px; padding: 24px; backdrop-filter: blur(10px); box-shadow: 0 30px 60px rgba(8,30,60,.35); }
+  .glass-head { display: flex; align-items: center; justify-content: space-between; color: #fff; font-weight: 700; font-size: 15px; margin-bottom: 16px; }
+  .glass-head .live { font-size: 11px; font-weight: 700; color: #7ef0c0; display: flex; align-items: center; gap: 6px; }
+  .glass-head .live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #7ef0c0; box-shadow: 0 0 0 4px rgba(126,240,192,.2); }
+  .glass-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
+  .gs { background: rgba(255,255,255,.06); border-radius: 14px; padding: 14px 10px; text-align: center; }
+  .gs b { display: block; font-size: 22px; font-weight: 800; color: #fff; line-height: 1; }
+  .gs span { font-size: 11.5px; color: #bcd0ec; }
+  .glass-bars { display: flex; flex-direction: column; gap: 10px; }
+  .gbar { display: flex; align-items: center; gap: 10px; }
+  .gbar em { font-style: normal; font-size: 12px; color: #cfe0f5; width: 100px; flex: none; }
+  .gtrack { flex: 1; height: 8px; border-radius: 999px; background: rgba(255,255,255,.14); overflow: hidden; }
+  .gfill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--gold), var(--accent)); width: 0; animation: gfill 1.1s cubic-bezier(.2,.7,.2,1) forwards; }
+  @keyframes gfill { to { width: var(--w); } }
+  .glass-foot { margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.14); color: var(--gold); font-size: 12.5px; font-weight: 700; }
+  .glass-foot b { color: #fff; }
+  @media (prefers-reduced-motion: reduce) { .gfill { animation: none; width: var(--w); } }
+  @media (max-width: 980px) { .hero-graphic { margin-top: 8px; } }
 
   /* ---------- SOCIAL PROOF ---------- */
   .proof { background: var(--bg); }
@@ -455,20 +467,23 @@ const faqs = [
   .metric-card .mc-lab { color: var(--muted); font-size: 14px; margin-top: 8px; }
   @media (max-width: 760px) { .metric-cards { grid-template-columns: repeat(2, 1fr); } }
 
-  .client-logos { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin: 24px 0 8px; }
-  .client-cell { background: #fff; border: 1px solid var(--line); border-radius: 10px; height: 76px; display: flex; align-items: center; justify-content: center; padding: 12px; }
-  .client-cell img { max-width: 100%; max-height: 100%; object-fit: contain; filter: grayscale(1); opacity: .68; transition: filter .2s ease, opacity .2s ease; }
-  .client-cell:hover img { filter: grayscale(0); opacity: 1; }
-  @media (max-width: 880px) { .client-logos { grid-template-columns: repeat(3, 1fr); } }
+  .logo-marquee { margin: 24px 0 8px; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); }
+  .lm-track { display: flex; align-items: center; gap: 16px; width: max-content; animation: lm 40s linear infinite; }
+  .logo-marquee:hover .lm-track { animation-play-state: paused; }
+  @keyframes lm { to { transform: translateX(-50%); } }
+  .lm-cell { flex: none; width: 150px; height: 76px; background: #fff; border: 1px solid var(--line); border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 12px; }
+  .lm-cell img { max-width: 100%; max-height: 100%; object-fit: contain; filter: grayscale(1); opacity: .66; transition: filter .2s ease, opacity .2s ease; }
+  .lm-cell:hover img { filter: grayscale(0); opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { .lm-track { animation: none; flex-wrap: wrap; justify-content: center; } }
 
-  .reviews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 42px; }
-  .review { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; }
-  .review .stars { color: var(--gold); letter-spacing: 2px; font-size: 15px; }
-  .rtext { color: var(--text); font-size: 15px; margin: 12px 0 18px; flex: 1; }
-  .rhead { display: flex; align-items: center; gap: 12px; }
-  .rhead img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; }
-  .rname { color: var(--navy); font-weight: 700; font-size: 14px; }
-  @media (max-width: 880px) { .reviews { grid-template-columns: 1fr; } }
+  .spotlight { margin: 48px auto 0; max-width: 780px; background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 40px; text-align: center; box-shadow: 0 20px 44px rgba(20,49,91,.08); }
+  .spotlight .stars { color: var(--gold); letter-spacing: 3px; font-size: 20px; }
+  .spotlight blockquote { font-size: clamp(1.1rem, 1rem + .6vw, 1.4rem); color: var(--navy); font-weight: 600; line-height: 1.45; letter-spacing: -.2px; margin: 16px 0 22px; }
+  .spotlight figcaption { display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .spotlight figcaption img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+  .spotlight figcaption span { text-align: left; display: flex; flex-direction: column; }
+  .sp-name { color: var(--navy); font-weight: 700; font-size: 15px; }
+  .spotlight figcaption small { color: var(--muted); font-size: 13px; }
 
   /* ---------- UITGELICHTE ASSESSMENTS ---------- */
   .assess-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
@@ -500,6 +515,22 @@ const faqs = [
   .value-tile p { color: var(--muted); font-size: 14px; line-height: 1.55; }
   @media (max-width: 980px) { .value-grid { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 560px) { .value-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- VERGELIJKING ---------- */
+  .vs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .vs-card { border-radius: 18px; padding: 30px; border: 1px solid var(--line); }
+  .vs-card.old { background: #fbfcfe; }
+  .vs-card.new { background: linear-gradient(160deg, var(--navy), var(--navy-deep)); color: #fff; border: 0; box-shadow: 0 24px 50px rgba(14,70,140,.26); }
+  .vs-card h3 { font-size: 1.2rem; margin-bottom: 18px; }
+  .vs-card.old h3 { color: var(--navy); }
+  .vs-card ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 13px; }
+  .vs-card li { display: flex; gap: 11px; align-items: flex-start; font-size: 15px; }
+  .vs-card.old li { color: var(--muted); }
+  .vs-ic { width: 22px; height: 22px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; margin-top: 1px; }
+  .vs-ic.x { background: #fdecec; color: #c0392b; }
+  .vs-ic.v { background: rgba(252,193,27,.22); color: var(--gold); }
+  .vs-tag { display: inline-block; background: var(--gold); color: #3a2a00; font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 999px; margin-bottom: 14px; }
+  @media (max-width: 780px) { .vs-grid { grid-template-columns: 1fr; } }
 
   /* ---------- Behouden secties ---------- */
   .rendement { display: grid; grid-template-columns: 1.05fr 1fr; gap: 44px; align-items: center; }
