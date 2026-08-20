@@ -1,0 +1,62 @@
+---
+/*
+  hrmforce merk-golfband — slanke decoratieve zigzag/golf in de huisstijl.
+  Herbruikbaar: gebruik <WaveBand /> onder de header en <WaveBand flip /> boven
+  de footer, zodat de golven elkaar spiegelen. Puur inline SVG, geen assets.
+
+  Props:
+    - flip   : boolean  → spiegelt de golf verticaal (voor de onderste band)
+    - variant: "light" | "dark" → afstemming op lichte content of donkere footer
+*/
+const { flip = false, variant = "light" } = Astro.props;
+const cls = [
+  "wave-band",
+  flip ? "wave-band--flip" : "",
+  variant === "dark" ? "wave-band--dark" : "",
+]
+  .filter(Boolean)
+  .join(" ");
+---
+<div class={cls} role="presentation" aria-hidden="true">
+  <svg
+    class="wave-band__svg"
+    width="100%"
+    height="14"
+    preserveAspectRatio="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <defs>
+      <!-- Eén naadloos tegelbaar golf-patroon (40px breed) in de merkkleuren.
+           Start- en eindpunten + raaklijnen zijn gelijk → vloeiende herhaling. -->
+      <pattern
+        id="hf-wave"
+        x="0"
+        y="0"
+        width="40"
+        height="14"
+        patternUnits="userSpaceOnUse"
+      >
+        <!-- navy golffill met golvende bovenrand -->
+        <path
+          d="M0,9 C10,5 30,13 40,9 L40,14 L0,14 Z"
+          fill="var(--wave-fill, #0e468c)"
+        />
+        <!-- secundaire lichtblauwe golflijn -->
+        <path
+          d="M0,7 C10,3 30,11 40,7"
+          fill="none"
+          stroke="var(--wave-blue, #4691ce)"
+          stroke-width="1.4"
+        />
+        <!-- gouden golflijn — het frivole accent -->
+        <path
+          d="M0,5 C10,1 30,9 40,5"
+          fill="none"
+          stroke="var(--wave-gold, #fcc11b)"
+          stroke-width="1.6"
+        />
+      </pattern>
+    </defs>
+    <rect x="0" y="0" width="100%" height="14" fill="url(#hf-wave)" />
+  </svg>
+</div>
