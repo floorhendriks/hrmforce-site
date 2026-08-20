@@ -10,7 +10,7 @@ export const CONTACT_EMAIL = "service@hrmforce.com";
 // een nette placeholder met een knop naar shop.hrmforce.com.
 export const SHOPIFY = {
   DOMAIN: "nad8cn-ni.myshopify.com", // Shopify-verkoopdomein (niet het custom domein)
-  STOREFRONT_TOKEN: "",              // <-- hier je Storefront API access token
+  STOREFRONT_TOKEN: "eec96c05b11f763039d06b54f372c00f", // publiek Storefront-token (Headless-kanaal, bedoeld voor client-side)
   API_VERSION: "2024-07",
   PUBLIC_SHOP_URL: "https://shop.hrmforce.com",
 };
