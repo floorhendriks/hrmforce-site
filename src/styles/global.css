@@ -44,8 +44,8 @@
   /* Layout */
   --max:1180px;
 
-  /* Typografie */
-  --font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji",sans-serif;
+  /* Typografie — merkfont Inter met systeem-fallback */
+  --font-sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji",sans-serif;
 
   /* Focus */
   --focus:0 0 0 3px rgba(70,145,206,.45);
@@ -170,7 +170,10 @@ nav.menu a.active{font-weight:700}
 
 /* ---------- Generieke sectie ---------- */
 section{padding:clamp(48px,6vw,88px) 0}
-.eyebrow{color:var(--blue);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:1.4px;margin-bottom:12px;display:block}
+.eyebrow{color:var(--blue);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:1.4px;margin-bottom:12px;display:inline-flex;align-items:center;gap:8px}
+/* Frivool micro-accent: gouden streepje voor de eyebrow */
+.eyebrow::before{content:"";width:22px;height:3px;border-radius:2px;background:var(--gold);display:inline-block;flex:none}
+.center .eyebrow{justify-content:center}
 h2.section-title{font-size:clamp(1.6rem,1.25rem + 1.6vw,2.25rem);font-weight:800;margin-bottom:14px;color:var(--navy)}
 .sub{color:var(--muted);font-size:1.0625rem}
 .lead{color:var(--muted);font-size:clamp(1.05rem,1rem + .3vw,1.2rem);max-width:740px;line-height:1.6}
@@ -202,8 +205,11 @@ h2.section-title{font-size:clamp(1.6rem,1.25rem + 1.6vw,2.25rem);font-weight:800
 
 /* ---------- Kaarten (3 kolommen) ---------- */
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:42px}
-.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow-sm);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.card{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow-sm);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
 .card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md);border-color:var(--line-strong)}
+/* Frivool micro-accent: gouden bovenrand die bij hover verschijnt */
+.card::after{content:"";position:absolute;left:0;top:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--accent));border-radius:var(--radius) var(--radius) 0 0;transition:width .25s ease}
+.card:hover::after{width:100%}
 .card .ic{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#e8f0fe,#dbe9fb);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px;color:var(--navy)}
 .card h3{font-size:1.25rem;margin-bottom:8px;color:var(--navy)}
 .card p{color:var(--muted);font-size:15px;margin-bottom:16px}
