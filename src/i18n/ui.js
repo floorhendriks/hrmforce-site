@@ -3,14 +3,14 @@ export const defaultLang = "nl";
 export const languages = { nl: "NL", en: "EN", de: "DE", fr: "FR", es: "ES", ro: "RO" };
 
 export const routes = {
-  shop: "https://shop.hrmforce.com",
+  shop: "/shop/",
   assessments: "/online-assessments/",
   solutions: "/hrm-oplossingen/",
   advice: "/advies/",
   about: "/over-ons/",
   contact: "/contact/",
   support: "https://support.hrmforce.com",
-  };
+};
 
 export const ui = {
   nl: {
