@@ -35,7 +35,7 @@
 /ro/asistenta/         /ro/support/           301
 
 # --- Webshop: oude WooCommerce-URL's -> Shopify ---
-/shop/                    https://shop.hrmforce.com  301
+# LET OP: /shop/ is nu een ECHTE ingebedde pagina (src/pages/shop.astro) — geen redirect.
 /product/*                https://shop.hrmforce.com  301
 /winkel/*                 https://shop.hrmforce.com  301
 /winkelwagen/             https://shop.hrmforce.com  301
