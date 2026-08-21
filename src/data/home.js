@@ -1,4 +1,5 @@
 // Inhoud van de homepage, per taal.
+// rebuild-trigger: Sanity-content bijgewerkt (HRMforce -> hrmforce in 424 artikelen)
 export const home = {
   nl: {
     metaTitle: "Talentmanagement software | Assessment bureau | Hrmforce",
