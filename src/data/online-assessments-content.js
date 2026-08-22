@@ -195,5 +195,5 @@ applyFeatured(oaContent.ro, ["(Pre)Selecție", "Evaluare", "Dezvoltare", "Orient
   ["Test de orientare în studii", "Pe baza intereselor, oferă elevilor, studenților și angajaților o imagine asupra celor mai potrivite programe de studiu."],
   ["Dinamica echipei Lencioni", "Chestionarul Lencioni este conceput pentru a ajuta echipele să înțeleagă și să evalueze dinamica echipei prin măsurarea prezenței și impactului celor cinci disfuncții ale muncii în echipă."],
   ["Pulse Survey", "Oferă organizațiilor posibilitatea de a-și crea propriile chestionare folosind chestionarele noastre standard și baza de întrebări, și de a le trimite candidaților și angajaților."],
-  ["Scanare a rezilienței mentale", "Înțelegerea măsurii în care o persoană ră¢nă eficientă sub presiune ridicată și/sau în fața dificultăților."],
+  ["Scanare a rezilienței mentale", "Înțelegerea măsurii în care o persoană rămâne eficientă sub presiune ridicată și/sau în fața dificultăților."],
 ]);
