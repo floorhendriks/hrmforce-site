@@ -1,0 +1,9 @@
+---
+import Base from "../../layouts/Base.astro";
+import OnlineAssessments from "../../components/OnlineAssessments.astro";
+import { oaContent } from "../../data/online-assessments-content.js";
+const c = oaContent.es;
+---
+<Base title={c.meta.title} description={c.meta.description} active="assessments">
+  <OnlineAssessments c={c} lang="es" />
+</Base>
