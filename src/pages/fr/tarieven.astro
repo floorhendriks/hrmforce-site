@@ -1,0 +1,9 @@
+---
+import Base from "../../layouts/Base.astro";
+import Tarieven from "../../components/Tarieven.astro";
+import { tarievenContent } from "../../data/tarieven-content.js";
+const t = tarievenContent.fr;
+---
+<Base title={t.meta.title} description={t.meta.description} active="">
+  <Tarieven t={t} lang="fr" />
+</Base>
