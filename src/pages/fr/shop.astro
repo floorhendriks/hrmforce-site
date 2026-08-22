@@ -1,0 +1,9 @@
+---
+import Base from "../../layouts/Base.astro";
+import Shop from "../../components/Shop.astro";
+import { shopContent } from "../../data/shop-content.js";
+const t = shopContent.fr;
+---
+<Base title={t.meta.title} description={t.meta.description} active="shop">
+  <Shop t={t} lang="fr" />
+</Base>
