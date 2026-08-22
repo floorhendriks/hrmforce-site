@@ -3,8 +3,9 @@ import { localizePath } from "../i18n/utils.js";
 import { shopMap } from "../data/assessment-shop.js";
 const { c, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
-const cardTarget = localizePath("/online-assessments/", lang);
-const cardHref = (slug) => (lang === "nl" ? `/assessments/${slug}/` : cardTarget);
+// NL linkt naar de root-detailpagina; andere talen naar de gelokaliseerde
+// detailpagina /<lang>/assessments/<slug>/ (die nu bestaat).
+const cardHref = (slug) => localizePath(`/assessments/${slug}/`, lang);
 
 // Verrijk elk item met shop-info (prijs, segment, uitgever). Segment/uitgever
 // blijven Nederlands (afkomstig uit assessment-shop.js).
