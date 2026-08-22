@@ -88,8 +88,24 @@ const faqs = [
   <section class="ahero"><div class="wrap" style="display:block">
     <div class="eyebrow" style="color:var(--gold)">Tarieven</div>
     <h1>Haal het maximale uit medewerkers met onze talentmanagement-software</h1>
-    <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px">Er zijn verschillende manieren om gebruik te maken van de online tests en HRM-tools binnen hrmforce. Kies pay-as-you-go of een jaarlicentie die past bij jouw organisatie.</p>
+    <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px">De meeste organisaties starten met een <strong>eigen portal op licentiebasis</strong>: onbeperkt afnemen tegen een vaste jaarprijs, in je eigen huisstijl en gekoppeld aan je HR-systeem. Voor pilots of incidentele afname kan het ook per assessment via de shop.</p>
+    <p style="color:var(--gold);font-weight:700;font-size:14px;margin-top:12px">Voor organisaties van 25 tot 2.500 medewerkers</p>
     <div class="btns" style="margin-top:18px"><a href="/contact/" class="btn btn-primary">Plan een demo</a></div>
+  </div></section>
+
+  <section class="bg-soft"><div class="wrap">
+    <div class="eyebrow center">Welke vorm past?</div>
+    <h2 class="section-title center">Vind snel de juiste opzet voor jouw organisatie</h2>
+    <div class="fit-helper" id="fitHelper">
+      <span class="fit-q">Hoeveel medewerkers heeft je organisatie?</span>
+      <div class="fit-seg" role="group" aria-label="Aantal medewerkers">
+        <button class="fit-btn is-active" data-tier="0">25–250</button>
+        <button class="fit-btn" data-tier="1">250–1.000</button>
+        <button class="fit-btn" data-tier="2">1.000–2.500</button>
+      </div>
+      <p class="fit-out" id="fitOut"></p>
+      <a href="/contact/" class="btn btn-primary" style="margin-top:6px">Plan een demo &rarr;</a>
+    </div>
   </div></section>
 
   <section><div class="wrap">
@@ -230,4 +246,26 @@ const faqs = [
   table.compare .no{color:var(--muted);font-weight:700}
   table.compare .txt{color:var(--navy);font-weight:600}
   table.compare tbody tr:last-child td,table.compare tbody tr:last-child th{border-bottom:none}
+  .fit-helper{max-width:640px;margin:26px auto 0;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px;text-align:center;box-shadow:var(--shadow-sm)}
+  .fit-q{display:block;color:var(--navy);font-weight:700;margin-bottom:14px}
+  .fit-seg{display:inline-flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px}
+  .fit-btn{border:1px solid var(--line-strong);background:#fff;color:var(--navy);font-weight:700;font-size:14px;padding:9px 16px;border-radius:var(--radius-pill);cursor:pointer;font-family:inherit;transition:.15s}
+  .fit-btn.is-active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .fit-out{color:var(--text);font-size:15px;max-width:520px;margin:0 auto 14px;min-height:44px}
+  .fit-out b{color:var(--navy)}
 </style>
+<script is:inline>
+  (function(){
+    var out=document.getElementById("fitOut");
+    var btns=Array.prototype.slice.call(document.querySelectorAll(".fit-btn"));
+    if(!out||!btns.length)return;
+    var msg=[
+      "Bij <b>25–250 medewerkers</b> is een jaarlicentie met een eigen portal meestal het voordeligst zodra je meerdere trajecten per jaar draait. Twijfel je? Start met een pilot en schaal op.",
+      "Bij <b>250–1.000 medewerkers</b> loont een <b>jaarlicentie</b> vrijwel altijd: onbeperkt afnemen, eigen huisstijl en koppeling met je HR-systeem. Vraag een prijs op maat.",
+      "Bij <b>1.000–2.500 medewerkers</b> kies je voor een <b>Pro-licentie</b> met eigen ontwikkelflows, maatwerk-API en een vaste accountmanager."
+    ];
+    function set(i){btns.forEach(function(b,x){b.classList.toggle("is-active",x===i)});out.innerHTML=msg[i];}
+    btns.forEach(function(b){b.addEventListener("click",function(){set(parseInt(b.dataset.tier,10));});});
+    set(0);
+  })();
+</script>
