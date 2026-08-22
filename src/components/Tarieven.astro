@@ -1,0 +1,178 @@
+---
+import { localizePath } from "../i18n/utils.js";
+const { t, lang } = Astro.props;
+const contactHref = localizePath("/contact/", lang);
+const overHref = localizePath("/over-ons/", lang);
+---
+<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+
+<section class="ahero"><div class="wrap" style="display:block">
+  <div class="eyebrow" style="color:var(--gold)">{t.hero.eyebrow}</div>
+  <h1>{t.hero.title}</h1>
+  <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px" set:html={t.hero.intro}></p>
+  <p style="color:var(--gold);font-weight:700;font-size:14px;margin-top:12px">{t.hero.positioning}</p>
+  <div class="btns" style="margin-top:18px"><a href={contactHref} class="btn btn-primary">{t.hero.cta}</a></div>
+</div></section>
+
+<section class="bg-soft"><div class="wrap">
+  <div class="eyebrow center">{t.fit.eyebrow}</div>
+  <h2 class="section-title center">{t.fit.title}</h2>
+  <div class="fit-helper" id="fitHelper" data-out={JSON.stringify(t.fit.out)}>
+    <span class="fit-q">{t.fit.q}</span>
+    <div class="fit-seg" role="group">
+      {t.fit.tiers.map((label, i) => <button class={`fit-btn${i === 0 ? " is-active" : ""}`} data-tier={i}>{label}</button>)}
+    </div>
+    <p class="fit-out" id="fitOut"></p>
+    <a href={contactHref} class="btn btn-primary" style="margin-top:6px">{t.fit.cta} &rarr;</a>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="eyebrow">{t.plansTitle.eyebrow}</div>
+  <h2 class="section-title">{t.plansTitle.title}</h2>
+  <div class="price-grid">
+    {t.plans.map((p) => (
+      <div class={`price-card${p.featured ? " featured" : ""}`}>
+        {p.featured && <span class="badge">{t.featuredBadge}</span>}
+        <h3>{p.name}</h3>
+        <p class="price-tag">{p.price}<span>{p.priceNote}</span></p>
+        <p class="price-desc">{p.tagline}</p>
+        <a href={contactHref} class="btn btn-primary" style="width:100%;text-align:center">{p.cta}</a>
+        {p.groups.map((g) => (
+          <div class="price-group"><h4>{g.title}</h4><ul>{g.items.map((i) => <li>{i}</li>)}</ul></div>
+        ))}
+      </div>
+    ))}
+  </div>
+  <p class="muted" style="margin-top:16px;font-size:14px">{t.plansNote}</p>
+</div></section>
+
+<section class="bg-soft"><div class="wrap">
+  <div class="eyebrow">{t.compare.eyebrow}</div>
+  <h2 class="section-title">{t.compare.title}</h2>
+  <div class="compare-scroll">
+    <table class="compare">
+      <thead><tr>
+        <th class="feat-col">{t.compare.head[0]}</th>
+        <th>{t.compare.head[1]}</th>
+        <th class="col-featured">{t.compare.featCol} <span class="th-badge">{t.compare.featBadge}</span></th>
+        <th>{t.compare.head[2]}</th>
+      </tr></thead>
+      <tbody>
+        {t.compare.rows.map((r) => (
+          <tr>
+            <th scope="row">{r.label}</th>
+            {[r.pay, r.adv, r.pro].map((v, i) => (
+              <td class={i === 1 ? "col-featured" : ""}>
+                {v === true ? <span class="yes">✓</span> : v === false ? <span class="no">–</span> : <span class="txt">{v}</span>}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <div class="btns" style="margin-top:20px"><a href={contactHref} class="btn btn-primary">{t.compare.cta}</a></div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="eyebrow">{t.incl.eyebrow}</div>
+  <h2 class="section-title">{t.incl.title}</h2>
+  <ul class="incl-grid">{t.incl.items.map((i) => <li>{i}</li>)}</ul>
+</div></section>
+
+<section class="bg-soft"><div class="wrap">
+  <div class="eyebrow">{t.onb.eyebrow}</div>
+  <h2 class="section-title">{t.onb.title}</h2>
+  <div class="price-grid">
+    {t.onb.tiers.map((o) => (
+      <div class="price-card">
+        <h3>{o.name}</h3>
+        <p class="onb-meta">{t.onb.self}: {o.zelf} · {t.onb.det}: {o.detail}</p>
+        <p class="price-tag">{t.onb.fromLabel} {o.price}</p>
+        <div class="price-group"><ul>{o.items.map((i) => <li>{i}</li>)}</ul></div>
+      </div>
+    ))}
+  </div>
+  <p class="muted" style="margin-top:14px;font-size:14px">{t.onb.note}</p>
+</div></section>
+
+<section><div class="wrap">
+  <div class="eyebrow">{t.faqSection.eyebrow}</div>
+  <h2 class="section-title">{t.faqSection.title}</h2>
+  <div style="max-width:820px">
+    {t.faqs.map((f) => (
+      <div class="faq-item"><div class="faq-q">{f.q}<span class="pl">+</span></div><div class="faq-a"><p>{f.a}</p></div></div>
+    ))}
+  </div>
+</div></section>
+
+<section class="cta"><div class="wrap" style="padding:56px 0">
+  <h2 style="color:#fff">{t.ctaBand.title}</h2>
+  <p style="color:rgba(255,255,255,.9);max-width:620px;margin:12px auto 0">{t.ctaBand.text}</p>
+  <div class="btns" style="justify-content:center;margin-top:20px">
+    <a href={contactHref} class="btn btn-light">{t.ctaBand.primary}</a>
+    <a href={overHref} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">{t.ctaBand.secondary}</a>
+  </div>
+  <p style="color:rgba(255,255,255,.9);margin-top:22px">
+    <strong>T:</strong> <a href="tel:+31888832188" style="color:#fff;text-decoration:underline">+31 (0)88 88 321 88</a>
+    &nbsp;·&nbsp;
+    <strong>E:</strong> <a href="mailto:service@hrmforce.com" style="color:#fff;text-decoration:underline">service@hrmforce.com</a>
+  </p>
+  <p style="color:rgba(255,255,255,.75);font-size:14px;margin-top:6px">{t.ctaBand.hours}</p>
+</div></section>
+
+<script is:inline>
+  (function(){
+    var el=document.getElementById("fitHelper"); if(!el)return;
+    var out=document.getElementById("fitOut");
+    var msg=JSON.parse(el.getAttribute("data-out")||"[]");
+    var btns=Array.prototype.slice.call(el.querySelectorAll(".fit-btn"));
+    function set(i){btns.forEach(function(b,x){b.classList.toggle("is-active",x===i)});out.innerHTML=msg[i]||"";}
+    btns.forEach(function(b){b.addEventListener("click",function(){set(parseInt(b.dataset.tier,10));});});
+    set(0);
+  })();
+</script>
+
+<style>
+  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:32px;align-items:start}
+  @media(max-width:900px){.price-grid{grid-template-columns:1fr}}
+  .price-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow-sm)}
+  .price-card.featured{border-color:var(--blue);box-shadow:var(--shadow-md);position:relative}
+  .price-card .badge{position:absolute;top:-12px;left:24px;background:var(--accent);color:#fff;font-size:12px;font-weight:800;padding:4px 12px;border-radius:999px}
+  .price-card h3{font-size:1.4rem;color:var(--navy);margin-bottom:6px}
+  .price-tag{font-size:1.6rem;font-weight:800;color:var(--navy);margin:6px 0 4px}
+  .price-tag span{display:block;font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .price-desc{color:var(--muted);font-size:15px;margin:8px 0 18px;line-height:1.6}
+  .onb-meta{color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+  .price-group{margin-top:18px}
+  .price-group h4{font-size:13px;text-transform:uppercase;letter-spacing:.8px;color:var(--blue);margin-bottom:8px}
+  .price-group ul{list-style:none;margin:0;padding:0}
+  .price-group li{position:relative;padding:7px 0 7px 26px;border-bottom:1px dashed var(--line);color:var(--navy);font-size:15px}
+  .price-group li:before{content:"✓";position:absolute;left:0;color:var(--gold);font-weight:800}
+  .incl-grid{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:760px){.incl-grid{grid-template-columns:1fr}}
+  .incl-grid li{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;font-weight:700;color:var(--navy);position:relative;padding-left:44px;box-shadow:var(--shadow-xs)}
+  .incl-grid li:before{content:"✓";position:absolute;left:18px;color:var(--gold);font-weight:800}
+  .cta .wrap{text-align:center}
+  .compare-scroll{overflow-x:auto;margin-top:28px;border-radius:var(--radius);border:1px solid var(--line);background:#fff}
+  table.compare{width:100%;border-collapse:collapse;min-width:720px}
+  table.compare th,table.compare td{padding:14px 16px;text-align:center;border-bottom:1px solid var(--line);font-size:14.5px}
+  table.compare thead th{background:var(--navy);color:#fff;font-weight:700;font-size:14px}
+  table.compare thead th.feat-col{text-align:left}
+  table.compare tbody th[scope=row]{text-align:left;color:var(--navy);font-weight:700;background:var(--bg-soft)}
+  table.compare .col-featured{background:#fff8f2}
+  table.compare thead th.col-featured{background:var(--accent);color:#fff}
+  .th-badge{display:block;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;opacity:.95;margin-top:2px}
+  table.compare .yes{color:#1a8a3d;font-weight:800;font-size:1.1rem}
+  table.compare .no{color:var(--muted);font-weight:700}
+  table.compare .txt{color:var(--navy);font-weight:600}
+  table.compare tbody tr:last-child td,table.compare tbody tr:last-child th{border-bottom:none}
+  .fit-helper{max-width:640px;margin:26px auto 0;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px;text-align:center;box-shadow:var(--shadow-sm)}
+  .fit-q{display:block;color:var(--navy);font-weight:700;margin-bottom:14px}
+  .fit-seg{display:inline-flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px}
+  .fit-btn{border:1px solid var(--line-strong);background:#fff;color:var(--navy);font-weight:700;font-size:14px;padding:9px 16px;border-radius:var(--radius-pill);cursor:pointer;font-family:inherit;transition:.15s}
+  .fit-btn.is-active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .fit-out{color:var(--text);font-size:15px;max-width:520px;margin:0 auto 14px;min-height:44px}
+  .fit-out b{color:var(--navy)}
+</style>
