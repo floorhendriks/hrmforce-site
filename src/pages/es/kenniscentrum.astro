@@ -1,0 +1,9 @@
+---
+import Base from "../../layouts/Base.astro";
+import Kenniscentrum from "../../components/Kenniscentrum.astro";
+import { kenniscentrumContent } from "../../data/kenniscentrum-content.js";
+const t = kenniscentrumContent.es;
+---
+<Base title={t.meta.title} description={t.meta.description} active="">
+  <Kenniscentrum t={t} lang="es" />
+</Base>
