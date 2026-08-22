@@ -1,0 +1,163 @@
+---
+import { localizePath } from "../i18n/utils.js";
+import { shopMap } from "../data/assessment-shop.js";
+const { c, lang } = Astro.props;
+const contactHref = localizePath("/contact/", lang);
+const cardTarget = localizePath("/online-assessments/", lang);
+const cardHref = (slug) => (lang === "nl" ? `/assessments/${slug}/` : cardTarget);
+
+// Verrijk elk item met shop-info (prijs, segment, uitgever). Segment/uitgever
+// blijven Nederlands (afkomstig uit assessment-shop.js).
+const items = c.items.map((a) => {
+  const s = shopMap[a.slug] || { price: null, segments: [], uitgever: null };
+  return { ...a, price: s.price, segments: s.segments || [], uitgever: s.uitgever || null };
+});
+
+const allCyclus = c.cyclus;
+const allSegments = [...new Set(items.flatMap((i) => i.segments))].sort();
+const allUitgevers = [...new Set(items.map((i) => i.uitgever).filter(Boolean))].sort();
+---
+<div class="crumb">
+  <div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{c.crumb}</span></div>
+</div>
+
+<section class="ahero">
+  <div class="wrap" style="display:block">
+    <div class="eyebrow" style="color:var(--gold)">{c.hero.eyebrow}</div>
+    <h1>{c.hero.title}</h1>
+    <p style="color:#c4d2e6;font-size:19px;max-width:840px;margin-top:8px" set:html={c.hero.intro}></p>
+    <div class="btns"><a class="btn btn-primary" href={contactHref}>{c.hero.cta}</a></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="filterbar" id="filterbar">
+      <div class="fb-search">
+        <input type="search" id="q" placeholder={c.ui.search} aria-label={c.ui.searchAria} />
+      </div>
+      <div class="fb-group" role="group" aria-label={c.ui.allPhases}>
+        <button class="chip is-active" data-cyclus="">{c.ui.allPhases}</button>
+        {allCyclus.map((cyc) => <button class="chip" data-cyclus={cyc}>{cyc}</button>)}
+      </div>
+      <div class="fb-selects">
+        <label class="sr-only" for="segsel">{c.ui.segmentLabel}</label>
+        <select id="segsel">
+          <option value="">{c.ui.allSegments}</option>
+          {allSegments.map((s) => <option value={s}>{s}</option>)}
+        </select>
+        <label class="sr-only" for="uitsel">{c.ui.uitgeverLabel}</label>
+        <select id="uitsel">
+          <option value="">{c.ui.allUitgevers}</option>
+          {allUitgevers.map((u) => <option value={u}>{u}</option>)}
+        </select>
+        <button class="chip chip-reset" id="reset" type="button">{c.ui.reset}</button>
+      </div>
+    </div>
+    <p class="result-count" id="count"></p>
+
+    <div class="cards" id="grid">
+      {items.map((a) => (
+        <a
+          class="card acard"
+          href={cardHref(a.slug)}
+          data-cyclus={a.cats.join("|")}
+          data-seg={a.segments.join("|")}
+          data-uit={a.uitgever || ""}
+          data-title={a.title.toLowerCase()}
+          style="text-decoration:none;color:inherit;display:flex;flex-direction:column"
+        >
+          <span class="tag-row">{a.cats.map((cat) => <span class="tag">{cat}</span>)}</span>
+          <h3>{a.title}</h3>
+          <p style="flex:1"><strong>{c.ui.goalLabel}</strong> {a.goal}</p>
+          <div class="card-foot">
+            {a.price ? <span class="price">€{a.price}</span> : <span class="price price-muted">{c.ui.inShop}</span>}
+            <span class="readmore">{c.ui.readmore} &rarr;</span>
+          </div>
+        </a>
+      ))}
+    </div>
+    <p class="noresult" id="noresult" hidden>{c.ui.noResult} <button class="linklike" id="reset2" type="button">{c.ui.clearFilters}</button></p>
+  </div>
+</section>
+
+<style>
+  .filterbar { display: grid; gap: 14px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm); margin-bottom: 18px; }
+  .fb-search input { width: 100%; padding: 12px 16px; border: 1px solid var(--line-strong); border-radius: var(--radius-pill); font-size: 15px; font-family: inherit; }
+  .fb-search input:focus { outline: 2px solid var(--blue); border-color: var(--blue); }
+  .fb-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { border: 1px solid var(--line-strong); background: #fff; color: var(--navy); font-weight: 700; font-size: 13.5px; padding: 8px 14px; border-radius: var(--radius-pill); cursor: pointer; transition: .15s; font-family: inherit; }
+  .chip:hover { border-color: var(--navy); }
+  .chip.is-active { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .fb-selects { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .fb-selects select { padding: 10px 14px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); font-size: 14px; font-family: inherit; background: #fff; color: var(--navy); font-weight: 600; }
+  .chip-reset { border-style: dashed; }
+  .result-count { color: var(--muted); font-size: 14px; margin: 0 2px 14px; }
+  .card-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .price { font-weight: 800; color: var(--navy); font-size: 1.05rem; }
+  .price-muted { color: var(--muted); font-weight: 700; font-size: .95rem; }
+  .readmore { color: var(--blue); font-weight: 600; font-size: 15px; }
+  .noresult { text-align: center; color: var(--muted); padding: 30px 0; }
+  .linklike { background: none; border: none; color: var(--accent); font-weight: 700; cursor: pointer; text-decoration: underline; font-family: inherit; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .tag { background: #e8f0fe; color: var(--navy); font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+</style>
+
+<script define:vars={{ ui: c.ui, cyclusLabels: c.cyclus }}>
+  const grid = document.getElementById("grid");
+  const cards = Array.from(grid.querySelectorAll(".acard"));
+  const q = document.getElementById("q");
+  const segsel = document.getElementById("segsel");
+  const uitsel = document.getElementById("uitsel");
+  const countEl = document.getElementById("count");
+  const noResult = document.getElementById("noresult");
+  const chips = Array.from(document.querySelectorAll(".chip[data-cyclus]"));
+  let cyclus = "";
+
+  function apply() {
+    const term = (q.value || "").trim().toLowerCase();
+    const seg = segsel.value;
+    const uit = uitsel.value;
+    let shown = 0;
+    cards.forEach((c) => {
+      const okCyc = !cyclus || c.dataset.cyclus.split("|").includes(cyclus);
+      const okSeg = !seg || c.dataset.seg.split("|").includes(seg);
+      const okUit = !uit || c.dataset.uit === uit;
+      const okTerm = !term || c.dataset.title.includes(term);
+      const show = okCyc && okSeg && okUit && okTerm;
+      c.style.display = show ? "flex" : "none";
+      if (show) shown++;
+    });
+    countEl.textContent = shown + ui.countMid + cards.length + ui.countSuffix;
+    noResult.hidden = shown !== 0;
+  }
+  chips.forEach((ch) => ch.addEventListener("click", () => {
+    chips.forEach((x) => x.classList.remove("is-active"));
+    ch.classList.add("is-active");
+    cyclus = ch.dataset.cyclus;
+    apply();
+  }));
+  q.addEventListener("input", apply);
+  segsel.addEventListener("change", apply);
+  uitsel.addEventListener("change", apply);
+  function reset() {
+    q.value = ""; segsel.value = ""; uitsel.value = ""; cyclus = "";
+    chips.forEach((x) => x.classList.remove("is-active"));
+    chips[0].classList.add("is-active");
+    apply();
+  }
+  document.getElementById("reset").addEventListener("click", reset);
+  document.getElementById("reset2").addEventListener("click", reset);
+
+  // Voorfilter via ?fase= (vanuit de keuze-CTA's op de homepage). De labels
+  // zijn per taal vertaald, dus mappen we op index in cyclusLabels.
+  var faseParam = new URLSearchParams(location.search).get("fase");
+  var faseMap = { selectie: cyclusLabels[0], evalueren: cyclusLabels[1], ontwikkeling: cyclusLabels[2], studiekeuze: cyclusLabels[3] };
+  if (faseParam && faseMap[faseParam]) {
+    var target = faseMap[faseParam];
+    var match = chips.filter(function (c) { return c.dataset.cyclus === target; })[0];
+    if (match) { chips.forEach(function (x) { x.classList.remove("is-active"); }); match.classList.add("is-active"); cyclus = target; }
+  }
+  apply();
+</script>
