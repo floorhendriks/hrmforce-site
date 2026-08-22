@@ -1,0 +1,9 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Faq from "../../../components/Faq.astro";
+import { faqContent } from "../../../data/faq-content.js";
+const t = faqContent.es;
+---
+<Base title={t.meta.title} description={t.meta.description} active="">
+  <Faq t={t} lang="es" />
+</Base>
