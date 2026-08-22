@@ -3,7 +3,8 @@ import { localizePath } from "../i18n/utils.js";
 const { c, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
 const overzichtHref = localizePath("/assessment-overzicht/", lang);
-const cardHref = (slug) => (lang === "nl" ? `/assessments/${slug}/` : overzichtHref);
+// NL linkt naar de root-detailpagina; andere talen naar /<lang>/assessments/<slug>/.
+const cardHref = (slug) => localizePath(`/assessments/${slug}/`, lang);
 
 const logos = [
   { src: "https://hrmforce.com/wp-content/uploads/2025/06/logo-cityofamsterdam.jpg", alt: "City of Amsterdam" },
