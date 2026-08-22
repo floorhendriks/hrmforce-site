@@ -1,0 +1,238 @@
+---
+import { SHOPIFY } from "../data/site-config.js";
+import { localizePath } from "../i18n/utils.js";
+
+const { t, lang } = Astro.props;
+
+const configured = Boolean(SHOPIFY.STOREFRONT_TOKEN);
+const cfg = {
+  domain: SHOPIFY.DOMAIN,
+  token: SHOPIFY.STOREFRONT_TOKEN,
+  version: SHOPIFY.API_VERSION,
+  publicUrl: SHOPIFY.PUBLIC_SHOP_URL,
+};
+const tarievenHref = localizePath("/tarieven/", lang);
+// Teksten die het inline script nodig heeft (via define:vars geïnjecteerd).
+const L = {
+  loading: t.loading,
+  countMid: t.countMid,
+  countUnit: t.countUnit,
+  buy: t.buy,
+  view: t.view,
+  more: t.more,
+  busy: t.busy,
+  checkoutError: t.checkoutError,
+  loadErrorPre: t.loadErrorPre,
+  toShop: t.toShop,
+};
+---
+<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+
+<section class="ahero"><div class="wrap" style="display:block">
+  <div class="eyebrow" style="color:var(--gold)">{t.hero.eyebrow}</div>
+  <h1>{t.hero.title}</h1>
+  <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">{t.hero.intro}</p>
+  <p style="color:#c4d2e6;font-size:15px;max-width:820px;margin-top:10px">{t.hero.licencePre}<a href={tarievenHref} style="color:#fff;border-bottom:1px solid var(--gold)">{t.hero.licenceLink}</a>{t.hero.licencePost}</p>
+</div></section>
+
+<section><div class="wrap">
+  {configured ? (
+    <div id="shopApp" data-domain={cfg.domain} data-token={cfg.token} data-version={cfg.version} data-publicurl={cfg.publicUrl}>
+      <div class="shop-toolbar">
+        <div class="shop-search"><input type="search" id="shopq" placeholder={t.search} aria-label={t.search} /></div>
+        <div class="shop-selects">
+          <select id="fCyclus"><option value="">{t.allCyclus}</option></select>
+          <select id="fSegment"><option value="">{t.allSegment}</option></select>
+          <select id="fUitgever"><option value="">{t.allUitgever}</option></select>
+          <button class="chip chip-reset" id="shopReset" type="button">{t.reset}</button>
+        </div>
+      </div>
+      <p class="result-count" id="shopCount">{t.loading}</p>
+      <div class="shop-grid" id="shopGrid"></div>
+      <p class="shop-status" id="shopStatus" hidden></p>
+    </div>
+  ) : (
+    <div class="shop-placeholder">
+      <h2 class="section-title">{t.placeholder.title}</h2>
+      <p class="lead" style="max-width:640px;margin:0 auto 22px">{t.placeholder.lead}</p>
+      <a class="btn btn-primary" href={cfg.publicUrl} rel="noopener">{t.toShop}</a>
+    </div>
+  )}
+</div></section>
+
+<section class="bg-soft"><div class="wrap">
+  <div class="shop-usps">
+    {t.usps.map((u) => (
+      <div class="usp"><strong>{u.strong}</strong><span>{u.span}</span></div>
+    ))}
+  </div>
+</div></section>
+
+<style>
+  .shop-toolbar { display: grid; gap: 14px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+  .shop-search input { width: 100%; max-width: 420px; padding: 12px 16px; border: 1px solid var(--line-strong); border-radius: var(--radius-pill); font-size: 15px; font-family: inherit; }
+  .shop-search input:focus { outline: 2px solid var(--blue); border-color: var(--blue); }
+  .shop-selects { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .shop-selects select { padding: 10px 14px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); font-size: 14px; font-family: inherit; background: #fff; color: var(--navy); font-weight: 600; }
+  .chip-reset { border: 1px dashed var(--line-strong); background: #fff; color: var(--navy); font-weight: 700; font-size: 13.5px; padding: 9px 14px; border-radius: var(--radius-pill); cursor: pointer; font-family: inherit; }
+  .result-count { color: var(--muted); font-size: 14px; margin: 0 2px 16px; }
+  .shop-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  @media (max-width: 1000px) { .shop-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 760px) { .shop-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .shop-grid { grid-template-columns: 1fr; } }
+  .sp-card { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-xs); transition: transform .2s, box-shadow .2s; }
+  .sp-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+  .sp-img { position: relative; display: block; height: 158px; background-color: var(--bg-soft); background-size: cover; background-position: center; background-repeat: no-repeat; }
+  .sp-vendor { position: absolute; top: 10px; left: 10px; background: rgba(11,52,104,.86); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; backdrop-filter: blur(2px); }
+  .sp-body { padding: 16px 18px 18px; display: flex; flex-direction: column; flex: 1; }
+  .sp-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+  .sp-tag { background: #e8f0fe; color: var(--navy); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+  .sp-title { display: block; color: var(--navy); font-size: 1.05rem; font-weight: 700; line-height: 1.3; margin-bottom: 6px; text-decoration: none; }
+  .sp-title:hover { color: var(--accent); }
+  .sp-desc { color: var(--muted); font-size: 13px; line-height: 1.5; margin: 0 0 8px; flex: 1; }
+  .sp-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 6px; }
+  .sp-more { display: inline-block; margin-top: 10px; color: var(--blue); font-weight: 600; font-size: 13px; text-decoration: none; }
+  .sp-more:hover { color: var(--navy); }
+  .sp-price { color: var(--navy); font-weight: 800; font-size: 1.05rem; }
+  .sp-buy { background: var(--accent); color: #fff; border: none; font-weight: 700; font-size: 13.5px; padding: 9px 14px; border-radius: var(--radius-pill); cursor: pointer; font-family: inherit; transition: background .15s; }
+  .sp-buy:hover { background: var(--accent-hover); }
+  .sp-buy:disabled { opacity: .6; cursor: default; }
+  .shop-status { text-align: center; color: var(--muted); padding: 24px 0; }
+  .shop-placeholder { text-align: center; padding: 30px 0 10px; }
+  .shop-usps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .usp { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; border-left: 3px solid var(--gold); }
+  .usp strong { display: block; color: var(--navy); margin-bottom: 4px; }
+  .usp span { color: var(--muted); font-size: 14px; }
+  @media (max-width: 880px) { .shop-usps { grid-template-columns: 1fr 1fr; } }
+</style>
+
+<script is:inline define:vars={{ L }}>
+  (function () {
+    var app = document.getElementById("shopApp");
+    if (!app) return; // shop nog niet geconfigureerd (placeholder-modus)
+    var DOMAIN = app.dataset.domain, TOKEN = app.dataset.token, VER = app.dataset.version, PUBLIC = app.dataset.publicurl;
+    var grid = document.getElementById("shopGrid");
+    var countEl = document.getElementById("shopCount");
+    var statusEl = document.getElementById("shopStatus");
+    var q = document.getElementById("shopq");
+    var fCyclus = document.getElementById("fCyclus"), fSegment = document.getElementById("fSegment"), fUitgever = document.getElementById("fUitgever");
+    var products = [];
+
+    function gql(query, variables) {
+      return fetch("https://" + DOMAIN + "/api/" + VER + "/graphql.json", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Shopify-Storefront-Access-Token": TOKEN },
+        body: JSON.stringify({ query: query, variables: variables || {} }),
+      }).then(function (r) { return r.json(); });
+    }
+
+    // De live-shop legt de facetten vast in: vendor (=uitgever), productType
+    // (=segment) en tags (waarvan een deel HR-cyclus-fases zijn).
+    var CYCLUS_TAGS = ["Voorselectie", "Selectie", "Ontwikkeling", "Doorstroom", "Mobiliteit", "Employability", "Functioneren", "Beoordelen"];
+    function parseTaxo(node) {
+      var cyclus = (node.tags || []).filter(function (t) { return CYCLUS_TAGS.indexOf(t) > -1; });
+      var uit = node.vendor && node.vendor !== "My Store" ? node.vendor : null;
+      return { cyclus: cyclus, segment: node.productType ? [node.productType] : [], uitgever: uit };
+    }
+    function money(a, c) {
+      var n = parseFloat(a);
+      return (c === "EUR" ? "€" : (c + " ")) + n.toFixed(2).replace(".", ",");
+    }
+    function fillSelect(sel, values) {
+      values.sort().forEach(function (v) {
+        var o = document.createElement("option"); o.value = v; o.textContent = v; sel.appendChild(o);
+      });
+    }
+
+    var PRODUCTS_Q =
+      "{ products(first: 250, sortKey: TITLE) { edges { node { title handle description tags vendor productType availableForSale " +
+      "featuredImage { url altText } priceRange { minVariantPrice { amount currencyCode } } " +
+      "variants(first: 1) { edges { node { id availableForSale } } } } } } }";
+
+    function esc(s) { return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+
+    function render() {
+      var term = (q.value || "").trim().toLowerCase();
+      var c = fCyclus.value, s = fSegment.value, u = fUitgever.value;
+      var html = "", shown = 0;
+      products.forEach(function (p) {
+        var okC = !c || p.taxo.cyclus.indexOf(c) > -1;
+        var okS = !s || p.taxo.segment.indexOf(s) > -1;
+        var okU = !u || p.taxo.uitgever === u;
+        var okT = !term || p.title.toLowerCase().indexOf(term) > -1;
+        if (!(okC && okS && okU && okT)) return;
+        shown++;
+        var chips = p.taxo.cyclus.concat(p.taxo.segment).slice(0, 3).map(function (x) { return '<span class="sp-tag">' + esc(x) + "</span>"; }).join("");
+        var img = p.image ? 'style="background-image:url(\'' + p.image + "')\"" : "";
+        var moreHref = PUBLIC + "/products/" + p.handle;
+        var vendor = p.taxo.uitgever ? '<span class="sp-vendor">' + esc(p.taxo.uitgever) + "</span>" : "";
+        var desc = p.desc ? '<p class="sp-desc">' + esc(p.desc).slice(0, 130) + (p.desc.length > 130 ? "…" : "") + "</p>" : "";
+        var buy = p.variantId && p.available
+          ? '<button class="sp-buy" data-vid="' + p.variantId + '">' + esc(L.buy) + '</button>'
+          : '<a class="sp-buy" href="' + moreHref + '">' + esc(L.view) + '</a>';
+        html +=
+          '<div class="sp-card">' +
+          '<a class="sp-img" ' + img + ' href="' + moreHref + '" aria-label="' + esc(p.title) + '">' + vendor + "</a>" +
+          '<div class="sp-body"><div class="sp-tags">' + chips + "</div>" +
+          '<a class="sp-title" href="' + moreHref + '">' + esc(p.title) + "</a>" +
+          desc +
+          '<div class="sp-foot"><span class="sp-price">' + p.price + "</span>" + buy + "</div>" +
+          '<a class="sp-more" href="' + moreHref + '">' + esc(L.more) + '</a>' +
+          "</div></div>";
+      });
+      grid.innerHTML = html;
+      countEl.textContent = shown + " " + L.countMid + " " + products.length + " " + L.countUnit;
+      grid.querySelectorAll(".sp-buy[data-vid]").forEach(function (b) {
+        b.addEventListener("click", function () { checkout(b.dataset.vid, b); });
+      });
+    }
+
+    function checkout(variantId, btn) {
+      btn.disabled = true; btn.textContent = L.busy;
+      var M = 'mutation($id: ID!){ cartCreate(input:{lines:[{quantity:1, merchandiseId:$id}]}){ cart { checkoutUrl } userErrors { message } } }';
+      gql(M, { id: variantId }).then(function (res) {
+        var url = res && res.data && res.data.cartCreate && res.data.cartCreate.cart && res.data.cartCreate.cart.checkoutUrl;
+        if (url) { window.location.href = url; }
+        else { throw new Error("no checkout url"); }
+      }).catch(function () {
+        btn.disabled = false; btn.textContent = L.buy;
+        statusEl.hidden = false; statusEl.textContent = L.checkoutError;
+      });
+    }
+
+    countEl.textContent = L.loading;
+    gql(PRODUCTS_Q).then(function (res) {
+      var edges = res && res.data && res.data.products && res.data.products.edges;
+      if (!edges) throw new Error("no products");
+      var cycSet = {}, segSet = {}, uitSet = {};
+      products = edges.map(function (e) {
+        var n = e.node, taxo = parseTaxo(n);
+        taxo.cyclus.forEach(function (x) { cycSet[x] = 1; });
+        taxo.segment.forEach(function (x) { segSet[x] = 1; });
+        if (taxo.uitgever) uitSet[taxo.uitgever] = 1;
+        var v = n.variants && n.variants.edges && n.variants.edges[0] && n.variants.edges[0].node;
+        return {
+          title: n.title, handle: n.handle, taxo: taxo, desc: n.description || "",
+          image: n.featuredImage ? n.featuredImage.url : null,
+          price: n.priceRange ? money(n.priceRange.minVariantPrice.amount, n.priceRange.minVariantPrice.currencyCode) : "",
+          variantId: v ? v.id : null, available: v ? v.availableForSale : false,
+        };
+      });
+      fillSelect(fCyclus, Object.keys(cycSet));
+      fillSelect(fSegment, Object.keys(segSet));
+      fillSelect(fUitgever, Object.keys(uitSet));
+      render();
+    }).catch(function () {
+      countEl.textContent = "";
+      statusEl.hidden = false;
+      statusEl.innerHTML = L.loadErrorPre + '<a href="' + PUBLIC + '">' + L.toShop + '</a>';
+    });
+
+    [q, fCyclus, fSegment, fUitgever].forEach(function (el) {
+      el.addEventListener(el === q ? "input" : "change", render);
+    });
+    document.getElementById("shopReset").addEventListener("click", function () {
+      q.value = ""; fCyclus.value = ""; fSegment.value = ""; fUitgever.value = ""; render();
+    });
+  })();
+</script>
