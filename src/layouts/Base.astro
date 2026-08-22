@@ -12,6 +12,24 @@ const {
 
 const lang = getLangFromUrl(Astro.url);
 const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://hrmforce.com");
+
+// Organisatie-structured-data (voor Google + AI-samenvattingen)
+const orgLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "hrmforce",
+  url: "https://hrmforce.com",
+  logo: "https://hrmforce.com/wp-content/uploads/2022/03/HRM-LOGO.svg",
+  description: "Talentmanagement software en wetenschappelijk gevalideerde online assessments voor selectie, ontwikkeling en teams.",
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: "+31-88-88-321-88",
+    email: "service@hrmforce.com",
+    contactType: "customer service",
+    areaServed: "EU",
+    availableLanguage: ["nl", "en", "de", "fr", "es", "ro"],
+  },
+};
 ---
 <!DOCTYPE html>
 <html lang={lang}>
@@ -27,6 +45,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://hrmforce.co
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
     />
     <title>{title}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(orgLd)} is:inline></script>
   </head>
   <body>
     <Header active={active} />
