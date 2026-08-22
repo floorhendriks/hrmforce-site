@@ -183,10 +183,10 @@ const faqLd = {
   <!-- Sticky CTA-balk (verschijnt bij scrollen) -->
   <div class="sticky-cta" id="stickyCta" aria-hidden="true">
     <div class="wrap">
-      <span class="sc-text"><b>hrmforce</b> — betere beslissingen over mensen, onderbouwd en objectief.</span>
+      <span class="sc-text"><b>hrmforce</b> — ontdek vrijblijvend welke aanpak past bij jouw HR-vraag.</span>
       <div class="sc-btns">
         <a href="/online-assessments/" class="sc-ghost">Bekijk assessments</a>
-        <a href="/contact/" class="btn btn-primary sc-primary">Plan een gratis demo →</a>
+        <a href="/contact/" class="btn btn-primary sc-primary">Plan een demo →</a>
       </div>
     </div>
   </div>
@@ -215,6 +215,7 @@ const faqLd = {
           <span class="hb"><span class="hb-ic">✓</span> NIP-psychologen</span>
           <span class="hb"><span class="hb-ic">✓</span> AVG-proof (EU)</span>
         </div>
+        <a class="hero-trustlink" href="/over-ons/">Zo borgen we kwaliteit &amp; AVG →</a>
       </div>
 
       <!-- Glazen statspaneel: kerncijfers + competentiebalken + trend -->
@@ -258,6 +259,8 @@ const faqLd = {
           ))}
         </div>
       </div>
+
+      <p class="sector-line">Van overheid en banken tot zorg, onderwijs en industrie — 1.200+ organisaties kiezen hrmforce.</p>
 
       <figure class="spotlight">
         <div class="stars">★★★★★</div>
@@ -310,6 +313,14 @@ const faqLd = {
           </ul>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- 2d. UITKOMST-BAND -->
+  <section class="outcome">
+    <div class="wrap">
+      <p class="outcome-stat"><b>Tot 40% meer rendement</b> van een bovengemiddeld presterende medewerker.</p>
+      <p class="outcome-sub">Onderbouwd selecteren en gericht ontwikkelen loont — meetbaar, voor selectie én groei.</p>
     </div>
   </section>
 
@@ -508,6 +519,17 @@ const faqLd = {
   .sc-ghost:hover { color: var(--accent); }
   .sc-primary { padding: 9px 18px; font-size: 14px; }
   @media (max-width: 720px) { .sc-text { display: none; } .sticky-cta .wrap { justify-content: center; } }
+
+  .hero-trustlink { display: inline-block; margin-top: 14px; color: #cfe0f5; font-size: 13.5px; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,.3); padding-bottom: 1px; }
+  .hero-trustlink:hover { color: #fff; border-color: #fff; }
+
+  .sector-line { text-align: center; color: var(--muted); font-size: 14.5px; margin: 20px auto 0; max-width: 640px; }
+
+  .outcome { background: linear-gradient(120deg, var(--navy), var(--navy-deep)); color: #fff; text-align: center; }
+  .outcome .wrap { padding-top: 40px; padding-bottom: 40px; }
+  .outcome-stat { font-size: clamp(1.3rem, 1.1rem + 1vw, 1.9rem); font-weight: 700; letter-spacing: -.4px; }
+  .outcome-stat b { color: var(--gold); font-weight: 800; }
+  .outcome-sub { color: #c4d2e6; font-size: 16px; margin-top: 8px; }
 
   /* ---------- SOCIAL PROOF ---------- */
   .proof { background: var(--bg); }
