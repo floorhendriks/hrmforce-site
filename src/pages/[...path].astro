@@ -1,45 +1,106 @@
 ---
 import Base from "../layouts/Base.astro";
 import { createClient } from "@sanity/client";
+import { shopInfo } from "../data/assessment-shop.js";
+import { localizePath } from "../i18n/utils.js";
 
 // Gemigreerde kenniscentrum-artikelen uit WordPress. Elk artikel-document in
 // Sanity heeft een volledig 'path'; deze catch-all route rendert ze op dat pad.
-// Project-ID en dataset staan hier vast (publiek, niet-geheim) zodat de build
-// de artikelen altijd ophaalt, los van omgevingsvariabelen.
-const sanityArticles = createClient({
-  projectId: "hqo56w28",
-  dataset: "production",
-  apiVersion: "2024-01-01",
-  useCdn: false,
-});
-
 export async function getStaticPaths() {
-  const client = createClient({
-    projectId: "hqo56w28",
-    dataset: "production",
-    apiVersion: "2024-01-01",
-    useCdn: false,
-  });
+  const client = createClient({ projectId: "hqo56w28", dataset: "production", apiVersion: "2024-01-01", useCdn: false });
   const arts = await client.fetch(
     `*[_type == "article" && defined(path) && defined(body)]{path, title, body, date}`
   );
   return arts
     .filter((a) => a.path && a.path.includes("/"))
-    .map((a) => ({
-      params: { path: a.path.replace(/^\/+|\/+$/g, "") },
-      props: { article: a },
-    }));
+    .map((a) => ({ params: { path: a.path.replace(/^\/+|\/+$/g, "") }, props: { article: a } }));
 }
 
 const { article } = Astro.props;
 const fmt = (d) => (d ? new Date(d).toLocaleDateString("nl-NL") : "");
+
+// Taal afleiden uit het pad (bv. /en/kenniscentrum/...).
+const seg = (article.path || "").split("/").filter(Boolean)[0];
+const lang = ["en", "de", "fr", "es", "ro"].includes(seg) ? seg : "nl";
+
+// Meest relevante assessment kiezen op basis van de titel (themabuckets).
+const REC = {
+  "disc-test": { label: "DISC Test", blurb: "Breng gedrag, communicatie en samenwerking in kaart." },
+  "big-five": { label: "Persoonlijkheidstest: Big Five", blurb: "Persoonlijkheid vertaald naar werkgerelateerde competenties." },
+  "cognitieve-test": { label: "Cognitieve capaciteitentest", blurb: "Meet werk- en denkniveau en leervermogen objectief." },
+  "drijfverentest": { label: "Drijfverentest", blurb: "Ontdek wat iemand motiveert en energie geeft." },
+  "leiderschapstest": { label: "Leiderschapstest", blurb: "Inzicht in leiderschapsstijlen en managementrollen." },
+  "360-graden-feedback": { label: "360 graden feedback", blurb: "Feedback van collega's, leidinggevenden en klanten." },
+  "studiekeuzetest": { label: "Studiekeuzetest", blurb: "Passende opleidingen en beroepen op basis van interesses." },
+};
+function pickAssessment(title) {
+  const t = (title || "").toLowerCase();
+  const has = (...kw) => kw.some((k) => t.includes(k));
+  if (has("disc")) return "disc-test";
+  if (has("big five", "big 5", "big fifty", "persoonlijk", "personality")) return "big-five";
+  if (has("capacit", "cognit", "intelligent", "iq", "abstract", "matrigma", "ability")) return "cognitieve-test";
+  if (has("drijfver", "motivat", "drives")) return "drijfverentest";
+  if (has("leider", "leadership", "management", "manager")) return "leiderschapstest";
+  if (has("team", "360", "feedback", "samenwerk")) return "360-graden-feedback";
+  if (has("studiekeuze", "beroepskeuze", "loopbaan", "career", "study")) return "studiekeuzetest";
+  return null;
+}
+const recSlug = pickAssessment(article.title);
+const rec = recSlug ? REC[recSlug] : null;
+const recShop = recSlug ? shopInfo(recSlug) : null;
+const recHref = recSlug ? (lang === "nl" ? `/assessments/${recSlug}/` : localizePath("/online-assessments/", lang)) : localizePath("/online-assessments/", lang);
+const contactHref = localizePath("/contact/", lang);
+const allHref = localizePath("/online-assessments/", lang);
+
+// Gerelateerde assessments voor de eindband (max 3, exclusief de aanbevolen).
+const relatedPool = ["big-five", "drijfverentest", "360-graden-feedback", "disc-test", "cognitieve-test"];
+const related = relatedPool.filter((s) => s !== recSlug).slice(0, 3).map((s) => ({ slug: s, label: REC[s].label }));
+
+// UI-teksten (nl volledig; de/fr/es/ro vallen terug op en).
+const T = {
+  nl: { tag: "Direct toepassen", from: "vanaf", card: "Bekijk", endTitle: "Zet dit inzicht in de praktijk", endText: "Neem het assessment direct af, of bespreek met een specialist welke aanpak past.", primary: "Bekijk assessments", demo: "Plan een gratis demo", also: "Ook interessant:" },
+  en: { tag: "Put it into practice", from: "from", card: "View", endTitle: "Put this insight into practice", endText: "Take the assessment directly, or discuss the right approach with a specialist.", primary: "View assessments", demo: "Book a free demo", also: "Also interesting:" },
+};
+const L = T[lang] || T.en;
+
+// Body splitsen: contextuele kaart na de eerste </h2> (anders vóór de eindband).
+const body = article.body || "";
+const cut = body.indexOf("</h2>");
+const bodyTop = cut !== -1 ? body.slice(0, cut + 5) : body;
+const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
 ---
 <Base title={`${article.title} | Hrmforce`} description={article.title}>
   <article class="kc-article">
     <div class="wrap">
       <h1>{article.title}</h1>
       {article.date && <p class="kc-date">{fmt(article.date)}</p>}
-      <div class="kc-body" set:html={article.body}></div>
+      <div class="kc-body" set:html={bodyTop}></div>
+
+      {rec && (
+        <div class="kc-ctx">
+          <span class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
+          </span>
+          <div class="ctx-body">
+            <div class="ctx-tag">{L.tag}</div>
+            <h3>{rec.label}{recShop && recShop.price && <span class="ctx-price"> · {L.from} &euro;{recShop.price}</span>}</h3>
+            <p>{rec.blurb}</p>
+          </div>
+          <a class="ctx-btn" href={recHref}>{L.card} {rec.label} →</a>
+        </div>
+      )}
+
+      {bodyBottom && <div class="kc-body" set:html={bodyBottom}></div>}
+
+      <div class="kc-endcta">
+        <h3>{L.endTitle}</h3>
+        <p>{L.endText}</p>
+        <div class="kc-btns">
+          <a class="btn btn-primary" href={recHref}>{recSlug ? `${L.card} ${rec.label}` : L.primary} →</a>
+          <a class="btn btn-ghost" href={contactHref}>{L.demo}</a>
+        </div>
+        <p class="kc-rel">{L.also} {related.map((r, i) => (<>{i > 0 && " · "}<a href={lang === "nl" ? `/assessments/${r.slug}/` : allHref}>{r.label}</a></>))}</p>
+      </div>
     </div>
   </article>
 </Base>
@@ -59,4 +120,23 @@ const fmt = (d) => (d ? new Date(d).toLocaleDateString("nl-NL") : "");
   .kc-body :global(a) { color: var(--blue, #4691CE); }
   .kc-body :global(table) { width: 100%; border-collapse: collapse; margin: 16px 0; }
   .kc-body :global(td), .kc-body :global(th) { border: 1px solid #e2e2e2; padding: 8px; text-align: left; }
+
+  .kc-ctx { display: flex; gap: 16px; align-items: center; background: linear-gradient(160deg, var(--navy), var(--navy-deep)); color: #fff; border-radius: 16px; padding: 22px 24px; margin: 30px 0; box-shadow: 0 18px 40px rgba(14,70,140,.22); }
+  .kc-ctx .ic { width: 52px; height: 52px; border-radius: 12px; background: rgba(255,255,255,.1); color: var(--gold); flex: none; display: flex; align-items: center; justify-content: center; }
+  .kc-ctx .ic svg { width: 26px; height: 26px; }
+  .kc-ctx .ctx-body { flex: 1; }
+  .kc-ctx .ctx-tag { font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .6px; color: var(--gold); }
+  .kc-ctx h3 { color: #fff; font-size: 1.15rem; margin: 3px 0; }
+  .kc-ctx .ctx-price { color: var(--gold); font-weight: 700; }
+  .kc-ctx .ctx-body p { color: #c9d8ef; font-size: 14px; margin: 0; }
+  .kc-ctx .ctx-btn { flex: none; background: var(--accent); color: #fff; font-weight: 700; font-size: 14px; padding: 11px 18px; border-radius: 999px; text-decoration: none; white-space: nowrap; transition: background .15s; }
+  .kc-ctx .ctx-btn:hover { background: var(--accent-hover); }
+  @media (max-width: 620px) { .kc-ctx { flex-direction: column; align-items: flex-start; } .kc-ctx .ctx-btn { width: 100%; text-align: center; } }
+
+  .kc-endcta { background: var(--bg); border: 1px solid var(--line); border-top: 3px solid var(--gold); border-radius: 16px; padding: 30px; margin-top: 40px; text-align: center; }
+  .kc-endcta h3 { color: var(--navy); font-size: 1.3rem; margin-bottom: 8px; }
+  .kc-endcta p { color: var(--muted); font-size: 15px; max-width: 540px; margin: 0 auto 18px; }
+  .kc-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .kc-rel { margin-top: 14px !important; font-size: 13.5px; color: var(--muted); }
+  .kc-rel a { color: var(--blue); font-weight: 600; text-decoration: none; }
 </style>
