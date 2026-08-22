@@ -1,0 +1,9 @@
+---
+import Base from "../../layouts/Base.astro";
+import Voorbereiding from "../../components/Voorbereiding.astro";
+import { voorbereidingContent } from "../../data/voorbereiding-content.js";
+const t = voorbereidingContent.ro;
+---
+<Base title={t.meta.title} description={t.meta.description} active="">
+  <Voorbereiding t={t} lang="ro" />
+</Base>
