@@ -1,0 +1,52 @@
+---
+import { localizePath } from "../i18n/utils.js";
+const { t, lang } = Astro.props;
+const contactHref = localizePath("/contact/", lang);
+---
+<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={localizePath("/support/", lang)}>{t.crumb.support}</a> › <span>{t.crumb.faq}</span></div></div>
+
+<section class="ahero"><div class="wrap" style="display:block">
+  <div class="eyebrow" style="color:var(--gold)">{t.hero.eyebrow}</div>
+  <h1>{t.hero.title}</h1>
+  <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px" set:html={t.hero.intro}></p>
+</div></section>
+
+{t.categories.map((cat) => (
+  <section class="faq-cat"><div class="wrap">
+    <div class="cat-head">
+      <span class="cat-num">{cat.num}</span>
+      <div>
+        <h2 class="section-title" style="margin-bottom:6px">{cat.title}</h2>
+        <p class="muted">{cat.intro}</p>
+      </div>
+    </div>
+    <div class="faq-list">
+      {cat.items.map((f) => (
+        <div class="faq-item">
+          <div class="faq-q">{f.q}<span class="pl">+</span></div>
+          <div class="faq-a" set:html={f.a}></div>
+        </div>
+      ))}
+    </div>
+  </div></section>
+))}
+
+<section class="cta"><div class="wrap" style="padding:56px 0;text-align:center">
+  <h2 style="color:#fff">{t.cta.title}</h2>
+  <p style="color:rgba(255,255,255,.9);max-width:640px;margin:12px auto 0">{t.cta.lead}</p>
+  <div class="btns" style="justify-content:center;margin-top:20px">
+    <a href={contactHref} class="btn btn-light">{t.cta.btnDemo}</a>
+    <a href={contactHref} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">{t.cta.btnContact}</a>
+  </div>
+</div></section>
+<style>
+  .faq-cat{padding-top:34px}
+  .faq-cat:nth-child(odd){background:var(--bg-soft,#f6f9fc)}
+  .cat-head{display:flex;gap:18px;align-items:flex-start;margin-bottom:8px}
+  .cat-num{font-size:2rem;font-weight:800;color:var(--gold);line-height:1;flex:0 0 auto}
+  .faq-list{max-width:860px;margin-top:20px}
+  .faq-a :global(p){margin:0 0 12px}
+  .faq-a :global(ul),.faq-a :global(ol){margin:0 0 12px 20px}
+  .faq-a :global(li){margin:5px 0}
+  .faq-a :global(a){color:var(--blue)}
+</style>
