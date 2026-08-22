@@ -1,0 +1,9 @@
+---
+import Base from "../../layouts/Base.astro";
+import AssessmentOverzicht from "../../components/AssessmentOverzicht.astro";
+import { ovContent } from "../../data/overzicht-content.js";
+const c = ovContent.de;
+---
+<Base title={c.meta.title} description={c.meta.description} active="assessments">
+  <AssessmentOverzicht c={c} lang="de" />
+</Base>
