@@ -1,0 +1,9 @@
+---
+import Base from "../../layouts/Base.astro";
+import Trust from "../../components/Trust.astro";
+import { trustContent } from "../../data/trust-content.js";
+const t = trustContent.fr;
+---
+<Base title={t.meta.title} description={t.meta.description} active="about">
+  <Trust t={t} lang="fr" />
+</Base>
