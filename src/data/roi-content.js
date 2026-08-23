@@ -216,7 +216,7 @@ Object.assign(roiContent.fr.form, {
 Object.assign(roiContent.fr.result, {
   eyebrow: "Rendement calculé (indicatif)",
   nettoLabel: "Rendement net annuel",
-  bruto:  Bénéfice brut",
+  bruto: "Bénéfice brut",
   investering: "Investissement total",
   aantal: "Nombre d'évaluations",
   roi: "Retour sur investissement",
