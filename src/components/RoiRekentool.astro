@@ -1,0 +1,117 @@
+---
+import { localizePath } from "../i18n/utils.js";
+const { t, lang } = Astro.props;
+const contactHref = localizePath("/contact/", lang);
+---
+<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+
+<section class="ahero"><div class="wrap" style="display:block">
+  <div class="eyebrow" style="color:var(--gold)">{t.hero.eyebrow}</div>
+  <h1>{t.hero.title}</h1>
+  <p style="color:#dbe6f5;font-size:19px;max-width:760px;margin-top:8px">
+    {t.hero.intro}
+  </p>
+</div></section>
+
+<section><div class="wrap">
+  <div class="explain" style="grid-template-columns:1fr 1fr">
+    <div class="formcard" style="max-width:none;margin:0">
+      <div class="eyebrow">{t.form.orgHeading}</div>
+      <div class="fg"><label for="wervingen">{t.form.wervingen}</label><input type="number" id="wervingen" value="50" min="0" /></div>
+      <div class="fg"><label for="sollicitanten">{t.form.sollicitanten}</label><input type="number" id="sollicitanten" value="3" min="1" /></div>
+      <div class="fg"><label for="salaris">{t.form.salaris}</label><input type="number" id="salaris" value="45000" min="0" step="1000" /></div>
+
+      <div class="eyebrow" style="margin-top:10px">{t.form.pakketHeading}</div>
+      <div class="fg">
+        <label for="pakket">{t.form.pakketLabel}</label>
+        <select id="pakket">
+          <option value="basis">{t.form.pakketOptions.basis}</option>
+          <option value="compleet" selected>{t.form.pakketOptions.compleet}</option>
+          <option value="premium">{t.form.pakketOptions.premium}</option>
+        </select>
+      </div>
+
+      <div class="eyebrow" style="margin-top:10px">{t.form.advancedHeading}</div>
+      <div class="frow">
+        <div class="fg"><label for="zx">{t.form.zx}</label><input type="number" id="zx" value="1.0" min="0" step="0.1" /></div>
+        <div class="fg"><label for="sd">{t.form.sd}</label><input type="number" id="sd" value="40" min="0" step="5" /></div>
+      </div>
+      <div class="fg"><label for="kosten">{t.form.kosten}</label><input type="number" id="kosten" value="100" min="0" step="5" /></div>
+    </div>
+
+    <div>
+      <div class="pentagon" style="text-align:left">
+        <div class="eyebrow">{t.result.eyebrow}</div>
+        <div style="font-size:40px;font-weight:800;color:var(--navy)" id="netto">€ 0</div>
+        <p style="color:var(--muted);font-size:14px;margin:0 0 18px">{t.result.nettoLabel}</p>
+        <div class="info-grid" style="grid-template-columns:1fr 1fr;padding:0;gap:14px">
+          <div><div class="lbl">{t.result.bruto}</div><div class="v" id="bruto">€ 0</div></div>
+          <div><div class="lbl">{t.result.investering}</div><div class="v" id="investering">€ 0</div></div>
+          <div><div class="lbl">{t.result.aantal}</div><div class="v" id="aantal">0</div></div>
+          <div><div class="lbl">{t.result.roi}</div><div class="v" id="roi">0%</div></div>
+        </div>
+        <a href={contactHref} class="btn btn-primary" style="margin-top:22px">{t.result.cta}</a>
+      </div>
+      <p class="note" style="margin-top:18px;text-align:left" set:html={t.result.note}></p>
+    </div>
+  </div>
+</div></section>
+
+<section class="formsec"><div class="wrap">
+  <div class="eyebrow">{t.explain.eyebrow}</div>
+  <h2 class="section-title">{t.explain.title}</h2>
+  <div class="explain">
+    <div>
+      <p>{t.explain.p1}</p>
+      <p set:html={t.explain.formula}></p>
+      <ul class="traits">
+        {t.explain.factors.map((f) => <li>{f}</li>)}
+      </ul>
+    </div>
+    <div>
+      <p set:html={t.explain.offerHeading}></p>
+      <ul class="traits">
+        {t.explain.offerList.map((o) => <li>{o}</li>)}
+      </ul>
+      <p style="color:var(--muted);font-size:14px">{t.explain.costsNote}</p>
+    </div>
+  </div>
+</div></section>
+
+<script>
+  (function () {
+    const ids = ["wervingen", "sollicitanten", "salaris", "pakket", "zx", "sd", "kosten"];
+    const rvMap = { basis: 0.30, compleet: 0.50, premium: 0.65 };
+    const euro = (n) => "€ " + Math.round(n).toLocaleString("nl-NL");
+
+    function calc() {
+      const g = (id) => document.getElementById(id);
+      const N = parseFloat(g("wervingen").value) || 0;
+      const sol = parseFloat(g("sollicitanten").value) || 0;
+      const salaris = parseFloat(g("salaris").value) || 0;
+      const rv = rvMap[g("pakket").value] || 0.30;
+      const zx = parseFloat(g("zx").value) || 0;
+      const sdPct = parseFloat(g("sd").value) || 0;
+      const kostenPer = parseFloat(g("kosten").value) || 0;
+
+      const sdEuro = (sdPct / 100) * salaris;
+      const bruto = N * rv * zx * sdEuro;
+      const aantal = N * sol;
+      const investering = aantal * kostenPer;
+      const netto = bruto - investering;
+      const roi = investering > 0 ? (netto / investering) * 100 : 0;
+
+      g("netto").textContent = euro(netto);
+      g("bruto").textContent = euro(bruto);
+      g("investering").textContent = euro(investering);
+      g("aantal").textContent = Math.round(aantal).toLocaleString("nl-NL");
+      g("roi").textContent = Math.round(roi).toLocaleString("nl-NL") + "%";
+    }
+
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) { el.addEventListener("input", calc); el.addEventListener("change", calc); }
+    });
+    calc();
+  })();
+</script>
