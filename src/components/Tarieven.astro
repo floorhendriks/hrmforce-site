@@ -3,6 +3,7 @@ import { localizePath } from "../i18n/utils.js";
 const { t, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
 const overHref = localizePath("/over-ons/", lang);
+const roiHref = localizePath("/roi-rekentool/", lang);
 ---
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
 
@@ -11,7 +12,7 @@ const overHref = localizePath("/over-ons/", lang);
   <h1>{t.hero.title}</h1>
   <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px" set:html={t.hero.intro}></p>
   <p style="color:var(--gold);font-weight:700;font-size:14px;margin-top:12px">{t.hero.positioning}</p>
-  <div class="btns" style="margin-top:18px"><a href={contactHref} class="btn btn-primary">{t.hero.cta}</a></div>
+  <div class="btns" style="margin-top:18px"><a href={contactHref} class="btn btn-primary">{t.hero.cta}</a><a href={roiHref} class="btn btn-light">{t.hero.roiCta} &rarr;</a></div>
 </div></section>
 
 <section class="bg-soft"><div class="wrap">
