@@ -1,0 +1,9 @@
+---
+import Base from "../../layouts/Base.astro";
+import Integraties from "../../components/Integraties.astro";
+import { integratiesContent } from "../../data/integraties-content.js";
+const t = integratiesContent.en;
+---
+<Base title={t.meta.title} description={t.meta.description} active="solutions">
+  <Integraties t={t} lang="en" />
+</Base>
