@@ -84,7 +84,8 @@ const faqLd = {
     <div class="metric-cards">
       {c.metrics.map((m) => <div class="metric-card"><div class="mc-big">{m.big}</div><div class="mc-lab">{m.label}</div></div>)}
     </div>
-    <p class="lead center" style="margin:44px auto 0">{c.proof.trustedBy}</p>
+    <div class="google-rating"><span class="gr-stars">★★★★★</span> <b>4,9</b>/5 · Google</div>
+    <p class="lead center" style="margin:22px auto 0">{c.proof.trustedBy}</p>
     <div class="logo-marquee" aria-label="hrmforce">
       <div class="lm-track">
         {[...clients, ...clients].map((cl) => <div class="lm-cell"><img src={cl.logo} alt={cl.name} loading="lazy" /></div>)}
@@ -319,6 +320,9 @@ const faqLd = {
   .hero-trustlink { display: inline-block; margin-top: 14px; color: #cfe0f5; font-size: 13.5px; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,.3); padding-bottom: 1px; }
   .hero-trustlink:hover { color: #fff; border-color: #fff; }
   .sector-line { text-align: center; color: var(--muted); font-size: 14.5px; margin: 20px auto 0; max-width: 640px; }
+  .google-rating { text-align: center; margin: 44px auto 0; color: var(--navy); font-weight: 700; font-size: 15px; }
+  .google-rating .gr-stars { color: var(--gold); letter-spacing: 2px; }
+  .google-rating b { font-size: 1.1rem; }
   .outcome { background: linear-gradient(120deg, var(--navy), var(--navy-deep)); color: #fff; text-align: center; }
   .outcome .wrap { padding-top: 40px; padding-bottom: 40px; }
   .outcome-stat { font-size: clamp(1.3rem, 1.1rem + 1vw, 1.9rem); font-weight: 700; letter-spacing: -.4px; }
