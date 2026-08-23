@@ -1,1 +1,9 @@
-
+---
+import Base from "../../layouts/Base.astro";
+import RoiRekentool from "../../components/RoiRekentool.astro";
+import { roiContent } from "../../data/roi-content.js";
+const t = roiContent.fr;
+---
+<Base title={t.meta.title} description={t.meta.description} active="">
+  <RoiRekentool t={t} lang="fr" />
+</Base>
