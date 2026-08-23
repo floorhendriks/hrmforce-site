@@ -1,0 +1,78 @@
+---
+import { localizePath } from "../i18n/utils.js";
+const { t, lang } = Astro.props;
+const contactHref = localizePath("/contact/", lang);
+const tarievenHref = localizePath("/tarieven/", lang);
+---
+<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+
+<section class="ahero"><div class="wrap" style="display:block">
+  <div class="eyebrow" style="color:var(--gold)">{t.hero.eyebrow}</div>
+  <h1>{t.hero.title}</h1>
+  <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px" set:html={t.hero.intro}></p>
+  <p style="color:var(--gold);font-weight:700;font-size:14px;margin-top:12px">{t.hero.positioning}</p>
+  <div class="btns" style="margin-top:18px"><a href={contactHref} class="btn btn-primary">{t.hero.cta}</a></div>
+</div></section>
+
+<section class="bg-soft"><div class="wrap">
+  <div class="eyebrow">{t.categories.eyebrow}</div>
+  <h2 class="section-title">{t.categories.title}</h2>
+  <div class="cards">
+    {t.categories.items.map((c) => (
+      <div class="card">
+        <div class="ic">{c.icon}</div>
+        <h3>{c.title}</h3>
+        <p>{c.text}</p>
+      </div>
+    ))}
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="eyebrow">{t.examples.eyebrow}</div>
+  <h2 class="section-title">{t.examples.title}</h2>
+  <p class="muted" style="max-width:760px;font-size:16px">{t.examples.intro}</p>
+  <div class="chip-row">
+    {t.examples.items.map((name) => <span class="chip">{name}</span>)}
+  </div>
+  <p class="note" style="max-width:760px;margin-top:20px">{t.examples.note}</p>
+</div></section>
+
+<section class="bg-soft"><div class="wrap">
+  <div class="eyebrow">{t.how.eyebrow}</div>
+  <h2 class="section-title">{t.how.title}</h2>
+  <div class="cards">
+    {t.how.steps.map((s) => (
+      <div class="card">
+        <h3>{s.title}</h3>
+        <p>{s.text}</p>
+      </div>
+    ))}
+  </div>
+  <p class="note" style="max-width:760px;margin-top:20px">{t.how.note}</p>
+</div></section>
+
+<section class="cta"><div class="wrap" style="padding:56px 0">
+  <h2 style="color:#fff">{t.ctaBand.title}</h2>
+  <p style="color:rgba(255,255,255,.9);max-width:620px;margin:12px auto 0">{t.ctaBand.text}</p>
+  <div class="btns" style="justify-content:center;margin-top:20px">
+    <a href={contactHref} class="btn btn-light">{t.ctaBand.primary}</a>
+    <a href={tarievenHref} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">{t.ctaBand.secondary}</a>
+  </div>
+  <p style="color:rgba(255,255,255,.9);margin-top:22px">
+    <strong>T:</strong> <a href="tel:+31888832188" style="color:#fff;text-decoration:underline">+31 (0)88 88 321 88</a>
+    &nbsp;·&nbsp;
+    <strong>E:</strong> <a href="mailto:service@hrmforce.com" style="color:#fff;text-decoration:underline">service@hrmforce.com</a>
+  </p>
+</div></section>
+
+<style>
+  .chip-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+  .chip {
+    display: inline-flex; align-items: center;
+    background: #fff; border: 1px solid var(--line-strong);
+    color: var(--navy); font-weight: 700; font-size: 15px;
+    padding: 10px 20px; border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-sm);
+  }
+</style>
