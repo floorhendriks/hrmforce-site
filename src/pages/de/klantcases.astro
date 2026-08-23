@@ -1,0 +1,9 @@
+---
+import Base from "../../layouts/Base.astro";
+import Cases from "../../components/Cases.astro";
+import { casesContent } from "../../data/cases-content.js";
+const t = casesContent.de;
+---
+<Base title={t.meta.title} description={t.meta.description} active="about">
+  <Cases t={t} lang="de" />
+</Base>
