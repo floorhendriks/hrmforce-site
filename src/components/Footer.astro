@@ -1,11 +1,12 @@
 ---
 import { routes } from "../i18n/ui.js";
 import { getLangFromUrl, useTranslations, navHref } from "../i18n/utils.js";
+import validPaths from "../data/valid-paths.js";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const year = new Date().getFullYear();
-const L = (p) => navHref(p, lang);
+const L = (p) => navHref(p, lang, validPaths);
 ---
 <footer>
   <div class="wrap">
