@@ -17,7 +17,7 @@ const CTA = {
 const cta = CTA[lang] || CTA.en;
 const homeHref = localizePath("/", lang);
 const contactHref = localizePath(routes.contact, lang);
-const assessHref = routes.assessments;
+const assessHref = localizePath(routes.assessments, lang);
 ---
 <Base title={page.metaTitle} description={page.metaDescription} active={active}>
   <div class="crumb">
