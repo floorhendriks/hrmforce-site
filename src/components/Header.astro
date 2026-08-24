@@ -1,6 +1,7 @@
 ---
 import { routes, languages } from "../i18n/ui.js";
 import { getLangFromUrl, useTranslations, navHref, switchLocalePath } from "../i18n/utils.js";
+import validPaths from "../data/valid-paths.json";
 
 const { active = "" } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
@@ -68,7 +69,7 @@ const contactItems = [
       <summary>{languages[lang]}<span class="caret">&#9662;</span></summary>
       <div class="langdd-menu">
         {otherLangs.map((code) => (
-          <a href={switchLocalePath(Astro.url, code)}>{languages[code]}</a>
+          <a href={switchLocalePath(Astro.url, code, validPaths)}>{languages[code]}</a>
         ))}
       </div>
     </details>
