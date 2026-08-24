@@ -1,0 +1,265 @@
+---
+// Privacy-first cookie-consent-banner met Google Consent Mode v2.
+// Standaard wordt NIETS getrackt. GA4 laadt alleen wanneer:
+//   1) een GA4_ID is ingevuld in site-config.js (ANALYTICS.GA4_ID), en
+//   2) de bezoeker de categorie "Statistieken" heeft geaccepteerd.
+// Keuze wordt opgeslagen in localStorage (met versienummer). Herzien via
+// window.openCookiePrefs().
+const { lang = "nl", ga4Id = "", t = {} } = Astro.props;
+const cat = t.categories ?? {};
+const nec = cat.necessary ?? {};
+const stat = cat.statistics ?? {};
+const mkt = cat.marketing ?? {};
+---
+<div id="cc-root" data-ga4={ga4Id} data-version="1" hidden>
+  <!-- Banner -->
+  <div id="cc-banner" class="cc-banner" role="dialog" aria-modal="false" aria-labelledby="cc-title" aria-describedby="cc-body" hidden>
+    <div class="cc-inner">
+      <div class="cc-text">
+        <h2 id="cc-title" class="cc-title">{t.title}</h2>
+        <p id="cc-body" class="cc-body">{t.body}</p>
+        <p class="cc-privacy"><a id="cc-privacy-link" href="#">{t.privacy}</a></p>
+      </div>
+      <div class="cc-actions">
+        <button type="button" class="cc-btn cc-btn-ghost" data-cc="prefs">{t.prefs}</button>
+        <button type="button" class="cc-btn cc-btn-ghost" data-cc="reject">{t.reject}</button>
+        <button type="button" class="cc-btn cc-btn-primary" data-cc="accept">{t.accept}</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Voorkeuren-paneel -->
+  <div id="cc-prefs" class="cc-prefs-overlay" role="dialog" aria-modal="true" aria-labelledby="cc-prefs-title" hidden>
+    <div class="cc-prefs-panel">
+      <button type="button" class="cc-close" data-cc="close" aria-label="Sluiten">&times;</button>
+      <h2 id="cc-prefs-title" class="cc-title">{t.prefsTitle}</h2>
+      <p class="cc-body">{t.prefsIntro}</p>
+
+      <div class="cc-cat">
+        <div class="cc-cat-head">
+          <strong>{nec.title}</strong>
+          <span class="cc-always">{nec.always}</span>
+        </div>
+        <p class="cc-cat-desc">{nec.desc}</p>
+      </div>
+
+      <div class="cc-cat">
+        <div class="cc-cat-head">
+          <strong>{stat.title}</strong>
+          <label class="cc-switch">
+            <input type="checkbox" id="cc-statistics" />
+            <span class="cc-slider" aria-hidden="true"></span>
+          </label>
+        </div>
+        <p class="cc-cat-desc">{stat.desc}</p>
+      </div>
+
+      <div class="cc-cat">
+        <div class="cc-cat-head">
+          <strong>{mkt.title}</strong>
+          <label class="cc-switch">
+            <input type="checkbox" id="cc-marketing" />
+            <span class="cc-slider" aria-hidden="true"></span>
+          </label>
+        </div>
+        <p class="cc-cat-desc">{mkt.desc}</p>
+      </div>
+
+      <div class="cc-prefs-actions">
+        <button type="button" class="cc-btn cc-btn-ghost" data-cc="reject">{t.reject}</button>
+        <button type="button" class="cc-btn cc-btn-primary" data-cc="save">{t.save}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline define:vars={{ ga4Id, lang }}>
+  (function () {
+    var STORAGE_KEY = "hrmforce_cookie_consent";
+    var VERSION = 1;
+
+    // --- 1) Consent Mode v2: standaard alles geweigerd ---
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    window.gtag = window.gtag || gtag;
+    gtag("consent", "default", {
+      ad_storage: "denied",
+      analytics_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+      functionality_storage: "granted",
+      security_storage: "granted",
+    });
+
+    var gaLoaded = false;
+    function loadGA4() {
+      if (gaLoaded || !ga4Id) return;
+      gaLoaded = true;
+      var s = document.createElement("script");
+      s.async = true;
+      s.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(ga4Id);
+      document.head.appendChild(s);
+      gtag("js", new Date());
+      gtag("config", ga4Id, { anonymize_ip: true });
+    }
+
+    function readConsent() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        var obj = JSON.parse(raw);
+        if (!obj || obj.version !== VERSION) return null;
+        return obj;
+      } catch (e) { return null; }
+    }
+    function saveConsent(statistics, marketing) {
+      var obj = { version: VERSION, statistics: !!statistics, marketing: !!marketing, ts: Date.now() };
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(obj)); } catch (e) {}
+      return obj;
+    }
+
+    function applyConsent(c) {
+      gtag("consent", "update", {
+        analytics_storage: c.statistics ? "granted" : "denied",
+        ad_storage: c.marketing ? "granted" : "denied",
+        ad_user_data: c.marketing ? "granted" : "denied",
+        ad_personalization: c.marketing ? "granted" : "denied",
+      });
+      if (c.statistics && ga4Id) loadGA4();
+    }
+
+    function onReady(fn) {
+      if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn);
+      else fn();
+    }
+
+    onReady(function () {
+      var root = document.getElementById("cc-root");
+      if (!root) return;
+      var banner = document.getElementById("cc-banner");
+      var prefs = document.getElementById("cc-prefs");
+      var cbStat = document.getElementById("cc-statistics");
+      var cbMkt = document.getElementById("cc-marketing");
+      var privacyLink = document.getElementById("cc-privacy-link");
+
+      // Privacyverklaring-link (NL-fallback ingebakken via lang-prefix)
+      if (privacyLink) {
+        privacyLink.href = (lang === "nl" ? "" : "/" + lang) + "/support/privacy-statement/";
+      }
+
+      root.hidden = false;
+
+      function showBanner() { banner.hidden = false; }
+      function hideBanner() { banner.hidden = true; }
+      function openPrefs() {
+        var c = readConsent();
+        cbStat.checked = c ? !!c.statistics : false;
+        cbMkt.checked = c ? !!c.marketing : false;
+        prefs.hidden = false;
+      }
+      function closePrefs() { prefs.hidden = true; }
+
+      // Globale functie om voorkeuren opnieuw te openen
+      window.openCookiePrefs = function () { openPrefs(); };
+
+      var existing = readConsent();
+      if (existing) {
+        applyConsent(existing);
+      } else {
+        showBanner();
+      }
+
+      root.addEventListener("click", function (e) {
+        var btn = e.target.closest("[data-cc]");
+        if (!btn) return;
+        var action = btn.getAttribute("data-cc");
+        if (action === "accept") {
+          var c = saveConsent(true, true);
+          applyConsent(c);
+          hideBanner(); closePrefs();
+        } else if (action === "reject") {
+          var c2 = saveConsent(false, false);
+          applyConsent(c2);
+          hideBanner(); closePrefs();
+        } else if (action === "prefs") {
+          openPrefs();
+        } else if (action === "save") {
+          var c3 = saveConsent(cbStat.checked, cbMkt.checked);
+          applyConsent(c3);
+          hideBanner(); closePrefs();
+        } else if (action === "close") {
+          closePrefs();
+        }
+      });
+    });
+  })();
+</script>
+
+<style>
+  #cc-root { position: relative; z-index: 60; }
+  .cc-banner {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+    background: #fff; border-top: 1px solid var(--border, #e5e7eb);
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.12);
+    padding: 18px 20px;
+  }
+  .cc-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; gap: 20px; align-items: center; justify-content: space-between; flex-wrap: wrap;
+  }
+  .cc-text { flex: 1 1 420px; min-width: 260px; }
+  .cc-title { font-size: 17px; font-weight: 700; margin: 0 0 6px; }
+  .cc-body { font-size: 14px; line-height: 1.5; margin: 0; color: #374151; }
+  .cc-privacy { margin: 8px 0 0; font-size: 13px; }
+  .cc-privacy a { color: var(--accent, #d95d15); text-decoration: underline; }
+  .cc-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .cc-btn {
+    cursor: pointer; border-radius: var(--radius-pill, 999px);
+    font-weight: 600; font-size: 14px; padding: 11px 20px; min-height: 44px;
+    border: 1px solid transparent; transition: background .18s ease, border-color .18s ease;
+  }
+  .cc-btn-primary { background: var(--accent, #d95d15); color: #fff; }
+  .cc-btn-primary:hover { background: var(--accent-hover, #c04f10); }
+  .cc-btn-ghost { background: #fff; color: #111827; border-color: var(--border, #d1d5db); }
+  .cc-btn-ghost:hover { background: #f3f4f6; }
+
+  .cc-prefs-overlay {
+    position: fixed; inset: 0; z-index: 70;
+    background: rgba(17, 24, 39, 0.55);
+    display: flex; align-items: center; justify-content: center; padding: 20px;
+  }
+  .cc-prefs-panel {
+    position: relative; background: #fff; border-radius: 16px;
+    max-width: 560px; width: 100%; max-height: 88vh; overflow-y: auto;
+    padding: 26px 26px 22px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  }
+  .cc-close {
+    position: absolute; top: 12px; right: 14px; background: none; border: none;
+    font-size: 26px; line-height: 1; cursor: pointer; color: #6b7280;
+  }
+  .cc-cat { border-top: 1px solid var(--border, #e5e7eb); padding: 14px 0; }
+  .cc-cat-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .cc-cat-desc { margin: 6px 0 0; font-size: 13px; line-height: 1.5; color: #4b5563; }
+  .cc-always { font-size: 12px; font-weight: 600; color: #059669; }
+  .cc-prefs-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; flex-wrap: wrap; }
+
+  .cc-switch { position: relative; display: inline-block; width: 46px; height: 26px; flex-shrink: 0; }
+  .cc-switch input { opacity: 0; width: 0; height: 0; }
+  .cc-slider {
+    position: absolute; inset: 0; cursor: pointer; background: #cbd5e1;
+    border-radius: 999px; transition: background .18s ease;
+  }
+  .cc-slider::before {
+    content: ""; position: absolute; height: 20px; width: 20px; left: 3px; top: 3px;
+    background: #fff; border-radius: 50%; transition: transform .18s ease;
+  }
+  .cc-switch input:checked + .cc-slider { background: var(--accent, #d95d15); }
+  .cc-switch input:checked + .cc-slider::before { transform: translateX(20px); }
+  .cc-switch input:focus-visible + .cc-slider { outline: 2px solid var(--accent, #d95d15); outline-offset: 2px; }
+
+  @media (max-width: 640px) {
+    .cc-inner { flex-direction: column; align-items: stretch; }
+    .cc-actions { justify-content: stretch; }
+    .cc-actions .cc-btn { flex: 1 1 auto; }
+  }
+</style>
