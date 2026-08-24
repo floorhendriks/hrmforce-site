@@ -92,7 +92,7 @@ export const assessments = [
     related: ["Drijfverentest"],
   },
   {
-    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
+    image: "https://images.pexels.com/photos/1516440/pexels-photo-1516440.jpeg?auto=compress&cs=tinysrgb&w=900",
     slug: "mentale-veerkracht-scan", title: "Mentale veerkracht scan",
     metaTitle: "Mentale veerkracht scan | Duurzame inzetbaarheid | Hrmforce", metaDescription: "Meet mentale veerkracht en helpt duurzame inzetbaarheid te bevorderen.",
     phase: "Employability", goal: "Inzicht in stressbestendigheid en herstelvermogen.",
@@ -212,7 +212,7 @@ export const assessments = [
     related: ["Loopbaanwaarden", "Studiekeuzetest", "Interesse test"],
   },
   {
-    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
+    image: "https://images.pexels.com/photos/3862130/pexels-photo-3862130.jpeg?auto=compress&cs=tinysrgb&w=900",
     slug: "canmeds", title: "CanMeds",
     metaTitle: "CanMeds | 360 Graden Feedback voor de zorg | Hrmforce",
     metaDescription: "Krijg inzicht in hoe makkelijk een medewerker met een bepaald persoonlijkheidsprofiel CanMeds competenties kan laten zien of kan ontwikkelen.",
@@ -229,7 +229,7 @@ export const assessments = [
     related: ["Persoonlijkheidstest: Big Five", "360 graden feedback", "Competentietest"],
   },
   {
-    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
+    image: "https://images.pexels.com/photos/3153207/pexels-photo-3153207.jpeg?auto=compress&cs=tinysrgb&w=900",
     slug: "coaching-screener-scan", title: "Coaching Screener Scan",
     metaTitle: "Coaching Screener Scan | Hrmforce",
     metaDescription: "Inzicht krijgen in welke klachten en problemen een kandidaat ervaart en hoe hij/zij hiermee omgaat, met name goed te benutten bij coaching.",
@@ -297,7 +297,7 @@ export const assessments = [
     related: ["Communicatiestijl test", "DISC Test", "Interesse test"],
   },
   {
-    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
+    image: "https://images.pexels.com/photos/3760067/pexels-photo-3760067.jpeg?auto=compress&cs=tinysrgb&w=900",
     slug: "duurzame-inzetbaarheid-scan", title: "Duurzame Inzetbaarheid Scan",
     metaTitle: "Duurzame Inzetbaarheid Scan | Hrmforce",
     metaDescription: "Met de Duurzame Inzetbaarheid Scan verkrijg je snel inzicht of een medewerker en/of organisatie nog voldoende duurzaam inzetbaar zijn.",
@@ -365,7 +365,7 @@ export const assessments = [
     related: ["Referentie Check", "Job Profiler", "Typology"],
   },
   {
-    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
+    image: "https://images.pexels.com/photos/2422293/pexels-photo-2422293.jpeg?auto=compress&cs=tinysrgb&w=900",
     slug: "interesse-scan", title: "Interesse test",
     metaTitle: "Interessetest doen? | Voor scholieren & personeel | Hrmforce",
     metaDescription: "Met de interesse scan verkrijgt een scholier of medewerker inzicht in welke sectoren hij/zij de meeste interesse heeft.",
@@ -399,7 +399,7 @@ export const assessments = [
     related: ["Competentietest", "Intake Candidate", "Typology"],
   },
   {
-    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
+    image: "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=900",
     slug: "lean-scan", title: "Lean Scan",
     metaTitle: "Lean Scan doen? | Lean Methode | Ontdek Hrmforce",
     metaDescription: "Met de Lean Scan verkrijgen bedrijven inzicht in de gap tussen huidige en ideale situatie om zo behoefte en noodzaak van Lean management aan te tonen.",
@@ -433,7 +433,7 @@ export const assessments = [
     related: ["DISC Test", "Interesse test", "Conflictstijlen test"],
   },
   {
-    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
+    image: "https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=900",
     slug: "levensloop-scan", title: "Levensloop Scan",
     metaTitle: "Levensloop Scan | Hrmforce",
     metaDescription: "Een Levensloop Scan verschaft inzicht in de levensloop van een kandidaat, om zo aanknopingspunten voor coaching en ontwikkeling bloot te leggen.",
@@ -450,7 +450,7 @@ export const assessments = [
     related: ["Coaching Screener Scan", "Mentale veerkracht scan", "Duurzame Inzetbaarheid Scan"],
   },
   {
-    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
+    image: "https://images.pexels.com/photos/1181533/pexels-photo-1181533.jpeg?auto=compress&cs=tinysrgb&w=900",
     slug: "loopbaanwaarden", title: "Loopbaanwaarden",
     metaTitle: "Loopbaanwaarden | Hrmforce",
     metaDescription: "Loopbaanwaarden helpt bij de vraag welke functies of organisaties passen bij de waarden die iemand van belang vindt om in de loopbaan te realiseren.",
@@ -501,7 +501,7 @@ export const assessments = [
     related: ["Intake Candidate", "Job Profiler", "Typology"],
   },
   {
-    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
+    image: "https://images.pexels.com/photos/3182746/pexels-photo-3182746.jpeg?auto=compress&cs=tinysrgb&w=900",
     slug: "teamanalyse", title: "Teamanalyse",
     metaTitle: "Teamanalyse maken? | Gebruik een vragenlijst | Hrmforce",
     metaDescription: "Teamanalyse: inzicht geven in welke onderwerpen en thema's binnen het team (extra) aandacht nodig hebben.",
@@ -569,7 +569,7 @@ export const assessments = [
     related: ["Drijfverentest", "Loopbaanwaarden", "Typology"],
   },
   {
-    image: "https://hrmforce.com/wp-content/uploads/2025/03/placeholder-assessment2.png",
+    image: "https://images.pexels.com/photos/1367271/pexels-photo-1367271.jpeg?auto=compress&cs=tinysrgb&w=900",
     slug: "verkoopvaardigheden", title: "Verkoopvaardigheden",
     metaTitle: "Verkoopvaardigheden | Hrmforce",
     metaDescription: "De Verkoopvaardigheden test geeft een helder beeld van de vaardigheden waarmee een topverkoper zich onderscheidt van de rest.",
