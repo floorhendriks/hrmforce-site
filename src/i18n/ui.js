@@ -24,6 +24,7 @@ export const ui = {
     "footer.training": "Trainingen", "footer.about": "Over ons", "footer.partners": "Partners",
     "footer.pricing": "Tarieven", "footer.support": "Support", "footer.vacancies": "Vacatures",
     "footer.rights": "Privacy Statement - Algemene voorwaarden",
+    "footer.cases": "Klantcases", "footer.integrations": "Integraties", "footer.trust": "Trust & security", "footer.cookieprefs": "Cookievoorkeuren",
   },
   en: {
     "topbar.login": "Login", "topbar.demo": "Free demo",
@@ -36,6 +37,7 @@ export const ui = {
     "footer.training": "Training", "footer.about": "About us", "footer.partners": "Partners",
     "footer.pricing": "Pricing", "footer.support": "Support", "footer.vacancies": "Careers",
     "footer.rights": "Privacy Statement - Terms & Conditions",
+    "footer.cases": "Client cases", "footer.integrations": "Integrations", "footer.trust": "Trust & security", "footer.cookieprefs": "Cookie preferences",
   },
   de: {
     "topbar.login": "Einloggen", "topbar.demo": "Kostenlose Demo",
@@ -48,6 +50,7 @@ export const ui = {
     "footer.training": "Schulungen", "footer.about": "hrmforce", "footer.partners": "Partner",
     "footer.pricing": "Preise", "footer.support": "Support", "footer.vacancies": "Stellenangebote",
     "footer.rights": "Datenschutz - AGB",
+    "footer.cases": "Kundenreferenzen", "footer.integrations": "Integrationen", "footer.trust": "Trust & Security", "footer.cookieprefs": "Cookie-Einstellungen",
   },
   fr: {
     "topbar.login": "Login", "topbar.demo": "Demander une démo",
@@ -60,6 +63,7 @@ export const ui = {
     "footer.training": "Formations", "footer.about": "À propos", "footer.partners": "Partenaires",
     "footer.pricing": "Tarifs", "footer.support": "Support", "footer.vacancies": "Carrières",
     "footer.rights": "Confidentialité - Conditions générales",
+    "footer.cases": "Cas clients", "footer.integrations": "Intégrations", "footer.trust": "Trust & security", "footer.cookieprefs": "Préférences de cookies",
   },
   es: {
     "topbar.login": "Login", "topbar.demo": "Prueba gratis",
@@ -72,10 +76,11 @@ export const ui = {
     "footer.training": "Cursos", "footer.about": "Lo que hacemos", "footer.partners": "Socios",
     "footer.pricing": "Precios", "footer.support": "Ayuda", "footer.vacancies": "Vacantes",
     "footer.rights": "Privacidad - Términos",
+    "footer.cases": "Casos de clientes", "footer.integrations": "Integraciones", "footer.trust": "Trust & security", "footer.cookieprefs": "Preferencias de cookies",
   },
   ro: {
     "topbar.login": "Login", "topbar.demo": "Demo gratuită",
-    "nav.shop": "Shop", "nav.assessments": "Evaluare online", "nav.solutions": "Soluții HRM",
+    "nav.shop": "Shop", "nav.assessments": "Evaluare online", "nav.solutions": "SoluȚii HRM",
     "nav.advice": "Consultanță", "nav.about": "Ce facem noi", "nav.contact": "Contact",
     "cta.demo": "Demo gratuită", "cta.shop": "Shop",
     "footer.tagline": "Software-ul de management al talentelor hrmforce vă ajută cu fiecare parte a procesului de resurse umane. Dezvoltați-vă angajații, lăsați-vă organizația să crească și obțineți rentabilitatea maximă. Hrmforce, de la talent la rezultate.",
@@ -84,5 +89,6 @@ export const ui = {
     "footer.training": "Cursuri", "footer.about": "Ce facem noi", "footer.partners": "Parteneri",
     "footer.pricing": "Prețuri", "footer.support": "Asistență", "footer.vacancies": "Cariere",
     "footer.rights": "Confidențialitate - Termeni",
+    "footer.cases": "Studii de caz", "footer.integrations": "Integrări", "footer.trust": "Trust & security", "footer.cookieprefs": "Preferințe cookie-uri",
   },
 };
