@@ -14,3 +14,6 @@ export const SHOPIFY = {
   API_VERSION: "2024-07",
   PUBLIC_SHOP_URL: "https://shop.hrmforce.com",
 };
+
+// Vul je GA4 Measurement-ID in (G-XXXXXXXXXX). Leeg = geen tracking.
+export const ANALYTICS = { GA4_ID: "" };
