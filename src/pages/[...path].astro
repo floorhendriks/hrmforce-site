@@ -2,7 +2,8 @@
 import Base from "../layouts/Base.astro";
 import { createClient } from "@sanity/client";
 import { shopInfo } from "../data/assessment-shop.js";
-import { localizePath } from "../i18n/utils.js";
+import { localizePath, sanitizeBodyLinks } from "../i18n/utils.js";
+import validPaths from "../data/valid-paths.json";
 
 // Gemigreerde kenniscentrum-artikelen uit WordPress. Elk artikel-document in
 // Sanity heeft een volledig 'path'; deze catch-all route rendert ze op dat pad.
@@ -68,7 +69,7 @@ const T = {
 const L = T[lang] || T.en;
 
 // Body splitsen: contextuele kaart na de eerste </h2> (anders vóór de eindband).
-const body = article.body || "";
+const body = sanitizeBodyLinks(article.body || "", lang, validPaths);
 const cut = body.indexOf("</h2>");
 const bodyTop = cut !== -1 ? body.slice(0, cut + 5) : body;
 const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
