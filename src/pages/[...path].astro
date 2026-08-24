@@ -3,7 +3,7 @@ import Base from "../layouts/Base.astro";
 import { createClient } from "@sanity/client";
 import { shopInfo } from "../data/assessment-shop.js";
 import { localizePath, sanitizeBodyLinks } from "../i18n/utils.js";
-import validPaths from "../data/valid-paths.json";
+import validPaths from "../data/valid-paths.js";
 
 // Gemigreerde kenniscentrum-artikelen uit WordPress. Elk artikel-document in
 // Sanity heeft een volledig 'path'; deze catch-all route rendert ze op dat pad.
