@@ -96,6 +96,12 @@ const orgLd = {
       });
     </script>
     <CookieConsent lang={lang} ga4Id={ANALYTICS.GA4_ID} t={consentT} />
+    <!-- Henry chatbot -->
+    <script src="/henry-widget.js" is:inline defer></script>
+    <style is:global>
+      /* Henry-bubbel boven de sticky demo-knop plaatsen */
+      #hrmforce-chatbot { bottom: 88px !important; right: 20px !important; }
+    </style>
   </body>
 </html>
 
