@@ -1,6 +1,7 @@
 ---
 import { routes, languages } from "../i18n/ui.js";
 import { getLangFromUrl, useTranslations, navHref, switchLocalePath } from "../i18n/utils.js";
+import { menuFor } from "../data/menu-content.js";
 import validPaths from "../data/valid-paths.json";
 
 const { active = "" } = Astro.props;
@@ -14,53 +15,14 @@ const solutionsHref = navHref(routes.solutions, lang);
 const adviceHref = navHref(routes.advice, lang);
 const otherLangs = Object.keys(languages).filter((c) => c !== lang);
 
-// Submenu's exact overgenomen van de oude live site hrmforce.com (menu-top-menu-dutch).
-const assessmentItems = [
-  { label: "360 graden feedback", path: "/assessments/360-graden-feedback/" },
-  { label: "Persoonlijkheidstest (Big 5)", path: "/assessments/big-five/" },
-  { label: "Drijfverentest", path: "/assessments/drijfverentest/" },
-  { label: "Cognitieve test", path: "/assessments/ability-scan/" },
-  { label: "DISC Test", path: "/assessments/disc-test/" },
-  { label: "Studiekeuzetest", path: "/assessments/studiekeuzetest/" },
-  { label: "Mentale veerkracht scan", path: "/assessments/mentale-veerkracht-scan/" },
-  { label: "Lencioni Teamdynamiek", path: "/assessments/lencioni-teamdynamiek/" },
-  { label: "Leiderschapstest", path: "/assessments/leiderschapstest/" },
-  { label: "Ontwikkelassessment", path: "/assessments/ontwikkelassessment/" },
-  { label: "Ontdek alle assessments", path: "/assessment-overzicht/" },
-];
-const solutionItems = [
-  { label: "Matching & selectie", path: "/hrm-oplossingen/matching/" },
-  { label: "HR Gesprekcyclus", path: "/hrm-oplossingen/development/" },
-  { label: "Employability", path: "/hrm-oplossingen/employability/" },
-  { label: "HR Analytics", path: "/hrm-oplossingen/hr-analytics/" },
-  { label: "Integraties", path: "/integraties/" },
-  { label: "Sectoren", path: "/sectoren/" },
-];
-const adviceItems = [
-  { label: "Overzicht", path: "/advies/overzicht/" },
-  { label: "Assessments", path: "/advies/assessments/" },
-  { label: "Trainingen", path: "/advies/trainingen/" },
-  { label: "Competentie management", path: "/advies/competentie-management/" },
-  { label: "Talent management", path: "/advies/talent-management/" },
-];
-const aboutItems = [
-  { label: "Over Hrmforce", path: "/over-ons/" },
-  { label: "Tarieven", path: "/tarieven/" },
-  { label: "ROI-rekentool", path: "/roi-rekentool/" },
-  { label: "Klantcases", path: "/klantcases/" },
-  { label: "Kenniscentrum", path: "/kenniscentrum/" },
-  { label: "Trust & security", path: "/trust/" },
-  { label: "Wat levert het concreet op?", path: "/hrmforce/voordelen/" },
-  { label: "Partners", path: "/partners/" },
-  { label: "Vacatures", path: "/vacatures/" },
-];
-const contactItems = [
-  { label: "Contact opnemen", path: "/contact/" },
-  { label: "Support", path: "/support/" },
-  { label: "Voorbereiding", path: "/voorbereiding/" },
-  { label: "FAQ", path: "/support/f-a-q/" },
-  { label: "Vacatures", path: "/vacatures/" },
-];
+// Submenu-items met per-taal vertaalde labels (paden blijven gelijk; navHref
+// zet de juiste taalprefix erop of valt terug op NL waar nog niet vertaald).
+const _menu = menuFor(lang);
+const assessmentItems = _menu.assessments;
+const solutionItems = _menu.solutions;
+const adviceItems = _menu.advice;
+const aboutItems = _menu.about;
+const contactItems = _menu.contact;
 ---
 <div class="topbar">
   <div class="wrap">
