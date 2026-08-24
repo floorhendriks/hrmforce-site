@@ -51,6 +51,17 @@ export function navHref(path, lang, validPaths) {
   return path; // NL-fallback
 }
 
+// Zet een bestaand (mogelijk NL) pad om naar de huidige taal als die versie
+// bestaat; anders de NL-basis. Voor kaart-/lijstlinks in componenten.
+export function localizeExisting(path, lang, validPaths) {
+  if (!path || lang === "nl") return path;
+  const valid = validPaths instanceof Set ? validPaths : new Set(validPaths);
+  const seg = path.split("/")[1];
+  const base = PREFIXED.includes(seg) ? path.slice(seg.length + 1) || "/" : path;
+  const localized = "/" + lang + base;
+  return valid.has(localized) ? localized : base;
+}
+
 // Hernoemde assessment-slugs (oude WordPress-slug -> nieuwe slug).
 const ASSESS_SLUG_MAP = {
   "big-fifty": "big-five",
@@ -74,6 +85,15 @@ export function sanitizeBodyLinks(html, lang, validPaths) {
   if (!html) return html;
   const valid = validPaths instanceof Set ? validPaths : new Set(validPaths);
   const kcFallback = localizePath("/kenniscentrum/", lang);
+  // Zet een (geldig) pad om naar de huidige taal als die versie bestaat,
+  // anders NL-basis. Voorkomt dat body-links naar NL blijven wijzen.
+  const loc = (p) => {
+    if (lang === "nl") return p;
+    const seg = p.split("/")[1];
+    const base = PREFIXED.includes(seg) ? p.slice(seg.length + 1) || "/" : p;
+    const localized = "/" + lang + base;
+    return valid.has(localized) ? localized : base;
+  };
   return html.replace(/href="(\/[^"]*)"/g, (m, raw) => {
     if (raw.startsWith("//")) return m; // protocol-relatief/extern
     // e-mailadres per ongeluk als pad (bv. /contact/service@x.com) => mailto
@@ -87,13 +107,13 @@ export function sanitizeBodyLinks(html, lang, validPaths) {
     const last = path.split("/").pop();
     if (last && last.includes(".")) return m;
     if (!path.endsWith("/")) path += "/";
-    if (valid.has(path)) return `href="${path}${hash}"`; // al geldig
+    if (valid.has(path)) return `href="${loc(path)}${hash}"`; // geldig -> naar juiste taal
     // remap: /assessment/ (enkelvoud) => /assessments/
     let cand = path.replace(/^(\/(?:en|de|fr|es|ro))?\/assessment\//, "$1/assessments/");
     cand = cand.replace(/\/assessments\/preselectie\//, "/assessments/");
     cand = cand.replace(/\/assessments\/([^/]+)\//, (mm, slug) =>
       `/assessments/${ASSESS_SLUG_MAP[slug] || slug}/`);
-    if (valid.has(cand)) return `href="${cand}${hash}"`;
+    if (valid.has(cand)) return `href="${loc(cand)}${hash}"`;
     // sectie-fallback in dezelfde taal
     const segs = path.split("/").filter(Boolean);
     const li = PREFIXED.includes(segs[0]) ? 1 : 0;
@@ -105,7 +125,6 @@ export function sanitizeBodyLinks(html, lang, validPaths) {
     return `href="${kcFallback}"`;
   });
 }
-
 // Geeft hetzelfde pad in de andere taal (voor de taalwissel). Bestaat de pagina
 // niet in de doeltaal, dan val terug op de sectie-hoofdpagina en anders de
 // homepage van die taal — zo leidt de taalwissel nooit naar een 404.
