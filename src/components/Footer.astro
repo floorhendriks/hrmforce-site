@@ -1,11 +1,11 @@
 ---
 import { routes } from "../i18n/ui.js";
-import { getLangFromUrl, useTranslations, localizePath } from "../i18n/utils.js";
+import { getLangFromUrl, useTranslations, navHref } from "../i18n/utils.js";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const year = new Date().getFullYear();
-const L = (p) => localizePath(p, lang);
+const L = (p) => navHref(p, lang);
 ---
 <footer>
   <div class="wrap">
@@ -17,11 +17,11 @@ const L = (p) => localizePath(p, lang);
       <div>
         <h4>{t("footer.quick")}</h4>
         <ul>
-          <li><a href={routes.assessments}>{t("footer.assessments")}</a></li>
+          <li><a href={L(routes.assessments)}>{t("footer.assessments")}</a></li>
           <li><a href={L("/voorbereiding/")}>{t("footer.prep")}</a></li>
           <li><a href={L("/kenniscentrum/")}>{t("footer.knowledge")}</a></li>
           <li><a href={L("/advies/")}>{t("footer.training")}</a></li>
-          <li><a href={routes.shop}>{t("nav.shop")}</a></li>
+          <li><a href={L(routes.shop)}>{t("nav.shop")}</a></li>
         </ul>
       </div>
       <div>
