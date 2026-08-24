@@ -40,9 +40,14 @@ function isLocalizedAssessment(path) {
 
 // Menu-/interne link: localiseert alleen als de doelpagina in die taal bestaat,
 // anders NL-fallback. Voorkomt 404's bij nog niet vertaalde pagina's.
-export function navHref(path, lang) {
+export function navHref(path, lang, validPaths) {
   if (lang === "nl") return path;
-  if (LOCALIZED_PAGES.has(path) || isLocalizedAssessment(path)) return "/" + lang + path;
+  const target = "/" + lang + path;
+  if (validPaths) {
+    const valid = validPaths instanceof Set ? validPaths : new Set(validPaths);
+    return valid.has(target) ? target : path; // localiseer als vertaling bestaat, anders NL
+  }
+  if (LOCALIZED_PAGES.has(path) || isLocalizedAssessment(path)) return target;
   return path; // NL-fallback
 }
 
