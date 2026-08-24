@@ -1,5 +1,6 @@
 ---
-import { localizePath } from "../i18n/utils.js";
+import { localizePath, sanitizeBodyLinks } from "../i18n/utils.js";
+import validPaths from "../data/valid-paths.js";
 const { t, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
 ---
@@ -8,7 +9,7 @@ const contactHref = localizePath("/contact/", lang);
 <section class="ahero"><div class="wrap" style="display:block">
   <div class="eyebrow" style="color:var(--gold)">{t.hero.eyebrow}</div>
   <h1>{t.hero.title}</h1>
-  <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px" set:html={t.hero.intro}></p>
+  <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px" set:html={sanitizeBodyLinks(t.hero.intro, lang, validPaths)}></p>
 </div></section>
 
 {t.categories.map((cat) => (
@@ -24,7 +25,7 @@ const contactHref = localizePath("/contact/", lang);
       {cat.items.map((f) => (
         <div class="faq-item">
           <div class="faq-q">{f.q}<span class="pl">+</span></div>
-          <div class="faq-a" set:html={f.a}></div>
+          <div class="faq-a" set:html={sanitizeBodyLinks(f.a, lang, validPaths)}></div>
         </div>
       ))}
     </div>
