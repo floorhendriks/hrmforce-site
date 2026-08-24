@@ -94,8 +94,7 @@ const isEmpty = list.length === 0;
             <span class="eyebrow">{t.featured} · {featured.catLabel}</span>
             <h2>{featured.title}</h2>
             <p>{featured.excerpt}</p>
-            <span class="date">{fmt(featured.date)}</span>
-            <span class="readmore">{t.readmore}</span>
+              <span class="readmore">{t.readmore}</span>
           </div>
         </a>
       </div></section>
@@ -120,7 +119,6 @@ const isEmpty = list.length === 0;
                 <span class="post-cat">{p.catLabel}</span>
                 <h3>{p.title}</h3>
                 <p class="post-ex">{p.excerpt}</p>
-                <span class="date">{fmt(p.date)}</span>
               </div>
             </a>
           ))}
