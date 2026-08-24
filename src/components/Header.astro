@@ -1,30 +1,30 @@
 ---
 import { routes, languages } from "../i18n/ui.js";
-import { getLangFromUrl, useTranslations, localizePath, switchLocalePath } from "../i18n/utils.js";
+import { getLangFromUrl, useTranslations, navHref, switchLocalePath } from "../i18n/utils.js";
 
 const { active = "" } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const logo = "https://hrmforce.com/wp-content/uploads/2022/03/HRM-LOGO.svg";
 
-const assessmentsHref = routes.assessments;
-const shopHref = routes.shop;
-const solutionsHref = localizePath(routes.solutions, lang);
-const adviceHref = localizePath(routes.advice, lang);
+const assessmentsHref = navHref(routes.assessments, lang);
+const shopHref = navHref(routes.shop, lang);
+const solutionsHref = navHref(routes.solutions, lang);
+const adviceHref = navHref(routes.advice, lang);
 const otherLangs = Object.keys(languages).filter((c) => c !== lang);
 
 // Submenu's exact overgenomen van de oude live site hrmforce.com (menu-top-menu-dutch).
 const assessmentItems = [
   { label: "360 graden feedback", path: "/assessments/360-graden-feedback/" },
-  { label: "Persoonlijkheidstest (Big 5)", path: "/assessments/big-fifty/" },
+  { label: "Persoonlijkheidstest (Big 5)", path: "/assessments/big-five/" },
   { label: "Drijfverentest", path: "/assessments/drijfverentest/" },
   { label: "Cognitieve test", path: "/assessments/ability-scan/" },
-  { label: "DISC Test", path: "/assessments/preselectie/disc-test/" },
+  { label: "DISC Test", path: "/assessments/disc-test/" },
   { label: "Studiekeuzetest", path: "/assessments/studiekeuzetest/" },
   { label: "Mentale veerkracht scan", path: "/assessments/mentale-veerkracht-scan/" },
   { label: "Lencioni Teamdynamiek", path: "/assessments/lencioni-teamdynamiek/" },
   { label: "Leiderschapstest", path: "/assessments/leiderschapstest/" },
-  { label: "Ontwikkelassessment", path: "/assessments/ontwikkelmatrix/" },
+  { label: "Ontwikkelassessment", path: "/assessments/ontwikkelassessment/" },
   { label: "Ontdek alle assessments", path: "/assessment-overzicht/" },
 ];
 const solutionItems = [
@@ -72,47 +72,47 @@ const contactItems = [
         ))}
       </div>
     </details>
-    <a class="demo-link" href={localizePath(routes.contact, lang)}>{t("topbar.demo")} &rarr;</a>
+    <a class="demo-link" href={navHref(routes.contact, lang)}>{t("topbar.demo")} &rarr;</a>
   </div>
 </div>
 <header>
   <div class="wrap nav">
-    <a class="logo" href={lang === "nl" ? "/" : "/en/"}><img src={logo} alt="hrmforce" /></a>
+    <a class="logo" href={lang === "nl" ? "/" : "/" + lang + "/"}><img src={logo} alt="hrmforce" /></a>
     <nav class="menu">
       <div class={`has-dd ${active === "assessments" ? "active" : ""}`}>
         <a href={assessmentsHref}>{t("nav.assessments")}<span class="caret">&#9662;</span></a>
         <div class="dd">
-          {assessmentItems.map((it) => (<a href={localizePath(it.path, lang)}>{it.label}</a>))}
+          {assessmentItems.map((it) => (<a href={navHref(it.path, lang)}>{it.label}</a>))}
         </div>
       </div>
       <div class={`has-dd ${active === "solutions" ? "active" : ""}`}>
         <a href={solutionsHref}>{t("nav.solutions")}<span class="caret">&#9662;</span></a>
         <div class="dd">
-          {solutionItems.map((it) => (<a href={localizePath(it.path, lang)}>{it.label}</a>))}
+          {solutionItems.map((it) => (<a href={navHref(it.path, lang)}>{it.label}</a>))}
         </div>
       </div>
       <div class={`has-dd ${active === "advice" ? "active" : ""}`}>
         <a href={adviceHref}>{t("nav.advice")}<span class="caret">&#9662;</span></a>
         <div class="dd">
-          {adviceItems.map((it) => (<a href={localizePath(it.path, lang)}>{it.label}</a>))}
+          {adviceItems.map((it) => (<a href={navHref(it.path, lang)}>{it.label}</a>))}
         </div>
       </div>
       <div class={`has-dd ${active === "about" ? "active" : ""}`}>
-        <a href={localizePath(routes.about, lang)}>{t("nav.about")}<span class="caret">&#9662;</span></a>
+        <a href={navHref(routes.about, lang)}>{t("nav.about")}<span class="caret">&#9662;</span></a>
         <div class="dd">
-          {aboutItems.map((it) => (<a href={localizePath(it.path, lang)}>{it.label}</a>))}
+          {aboutItems.map((it) => (<a href={navHref(it.path, lang)}>{it.label}</a>))}
         </div>
       </div>
       <div class={`has-dd ${active === "contact" ? "active" : ""}`}>
-        <a href={localizePath(routes.contact, lang)}>{t("nav.contact")}<span class="caret">&#9662;</span></a>
+        <a href={navHref(routes.contact, lang)}>{t("nav.contact")}<span class="caret">&#9662;</span></a>
         <div class="dd">
-          {contactItems.map((it) => (<a href={localizePath(it.path, lang)}>{it.label}</a>))}
+          {contactItems.map((it) => (<a href={navHref(it.path, lang)}>{it.label}</a>))}
         </div>
       </div>
     </nav>
     <div class="nav-cta">
       <a href={shopHref} class="btn btn-ghost">{t("cta.shop")}</a>
-      <a href={localizePath(routes.contact, lang)} class="btn btn-primary">{t("cta.demo")}</a>
+      <a href={navHref(routes.contact, lang)} class="btn btn-primary">{t("cta.demo")}</a>
     </div>
   </div>
 </header>
