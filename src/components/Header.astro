@@ -2,7 +2,7 @@
 import { routes, languages } from "../i18n/ui.js";
 import { getLangFromUrl, useTranslations, navHref, switchLocalePath } from "../i18n/utils.js";
 import { menuFor } from "../data/menu-content.js";
-import validPaths from "../data/valid-paths.json";
+import validPaths from "../data/valid-paths.js";
 
 const { active = "" } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
@@ -45,31 +45,31 @@ const contactItems = _menu.contact;
       <div class={`has-dd ${active === "assessments" ? "active" : ""}`}>
         <a href={assessmentsHref}>{t("nav.assessments")}<span class="caret">&#9662;</span></a>
         <div class="dd">
-          {assessmentItems.map((it) => (<a href={navHref(it.path, lang)}>{it.label}</a>))}
+          {assessmentItems.map((it) => (<a href={navHref(it.path, lang, validPaths)}>{it.label}</a>))}
         </div>
       </div>
       <div class={`has-dd ${active === "solutions" ? "active" : ""}`}>
         <a href={solutionsHref}>{t("nav.solutions")}<span class="caret">&#9662;</span></a>
         <div class="dd">
-          {solutionItems.map((it) => (<a href={navHref(it.path, lang)}>{it.label}</a>))}
+          {solutionItems.map((it) => (<a href={navHref(it.path, lang, validPaths)}>{it.label}</a>))}
         </div>
       </div>
       <div class={`has-dd ${active === "advice" ? "active" : ""}`}>
         <a href={adviceHref}>{t("nav.advice")}<span class="caret">&#9662;</span></a>
         <div class="dd">
-          {adviceItems.map((it) => (<a href={navHref(it.path, lang)}>{it.label}</a>))}
+          {adviceItems.map((it) => (<a href={navHref(it.path, lang, validPaths)}>{it.label}</a>))}
         </div>
       </div>
       <div class={`has-dd ${active === "about" ? "active" : ""}`}>
         <a href={navHref(routes.about, lang)}>{t("nav.about")}<span class="caret">&#9662;</span></a>
         <div class="dd">
-          {aboutItems.map((it) => (<a href={navHref(it.path, lang)}>{it.label}</a>))}
+          {aboutItems.map((it) => (<a href={navHref(it.path, lang, validPaths)}>{it.label}</a>))}
         </div>
       </div>
       <div class={`has-dd ${active === "contact" ? "active" : ""}`}>
         <a href={navHref(routes.contact, lang)}>{t("nav.contact")}<span class="caret">&#9662;</span></a>
         <div class="dd">
-          {contactItems.map((it) => (<a href={navHref(it.path, lang)}>{it.label}</a>))}
+          {contactItems.map((it) => (<a href={navHref(it.path, lang, validPaths)}>{it.label}</a>))}
         </div>
       </div>
     </nav>
