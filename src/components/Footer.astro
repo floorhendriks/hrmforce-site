@@ -30,6 +30,9 @@ const L = (p) => localizePath(p, lang);
           <li><a href={L(routes.about)}>{t("footer.about")}</a></li>
           <li><a href={L("/partners/")}>{t("footer.partners")}</a></li>
           <li><a href={L("/tarieven/")}>{t("footer.pricing")}</a></li>
+          <li><a href={L("/klantcases/")}>{t("footer.cases")}</a></li>
+          <li><a href={L("/integraties/")}>{t("footer.integrations")}</a></li>
+          <li><a href={L("/trust/")}>{t("footer.trust")}</a></li>
           <li><a href={routes.support}>{t("footer.support")}</a></li>
           <li><a href={L("/vacatures/")}>{t("footer.vacancies")}</a></li>
         </ul>
@@ -42,7 +45,23 @@ const L = (p) => localizePath(p, lang);
     </div>
     <div class="fbottom">
       <span>Copyright hrmforce &copy; 2009&ndash;{year}</span>
-      <span>{t("footer.rights")}</span>
+      <span>
+        <button type="button" class="cookie-prefs-btn" onclick="window.openCookiePrefs && window.openCookiePrefs()">{t("footer.cookieprefs")}</button>
+        &nbsp;&middot;&nbsp;{t("footer.rights")}
+      </span>
     </div>
   </div>
 </footer>
+
+<style>
+  .cookie-prefs-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .cookie-prefs-btn:hover { opacity: .8; }
+</style>
