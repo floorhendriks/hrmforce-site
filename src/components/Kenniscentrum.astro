@@ -1,6 +1,7 @@
 ---
 import { createClient } from "@sanity/client";
-import { localizePath } from "../i18n/utils.js";
+import { localizePath, localizeExisting } from "../i18n/utils.js";
+import validPaths from "../data/valid-paths.js";
 
 const { t, lang } = Astro.props;
 
@@ -88,7 +89,7 @@ const isEmpty = list.length === 0;
   <>
     {featured && (
       <section><div class="wrap">
-        <a class="feature" href={featured.path}>
+        <a class="feature" href={localizeExisting(featured.path, lang, validPaths)}>
           <div class="feature-img" style={featured.img ? `background-image:url('${featured.img}')` : ""}></div>
           <div class="feature-body">
             <span class="eyebrow">{t.featured} · {featured.catLabel}</span>
@@ -113,7 +114,7 @@ const isEmpty = list.length === 0;
 
         <div class="posts" id="kcgrid">
           {rest.map((p) => (
-            <a class="post" href={p.path} data-cat={p.cat} data-title={p.title.toLowerCase()}>
+            <a class="post" href={localizeExisting(p.path, lang, validPaths)} data-cat={p.cat} data-title={p.title.toLowerCase()}>
               <div class="img" style={p.img ? `background-image:url('${p.img}')` : ""}></div>
               <div class="body">
                 <span class="post-cat">{p.catLabel}</span>
