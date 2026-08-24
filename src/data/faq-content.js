@@ -24,7 +24,7 @@ export const faqContent = {
           },
           {
             q: "Zijn de assessments wetenschappelijk onderbouwd?",
-            a: `<p>Ja. De vragenlijsten rusten op gevalideerde modellen uit de selectiepsychologie. De <a href="/assessments/big-fifty/">persoonlijkheidstest Big Fifty</a> is bijvoorbeeld gebaseerd op de Big Five, het meest onderzochte model voor persoonlijkheid. We toetsen de instrumenten doorlopend op betrouwbaarheid en voorspellende waarde.</p><p>Meer lezen over de methodiek? Dat staat in ons <a href="/kenniscentrum/">kenniscentrum</a>.</p>`
+            a: `<p>Ja. De vragenlijsten rusten op gevalideerde modellen uit de selectiepsychologie. De <a href="/assessments/big-five/">persoonlijkheidstest Big Fifty</a> is bijvoorbeeld gebaseerd op de Big Five, het meest onderzochte model voor persoonlijkheid. We toetsen de instrumenten doorlopend op betrouwbaarheid en voorspellende waarde.</p><p>Meer lezen over de methodiek? Dat staat in ons <a href="/kenniscentrum/">kenniscentrum</a>.</p>`
           },
           {
             q: "Op welk niveau zijn de assessments toepasbaar?",
@@ -36,7 +36,7 @@ export const faqContent = {
           },
           {
             q: "Welke assessments biedt hrmforce aan?",
-            a: `<p>Je kiest uit losse vragenlijsten voor selectie, ontwikkeling en teamwerk. De meest gevraagde:</p><ul><li><a href="/assessments/big-fifty/">Persoonlijkheidstest (Big 5)</a></li><li><a href="/assessments/ability-scan/">Cognitieve test (Ability Scan)</a></li><li><a href="/assessments/preselectie/disc-test/">DISC-test</a></li><li><a href="/assessments/drijfverentest/">Drijfverentest</a></li><li><a href="/assessments/360-graden-feedback/">360 graden feedback</a></li><li><a href="/assessments/leiderschapstest">Leiderschapstest</a></li></ul><p>Het volledige aanbod staat in het <a href="/assessment-overzicht/">assessment-overzicht</a>.</p>`
+            a: `<p>Je kiest uit losse vragenlijsten voor selectie, ontwikkeling en teamwerk. De meest gevraagde:</p><ul><li><a href="/assessments/big-five/">Persoonlijkheidstest (Big 5)</a></li><li><a href="/assessments/ability-scan/">Cognitieve test (Ability Scan)</a></li><li><a href="/assessments/disc-test/">DISC-test</a></li><li><a href="/assessments/drijfverentest/">Drijfverentest</a></li><li><a href="/assessments/360-graden-feedback/">360 graden feedback</a></li><li><a href="/assessments/leiderschapstest/">Leiderschapstest</a></li></ul><p>Het volledige aanbod staat in het <a href="/assessment-overzicht/">assessment-overzicht</a>.</p>`
           },
           {
             q: "Wat kost het en hoe bestel ik?",
@@ -157,7 +157,7 @@ export const faqContent = {
           },
           {
             q: "Are the assessments scientifically substantiated?",
-            a: `<p>Yes. The questionnaires are based on validated models from selection psychology. The <a href="/assessments/big-fifty/">Big Fifty personality test</a>, for example, is based on the Big Five, the most researched model for personality. We continuously test the instruments for reliability and predictive value.</p><p>Want to read more about the methodology? You will find it in our <a href="/kenniscentrum/">knowledge centre</a>.</p>`
+            a: `<p>Yes. The questionnaires are based on validated models from selection psychology. The <a href="/assessments/big-five/">Big Fifty personality test</a>, for example, is based on the Big Five, the most researched model for personality. We continuously test the instruments for reliability and predictive value.</p><p>Want to read more about the methodology? You will find it in our <a href="/kenniscentrum/">knowledge centre</a>.</p>`
           },
           {
             q: "At what level are the assessments applicable?",
@@ -169,7 +169,7 @@ export const faqContent = {
           },
           {
             q: "Which assessments does hrmforce offer?",
-            a: `<p>You can choose from individual questionnaires for selection, development and teamwork. The most requested ones:</p><ul><li><a href="/assessments/big-fifty/">Personality test (Big 5)</a></li><li><a href="/assessments/ability-scan/">Cognitive test (Ability Scan)</a></li><li><a href="/assessments/preselectie/disc-test/">DISC test</a></li><li><a href="/assessments/drijfverentest/">Motivational drivers test</a></li><li><a href="/assessments/360-graden-feedback/">360 degree feedback</a></li><li><a href="/assessments/leiderschapstest">Leadership test</a></li></ul><p>The full range is available in the <a href="/assessment-overzicht/">assessment overview</a>.</p>`
+            a: `<p>You can choose from individual questionnaires for selection, development and teamwork. The most requested ones:</p><ul><li><a href="/assessments/big-five/">Personality test (Big 5)</a></li><li><a href="/assessments/ability-scan/">Cognitive test (Ability Scan)</a></li><li><a href="/assessments/disc-test/">DISC test</a></li><li><a href="/assessments/drijfverentest/">Motivational drivers test</a></li><li><a href="/assessments/360-graden-feedback/">360 degree feedback</a></li><li><a href="/assessments/leiderschapstest/">Leadership test</a></li></ul><p>The full range is available in the <a href="/assessment-overzicht/">assessment overview</a>.</p>`
           },
           {
             q: "What does it cost and how do I order?",
@@ -290,7 +290,7 @@ export const faqContent = {
           },
           {
             q: "Sind die Assessments wissenschaftlich fundiert?",
-            a: `<p>Ja. Die Fragebogen beruhen auf validierten Modellen aus der Auswahlpsychologie. Der <a href="/assessments/big-fifty/">Persoenlichkeitstest Big Fifty</a> basiert zum Beispiel auf den Big Five, dem am besten erforschten Modell fuer Persoenlichkeit. Wir pruefen die Instrumente laufend auf Zuverlaessigkeit und Vorhersagewert.</p><p>Moechten Sie mehr ueber die Methodik lesen? Das steht in unserem <a href="/kenniscentrum/">Wissenszentrum</a>.</p>`
+            a: `<p>Ja. Die Fragebogen beruhen auf validierten Modellen aus der Auswahlpsychologie. Der <a href="/assessments/big-five/">Persoenlichkeitstest Big Fifty</a> basiert zum Beispiel auf den Big Five, dem am besten erforschten Modell fuer Persoenlichkeit. Wir pruefen die Instrumente laufend auf Zuverlaessigkeit und Vorhersagewert.</p><p>Moechten Sie mehr ueber die Methodik lesen? Das steht in unserem <a href="/kenniscentrum/">Wissenszentrum</a>.</p>`
           },
           {
             q: "Auf welchem Niveau sind die Assessments anwendbar?",
@@ -302,7 +302,7 @@ export const faqContent = {
           },
           {
             q: "Welche Assessments bietet hrmforce an?",
-            a: `<p>Sie waehlen aus einzelnen Fragebogen fuer Auswahl, Entwicklung und Teamarbeit. Die meistgefragten:</p><ul><li><a href="/assessments/big-fifty/">Persoenlichkeitstest (Big 5)</a></li><li><a href="/assessments/ability-scan/">Kognitiver Test (Ability Scan)</a></li><li><a href="/assessments/preselectie/disc-test/">DISC-Test</a></li><li><a href="/assessments/drijfverentest/">Motivationstest</a></li><li><a href="/assessments/360-graden-feedback/">360-Grad-Feedback</a></li><li><a href="/assessments/leiderschapstest">Fuehrungstest</a></li></ul><p>Das vollstaendige Angebot finden Sie in der <a href="/assessment-overzicht/">Assessment-Uebersicht</a>.</p>`
+            a: `<p>Sie waehlen aus einzelnen Fragebogen fuer Auswahl, Entwicklung und Teamarbeit. Die meistgefragten:</p><ul><li><a href="/assessments/big-five/">Persoenlichkeitstest (Big 5)</a></li><li><a href="/assessments/ability-scan/">Kognitiver Test (Ability Scan)</a></li><li><a href="/assessments/disc-test/">DISC-Test</a></li><li><a href="/assessments/drijfverentest/">Motivationstest</a></li><li><a href="/assessments/360-graden-feedback/">360-Grad-Feedback</a></li><li><a href="/assessments/leiderschapstest/">Fuehrungstest</a></li></ul><p>Das vollstaendige Angebot finden Sie in der <a href="/assessment-overzicht/">Assessment-Uebersicht</a>.</p>`
           },
           {
             q: "Was kostet es und wie bestelle ich?",
@@ -423,7 +423,7 @@ export const faqContent = {
           },
           {
             q: "Les assessments sont-ils scientifiquement fondes ?",
-            a: `<p>Oui. Les questionnaires reposent sur des modeles valides issus de la psychologie de la selection. Le <a href="/assessments/big-fifty/">test de personnalite Big Fifty</a> est par exemple base sur le Big Five, le modele de personnalite le plus etudie. Nous testons en permanence les instruments quant a leur fiabilite et leur valeur predictive.</p><p>Vous voulez en savoir plus sur la methodologie ? Cela figure dans notre <a href="/kenniscentrum/">centre de connaissances</a>.</p>`
+            a: `<p>Oui. Les questionnaires reposent sur des modeles valides issus de la psychologie de la selection. Le <a href="/assessments/big-five/">test de personnalite Big Fifty</a> est par exemple base sur le Big Five, le modele de personnalite le plus etudie. Nous testons en permanence les instruments quant a leur fiabilite et leur valeur predictive.</p><p>Vous voulez en savoir plus sur la methodologie ? Cela figure dans notre <a href="/kenniscentrum/">centre de connaissances</a>.</p>`
           },
           {
             q: "A quel niveau les assessments sont-ils applicables ?",
@@ -435,7 +435,7 @@ export const faqContent = {
           },
           {
             q: "Quels assessments hrmforce propose-t-il ?",
-            a: `<p>Vous choisissez parmi des questionnaires individuels pour la selection, le developpement et le travail en equipe. Les plus demandes :</p><ul><li><a href="/assessments/big-fifty/">Test de personnalite (Big 5)</a></li><li><a href="/assessments/ability-scan/">Test cognitif (Ability Scan)</a></li><li><a href="/assessments/preselectie/disc-test/">Test DISC</a></li><li><a href="/assessments/drijfverentest/">Test des motivations</a></li><li><a href="/assessments/360-graden-feedback/">Feedback a 360 degres</a></li><li><a href="/assessments/leiderschapstest">Test de leadership</a></li></ul><p>L'offre complete figure dans l'<a href="/assessment-overzicht/">apercu des assessments</a>.</p>`
+            a: `<p>Vous choisissez parmi des questionnaires individuels pour la selection, le developpement et le travail en equipe. Les plus demandes :</p><ul><li><a href="/assessments/big-five/">Test de personnalite (Big 5)</a></li><li><a href="/assessments/ability-scan/">Test cognitif (Ability Scan)</a></li><li><a href="/assessments/disc-test/">Test DISC</a></li><li><a href="/assessments/drijfverentest/">Test des motivations</a></li><li><a href="/assessments/360-graden-feedback/">Feedback a 360 degres</a></li><li><a href="/assessments/leiderschapstest/">Test de leadership</a></li></ul><p>L'offre complete figure dans l'<a href="/assessment-overzicht/">apercu des assessments</a>.</p>`
           },
           {
             q: "Combien cela coute et comment commander ?",
@@ -556,7 +556,7 @@ export const faqContent = {
           },
           {
             q: "Estan las evaluaciones fundamentadas cientificamente?",
-            a: `<p>Si. Los cuestionarios se basan en modelos validados de la psicologia de la seleccion. La <a href="/assessments/big-fifty/">prueba de personalidad Big Fifty</a>, por ejemplo, se basa en los Big Five, el modelo de personalidad mas investigado. Comprobamos continuamente la fiabilidad y el valor predictivo de los instrumentos.</p><p>Quieres leer mas sobre la metodologia? Lo encontraras en nuestro <a href="/kenniscentrum/">centro de conocimiento</a>.</p>`
+            a: `<p>Si. Los cuestionarios se basan en modelos validados de la psicologia de la seleccion. La <a href="/assessments/big-five/">prueba de personalidad Big Fifty</a>, por ejemplo, se basa en los Big Five, el modelo de personalidad mas investigado. Comprobamos continuamente la fiabilidad y el valor predictivo de los instrumentos.</p><p>Quieres leer mas sobre la metodologia? Lo encontraras en nuestro <a href="/kenniscentrum/">centro de conocimiento</a>.</p>`
           },
           {
             q: "A que nivel se pueden aplicar las evaluaciones?",
@@ -568,7 +568,7 @@ export const faqContent = {
           },
           {
             q: "Que evaluaciones ofrece hrmforce?",
-            a: `<p>Eliges entre cuestionarios individuales para seleccion, desarrollo y trabajo en equipo. Los mas solicitados:</p><ul><li><a href="/assessments/big-fifty/">Prueba de personalidad (Big 5)</a></li><li><a href="/assessments/ability-scan/">Prueba cognitiva (Ability Scan)</a></li><li><a href="/assessments/preselectie/disc-test/">Prueba DISC</a></li><li><a href="/assessments/drijfverentest/">Prueba de motivaciones</a></li><li><a href="/assessments/360-graden-feedback/">Feedback de 360 grados</a></li><li><a href="/assessments/leiderschapstest">Prueba de liderazgo</a></li></ul><p>La oferta completa esta en el <a href="/assessment-overzicht/">resumen de evaluaciones</a>.</p>`
+            a: `<p>Eliges entre cuestionarios individuales para seleccion, desarrollo y trabajo en equipo. Los mas solicitados:</p><ul><li><a href="/assessments/big-five/">Prueba de personalidad (Big 5)</a></li><li><a href="/assessments/ability-scan/">Prueba cognitiva (Ability Scan)</a></li><li><a href="/assessments/disc-test/">Prueba DISC</a></li><li><a href="/assessments/drijfverentest/">Prueba de motivaciones</a></li><li><a href="/assessments/360-graden-feedback/">Feedback de 360 grados</a></li><li><a href="/assessments/leiderschapstest/">Prueba de liderazgo</a></li></ul><p>La oferta completa esta en el <a href="/assessment-overzicht/">resumen de evaluaciones</a>.</p>`
           },
           {
             q: "Cuanto cuesta y como hago el pedido?",
@@ -689,7 +689,7 @@ export const faqContent = {
           },
           {
             q: "Evaluarile sunt fundamentate stiintific?",
-            a: `<p>Da. Chestionarele se bazeaza pe modele validate din psihologia selectiei. <a href="/assessments/big-fifty/">Testul de personalitate Big Fifty</a>, de exemplu, se bazeaza pe Big Five, cel mai cercetat model de personalitate. Testam instrumentele in mod continuu pentru fiabilitate si valoare predictiva.</p><p>Vrei sa citesti mai multe despre metodologie? Gasesti totul in <a href="/kenniscentrum/">centrul nostru de cunostinte</a>.</p>`
+            a: `<p>Da. Chestionarele se bazeaza pe modele validate din psihologia selectiei. <a href="/assessments/big-five/">Testul de personalitate Big Fifty</a>, de exemplu, se bazeaza pe Big Five, cel mai cercetat model de personalitate. Testam instrumentele in mod continuu pentru fiabilitate si valoare predictiva.</p><p>Vrei sa citesti mai multe despre metodologie? Gasesti totul in <a href="/kenniscentrum/">centrul nostru de cunostinte</a>.</p>`
           },
           {
             q: "La ce nivel se pot aplica evaluarile?",
@@ -701,7 +701,7 @@ export const faqContent = {
           },
           {
             q: "Ce evaluari ofera hrmforce?",
-            a: `<p>Alegi dintre chestionare individuale pentru selectie, dezvoltare si munca in echipa. Cele mai solicitate:</p><ul><li><a href="/assessments/big-fifty/">Test de personalitate (Big 5)</a></li><li><a href="/assessments/ability-scan/">Test cognitiv (Ability Scan)</a></li><li><a href="/assessments/preselectie/disc-test/">Test DISC</a></li><li><a href="/assessments/drijfverentest/">Test al motivatiilor</a></li><li><a href="/assessments/360-graden-feedback/">Feedback la 360 de grade</a></li><li><a href="/assessments/leiderschapstest">Test de leadership</a></li></ul><p>Oferta completa se afla in <a href="/assessment-overzicht/">prezentarea generala a evaluarilor</a>.</p>`
+            a: `<p>Alegi dintre chestionare individuale pentru selectie, dezvoltare si munca in echipa. Cele mai solicitate:</p><ul><li><a href="/assessments/big-five/">Test de personalitate (Big 5)</a></li><li><a href="/assessments/ability-scan/">Test cognitiv (Ability Scan)</a></li><li><a href="/assessments/disc-test/">Test DISC</a></li><li><a href="/assessments/drijfverentest/">Test al motivatiilor</a></li><li><a href="/assessments/360-graden-feedback/">Feedback la 360 de grade</a></li><li><a href="/assessments/leiderschapstest/">Test de leadership</a></li></ul><p>Oferta completa se afla in <a href="/assessment-overzicht/">prezentarea generala a evaluarilor</a>.</p>`
           },
           {
             q: "Cat costa si cum comand?",
