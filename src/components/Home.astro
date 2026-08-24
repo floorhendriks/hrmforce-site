@@ -1,7 +1,8 @@
 ---
 // Gedeelde homepage-component. Wordt per taal gevuld via `c` (content) + `lang`.
 import { clients } from "../data/home.js";
-import { localizePath } from "../i18n/utils.js";
+import { localizePath, sanitizeBodyLinks } from "../i18n/utils.js";
+import validPaths from "../data/valid-paths.js";
 
 const { c, lang } = Astro.props;
 const lp = (p) => localizePath(p, lang);
@@ -74,7 +75,7 @@ const faqLd = {
         <div class="glass-bars">
           {c.glass.bars.map((b) => <div class="gbar"><em>{b.label}</em><div class="gtrack"><div class="gfill" style={`--w:${b.w}`}></div></div></div>)}
         </div>
-        <div class="glass-foot" set:html={c.glass.foot}></div>
+        <div class="glass-foot" set:html={sanitizeBodyLinks(c.glass.foot, lang, validPaths)}></div>
       </div>
     </div>
   </div>
@@ -226,7 +227,7 @@ const faqLd = {
     {c.faqs.map((f) => (
       <div class="faq-item">
         <div class="faq-q">{f.q}<span class="pl">+</span></div>
-        <div class="faq-a"><p set:html={f.a}></p></div>
+        <div class="faq-a"><p set:html={sanitizeBodyLinks(f.a, lang, validPaths)}></p></div>
       </div>
     ))}
   </div>
