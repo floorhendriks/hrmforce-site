@@ -25,15 +25,63 @@ const seg = (article.path || "").split("/").filter(Boolean)[0];
 const lang = ["en", "de", "fr", "es", "ro"].includes(seg) ? seg : "nl";
 
 // Meest relevante assessment kiezen op basis van de titel (themabuckets).
-const REC = {
-  "disc-test": { label: "DISC Test", blurb: "Breng gedrag, communicatie en samenwerking in kaart." },
-  "big-five": { label: "Persoonlijkheidstest: Big Five", blurb: "Persoonlijkheid vertaald naar werkgerelateerde competenties." },
-  "cognitieve-test": { label: "Cognitieve capaciteitentest", blurb: "Meet werk- en denkniveau en leervermogen objectief." },
-  "drijfverentest": { label: "Drijfverentest", blurb: "Ontdek wat iemand motiveert en energie geeft." },
-  "leiderschapstest": { label: "Leiderschapstest", blurb: "Inzicht in leiderschapsstijlen en managementrollen." },
-  "360-graden-feedback": { label: "360 graden feedback", blurb: "Feedback van collega's, leidinggevenden en klanten." },
-  "studiekeuzetest": { label: "Studiekeuzetest", blurb: "Passende opleidingen en beroepen op basis van interesses." },
+const RECI18N = {
+  nl: {
+    "disc-test": { label: "DISC Test", blurb: "Breng gedrag, communicatie en samenwerking in kaart." },
+    "big-five": { label: "Persoonlijkheidstest: Big Five", blurb: "Persoonlijkheid vertaald naar werkgerelateerde competenties." },
+    "cognitieve-test": { label: "Cognitieve capaciteitentest", blurb: "Meet werk- en denkniveau en leervermogen objectief." },
+    "drijfverentest": { label: "Drijfverentest", blurb: "Ontdek wat iemand motiveert en energie geeft." },
+    "leiderschapstest": { label: "Leiderschapstest", blurb: "Inzicht in leiderschapsstijlen en managementrollen." },
+    "360-graden-feedback": { label: "360 graden feedback", blurb: "Feedback van collega's, leidinggevenden en klanten." },
+    "studiekeuzetest": { label: "Studiekeuzetest", blurb: "Passende opleidingen en beroepen op basis van interesses." },
+  },
+  en: {
+    "disc-test": { label: "DISC test", blurb: "Map behaviour, communication and collaboration." },
+    "big-five": { label: "Personality test: Big Five", blurb: "Personality translated into work-related competencies." },
+    "cognitieve-test": { label: "Cognitive ability test", blurb: "Objectively measures working and thinking level and learning ability." },
+    "drijfverentest": { label: "Motivational drivers test", blurb: "Discover what motivates someone and gives energy." },
+    "leiderschapstest": { label: "Leadership test", blurb: "Insight into leadership styles and management roles." },
+    "360-graden-feedback": { label: "360-degree feedback", blurb: "Feedback from colleagues, managers and clients." },
+    "studiekeuzetest": { label: "Study choice test", blurb: "Suitable studies and professions based on interests." },
+  },
+  de: {
+    "disc-test": { label: "DISC-Test", blurb: "Verhalten, Kommunikation und Zusammenarbeit erfassen." },
+    "big-five": { label: "Persönlichkeitstest: Big Five", blurb: "Persönlichkeit übersetzt in arbeitsbezogene Kompetenzen." },
+    "cognitieve-test": { label: "Kognitiver Fähigkeitstest", blurb: "Misst Arbeits- und Denkniveau sowie Lernfähigkeit objektiv." },
+    "drijfverentest": { label: "Motivationstest", blurb: "Entdecken Sie, was jemanden motiviert und Energie gibt." },
+    "leiderschapstest": { label: "Führungstest", blurb: "Einblick in Führungsstile und Managementrollen." },
+    "360-graden-feedback": { label: "360-Grad-Feedback", blurb: "Feedback von Kollegen, Führungskräften und Kunden." },
+    "studiekeuzetest": { label: "Studienwahltest", blurb: "Passende Studiengänge und Berufe auf Basis von Interessen." },
+  },
+  fr: {
+    "disc-test": { label: "Test DISC", blurb: "Cartographie le comportement, la communication et la collaboration." },
+    "big-five": { label: "Test de personnalité : Big Five", blurb: "La personnalité traduite en compétences professionnelles." },
+    "cognitieve-test": { label: "Test d'aptitude cognitive", blurb: "Mesure objectivement le niveau de travail, de réflexion et d'apprentissage." },
+    "drijfverentest": { label: "Test des motivations", blurb: "Découvrez ce qui motive une personne et lui donne de l'énergie." },
+    "leiderschapstest": { label: "Test de leadership", blurb: "Aperçu des styles de leadership et des rôles managériaux." },
+     "360-graden-feedback": { label: "Feedback à 360 degrés", blurb: "Retours de collègues, managers et clients." },
+    "studiekeuzetest": { label: "Test d'orientation", blurb: "Formations et métiers adaptés selon les intérêts." },
+  },
+  es: {
+    "disc-test": { label: "Test DISC", blurb: "Mapea el comportamiento, la comunicación y la colaboración." },
+    "big-five": { label: "Test de personalidad: Big Five", blurb: "La personalidad traducida en competencias laborales." },
+    "cognitieve-test": { label: "Test de capacidad cognitiva", blurb: "Mide objetivamente el nivel de trabajo, pensamiento y aprendizaje." },
+    "drijfverentest": { label: "Test de motivaciones", blurb: "Descubre qué motiva a alguien y le da energía." },
+    "leiderschapstest": { label: "Test de liderazgo", blurb: "Información sobre estilos de liderazgo y roles directivos." },
+    "360-graden-feedback": { label: "Feedback de 360 grados", blurb: "Comentarios de compañeros, responsables y clientes." },
+    "studiekeuzetest": { label: "Test de orientación académica", blurb: "Estudios y profesiones adecuados según los intereses." },
+  },
+  ro: {
+    "disc-test": { label: "Test DISC", blurb: "Cartografiază comportamentul, comunicarea și colaborarea." },
+    "big-five": { label: "Test de personalitate: Big Five", blurb: "Personalitatea tradusă în competențe legate de muncă." },
+    "cognitieve-test": { label: "Test de aptitudini cognitive", blurb: "Măsoară obiectiv nivelul de lucru, gândire și capacitatea de învățare." },
+    "drijfverentest": { label: "Test al motivațiilor", blurb: "Descoperiți ce motivează o persoană și îi dă energie." },
+    "leiderschapstest": { label: "Test de leadership", blurb: "Perspectivă asupra stilurilor de leadership și rolurilor de management." },
+    "360-graden-feedback": { label: "Feedback 360 de grade", blurb: "Feedback de la colegi, manageri și clienți." },
+    "studiekeuzetest": { label: "Test de orientare în studii", blurb: "Studii și profesii potrivite în funcție de interese." },
+  },
 };
+const REC = RECI18N[lang] || RECI18N.nl;
 function pickAssessment(title) {
   const t = (title || "").toLowerCase();
   const has = (...kw) => kw.some((k) => t.includes(k));
