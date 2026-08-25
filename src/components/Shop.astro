@@ -12,18 +12,26 @@ const cfg = {
   publicUrl: SHOPIFY.PUBLIC_SHOP_URL,
 };
 const tarievenHref = localizePath("/tarieven/", lang);
+
+// Winkelwagen-/detail-teksten per taal (in de component; geen extra databron nodig).
+const CART_I18N = {
+  nl: { add: "In winkelmand", added: "Toegevoegd ✓", inCart: "In mand", cartTitle: "Winkelmand", empty: "Je winkelmand is nog leeg.", checkout: "Afrekenen", remove: "Verwijderen", subtotal: "Subtotaal", close: "Sluiten", secure: "Veilig afrekenen via Shopify", details: "Details bekijken", each: "per stuk", continue: "Verder winkelen" },
+  en: { add: "Add to cart", added: "Added ✓", inCart: "In cart", cartTitle: "Cart", empty: "Your cart is empty.", checkout: "Checkout", remove: "Remove", subtotal: "Subtotal", close: "Close", secure: "Secure checkout via Shopify", details: "View details", each: "each", continue: "Continue shopping" },
+  de: { add: "In den Warenkorb", added: "Hinzugefügt ✓", inCart: "Im Korb", cartTitle: "Warenkorb", empty: "Ihr Warenkorb ist leer.", checkout: "Zur Kasse", remove: "Entfernen", subtotal: "Zwischensumme", close: "Schließen", secure: "Sichere Kasse über Shopify", details: "Details ansehen", each: "pro Stück", continue: "Weiter einkaufen" },
+  fr: { add: "Ajouter au panier", added: "Ajouté ✓", inCart: "Au panier", cartTitle: "Panier", empty: "Votre panier est vide.", checkout: "Commander", remove: "Retirer", subtotal: "Sous-total", close: "Fermer", secure: "Paiement sécurisé via Shopify", details: "Voir les détails", each: "l'unité", continue: "Continuer les achats" },
+  es: { add: "Añadir al carrito", added: "Añadido ✓", inCart: "En carrito", cartTitle: "Carrito", empty: "Tu carrito está vacío.", checkout: "Pagar", remove: "Eliminar", subtotal: "Subtotal", close: "Cerrar", secure: "Pago seguro con Shopify", details: "Ver detalles", each: "por unidad", continue: "Seguir comprando" },
+  ro: { add: "Adaugă în coș", added: "Adăugat ✓", inCart: "În coș", cartTitle: "Coș", empty: "Coșul tău este gol.", checkout: "Finalizează comanda", remove: "Elimină", subtotal: "Subtotal", close: "Închide", secure: "Plată securizată prin Shopify", details: "Vezi detaliile", each: "bucata", continue: "Continuă cumpărăturile" },
+};
+const ct = CART_I18N[lang] || CART_I18N.nl;
+
 // Teksten die het inline script nodig heeft (via define:vars geïnjecteerd).
 const L = {
-  loading: t.loading,
-  countMid: t.countMid,
-  countUnit: t.countUnit,
-  buy: t.buy,
-  view: t.view,
-  more: t.more,
-  busy: t.busy,
-  checkoutError: t.checkoutError,
-  loadErrorPre: t.loadErrorPre,
-  toShop: t.toShop,
+  loading: t.loading, countMid: t.countMid, countUnit: t.countUnit,
+  buy: ct.add, view: t.view, more: ct.details, busy: t.busy,
+  checkoutError: t.checkoutError, loadErrorPre: t.loadErrorPre, toShop: t.toShop,
+  add: ct.add, added: ct.added, inCart: ct.inCart, cartTitle: ct.cartTitle,
+  empty: ct.empty, checkout: ct.checkout, remove: ct.remove, subtotal: ct.subtotal,
+  close: ct.close, secure: ct.secure, details: ct.details, each: ct.each, cont: ct.continue,
 };
 ---
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
@@ -68,6 +76,47 @@ const L = {
   </div>
 </div></section>
 
+{configured && (
+  <>
+    <!-- Zwevende winkelmand-knop -->
+    <button id="cartFab" class="cart-fab" type="button" aria-label={ct.cartTitle} hidden>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      <span class="cart-fab-count" id="cartCount">0</span>
+    </button>
+
+    <!-- Winkelmand-lade -->
+    <div id="cartOverlay" class="cart-overlay" hidden></div>
+    <aside id="cartDrawer" class="cart-drawer" aria-label={ct.cartTitle} hidden>
+      <div class="cart-head">
+        <strong>{ct.cartTitle}</strong>
+        <button class="cart-x" id="cartClose" type="button" aria-label={ct.close}>&times;</button>
+      </div>
+      <div class="cart-lines" id="cartLines"></div>
+      <div class="cart-foot" id="cartFoot" hidden>
+        <div class="cart-sub"><span>{ct.subtotal}</span><span id="cartSubtotal"></span></div>
+        <a class="btn btn-primary cart-checkout" id="cartCheckout" href="#">{ct.checkout} →</a>
+        <p class="cart-secure">{ct.secure}</p>
+      </div>
+    </aside>
+
+    <!-- Product-detail (op de site, geen doorklik) -->
+    <div id="pmOverlay" class="pm-overlay" hidden>
+      <div class="pm-panel" role="dialog" aria-modal="true">
+        <button class="pm-x" id="pmClose" type="button" aria-label={ct.close}>&times;</button>
+        <div class="pm-media"><div class="pm-img" id="pmImg"></div></div>
+        <div class="pm-body">
+          <span class="pm-vendor" id="pmVendor" hidden></span>
+          <h2 id="pmTitle"></h2>
+          <div class="pm-tags" id="pmTags"></div>
+          <div class="pm-price" id="pmPrice"></div>
+          <div class="pm-desc" id="pmDesc"></div>
+          <button class="btn btn-primary pm-add" id="pmAdd" type="button">{ct.add}</button>
+        </div>
+      </div>
+    </div>
+  </>
+)}
+
 <style>
   .shop-toolbar { display: grid; gap: 14px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
   .shop-search input { width: 100%; max-width: 420px; padding: 12px 16px; border: 1px solid var(--line-strong); border-radius: var(--radius-pill); font-size: 15px; font-family: inherit; }
@@ -82,21 +131,21 @@ const L = {
   @media (max-width: 480px) { .shop-grid { grid-template-columns: 1fr; } }
   .sp-card { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-xs); transition: transform .2s, box-shadow .2s; }
   .sp-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-  .sp-img { position: relative; display: block; height: 158px; background-color: var(--bg-soft); background-size: cover; background-position: center; background-repeat: no-repeat; }
-  .sp-vendor { position: absolute; top: 10px; left: 10px; background: rgba(11,52,104,.86); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; backdrop-filter: blur(2px); }
+  .sp-img { position: relative; display: block; height: 158px; width: 100%; border: 0; padding: 0; cursor: pointer; background-color: var(--bg-soft); background-size: cover; background-position: center; background-repeat: no-repeat; }
+  .sp-vendor { position: absolute; top: 10px; left: 10px; background: rgba(11,52,104,.86); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
   .sp-body { padding: 16px 18px 18px; display: flex; flex-direction: column; flex: 1; }
   .sp-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
   .sp-tag { background: #e8f0fe; color: var(--navy); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
-  .sp-title { display: block; color: var(--navy); font-size: 1.05rem; font-weight: 700; line-height: 1.3; margin-bottom: 6px; text-decoration: none; }
+  .sp-title { display: block; text-align: left; color: var(--navy); font-size: 1.05rem; font-weight: 700; line-height: 1.3; margin-bottom: 6px; background: none; border: 0; padding: 0; cursor: pointer; font-family: inherit; }
   .sp-title:hover { color: var(--accent); }
   .sp-desc { color: var(--muted); font-size: 13px; line-height: 1.5; margin: 0 0 8px; flex: 1; }
   .sp-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 6px; }
-  .sp-more { display: inline-block; margin-top: 10px; color: var(--blue); font-weight: 600; font-size: 13px; text-decoration: none; }
+  .sp-more { display: inline-block; margin-top: 10px; color: var(--blue); font-weight: 600; font-size: 13px; background: none; border: 0; padding: 0; cursor: pointer; font-family: inherit; text-align: left; }
   .sp-more:hover { color: var(--navy); }
   .sp-price { color: var(--navy); font-weight: 800; font-size: 1.05rem; }
-  .sp-buy { background: var(--accent); color: #fff; border: none; font-weight: 700; font-size: 13.5px; padding: 9px 14px; border-radius: var(--radius-pill); cursor: pointer; font-family: inherit; transition: background .15s; }
+  .sp-buy { background: var(--accent); color: #fff; border: none; font-weight: 700; font-size: 13.5px; padding: 9px 14px; border-radius: var(--radius-pill); cursor: pointer; font-family: inherit; transition: background .15s; white-space: nowrap; }
   .sp-buy:hover { background: var(--accent-hover); }
-  .sp-buy:disabled { opacity: .6; cursor: default; }
+  .sp-buy.is-added { background: #1a8a55; }
   .shop-status { text-align: center; color: var(--muted); padding: 24px 0; }
   .shop-placeholder { text-align: center; padding: 30px 0 10px; }
   .shop-usps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
@@ -104,12 +153,55 @@ const L = {
   .usp strong { display: block; color: var(--navy); margin-bottom: 4px; }
   .usp span { color: var(--muted); font-size: 14px; }
   @media (max-width: 880px) { .shop-usps { grid-template-columns: 1fr 1fr; } }
+
+  /* Winkelmand-knop */
+  .cart-fab { position: fixed; right: 20px; bottom: 84px; z-index: 55; width: 56px; height: 56px; border-radius: 50%; background: var(--navy); color: #fff; border: 0; cursor: pointer; box-shadow: 0 12px 28px rgba(14,70,140,.4); display: flex; align-items: center; justify-content: center; }
+  .cart-fab:hover { background: var(--navy-deep); }
+  .cart-fab-count { position: absolute; top: -4px; right: -4px; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: var(--gold); color: #3a2a00; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+  .cart-overlay { position: fixed; inset: 0; background: rgba(11,42,92,.5); z-index: 70; }
+  .cart-drawer { position: fixed; top: 0; right: 0; height: 100%; width: 400px; max-width: 92vw; background: #fff; z-index: 71; box-shadow: -12px 0 40px rgba(0,0,0,.2); display: flex; flex-direction: column; }
+  .cart-head { display: flex; align-items: center; justify-content: space-between; padding: 20px 22px; border-bottom: 1px solid var(--line); }
+  .cart-head strong { font-size: 1.15rem; color: var(--navy); }
+  .cart-x, .pm-x { background: none; border: 0; font-size: 26px; line-height: 1; cursor: pointer; color: var(--muted); }
+  .cart-lines { flex: 1; overflow-y: auto; padding: 10px 22px; }
+  .cart-empty { color: var(--muted); text-align: center; padding: 40px 0; }
+  .cl { display: flex; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .cl-img { width: 56px; height: 56px; border-radius: 8px; background: var(--bg-soft) center/cover no-repeat; flex: none; }
+  .cl-info { flex: 1; min-width: 0; }
+  .cl-title { color: var(--navy); font-weight: 700; font-size: 14px; margin: 0 0 4px; }
+  .cl-price { color: var(--muted); font-size: 13px; }
+  .cl-ctrls { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+  .cl-qty { display: inline-flex; align-items: center; border: 1px solid var(--line-strong); border-radius: 999px; overflow: hidden; }
+  .cl-qty button { width: 28px; height: 28px; border: 0; background: #fff; color: var(--navy); font-size: 16px; cursor: pointer; }
+  .cl-qty span { min-width: 26px; text-align: center; font-weight: 700; font-size: 14px; }
+  .cl-rm { background: none; border: 0; color: var(--muted); font-size: 12.5px; cursor: pointer; text-decoration: underline; }
+  .cl-rm:hover { color: var(--accent); }
+  .cart-foot { padding: 18px 22px 22px; border-top: 1px solid var(--line); }
+  .cart-sub { display: flex; justify-content: space-between; font-weight: 800; color: var(--navy); font-size: 1.05rem; margin-bottom: 14px; }
+  .cart-checkout { width: 100%; text-align: center; }
+  .cart-secure { text-align: center; color: var(--muted); font-size: 12px; margin: 10px 0 0; }
+
+  /* Product-detail-paneel */
+  .pm-overlay { position: fixed; inset: 0; background: rgba(11,42,92,.55); z-index: 72; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .pm-panel { position: relative; background: #fff; border-radius: 18px; max-width: 820px; width: 100%; max-height: 90vh; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; box-shadow: 0 30px 70px rgba(0,0,0,.35); }
+  .pm-x { position: absolute; top: 12px; right: 14px; z-index: 2; }
+  .pm-media { background: var(--bg-soft); }
+  .pm-img { width: 100%; height: 100%; min-height: 280px; background: var(--bg-soft) center/cover no-repeat; }
+  .pm-body { padding: 30px 30px 30px; overflow-y: auto; }
+  .pm-vendor { display: inline-block; background: var(--navy); color: #fff; font-size: 11.5px; font-weight: 700; padding: 3px 10px; border-radius: 999px; margin-bottom: 8px; }
+  .pm-body h2 { color: var(--navy); font-size: 1.5rem; margin: 0 0 10px; }
+  .pm-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .pm-price { color: var(--navy); font-weight: 800; font-size: 1.3rem; margin-bottom: 14px; }
+  .pm-desc { color: var(--text); font-size: 14.5px; line-height: 1.6; margin-bottom: 20px; }
+  .pm-desc :global(p) { margin: 0 0 10px; }
+  .pm-add { width: 100%; }
+  @media (max-width: 680px) { .pm-panel { grid-template-columns: 1fr; } .pm-media { min-height: 180px; } }
 </style>
 
 <script is:inline define:vars={{ L }}>
   (function () {
     var app = document.getElementById("shopApp");
-    if (!app) return; // shop nog niet geconfigureerd (placeholder-modus)
+    if (!app) return;
     var DOMAIN = app.dataset.domain, TOKEN = app.dataset.token, VER = app.dataset.version, PUBLIC = app.dataset.publicurl;
     var grid = document.getElementById("shopGrid");
     var countEl = document.getElementById("shopCount");
@@ -117,6 +209,8 @@ const L = {
     var q = document.getElementById("shopq");
     var fCyclus = document.getElementById("fCyclus"), fSegment = document.getElementById("fSegment"), fUitgever = document.getElementById("fUitgever");
     var products = [];
+    var CART_KEY = "hrmforce_cart_id";
+    var cart = null; // { id, checkoutUrl, subtotal, lines:[{lineId,variantId,title,image,qty,price}] }
 
     function gql(query, variables) {
       return fetch("https://" + DOMAIN + "/api/" + VER + "/graphql.json", {
@@ -126,36 +220,131 @@ const L = {
       }).then(function (r) { return r.json(); });
     }
 
-    // De live-shop legt de facetten vast in: vendor (=uitgever), productType
-    // (=segment) en tags (waarvan een deel HR-cyclus-fases zijn).
+    var CART_FIELDS = "{ id checkoutUrl totalQuantity cost { subtotalAmount { amount currencyCode } } lines(first:100){ edges { node { id quantity merchandise { ... on ProductVariant { id price { amount currencyCode } product { title featuredImage { url } } } } } } } }";
+
     var CYCLUS_TAGS = ["Voorselectie", "Selectie", "Ontwikkeling", "Doorstroom", "Mobiliteit", "Employability", "Functioneren", "Beoordelen"];
     function parseTaxo(node) {
       var cyclus = (node.tags || []).filter(function (t) { return CYCLUS_TAGS.indexOf(t) > -1; });
       var uit = node.vendor && node.vendor !== "My Store" ? node.vendor : null;
       return { cyclus: cyclus, segment: node.productType ? [node.productType] : [], uitgever: uit };
     }
-    function money(a, c) {
-      var n = parseFloat(a);
-      return (c === "EUR" ? "€" : (c + " ")) + n.toFixed(2).replace(".", ",");
-    }
-    function fillSelect(sel, values) {
-      values.sort().forEach(function (v) {
-        var o = document.createElement("option"); o.value = v; o.textContent = v; sel.appendChild(o);
-      });
-    }
+    function money(a, c) { var n = parseFloat(a); return (c === "EUR" ? "€" : (c + " ")) + n.toFixed(2).replace(".", ","); }
+    function fillSelect(sel, values) { values.sort().forEach(function (v) { var o = document.createElement("option"); o.value = v; o.textContent = v; sel.appendChild(o); }); }
+    function esc(s) { return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
 
     var PRODUCTS_Q =
-      "{ products(first: 250, sortKey: TITLE) { edges { node { title handle description tags vendor productType availableForSale " +
+      "{ products(first: 250, sortKey: TITLE) { edges { node { title handle description descriptionHtml tags vendor productType availableForSale " +
       "featuredImage { url altText } priceRange { minVariantPrice { amount currencyCode } } " +
       "variants(first: 1) { edges { node { id availableForSale } } } } } } }";
 
-    function esc(s) { return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+    /* ---------- Winkelmand ---------- */
+    function mapCart(c) {
+      if (!c) return null;
+      return {
+        id: c.id, checkoutUrl: c.checkoutUrl, qty: c.totalQuantity,
+        subtotal: c.cost ? money(c.cost.subtotalAmount.amount, c.cost.subtotalAmount.currencyCode) : "",
+        lines: (c.lines.edges || []).map(function (e) {
+          var n = e.node, m = n.merchandise || {};
+          return { lineId: n.id, variantId: m.id, qty: n.quantity,
+            title: m.product ? m.product.title : "", image: m.product && m.product.featuredImage ? m.product.featuredImage.url : null,
+            price: m.price ? money(m.price.amount, m.price.currencyCode) : "" };
+        }),
+      };
+    }
+    function saveCartId(id) { try { id ? localStorage.setItem(CART_KEY, id) : localStorage.removeItem(CART_KEY); } catch (e) {} }
 
+    function ensureCart() {
+      if (cart && cart.id) return Promise.resolve(cart.id);
+      var M = "mutation { cartCreate { cart " + CART_FIELDS + " } }";
+      return gql(M).then(function (r) {
+        var c = r.data.cartCreate.cart; cart = mapCart(c); saveCartId(cart.id); return cart.id;
+      });
+    }
+    function addToCart(variantId, btn) {
+      var old = btn ? btn.textContent : "";
+      if (btn) { btn.disabled = true; btn.textContent = L.busy; }
+      ensureCart().then(function (id) {
+        var M = "mutation($id:ID!,$lines:[CartLineInput!]!){ cartLinesAdd(cartId:$id, lines:$lines){ cart " + CART_FIELDS + " } }";
+        return gql(M, { id: id, lines: [{ merchandiseId: variantId, quantity: 1 }] });
+      }).then(function (r) {
+        cart = mapCart(r.data.cartLinesAdd.cart); renderCart(); updateFab();
+        if (btn) { btn.textContent = L.added; btn.classList.add("is-added"); setTimeout(function () { btn.disabled = false; btn.textContent = old || L.add; btn.classList.remove("is-added"); }, 1400); }
+        openCart();
+      }).catch(function () { if (btn) { btn.disabled = false; btn.textContent = old || L.add; } });
+    }
+    function changeQty(lineId, qty) {
+      if (qty < 1) return removeLine(lineId);
+      var M = "mutation($id:ID!,$lines:[CartLineUpdateInput!]!){ cartLinesUpdate(cartId:$id, lines:$lines){ cart " + CART_FIELDS + " } }";
+      gql(M, { id: cart.id, lines: [{ id: lineId, quantity: qty }] }).then(function (r) { cart = mapCart(r.data.cartLinesUpdate.cart); renderCart(); updateFab(); });
+    }
+    function removeLine(lineId) {
+      var M = "mutation($id:ID!,$ids:[ID!]!){ cartLinesRemove(cartId:$id, lineIds:$ids){ cart " + CART_FIELDS + " } }";
+      gql(M, { id: cart.id, ids: [lineId] }).then(function (r) { cart = mapCart(r.data.cartLinesRemove.cart); renderCart(); updateFab(); });
+    }
+
+    var fab = document.getElementById("cartFab");
+    var cartCount = document.getElementById("cartCount");
+    var drawer = document.getElementById("cartDrawer");
+    var overlay = document.getElementById("cartOverlay");
+    var linesEl = document.getElementById("cartLines");
+    var footEl = document.getElementById("cartFoot");
+    function updateFab() {
+      var n = cart ? cart.qty : 0;
+      if (n > 0) { fab.hidden = false; cartCount.textContent = n; } else { fab.hidden = true; }
+    }
+    function renderCart() {
+      if (!cart || !cart.lines.length) { linesEl.innerHTML = '<p class="cart-empty">' + esc(L.empty) + "</p>"; footEl.hidden = true; return; }
+      var html = "";
+      cart.lines.forEach(function (l) {
+        var im = l.image ? 'style="background-image:url(\'' + l.image + "')\"" : "";
+        html += '<div class="cl"><div class="cl-img" ' + im + "></div>" +
+          '<div class="cl-info"><p class="cl-title">' + esc(l.title) + '</p><span class="cl-price">' + l.price + " " + esc(L.each) + "</span>" +
+          '<div class="cl-ctrls"><span class="cl-qty"><button type="button" data-dec="' + l.lineId + '">−</button><span>' + l.qty + '</span><button type="button" data-inc="' + l.lineId + '">+</button></span>' +
+          '<button class="cl-rm" data-rm="' + l.lineId + '">' + esc(L.remove) + "</button></div></div></div>";
+      });
+      linesEl.innerHTML = html;
+      footEl.hidden = false;
+      document.getElementById("cartSubtotal").textContent = cart.subtotal;
+      document.getElementById("cartCheckout").href = cart.checkoutUrl || "#";
+    }
+    function openCart() { renderCart(); overlay.hidden = false; drawer.hidden = false; }
+    function closeCart() { overlay.hidden = true; drawer.hidden = true; }
+    fab.addEventListener("click", openCart);
+    document.getElementById("cartClose").addEventListener("click", closeCart);
+    overlay.addEventListener("click", closeCart);
+    linesEl.addEventListener("click", function (e) {
+      var t = e.target;
+      var q = cart.lines.filter(function (x) { return x.lineId === (t.dataset.inc || t.dataset.dec || t.dataset.rm); })[0];
+      if (t.dataset.inc && q) changeQty(t.dataset.inc, q.qty + 1);
+      else if (t.dataset.dec && q) changeQty(t.dataset.dec, q.qty - 1);
+      else if (t.dataset.rm) removeLine(t.dataset.rm);
+    });
+
+    /* ---------- Product-detail-paneel ---------- */
+    var pmOverlay = document.getElementById("pmOverlay");
+    function openProduct(p) {
+      document.getElementById("pmTitle").textContent = p.title;
+      document.getElementById("pmPrice").textContent = p.price;
+      document.getElementById("pmImg").style.backgroundImage = p.image ? "url('" + p.image + "')" : "";
+      var vd = document.getElementById("pmVendor");
+      if (p.taxo.uitgever) { vd.textContent = p.taxo.uitgever; vd.hidden = false; } else vd.hidden = true;
+      document.getElementById("pmTags").innerHTML = p.taxo.cyclus.concat(p.taxo.segment).map(function (x) { return '<span class="sp-tag">' + esc(x) + "</span>"; }).join("");
+      document.getElementById("pmDesc").innerHTML = p.descHtml || ("<p>" + esc(p.desc) + "</p>");
+      var add = document.getElementById("pmAdd");
+      add.disabled = !(p.variantId && p.available);
+      add.textContent = L.add;
+      add.onclick = function () { if (p.variantId) { addToCart(p.variantId, add); } };
+      pmOverlay.hidden = false;
+    }
+    document.getElementById("pmClose").addEventListener("click", function () { pmOverlay.hidden = true; });
+    pmOverlay.addEventListener("click", function (e) { if (e.target === pmOverlay) pmOverlay.hidden = true; });
+
+    /* ---------- Grid ---------- */
     function render() {
       var term = (q.value || "").trim().toLowerCase();
       var c = fCyclus.value, s = fSegment.value, u = fUitgever.value;
       var html = "", shown = 0;
-      products.forEach(function (p) {
+      products.forEach(function (p, idx) {
         var okC = !c || p.taxo.cyclus.indexOf(c) > -1;
         var okS = !s || p.taxo.segment.indexOf(s) > -1;
         var okU = !u || p.taxo.uitgever === u;
@@ -164,40 +353,25 @@ const L = {
         shown++;
         var chips = p.taxo.cyclus.concat(p.taxo.segment).slice(0, 3).map(function (x) { return '<span class="sp-tag">' + esc(x) + "</span>"; }).join("");
         var img = p.image ? 'style="background-image:url(\'' + p.image + "')\"" : "";
-        var moreHref = PUBLIC + "/products/" + p.handle;
         var vendor = p.taxo.uitgever ? '<span class="sp-vendor">' + esc(p.taxo.uitgever) + "</span>" : "";
         var desc = p.desc ? '<p class="sp-desc">' + esc(p.desc).slice(0, 130) + (p.desc.length > 130 ? "…" : "") + "</p>" : "";
         var buy = p.variantId && p.available
-          ? '<button class="sp-buy" data-vid="' + p.variantId + '">' + esc(L.buy) + '</button>'
-          : '<a class="sp-buy" href="' + moreHref + '">' + esc(L.view) + '</a>';
+          ? '<button class="sp-buy" data-add="' + idx + '">' + esc(L.add) + "</button>"
+          : '<button class="sp-buy" data-open="' + idx + '">' + esc(L.view) + "</button>";
         html +=
           '<div class="sp-card">' +
-          '<a class="sp-img" ' + img + ' href="' + moreHref + '" aria-label="' + esc(p.title) + '">' + vendor + "</a>" +
+          '<button class="sp-img" ' + img + ' data-open="' + idx + '" aria-label="' + esc(p.title) + '">' + vendor + "</button>" +
           '<div class="sp-body"><div class="sp-tags">' + chips + "</div>" +
-          '<a class="sp-title" href="' + moreHref + '">' + esc(p.title) + "</a>" +
+          '<button class="sp-title" data-open="' + idx + '">' + esc(p.title) + "</button>" +
           desc +
           '<div class="sp-foot"><span class="sp-price">' + p.price + "</span>" + buy + "</div>" +
-          '<a class="sp-more" href="' + moreHref + '">' + esc(L.more) + '</a>' +
+          '<button class="sp-more" data-open="' + idx + '">' + esc(L.more) + "</button>" +
           "</div></div>";
       });
       grid.innerHTML = html;
       countEl.textContent = shown + " " + L.countMid + " " + products.length + " " + L.countUnit;
-      grid.querySelectorAll(".sp-buy[data-vid]").forEach(function (b) {
-        b.addEventListener("click", function () { checkout(b.dataset.vid, b); });
-      });
-    }
-
-    function checkout(variantId, btn) {
-      btn.disabled = true; btn.textContent = L.busy;
-      var M = 'mutation($id: ID!){ cartCreate(input:{lines:[{quantity:1, merchandiseId:$id}]}){ cart { checkoutUrl } userErrors { message } } }';
-      gql(M, { id: variantId }).then(function (res) {
-        var url = res && res.data && res.data.cartCreate && res.data.cartCreate.cart && res.data.cartCreate.cart.checkoutUrl;
-        if (url) { window.location.href = url; }
-        else { throw new Error("no checkout url"); }
-      }).catch(function () {
-        btn.disabled = false; btn.textContent = L.buy;
-        statusEl.hidden = false; statusEl.textContent = L.checkoutError;
-      });
+      grid.querySelectorAll("[data-add]").forEach(function (b) { b.addEventListener("click", function () { addToCart(products[+b.dataset.add].variantId, b); }); });
+      grid.querySelectorAll("[data-open]").forEach(function (b) { b.addEventListener("click", function () { openProduct(products[+b.dataset.open]); }); });
     }
 
     countEl.textContent = L.loading;
@@ -212,7 +386,7 @@ const L = {
         if (taxo.uitgever) uitSet[taxo.uitgever] = 1;
         var v = n.variants && n.variants.edges && n.variants.edges[0] && n.variants.edges[0].node;
         return {
-          title: n.title, handle: n.handle, taxo: taxo, desc: n.description || "",
+          title: n.title, handle: n.handle, taxo: taxo, desc: n.description || "", descHtml: n.descriptionHtml || "",
           image: n.featuredImage ? n.featuredImage.url : null,
           price: n.priceRange ? money(n.priceRange.minVariantPrice.amount, n.priceRange.minVariantPrice.currencyCode) : "",
           variantId: v ? v.id : null, available: v ? v.availableForSale : false,
@@ -225,14 +399,19 @@ const L = {
     }).catch(function () {
       countEl.textContent = "";
       statusEl.hidden = false;
-      statusEl.innerHTML = L.loadErrorPre + '<a href="' + PUBLIC + '">' + L.toShop + '</a>';
+      statusEl.innerHTML = L.loadErrorPre + '<a href="' + PUBLIC + '">' + L.toShop + "</a>";
     });
 
-    [q, fCyclus, fSegment, fUitgever].forEach(function (el) {
-      el.addEventListener(el === q ? "input" : "change", render);
-    });
-    document.getElementById("shopReset").addEventListener("click", function () {
-      q.value = ""; fCyclus.value = ""; fSegment.value = ""; fUitgever.value = ""; render();
-    });
+    // Bestaande winkelmand herstellen (indien nog geldig).
+    var savedId = null; try { savedId = localStorage.getItem(CART_KEY); } catch (e) {}
+    if (savedId) {
+      gql("query($id:ID!){ cart(id:$id) " + CART_FIELDS + " }", { id: savedId }).then(function (r) {
+        if (r.data && r.data.cart) { cart = mapCart(r.data.cart); updateFab(); } else saveCartId(null);
+      }).catch(function () {});
+    }
+
+    [q, fCyclus, fSegment, fUitgever].forEach(function (el) { el.addEventListener(el === q ? "input" : "change", render); });
+    document.getElementById("shopReset").addEventListener("click", function () { q.value = ""; fCyclus.value = ""; fSegment.value = ""; fUitgever.value = ""; render(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") { closeCart(); pmOverlay.hidden = true; } });
   })();
 </script>
