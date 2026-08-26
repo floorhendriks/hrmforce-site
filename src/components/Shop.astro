@@ -1,6 +1,7 @@
 ---
 import { SHOPIFY } from "../data/site-config.js";
 import { localizePath } from "../i18n/utils.js";
+import { shopImages } from "../data/shop-images.js";
 
 const { t, lang } = Astro.props;
 
@@ -216,7 +217,7 @@ const L = {
   @media (max-width: 680px) { .pm-panel { grid-template-columns: 1fr; } .pm-media { min-height: 180px; } }
 </style>
 
-<script is:inline define:vars={{ L, ENRICH, LANG }}>
+<script is:inline define:vars={{ L, ENRICH, LANG, IMGMAP: shopImages }}>
   (function () {
     var app = document.getElementById("shopApp");
     if (!app) return;
@@ -249,7 +250,7 @@ const L = {
     function money(a, c) { var n = parseFloat(a); return (c === "EUR" ? "€" : (c + " ")) + n.toFixed(2).replace(".", ","); }
     function fillSelect(sel, values) { values.sort().forEach(function (v) { var o = document.createElement("option"); o.value = v; o.textContent = v; sel.appendChild(o); }); }
     function esc(s) { return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
-    function enrichImg(p) { return (p.taxo.segment[0] && ENRICH.imgBySeg[p.taxo.segment[0]]) || ENRICH.defImg; }
+    function enrichImg(p) { return (IMGMAP && IMGMAP[p.handle]) || (p.taxo.segment[0] && ENRICH.imgBySeg[p.taxo.segment[0]]) || ENRICH.defImg; }
     function enrichD(p) { return ENRICH.desc[LANG] || ENRICH.desc.nl; }
     function enrichText(p) { return enrichD(p).intro.replace("{name}", p.title); }
     function enrichHtml(p) { var d = enrichD(p); return "<p>" + esc(d.intro.replace("{name}", p.title)) + "</p><p>" + esc(d.body) + "</p><ul>" + d.bullets.map(function (b) { return "<li>" + esc(b) + "</li>"; }).join("") + "</ul>"; }
