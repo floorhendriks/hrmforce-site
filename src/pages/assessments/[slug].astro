@@ -4,6 +4,7 @@ import { assessments } from "../../data/assessments.js";
 import { shopInfo } from "../../data/assessment-shop.js";
 import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../data/site-config.js";
 import { getLangFromUrl, localizePath } from "../../i18n/utils.js";
+import { examplesFor } from "../../data/assessment-examples.js";
 
 const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
 
@@ -32,6 +33,7 @@ if (!a) {
   };
 }
 const assessHref = localizePath("/online-assessments/", lang);
+const ex = examplesFor(Astro.params.slug, lang);
 
 // Shop-info (prijs + bestellink) op basis van de huidige slug.
 const shop = shopInfo(Astro.params.slug);
@@ -132,6 +134,21 @@ const related = (a.related || [])
       </div>
     </section>
   )}
+
+  <section class="bg-soft"><div class="wrap" style="max-width:860px">
+    <div class="eyebrow" style="color:var(--gold)">{ex.tag}</div>
+    <h2 class="section-title">{ex.title}</h2>
+    <p class="lead" style="margin-bottom:22px">{ex.intro}</p>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      {ex.items.map((qq, i) => (
+        <div style="display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow-xs)">
+          <span style="flex:none;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center">{i + 1}</span>
+          <span style="color:var(--navy);font-weight:600;font-size:15px;line-height:1.5">{qq}</span>
+        </div>
+      ))}
+    </div>
+    <p style="color:var(--muted);font-size:14px;margin-top:16px"><strong style="color:var(--navy)">{ex.scaleLabel}:</strong> {ex.scale}</p>
+  </div></section>
 
   <section>
     <div class="wrap">
