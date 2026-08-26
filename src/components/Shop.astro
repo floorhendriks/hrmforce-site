@@ -24,6 +24,24 @@ const CART_I18N = {
 };
 const ct = CART_I18N[lang] || CART_I18N.nl;
 
+// Website-verrijking (Optie A): relevante foto per segment + uitgebreidere,
+// vertaalde beschrijving per product. Wordt op de site getoond bovenop de
+// live Shopify-prijs/voorraad.
+const PX = (i) => `https://images.pexels.com/photos/${i}/pexels-photo-${i}.jpeg?auto=compress&cs=tinysrgb&w=900`;
+const ENRICH = {
+  imgBySeg: { "Persoonlijkheid": PX(3184418), "Capaciteiten": PX(3184338), "Gedrag": PX(3183197), "360 & Gedrag": PX(3183197), "Drijfveren": PX(1181533), "Interesse": PX(2422293), "Vaardigheden": PX(1367271) },
+  defImg: PX(3184291),
+  desc: {
+    nl: { intro: "{name} is een online assessment van hrmforce: wetenschappelijk onderbouwd, direct online af te nemen en meteen bruikbaar.", body: "Je ontvangt een helder, praktisch rapport dat je meteen kunt inzetten voor selectie, ontwikkeling of teamgesprekken. De vragenlijst is in meerdere talen beschikbaar en meestal binnen 10–20 minuten ingevuld.", bullets: ["Wetenschappelijk gevalideerd instrument", "Direct online afnemen, rapport per e-mail", "Beschikbaar in 6 talen", "Losse afname, zonder abonnement"] },
+    en: { intro: "{name} is an online assessment by hrmforce: scientifically grounded, taken directly online and immediately usable.", body: "You receive a clear, practical report you can use right away for selection, development or team conversations. The questionnaire is available in several languages and usually completed within 10–20 minutes.", bullets: ["Scientifically validated instrument", "Taken online, report by email", "Available in 6 languages", "Single purchase, no subscription"] },
+    de: { intro: "{name} ist ein Online-Assessment von hrmforce: wissenschaftlich fundiert, direkt online durchführbar und sofort einsetzbar.", body: "Sie erhalten einen klaren, praktischen Bericht, den Sie sofort für Auswahl, Entwicklung oder Teamgespräche nutzen können. Der Fragebogen ist in mehreren Sprachen verfügbar und meist in 10–20 Minuten ausgefüllt.", bullets: ["Wissenschaftlich validiertes Instrument", "Online durchführbar, Bericht per E-Mail", "In 6 Sprachen verfügbar", "Einzelkauf, kein Abo"] },
+    fr: { intro: "{name} est une évaluation en ligne de hrmforce : fondée scientifiquement, réalisable directement en ligne et immédiatement exploitable.", body: "Vous recevez un rapport clair et pratique, utilisable aussitôt pour la sélection, le développement ou les échanges d'équipe. Le questionnaire est disponible en plusieurs langues et se remplit généralement en 10 à 20 minutes.", bullets: ["Instrument validé scientifiquement", "En ligne, rapport par e-mail", "Disponible en 6 langues", "Achat à l'unité, sans abonnement"] },
+    es: { intro: "{name} es una evaluación en línea de hrmforce: con base científica, se realiza directamente en línea y es utilizable de inmediato.", body: "Recibes un informe claro y práctico que puedes usar enseguida para selección, desarrollo o conversaciones de equipo. El cuestionario está disponible en varios idiomas y suele completarse en 10–20 minutos.", bullets: ["Instrumento validado científicamente", "En línea, informe por correo", "Disponible en 6 idiomas", "Compra individual, sin suscripción"] },
+    ro: { intro: "{name} este o evaluare online de la hrmforce: fundamentată științific, se completează direct online și este utilizabilă imediat.", body: "Primești un raport clar și practic, pe care îl poți folosi imediat pentru selecție, dezvoltare sau discuții de echipă. Chestionarul este disponibil în mai multe limbi și se completează de obicei în 10–20 de minute.", bullets: ["Instrument validat științific", "Online, raport pe e-mail", "Disponibil în 6 limbi", "Achiziție individuală, fără abonament"] },
+  },
+};
+const LANG = lang;
+
 // Teksten die het inline script nodig heeft (via define:vars geïnjecteerd).
 const L = {
   loading: t.loading, countMid: t.countMid, countUnit: t.countUnit,
@@ -198,7 +216,7 @@ const L = {
   @media (max-width: 680px) { .pm-panel { grid-template-columns: 1fr; } .pm-media { min-height: 180px; } }
 </style>
 
-<script is:inline define:vars={{ L }}>
+<script is:inline define:vars={{ L, ENRICH, LANG }}>
   (function () {
     var app = document.getElementById("shopApp");
     if (!app) return;
@@ -231,6 +249,10 @@ const L = {
     function money(a, c) { var n = parseFloat(a); return (c === "EUR" ? "€" : (c + " ")) + n.toFixed(2).replace(".", ","); }
     function fillSelect(sel, values) { values.sort().forEach(function (v) { var o = document.createElement("option"); o.value = v; o.textContent = v; sel.appendChild(o); }); }
     function esc(s) { return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+    function enrichImg(p) { return (p.taxo.segment[0] && ENRICH.imgBySeg[p.taxo.segment[0]]) || ENRICH.defImg; }
+    function enrichD(p) { return ENRICH.desc[LANG] || ENRICH.desc.nl; }
+    function enrichText(p) { return enrichD(p).intro.replace("{name}", p.title); }
+    function enrichHtml(p) { var d = enrichD(p); return "<p>" + esc(d.intro.replace("{name}", p.title)) + "</p><p>" + esc(d.body) + "</p><ul>" + d.bullets.map(function (b) { return "<li>" + esc(b) + "</li>"; }).join("") + "</ul>"; }
 
     var PRODUCTS_Q =
       "{ products(first: 250, sortKey: TITLE) { edges { node { title handle description descriptionHtml tags vendor productType availableForSale " +
@@ -325,11 +347,11 @@ const L = {
     function openProduct(p) {
       document.getElementById("pmTitle").textContent = p.title;
       document.getElementById("pmPrice").textContent = p.price;
-      document.getElementById("pmImg").style.backgroundImage = p.image ? "url('" + p.image + "')" : "";
+      document.getElementById("pmImg").style.backgroundImage = "url('" + enrichImg(p) + "')";
       var vd = document.getElementById("pmVendor");
       if (p.taxo.uitgever) { vd.textContent = p.taxo.uitgever; vd.hidden = false; } else vd.hidden = true;
       document.getElementById("pmTags").innerHTML = p.taxo.cyclus.concat(p.taxo.segment).map(function (x) { return '<span class="sp-tag">' + esc(x) + "</span>"; }).join("");
-      document.getElementById("pmDesc").innerHTML = p.descHtml || ("<p>" + esc(p.desc) + "</p>");
+      document.getElementById("pmDesc").innerHTML = enrichHtml(p);
       var add = document.getElementById("pmAdd");
       add.disabled = !(p.variantId && p.available);
       add.textContent = L.add;
@@ -352,9 +374,9 @@ const L = {
         if (!(okC && okS && okU && okT)) return;
         shown++;
         var chips = p.taxo.cyclus.concat(p.taxo.segment).slice(0, 3).map(function (x) { return '<span class="sp-tag">' + esc(x) + "</span>"; }).join("");
-        var img = p.image ? 'style="background-image:url(\'' + p.image + "')\"" : "";
+        var img = 'style="background-image:url(\'' + enrichImg(p) + "')\"" ;
         var vendor = p.taxo.uitgever ? '<span class="sp-vendor">' + esc(p.taxo.uitgever) + "</span>" : "";
-        var desc = p.desc ? '<p class="sp-desc">' + esc(p.desc).slice(0, 130) + (p.desc.length > 130 ? "…" : "") + "</p>" : "";
+        var et = enrichText(p); var desc = '<p class="sp-desc">' + esc(et).slice(0, 130) + (et.length > 130 ? "…" : "") + "</p>";
         var buy = p.variantId && p.available
           ? '<button class="sp-buy" data-add="' + idx + '">' + esc(L.add) + "</button>"
           : '<button class="sp-buy" data-open="' + idx + '">' + esc(L.view) + "</button>";
