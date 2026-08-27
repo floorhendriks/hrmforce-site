@@ -251,6 +251,10 @@ const L = {
   .cart-checkout { width: 100%; text-align: center; }
   .cart-secure { text-align: center; color: var(--muted); font-size: 12px; margin: 10px 0 0; }
 
+  /* [hidden] moet altijd winnen van de display-regels hieronder,
+     anders blijft een leeg overlay-paneel de pagina blokkeren (klikken lijken te 'hangen'). */
+  .pm-overlay[hidden], .cart-overlay[hidden], .cart-drawer[hidden], .cart-fab[hidden] { display: none !important; }
+
   /* Product-detail-paneel */
   .pm-overlay { position: fixed; inset: 0; background: rgba(11,42,92,.55); z-index: 72; display: flex; align-items: center; justify-content: center; padding: 20px; }
   .pm-panel { position: relative; background: #fff; border-radius: 18px; max-width: 820px; width: 100%; max-height: 90vh; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; box-shadow: 0 30px 70px rgba(0,0,0,.35); }
