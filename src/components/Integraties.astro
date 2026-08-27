@@ -3,6 +3,9 @@ import { localizePath } from "../i18n/utils.js";
 const { t, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
 const tarievenHref = localizePath("/tarieven/", lang);
+import { PARTNERS, PARTNER_CAT_ORDER, PARTNER_CATS, PARTNER_UI } from "../data/partners.js";
+const pui = PARTNER_UI[lang] || PARTNER_UI.nl;
+const pcats = PARTNER_CATS[lang] || PARTNER_CATS.nl;
 ---
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
 
@@ -36,6 +39,28 @@ const tarievenHref = localizePath("/tarieven/", lang);
     {t.examples.items.map((name) => <span class="chip">{name}</span>)}
   </div>
   <p class="note" style="max-width:760px;margin-top:20px">{t.examples.note}</p>
+</div></section>
+
+<section class="bg-soft partners"><div class="wrap">
+  <div class="eyebrow">{pui.eyebrow}</div>
+  <h2 class="section-title">{pui.title}</h2>
+  <p class="muted" style="max-width:820px;font-size:16px">{pui.intro}</p>
+
+  <div class="pt-filter" id="ptFilter">
+    <button type="button" class="pt-chip is-active" data-cat="all">{pcats.all}</button>
+    {PARTNER_CAT_ORDER.map((c) => (<button type="button" class="pt-chip" data-cat={c}>{pcats[c]}</button>))}
+  </div>
+
+  <div class="pt-grid" id="ptGrid">
+    {PARTNERS.map((p) => (
+      <a class="pt-card" href={p.url} target="_blank" rel="noopener noreferrer" data-cat={p.cat} title={p.name}>
+        <span class="pt-logo"><img src={p.logo} alt={p.name} loading="lazy" /></span>
+        <span class="pt-name">{p.name}</span>
+        <span class="pt-cat">{pcats[p.cat]}</span>
+      </a>
+    ))}
+  </div>
+  <p class="pt-empty" id="ptEmpty" hidden></p>
 </div></section>
 
 <section class="bg-soft"><div class="wrap">
@@ -75,4 +100,43 @@ const tarievenHref = localizePath("/tarieven/", lang);
     padding: 10px 20px; border-radius: var(--radius-pill);
     box-shadow: var(--shadow-sm);
   }
+
+  .partners .pt-filter { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 26px; }
+  .pt-chip { cursor: pointer; background: #fff; border: 1px solid var(--line-strong); color: var(--navy); font-weight: 700; font-size: 14px; padding: 8px 16px; border-radius: var(--radius-pill); transition: background .15s, color .15s, border-color .15s; }
+  .pt-chip:hover { background: #f1f5fb; }
+  .pt-chip.is-active { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .pt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 16px; }
+  .pt-card { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; background: #fff; border: 1px solid var(--line-strong); border-radius: 14px; padding: 20px 14px 16px; box-shadow: var(--shadow-sm); transition: transform .15s, box-shadow .15s, border-color .15s; text-decoration: none; }
+  .pt-card:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(14,70,140,.14); border-color: var(--gold); }
+  .pt-logo { display: flex; align-items: center; justify-content: center; height: 64px; width: 100%; }
+  .pt-logo img { max-height: 56px; max-width: 130px; width: auto; height: auto; object-fit: contain; }
+  .pt-name { font-weight: 700; font-size: 14px; color: var(--navy); line-height: 1.25; }
+  .pt-cat { font-size: 11px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--gold); }
+  .pt-card[hidden] { display: none !important; }
+  .pt-empty { margin-top: 20px; color: var(--muted, #6b7280); }
 </style>
+
+
+<script is:inline>
+  (function () {
+    var wrap = document.getElementById("ptFilter");
+    var grid = document.getElementById("ptGrid");
+    if (!wrap || !grid) return;
+    var chips = wrap.querySelectorAll(".pt-chip");
+    var cards = grid.querySelectorAll(".pt-card");
+    var empty = document.getElementById("ptEmpty");
+    wrap.addEventListener("click", function (e) {
+      var b = e.target.closest(".pt-chip");
+      if (!b) return;
+      var cat = b.getAttribute("data-cat");
+      chips.forEach(function (c) { c.classList.toggle("is-active", c === b); });
+      var shown = 0;
+      cards.forEach(function (card) {
+        var ok = cat === "all" || card.getAttribute("data-cat") === cat;
+        card.hidden = !ok;
+        if (ok) shown++;
+      });
+      if (empty) empty.hidden = shown !== 0;
+    });
+  })();
+</script>
