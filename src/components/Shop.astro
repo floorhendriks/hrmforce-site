@@ -1,7 +1,8 @@
 ---
-import { SHOPIFY } from "../data/site-config.js";
+import { SHOPIFY, FORMSPREE_ENDPOINT } from "../data/site-config.js";
 import { localizePath } from "../i18n/utils.js";
 import { shopImages } from "../data/shop-images.js";
+import { SHOP_CONTENT } from "../data/shop-products.js";
 
 const { t, lang } = Astro.props;
 
@@ -102,6 +103,28 @@ const L = {
   empty: ct.empty, checkout: ct.checkout, remove: ct.remove, subtotal: ct.subtotal,
   close: ct.close, secure: ct.secure, details: ct.details, each: ct.each, cont: ct.continue,
 };
+
+// Leverancierslogo's (voor de badge i.p.v. de naam). Waar een product zelf een
+// merk-/testlogo heeft (uit SHOP_CONTENT.img) wordt dat gebruikt; anders dit.
+const VENDOR_LOGO = {
+  "hrmforce": "https://hrmforce.com/wp-content/uploads/2022/03/HRM-LOGO.svg",
+  "SHL": "https://logo.clearbit.com/shl.com",
+  "Cubiks": "https://logo.clearbit.com/cubiks.com",
+  "Pearson": "https://logo.clearbit.com/pearson.com",
+  "GITP": "https://logo.clearbit.com/gitp.nl",
+  "Talogy": "https://logo.clearbit.com/talogy.com",
+};
+
+// "Voorbeeldrapport aanvragen"-formulier (lead capture). Naam + e-mail verplicht, telefoon optioneel.
+const REQ_I18N = {
+  nl: { title: "Voorbeeldrapport aanvragen", intro: "Vul je gegevens in; we sturen een voorbeeldrapport per e-mail.", name: "Naam", email: "E-mailadres", phone: "Telefoon (optioneel)", submit: "Aanvragen", sending: "Versturen…", thanks: "Bedankt! We sturen het voorbeeldrapport zo snel mogelijk per e-mail." },
+  en: { title: "Request a sample report", intro: "Leave your details and we'll email you a sample report.", name: "Name", email: "Email address", phone: "Phone (optional)", submit: "Request", sending: "Sending…", thanks: "Thank you! We'll email the sample report as soon as possible." },
+  de: { title: "Musterbericht anfordern", intro: "Hinterlassen Sie Ihre Daten; wir senden Ihnen einen Musterbericht per E-Mail.", name: "Name", email: "E-Mail-Adresse", phone: "Telefon (optional)", submit: "Anfordern", sending: "Senden…", thanks: "Danke! Wir senden den Musterbericht so schnell wie möglich per E-Mail." },
+  fr: { title: "Demander un rapport exemple", intro: "Laissez vos coordonnées ; nous vous enverrons un rapport exemple par e-mail.", name: "Nom", email: "Adresse e-mail", phone: "Téléphone (facultatif)", submit: "Demander", sending: "Envoi…", thanks: "Merci ! Nous enverrons le rapport exemple par e-mail dès que possible." },
+  es: { title: "Solicitar un informe de ejemplo", intro: "Deja tus datos y te enviaremos un informe de ejemplo por correo.", name: "Nombre", email: "Correo electrónico", phone: "Teléfono (opcional)", submit: "Solicitar", sending: "Enviando…", thanks: "¡Gracias! Enviaremos el informe de ejemplo por correo lo antes posible." },
+  ro: { title: "Solicită un raport exemplu", intro: "Lasă-ne datele tale; îți trimitem un raport exemplu pe e-mail.", name: "Nume", email: "Adresă de e-mail", phone: "Telefon (opțional)", submit: "Solicită", sending: "Se trimite…", thanks: "Mulțumim! Îți trimitem raportul exemplu pe e-mail cât mai curând." },
+};
+const rq = REQ_I18N[lang] || REQ_I18N.nl;
 ---
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
 
@@ -181,6 +204,19 @@ const L = {
           <div class="pm-desc" id="pmDesc"></div>
           <div class="pm-faq" id="pmFaq"></div>
           <button class="btn btn-primary pm-add" id="pmAdd" type="button">{ct.add}</button>
+          <form class="pm-req" id="pmReq" method="POST" action={FORMSPREE_ENDPOINT}>
+            <div class="pm-req-h">{rq.title}</div>
+            <p class="pm-req-intro">{rq.intro}</p>
+            <input type="hidden" name="product" id="pmReqProduct" />
+            <input type="hidden" name="_subject" value="Voorbeeldrapport aangevraagd via shop" />
+            <div class="pm-req-row">
+              <input type="text" name="naam" id="pmReqName" placeholder={rq.name} required />
+              <input type="email" name="email" id="pmReqEmail" placeholder={rq.email} required />
+            </div>
+            <input type="tel" name="telefoon" id="pmReqPhone" placeholder={rq.phone} />
+            <button type="submit" class="btn btn-light pm-req-btn" id="pmReqBtn">{rq.submit}</button>
+            <p class="pm-req-done" id="pmReqDone" hidden>{rq.thanks}</p>
+          </form>
         </div>
       </div>
     </div>
@@ -203,6 +239,25 @@ const L = {
   .sp-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
   .sp-img { position: relative; display: block; height: 158px; width: 100%; border: 0; padding: 0; cursor: pointer; background-color: var(--bg-soft); background-size: cover; background-position: center; background-repeat: no-repeat; }
   .sp-vendor { position: absolute; top: 10px; left: 10px; background: rgba(11,52,104,.86); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+  /* Merk-/uitgeverslogo als badge i.p.v. de naam */
+  .sp-brand { position: absolute; top: 10px; left: 10px; display: inline-flex; align-items: center; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 4px 7px; box-shadow: 0 2px 8px rgba(0,0,0,.14); max-width: 66%; }
+  .sp-brand img { height: 20px; max-width: 120px; width: auto; object-fit: contain; display: block; }
+  .sp-brand em { display: none; font-style: normal; font-weight: 700; font-size: 11px; color: var(--navy); }
+  .sp-brand.is-txt { background: rgba(11,52,104,.86); border: 0; padding: 3px 9px; border-radius: 999px; box-shadow: none; }
+  .sp-brand.is-txt img { display: none; }
+  .sp-brand.is-txt em { display: inline; color: #fff; }
+  .pm-brand { display: inline-flex; align-items: center; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 5px 10px; margin-bottom: 10px; box-shadow: var(--shadow-xs); }
+  .pm-brand img { height: 26px; max-width: 150px; width: auto; object-fit: contain; display: block; }
+  /* Voorbeeldrapport-aanvraagformulier */
+  .pm-req { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 14px; }
+  .pm-req-h { font-weight: 800; color: var(--navy); font-size: 15px; }
+  .pm-req-intro { color: var(--muted); font-size: 13px; margin: 3px 0 10px; }
+  .pm-req-row { display: flex; gap: 8px; margin-bottom: 8px; }
+  .pm-req input { width: 100%; padding: 9px 12px; border: 1px solid var(--line-strong); border-radius: 8px; font-family: inherit; font-size: 14px; }
+  .pm-req input:focus { outline: 2px solid var(--blue); border-color: var(--blue); }
+  .pm-req-btn { width: 100%; margin-top: 8px; }
+  .pm-req-done { color: #1a8a55; font-weight: 700; font-size: 14px; margin: 6px 0 0; }
+  @media (max-width: 520px) { .pm-req-row { flex-direction: column; } }
   .sp-body { padding: 16px 18px 18px; display: flex; flex-direction: column; flex: 1; }
   .sp-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
   .sp-tag { background: #e8f0fe; color: var(--navy); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
@@ -281,7 +336,7 @@ const L = {
   @media (max-width: 680px) { .pm-panel { grid-template-columns: 1fr; } .pm-media { min-height: 180px; } }
 </style>
 
-<script is:inline define:vars={{ L, ENRICH, LANG, IMGMAP: shopImages }}>
+<script is:inline define:vars={{ L, ENRICH, LANG, IMGMAP: shopImages, SC: SHOP_CONTENT, FORM: FORMSPREE_ENDPOINT, VENDOR_LOGO, RQ: rq }}>
   (function () {
     var app = document.getElementById("shopApp");
     if (!app) return;
@@ -318,6 +373,27 @@ const L = {
     function enrichD(p) { return ENRICH.desc[LANG] || ENRICH.desc.nl; }
     function enrichText(p) { return enrichD(p).intro.replace("{name}", p.title); }
     function enrichHtml(p) { var d = enrichD(p); return "<p>" + esc(d.intro.replace("{name}", p.title)) + "</p><p>" + esc(d.body) + "</p><ul>" + d.bullets.map(function (b) { return "<li>" + esc(b) + "</li>"; }).join("") + "</ul>"; }
+    function enrichBullets() { var d = enrichD(); return "<ul>" + d.bullets.map(function (b) { return "<li>" + esc(b) + "</li>"; }).join("") + "</ul>"; }
+
+    /* ---------- Echte productinhoud (van hrmforce.com) + logo per product ---------- */
+    function scFor(p) { return (SC && SC[p.title]) || null; }
+    // Echte beschrijving (NL) uit SHOP_CONTENT; val terug op de generieke tekst.
+    function descText(p) { var c = scFor(p); return (c && c.desc) ? c.desc : enrichText(p); }
+    function descHtml(p) { var c = scFor(p); return (c && c.desc) ? ("<p>" + esc(c.desc) + "</p>" + enrichBullets()) : enrichHtml(p); }
+    // Logo-URL: eigen merk-/testlogo van het product, anders het uitgeverslogo.
+    function brandUrl(p) {
+      var c = scFor(p);
+      var vend = (c && c.vendor) || (p.taxo && p.taxo.uitgever) || "";
+      if (c && c.img && c.img.indexOf("Generaltesticon") === -1) return c.img;
+      return VENDOR_LOGO[vend] || null;
+    }
+    function vendorName(p) { var c = scFor(p); return (c && c.vendor) || (p.taxo && p.taxo.uitgever) || ""; }
+    // Badge-HTML: toont het logo; valt bij een laadfout terug op de naam.
+    function brandBadge(p) {
+      var url = brandUrl(p), vn = vendorName(p);
+      if (url) return '<span class="sp-brand"><img src="' + url + '" alt="' + esc(vn) + '" loading="lazy" onerror="this.parentNode.classList.add(\'is-txt\');this.remove();"><em>' + esc(vn) + "</em></span>";
+      return vn ? '<span class="sp-brand is-txt"><em>' + esc(vn) + "</em></span>" : "";
+    }
 
     var PRODUCTS_Q =
       "{ products(first: 250, sortKey: TITLE) { edges { node { title handle description descriptionHtml tags vendor productType availableForSale " +
@@ -414,18 +490,42 @@ const L = {
       document.getElementById("pmPrice").textContent = p.price;
       document.getElementById("pmImg").style.backgroundImage = "url('" + enrichImg(p) + "')";
       var vd = document.getElementById("pmVendor");
-      if (p.taxo.uitgever) { vd.textContent = p.taxo.uitgever; vd.hidden = false; } else vd.hidden = true;
+      var _burl = brandUrl(p), _vn = vendorName(p);
+      if (_burl) { vd.className = "pm-brand"; vd.innerHTML = '<img src="' + _burl + '" alt="' + esc(_vn) + '" onerror="this.remove()">'; vd.hidden = false; }
+      else if (_vn) { vd.className = "pm-vendor"; vd.textContent = _vn; vd.hidden = false; }
+      else vd.hidden = true;
       document.getElementById("pmTags").innerHTML = p.taxo.cyclus.concat(p.taxo.segment).map(function (x) { return '<span class="sp-tag">' + esc(x) + "</span>"; }).join("");
-      document.getElementById("pmDesc").innerHTML = enrichHtml(p);
+      document.getElementById("pmDesc").innerHTML = descHtml(p);
       var faqs = (ENRICH.faq[LANG] || ENRICH.faq.nl);
       document.getElementById("pmFaq").innerHTML = faqs.map(function (f) { return '<details class="pm-faq-item"><summary>' + esc(f.q) + '</summary><p>' + esc(f.a) + "</p></details>"; }).join("");
       var add = document.getElementById("pmAdd");
       add.disabled = !(p.variantId && p.available);
       add.textContent = L.add;
       add.onclick = function () { if (p.variantId) { addToCart(p.variantId, add); } };
+      // Voorbeeldrapport-formulier resetten voor dit product
+      var _rq = document.getElementById("pmReq");
+      if (_rq) {
+        document.getElementById("pmReqProduct").value = p.title;
+        _rq.querySelector(".pm-req-row").style.display = "";
+        document.getElementById("pmReqPhone").style.display = "";
+        var _rb = document.getElementById("pmReqBtn"); _rb.style.display = ""; _rb.disabled = false; _rb.textContent = RQ.submit;
+        document.getElementById("pmReqDone").hidden = true;
+        document.getElementById("pmReqName").value = ""; document.getElementById("pmReqEmail").value = ""; document.getElementById("pmReqPhone").value = "";
+      }
       pmOverlay.hidden = false;
     }
     document.getElementById("pmClose").addEventListener("click", function () { pmOverlay.hidden = true; });
+    var _reqForm = document.getElementById("pmReq");
+    if (_reqForm) _reqForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var btn = document.getElementById("pmReqBtn"); btn.disabled = true; btn.textContent = RQ.sending;
+      fetch(FORM, { method: "POST", headers: { Accept: "application/json" }, body: new FormData(_reqForm) })
+        .then(function (r) {
+          if (r.ok) { _reqForm.querySelector(".pm-req-row").style.display = "none"; document.getElementById("pmReqPhone").style.display = "none"; btn.style.display = "none"; document.getElementById("pmReqDone").hidden = false; }
+          else { btn.disabled = false; btn.textContent = RQ.submit; }
+        })
+        .catch(function () { btn.disabled = false; btn.textContent = RQ.submit; });
+    });
     pmOverlay.addEventListener("click", function (e) { if (e.target === pmOverlay) pmOverlay.hidden = true; });
 
     /* ---------- Grid ---------- */
@@ -442,8 +542,8 @@ const L = {
         shown++;
         var chips = p.taxo.cyclus.concat(p.taxo.segment).slice(0, 3).map(function (x) { return '<span class="sp-tag">' + esc(x) + "</span>"; }).join("");
         var img = 'style="background-image:url(\'' + enrichImg(p) + "')\"" ;
-        var vendor = p.taxo.uitgever ? '<span class="sp-vendor">' + esc(p.taxo.uitgever) + "</span>" : "";
-        var et = enrichText(p); var desc = '<p class="sp-desc">' + esc(et).slice(0, 130) + (et.length > 130 ? "…" : "") + "</p>";
+        var vendor = brandBadge(p);
+        var et = descText(p); var desc = '<p class="sp-desc">' + esc(et).slice(0, 130) + (et.length > 130 ? "…" : "") + "</p>";
         var buy = p.variantId && p.available
           ? '<button class="sp-buy" data-add="' + idx + '">' + esc(L.add) + "</button>"
           : '<button class="sp-buy" data-open="' + idx + '">' + esc(L.view) + "</button>";
