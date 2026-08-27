@@ -35,7 +35,8 @@ if (!a) {
 }
 const assessHref = localizePath("/online-assessments/", lang);
 const ex = examplesFor(Astro.params.slug, lang);
-const allFaq = [...(a.faq || []), ...generalFaq(lang)];
+const _specQ = new Set((a.faq || []).map((f) => (f.q || "").trim().toLowerCase()));
+const allFaq = [...(a.faq || []), ...generalFaq(lang).filter((g) => !_specQ.has((g.q || "").trim().toLowerCase()))];
 
 // Shop-info (prijs + bestellink) op basis van de huidige slug.
 const shop = shopInfo(Astro.params.slug);
