@@ -12,11 +12,58 @@ const logo = "https://hrmforce.com/wp-content/uploads/2022/03/HRM-LOGO.svg";
 const nav = navFor(lang);
 const otherLangs = Object.keys(languages).filter((c) => c !== lang);
 const H = (p) => navHref(p, lang, validPaths);
+
+// --- Site-brede zoekindex ---
+const SEARCH_I18N = {
+  nl: { ph: "Zoek op de hele site\u2026", none: "Geen resultaten gevonden", label: "Zoeken" },
+  en: { ph: "Search the entire site\u2026", none: "No results found", label: "Search" },
+  de: { ph: "Ganze Website durchsuchen\u2026", none: "Keine Ergebnisse gefunden", label: "Suche" },
+  fr: { ph: "Rechercher sur tout le site\u2026", none: "Aucun r\u00e9sultat", label: "Recherche" },
+  es: { ph: "Buscar en todo el sitio\u2026", none: "Sin resultados", label: "Buscar" },
+  ro: { ph: "C\u0103uta\u021bi pe tot site-ul\u2026", none: "Niciun rezultat", label: "C\u0103utare" },
+};
+const si = SEARCH_I18N[lang] || SEARCH_I18N.nl;
+
+const stripLang = (p) => {
+  const m = p.match(/^\/(en|de|fr|es|ro)(\/|$)/);
+  return m ? p.slice(m[1].length + 1) : p;
+};
+const humanize = (p) => {
+  const seg = p.replace(/\/$/, "").split("/").filter(Boolean).pop() || "";
+  if (!seg) return "Home";
+  return seg.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+};
+const labelOverride = {};
+nav.assessments.forEach((it) => { labelOverride[it.path] = it.label; });
+nav.solutions.forEach((g) => g.items.forEach((it) => { labelOverride[it.path] = it.label; }));
+nav.kennisbank.forEach((it) => { labelOverride[it.path] = it.label; });
+nav.about.forEach((it) => { labelOverride[it.path] = it.label; });
+labelOverride["/tarieven/"] = nav.labels.tarieven;
+labelOverride[routes.contact] = nav.contact;
+
+const _forLang = validPaths.filter((p) => {
+  if (p.includes("%3F")) return false;
+  const isPrefixed = /^\/(en|de|fr|es|ro)\//.test(p);
+  return lang === "nl" ? !isPrefixed : p.startsWith("/" + lang + "/");
+});
+const _seen = new Set();
+const searchIndex = [];
+for (const p of _forLang) {
+  const base = stripLang(p);
+  if (base === "/") continue;
+  const title = labelOverride[base] || humanize(base);
+  if (_seen.has(p)) continue;
+  _seen.add(p);
+  searchIndex.push({ t: title, u: p });
+}
 ---
 <div class="topbar">
   <div class="wrap">
     <a class="tb-phone" href="tel:+31888832188">+31 (0)88 88 321 88</a>
     <div class="tb-right">
+      <button type="button" class="tb-search" id="siteSearchBtn" aria-label={si.label} title={si.label}>
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      </button>
       <a class="tb-link" href={H(routes.contact)}>{nav.contact}</a>
       <a class="login-btn" href="https://assessment.hrmforce.com/Login.aspx?LanguageCode=nl-NL">{t("topbar.login")}</a>
       <details class="langdd">
@@ -73,6 +120,18 @@ const H = (p) => navHref(p, lang, validPaths);
   </div>
 </header>
 
+<div class="search-overlay" id="siteSearch" hidden>
+  <div class="search-box" role="dialog" aria-modal="true" aria-label={si.label}>
+    <div class="search-inp">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="text" id="siteSearchInput" placeholder={si.ph} autocomplete="off" spellcheck="false" />
+      <button type="button" class="search-close" id="siteSearchClose" aria-label="Sluiten">&times;</button>
+    </div>
+    <ul class="search-results" id="siteSearchResults"></ul>
+    <p class="search-none" id="siteSearchNone" hidden>{si.none}</p>
+  </div>
+</div>
+
 <style>
   .topbar .wrap { display: flex; align-items: center; justify-content: space-between; }
   .tb-phone { color: rgba(255,255,255,.85); font-size: 13.5px; font-weight: 600; }
@@ -121,4 +180,68 @@ const H = (p) => navHref(p, lang, validPaths);
     .has-dd > a, .nav-item > a { padding: 8px 8px; font-size: 14.5px; }
     .tb-phone { display: none; }
   }
+
+  .tb-search { background: none; border: 0; color: rgba(255,255,255,.9); cursor: pointer; display: inline-flex; align-items: center; padding: 5px; border-radius: 7px; transition: background .15s, color .15s; }
+  .tb-search:hover { color: #fff; background: rgba(255,255,255,.14); }
+  .tb-search svg { display: block; }
+
+  .search-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(9,26,54,.55); backdrop-filter: blur(2px); display: flex; align-items: flex-start; justify-content: center; padding: 12vh 16px 16px; }
+  .search-overlay[hidden] { display: none !important; }
+  .search-box { width: 100%; max-width: 640px; background: #fff; border-radius: 16px; box-shadow: 0 24px 60px rgba(9,26,54,.35); overflow: hidden; }
+  .search-inp { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid #eef1f6; }
+  .search-inp > svg { color: var(--navy, #0E468C); flex: 0 0 auto; }
+  .search-inp input { flex: 1; border: 0; outline: 0; font-size: 17px; color: #1a2b45; background: none; }
+  .search-close { background: none; border: 0; font-size: 26px; line-height: 1; color: #8a97ab; cursor: pointer; padding: 0 4px; }
+  .search-close:hover { color: #1a2b45; }
+  .search-results { list-style: none; margin: 0; padding: 6px; max-height: 52vh; overflow: auto; }
+  .search-results li a { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: 10px; color: #1a2b45; text-decoration: none; font-weight: 600; }
+  .search-results li a:hover { background: #f1f5fb; color: var(--navy, #0E468C); }
+  .search-results .sr-url { font-size: 12px; font-weight: 500; color: #93a1b5; }
+  .search-none { padding: 22px 16px; color: #8a97ab; text-align: center; margin: 0; }
 </style>
+
+
+<script is:inline define:vars={{ SEARCH: searchIndex }}>
+  (function () {
+    var btn = document.getElementById("siteSearchBtn");
+    var ov = document.getElementById("siteSearch");
+    var inp = document.getElementById("siteSearchInput");
+    var res = document.getElementById("siteSearchResults");
+    var none = document.getElementById("siteSearchNone");
+    var closeBtn = document.getElementById("siteSearchClose");
+    if (!btn || !ov || !inp) return;
+    function norm(s) { return (s || "").toLowerCase(); }
+    function render(q) {
+      q = norm(q).trim();
+      var items;
+      if (!q) { items = SEARCH.slice(0, 12); }
+      else { items = SEARCH.filter(function (x) { return norm(x.t).indexOf(q) >= 0 || norm(x.u).indexOf(q) >= 0; }).slice(0, 40); }
+      res.innerHTML = "";
+      if (q && items.length === 0) { none.hidden = false; return; }
+      none.hidden = true;
+      items.forEach(function (x) {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.href = x.u; a.textContent = x.t;
+        var sp = document.createElement("span"); sp.className = "sr-url"; sp.textContent = x.u;
+        a.appendChild(sp); li.appendChild(a); res.appendChild(li);
+      });
+    }
+    function open() { ov.hidden = false; document.body.style.overflow = "hidden"; render(""); setTimeout(function () { inp.focus(); }, 30); }
+    function close() { ov.hidden = true; document.body.style.overflow = ""; inp.value = ""; }
+    btn.addEventListener("click", open);
+    closeBtn.addEventListener("click", close);
+    inp.addEventListener("input", function () { render(inp.value); });
+    ov.addEventListener("click", function (e) { if (e.target === ov) close(); });
+    inp.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { var first = res.querySelector("a"); if (first) window.location.href = first.href; }
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !ov.hidden) close();
+      if (e.key === "/" && ov.hidden) {
+        var tag = (document.activeElement && document.activeElement.tagName || "").toLowerCase();
+        if (tag !== "input" && tag !== "textarea") { e.preventDefault(); open(); }
+      }
+    });
+  })();
+</script>
