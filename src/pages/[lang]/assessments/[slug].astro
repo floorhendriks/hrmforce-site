@@ -7,6 +7,7 @@ import { shopInfo } from "../../../data/assessment-shop.js";
 import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../../data/site-config.js";
 import { localizePath } from "../../../i18n/utils.js";
 import { examplesFor } from "../../../data/assessment-examples.js";
+import { generalFaq } from "../../../data/general-faq.js";
 
 const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
 
@@ -54,6 +55,7 @@ const related = (a.related || [])
   });
 
 const ex = examplesFor(a.slug, lang);
+const allFaq = [...(a.faq || []), ...generalFaq(lang)];
 const faqTitle = t.faqTitle.replace("{t}", a.title);
 const howTitle = t.howTitle.replace("{t}", a.title);
 const requestTitle = t.requestTitle.replace("{t}", a.title);
@@ -169,7 +171,7 @@ const requestTitle = t.requestTitle.replace("{t}", a.title);
         <h2 class="section-title" style="margin-bottom:42px">{faqTitle}</h2>
       </div>
       <div style="max-width:820px;margin:0 auto">
-        {a.faq.map((f) => (
+        {allFaq.map((f) => (
           <div class="faq-item">
             <div class="faq-q">{f.q}<span class="pl">+</span></div>
             <div class="faq-a"><p>{f.a}</p></div>
