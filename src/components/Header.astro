@@ -1,7 +1,7 @@
 ---
 import { routes, languages } from "../i18n/ui.js";
 import { getLangFromUrl, useTranslations, navHref, switchLocalePath } from "../i18n/utils.js";
-import { menuFor } from "../data/menu-content.js";
+import { navFor } from "../data/menu-content.js";
 import validPaths from "../data/valid-paths.js";
 
 const { active = "" } = Astro.props;
@@ -9,33 +9,25 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const logo = "https://hrmforce.com/wp-content/uploads/2022/03/HRM-LOGO.svg";
 
-const assessmentsHref = navHref(routes.assessments, lang);
-const shopHref = navHref(routes.shop, lang);
-const solutionsHref = navHref(routes.solutions, lang);
-const adviceHref = navHref(routes.advice, lang);
+const nav = navFor(lang);
 const otherLangs = Object.keys(languages).filter((c) => c !== lang);
-
-// Submenu-items met per-taal vertaalde labels (paden blijven gelijk; navHref
-// zet de juiste taalprefix erop of valt terug op NL waar nog niet vertaald).
-const _menu = menuFor(lang);
-const assessmentItems = _menu.assessments;
-const solutionItems = _menu.solutions;
-const adviceItems = _menu.advice;
-const aboutItems = _menu.about;
-const contactItems = _menu.contact;
+const H = (p) => navHref(p, lang, validPaths);
 ---
 <div class="topbar">
   <div class="wrap">
-    <a class="login-btn" href="https://assessment.hrmforce.com/Login.aspx?LanguageCode=nl-NL">{t("topbar.login")}</a>
-    <details class="langdd">
-      <summary>{languages[lang]}<span class="caret">&#9662;</span></summary>
-      <div class="langdd-menu">
-        {otherLangs.map((code) => (
-          <a href={switchLocalePath(Astro.url, code, validPaths)}>{languages[code]}</a>
-        ))}
-      </div>
-    </details>
-    <a class="demo-link" href={navHref(routes.contact, lang)}>{t("topbar.demo")} &rarr;</a>
+    <a class="tb-phone" href="tel:+31888832188">+31 (0)88 88 321 88</a>
+    <div class="tb-right">
+      <a class="tb-link" href={H(routes.contact)}>{nav.contact}</a>
+      <a class="login-btn" href="https://assessment.hrmforce.com/Login.aspx?LanguageCode=nl-NL">{t("topbar.login")}</a>
+      <details class="langdd">
+        <summary>{languages[lang]}<span class="caret">&#9662;</span></summary>
+        <div class="langdd-menu">
+          {otherLangs.map((code) => (
+            <a href={switchLocalePath(Astro.url, code, validPaths)}>{languages[code]}</a>
+          ))}
+        </div>
+      </details>
+    </div>
   </div>
 </div>
 <header>
@@ -43,71 +35,90 @@ const contactItems = _menu.contact;
     <a class="logo" href={lang === "nl" ? "/" : "/" + lang + "/"}><img src={logo} alt="hrmforce" /></a>
     <nav class="menu">
       <div class={`has-dd ${active === "assessments" ? "active" : ""}`}>
-        <a href={assessmentsHref}>{t("nav.assessments")}<span class="caret">&#9662;</span></a>
-        <div class="dd">
-          {assessmentItems.map((it) => (<a href={navHref(it.path, lang, validPaths)}>{it.label}</a>))}
+        <a href={H(routes.assessments)}>{nav.labels.assessments}<span class="caret">&#9662;</span></a>
+        <div class="dd dd-cols">
+          {nav.assessments.map((it) => (<a href={H(it.path)}>{it.label}</a>))}
         </div>
       </div>
       <div class={`has-dd ${active === "solutions" ? "active" : ""}`}>
-        <a href={solutionsHref}>{t("nav.solutions")}<span class="caret">&#9662;</span></a>
-        <div class="dd">
-          {solutionItems.map((it) => (<a href={navHref(it.path, lang, validPaths)}>{it.label}</a>))}
+        <a href={H(routes.solutions)}>{nav.labels.solutions}<span class="caret">&#9662;</span></a>
+        <div class="dd dd-mega">
+          {nav.solutions.map((g) => (
+            <div class="dd-col">
+              <span class="dd-col-t">{g.title}</span>
+              {g.items.map((it) => (<a href={H(it.path)}>{it.label}</a>))}
+            </div>
+          ))}
         </div>
       </div>
-      <div class={`has-dd ${active === "advice" ? "active" : ""}`}>
-        <a href={adviceHref}>{t("nav.advice")}<span class="caret">&#9662;</span></a>
+      <div class={`nav-item ${active === "tarieven" ? "active" : ""}`}>
+        <a href={H("/tarieven/")}>{nav.labels.tarieven}</a>
+      </div>
+      <div class={`has-dd ${active === "kennisbank" ? "active" : ""}`}>
+        <a href={H("/kenniscentrum/")}>{nav.labels.kennisbank}<span class="caret">&#9662;</span></a>
         <div class="dd">
-          {adviceItems.map((it) => (<a href={navHref(it.path, lang, validPaths)}>{it.label}</a>))}
+          {nav.kennisbank.map((it) => (<a href={H(it.path)}>{it.label}</a>))}
         </div>
       </div>
       <div class={`has-dd ${active === "about" ? "active" : ""}`}>
-        <a href={navHref(routes.about, lang)}>{t("nav.about")}<span class="caret">&#9662;</span></a>
+        <a href={H(routes.about)}>{nav.labels.about}<span class="caret">&#9662;</span></a>
         <div class="dd">
-          {aboutItems.map((it) => (<a href={navHref(it.path, lang, validPaths)}>{it.label}</a>))}
-        </div>
-      </div>
-      <div class={`has-dd ${active === "contact" ? "active" : ""}`}>
-        <a href={navHref(routes.contact, lang)}>{t("nav.contact")}<span class="caret">&#9662;</span></a>
-        <div class="dd">
-          {contactItems.map((it) => (<a href={navHref(it.path, lang, validPaths)}>{it.label}</a>))}
+          {nav.about.map((it) => (<a href={H(it.path)}>{it.label}</a>))}
         </div>
       </div>
     </nav>
     <div class="nav-cta">
-      <a href={shopHref} class="btn btn-ghost">{t("cta.shop")}</a>
-      <a href={navHref(routes.contact, lang)} class="btn btn-primary">{t("cta.demo")}</a>
+      <a href={H(routes.contact)} class="btn btn-primary">{nav.demo}</a>
     </div>
   </div>
 </header>
 
 <style>
-  .langdd { position: relative; display: inline-block; margin: 0 14px; }
-  .langdd > summary { list-style: none; cursor: pointer; color: #fff; opacity: .9; display: inline-flex; align-items: center; gap: 4px; font-weight: 600; }
+  .topbar .wrap { display: flex; align-items: center; justify-content: space-between; }
+  .tb-phone { color: rgba(255,255,255,.85); font-size: 13.5px; font-weight: 600; }
+  .tb-phone:hover { color: #fff; }
+  .tb-right { display: flex; align-items: center; gap: 16px; }
+  .tb-link { color: rgba(255,255,255,.9); font-weight: 600; font-size: 14px; }
+  .tb-link:hover { color: #fff; }
+
+  .langdd { position: relative; display: inline-block; }
+  .langdd > summary { list-style: none; cursor: pointer; color: #fff; opacity: .9; display: inline-flex; align-items: center; gap: 4px; font-weight: 600; font-size: 14px; }
   .langdd > summary::-webkit-details-marker { display: none; }
   .langdd .caret { font-size: .7em; }
   .langdd[open] > summary { opacity: 1; }
-  .langdd-menu { position: absolute; top: 130%; left: 0; z-index: 60; background: #fff; border: 1px solid #e2e2e2; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.12); min-width: 70px; padding: 4px; }
+  .langdd-menu { position: absolute; top: 130%; right: 0; z-index: 60; background: #fff; border: 1px solid #e2e2e2; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.12); min-width: 70px; padding: 4px; }
   .langdd-menu a { display: block; padding: 7px 14px; color: #343434; text-decoration: none; font-weight: 600; border-radius: 6px; }
   .langdd-menu a:hover { background: #f1f5fb; color: var(--navy, #0E468C); }
 
-  .has-dd { position: relative; display: inline-flex; align-items: center; }
-  .has-dd > a .caret { font-size: .7em; margin-left: 4px; }
-  .has-dd .dd { position: absolute; top: 100%; left: 0; z-index: 60; display: none; background: #fff; border: 1px solid #e2e2e2; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.12); min-width: 200px; padding: 6px; }
+  .menu { display: flex; align-items: center; gap: 4px; }
+  .has-dd, .nav-item { position: relative; display: inline-flex; align-items: center; }
+  .has-dd > a, .nav-item > a { padding: 8px 12px; border-radius: 8px; }
+  .has-dd > a .caret { font-size: .7em; margin-left: 5px; }
+  .has-dd .dd { position: absolute; top: 100%; left: 0; z-index: 60; display: none; background: #fff; border: 1px solid #e2e2e2; border-radius: 12px; box-shadow: 0 14px 34px rgba(14,70,140,.16); padding: 10px; }
   .has-dd:hover .dd, .has-dd:focus-within .dd { display: block; }
-  .has-dd .dd a { display: block; padding: 9px 14px; color: #343434; text-decoration: none; font-weight: 600; border-radius: 6px; white-space: nowrap; }
+  .has-dd .dd a { display: block; padding: 9px 12px; color: #343434; text-decoration: none; font-weight: 600; border-radius: 8px; white-space: nowrap; font-size: 14px; }
   .has-dd .dd a:hover { background: #f1f5fb; color: var(--navy, #0E468C); }
 
-  .topbar .demo-link { color: #fff; font-weight: 600; }
+  /* Assessments: twee kolommen zodat de lijst niet te lang wordt */
+  .dd-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 10px; min-width: 420px; }
+
+  /* Oplossingen: mega-menu met gegroepeerde kolommen */
+  .dd-mega { display: none; grid-template-columns: repeat(3, minmax(180px, 1fr)); gap: 8px 22px; min-width: 640px; padding: 18px; }
+  .has-dd:hover .dd-mega, .has-dd:focus-within .dd-mega { display: grid; }
+  .dd-col { display: flex; flex-direction: column; }
+  .dd-col:not(:first-child) { border-left: 1px solid #eef1f6; padding-left: 18px; }
+  .dd-col-t { font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .6px; color: var(--navy, #0E468C); padding: 0 12px 6px; }
 
   .topbar .login-btn {
-    color: #fff;
-    font-weight: 700;
-    font-size: 15px;
-    padding: 6px 16px;
-    border: 1px solid rgba(255,255,255,.55);
-    border-radius: 8px;
-    line-height: 1;
+    color: #fff; font-weight: 700; font-size: 14px; padding: 6px 16px;
+    border: 1px solid rgba(255,255,255,.55); border-radius: 8px; line-height: 1;
     transition: background .15s, border-color .15s;
   }
   .topbar .login-btn:hover { background: rgba(255,255,255,.15); border-color: #fff; }
+
+  @media (max-width: 1040px) {
+    .menu { gap: 0; }
+    .has-dd > a, .nav-item > a { padding: 8px 8px; font-size: 14.5px; }
+    .tb-phone { display: none; }
+  }
 </style>
