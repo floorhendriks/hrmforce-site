@@ -55,7 +55,8 @@ const related = (a.related || [])
   });
 
 const ex = examplesFor(a.slug, lang);
-const allFaq = [...(a.faq || []), ...generalFaq(lang)];
+const _specQ = new Set((a.faq || []).map((f) => (f.q || "").trim().toLowerCase()));
+const allFaq = [...(a.faq || []), ...generalFaq(lang).filter((g) => !_specQ.has((g.q || "").trim().toLowerCase()))];
 const faqTitle = t.faqTitle.replace("{t}", a.title);
 const howTitle = t.howTitle.replace("{t}", a.title);
 const requestTitle = t.requestTitle.replace("{t}", a.title);
