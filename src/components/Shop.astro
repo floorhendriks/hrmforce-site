@@ -203,6 +203,7 @@ const FAQ_DEFAULT = generalFaq(lang);
       <div class="cart-lines" id="cartLines"></div>
       <div class="cart-foot" id="cartFoot" hidden>
         <div class="cart-sub"><span>{ct.subtotal}</span><span id="cartSubtotal"></span></div>
+        <p class="cart-warn" id="cartWarn" hidden></p>
         <a class="btn btn-primary cart-checkout" id="cartCheckout" href="#">{ct.checkout} →</a>
         <p class="cart-secure">{ct.secure}</p>
       </div>
@@ -363,6 +364,8 @@ const FAQ_DEFAULT = generalFaq(lang);
   .cand input:focus, .cand select:focus { outline: 2px solid var(--blue); border-color: var(--blue); }
   .cand-row { display: flex; gap: 7px; }
   .cand-row select { flex: 1; min-width: 0; }
+  .cand-invalid { border-color: #d64545 !important; box-shadow: 0 0 0 2px rgba(214,69,69,.15); }
+  .cart-warn { color: #b3261e; background: #fdeceb; border: 1px solid #f6c9c5; border-radius: 8px; padding: 8px 12px; font-size: 13px; font-weight: 600; margin: 0 0 10px; }
 </style>
 
 <script is:inline define:vars={{ L, ENRICH, LANG, IMGMAP: shopImages, SC: SHOP_CONTENT, FORM: FORMSPREE_ENDPOINT, VENDOR_LOGO, RQ: rq, FAQ_SEG, FAQ_DEFAULT }}>
@@ -539,6 +542,70 @@ const FAQ_DEFAULT = generalFaq(lang);
     fab.addEventListener("click", openCart);
     document.getElementById("cartClose").addEventListener("click", closeCart);
     overlay.addEventListener("click", closeCart);
+
+    var checkoutBtn = document.getElementById("cartCheckout");
+    var warnEl = document.getElementById("cartWarn");
+    var REQMSG = { nl: "Vul voor elke kandidaat naam en een geldig e-mailadres in.", en: "Enter a name and a valid email for every candidate.", de: "Bitte für jeden Kandidaten Namen und eine gültige E-Mail-Adresse eingeben.", fr: "Saisissez un nom et un e-mail valide pour chaque candidat.", es: "Introduce nombre y un correo válido para cada candidato.", ro: "Introduceți nume și un e-mail valid pentru fiecare candidat." };
+    function validEmail(s) { s = (s || "").trim(); var at = s.indexOf("@"); return at > 0 && s.indexOf(".", at) > at + 1 && s.indexOf(" ") < 0; }
+    function collectAttrs(lineId) {
+      var groups = [].slice.call(linesEl.querySelectorAll(".cand")).filter(function (g) { return g.getAttribute("data-line") === lineId; });
+      var attrs = [];
+      groups.forEach(function (g) {
+        var n = (+g.getAttribute("data-idx")) + 1;
+        var nm = g.querySelector(".cand-name").value.trim(), ml = g.querySelector(".cand-mail").value.trim(), lg = g.querySelector(".cand-lang").value, lv = g.querySelector(".cand-level").value;
+        if (nm) attrs.push({ key: "Kandidaat " + n + " - Naam", value: nm });
+        if (ml) attrs.push({ key: "Kandidaat " + n + " - E-mail", value: ml });
+        if (lg) attrs.push({ key: "Kandidaat " + n + " - Taal", value: lg });
+        if (lv) attrs.push({ key: "Kandidaat " + n + " - Niveau", value: lv });
+      });
+      return attrs;
+    }
+    function saveAllLines() {
+      var proms = [];
+      cart.lines.forEach(function (l) {
+        var M = "mutation($id:ID!,$lines:[CartLineUpdateInput!]!){ cartLinesUpdate(cartId:$id, lines:$lines){ cart " + CART_FIELDS + " } }";
+        proms.push(gql(M, { id: cart.id, lines: [{ id: l.lineId, quantity: l.qty, attributes: collectAttrs(l.lineId) }] }));
+      });
+      return Promise.all(proms);
+    }
+    function buildSummary() {
+      var NL = String.fromCharCode(10);
+      var L2 = { nl: "Nederlands", en: "Engels", de: "Duits", fr: "Frans", es: "Spaans", ro: "Roemeens" };
+      var V2 = { operational: "Operational", bachelor: "Bachelor", master: "Master" };
+      var out = [];
+      cart.lines.forEach(function (l) {
+        out.push("• " + l.title + " (" + l.qty + "x) - " + l.price);
+        var groups = [].slice.call(linesEl.querySelectorAll(".cand")).filter(function (g) { return g.getAttribute("data-line") === l.lineId; });
+        groups.forEach(function (g) {
+          var n = (+g.getAttribute("data-idx")) + 1;
+          out.push("   Kandidaat " + n + ": " + g.querySelector(".cand-name").value.trim() + " <" + g.querySelector(".cand-mail").value.trim() + ">, taal: " + (L2[g.querySelector(".cand-lang").value] || "-") + ", niveau: " + (V2[g.querySelector(".cand-level").value] || "-"));
+        });
+      });
+      out.push("");
+      out.push("Subtotaal: " + (cart.subtotal || ""));
+      return out.join(NL);
+    }
+    if (checkoutBtn) checkoutBtn.addEventListener("click", function (ev) {
+      ev.preventDefault();
+      var groups = [].slice.call(linesEl.querySelectorAll(".cand"));
+      var bad = groups.length === 0;
+      groups.forEach(function (g) {
+        var nm = g.querySelector(".cand-name"), ml = g.querySelector(".cand-mail");
+        var okN = nm.value.trim().length > 0, okM = validEmail(ml.value);
+        nm.classList.toggle("cand-invalid", !okN); ml.classList.toggle("cand-invalid", !okM);
+        if (!okN || !okM) bad = true;
+      });
+      if (bad) { if (warnEl) { warnEl.textContent = REQMSG[LANG] || REQMSG.nl; warnEl.hidden = false; } var fb = linesEl.querySelector(".cand-invalid"); if (fb) fb.focus(); return; }
+      if (warnEl) warnEl.hidden = true;
+      var href = checkoutBtn.getAttribute("href") || (cart && cart.checkoutUrl) || "#";
+      checkoutBtn.style.pointerEvents = "none"; checkoutBtn.style.opacity = "0.7";
+      saveAllLines().catch(function () {}).then(function () {
+        var fd = new FormData();
+        fd.append("_subject", "Nieuwe shop-bestelling met kandidaatgegevens");
+        fd.append("Bestelling", buildSummary());
+        return fetch(FORM, { method: "POST", headers: { Accept: "application/json" }, body: fd }).catch(function () {});
+      }).then(function () { window.location.href = href; });
+    });
     linesEl.addEventListener("click", function (e) {
       var t = e.target;
       var q = cart.lines.filter(function (x) { return x.lineId === (t.dataset.inc || t.dataset.dec || t.dataset.rm); })[0];
