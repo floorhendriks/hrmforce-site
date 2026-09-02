@@ -48,8 +48,22 @@ const related = (a.related || [])
   .filter(Boolean)
   .slice(0, 3)
   .map((x) => ({ title: x.title, slug: x.slug, image: x.image, goal: x.goal }));
+const _canon = new URL(Astro.url.pathname, "https://hrmforce.com").href;
+const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+  { "@type": "ListItem", position: 1, name: "Home", item: "https://hrmforce.com/" },
+  { "@type": "ListItem", position: 2, name: "Online assessments", item: new URL(assessHref, "https://hrmforce.com").href },
+  { "@type": "ListItem", position: 3, name: a.title, item: _canon },
+] };
+const _faqLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: (allFaq || []).map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) };
+const _offerLd = (shop && shop.price)
+  ? { "@context": "https://schema.org", "@type": "Product", name: a.title, description: a.goal, brand: { "@type": "Brand", name: "hrmforce" }, ...(a.image ? { image: a.image } : {}), offers: { "@type": "Offer", price: String(shop.price), priceCurrency: "EUR", availability: "https://schema.org/InStock", url: _canon } }
+  : { "@context": "https://schema.org", "@type": "Service", name: a.title, description: a.goal, provider: { "@type": "Organization", name: "hrmforce" }, areaServed: "EU" };
 ---
 <Base title={a.metaTitle} description={a.metaDescription} active="assessments">
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(_offerLd)}></script>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(_faqLd)}></script>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(_crumbLd)}></script>
+
   <div class="crumb">
     <div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={assessHref}>Online assessments</a> › <span>{a.title}</span></div>
   </div>
