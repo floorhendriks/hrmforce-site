@@ -11,11 +11,14 @@ const {
   title = "Hrmforce",
   description = "Talentmanagement software en online assessments van hrmforce.",
   active = "",
+  image = "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
 } = Astro.props;
 
 const lang = getLangFromUrl(Astro.url);
 const consentT = consentContent[lang] ?? consentContent.nl;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://hrmforce.com");
+const LOCALE_MAP = { nl: "nl_NL", en: "en_US", de: "de_DE", fr: "fr_FR", es: "es_ES", ro: "ro_RO" };
+const ogLocale = LOCALE_MAP[lang] || "nl_NL";
 
 // hreflang: alternatieve taalversies voor pagina's die in alle 6 talen bestaan.
 const SITE = "https://hrmforce.com";
@@ -64,6 +67,17 @@ const orgLd = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="hrmforce" />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={image} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
     <link rel="canonical" href={canonical} />
     {hreflangs.map((h) => <link rel="alternate" hreflang={h.lang} href={h.href} />)}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
