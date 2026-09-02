@@ -109,6 +109,29 @@ const orgLd = {
         q.addEventListener("click", () => q.parentElement.classList.toggle("open"));
       });
     </script>
+    <script is:inline>
+      (function () {
+        function toWebp(u, w) {
+          if (!u || /^data:/.test(u) || /\.svg(\?|$)/i.test(u) || u.indexOf("images.weserv.nl") >= 0) return null;
+          var clean = u.replace(/^https?:\/\//, "");
+          var q = "https://images.weserv.nl/?url=" + encodeURIComponent(clean) + "&output=webp&q=82&we";
+          if (w) q += "&w=" + w;
+          return q;
+        }
+        var imgs = document.querySelectorAll('img[loading="lazy"]');
+        Array.prototype.forEach.call(imgs, function (im) {
+          var src = im.getAttribute("src");
+          var wattr = im.getAttribute("width");
+          var w = wattr ? parseInt(wattr, 10) : (im.clientWidth ? im.clientWidth * 2 : 1000);
+          w = Math.max(120, Math.min(1600, Math.round(w || 1000)));
+          var nw = toWebp(src, w);
+          if (!nw) return;
+          im.dataset.orig = src;
+          im.addEventListener("error", function h() { im.removeEventListener("error", h); if (im.dataset.orig) im.src = im.dataset.orig; });
+          im.src = nw;
+        });
+      })();
+    </script>
     <CookieConsent lang={lang} ga4Id={ANALYTICS.GA4_ID} t={consentT} />
     <!-- Henry chatbot -->
     <script src="/henry-widget.js" is:inline defer></script>
