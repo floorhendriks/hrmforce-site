@@ -27,6 +27,15 @@ const CART_I18N = {
 };
 const ct = CART_I18N[lang] || CART_I18N.nl;
 
+const CAND_I18N = {
+  nl: { heading: "Kandidaat", name: "Naam kandidaat", email: "E-mail kandidaat", lang: "Taal kandidaat", level: "Niveau", pick: "Kies…", langs: [["nl","Nederlands"],["en","Engels"],["de","Duits"],["fr","Frans"],["es","Spaans"],["ro","Roemeens"]], levels: [["operational","Operational"],["bachelor","Bachelor"],["master","Master"]] },
+  en: { heading: "Candidate", name: "Candidate name", email: "Candidate email", lang: "Candidate language", level: "Level", pick: "Choose…", langs: [["nl","Dutch"],["en","English"],["de","German"],["fr","French"],["es","Spanish"],["ro","Romanian"]], levels: [["operational","Operational"],["bachelor","Bachelor"],["master","Master"]] },
+  de: { heading: "Kandidat", name: "Name des Kandidaten", email: "E-Mail des Kandidaten", lang: "Sprache", level: "Niveau", pick: "Wählen…", langs: [["nl","Niederländisch"],["en","Englisch"],["de","Deutsch"],["fr","Französisch"],["es","Spanisch"],["ro","Rumänisch"]], levels: [["operational","Operational"],["bachelor","Bachelor"],["master","Master"]] },
+  fr: { heading: "Candidat", name: "Nom du candidat", email: "E-mail du candidat", lang: "Langue", level: "Niveau", pick: "Choisir…", langs: [["nl","Néerlandais"],["en","Anglais"],["de","Allemand"],["fr","Français"],["es","Espagnol"],["ro","Roumain"]], levels: [["operational","Opérationnel"],["bachelor","Bachelor"],["master","Master"]] },
+  es: { heading: "Candidato", name: "Nombre del candidato", email: "Correo del candidato", lang: "Idioma", level: "Nivel", pick: "Elegir…", langs: [["nl","Neerlandés"],["en","Inglés"],["de","Alemán"],["fr","Francés"],["es","Español"],["ro","Rumano"]], levels: [["operational","Operacional"],["bachelor","Bachelor"],["master","Máster"]] },
+  ro: { heading: "Candidat", name: "Numele candidatului", email: "E-mailul candidatului", lang: "Limbă", level: "Nivel", pick: "Alege…", langs: [["nl","Neerlandeză"],["en","Engleză"],["de","Germană"],["fr","Franceză"],["es","Spaniolă"],["ro","Română"]], levels: [["operational","Operațional"],["bachelor","Bachelor"],["master","Master"]] },
+};
+
 // Website-verrijking (Optie A): relevante foto per segment + uitgebreidere,
 // vertaalde beschrijving per product. Wordt op de site getoond bovenop de
 // live Shopify-prijs/voorraad.
@@ -103,6 +112,7 @@ const L = {
   add: ct.add, added: ct.added, inCart: ct.inCart, cartTitle: ct.cartTitle,
   empty: ct.empty, checkout: ct.checkout, remove: ct.remove, subtotal: ct.subtotal,
   close: ct.close, secure: ct.secure, details: ct.details, each: ct.each, cont: ct.continue,
+  cand: CAND_I18N[lang] || CAND_I18N.nl,
 };
 
 // Leverancierslogo's (voor de badge i.p.v. de naam). Waar een product zelf een
@@ -346,6 +356,13 @@ const FAQ_DEFAULT = generalFaq(lang);
   .pm-add { width: 100%; padding: 13px 18px; font-size: 15px; box-shadow: 0 6px 16px rgba(217,93,21,.30); transition: box-shadow .15s, transform .1s; }
   .pm-add:hover { box-shadow: 0 9px 22px rgba(217,93,21,.40); transform: translateY(-1px); }
   @media (max-width: 680px) { .pm-panel { grid-template-columns: 1fr; overflow-y: auto; } .pm-media { min-height: 160px; } .pm-body { max-height: none; } }
+  .cand-wrap { margin-top: 10px; display: grid; gap: 10px; }
+  .cand { background: var(--bg-soft); border: 1px solid var(--line); border-radius: 10px; padding: 10px; display: grid; gap: 7px; }
+  .cand-h { font-size: 12px; font-weight: 800; color: var(--navy); }
+  .cand input, .cand select { width: 100%; padding: 8px 10px; border: 1px solid var(--line-strong); border-radius: 8px; font-family: inherit; font-size: 13px; background: #fff; color: var(--navy); }
+  .cand input:focus, .cand select:focus { outline: 2px solid var(--blue); border-color: var(--blue); }
+  .cand-row { display: flex; gap: 7px; }
+  .cand-row select { flex: 1; min-width: 0; }
 </style>
 
 <script is:inline define:vars={{ L, ENRICH, LANG, IMGMAP: shopImages, SC: SHOP_CONTENT, FORM: FORMSPREE_ENDPOINT, VENDOR_LOGO, RQ: rq, FAQ_SEG, FAQ_DEFAULT }}>
@@ -370,7 +387,7 @@ const FAQ_DEFAULT = generalFaq(lang);
       }).then(function (r) { return r.json(); });
     }
 
-    var CART_FIELDS = "{ id checkoutUrl totalQuantity cost { subtotalAmount { amount currencyCode } } lines(first:100){ edges { node { id quantity merchandise { ... on ProductVariant { id price { amount currencyCode } product { title featuredImage { url } } } } } } } }";
+    var CART_FIELDS = "{ id checkoutUrl totalQuantity cost { subtotalAmount { amount currencyCode } } lines(first:100){ edges { node { id quantity attributes { key value } merchandise { ... on ProductVariant { id price { amount currencyCode } product { title featuredImage { url } } } } } } } }";
 
     var CYCLUS_TAGS = ["Voorselectie", "Selectie", "Ontwikkeling", "Doorstroom", "Mobiliteit", "Employability", "Functioneren", "Beoordelen"];
     function parseTaxo(node) {
@@ -423,7 +440,7 @@ const FAQ_DEFAULT = generalFaq(lang);
         subtotal: c.cost ? money(c.cost.subtotalAmount.amount, c.cost.subtotalAmount.currencyCode) : "",
         lines: (c.lines.edges || []).map(function (e) {
           var n = e.node, m = n.merchandise || {};
-          return { lineId: n.id, variantId: m.id, qty: n.quantity,
+          return { lineId: n.id, variantId: m.id, qty: n.quantity, attributes: n.attributes || [],
             title: m.product ? m.product.title : "", image: m.product && m.product.featuredImage ? m.product.featuredImage.url : null,
             price: m.price ? money(m.price.amount, m.price.currencyCode) : "" };
         }),
@@ -470,17 +487,49 @@ const FAQ_DEFAULT = generalFaq(lang);
       var n = cart ? cart.qty : 0;
       if (n > 0) { fab.hidden = false; cartCount.textContent = n; } else { fab.hidden = true; }
     }
+    var saveTimers = {};
+    function attrVal(l, key) { var a = l.attributes || []; for (var i = 0; i < a.length; i++) { if (a[i].key === key) return a[i].value; } return ""; }
+    function candGroupHtml(l, i) {
+      var n = i + 1, C = L.cand;
+      var vN = attrVal(l, "Kandidaat " + n + " - Naam"), vE = attrVal(l, "Kandidaat " + n + " - E-mail"), vL = attrVal(l, "Kandidaat " + n + " - Taal"), vV = attrVal(l, "Kandidaat " + n + " - Niveau");
+      var lo = '<option value="">' + esc(C.pick) + "</option>" + C.langs.map(function (o) { return '<option value="' + o[0] + '"' + (vL === o[0] ? " selected" : "") + ">" + esc(o[1]) + "</option>"; }).join("");
+      var vo = '<option value="">' + esc(C.pick) + "</option>" + C.levels.map(function (o) { return '<option value="' + o[0] + '"' + (vV === o[0] ? " selected" : "") + ">" + esc(o[1]) + "</option>"; }).join("");
+      return '<div class="cand" data-line="' + l.lineId + '" data-idx="' + i + '">' + (l.qty > 1 ? '<div class="cand-h">' + esc(C.heading) + " " + n + "</div>" : "") + '<input class="cand-name" type="text" placeholder="' + esc(C.name) + '" value="' + esc(vN) + '"><input class="cand-mail" type="email" placeholder="' + esc(C.email) + '" value="' + esc(vE) + '"><div class="cand-row"><select class="cand-lang" aria-label="' + esc(C.lang) + '">' + lo + '</select><select class="cand-level" aria-label="' + esc(C.level) + '">' + vo + "</select></div></div>";
+    }
+    function scheduleSave(lineId) { clearTimeout(saveTimers[lineId]); saveTimers[lineId] = setTimeout(function () { saveLineCandidates(lineId); }, 700); }
+    function saveLineCandidates(lineId) {
+      var line = cart && cart.lines.filter(function (x) { return x.lineId === lineId; })[0]; if (!line) return;
+      var groups = [].slice.call(linesEl.querySelectorAll(".cand")).filter(function (g) { return g.getAttribute("data-line") === lineId; });
+      var attrs = [];
+      groups.forEach(function (g) {
+        var n = (+g.getAttribute("data-idx")) + 1;
+        var nm = g.querySelector(".cand-name").value.trim(), ml = g.querySelector(".cand-mail").value.trim(), lg = g.querySelector(".cand-lang").value, lv = g.querySelector(".cand-level").value;
+        if (nm) attrs.push({ key: "Kandidaat " + n + " - Naam", value: nm });
+        if (ml) attrs.push({ key: "Kandidaat " + n + " - E-mail", value: ml });
+        if (lg) attrs.push({ key: "Kandidaat " + n + " - Taal", value: lg });
+        if (lv) attrs.push({ key: "Kandidaat " + n + " - Niveau", value: lv });
+      });
+      var M = "mutation($id:ID!,$lines:[CartLineUpdateInput!]!){ cartLinesUpdate(cartId:$id, lines:$lines){ cart " + CART_FIELDS + " } }";
+      gql(M, { id: cart.id, lines: [{ id: lineId, quantity: line.qty, attributes: attrs }] }).then(function (r) { if (r.data && r.data.cartLinesUpdate) cart = mapCart(r.data.cartLinesUpdate.cart); });
+    }
     function renderCart() {
       if (!cart || !cart.lines.length) { linesEl.innerHTML = '<p class="cart-empty">' + esc(L.empty) + "</p>"; footEl.hidden = true; return; }
       var html = "";
       cart.lines.forEach(function (l) {
+        var groups = ""; for (var gi = 0; gi < l.qty; gi++) { groups += candGroupHtml(l, gi); }
         var im = l.image ? 'style="background-image:url(\'' + l.image + "')\"" : "";
         html += '<div class="cl"><div class="cl-img" ' + im + "></div>" +
           '<div class="cl-info"><p class="cl-title">' + esc(l.title) + '</p><span class="cl-price">' + l.price + " " + esc(L.each) + "</span>" +
           '<div class="cl-ctrls"><span class="cl-qty"><button type="button" data-dec="' + l.lineId + '">−</button><span>' + l.qty + '</span><button type="button" data-inc="' + l.lineId + '">+</button></span>' +
-          '<button class="cl-rm" data-rm="' + l.lineId + '">' + esc(L.remove) + "</button></div></div></div>";
+          '<button class="cl-rm" data-rm="' + l.lineId + '">' + esc(L.remove) + "</button></div>" + '<div class="cand-wrap">' + groups + "</div></div></div>";
       });
       linesEl.innerHTML = html;
+      [].slice.call(linesEl.querySelectorAll(".cand")).forEach(function (g) {
+        [].slice.call(g.querySelectorAll("input, select")).forEach(function (el) {
+          el.addEventListener("change", function () { scheduleSave(g.getAttribute("data-line")); });
+          el.addEventListener("input", function () { scheduleSave(g.getAttribute("data-line")); });
+        });
+      });
       footEl.hidden = false;
       document.getElementById("cartSubtotal").textContent = cart.subtotal;
       document.getElementById("cartCheckout").href = cart.checkoutUrl || "#";
