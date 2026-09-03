@@ -9,10 +9,7 @@ export const oplossingen = [
     metaTitle: "Matching & selectie | Automatisch de beste kandidaten matchen | Hrmforce",
     metaDescription:
       "Met selectieassessments vind je sneller kandidaten die bij je organisatie passen. Zo wordt je selectieproces makkelijk en objectief.",
-    intro: [
-      "Aan de hand van selectieassessments vind je sneller kandidaten die bij je organisatie passen. Je selectieproces wordt makkelijk en objectief.",
-      "De vragenlijsten voorspellen wie de grootste kans heeft op succes, zodat je automatisch alleen kandidaten met het meeste potentieel selecteert voor de volgende ronde.",
-    ],
+    intro: ["Vacatures blijven lang open en de kandidaten die je aanneemt, blijken achteraf niet de beste match. Voorselecteren op cv en onderbuik kost tijd en levert verkeerde aannames op.", "hrmforce matcht kandidaten data-gedreven op de competenties die er echt toe doen. Je krijgt een objectieve ranking en gerichte rapportages, zodat je sneller de juiste mensen selecteert."],
     body: [
       "Je gebruikt alleen vragenlijsten en assessments die relevant zijn voor de functie in kwestie. Dat bepaal je aan de hand van bijvoorbeeld het functieprofiel en een best-practice-onderzoek. Kandidaten hoeven zo minder onnodige formulieren in te vullen.",
       "Door objectieve, valide analyse selecteer je automatisch alleen de kandidaten met het meeste potentieel. De rapportages zorgen bovendien voor inhoudelijkere gesprekken: zowel jij als de sollicitant krijgt meer inzicht in sterke punten en mogelijke struikelblokken.",
@@ -61,10 +58,7 @@ export const oplossingen = [
     metaTitle: "HR Employability | Gezond en gemotiveerd personeel | Hrmforce",
     metaDescription:
       "HR Employability verhoogt de betrokkenheid van personeel en bevordert loopbaan en ontwikkeling. Wij ondersteunen met vragenlijsten.",
-    intro: [
-      "HR Employability verhoogt de betrokkenheid van personeel én bevordert de loopbaan en ontwikkeling. Het stelt medewerkers en HR-afdelingen in staat een brede carrièreontwikkeling te stimuleren.",
-      "Met behulp van Pulse Surveys en eigen vragenlijsten brengt employability sterke kenmerken in kaart die jouw organisatie verbeteren.",
-    ],
+    intro: ["Ziekteverzuim, verloop en medewerkers die vastlopen in hun rol kosten veel geld en energie. Vaak zie je te laat dat iemand niet meer op zijn plek zit.", "hrmforce maakt duurzame inzetbaarheid meetbaar met wetenschappelijke vragenlijsten. Je ziet vroeg waar ontwikkeling of bijsturing nodig is, en houdt mensen gezond en gemotiveerd aan het werk."],
     body: [
       "Onze employability-oplossing ondersteunt zowel interne als externe loopbaanontwikkeling. Het verhoogt het engagement van medewerkers en voorkomt dat iemand langdurig in een niet-passende functie actief blijft.",
       "Een hogere inzetbaarheid is niet alleen voordelig voor de medewerker, maar ook voor de werkgever. Werknemers zijn onder meer flexibeler, beter getraind, effectiever en maken minder fouten. Op de lange termijn draagt werken aan inzetbaarheid eraan bij dat kennis binnen de organisatie geborgd blijft, dat de organisatie zich sneller aanpast aan veranderende marktomstandigheden en dat de loyaliteit van medewerkers toeneemt.",
@@ -87,10 +81,7 @@ export const oplossingen = [
     metaTitle: "HR Analytics | 24/7 inzicht in personeelsdata | Hrmforce",
     metaDescription:
       "De HR-Analytics-oplossing van hrmforce geeft organisaties gedetailleerd inzicht in talenten, valkuilen en prestaties van medewerkers en teams.",
-    intro: [
-      "HR Analytics biedt organisaties 24/7 een helder beeld van hun medewerkers en teams. Het overzichtelijke platform toont talenten, knelpunten en prestaties.",
-      "Het systeem verzamelt data uit vragenlijsten en periodieke tests en zet deze om in visueel heldere inzichten.",
-    ],
+    intro: ["HR-beslissingen worden nog te vaak op gevoel genomen, terwijl de data verspreid en onbenut in systemen zit. Zonder inzicht blijft sturen op talent gissen.", "hrmforce brengt je HR-data samen in heldere dashboards en rapportages. Zo onderbouw je beslissingen over selectie, ontwikkeling en teams met feiten in plaats van aannames."],
     body: [
       "De uitdagingen van vandaag vragen meer dan alleen een beter ingerichte HR-afdeling. Ze vereisen een beter begrip van werknemersprestaties en van wat die prestaties bepaalt. De universele hamvraag luidt: hoe ontwikkel je een competent personeelsbestand zonder dat de kosten uit de hand lopen?",
       "Beter inzicht helpt je te ontdekken welke factoren de productiviteit van medewerkers bepalen en die kennis te gebruiken om de prestaties van je hele organisatie te verbeteren. Je analyseert data om te begrijpen waarom bepaalde dingen gebeuren en zet medewerkers optimaal in door ze te koppelen aan de juiste functieprofielen.",
