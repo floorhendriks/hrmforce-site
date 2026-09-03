@@ -8,7 +8,8 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
 ## Fase 1: P1, 27,5 uur
 
 ### Content en materiaal
-- [ ] P1 · 1 u · Screenshots van de vragenlijst-interface genereren. Drie tot vijf beelden per assessment, kloppend met het echte product. Voorwaarde voor de sliders op de assessment-, oplossing- en shoppagina's. (03:29)
+- [x] (2026-09-03) P1 · 1 u · Screenshots van de vragenlijst-interface genereren. Drie tot vijf beelden per assessment, kloppend met het echte product. Voorwaarde voor de sliders op de assessment-, oplossing- en shoppagina's. (03:29)
+  3 herbruikbare SVG-mockups in public/mockups (vraag met Likert-schaal, intro, afgerond). Gebaseerd op de voorbeeldvragen op de site, geen verzonnen functionaliteit, geen pdf-download. Assessment-specifieke varianten (bv. cognitief) kunnen later.
 
 ### Sitebreed
 - [x] (2026-09-03) P1 · 1 u · Menu sticky maken. Het menu verdwijnt nu bij scrollen en moet altijd zichtbaar blijven. (02:54)
@@ -84,6 +85,8 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
 
 ## Later opgemerkt
 (hier zet je dingen die je onderweg tegenkomt en die niet bij je huidige taak horen)
+- Het /assessments/ overzicht gaf een 404 bij bezoek (detailpagina's werken wel). Overzicht-URL of routing nakijken.
+- Big Five detailpagina bevat een typo "Big Fifty Personality-vragenlijst" in een FAQ-antwoord.
 - home.js regel 31 (nl werkwijze-lead) gebruikt een gedachtestreepje, in strijd met de stijlafspraak. Vervangen door komma.
 - Base.astro herschrijft lazy afbeeldingen naar de weserv-proxy. In horizontale marquees laden off-screen lazy afbeeldingen niet. Breder nakijken of dit elders speelt.
 - Live homepage liep bij aanvang achter op de broncode (oude build). Na deploy komt de nieuwe hero/logoslider door.
