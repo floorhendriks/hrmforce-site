@@ -1,0 +1,59 @@
+---
+// Herbruikbare klantlogo-slider (kleur, marquee). Gebruik op homepage, oplossingen en training.
+const LOGOS = [
+  { name: "Rabobank", file: "2025/06/logo-Rabobank.png" },
+  { name: "Siemens", file: "2025/06/logo-siemens.jpg" },
+  { name: "Fugro", file: "2025/06/logo-fugro.jpg" },
+  { name: "Royal HaskoningDHV", file: "2025/06/logo-RHDHV.jpg" },
+  { name: "Office Depot", file: "2025/07/logo-officedepot.png" },
+  { name: "vidaXL", file: "2025/06/logo-vidaXL.jpg" },
+  { name: "Gemeente Amsterdam", file: "2025/06/logo-cityofamsterdam.jpg" },
+  { name: "Prinses Maxima Centrum", file: "2025/06/logo-prinsesmaximacenter.jpg" },
+  { name: "Cordaan", file: "2025/06/logo-cordaan.jpg" },
+  { name: "Skidata", file: "2025/06/logo-skidata.jpg" },
+  { name: "Rentokil", file: "2025/06/logo-rentokil.jpg" },
+  { name: "Greenyard", file: "2025/06/logo-greenyard.jpg" },
+  { name: "Hoogheemraadschap van Rijnland", file: "2025/06/logo-Rijnland.jpg" },
+  { name: "Raiffeisen Bank", file: "2025/06/logo-Raifeissen-bank.jpg" },
+  { name: "Taco Mundo", file: "2025/06/logo-tacomundo.png" },
+  { name: "TCR", file: "2025/06/logo-TCR.jpg" },
+  { name: "Uniqa", file: "2025/06/logo-uniqa.jpg" },
+  { name: "Fairtrade", file: "2025/06/logo-fairtrade.jpg" },
+  { name: "Computacenter", file: "2025/06/logo-computacenter.jpg" },
+  { name: "e-Boekhouden", file: "2025/06/logo-eboekhouden.jpg" },
+  { name: "De Key", file: "2025/06/logo-dekey.jpg" },
+  { name: "Ministerie", file: "2025/06/logo-ministery.jpg" },
+];
+const heading = Astro.props.heading ?? "Vertrouwd door 1.200+ organisaties";
+const note = Astro.props.note ?? "Van overheid en banken tot zorg, onderwijs en industrie, 1.200+ organisaties kiezen hrmforce.";
+const logos = Astro.props.logos ?? LOGOS;
+const showNote = Astro.props.note !== null;
+const base = "https://hrmforce.com/wp-content/uploads/";
+const track = logos.concat(logos);
+---
+<section class="logoslider">
+  <div class="wrap">
+    { heading && <p class="ls-h">{heading}</p> }
+    <div class="ls-viewport" aria-label="Klantlogo's">
+      <div class="ls-track">
+        { track.map((l) => (
+          <span class="ls-item"><img src={base + l.file} alt={l.name} loading="lazy" /></span>
+        )) }
+      </div>
+    </div>
+    { showNote && note && <p class="ls-note">{note}</p> }
+  </div>
+</section>
+<style>
+  .logoslider{ padding:24px 0 20px; background:#fff; border-bottom:1px solid var(--line); }
+  .ls-h{ text-align:center; color:var(--muted); font-size:14px; letter-spacing:.01em; margin:0 0 16px; }
+  .ls-viewport{ overflow:hidden; position:relative; -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent); mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent); }
+  .ls-track{ display:flex; align-items:center; gap:54px; width:max-content; animation:ls-scroll 48s linear infinite; }
+  .ls-viewport:hover .ls-track{ animation-play-state:paused; }
+  .ls-item{ flex:0 0 auto; display:flex; align-items:center; justify-content:center; height:56px; }
+  .ls-item img{ height:auto; width:auto; max-height:52px; max-width:150px; object-fit:contain; display:block; }
+  .ls-note{ text-align:center; color:var(--muted); font-size:13px; margin:16px auto 0; max-width:620px; }
+  @keyframes ls-scroll{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  @media (prefers-reduced-motion: reduce){ .ls-track{ animation:none; flex-wrap:wrap; justify-content:center; gap:28px 44px; } }
+  @media (max-width:640px){ .ls-item{ height:46px; } .ls-item img{ max-height:42px; max-width:124px; } .ls-track{ gap:40px; } }
+</style>
