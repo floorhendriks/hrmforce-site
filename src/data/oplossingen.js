@@ -40,7 +40,7 @@ export const oplossingen = [
       "De tool houdt automatisch de voortgang bij, zodat je structuur aanbrengt in de gesprekscyclus van je bedrijf of organisatie.",
     ],
     body: [
-      "Er zijn vijf digitale gesprekscycli beschikbaar: het bila-gesprek, bila+, het ontwikkelgesprek, het jaargesprek en de jaarcyclus. Hrmforce helpt bij de keuze en inrichting op basis van je functiehuis. Zijn er nog geen functieprofielen? Dan ondersteunen we bij het opstellen daarvan, inclusief resultaatgebieden en competenties.",
+      "De HR Gesprekscyclus van hrmforce ondersteunt je volledige jaarcyclus, niet los een enkel gesprek. Binnen die cyclus zet je digitaal de gesprekken in die je nodig hebt: het bila-gesprek, bila+, het ontwikkelgesprek en het jaargesprek. hrmforce helpt bij de opzet en levert per gesprekstype een passende vragenlijst.",
       "Na het uploaden van medewerkergegevens, handmatig of via API, kunnen teams direct aan de slag. Het bila-gesprek is het digitale alternatief voor je actielijstje in mail of notitieblok: je legt concrete werkafspraken vast en registreert wie wat wanneer gaat uitvoeren. Zo worden er geen afspraken meer vergeten.",
       "Het ontwikkelgesprek is een cyclus speciaal voor operationele medewerkers, opgebouwd rond vijf thema's: werk, leren en ontwikkelen, gezondheid en conditie, samenwerking en leiding, en familie en sociale contacten. De input leidt tot een concrete actielijst; alle gesprekken worden opgeslagen zodat je de voortgang over tijd kunt bijhouden.",
     ],
