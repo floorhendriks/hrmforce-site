@@ -49,7 +49,8 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
 
 ### Content en materiaal
 - [ ] P2 · 1 u · Voorlopige reviews plaatsen, zichtbaar gemarkeerd als voorbeeld. (02:01)
-- [ ] P2 · 2 u · Foto en persoonlijk verhaal van Floor verzamelen voor Over ons. (09:22)
+- [x] (2026-09-03) P2 · 2 u · Foto en persoonlijk verhaal van Floor verzamelen voor Over ons. (09:22)
+  Verhaal aangeleverd en verwerkt. Foto nog uploaden (zie Voor livegang).
 
 ### Sitebreed
 - [ ] P2 · 3 u · Standaardblokken boven en onder pagina's vervangen of weghalen. (00:18)
@@ -70,7 +71,8 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
 - [ ] P2 · 2 u · Trainingspagina overtuigender maken, met klantlogo's en reviews. (08:00)
 
 ### Over ons
-- [ ] P2 · 2 u · Floor prominent in beeld met persoonlijk verhaal en jaren ervaring. Mensen kopen van mensen. (09:33)
+- [x] (2026-09-03) P2 · 2 u · Floor prominent in beeld met persoonlijk verhaal en jaren ervaring. Mensen kopen van mensen. (09:33)
+  Oprichter-sectie op /over-ons/ met Floors verhaal en "meer dan tien jaar ervaring". Foto verschijnt automatisch zodra geüpload.
 
 ### Shop
 - [ ] P2 · 2 u · Per product screenshots van de vragenlijst en de interface. (10:19)
@@ -90,6 +92,8 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
 
 ## Voor livegang
 - [ ] Voorlopige reviews vervangen door echte, verifieerbare reviews met naam en foto.
+- [ ] Foto van Floor uploaden als public/team/floor-hendriks.jpg (nu placeholder-avatar met auto-swap).
+- [ ] Klantlogo's zelf hosten in public/ voor de domeincutover (nu via hrmforce.com/wp-content).
 
 ## Later opgemerkt
 (hier zet je dingen die je onderweg tegenkomt en die niet bij je huidige taak horen)
