@@ -1,0 +1,50 @@
+---
+// Herbruikbare reviewslider met sterren en avatar.
+// LET OP: standaard staan er VOORBEELD-reviews in, zichtbaar gemarkeerd. Vervang voor livegang door echte, verifieerbare reviews.
+const SAMPLE = [
+  { who: "HR-adviseur", org: "Zorgorganisatie", stars: 5, quote: "De rapportages geven ons eindelijk een objectief gesprek in plaats van onderbuikgevoel. We selecteren sneller en met meer vertrouwen." },
+  { who: "Recruiter", org: "Industrie", stars: 5, quote: "Binnen een dag reactie en heldere terugkoppeling. De mensen die we aannemen passen echt beter bij de functie." },
+  { who: "Manager L&D", org: "Financiële dienstverlening", stars: 5, quote: "De ontwikkelrapporten maken loopbaangesprekken concreter. Medewerkers herkennen zich erin en gaan er zelf mee aan de slag." },
+  { who: "HR-directeur", org: "Onderwijs", stars: 4, quote: "Wetenschappelijk onderbouwd en toch praktisch. De begeleiding door het team van hrmforce is prettig en snel." },
+  { who: "Teamlead werving", org: "Overheid", stars: 5, quote: "Structuur in onze gesprekscyclus en minder verloop. De voortgang bijhouden kost ons nu bijna geen tijd meer." },
+];
+const heading = Astro.props.heading ?? "Wat opdrachtgevers merken";
+const reviews = Astro.props.reviews ?? SAMPLE;
+const sample = Astro.props.sample ?? true;
+const stars = (n) => "\u2605".repeat(n) + "\u2606".repeat(5 - n);
+---
+<section class="reviewslider">
+  <div class="wrap">
+    <div class="rs-head">
+      <h2 class="rs-title">{heading}</h2>
+      { sample && <span class="rs-sample" title="Deze reviews zijn ter illustratie en worden voor livegang vervangen door echte reviews.">Voorbeeldweergave</span> }
+    </div>
+    <div class="rs-track">
+      { reviews.map((r) => (
+        <figure class="rs-card">
+          <div class="rs-stars" aria-label={r.stars + " van 5 sterren"}>{stars(r.stars)}</div>
+          <blockquote class="rs-quote">{r.quote}</blockquote>
+          <figcaption class="rs-by">
+            <span class="rs-avatar" aria-hidden="true">{r.who.slice(0,1)}</span>
+            <span class="rs-meta"><b>{r.who}</b><small>{r.org}</small></span>
+          </figcaption>
+        </figure>
+      )) }
+    </div>
+  </div>
+</section>
+<style>
+  .reviewslider{ padding:48px 0; }
+  .rs-head{ display:flex; align-items:center; gap:14px; margin:0 0 20px; flex-wrap:wrap; }
+  .rs-title{ margin:0; }
+  .rs-sample{ font-size:12px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:#8a6d1a; background:#fbf4e1; border:1px solid #e7cf8a; padding:4px 10px; border-radius:999px; }
+  .rs-track{ display:flex; gap:20px; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:12px; -webkit-overflow-scrolling:touch; }
+  .rs-card{ flex:0 0 88%; max-width:380px; scroll-snap-align:start; margin:0; background:#fff; border:1px solid var(--line); border-radius:16px; padding:24px; box-shadow:var(--shadow-xs); display:flex; flex-direction:column; gap:12px; }
+  .rs-stars{ color:var(--gold); font-size:18px; letter-spacing:2px; }
+  .rs-quote{ margin:0; color:var(--text); font-size:16px; line-height:1.55; }
+  .rs-by{ display:flex; align-items:center; gap:12px; margin-top:auto; }
+  .rs-avatar{ width:44px; height:44px; border-radius:50%; background:linear-gradient(160deg,var(--navy),var(--navy-deep)); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
+  .rs-meta{ display:flex; flex-direction:column; line-height:1.25; }
+  .rs-meta small{ color:var(--muted); }
+  @media(min-width:820px){ .rs-card{ flex-basis:calc(33.333% - 14px); } }
+</style>
