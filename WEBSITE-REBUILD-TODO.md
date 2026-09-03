@@ -67,7 +67,8 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
   Concrete CTA toegevoegd aan het why-blok (Plan een kennismaking met een HR-specialist).
 
 ### Assessmentpagina's
-- [ ] P2 · 10 u · De vijf assessmentpagina's verdiepen en verlengen. De basis is goed, de inhoud mag uitgebreider. (04:39)
+- [x] (2026-09-03) P2 · 10 u · De vijf assessmentpagina's verdiepen en verlengen. De basis is goed, de inhoud mag uitgebreider. (04:39)
+  Op verzoek ALLE assessmentpagina's verdiept: template-blok "Zo zet je deze test in" dat per assessment wat het meet, de fase, de terugkoppeling en de doorlooptijd samenstelt uit de eigen data (NL + 5 talen). Vakinhoud graag nog checken.
 
 ### Oplossingenpagina's
 - [x] (2026-09-03) P2 · 0,5 u · Logoslider toevoegen. (05:40)
