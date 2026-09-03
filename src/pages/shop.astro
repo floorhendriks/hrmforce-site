@@ -1,9 +1,26 @@
 ---
 import Base from "../layouts/Base.astro";
 import Shop from "../components/Shop.astro";
+import ReviewSlider from "../components/ReviewSlider.astro";
 import { shopContent } from "../data/shop-content.js";
 const t = shopContent.nl;
 ---
 <Base title={t.meta.title} description={t.meta.description} active="shop">
   <Shop t={t} lang="nl" />
+
+  <section class="wrap" style="padding:48px 0">
+    <div class="eyebrow" style="color:var(--gold)">Zo werkt een afname</div>
+    <h2>Van bestelling tot rapport</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:24px;margin-top:18px">
+      <div style="flex:1 1 220px"><strong>1. Bestel je vragenlijst</strong><p style="color:var(--muted);margin-top:6px">Reken af in de shop en vul de kandidaatgegevens in.</p></div>
+      <div style="flex:1 1 220px"><strong>2. Kandidaat vult in</strong><p style="color:var(--muted);margin-top:6px">De kandidaat krijgt een persoonlijke link en vult de vragenlijst online in, in eigen taal en tempo.</p></div>
+      <div style="flex:1 1 220px"><strong>3. Ontvang het rapport</strong><p style="color:var(--muted);margin-top:6px">Het rapport komt automatisch in je inbox, met heldere uitleg en direct bruikbaar in het gesprek. Geen pdf om te downloaden.</p></div>
+    </div>
+    <div style="display:flex;gap:16px;overflow-x:auto;margin-top:28px;padding-bottom:8px;scroll-snap-type:x mandatory">
+      <img src="/mockups/vragenlijst-intro.svg" alt="Startscherm van de vragenlijst" loading="eager" style="flex:0 0 auto;width:82%;max-width:520px;border-radius:12px;border:1px solid var(--line);scroll-snap-align:center" />
+      <img src="/mockups/vragenlijst-vraag.svg" alt="Vraagscherm met antwoordschaal" loading="eager" style="flex:0 0 auto;width:82%;max-width:520px;border-radius:12px;border:1px solid var(--line);scroll-snap-align:center" />
+      <img src="/mockups/vragenlijst-afgerond.svg" alt="Afrondscherm van de vragenlijst" loading="eager" style="flex:0 0 auto;width:82%;max-width:520px;border-radius:12px;border:1px solid var(--line);scroll-snap-align:center" />
+    </div>
+  </section>
+  <ReviewSlider heading="Wat kopers zeggen" />
 </Base>
