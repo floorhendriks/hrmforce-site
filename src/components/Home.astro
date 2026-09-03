@@ -4,6 +4,7 @@ import { clients } from "../data/home.js";
 import { localizePath, sanitizeBodyLinks } from "../i18n/utils.js";
 import validPaths from "../data/valid-paths.js";
 import LogoSlider from "./LogoSlider.astro";
+import ReviewSlider from "./ReviewSlider.astro";
 
 const { c, lang } = Astro.props;
 const lp = (p) => localizePath(p, lang);
@@ -155,6 +156,8 @@ const faqLd = {
   </div>
 </section>
 
+<ReviewSlider />
+
 <section class="outcome">
   <div class="wrap">
     <p class="outcome-stat"><b>{c.outcome.statBold}</b> {c.outcome.statRest}</p>
@@ -233,17 +236,6 @@ const faqLd = {
 
 <section class="bg-soft testi">
   <div class="wrap" style="display:block">
-    <span class="eyebrow center">{ti.eyebrow}</span>
-    <h2 class="section-title center">{ti.title}</h2>
-    <div class="testi-grid">
-      {ti.items.map((t) => (
-        <figure class="testi-card">
-          <div class="tstars">★★★★★</div>
-          <blockquote>“{t.q}”</blockquote>
-          <figcaption><b>{t.who}</b><span>{t.org}</span></figcaption>
-        </figure>
-      ))}
-    </div>
     <div class="itc-bar">
       <span class="itc-badge"><img src="https://images.weserv.nl/?url=www.intestcom.org/images/logo.png&output=webp&w=150&we" alt="International Test Commission (ITC)" loading="lazy" onerror="this.parentNode.classList.add('is-txt');this.remove();" /><em>ITC</em></span>
       <p>{ti.itc}</p>
