@@ -3,6 +3,7 @@
 import { clients } from "../data/home.js";
 import { localizePath, sanitizeBodyLinks } from "../i18n/utils.js";
 import validPaths from "../data/valid-paths.js";
+import LogoSlider from "./LogoSlider.astro";
 
 const { c, lang } = Astro.props;
 const lp = (p) => localizePath(p, lang);
@@ -75,6 +76,8 @@ const faqLd = {
   </div>
 </div>
 
+<LogoSlider />
+
 <section class="hero">
   <span class="hero-blob gold" aria-hidden="true"></span>
   <span class="hero-blob blue" aria-hidden="true"></span>
@@ -114,31 +117,7 @@ const faqLd = {
   </div>
 </section>
 
-<section class="proof">
-  <div class="wrap" style="display:block">
-    <div class="metric-cards">
-      {c.metrics.map((m) => <div class="metric-card"><div class="mc-big">{m.big}</div><div class="mc-lab">{m.label}</div></div>)}
-    </div>
-    <div class="google-rating"><span class="gr-stars">★★★★★</span> <b>4,9</b>/5 · Google</div>
-    <p class="lead center" style="margin:22px auto 0">{c.proof.trustedBy}</p>
-    <div class="logo-marquee" aria-label="hrmforce">
-      <div class="lm-track">
-        {[...clients, ...clients].map((cl) => <div class="lm-cell"><img src={cl.logo} alt={cl.name} loading="lazy" /></div>)}
-      </div>
-    </div>
-    <p class="sector-line">{c.proof.sectorLine}</p>
 
-    <figure class="spotlight">
-      <div class="stars">★★★★★</div>
-      <blockquote id="sp-text">“{reviews[0].text}”</blockquote>
-      <figcaption id="sp-cap">
-        <img id="sp-avatar" src={reviews[0].avatar} alt={reviews[0].name} loading="lazy" />
-        <span><a id="sp-name" href={reviews[0].href} class="sp-name">{reviews[0].name}</a><small>{c.spotlight.caption}</small></span>
-      </figcaption>
-      <div class="sp-dots" id="sp-dots" role="tablist" aria-label="Reviews"></div>
-    </figure>
-  </div>
-</section>
 
 <section>
   <div class="wrap" style="display:block">
