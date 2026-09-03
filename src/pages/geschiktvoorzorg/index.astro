@@ -77,6 +77,39 @@ import Base from "../../layouts/Base.astro";
     <a href="/contact/" class="btn btn-primary" style="margin-top:12px">Vraag een gratis demo aan</a>
   </div></section>
 
+  <section class="bg-soft"><div class="wrap">
+    <div class="center">
+      <div class="eyebrow">Klantcases</div>
+      <h2 class="section-title">Zorgorganisaties die met ons matchen</h2>
+      <p class="lead center" style="max-width:720px;margin:0 auto 40px">Van ouderenzorg tot gehandicaptenzorg en eerstelijnszorg — tientallen organisaties vinden met Geschikt voor Zorg duurzaam de juiste mensen.</p>
+    </div>
+    <div class="gvz-cases">
+      <article class="gvz-case">
+        <div class="gvz-org">Icare</div>
+        <span class="gvz-metric">150+ aangenomen &middot; 350+ matches</span>
+        <p>Werving en selectie voor zij-instromers als cli&euml;ntondersteuner. Via gerichte campagnes en een eigen landingspagina bereikten we tienduizenden mensen.</p>
+        <blockquote>&ldquo;Er is geen tekort aan arbeid, maar een tekort aan match. De match maken, dat doet Geschikt voor Zorg &mdash; wat een succes!&rdquo;</blockquote>
+        <div class="gvz-who"><b>Sietske Ras</b> &mdash; Relatiemanager &amp; Projectleider, Icare GewoonThuis</div>
+      </article>
+      <article class="gvz-case">
+        <div class="gvz-org">SEIN</div>
+        <span class="gvz-metric">Zij-instroomklassen gevuld</span>
+        <p>Expertisecentrum voor epilepsie en slaapgeneeskunde (~1500 medewerkers). Wij vullen jaarlijks de WelSEIN-klas en de Nachtzorgklassen met vast personeel.</p>
+        <blockquote>&ldquo;In heel korte tijd een topresultaat neergezet. Prettige samenwerking, duidelijke en snelle terugkoppeling en een fijn team!&rdquo;</blockquote>
+        <div class="gvz-who"><b>Marjolijn Vijverberg</b> &mdash; Adviseur recruitment, SEIN</div>
+      </article>
+      <article class="gvz-case">
+        <div class="gvz-org">Odion</div>
+        <span class="gvz-metric">63 locaties &middot; 1.750 cli&euml;nten</span>
+        <p>Gehandicaptenzorg in Zaanstreek, Kennemerland en Waterland. Wij richtten werving en selectie in voor zij-instroomklassen en zorgprofessionals.</p>
+        <blockquote>&ldquo;Data-gedreven diensten en toch persoonlijk. De mensen hier hebben een zorghart &mdash; geen marketingpraatje. Dat maakt de samenwerking heel fijn!&rdquo;</blockquote>
+        <div class="gvz-who"><b>Odion</b> &mdash; Werving &amp; selectie</div>
+      </article>
+    </div>
+    <p class="gvz-trust">Ook vertrouwd door o.a. Zonboog, ABN AMRO en PFZW.</p>
+    <div class="center" style="margin-top:26px"><a href="/geschiktvoorzorg/klantcases/" class="btn btn-primary">Bekijk alle klantcases &rarr;</a></div>
+  </div></section>
+
   <section><div class="wrap">
     <div class="center">
       <div class="eyebrow">Twee opties</div>
@@ -117,3 +150,16 @@ import Base from "../../layouts/Base.astro";
     </div>
   </div></section>
 </Base>
+
+<style>
+  .gvz-cases { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  @media (max-width: 900px) { .gvz-cases { grid-template-columns: 1fr; } }
+  .gvz-case { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 26px 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; border-top: 3px solid var(--gold); }
+  .gvz-org { font-size: 1.25rem; font-weight: 800; color: var(--navy); }
+  .gvz-metric { display: inline-block; align-self: flex-start; background: #e8f0fe; color: var(--navy); font-size: 12.5px; font-weight: 700; padding: 4px 11px; border-radius: 999px; margin: 8px 0 12px; }
+  .gvz-case p { color: var(--muted); font-size: 14.5px; line-height: 1.55; margin: 0 0 12px; }
+  .gvz-case blockquote { color: var(--navy); font-weight: 600; font-size: 14.5px; line-height: 1.5; font-style: italic; border-left: 3px solid var(--gold); padding-left: 14px; margin: 0 0 14px; flex: 1; }
+  .gvz-who { font-size: 13px; color: var(--muted); }
+  .gvz-who b { color: var(--navy); }
+  .gvz-trust { text-align: center; color: var(--muted); font-size: 14px; margin-top: 26px; }
+</style>
