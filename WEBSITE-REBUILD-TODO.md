@@ -40,8 +40,10 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
   Verduidelijkt (na afstemming): het is de volledige jaarcyclus, met de gesprekken die je erin inzet (bila-gesprek, bila+, ontwikkelgesprek, jaargesprek).
 
 ### Tarieven
-- [ ] P1 · 3 u · Eén tarievenblok met prijzen en features samen. Light, Base en Pro naast elkaar, vanaf-prijs en features in dezelfde kolom, geen losse tabel eronder. (08:58)
-- [ ] P1 · 1,5 u · Implementatieprijzen als apart blok direct onder het pakketblok. Eenmalige kosten los van de licentie. (08:40)
+- [x] (2026-09-03) P1 · 3 u · Eén tarievenblok met prijzen en features samen. Light, Base en Pro naast elkaar, vanaf-prijs en features in dezelfde kolom, geen losse tabel eronder. (08:58)
+  Losse vergelijkingstabel verwijderd. De pakketkaarten (Pay-as-you-go, Advanced, Pro) tonen vanaf-prijs en features samen in één kolom.
+- [x] (2026-09-03) P1 · 1,5 u · Implementatieprijzen als apart blok direct onder het pakketblok. Eenmalige kosten los van de licentie. (08:40)
+  Onboarding/implementatie-prijzen (tiers) verplaatst naar direct onder het pakketblok. Volgorde: pakketten, implementatie, inclusief.
 
 ## Fase 2: P2, 41,5 uur
 
