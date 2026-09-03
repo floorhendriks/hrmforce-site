@@ -70,9 +70,11 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
 - [ ] P2 · 10 u · De vijf assessmentpagina's verdiepen en verlengen. De basis is goed, de inhoud mag uitgebreider. (04:39)
 
 ### Oplossingenpagina's
-- [ ] P2 · 0,5 u · Logoslider toevoegen. (05:40)
+- [x] (2026-09-03) P2 · 0,5 u · Logoslider toevoegen. (05:40)
+  Klantlogo-slider toegevoegd aan het oplossingen-template.
 - [ ] P2 · 1,5 u · Interface-screenshots toevoegen in plaats van alleen tekst. (05:43)
-- [ ] P2 · 6 u · Copy herschrijven volgens pijn, dan oplossing, voor vier oplossingenpagina's. (05:54)
+- [x] (2026-09-03) P2 · 6 u · Copy herschrijven volgens pijn, dan oplossing, voor vier oplossingenpagina's. (05:54)
+  Intro's van matching, employability, hr-analytics herschreven naar pijn dan oplossing; gesprekscyclus eerder al verduidelijkt.
 - [ ] P2 · 2 u · Trainingspagina overtuigender maken, met klantlogo's en reviews. (08:00)
 
 ### Over ons
