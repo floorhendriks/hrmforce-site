@@ -164,6 +164,23 @@ const _offerLd = (shop && shop.price)
           {a.intro.map((p) => <p>{p}</p>)}
           {a.traits.length > 0 && <ul class="traits">{a.traits.map((tr) => <li>{tr}</li>)}</ul>}
           {a.body.map((p) => <p>{p}</p>)}
+          {(() => {
+            const T = {
+              en:{meet:"This test measures ", phase:"You use it in the HR cycle: ", time:"Completion takes ", tail:" and you receive the results in your inbox, with no PDF to download."},
+              de:{meet:"Dieser Test misst ", phase:"Sie setzen ihn im HR-Zyklus ein: ", time:"Das Ausfüllen dauert ", tail:" und Sie erhalten die Ergebnisse in Ihrem Postfach, ohne PDF zum Herunterladen."},
+              fr:{meet:"Ce test mesure ", phase:"Vous l utilisez dans le cycle RH : ", time:"Le remplissage prend ", tail:" et vous recevez les résultats dans votre boîte mail, sans PDF à télécharger."},
+              es:{meet:"Esta prueba mide ", phase:"La usas en el ciclo de RR. HH.: ", time:"Completarla dura ", tail:" y recibes los resultados en tu bandeja de entrada, sin PDF para descargar."},
+              ro:{meet:"Acest test măsoară ", phase:"Îl folosești în ciclul HR: ", time:"Completarea durează ", tail:" și primești rezultatele în inbox, fără PDF de descărcat."}
+            };
+            const t = T[lang] || T.en;
+            const parts = [
+              a.traits && a.traits.length ? t.meet + a.traits.join(", ") + ". " : "",
+              a.phase ? t.phase + a.phase + ". " : "",
+              a.feedback ? a.feedback + " " : "",
+              a.time ? t.time + a.time + (a.form ? " (" + a.form + ")" : "") + t.tail : ""
+            ].join("");
+            return <p class="assess-usage">{parts}</p>;
+          })()}
           <a href="#request" class="btn btn-primary" style="margin-top:8px">{t.startNow}</a>
         </div>
         <div class="pentagon">
@@ -315,4 +332,5 @@ const _offerLd = (shop && shop.price)
   .qshot img{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow-sm);display:block}
   .qshot figcaption{margin-top:10px;color:var(--muted);font-size:14px;text-align:center}
   @media(min-width:900px){ .qshot{flex-basis:46%} }
+  .assess-usage{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line); color:var(--text); }
 </style>
