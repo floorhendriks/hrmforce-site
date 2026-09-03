@@ -82,9 +82,12 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
   Oprichter-sectie op /over-ons/ met Floors verhaal en "meer dan tien jaar ervaring". Foto verschijnt automatisch zodra geüpload.
 
 ### Shop
-- [ ] P2 · 2 u · Per product screenshots van de vragenlijst en de interface. (10:19)
-- [ ] P2 · 2 u · Reviews of reviewslider in de shop. (10:43)
-- [ ] P2 · 3 u · Uitleg over afname, vragenlijst en wat je terugkrijgt. Geen downloadbaar rapport. (11:11)
+- [x] (2026-09-03) P2 · 2 u · Per product screenshots van de vragenlijst en de interface. (10:19)
+  Interface-mockups (intro, vraag, afgerond) als slider op de shop-pagina.
+- [x] (2026-09-03) P2 · 2 u · Reviews of reviewslider in de shop. (10:43)
+  ReviewSlider (voorbeeldweergave) toegevoegd op de shop-pagina.
+- [x] (2026-09-03) P2 · 3 u · Uitleg over afname, vragenlijst en wat je terugkrijgt. Geen downloadbaar rapport. (11:11)
+  "Van bestelling tot rapport" in 3 stappen: bestellen, kandidaat vult in, rapport in de inbox (geen pdf-download).
 
 ## Fase 3: P3, 3 uur
 - [ ] P3 · 2 u · Iconen bij de sectoren zorg, onderwijs en industrie op de homepage. (02:27)
