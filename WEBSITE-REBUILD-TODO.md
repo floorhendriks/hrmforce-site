@@ -26,8 +26,10 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
   Op homepage direct onder de header geplaatst, de kapotte proof-strook (verzonnen bestandsnamen) vervangen. Kan desgewenst onder de hero i.p.v. erboven.
 
 ### Assessmentpagina's
-- [ ] P1 · 0,5 u · Hero-afbeelding verkleinen, die duwt nu de inhoud weg. (03:17)
-- [ ] P1 · 3 u · Screenshot-slider in het assessment-template. Voorbeeldvragen blijven als tekst staan. (04:32)
+- [x] (2026-09-03) P1 · 0,5 u · Hero-afbeelding verkleinen, die duwt nu de inhoud weg. (03:17)
+  report-afbeelding in de hero gecapt op max-height 300px (object-fit cover), in beide templates (NL + anderstalig). NB: de report-afbeelding laadt momenteel niet (kapotte bron), zie Later opgemerkt.
+- [x] (2026-09-03) P1 · 3 u · Screenshot-slider in het assessment-template. Voorbeeldvragen blijven als tekst staan. (04:32)
+  "Een kijkje in de vragenlijst"-slider met de 3 mockups toegevoegd (scroll-snap), in beide templates, anderstalig vertaald. Voorbeeldvragen ongewijzigd. Live geverifieerd op NL en EN.
 - [ ] P1 · 7,5 u · Copy herschrijven volgens pijn, dan oplossing, voor de vijf assessments waarop geadverteerd wordt. (04:59)
 
 ### Oplossingenpagina's
@@ -88,6 +90,7 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
 (hier zet je dingen die je onderweg tegenkomt en die niet bij je huidige taak horen)
 - Het /assessments/ overzicht gaf een 404 bij bezoek (detailpagina's werken wel). Overzicht-URL of routing nakijken.
 - Big Five detailpagina bevat een typo "Big Fifty Personality-vragenlijst" in een FAQ-antwoord.
+- De hero-report-afbeelding op assessmentpagina's laadt niet (kapotte bron, natW 0). Overwegen te vervangen door een werkende vragenlijst-mockup (past ook bij de afspraak: geen voorbeeldrapporten).
 - home.js regel 31 (nl werkwijze-lead) gebruikt een gedachtestreepje, in strijd met de stijlafspraak. Vervangen door komma.
 - Base.astro herschrijft lazy afbeeldingen naar de weserv-proxy. In horizontale marquees laden off-screen lazy afbeeldingen niet. Breder nakijken of dit elders speelt.
 - Live homepage liep bij aanvang achter op de broncode (oude build). Na deploy komt de nieuwe hero/logoslider door.
