@@ -121,6 +121,29 @@ const _offerLd = (shop && shop.price)
     </div>
   </section>
 
+{(() => {
+  const M = {
+    en:{e:"How it works",h:"A look inside the questionnaire",l:"This is what the questionnaire looks like for your candidates, from invitation to completion.",c1:"Start in your own language and pace",c2:"Statements with a clear answer scale",c3:"Discuss the results in person"},
+    de:{e:"So funktioniert es",h:"Ein Blick in den Fragebogen",l:"So sieht der Fragebogen für Ihre Kandidaten aus, von der Einladung bis zum Abschluss.",c1:"Starten in eigener Sprache und im eigenen Tempo",c2:"Aussagen mit einer klaren Antwortskala",c3:"Die Ergebnisse besprechen Sie persönlich"},
+    fr:{e:"Comment ça marche",h:"Un aperçu du questionnaire",l:"Voici à quoi ressemble le questionnaire pour vos candidats, de l'invitation à la fin.",c1:"Commencez dans votre langue et à votre rythme",c2:"Des affirmations avec une échelle de réponse claire",c3:"Les résultats se discutent en personne"},
+    es:{e:"Cómo funciona",h:"Un vistazo al cuestionario",l:"Así ve el cuestionario tu candidato, desde la invitación hasta el final.",c1:"Empieza en tu idioma y a tu ritmo",c2:"Afirmaciones con una escala de respuesta clara",c3:"Los resultados se comentan en persona"},
+    ro:{e:"Cum funcționează",h:"O privire în chestionar",l:"Așa arată chestionarul pentru candidații tăi, de la invitație până la final.",c1:"Începe în limba și ritmul tău",c2:"Afirmații cu o scală de răspuns clară",c3:"Rezultatele se discută personal"}
+  };
+  const q = M[lang] || M.en;
+  return (
+    <section class="qshots"><div class="wrap">
+      <div class="eyebrow" style="color:var(--gold)">{q.e}</div>
+      <h2 class="qshots-h">{q.h}</h2>
+      <p class="qshots-lead">{q.l}</p>
+      <div class="qshots-track">
+        <figure class="qshot"><img src="/mockups/vragenlijst-intro.svg" alt={q.c1} loading="eager" /><figcaption>{q.c1}</figcaption></figure>
+        <figure class="qshot"><img src="/mockups/vragenlijst-vraag.svg" alt={q.c2} loading="eager" /><figcaption>{q.c2}</figcaption></figure>
+        <figure class="qshot"><img src="/mockups/vragenlijst-afgerond.svg" alt={q.c3} loading="eager" /><figcaption>{q.c3}</figcaption></figure>
+      </div>
+    </div></section>
+  );
+})()}
+
   <div class="infobar">
     <div class="wrap">
       <div class="info-grid">
@@ -284,4 +307,12 @@ const _offerLd = (shop && shop.price)
   .ostep h4{color:var(--navy);font-size:1.05rem;margin-bottom:6px}
   .ostep p{color:var(--muted);font-size:14px}
   @media(max-width:760px){.order-steps{grid-template-columns:1fr}}
+  .qshots{padding:48px 0}
+  .qshots-h{margin:6px 0 6px}
+  .qshots-lead{color:var(--muted);max-width:620px;margin:0 0 22px}
+  .qshots-track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;-webkit-overflow-scrolling:touch}
+  .qshot{flex:0 0 88%;max-width:680px;scroll-snap-align:center;margin:0}
+  .qshot img{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow-sm);display:block}
+  .qshot figcaption{margin-top:10px;color:var(--muted);font-size:14px;text-align:center}
+  @media(min-width:900px){ .qshot{flex-basis:46%} }
 </style>
