@@ -20,7 +20,8 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
 ### Homepage
 - [x] (2026-09-03) P1 · 1 u · Hero terugbrengen tot één USP. "Binnen 24 uur reactie" werkt, "vrijblijvend advies" is geen USP en kan eruit. (00:56)
   Hero-micro in 6 talen teruggebracht tot alleen "Binnen 24 uur reactie".
-- [ ] P1 · 1 u · Pijn/oplossing-blok naar boven halen, direct onder de hero. Dit blok werd expliciet goed genoemd maar staat te laag. (01:20)
+- [x] (2026-09-03) P1 · 1 u · Pijn/oplossing-blok naar boven halen, direct onder de hero. Dit blok werd expliciet goed genoemd maar staat te laag. (01:20)
+  Het "Het verschil / Van onderbuik naar onderbouwd"-blok (compare) staat nu direct onder de hero, boven het why-blok. Logoslider staat als dunne trustbalk tussen hero en dit blok (onder de hero, beter voor conversie).
 - [x] (2026-09-03) P1 · 1 u · Logoslider direct onder de header plaatsen, logo's in kleur. (01:28)
   Op homepage direct onder de header geplaatst, de kapotte proof-strook (verzonnen bestandsnamen) vervangen. Kan desgewenst onder de hero i.p.v. erboven.
 
