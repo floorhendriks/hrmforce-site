@@ -2,6 +2,7 @@
 import Base from "../../layouts/Base.astro";
 import { oplossingen } from "../../data/oplossingen.js";
 import { getLangFromUrl, localizePath } from "../../i18n/utils.js";
+import LogoSlider from "../../components/LogoSlider.astro";
 
 export async function getStaticPaths() {
   return oplossingen.map((o) => ({ params: { slug: o.slug }, props: { o } }));
@@ -33,6 +34,8 @@ const solutionsHref = localizePath("/hrm-oplossingen/", lang);
       )}
     </div>
   </section>
+
+<LogoSlider heading="Vertrouwd door 1.200+ organisaties" />
 
   <section>
     <div class="wrap">
