@@ -48,34 +48,6 @@ const roiHref = localizePath("/roi-rekentool/", lang);
   <p class="muted" style="margin-top:16px;font-size:14px">{t.plansNote}</p>
 </div></section>
 
-<section class="bg-soft"><div class="wrap">
-  <div class="eyebrow">{t.compare.eyebrow}</div>
-  <h2 class="section-title">{t.compare.title}</h2>
-  <div class="compare-scroll">
-    <table class="compare">
-      <thead><tr>
-        <th class="feat-col">{t.compare.head[0]}</th>
-        <th>{t.compare.head[1]}</th>
-        <th class="col-featured">{t.compare.featCol} <span class="th-badge">{t.compare.featBadge}</span></th>
-        <th>{t.compare.head[2]}</th>
-      </tr></thead>
-      <tbody>
-        {t.compare.rows.map((r) => (
-          <tr>
-            <th scope="row">{r.label}</th>
-            {[r.pay, r.adv, r.pro].map((v, i) => (
-              <td class={i === 1 ? "col-featured" : ""}>
-                {v === true ? <span class="yes">✓</span> : v === false ? <span class="no">–</span> : <span class="txt">{v}</span>}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-  <div class="btns" style="margin-top:20px"><a href={contactHref} class="btn btn-primary">{t.compare.cta}</a></div>
-</div></section>
-
 <section><div class="wrap">
   <div class="eyebrow">{t.incl.eyebrow}</div>
   <h2 class="section-title">{t.incl.title}</h2>
