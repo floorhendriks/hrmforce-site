@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Voorbeeld van het startscherm van de hrmforce vragenlijst">
+  <rect width="1200" height="760" fill="#EEF3F9"/>
+  <rect x="0" y="0" width="1200" height="72" fill="#FFFFFF"/>
+  <rect x="0" y="71" width="1200" height="1" fill="#E2E8F0"/>
+  <text x="48" y="46" font-size="24" font-weight="800" fill="#0B2545">hrm<tspan fill="#C8A63E">force</tspan></text>
+  <text x="1152" y="44" text-anchor="end" font-size="15" fill="#6B7A90">Persoonlijkheidstest</text>
+  <rect x="240" y="150" width="720" height="470" rx="18" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <text x="290" y="228" font-size="14" font-weight="700" letter-spacing="1" fill="#C8A63E">VRAGENLIJST</text>
+  <text x="290" y="272" font-size="30" font-weight="800" fill="#1F2D45">Welkom bij de Big Five test</text>
+  <text x="290" y="312" font-size="16" fill="#6B7A90">Je krijgt een reeks stellingen. Geef per stelling aan in hoeverre die bij je past.</text>
+  <g>
+    <circle cx="304" cy="372" r="16" fill="#EAF0F8"/>
+    <path d="M297 372 a7 7 0 1 1 14 0" fill="none" stroke="#0B2545" stroke-width="2"/><line x1="304" y1="368" x2="304" y2="373" stroke="#0B2545" stroke-width="2"/><line x1="304" y1="373" x2="307" y2="376" stroke="#0B2545" stroke-width="2"/>
+    <text x="336" y="378" font-size="16" font-weight="600" fill="#1F2D45">Duurt ongeveer 10 minuten</text>
+    <circle cx="304" cy="420" r="16" fill="#EAF0F8"/>
+    <text x="304" y="426" text-anchor="middle" font-size="16" font-weight="800" fill="#0B2545">?</text>
+    <text x="336" y="426" font-size="16" font-weight="600" fill="#1F2D45">Er zijn geen goede of foute antwoorden</text>
+    <circle cx="304" cy="468" r="16" fill="#EAF0F8"/>
+    <path d="M298 468 l4 4 l8 -9" fill="none" stroke="#0B2545" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="336" y="474" font-size="16" font-weight="600" fill="#1F2D45">Antwoord spontaan, dat geeft het beste beeld</text>
+  </g>
+  <rect x="290" y="524" width="260" height="56" rx="12" fill="#C8A63E"/>
+  <text x="420" y="559" text-anchor="middle" font-size="17" font-weight="700" fill="#FFFFFF">Start de vragenlijst</text>
+  <text x="574" y="559" font-size="15" fill="#6B7A90">In je eigen taal en tempo</text>
+</svg>
