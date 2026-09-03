@@ -140,6 +140,7 @@ const _offerLd = (shop && shop.price)
           {a.intro.map((p) => <p>{p}</p>)}
           {a.traits.length > 0 && <ul class="traits">{a.traits.map((t) => <li>{t}</li>)}</ul>}
           {a.body.map((p) => <p>{p}</p>)}
+          <p class="assess-usage">{[a.traits && a.traits.length ? "De test meet " + a.traits.join(", ") + ". " : "", a.phase ? "Je zet deze test in binnen de HR-cyclus: " + a.phase + ". " : "", a.feedback ? a.feedback + " " : "", a.time ? "Invullen duurt " + a.time + (a.form ? " (" + a.form + ")" : "") + " en je ontvangt de uitkomsten in je inbox, zonder pdf om te downloaden." : ""].join("")}</p>
           <a href="#request" class="btn btn-primary" style="margin-top:8px">Direct starten</a>
         </div>
         <div class="pentagon">
@@ -291,4 +292,5 @@ const _offerLd = (shop && shop.price)
   .qshot img{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow-sm);display:block}
   .qshot figcaption{margin-top:10px;color:var(--muted);font-size:14px;text-align:center}
   @media(min-width:900px){ .qshot{flex-basis:46%} }
+  .assess-usage{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line); color:var(--text); }
 </style>
