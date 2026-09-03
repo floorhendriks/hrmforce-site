@@ -109,6 +109,17 @@ const _offerLd = (shop && shop.price)
     </div>
   </section>
 
+<section class="qshots"><div class="wrap">
+  <div class="eyebrow" style="color:var(--gold)">Zo werkt het</div>
+  <h2 class="qshots-h">Een kijkje in de vragenlijst</h2>
+  <p class="qshots-lead">Zo ziet de vragenlijst er voor je kandidaten uit, van uitnodiging tot afronding.</p>
+  <div class="qshots-track">
+    <figure class="qshot"><img src="/mockups/vragenlijst-intro.svg" alt="Startscherm van de vragenlijst" loading="eager" /><figcaption>Starten in eigen taal en tempo</figcaption></figure>
+    <figure class="qshot"><img src="/mockups/vragenlijst-vraag.svg" alt="Vraagscherm met antwoordschaal" loading="eager" /><figcaption>Stellingen met een duidelijke antwoordschaal</figcaption></figure>
+    <figure class="qshot"><img src="/mockups/vragenlijst-afgerond.svg" alt="Afrondscherm van de vragenlijst" loading="eager" /><figcaption>Uitkomsten bespreek je persoonlijk</figcaption></figure>
+  </div>
+</div></section>
+
   <div class="infobar">
     <div class="wrap">
       <div class="info-grid">
@@ -272,4 +283,12 @@ const _offerLd = (shop && shop.price)
   .ostep h4{color:var(--navy);font-size:1.05rem;margin-bottom:6px}
   .ostep p{color:var(--muted);font-size:14px}
   @media(max-width:760px){.order-steps{grid-template-columns:1fr}}
+  .qshots{padding:48px 0}
+  .qshots-h{margin:6px 0 6px}
+  .qshots-lead{color:var(--muted);max-width:620px;margin:0 0 22px}
+  .qshots-track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;-webkit-overflow-scrolling:touch}
+  .qshot{flex:0 0 88%;max-width:680px;scroll-snap-align:center;margin:0}
+  .qshot img{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow-sm);display:block}
+  .qshot figcaption{margin-top:10px;color:var(--muted);font-size:14px;text-align:center}
+  @media(min-width:900px){ .qshot{flex-basis:46%} }
 </style>
