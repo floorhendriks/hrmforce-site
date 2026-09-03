@@ -20,8 +20,8 @@ const cases = [
     naam: "Odion",
     tekst: "Odion is actief in de regio's Zaanstreek, Kennemerland en Waterland met 63 locaties, 1500 medewerkers en vrijwilligers, en helpt zo'n 1750 kinderen en volwassenen met een beperking. Voor Odion richtten wij de werving en selectie in voor zij-instroomklassen en zorgprofessionals. Met een test- en landingspagina op maat krijgen latent werkzoekenden een goed beeld van de organisatie en kan Odion putten uit een database met relevante leads.",
     quote: "Geschikt voor Zorg biedt data-gedreven diensten en blijft toch persoonlijk. Je merkt dat de mensen hier een zorghart hebben. Het is geen marketingpraatje, ze zijn echt zo. Dat maakt de samenwerking heel fijn!",
-    auteur: "Sietske Ras",
-    rol: "Relatiemanager en Projectleider Icare GewoonThuis",
+    auteur: "",
+    rol: "",
   },
   {
     naam: "Zonboog",
@@ -71,7 +71,7 @@ const cases = [
         {c.quote && (
           <blockquote style="font-style:italic;color:var(--navy);border-left:3px solid var(--gold);padding-left:16px;margin-top:10px">
             "{c.quote}"
-            <div style="font-style:normal;margin-top:8px;font-size:14px;color:var(--muted)"><b>{c.auteur}</b> — {c.rol}</div>
+            {c.auteur && (<div style="font-style:normal;margin-top:8px;font-size:14px;color:var(--muted)"><b>{c.auteur}</b> — {c.rol}</div>)}
           </blockquote>
         )}
       </div>
