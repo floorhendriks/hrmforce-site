@@ -31,11 +31,13 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
 - [x] (2026-09-03) P1 · 3 u · Screenshot-slider in het assessment-template. Voorbeeldvragen blijven als tekst staan. (04:32)
   "Een kijkje in de vragenlijst"-slider met de 3 mockups toegevoegd (scroll-snap), in beide templates, anderstalig vertaald. Voorbeeldvragen ongewijzigd. Live geverifieerd op NL en EN.
 - [x] (2026-09-03) P1 · 7,5 u · Copy herschrijven volgens pijn, dan oplossing, voor de vijf assessments waarop geadverteerd wordt. (04:59)
-  Intro's herschreven naar pijn dan oplossing voor big-five, 360-graden-feedback, drijfverentest, cognitieve-test en disc-test (de 5 bovenaan/uitgelicht). NL in assessments.js. "Big Fifty"-typo gecorrigeerd. Let op: welke 5 er echt geadverteerd worden even bevestigen; anderstalige intro's (assessments-i18n.js) volgen nog.
+  Intro's herschreven naar pijn dan oplossing voor big-five, 360-graden-feedback, drijfverentest, cognitieve-test en disc-test (de 5 bovenaan/uitgelicht). NL in assessments.js. NB: "Big Fifty Personality" is de productnaam (op basis van Big 5) en blijft staan. Let op: welke 5 er echt geadverteerd worden even bevestigen; anderstalige intro's (assessments-i18n.js) volgen nog.
 
 ### Oplossingenpagina's
-- [ ] P1 · 2 u · Concrete call to action per oplossing in plaats van "gratis demo". (06:42)
-- [ ] P1 · 2 u · Aanbod specificeren. Bij de gesprekscyclus is nu onduidelijk of het om de hele cyclus gaat of om de vijf digitale gesprekken, en welke dan. (07:16)
+- [x] (2026-09-03) P1 · 2 u · Concrete call to action per oplossing in plaats van "gratis demo". (06:42)
+  Elke oplossing (matching, HR gesprekscyclus, employability, hr-analytics) heeft nu een concrete CTA die zegt wat er gebeurt.
+- [x] (2026-09-03) P1 · 2 u · Aanbod specificeren. Bij de gesprekscyclus is nu onduidelijk of het om de hele cyclus gaat of om de vijf digitale gesprekken, en welke dan. (07:16)
+  Verduidelijkt (na afstemming): het is de volledige jaarcyclus, met de gesprekken die je erin inzet (bila-gesprek, bila+, ontwikkelgesprek, jaargesprek).
 
 ### Tarieven
 - [ ] P1 · 3 u · Eén tarievenblok met prijzen en features samen. Light, Base en Pro naast elkaar, vanaf-prijs en features in dezelfde kolom, geen losse tabel eronder. (08:58)
