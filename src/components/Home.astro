@@ -119,23 +119,6 @@ const faqLd = {
 
 
 
-<section>
-  <div class="wrap" style="display:block">
-    <span class="eyebrow center">{c.why.eyebrow}</span>
-    <h2 class="section-title center">{c.why.title}</h2>
-    <p class="lead center" style="margin:0 auto 40px">{c.why.lead}</p>
-    <div class="value-grid">
-      {c.valueProps.map((v) => (
-        <div class="value-tile">
-          <span class="value-ic" set:html={vpIcons[v.icon]}></span>
-          <h3>{v.h}</h3>
-          <p>{v.p}</p>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
-
 <section class="bg-soft">
   <div class="wrap" style="display:block">
     <span class="eyebrow center">{c.compare.eyebrow}</span>
@@ -151,6 +134,23 @@ const faqLd = {
         <h3>{c.compare.newTitle}</h3>
         <ul>{c.compare.new.map((t) => <li><span class="vs-ic v">✓</span>{t}</li>)}</ul>
       </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap" style="display:block">
+    <span class="eyebrow center">{c.why.eyebrow}</span>
+    <h2 class="section-title center">{c.why.title}</h2>
+    <p class="lead center" style="margin:0 auto 40px">{c.why.lead}</p>
+    <div class="value-grid">
+      {c.valueProps.map((v) => (
+        <div class="value-tile">
+          <span class="value-ic" set:html={vpIcons[v.icon]}></span>
+          <h3>{v.h}</h3>
+          <p>{v.p}</p>
+        </div>
+      ))}
     </div>
   </div>
 </section>
