@@ -48,18 +48,23 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
 ## Fase 2: P2, 41,5 uur
 
 ### Content en materiaal
-- [ ] P2 · 1 u · Voorlopige reviews plaatsen, zichtbaar gemarkeerd als voorbeeld. (02:01)
+- [x] (2026-09-03) P2 · 1 u · Voorlopige reviews plaatsen, zichtbaar gemarkeerd als voorbeeld. (02:01)
+  5 voorbeeldreviews in ReviewSlider, gemarkeerd met "Voorbeeldweergave". Vervangen voor livegang.
 - [x] (2026-09-03) P2 · 2 u · Foto en persoonlijk verhaal van Floor verzamelen voor Over ons. (09:22)
   Verhaal aangeleverd en verwerkt. Foto nog uploaden (zie Voor livegang).
 
 ### Sitebreed
 - [ ] P2 · 3 u · Standaardblokken boven en onder pagina's vervangen of weghalen. (00:18)
-- [ ] P2 · 3 u · Herbruikbare reviewslider bouwen, met sterren en foto. (10:43)
+- [x] (2026-09-03) P2 · 3 u · Herbruikbare reviewslider bouwen, met sterren en foto. (10:43)
+  ReviewSlider.astro met sterren, avatar en scroll-snap.
 
 ### Homepage
-- [ ] P2 · 1 u · Hero opschonen. De keuzepaden en de checklistrijtjes onder de knoppen maken het rommelig, kies er één. (01:45)
-- [ ] P2 · 2 u · Reviewblok met sterren en foto's hoog op de pagina. (01:40)
-- [ ] P2 · 0,5 u · Actiebutton in het middenblok, dat loopt nu dood. (02:25)
+- [x] (2026-09-03) P2 · 1 u · Hero opschonen. De keuzepaden en de checklistrijtjes onder de knoppen maken het rommelig, kies er één. (01:45)
+  Keuzepaden verwijderd, trust-checklist (Gevalideerd, NIP, AVG) behouden.
+- [x] (2026-09-03) P2 · 2 u · Reviewblok met sterren en foto's hoog op de pagina. (01:40)
+  ReviewSlider hoog op de homepage (na pijn/oplossing- en why-blok), live geverifieerd.
+- [x] (2026-09-03) P2 · 0,5 u · Actiebutton in het middenblok, dat loopt nu dood. (02:25)
+  Concrete CTA toegevoegd aan het why-blok (Plan een kennismaking met een HR-specialist).
 
 ### Assessmentpagina's
 - [ ] P2 · 10 u · De vijf assessmentpagina's verdiepen en verlengen. De basis is goed, de inhoud mag uitgebreider. (04:39)
