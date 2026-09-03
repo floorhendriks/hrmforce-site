@@ -48,12 +48,6 @@ const roiHref = localizePath("/roi-rekentool/", lang);
   <p class="muted" style="margin-top:16px;font-size:14px">{t.plansNote}</p>
 </div></section>
 
-<section><div class="wrap">
-  <div class="eyebrow">{t.incl.eyebrow}</div>
-  <h2 class="section-title">{t.incl.title}</h2>
-  <ul class="incl-grid">{t.incl.items.map((i) => <li>{i}</li>)}</ul>
-</div></section>
-
 <section class="bg-soft"><div class="wrap">
   <div class="eyebrow">{t.onb.eyebrow}</div>
   <h2 class="section-title">{t.onb.title}</h2>
@@ -69,6 +63,13 @@ const roiHref = localizePath("/roi-rekentool/", lang);
   </div>
   <p class="muted" style="margin-top:14px;font-size:14px">{t.onb.note}</p>
 </div></section>
+
+<section><div class="wrap">
+  <div class="eyebrow">{t.incl.eyebrow}</div>
+  <h2 class="section-title">{t.incl.title}</h2>
+  <ul class="incl-grid">{t.incl.items.map((i) => <li>{i}</li>)}</ul>
+</div></section>
+
 
 <section><div class="wrap">
   <div class="eyebrow">{t.faqSection.eyebrow}</div>
