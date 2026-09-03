@@ -13,12 +13,15 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
 ### Sitebreed
 - [x] (2026-09-03) P1 · 1 u · Menu sticky maken. Het menu verdwijnt nu bij scrollen en moet altijd zichtbaar blijven. (02:54)
   Was al sticky via global.css (header position:sticky, top:0, z-index:50), live geverifieerd op homepage.
-- [ ] P1 · 3 u · Herbruikbare logoslider bouwen, logo's in kleur. Voor homepage, oplossingen en training. (01:28)
+- [x] (2026-09-03) P1 · 3 u · Herbruikbare logoslider bouwen, logo's in kleur. Voor homepage, oplossingen en training. (01:28)
+  LogoSlider.astro met 22 echte klantlogo's in kleur (marquee). Logos laden eager, want lazy brak in de horizontale marquee.
 
 ### Homepage
-- [ ] P1 · 1 u · Hero terugbrengen tot één USP. "Binnen 24 uur reactie" werkt, "vrijblijvend advies" is geen USP en kan eruit. (00:56)
+- [x] (2026-09-03) P1 · 1 u · Hero terugbrengen tot één USP. "Binnen 24 uur reactie" werkt, "vrijblijvend advies" is geen USP en kan eruit. (00:56)
+  Hero-micro in 6 talen teruggebracht tot alleen "Binnen 24 uur reactie".
 - [ ] P1 · 1 u · Pijn/oplossing-blok naar boven halen, direct onder de hero. Dit blok werd expliciet goed genoemd maar staat te laag. (01:20)
-- [ ] P1 · 1 u · Logoslider direct onder de header plaatsen, logo's in kleur. (01:28)
+- [x] (2026-09-03) P1 · 1 u · Logoslider direct onder de header plaatsen, logo's in kleur. (01:28)
+  Op homepage direct onder de header geplaatst, de kapotte proof-strook (verzonnen bestandsnamen) vervangen. Kan desgewenst onder de hero i.p.v. erboven.
 
 ### Assessmentpagina's
 - [ ] P1 · 0,5 u · Hero-afbeelding verkleinen, die duwt nu de inhoud weg. (03:17)
@@ -81,3 +84,6 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
 
 ## Later opgemerkt
 (hier zet je dingen die je onderweg tegenkomt en die niet bij je huidige taak horen)
+- home.js regel 31 (nl werkwijze-lead) gebruikt een gedachtestreepje, in strijd met de stijlafspraak. Vervangen door komma.
+- Base.astro herschrijft lazy afbeeldingen naar de weserv-proxy. In horizontale marquees laden off-screen lazy afbeeldingen niet. Breder nakijken of dit elders speelt.
+- Live homepage liep bij aanvang achter op de broncode (oude build). Na deploy komt de nieuwe hero/logoslider door.
