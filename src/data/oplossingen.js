@@ -27,7 +27,7 @@ export const oplossingen = [
     ],
     image: "https://hrmforce.com/wp-content/uploads/2023/05/NLP-recruitment-development.webp",
     photo: "https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=900",
-    cta: "Vraag een gratis demo aan",
+    cta: "Bepaal met een HR-specialist welke assessments bij jullie vacatures passen",
   },
   {
     slug: "development",
@@ -53,7 +53,7 @@ export const oplossingen = [
     ],
     image: "https://hrmforce.com/wp-content/uploads/2017/02/appraisal-hrmforce.jpg",
     photo: "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=900",
-    cta: "Vraag een gratis demo aan",
+    cta: "Bespreek met een HR-specialist welke ontwikkelaanpak bij jullie team past",
   },
   {
     slug: "employability",
@@ -79,7 +79,7 @@ export const oplossingen = [
     ],
     image: "https://hrmforce.com/wp-content/uploads/2021/05/pulse-survey-hrmforce.jpg",
     photo: "https://images.pexels.com/photos/3760069/pexels-photo-3760069.jpeg?auto=compress&cs=tinysrgb&w=900",
-    cta: "Vraag een gratis demo aan",
+    cta: "Bepaal met een HR-specialist hoe je duurzame inzetbaarheid meetbaar maakt",
   },
   {
     slug: "hr-analytics",
@@ -105,6 +105,6 @@ export const oplossingen = [
     ],
     image: "https://hrmforce.com/wp-content/uploads/2022/02/ass-afb3.png",
     photo: "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=900",
-    cta: "Vraag een gratis demo aan",
+    cta: "Bespreek met een HR-specialist welke HR-data jullie beslissingen onderbouwt",
   },
 ];
