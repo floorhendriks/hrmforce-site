@@ -11,7 +11,8 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
 - [ ] P1 · 1 u · Screenshots van de vragenlijst-interface genereren. Drie tot vijf beelden per assessment, kloppend met het echte product. Voorwaarde voor de sliders op de assessment-, oplossing- en shoppagina's. (03:29)
 
 ### Sitebreed
-- [ ] P1 · 1 u · Menu sticky maken. Het menu verdwijnt nu bij scrollen en moet altijd zichtbaar blijven. (02:54)
+- [x] (2026-09-03) P1 · 1 u · Menu sticky maken. Het menu verdwijnt nu bij scrollen en moet altijd zichtbaar blijven. (02:54)
+  Was al sticky via global.css (header position:sticky, top:0, z-index:50), live geverifieerd op homepage.
 - [ ] P1 · 3 u · Herbruikbare logoslider bouwen, logo's in kleur. Voor homepage, oplossingen en training. (01:28)
 
 ### Homepage
