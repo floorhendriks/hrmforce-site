@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Voorbeeld van het afrondscherm van de hrmforce vragenlijst">
+  <rect width="1200" height="760" fill="#EEF3F9"/>
+  <rect x="0" y="0" width="1200" height="72" fill="#FFFFFF"/>
+  <rect x="0" y="71" width="1200" height="1" fill="#E2E8F0"/>
+  <text x="48" y="46" font-size="24" font-weight="800" fill="#0B2545">hrm<tspan fill="#C8A63E">force</tspan></text>
+  <text x="1152" y="44" text-anchor="end" font-size="15" fill="#6B7A90">Afgerond</text>
+  <rect x="0" y="72" width="1200" height="6" fill="#E7EDF4"/>
+  <rect x="0" y="72" width="1200" height="6" fill="#C8A63E"/>
+  <rect x="240" y="160" width="720" height="450" rx="18" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <circle cx="600" cy="270" r="52" fill="#EAF6EE"/>
+  <path d="M576 270 l16 16 l32 -34" fill="none" stroke="#1F9D57" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="600" y="360" text-anchor="middle" font-size="30" font-weight="800" fill="#1F2D45">Bedankt, je antwoorden zijn verwerkt</text>
+  <text x="600" y="402" text-anchor="middle" font-size="17" fill="#6B7A90">Je persoonlijke terugkoppeling bespreekt je adviseur met je.</text>
+  <rect x="360" y="448" width="480" height="64" rx="12" fill="#F6F8FB" stroke="#E2E8F0"/>
+  <circle cx="404" cy="480" r="18" fill="#0B2545"/>
+  <path d="M394 474 h20 v12 h-20 z" fill="none" stroke="#FFFFFF" stroke-width="2"/><path d="M394 474 l10 8 l10 -8" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+  <text x="436" y="475" font-size="15" font-weight="700" fill="#1F2D45">Je rapport is onderweg naar je inbox</text>
+  <text x="436" y="497" font-size="14" fill="#6B7A90">Heldere uitleg, direct bruikbaar in het gesprek.</text>
+  <text x="600" y="560" text-anchor="middle" font-size="14" fill="#94A3B8">Geen pdf om te downloaden. De uitkomsten bespreek je persoonlijk.</text>
+</svg>
