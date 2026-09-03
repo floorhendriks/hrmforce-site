@@ -90,11 +90,6 @@ const faqLd = {
         <a class="btn btn-ghost hero-ghost" href={assessHref}>{c.hero.ctaGhost}</a>
       </div>
       <p class="hero-micro">{c.hero.micro}</p>
-      <div class="hero-choose">
-        <span>{c.hero.chooseLabel}</span>
-        <a href={chooseSelect}>{c.hero.chooseSelect} →</a>
-        <a href={chooseDevelop}>{c.hero.chooseDevelop} →</a>
-      </div>
       <div class="hero-badges">
         {c.hero.badges.map((b) => <span class="hb"><span class="hb-ic">✓</span> {b}</span>)}
       </div>
@@ -153,6 +148,7 @@ const faqLd = {
         </div>
       ))}
     </div>
+      <div class="center" style="margin-top:26px"><a class="btn btn-primary" href={contactHref}>Plan een kennismaking met een HR-specialist</a></div>
   </div>
 </section>
 
