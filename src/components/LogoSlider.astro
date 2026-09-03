@@ -37,7 +37,7 @@ const track = logos.concat(logos);
     <div class="ls-viewport" aria-label="Klantlogo's">
       <div class="ls-track">
         { track.map((l) => (
-          <span class="ls-item"><img src={base + l.file} alt={l.name} loading="lazy" /></span>
+          <span class="ls-item"><img src={base + l.file} alt={l.name} loading="eager" decoding="async" fetchpriority="low" /></span>
         )) }
       </div>
     </div>
