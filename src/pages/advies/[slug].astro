@@ -2,6 +2,8 @@
 import Base from "../../layouts/Base.astro";
 import { adviesDetail } from "../../data/advies-detail.js";
 import { getLangFromUrl, localizePath } from "../../i18n/utils.js";
+import LogoSlider from "../../components/LogoSlider.astro";
+import ReviewSlider from "../../components/ReviewSlider.astro";
 
 export async function getStaticPaths() {
   return adviesDetail.map((a) => ({ params: { slug: a.slug }, props: { a } }));
@@ -59,4 +61,7 @@ const adviesHref = localizePath("/advies/", lang);
       </div>
     </div>
   </section>
+
+  <LogoSlider heading="Vertrouwd door 1.200+ organisaties" />
+  <ReviewSlider heading="Wat opdrachtgevers merken" />
 </Base>
