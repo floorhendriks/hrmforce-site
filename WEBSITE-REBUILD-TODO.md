@@ -121,3 +121,6 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
 - home.js regel 31 (nl werkwijze-lead) gebruikt een gedachtestreepje, in strijd met de stijlafspraak. Vervangen door komma.
 - Base.astro herschrijft lazy afbeeldingen naar de weserv-proxy. In horizontale marquees laden off-screen lazy afbeeldingen niet. Breder nakijken of dit elders speelt.
 - Live homepage liep bij aanvang achter op de broncode (oude build). Na deploy komt de nieuwe hero/logoslider door.
+- (2026-09-04) Mobiele hercheck uitgevoerd: hamburgermenu werkt nu op alle templates (homepage, assessment, tarieven, shop, hrm-oplossingen, over-ons, kenniscentrum). Menu standaard verborgen, opent op tik. Pagina's stapelen netjes in één kolom.
+- (2026-09-04) Over ons: ingebedde foto van Floor bleek bij een eerdere commit corrupt geraakt (data-URI decodeerde niet, toonde "FH"). Opnieuw ingebed als geverifieerde data-URI en gecontroleerd op de live blob.
+- Gedachtestreepje komt op meer plekken voor dan alleen home.js: cookiebanner-tekst, shop-hero ("zonder abonnement —"), hrm-oplossingen intro ("elke fase —"), assessment-prijsblok ("licentiebasis —"). Sitebreed vervangen door komma.
