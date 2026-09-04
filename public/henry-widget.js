@@ -1,5 +1,5 @@
 /**
- * Henry — hrmforce chatbot widget (standalone external script)
+ * Henry, hrmforce chatbot widget (standalone external script)
  * Self-injecting build generated from the live hrmforce.com widget (latest).
  * Embed: <script src=".../henry-widget.js" defer></script> before </body>.
  */
@@ -15,7 +15,7 @@
   // ---- widget logic (from live inline build) ----
 
   // ============================================================
-  // CONFIG — paste your Cloudflare Worker URL here to enable LLM mode.
+  // CONFIG, paste your Cloudflare Worker URL here to enable LLM mode.
   // Leave empty ("") to use the local keyword matcher only (offline).
   // See llm-setup-guide.md for deployment instructions.
   // ============================================================
@@ -23,7 +23,7 @@
   var HISTORY_TURNS = 6;  // how many recent user/assistant turns to send to the LLM
 
   // Cloudflare Turnstile site key (public, safe to embed).
-  // Leave empty to disable — the Worker will accept unauthenticated requests.
+  // Leave empty to disable, the Worker will accept unauthenticated requests.
   // Once set, the Worker must also have TURNSTILE_SECRET env var configured.
   var TURNSTILE_SITEKEY = "0x4AAAAAADxY_rOwdWb8Dpdj";
 
@@ -36,7 +36,7 @@
       welcome: "Welkom bij hrmforce! Hoe kan ik u vandaag helpen met talentmanagement?",
       placeholder: "Schrijf je bericht…",
       status: "Online",
-      noMatch: "Daar heb ik nog geen kant-en-klaar antwoord op. Mail ons gerust via service@hrmforce.com of bel +31 (0)88 88 321 88 — onze servicedesk helpt je verder.",
+      noMatch: "Daar heb ik nog geen kant-en-klaar antwoord op. Mail ons gerust via service@hrmforce.com of bel +31 (0)88 88 321 88, onze servicedesk helpt je verder.",
       suggestedStart: ["Hoe werkt de talentmanagement software van hrmforce?", "Welke HRM oplossingen bieden jullie aan?", "Hoe snel kunnen we live?", "Gratis demo aanvragen"]
     },
     en: {
@@ -44,7 +44,7 @@
       welcome: "Welcome to hrmforce! How can I assist you with our talent management solutions today?",
       placeholder: "Write your message…",
       status: "Online",
-      noMatch: "I don't have a ready answer for that yet. Email us at service@hrmforce.com or call +31 (0)88 88 321 88 — our service desk will be glad to help.",
+      noMatch: "I don't have a ready answer for that yet. Email us at service@hrmforce.com or call +31 (0)88 88 321 88, our service desk will be glad to help.",
       suggestedStart: ["What HRM solutions does hrmforce offer?", "Where can I find more information about assessments?", "How fast can we go live?", "Request a free demo"]
     },
     de: {
@@ -52,7 +52,7 @@
       welcome: "Willkommen bei hrmforce! Wie kann ich Ihnen heute beim Talentmanagement helfen?",
       placeholder: "Nachricht schreiben…",
       status: "Online",
-      noMatch: "Dafür habe ich noch keine vorbereitete Antwort. Schreiben Sie uns gerne an service@hrmforce.com oder rufen Sie +31 (0)88 88 321 88 an — unser Service-Desk hilft Ihnen weiter.",
+      noMatch: "Dafür habe ich noch keine vorbereitete Antwort. Schreiben Sie uns gerne an service@hrmforce.com oder rufen Sie +31 (0)88 88 321 88 an, unser Service-Desk hilft Ihnen weiter.",
       suggestedStart: ["Was bietet hrmforce an Talentmanagement-Software?", "Welche HR-Lösungen bieten Sie an?", "Wie schnell können wir starten?", "Kostenlose Demo anfragen"]
     },
     fr: {
@@ -60,7 +60,7 @@
       welcome: "Bienvenue chez hrmforce ! Comment puis-je vous aider avec la gestion des talents aujourd'hui ?",
       placeholder: "Écrivez votre message…",
       status: "En ligne",
-      noMatch: "Je n'ai pas encore de réponse prête pour cela. Écrivez-nous à service@hrmforce.com ou appelez le +31 (0)88 88 321 88 — notre service desk se fera un plaisir de vous aider.",
+      noMatch: "Je n'ai pas encore de réponse prête pour cela. Écrivez-nous à service@hrmforce.com ou appelez le +31 (0)88 88 321 88, notre service desk se fera un plaisir de vous aider.",
       suggestedStart: ["Que propose hrmforce comme logiciel de gestion des talents ?", "Quelles solutions RH proposez-vous ?", "Sous combien de temps peut-on démarrer ?", "Demander une démo gratuite"]
     },
     es: {
@@ -68,7 +68,7 @@
       welcome: "¡Bienvenido a hrmforce! ¿Cómo puedo ayudarle hoy con la gestión del talento?",
       placeholder: "Escribe tu mensaje…",
       status: "En línea",
-      noMatch: "Aún no tengo una respuesta preparada para eso. Escríbanos a service@hrmforce.com o llame al +31 (0)88 88 321 88 — nuestro service desk estará encantado de ayudarle.",
+      noMatch: "Aún no tengo una respuesta preparada para eso. Escríbanos a service@hrmforce.com o llame al +31 (0)88 88 321 88, nuestro service desk estará encantado de ayudarle.",
       suggestedStart: ["¿Qué software de gestión del talento ofrece hrmforce?", "¿Qué soluciones de RR.HH. ofrecen?", "¿En cuánto tiempo podemos empezar?", "Solicitar una demo gratuita"]
     },
     ro: {
@@ -76,7 +76,7 @@
       welcome: "Bine ați venit la hrmforce! Cum vă pot ajuta astăzi cu managementul talentelor?",
       placeholder: "Scrieți mesajul dvs…",
       status: "Online",
-      noMatch: "Nu am încă un răspuns pregătit pentru asta. Scrieți-ne la service@hrmforce.com sau sunați la +31 (0)88 88 321 88 — biroul nostru de service vă va ajuta cu plăcere.",
+      noMatch: "Nu am încă un răspuns pregătit pentru asta. Scrieți-ne la service@hrmforce.com sau sunați la +31 (0)88 88 321 88, biroul nostru de service vă va ajuta cu plăcere.",
       suggestedStart: ["Ce software de management al talentelor oferă hrmforce?", "Ce soluții HR oferiți?", "Cât de repede putem începe?", "Solicită un demo gratuit"]
     }
   };
@@ -94,7 +94,7 @@
   };
 
   // ============================================================
-  // KNOWLEDGE BASE — each entry has the question/answer/tags
+  // KNOWLEDGE BASE, each entry has the question/answer/tags
   // in all 6 languages. Tags are normalized (lowercase, no diacritics)
   // and are scored highest by the matcher.
   // ============================================================
@@ -103,43 +103,43 @@
     {
       id: "what-is-hrmforce",
       nl: { q: "Wat doet hrmforce eigenlijk?",
-            a: "Hrmforce is het snelstgroeiende online ontwikkelplatform voor talentmanagement, met het meest complete aanbod van assessments in Nederland. Wij ondersteunen werving, ontwikkeling, employability en HR-analytics — wetenschappelijk onderbouwd en met persoonlijke begeleiding. 1.500+ organisaties gingen je voor, met meer dan 100.000 tests per jaar.",
+            a: "Hrmforce is het snelstgroeiende online ontwikkelplatform voor talentmanagement, met het meest complete aanbod van assessments in Nederland. Wij ondersteunen werving, ontwikkeling, employability en HR-analytics, wetenschappelijk onderbouwd en met persoonlijke begeleiding. 1.500+ organisaties gingen je voor, met meer dan 100.000 tests per jaar.",
             tags: ["over","wat","doet","bedrijf","talentmanagement","platform","wie","hrmforce"] },
       en: { q: "What does hrmforce do?",
-            a: "Hrmforce is the fastest-growing online development platform for talent management, offering the most complete range of assessments in the Netherlands. We support recruitment, development, employability and HR analytics — scientifically grounded with personal guidance. 1,500+ organisations have preceded you, with over 100,000 tests run per year.",
+            a: "Hrmforce is the fastest-growing online development platform for talent management, offering the most complete range of assessments in the Netherlands. We support recruitment, development, employability and HR analytics, scientifically grounded with personal guidance. 1,500+ organisations have preceded you, with over 100,000 tests run per year.",
             tags: ["about","what","do","company","talent management","platform","who","hrmforce"] },
       de: { q: "Was macht hrmforce eigentlich?",
-            a: "Hrmforce ist die am schnellsten wachsende Online-Entwicklungsplattform für Talentmanagement mit dem umfassendsten Assessment-Angebot in den Niederlanden. Wir unterstützen Recruiting, Entwicklung, Employability und HR-Analytics — wissenschaftlich fundiert und mit persönlicher Begleitung. Über 1.500 Organisationen vertrauen uns, mit mehr als 100.000 Tests pro Jahr.",
+            a: "Hrmforce ist die am schnellsten wachsende Online-Entwicklungsplattform für Talentmanagement mit dem umfassendsten Assessment-Angebot in den Niederlanden. Wir unterstützen Recruiting, Entwicklung, Employability und HR-Analytics, wissenschaftlich fundiert und mit persönlicher Begleitung. Über 1.500 Organisationen vertrauen uns, mit mehr als 100.000 Tests pro Jahr.",
             tags: ["uber","was","macht","unternehmen","talentmanagement","plattform","wer","hrmforce"] },
       fr: { q: "Que fait hrmforce ?",
-            a: "Hrmforce est la plateforme de développement en ligne pour la gestion des talents qui connaît la croissance la plus rapide, avec la gamme d'assessments la plus complète aux Pays-Bas. Nous accompagnons recrutement, développement, employabilité et analytique RH — scientifiquement fondé et avec un accompagnement personnel. Plus de 1 500 organisations nous font confiance, avec plus de 100 000 tests réalisés chaque année.",
+            a: "Hrmforce est la plateforme de développement en ligne pour la gestion des talents qui connaît la croissance la plus rapide, avec la gamme d'assessments la plus complète aux Pays-Bas. Nous accompagnons recrutement, développement, employabilité et analytique RH, scientifiquement fondé et avec un accompagnement personnel. Plus de 1 500 organisations nous font confiance, avec plus de 100 000 tests réalisés chaque année.",
             tags: ["a propos","que","fait","entreprise","gestion talents","plateforme","qui","hrmforce"] },
       es: { q: "¿Qué hace hrmforce?",
-            a: "Hrmforce es la plataforma de desarrollo en línea para la gestión del talento de más rápido crecimiento, con la oferta de assessments más completa de los Países Bajos. Apoyamos selección, desarrollo, empleabilidad y analítica de RR.HH. — con base científica y acompañamiento personal. Más de 1.500 organizaciones nos han precedido, con más de 100.000 tests al año.",
+            a: "Hrmforce es la plataforma de desarrollo en línea para la gestión del talento de más rápido crecimiento, con la oferta de assessments más completa de los Países Bajos. Apoyamos selección, desarrollo, empleabilidad y analítica de RR.HH., con base científica y acompañamiento personal. Más de 1.500 organizaciones nos han precedido, con más de 100.000 tests al año.",
             tags: ["sobre","que","hace","empresa","gestion talento","plataforma","quien","hrmforce"] },
       ro: { q: "Ce face hrmforce?",
-            a: "Hrmforce este cea mai rapid în creștere platformă online de dezvoltare pentru managementul talentelor, cu cea mai completă gamă de evaluări din Olanda. Susținem recrutare, dezvoltare, employability și analitică HR — fundamentat științific și cu îndrumare personală. Peste 1.500 de organizații ne-au precedat, cu peste 100.000 de teste pe an.",
+            a: "Hrmforce este cea mai rapid în creștere platformă online de dezvoltare pentru managementul talentelor, cu cea mai completă gamă de evaluări din Olanda. Susținem recrutare, dezvoltare, employability și analitică HR, fundamentat științific și cu îndrumare personală. Peste 1.500 de organizații ne-au precedat, cu peste 100.000 de teste pe an.",
             tags: ["despre","ce","face","companie","management talente","platforma","cine","hrmforce"] }
     },
     {
       id: "selection-vs-development",
       nl: { q: "Welke assessments passen bij selectie en welke bij ontwikkeling?",
-            a: "Het doel bepaalt de keuze. Bij selectie zoek je signalen die voorspellen hoe iemand zich gedraagt in de functie — gestructureerde capaciteitentesten en persoonlijkheidsvragenlijsten zoals de Big Fifty horen daarbij. Bij ontwikkeling draait het om zelfinzicht en groei; DISC en 360° feedback passen daar beter. Zie het assessment-overzicht voor de doelen per instrument.\n\nMeer: https://hrmforce.com/assessment-overzicht/",
+            a: "Het doel bepaalt de keuze. Bij selectie zoek je signalen die voorspellen hoe iemand zich gedraagt in de functie, gestructureerde capaciteitentesten en persoonlijkheidsvragenlijsten zoals de Big Fifty horen daarbij. Bij ontwikkeling draait het om zelfinzicht en groei; DISC en 360° feedback passen daar beter. Zie het assessment-overzicht voor de doelen per instrument.\n\nMeer: https://hrmforce.com/assessment-overzicht/",
             tags: ["selectie","ontwikkeling","assessment","big five","big fifty","disc","360","keuze","welke","verschil"] },
       en: { q: "Which assessments fit selection and which fit development?",
-            a: "Your purpose drives the choice. For selection you want signals that predict on-the-job behaviour — structured ability tests and personality questionnaires such as the Big Fifty. For development the value sits in self-insight and growth, so DISC and 360° feedback fit better. The assessment overview shows what each instrument was built for.\n\nMore: https://hrmforce.com/en/online-assessments/",
+            a: "Your purpose drives the choice. For selection you want signals that predict on-the-job behaviour, structured ability tests and personality questionnaires such as the Big Fifty. For development the value sits in self-insight and growth, so DISC and 360° feedback fit better. The assessment overview shows what each instrument was built for.\n\nMore: https://hrmforce.com/en/online-assessments/",
             tags: ["selection","development","assessment","big five","big fifty","disc","360","choose","which","difference"] },
       de: { q: "Welche Assessments passen zur Auswahl, welche zur Entwicklung?",
-            a: "Der Zweck bestimmt die Wahl. Für die Auswahl wollen Sie Signale, die das Verhalten am Arbeitsplatz vorhersagen — strukturierte Fähigkeitstests und Persönlichkeitsfragebögen wie der Big Fifty gehören dazu. Bei der Entwicklung geht es um Selbsterkenntnis und Wachstum; DISC und 360°-Feedback passen besser. Die Assessment-Übersicht zeigt, wofür jedes Instrument entwickelt wurde.",
+            a: "Der Zweck bestimmt die Wahl. Für die Auswahl wollen Sie Signale, die das Verhalten am Arbeitsplatz vorhersagen, strukturierte Fähigkeitstests und Persönlichkeitsfragebögen wie der Big Fifty gehören dazu. Bei der Entwicklung geht es um Selbsterkenntnis und Wachstum; DISC und 360°-Feedback passen besser. Die Assessment-Übersicht zeigt, wofür jedes Instrument entwickelt wurde.",
             tags: ["auswahl","entwicklung","assessment","big five","big fifty","disc","360","wahl","welche","unterschied"] },
       fr: { q: "Quels assessments pour la sélection et lesquels pour le développement ?",
-            a: "L'objectif détermine le choix. Pour la sélection, vous cherchez des signaux qui prédisent le comportement au poste — tests d'aptitudes structurés et questionnaires de personnalité comme le Big Fifty. Pour le développement, la valeur est dans l'introspection et la croissance ; DISC et feedback 360° conviennent mieux. La vue d'ensemble des assessments indique l'usage de chaque instrument.",
+            a: "L'objectif détermine le choix. Pour la sélection, vous cherchez des signaux qui prédisent le comportement au poste, tests d'aptitudes structurés et questionnaires de personnalité comme le Big Fifty. Pour le développement, la valeur est dans l'introspection et la croissance ; DISC et feedback 360° conviennent mieux. La vue d'ensemble des assessments indique l'usage de chaque instrument.",
             tags: ["selection","developpement","assessment","big five","big fifty","disc","360","choisir","quel","difference"] },
       es: { q: "¿Qué assessments encajan para selección y cuáles para desarrollo?",
-            a: "El propósito determina la elección. Para selección busca señales que predigan el comportamiento en el puesto — pruebas de aptitudes estructuradas y cuestionarios de personalidad como el Big Fifty. Para desarrollo el valor está en el autoconocimiento y el crecimiento; DISC y feedback 360° encajan mejor. La visión general muestra para qué se diseñó cada instrumento.",
+            a: "El propósito determina la elección. Para selección busca señales que predigan el comportamiento en el puesto, pruebas de aptitudes estructuradas y cuestionarios de personalidad como el Big Fifty. Para desarrollo el valor está en el autoconocimiento y el crecimiento; DISC y feedback 360° encajan mejor. La visión general muestra para qué se diseñó cada instrumento.",
             tags: ["seleccion","desarrollo","assessment","big five","big fifty","disc","360","elegir","cual","diferencia"] },
       ro: { q: "Ce evaluări sunt pentru selecție și care pentru dezvoltare?",
-            a: "Scopul determină alegerea. Pentru selecție căutați semnale care prezic comportamentul la post — teste de aptitudini structurate și chestionare de personalitate precum Big Fifty. Pentru dezvoltare, valoarea stă în auto-cunoaștere și creștere; DISC și feedback-ul 360° se potrivesc mai bine. Prezentarea generală arată pentru ce a fost creat fiecare instrument.",
+            a: "Scopul determină alegerea. Pentru selecție căutați semnale care prezic comportamentul la post, teste de aptitudini structurate și chestionare de personalitate precum Big Fifty. Pentru dezvoltare, valoarea stă în auto-cunoaștere și creștere; DISC și feedback-ul 360° se potrivesc mai bine. Prezentarea generală arată pentru ce a fost creat fiecare instrument.",
             tags: ["selectie","dezvoltare","evaluare","big five","big fifty","disc","360","alege","care","diferenta"] }
     },
     {
@@ -187,22 +187,22 @@
     {
       id: "shop-vs-licence",
       nl: { q: "Wat is het verschil tussen een licentie en de webshop?",
-            a: "De webshop is voor incidentele afnames — handig voor freelance consultants of kleinere organisaties die af en toe een vragenlijst inzetten. Een licentie past bij organisaties die structureel of op grotere schaal assessments inzetten: toegang binnen afgesproken kaders, eigen branding op rapporten en gebruikersbeheer in het platform.",
+            a: "De webshop is voor incidentele afnames, handig voor freelance consultants of kleinere organisaties die af en toe een vragenlijst inzetten. Een licentie past bij organisaties die structureel of op grotere schaal assessments inzetten: toegang binnen afgesproken kaders, eigen branding op rapporten en gebruikersbeheer in het platform.",
             tags: ["webshop","shop","licentie","verschil","prijs","losse","incidenteel","structureel"] },
       en: { q: "What's the difference between a licence and the webshop?",
-            a: "The webshop is for occasional use — handy for freelance consultants or smaller organisations that run a questionnaire now and then. A licence suits organisations that use assessments structurally or at scale: access within agreed limits, your own branding on reports, and user management in the platform.",
+            a: "The webshop is for occasional use, handy for freelance consultants or smaller organisations that run a questionnaire now and then. A licence suits organisations that use assessments structurally or at scale: access within agreed limits, your own branding on reports, and user management in the platform.",
             tags: ["shop","webshop","licence","license","difference","price","one-off","structural"] },
       de: { q: "Was ist der Unterschied zwischen einer Lizenz und dem Webshop?",
-            a: "Der Webshop ist für gelegentliche Nutzung — praktisch für freiberufliche Consultants oder kleinere Organisationen, die ab und zu einen Fragebogen einsetzen. Eine Lizenz passt zu Organisationen, die Assessments strukturell oder in größerem Umfang einsetzen: Zugang innerhalb vereinbarter Rahmen, eigenes Branding in Berichten und Benutzerverwaltung auf der Plattform.",
+            a: "Der Webshop ist für gelegentliche Nutzung, praktisch für freiberufliche Consultants oder kleinere Organisationen, die ab und zu einen Fragebogen einsetzen. Eine Lizenz passt zu Organisationen, die Assessments strukturell oder in größerem Umfang einsetzen: Zugang innerhalb vereinbarter Rahmen, eigenes Branding in Berichten und Benutzerverwaltung auf der Plattform.",
             tags: ["shop","webshop","lizenz","unterschied","preis","einzeln","gelegentlich","strukturell"] },
       fr: { q: "Quelle est la différence entre une licence et la boutique en ligne ?",
-            a: "La boutique en ligne est pour un usage occasionnel — pratique pour les consultants indépendants ou les petites organisations qui utilisent un questionnaire de temps en temps. Une licence convient aux organisations qui utilisent des assessments de manière structurelle ou à grande échelle : accès dans un cadre convenu, branding sur les rapports et gestion des utilisateurs dans la plateforme.",
+            a: "La boutique en ligne est pour un usage occasionnel, pratique pour les consultants indépendants ou les petites organisations qui utilisent un questionnaire de temps en temps. Une licence convient aux organisations qui utilisent des assessments de manière structurelle ou à grande échelle : accès dans un cadre convenu, branding sur les rapports et gestion des utilisateurs dans la plateforme.",
             tags: ["boutique","licence","difference","prix","unitaire","occasionnel","structurel"] },
       es: { q: "¿Cuál es la diferencia entre una licencia y la tienda?",
-            a: "La tienda es para uso ocasional — práctica para consultores autónomos u organizaciones pequeñas que aplican un cuestionario de vez en cuando. Una licencia conviene a organizaciones que usan assessments de forma estructural o a gran escala: acceso dentro de los límites acordados, marca propia en los informes y gestión de usuarios en la plataforma.",
+            a: "La tienda es para uso ocasional, práctica para consultores autónomos u organizaciones pequeñas que aplican un cuestionario de vez en cuando. Una licencia conviene a organizaciones que usan assessments de forma estructural o a gran escala: acceso dentro de los límites acordados, marca propia en los informes y gestión de usuarios en la plataforma.",
             tags: ["tienda","licencia","diferencia","precio","unitario","ocasional","estructural"] },
       ro: { q: "Care este diferența între o licență și magazinul online?",
-            a: "Magazinul online este pentru utilizare ocazională — util pentru consultanți independenți sau organizații mici care folosesc ocazional un chestionar. O licență se potrivește organizațiilor care folosesc evaluări structural sau la scară: acces în limitele convenite, branding propriu pe rapoarte și gestionarea utilizatorilor în platformă.",
+            a: "Magazinul online este pentru utilizare ocazională, util pentru consultanți independenți sau organizații mici care folosesc ocazional un chestionar. O licență se potrivește organizațiilor care folosesc evaluări structural sau la scară: acces în limitele convenite, branding propriu pe rapoarte și gestionarea utilizatorilor în platformă.",
             tags: ["magazin","licenta","diferenta","pret","unitar","ocazional","structural"] }
     },
     {
@@ -229,43 +229,43 @@
     {
       id: "gdpr",
       nl: { q: "Hoe gaan jullie om met persoonsgegevens en de AVG?",
-            a: "Persoonsgegevens worden verwerkt binnen de Europese Unie, met versleutelde verbindingen, rolgebaseerd gebruikersbeheer en bewaartermijnen die je per assessment zelf instelt. Voor elk traject sluiten we een verwerkersovereenkomst. Kandidaten zien vooraf wat er met hun gegevens gebeurt — conform AVG en de NIP-richtlijnen.\n\nPrivacy: https://hrmforce.com/support/privacy-statement/",
+            a: "Persoonsgegevens worden verwerkt binnen de Europese Unie, met versleutelde verbindingen, rolgebaseerd gebruikersbeheer en bewaartermijnen die je per assessment zelf instelt. Voor elk traject sluiten we een verwerkersovereenkomst. Kandidaten zien vooraf wat er met hun gegevens gebeurt, conform AVG en de NIP-richtlijnen.\n\nPrivacy: https://hrmforce.com/support/privacy-statement/",
             tags: ["avg","gdpr","privacy","persoonsgegevens","data","verwerker","beveiliging","encryptie","bewaartermijn","wbp"] },
       en: { q: "How do you handle personal data and the GDPR?",
-            a: "Personal data is processed within the European Union, with encrypted connections, role-based user management and retention periods you set per assessment. Each project gets a data processing agreement. Candidates see beforehand what happens with their data — in line with the GDPR and NIP guidelines.\n\nPrivacy: https://hrmforce.com/en/support/privacy-statement/",
+            a: "Personal data is processed within the European Union, with encrypted connections, role-based user management and retention periods you set per assessment. Each project gets a data processing agreement. Candidates see beforehand what happens with their data, in line with the GDPR and NIP guidelines.\n\nPrivacy: https://hrmforce.com/en/support/privacy-statement/",
             tags: ["gdpr","privacy","personal data","data","processor","security","encryption","retention","compliance"] },
       de: { q: "Wie gehen Sie mit personenbezogenen Daten und der DSGVO um?",
-            a: "Personenbezogene Daten werden innerhalb der Europäischen Union verarbeitet, mit verschlüsselten Verbindungen, rollenbasierter Benutzerverwaltung und Aufbewahrungsfristen, die Sie pro Assessment selbst festlegen. Für jedes Projekt schließen wir eine Auftragsverarbeitungsvereinbarung. Kandidaten sehen im Voraus, was mit ihren Daten geschieht — gemäß DSGVO und NIP-Richtlinien.",
+            a: "Personenbezogene Daten werden innerhalb der Europäischen Union verarbeitet, mit verschlüsselten Verbindungen, rollenbasierter Benutzerverwaltung und Aufbewahrungsfristen, die Sie pro Assessment selbst festlegen. Für jedes Projekt schließen wir eine Auftragsverarbeitungsvereinbarung. Kandidaten sehen im Voraus, was mit ihren Daten geschieht, gemäß DSGVO und NIP-Richtlinien.",
             tags: ["dsgvo","gdpr","datenschutz","personenbezogene daten","verarbeiter","sicherheit","verschlusselung","aufbewahrung","compliance"] },
       fr: { q: "Comment gérez-vous les données personnelles et le RGPD ?",
-            a: "Les données personnelles sont traitées au sein de l'Union européenne, avec des connexions chiffrées, une gestion des utilisateurs basée sur les rôles et des durées de conservation que vous définissez par assessment. Chaque projet fait l'objet d'un contrat de sous-traitance. Les candidats voient au préalable ce qui est fait de leurs données — conformément au RGPD et aux directives NIP.",
+            a: "Les données personnelles sont traitées au sein de l'Union européenne, avec des connexions chiffrées, une gestion des utilisateurs basée sur les rôles et des durées de conservation que vous définissez par assessment. Chaque projet fait l'objet d'un contrat de sous-traitance. Les candidats voient au préalable ce qui est fait de leurs données, conformément au RGPD et aux directives NIP.",
             tags: ["rgpd","gdpr","confidentialite","donnees personnelles","sous-traitant","securite","chiffrement","conservation","conformite"] },
       es: { q: "¿Cómo manejan los datos personales y el RGPD?",
-            a: "Los datos personales se procesan dentro de la Unión Europea, con conexiones cifradas, gestión de usuarios por roles y plazos de conservación que usted define por assessment. Cada proyecto incluye un contrato de encargo de tratamiento. Los candidatos ven de antemano qué ocurre con sus datos — conforme al RGPD y a las directrices del NIP.",
+            a: "Los datos personales se procesan dentro de la Unión Europea, con conexiones cifradas, gestión de usuarios por roles y plazos de conservación que usted define por assessment. Cada proyecto incluye un contrato de encargo de tratamiento. Los candidatos ven de antemano qué ocurre con sus datos, conforme al RGPD y a las directrices del NIP.",
             tags: ["rgpd","gdpr","privacidad","datos personales","encargado","seguridad","cifrado","conservacion","cumplimiento"] },
       ro: { q: "Cum gestionați datele personale și GDPR?",
-            a: "Datele personale sunt procesate în cadrul Uniunii Europene, cu conexiuni criptate, gestionarea utilizatorilor pe roluri și perioade de păstrare pe care le setați per evaluare. Pentru fiecare proiect încheiem un acord de prelucrare. Candidații văd din timp ce se întâmplă cu datele lor — conform GDPR și ghidurilor NIP.",
+            a: "Datele personale sunt procesate în cadrul Uniunii Europene, cu conexiuni criptate, gestionarea utilizatorilor pe roluri și perioade de păstrare pe care le setați per evaluare. Pentru fiecare proiect încheiem un acord de prelucrare. Candidații văd din timp ce se întâmplă cu datele lor, conform GDPR și ghidurilor NIP.",
             tags: ["gdpr","confidentialitate","date personale","procesator","securitate","criptare","pastrare","conformitate"] }
     },
     {
       id: "languages",
       nl: { q: "In welke talen zijn de assessments beschikbaar?",
-            a: "De meeste vragenlijsten zijn beschikbaar in Nederlands, Engels, Duits, Frans, Spaans en Roemeens. Per assessment verschilt welke talen actief zijn — op de pagina van het instrument zie je het actuele overzicht. Werk je internationaal of in een andere taal, bespreek dat vooraf zodat we de juiste versie klaarzetten.",
+            a: "De meeste vragenlijsten zijn beschikbaar in Nederlands, Engels, Duits, Frans, Spaans en Roemeens. Per assessment verschilt welke talen actief zijn, op de pagina van het instrument zie je het actuele overzicht. Werk je internationaal of in een andere taal, bespreek dat vooraf zodat we de juiste versie klaarzetten.",
             tags: ["talen","taal","engels","duits","frans","spaans","roemeens","internationaal","language","languages"] },
       en: { q: "Which languages are the assessments available in?",
-            a: "Most questionnaires are available in Dutch, English, German, French, Spanish and Romanian. Active languages vary per instrument — check the assessment page for the current overview. If you work internationally or need a specific language, let us know upfront so we can prepare the right version.",
+            a: "Most questionnaires are available in Dutch, English, German, French, Spanish and Romanian. Active languages vary per instrument, check the assessment page for the current overview. If you work internationally or need a specific language, let us know upfront so we can prepare the right version.",
             tags: ["languages","language","dutch","english","german","french","spanish","romanian","international"] },
       de: { q: "In welchen Sprachen sind die Assessments verfügbar?",
-            a: "Die meisten Fragebögen sind in Niederländisch, Englisch, Deutsch, Französisch, Spanisch und Rumänisch verfügbar. Welche Sprachen aktiv sind, variiert pro Instrument — die aktuelle Übersicht finden Sie auf der Assessment-Seite. Bei internationaler Nutzung oder anderen Sprachen bitte vorab abstimmen.",
+            a: "Die meisten Fragebögen sind in Niederländisch, Englisch, Deutsch, Französisch, Spanisch und Rumänisch verfügbar. Welche Sprachen aktiv sind, variiert pro Instrument, die aktuelle Übersicht finden Sie auf der Assessment-Seite. Bei internationaler Nutzung oder anderen Sprachen bitte vorab abstimmen.",
             tags: ["sprachen","sprache","niederlandisch","englisch","deutsch","franzosisch","spanisch","rumanisch","international"] },
       fr: { q: "Dans quelles langues les assessments sont-ils disponibles ?",
-            a: "La plupart des questionnaires sont disponibles en néerlandais, anglais, allemand, français, espagnol et roumain. Les langues actives varient selon l'instrument — la page de l'assessment indique la disponibilité actuelle. Pour un usage international ou une autre langue, signalez-le en amont pour que nous préparions la bonne version.",
+            a: "La plupart des questionnaires sont disponibles en néerlandais, anglais, allemand, français, espagnol et roumain. Les langues actives varient selon l'instrument, la page de l'assessment indique la disponibilité actuelle. Pour un usage international ou une autre langue, signalez-le en amont pour que nous préparions la bonne version.",
             tags: ["langues","langue","neerlandais","anglais","allemand","francais","espagnol","roumain","international"] },
       es: { q: "¿En qué idiomas están disponibles los assessments?",
-            a: "La mayoría de los cuestionarios están disponibles en neerlandés, inglés, alemán, francés, español y rumano. Los idiomas activos varían por instrumento — la página del assessment muestra el estado actual. Para uso internacional u otro idioma, avísenos por adelantado para preparar la versión adecuada.",
+            a: "La mayoría de los cuestionarios están disponibles en neerlandés, inglés, alemán, francés, español y rumano. Los idiomas activos varían por instrumento, la página del assessment muestra el estado actual. Para uso internacional u otro idioma, avísenos por adelantado para preparar la versión adecuada.",
             tags: ["idiomas","idioma","neerlandes","ingles","aleman","frances","espanol","rumano","internacional"] },
       ro: { q: "În ce limbi sunt disponibile evaluările?",
-            a: "Majoritatea chestionarelor sunt disponibile în olandeză, engleză, germană, franceză, spaniolă și română. Limbile active variază pe instrument — pagina evaluării arată starea curentă. Pentru utilizare internațională sau o altă limbă, anunțați-ne în avans pentru a pregăti versiunea potrivită.",
+            a: "Majoritatea chestionarelor sunt disponibile în olandeză, engleză, germană, franceză, spaniolă și română. Limbile active variază pe instrument, pagina evaluării arată starea curentă. Pentru utilizare internațională sau o altă limbă, anunțați-ne în avans pentru a pregăti versiunea potrivită.",
             tags: ["limbi","limba","olandeza","engleza","germana","franceza","spaniola","romana","international"] }
     },
     {
@@ -313,108 +313,108 @@
     {
       id: "ai-in-selection",
       nl: { q: "Wat is jullie standpunt over AI in selectie?",
-            a: "We zijn terughoudend met AI op plekken waar dat de uitlegbaarheid van scores zou verzwakken. Rapporten zijn gebouwd op transparante meetmodellen en navolgbare normgroepen, geen black box. Waar AI waarde toevoegt — bijvoorbeeld bij interpretatie-ondersteuning — gebruiken we het als hulpmiddel voor de adviseur, in lijn met de NIP- en SIOP-richtlijnen.",
+            a: "We zijn terughoudend met AI op plekken waar dat de uitlegbaarheid van scores zou verzwakken. Rapporten zijn gebouwd op transparante meetmodellen en navolgbare normgroepen, geen black box. Waar AI waarde toevoegt, bijvoorbeeld bij interpretatie-ondersteuning, gebruiken we het als hulpmiddel voor de adviseur, in lijn met de NIP- en SIOP-richtlijnen.",
             tags: ["ai","kunstmatige","intelligentie","blackbox","standpunt","ethiek","uitlegbaar","nip","siop"] },
       en: { q: "What is your stance on AI in selection?",
-            a: "We're cautious about using AI where it weakens the explainability of scores. Our reports run on transparent measurement models and traceable norm groups — not a black box. Where AI adds value (e.g. interpretation support) we use it as a tool for the consultant, aligned with NIP and SIOP guidance on AI in selection.",
+            a: "We're cautious about using AI where it weakens the explainability of scores. Our reports run on transparent measurement models and traceable norm groups, not a black box. Where AI adds value (e.g. interpretation support) we use it as a tool for the consultant, aligned with NIP and SIOP guidance on AI in selection.",
             tags: ["ai","artificial","intelligence","blackbox","stance","ethics","explainable","nip","siop"] },
       de: { q: "Wie stehen Sie zu KI in der Personalauswahl?",
-            a: "Wir sind zurückhaltend mit KI dort, wo sie die Erklärbarkeit von Scores schwächen würde. Unsere Berichte basieren auf transparenten Messmodellen und nachvollziehbaren Normgruppen — keine Blackbox. Wo KI Mehrwert schafft (z. B. Interpretationsunterstützung), nutzen wir sie als Hilfsmittel für den Berater, im Einklang mit NIP- und SIOP-Leitlinien.",
+            a: "Wir sind zurückhaltend mit KI dort, wo sie die Erklärbarkeit von Scores schwächen würde. Unsere Berichte basieren auf transparenten Messmodellen und nachvollziehbaren Normgruppen, keine Blackbox. Wo KI Mehrwert schafft (z. B. Interpretationsunterstützung), nutzen wir sie als Hilfsmittel für den Berater, im Einklang mit NIP- und SIOP-Leitlinien.",
             tags: ["ki","ai","kunstliche intelligenz","blackbox","standpunkt","ethik","erklarbar","nip","siop"] },
       fr: { q: "Quelle est votre position sur l'IA en sélection ?",
-            a: "Nous sommes prudents avec l'IA là où elle affaiblirait l'explicabilité des scores. Nos rapports reposent sur des modèles de mesure transparents et des groupes de référence traçables — pas une boîte noire. Là où l'IA apporte de la valeur (par ex. en soutien à l'interprétation), nous l'utilisons comme outil pour le consultant, conformément aux directives du NIP et de la SIOP.",
+            a: "Nous sommes prudents avec l'IA là où elle affaiblirait l'explicabilité des scores. Nos rapports reposent sur des modèles de mesure transparents et des groupes de référence traçables, pas une boîte noire. Là où l'IA apporte de la valeur (par ex. en soutien à l'interprétation), nous l'utilisons comme outil pour le consultant, conformément aux directives du NIP et de la SIOP.",
             tags: ["ia","intelligence artificielle","boite noire","position","ethique","explicable","nip","siop"] },
       es: { q: "¿Cuál es su postura sobre la IA en selección?",
-            a: "Somos prudentes con la IA donde podría debilitar la explicabilidad de las puntuaciones. Nuestros informes se basan en modelos de medición transparentes y grupos normativos rastreables — no una caja negra. Donde la IA aporta valor (p. ej. apoyo a la interpretación) la usamos como herramienta del consultor, en línea con las directrices del NIP y SIOP.",
+            a: "Somos prudentes con la IA donde podría debilitar la explicabilidad de las puntuaciones. Nuestros informes se basan en modelos de medición transparentes y grupos normativos rastreables, no una caja negra. Donde la IA aporta valor (p. ej. apoyo a la interpretación) la usamos como herramienta del consultor, en línea con las directrices del NIP y SIOP.",
             tags: ["ia","inteligencia artificial","caja negra","postura","etica","explicable","nip","siop"] },
       ro: { q: "Care este poziția voastră privind IA în selecție?",
-            a: "Suntem prudenți cu IA acolo unde ar slăbi explicabilitatea scorurilor. Rapoartele noastre se bazează pe modele transparente de măsurare și grupuri normative trasabile — nu o cutie neagră. Unde IA aduce valoare (de ex. suport pentru interpretare) o folosim ca instrument pentru consultant, în linie cu ghidurile NIP și SIOP.",
+            a: "Suntem prudenți cu IA acolo unde ar slăbi explicabilitatea scorurilor. Rapoartele noastre se bazează pe modele transparente de măsurare și grupuri normative trasabile, nu o cutie neagră. Unde IA aduce valoare (de ex. suport pentru interpretare) o folosim ca instrument pentru consultant, în linie cu ghidurile NIP și SIOP.",
             tags: ["ia","inteligenta artificiala","cutie neagra","pozitie","etica","explicabil","nip","siop"] }
     },
 
     // ---------- Support / troubleshooting ----------
     {
       id: "verification-screen",
-      nl: { q: "Het verificatiescherm reageert niet — wat doe ik?",
-            a: "Loop deze stappen door:\n1. Wis browsercache en cookies, sluit de browser volledig en log opnieuw in.\n2. Probeer een andere browser (Chrome ↔ Firefox) of een incognitovenster.\n3. Type de zescijferige code in een leeg tekstvak (Kladblok) en plak die in het verificatiescherm — of juist andersom.\n4. Vraag via het inlogscherm een nieuwe verificatie-/resetlink aan (links zijn eenmalig en verlopen).\n5. Werkt het nog niet, dan kan een beheerder via het profiel een verse uitnodigingsmail sturen.",
+      nl: { q: "Het verificatiescherm reageert niet, wat doe ik?",
+            a: "Loop deze stappen door:\n1. Wis browsercache en cookies, sluit de browser volledig en log opnieuw in.\n2. Probeer een andere browser (Chrome ↔ Firefox) of een incognitovenster.\n3. Type de zescijferige code in een leeg tekstvak (Kladblok) en plak die in het verificatiescherm, of juist andersom.\n4. Vraag via het inlogscherm een nieuwe verificatie-/resetlink aan (links zijn eenmalig en verlopen).\n5. Werkt het nog niet, dan kan een beheerder via het profiel een verse uitnodigingsmail sturen.",
             tags: ["verificatie","verificatiescherm","inloggen","login","code","reageert","werkt niet","reset","cache","cookies","incognito"] },
-      en: { q: "The verification screen isn't responding — what should I do?",
-            a: "Work through these steps:\n1. Clear browser cache and cookies, close the browser fully and log in again.\n2. Try a different browser (Chrome ↔ Firefox) or a private/incognito window.\n3. Type the six-digit code into an empty text box (Notepad) and paste it into the verification screen — or the other way around.\n4. Request a new verification/reset link via the login screen (links are single-use and expire).\n5. If it still fails, an administrator can send a fresh invitation email from the user profile.",
+      en: { q: "The verification screen isn't responding, what should I do?",
+            a: "Work through these steps:\n1. Clear browser cache and cookies, close the browser fully and log in again.\n2. Try a different browser (Chrome ↔ Firefox) or a private/incognito window.\n3. Type the six-digit code into an empty text box (Notepad) and paste it into the verification screen, or the other way around.\n4. Request a new verification/reset link via the login screen (links are single-use and expire).\n5. If it still fails, an administrator can send a fresh invitation email from the user profile.",
             tags: ["verification","login","code","not responding","not working","reset","cache","cookies","incognito"] },
-      de: { q: "Der Verifizierungsbildschirm reagiert nicht — was tun?",
-            a: "Gehen Sie diese Schritte der Reihe nach durch:\n1. Browser-Cache und Cookies löschen, Browser vollständig schließen und erneut anmelden.\n2. Anderen Browser (Chrome ↔ Firefox) oder Inkognito-Fenster ausprobieren.\n3. Den sechsstelligen Code in ein leeres Textfeld (Notepad) tippen und in den Verifizierungsbildschirm einfügen — oder umgekehrt.\n4. Über den Login-Bildschirm einen neuen Verifizierungs-/Reset-Link anfordern (Links sind einmalig und laufen ab).\n5. Wenn es immer noch nicht funktioniert, kann ein Administrator über das Benutzerprofil eine neue Einladungs-E-Mail senden.",
+      de: { q: "Der Verifizierungsbildschirm reagiert nicht, was tun?",
+            a: "Gehen Sie diese Schritte der Reihe nach durch:\n1. Browser-Cache und Cookies löschen, Browser vollständig schließen und erneut anmelden.\n2. Anderen Browser (Chrome ↔ Firefox) oder Inkognito-Fenster ausprobieren.\n3. Den sechsstelligen Code in ein leeres Textfeld (Notepad) tippen und in den Verifizierungsbildschirm einfügen, oder umgekehrt.\n4. Über den Login-Bildschirm einen neuen Verifizierungs-/Reset-Link anfordern (Links sind einmalig und laufen ab).\n5. Wenn es immer noch nicht funktioniert, kann ein Administrator über das Benutzerprofil eine neue Einladungs-E-Mail senden.",
             tags: ["verifizierung","anmeldung","code","reagiert nicht","funktioniert nicht","reset","cache","cookies","inkognito"] },
-      fr: { q: "L'écran de vérification ne répond pas — que faire ?",
-            a: "Suivez ces étapes dans l'ordre :\n1. Videz le cache et les cookies du navigateur, fermez-le complètement et reconnectez-vous.\n2. Essayez un autre navigateur (Chrome ↔ Firefox) ou une fenêtre privée/incognito.\n3. Tapez le code à six chiffres dans un champ vide (Bloc-notes) et collez-le dans l'écran de vérification — ou l'inverse.\n4. Demandez un nouveau lien de vérification/réinitialisation via l'écran de connexion (à usage unique, expirent).\n5. Si cela échoue encore, un administrateur peut envoyer un nouveau mail d'invitation depuis le profil utilisateur.",
+      fr: { q: "L'écran de vérification ne répond pas, que faire ?",
+            a: "Suivez ces étapes dans l'ordre :\n1. Videz le cache et les cookies du navigateur, fermez-le complètement et reconnectez-vous.\n2. Essayez un autre navigateur (Chrome ↔ Firefox) ou une fenêtre privée/incognito.\n3. Tapez le code à six chiffres dans un champ vide (Bloc-notes) et collez-le dans l'écran de vérification, ou l'inverse.\n4. Demandez un nouveau lien de vérification/réinitialisation via l'écran de connexion (à usage unique, expirent).\n5. Si cela échoue encore, un administrateur peut envoyer un nouveau mail d'invitation depuis le profil utilisateur.",
             tags: ["verification","connexion","code","ne repond pas","ne fonctionne pas","reinitialisation","cache","cookies","incognito"] },
-      es: { q: "La pantalla de verificación no responde — ¿qué hago?",
-            a: "Siga estos pasos por orden:\n1. Borre caché y cookies del navegador, ciérrelo completamente y vuelva a iniciar sesión.\n2. Pruebe otro navegador (Chrome ↔ Firefox) o una ventana privada/incógnito.\n3. Escriba el código de seis dígitos en un campo vacío (Bloc de notas) y péguelo en la pantalla de verificación — o al revés.\n4. Solicite un nuevo enlace de verificación/restablecimiento desde la pantalla de inicio (de un solo uso y caducan).\n5. Si aún falla, un administrador puede enviar un nuevo correo de invitación desde el perfil del usuario.",
+      es: { q: "La pantalla de verificación no responde, ¿qué hago?",
+            a: "Siga estos pasos por orden:\n1. Borre caché y cookies del navegador, ciérrelo completamente y vuelva a iniciar sesión.\n2. Pruebe otro navegador (Chrome ↔ Firefox) o una ventana privada/incógnito.\n3. Escriba el código de seis dígitos en un campo vacío (Bloc de notas) y péguelo en la pantalla de verificación, o al revés.\n4. Solicite un nuevo enlace de verificación/restablecimiento desde la pantalla de inicio (de un solo uso y caducan).\n5. Si aún falla, un administrador puede enviar un nuevo correo de invitación desde el perfil del usuario.",
             tags: ["verificacion","inicio sesion","codigo","no responde","no funciona","reset","cache","cookies","incognito"] },
-      ro: { q: "Ecranul de verificare nu răspunde — ce să fac?",
-            a: "Parcurgeți acești pași în ordine:\n1. Ștergeți cache-ul și cookie-urile, închideți complet browserul și conectați-vă din nou.\n2. Încercați alt browser (Chrome ↔ Firefox) sau o fereastră privată/incognito.\n3. Tastați codul de șase cifre într-un câmp gol (Notepad) și lipiți-l în ecranul de verificare — sau invers.\n4. Solicitați un nou link de verificare/resetare din ecranul de conectare (sunt de unică folosință și expiră).\n5. Dacă tot nu funcționează, un administrator poate trimite un email nou de invitație din profilul utilizatorului.",
+      ro: { q: "Ecranul de verificare nu răspunde, ce să fac?",
+            a: "Parcurgeți acești pași în ordine:\n1. Ștergeți cache-ul și cookie-urile, închideți complet browserul și conectați-vă din nou.\n2. Încercați alt browser (Chrome ↔ Firefox) sau o fereastră privată/incognito.\n3. Tastați codul de șase cifre într-un câmp gol (Notepad) și lipiți-l în ecranul de verificare, sau invers.\n4. Solicitați un nou link de verificare/resetare din ecranul de conectare (sunt de unică folosință și expiră).\n5. Dacă tot nu funcționează, un administrator poate trimite un email nou de invitație din profilul utilizatorului.",
             tags: ["verificare","conectare","cod","nu raspunde","nu functioneaza","resetare","cache","cookie","incognito"] }
     },
     {
       id: "only-first-tab",
-      nl: { q: "Een kandidaat ziet alleen de eerste tab — hoe komt dat?",
-            a: "De vervolg-tabs worden pas vrijgegeven nadat de kandidaat de openingspagina actief heeft geaccepteerd via 'I accept'. Heeft de kandidaat dat vinkje overgeslagen, dan blijven de andere vragenlijsten gesloten. Laat de kandidaat opnieuw inloggen, terug naar de eerste pagina gaan, de voorwaarden accepteren en opslaan — de overige tabs komen dan automatisch beschikbaar.",
+      nl: { q: "Een kandidaat ziet alleen de eerste tab, hoe komt dat?",
+            a: "De vervolg-tabs worden pas vrijgegeven nadat de kandidaat de openingspagina actief heeft geaccepteerd via 'I accept'. Heeft de kandidaat dat vinkje overgeslagen, dan blijven de andere vragenlijsten gesloten. Laat de kandidaat opnieuw inloggen, terug naar de eerste pagina gaan, de voorwaarden accepteren en opslaan, de overige tabs komen dan automatisch beschikbaar.",
             tags: ["tab","tabs","vragenlijst","kandidaat","eerste","i accept","accepteren","openingspagina","zichtbaar"] },
-      en: { q: "A candidate only sees the first tab — why?",
-            a: "The follow-up tabs only unlock after the candidate actively accepts the opening page via 'I accept'. If they skipped that checkbox, the remaining questionnaires stay closed. Ask the candidate to log in again, return to the first page, accept the terms and save — the other tabs become available automatically.",
+      en: { q: "A candidate only sees the first tab, why?",
+            a: "The follow-up tabs only unlock after the candidate actively accepts the opening page via 'I accept'. If they skipped that checkbox, the remaining questionnaires stay closed. Ask the candidate to log in again, return to the first page, accept the terms and save, the other tabs become available automatically.",
             tags: ["tab","tabs","questionnaire","candidate","first","i accept","accept","opening page","visible"] },
-      de: { q: "Ein Kandidat sieht nur den ersten Tab — woran liegt das?",
-            a: "Die weiteren Tabs werden erst freigegeben, nachdem der Kandidat die Startseite über 'I accept' aktiv akzeptiert hat. Wurde dieses Häkchen übersprungen, bleiben die übrigen Fragebögen geschlossen. Lassen Sie den Kandidaten erneut anmelden, zur ersten Seite zurückkehren, die Bedingungen akzeptieren und speichern — die anderen Tabs werden dann automatisch verfügbar.",
+      de: { q: "Ein Kandidat sieht nur den ersten Tab, woran liegt das?",
+            a: "Die weiteren Tabs werden erst freigegeben, nachdem der Kandidat die Startseite über 'I accept' aktiv akzeptiert hat. Wurde dieses Häkchen übersprungen, bleiben die übrigen Fragebögen geschlossen. Lassen Sie den Kandidaten erneut anmelden, zur ersten Seite zurückkehren, die Bedingungen akzeptieren und speichern, die anderen Tabs werden dann automatisch verfügbar.",
             tags: ["tab","fragebogen","kandidat","erster","i accept","akzeptieren","startseite","sichtbar"] },
-      fr: { q: "Un candidat ne voit que le premier onglet — pourquoi ?",
-            a: "Les onglets suivants ne se déverrouillent qu'après que le candidat ait accepté activement la page d'accueil via 'I accept'. S'il a sauté cette case, les autres questionnaires restent fermés. Demandez-lui de se reconnecter, de revenir à la première page, d'accepter les conditions et d'enregistrer — les autres onglets seront alors disponibles automatiquement.",
+      fr: { q: "Un candidat ne voit que le premier onglet, pourquoi ?",
+            a: "Les onglets suivants ne se déverrouillent qu'après que le candidat ait accepté activement la page d'accueil via 'I accept'. S'il a sauté cette case, les autres questionnaires restent fermés. Demandez-lui de se reconnecter, de revenir à la première page, d'accepter les conditions et d'enregistrer, les autres onglets seront alors disponibles automatiquement.",
             tags: ["onglet","questionnaire","candidat","premier","i accept","accepter","page accueil","visible"] },
-      es: { q: "Un candidato solo ve la primera pestaña — ¿por qué?",
-            a: "Las demás pestañas solo se desbloquean cuando el candidato acepta activamente la página inicial mediante 'I accept'. Si saltó esa casilla, los demás cuestionarios quedan cerrados. Pídale que vuelva a entrar, regrese a la primera página, acepte las condiciones y guarde — las otras pestañas se activan automáticamente.",
+      es: { q: "Un candidato solo ve la primera pestaña, ¿por qué?",
+            a: "Las demás pestañas solo se desbloquean cuando el candidato acepta activamente la página inicial mediante 'I accept'. Si saltó esa casilla, los demás cuestionarios quedan cerrados. Pídale que vuelva a entrar, regrese a la primera página, acepte las condiciones y guarde, las otras pestañas se activan automáticamente.",
             tags: ["pestana","cuestionario","candidato","primera","i accept","aceptar","pagina inicial","visible"] },
-      ro: { q: "Un candidat vede doar prima filă — de ce?",
-            a: "Filele următoare se deblochează doar după ce candidatul acceptă activ pagina inițială prin 'I accept'. Dacă a sărit acea bifă, celelalte chestionare rămân închise. Cereți-i să se reconecteze, să revină la prima pagină, să accepte termenii și să salveze — celelalte file devin apoi disponibile automat.",
+      ro: { q: "Un candidat vede doar prima filă, de ce?",
+            a: "Filele următoare se deblochează doar după ce candidatul acceptă activ pagina inițială prin 'I accept'. Dacă a sărit acea bifă, celelalte chestionare rămân închise. Cereți-i să se reconecteze, să revină la prima pagină, să accepte termenii și să salveze, celelalte file devin apoi disponibile automat.",
             tags: ["fila","chestionar","candidat","prima","i accept","acceptare","pagina initiala","vizibil"] }
     },
     {
       id: "logiks-mbo",
-      nl: { q: "Logiks Advanced biedt geen MBO-benchmark — wat nu?",
+      nl: { q: "Logiks Advanced biedt geen MBO-benchmark, wat nu?",
             a: "Het Advanced-rapport ondersteunt alleen HBO 2.0 en WO 2.0. Een MBO-normgroep zit uitsluitend in het Intermediate-rapport. Vraagt de klant nadrukkelijk om MBO terwijl Advanced is besteld, lever dan tegen HBO 2.0 en meld transparant welke normgroep is gebruikt. Vuistregel: een score op HBO valt ongeveer 1 punt lager uit dan op MBO (een 4 op HBO ≈ een 5 op MBO).",
             tags: ["logiks","advanced","intermediate","mbo","hbo","wo","benchmark","normgroep","capaciteit","rapport"] },
-      en: { q: "Logiks Advanced has no MBO benchmark — how do we handle it?",
+      en: { q: "Logiks Advanced has no MBO benchmark, how do we handle it?",
             a: "The Advanced report only supports HBO 2.0 and WO 2.0. An MBO norm group is only available in the Intermediate report. If a client explicitly asks for MBO while Advanced has been ordered, deliver against HBO 2.0 and inform the client transparently which norm group is used. Rule of thumb: a score on HBO is roughly one point lower than on MBO (a 4 on HBO ≈ a 5 on MBO).",
             tags: ["logiks","advanced","intermediate","mbo","hbo","wo","benchmark","norm group","cognitive","report"] },
-      de: { q: "Logiks Advanced bietet keinen MBO-Benchmark — wie gehen wir damit um?",
+      de: { q: "Logiks Advanced bietet keinen MBO-Benchmark, wie gehen wir damit um?",
             a: "Der Advanced-Bericht unterstützt nur HBO 2.0 und WO 2.0. Eine MBO-Normgruppe gibt es ausschließlich im Intermediate-Bericht. Verlangt der Kunde ausdrücklich MBO, obwohl Advanced bestellt wurde, liefern Sie gegen HBO 2.0 und teilen Sie transparent mit, welche Normgruppe verwendet wurde. Faustregel: Ein Score auf HBO liegt etwa einen Punkt niedriger als auf MBO (eine 4 auf HBO ≈ eine 5 auf MBO).",
             tags: ["logiks","advanced","intermediate","mbo","hbo","wo","benchmark","normgruppe","kognitiv","bericht"] },
-      fr: { q: "Logiks Advanced n'offre pas de benchmark MBO — comment faire ?",
+      fr: { q: "Logiks Advanced n'offre pas de benchmark MBO, comment faire ?",
             a: "Le rapport Advanced ne prend en charge que HBO 2.0 et WO 2.0. Un groupe normatif MBO n'existe que dans le rapport Intermediate. Si le client demande explicitement MBO alors qu'Advanced a été commandé, livrez contre HBO 2.0 et informez-le de manière transparente du groupe de référence utilisé. Règle empirique : un score sur HBO est environ un point inférieur à un score sur MBO (un 4 sur HBO ≈ un 5 sur MBO).",
             tags: ["logiks","advanced","intermediate","mbo","hbo","wo","benchmark","groupe reference","cognitif","rapport"] },
-      es: { q: "Logiks Advanced no ofrece benchmark MBO — ¿cómo lo manejamos?",
+      es: { q: "Logiks Advanced no ofrece benchmark MBO, ¿cómo lo manejamos?",
             a: "El informe Advanced solo admite HBO 2.0 y WO 2.0. Un grupo normativo MBO existe únicamente en el informe Intermediate. Si el cliente pide MBO explícitamente cuando se pidió Advanced, entregue con HBO 2.0 e informe con transparencia el grupo normativo usado. Regla práctica: una puntuación en HBO es aproximadamente un punto inferior que en MBO (un 4 en HBO ≈ un 5 en MBO).",
             tags: ["logiks","advanced","intermediate","mbo","hbo","wo","benchmark","grupo normativo","cognitivo","informe"] },
-      ro: { q: "Logiks Advanced nu are benchmark MBO — cum procedăm?",
+      ro: { q: "Logiks Advanced nu are benchmark MBO, cum procedăm?",
             a: "Raportul Advanced acceptă doar HBO 2.0 și WO 2.0. Un grup normativ MBO există doar în raportul Intermediate. Dacă clientul cere explicit MBO deși s-a comandat Advanced, livrați pe HBO 2.0 și informați-l transparent ce grup normativ s-a folosit. Regulă orientativă: un scor pe HBO este cu aproximativ un punct mai mic decât pe MBO (un 4 pe HBO ≈ un 5 pe MBO).",
             tags: ["logiks","advanced","intermediate","mbo","hbo","wo","benchmark","grup normativ","cognitiv","raport"] }
     },
     {
       id: "pearson-migration",
       nl: { q: "Verandert er iets aan Pearson TalentLens-assessments?",
-            a: "Pearson migreert TalentLens van het oude Talogy-platform naar het nieuwe platform 'Palladium'. Inhoud, normering en validiteit blijven ongewijzigd, dus lopende afnames en bestaande rapportages houden hun waarde. De technische koppeling tussen HRMForce en Pearson stemmen we vooraf af in een kick-off — klanten hoeven zelf niets te doen.",
+            a: "Pearson migreert TalentLens van het oude Talogy-platform naar het nieuwe platform 'Palladium'. Inhoud, normering en validiteit blijven ongewijzigd, dus lopende afnames en bestaande rapportages houden hun waarde. De technische koppeling tussen HRMForce en Pearson stemmen we vooraf af in een kick-off, klanten hoeven zelf niets te doen.",
             tags: ["pearson","talentlens","talogy","palladium","migratie","platform","integratie","servicedesk"] },
       en: { q: "Is anything changing with Pearson TalentLens assessments?",
-            a: "Pearson is migrating TalentLens from the legacy Talogy platform to the new 'Palladium' platform. Content, norming and validity stay the same, so ongoing assessments and existing reports retain their value. The technical link between HRMForce and Pearson is coordinated upfront in a kick-off — clients don't need to do anything.",
+            a: "Pearson is migrating TalentLens from the legacy Talogy platform to the new 'Palladium' platform. Content, norming and validity stay the same, so ongoing assessments and existing reports retain their value. The technical link between HRMForce and Pearson is coordinated upfront in a kick-off, clients don't need to do anything.",
             tags: ["pearson","talentlens","talogy","palladium","migration","platform","integration","servicedesk"] },
       de: { q: "Ändert sich etwas bei Pearson TalentLens-Assessments?",
-            a: "Pearson migriert TalentLens von der alten Talogy-Plattform auf 'Palladium'. Inhalt, Normierung und Validität bleiben unverändert — laufende Assessments und Berichte behalten ihren Wert. Die technische Anbindung wird in einem Kick-off abgestimmt — Kunden müssen nichts tun.",
+            a: "Pearson migriert TalentLens von der alten Talogy-Plattform auf 'Palladium'. Inhalt, Normierung und Validität bleiben unverändert, laufende Assessments und Berichte behalten ihren Wert. Die technische Anbindung wird in einem Kick-off abgestimmt, Kunden müssen nichts tun.",
             tags: ["pearson","talentlens","talogy","palladium","migration","plattform","integration","servicedesk"] },
       fr: { q: "Y a-t-il des changements pour Pearson TalentLens ?",
-            a: "Pearson migre TalentLens de Talogy vers la nouvelle plateforme 'Palladium'. Contenu, étalonnage et validité restent inchangés — les assessments en cours et rapports existants conservent leur valeur. La connexion technique est coordonnée lors d'un kick-off — les clients n'ont rien à faire.",
+            a: "Pearson migre TalentLens de Talogy vers la nouvelle plateforme 'Palladium'. Contenu, étalonnage et validité restent inchangés, les assessments en cours et rapports existants conservent leur valeur. La connexion technique est coordonnée lors d'un kick-off, les clients n'ont rien à faire.",
             tags: ["pearson","talentlens","talogy","palladium","migration","plateforme","integration","service desk"] },
       es: { q: "¿Cambia algo en Pearson TalentLens?",
-            a: "Pearson está migrando TalentLens de Talogy a la nueva plataforma 'Palladium'. Contenido, baremación y validez no cambian — los assessments en curso e informes existentes conservan su valor. La conexión técnica se coordina en un kick-off — los clientes no tienen que hacer nada.",
+            a: "Pearson está migrando TalentLens de Talogy a la nueva plataforma 'Palladium'. Contenido, baremación y validez no cambian, los assessments en curso e informes existentes conservan su valor. La conexión técnica se coordina en un kick-off, los clientes no tienen que hacer nada.",
             tags: ["pearson","talentlens","talogy","palladium","migracion","plataforma","integracion","service desk"] },
       ro: { q: "Se schimbă ceva la Pearson TalentLens?",
-            a: "Pearson migrează TalentLens de pe Talogy pe noua platformă 'Palladium'. Conținutul, etalonarea și validitatea rămân neschimbate — evaluările în curs și rapoartele existente își păstrează valoarea. Conexiunea tehnică se coordonează printr-un kick-off — clienții nu trebuie să facă nimic.",
+            a: "Pearson migrează TalentLens de pe Talogy pe noua platformă 'Palladium'. Conținutul, etalonarea și validitatea rămân neschimbate, evaluările în curs și rapoartele existente își păstrează valoarea. Conexiunea tehnică se coordonează printr-un kick-off, clienții nu trebuie să facă nimic.",
             tags: ["pearson","talentlens","talogy","palladium","migrare","platforma","integrare","service desk"] }
     },
     {
@@ -482,43 +482,43 @@
     },
     {
       id: "account-blocked",
-      nl: { q: "Een kandidaat krijgt 'account geblokkeerd' — waarom?",
+      nl: { q: "Een kandidaat krijgt 'account geblokkeerd', waarom?",
             a: "Meestal omdat het profiel naar een ander segment is verplaatst (bv. Sollicitant naar Medewerker of Talent Pool). De oude login wordt automatisch gedeactiveerd. De kandidaat moet inloggen met het nieuwe account, of een beheerder kan het oorspronkelijke account deblokkeren via gebruikersbeheer.",
             tags: ["account","geblokkeerd","blocked","inloggen","segment","talent pool","sollicitant","medewerker","deblokkeren"] },
-      en: { q: "A candidate gets 'account blocked' on first login — why?",
+      en: { q: "A candidate gets 'account blocked' on first login, why?",
             a: "Usually because the profile was moved to another segment (e.g. Applicant to Employee or Talent Pool). The old login is automatically deactivated. The candidate should log in with the new account matching their current status, or an administrator can unblock the original account via user management.",
             tags: ["account","blocked","login","segment","talent pool","applicant","employee","unblock"] },
-      de: { q: "Ein Kandidat erhält 'Konto gesperrt' — warum?",
+      de: { q: "Ein Kandidat erhält 'Konto gesperrt', warum?",
             a: "Meist weil das Profil in ein anderes Segment verschoben wurde (z. B. Bewerber zu Mitarbeiter oder Talent Pool). Das alte Login wird automatisch deaktiviert. Der Kandidat muss sich mit dem neuen Konto anmelden, oder ein Administrator kann das ursprüngliche Konto entsperren.",
             tags: ["konto","gesperrt","anmeldung","segment","talent pool","bewerber","mitarbeiter","entsperren"] },
-      fr: { q: "Un candidat reçoit 'compte bloqué' — pourquoi ?",
+      fr: { q: "Un candidat reçoit 'compte bloqué', pourquoi ?",
             a: "Généralement parce que le profil a été déplacé vers un autre segment (par ex. Candidat → Employé ou Talent Pool). L'ancien login est désactivé automatiquement. Le candidat doit se connecter avec le nouveau compte, ou un administrateur peut débloquer le compte d'origine.",
             tags: ["compte","bloque","connexion","segment","talent pool","candidat","employe","debloquer"] },
-      es: { q: "Un candidato recibe 'cuenta bloqueada' — ¿por qué?",
+      es: { q: "Un candidato recibe 'cuenta bloqueada', ¿por qué?",
             a: "Suele ser porque el perfil se movió a otro segmento (p. ej. Candidato a Empleado o Talent Pool). El login antiguo se desactiva. El candidato debe entrar con la nueva cuenta, o un administrador puede desbloquear la cuenta original.",
             tags: ["cuenta","bloqueada","inicio sesion","segmento","talent pool","candidato","empleado","desbloquear"] },
-      ro: { q: "Un candidat primește 'cont blocat' — de ce?",
+      ro: { q: "Un candidat primește 'cont blocat', de ce?",
             a: "De obicei pentru că profilul a fost mutat în alt segment (de ex. Candidat → Angajat sau Talent Pool). Login-ul vechi este dezactivat automat. Candidatul trebuie să se conecteze cu noul cont, sau un administrator poate debloca contul original.",
             tags: ["cont","blocat","conectare","segment","talent pool","candidat","angajat","deblocare"] }
     },
     {
       id: "report-not-visible",
-      nl: { q: "Het rapport is niet zichtbaar terwijl status 'afgerond' is — hoe los ik dat op?",
+      nl: { q: "Het rapport is niet zichtbaar terwijl status 'afgerond' is, hoe los ik dat op?",
             a: "Bijna altijd een berekeningsvertraging. Open het kandidatenprofiel, wissel het competentieprofiel naar een ander en terug, of trigger een herberekening van de Capaciteitenanalyse via de beheerderstools. Het rapport wordt opnieuw gegenereerd en wordt zichtbaar.",
             tags: ["rapport","niet zichtbaar","afgerond","berekening","herberekening","competentieprofiel","capaciteitenanalyse"] },
-      en: { q: "The report isn't visible even though status is 'completed' — how do I fix it?",
+      en: { q: "The report isn't visible even though status is 'completed', how do I fix it?",
             a: "Almost always a calculation lag. Open the candidate profile, switch the competency profile to another and back, or trigger a recalculation of the cognitive analysis via admin tools. The report regenerates and becomes visible.",
             tags: ["report","not visible","completed","calculation","recalculate","competency profile","cognitive"] },
-      de: { q: "Bericht ist nicht sichtbar, Status 'abgeschlossen' — wie behebe ich das?",
+      de: { q: "Bericht ist nicht sichtbar, Status 'abgeschlossen', wie behebe ich das?",
             a: "Fast immer eine Berechnungsverzögerung. Öffnen Sie das Kandidatenprofil, wechseln Sie das Kompetenzprofil auf ein anderes und zurück, oder lösen Sie eine Neuberechnung der Fähigkeitsanalyse aus. Der Bericht wird neu generiert.",
             tags: ["bericht","nicht sichtbar","abgeschlossen","berechnung","neu berechnen","kompetenzprofil","kognitiv"] },
-      fr: { q: "Rapport non visible alors que statut 'terminé' — comment corriger ?",
+      fr: { q: "Rapport non visible alors que statut 'terminé', comment corriger ?",
             a: "Presque toujours un délai de calcul. Ouvrez le profil candidat, basculez le profil de compétences sur un autre puis revenez, ou déclenchez un recalcul de l'analyse cognitive. Le rapport se régénère.",
             tags: ["rapport","non visible","termine","calcul","recalculer","profil competences","cognitif"] },
-      es: { q: "Informe no visible aunque estado 'finalizado' — ¿cómo lo soluciono?",
+      es: { q: "Informe no visible aunque estado 'finalizado', ¿cómo lo soluciono?",
             a: "Casi siempre es un retardo de cálculo. Abra el perfil del candidato, cambie el perfil competencial a otro y vuelva, o dispare un recálculo del análisis cognitivo. El informe se regenera.",
             tags: ["informe","no visible","finalizado","calculo","recalcular","perfil competencias","cognitivo"] },
-      ro: { q: "Raport invizibil deși status 'finalizat' — cum rezolv?",
+      ro: { q: "Raport invizibil deși status 'finalizat', cum rezolv?",
             a: "Aproape întotdeauna o întârziere de calcul. Deschideți profilul candidatului, schimbați profilul de competențe pe alt profil și înapoi, sau declanșați o recalculare a analizei cognitive. Raportul se regenerează.",
             tags: ["raport","invizibil","finalizat","calcul","recalcul","profil competente","cognitiv"] }
     },
@@ -546,22 +546,22 @@
     {
       id: "service-desk-hours",
       nl: { q: "Wat zijn de openingstijden van de servicedesk?",
-            a: "De servicedesk is bereikbaar via service@hrmforce.com, ma-vr 08:00–18:00 (CET). Verzoeken vóór 18:00 worden dezelfde dag opgepakt. Direct telefonisch contact via je accountmanager — markeer urgenties in het onderwerp.",
+            a: "De servicedesk is bereikbaar via service@hrmforce.com, ma-vr 08:00–18:00 (CET). Verzoeken vóór 18:00 worden dezelfde dag opgepakt. Direct telefonisch contact via je accountmanager, markeer urgenties in het onderwerp.",
             tags: ["servicedesk","openingstijden","urgent","support","bereikbaar","email","contact","spoed"] },
       en: { q: "What are the service desk hours?",
-            a: "service@hrmforce.com is available Monday–Friday, 08:00–18:00 (CET). Requests before 18:00 are picked up the same day. Direct phone contact runs via your account manager — flag urgencies in the subject.",
+            a: "service@hrmforce.com is available Monday–Friday, 08:00–18:00 (CET). Requests before 18:00 are picked up the same day. Direct phone contact runs via your account manager, flag urgencies in the subject.",
             tags: ["service desk","hours","urgent","support","available","email","contact","priority"] },
       de: { q: "Was sind die Öffnungszeiten des Service-Desks?",
-            a: "service@hrmforce.com ist Mo-Fr 08:00–18:00 (MEZ) erreichbar. Anfragen vor 18:00 werden am selben Tag bearbeitet. Direkter Telefonkontakt via Account Manager — Dringlichkeit im Betreff markieren.",
+            a: "service@hrmforce.com ist Mo-Fr 08:00–18:00 (MEZ) erreichbar. Anfragen vor 18:00 werden am selben Tag bearbeitet. Direkter Telefonkontakt via Account Manager, Dringlichkeit im Betreff markieren.",
             tags: ["service desk","offnungszeiten","dringend","support","erreichbar","email","kontakt"] },
       fr: { q: "Quels sont les horaires du service desk ?",
-            a: "service@hrmforce.com est joignable lun-ven 08h-18h (CET). Les demandes avant 18h sont traitées le jour même. Contact téléphonique direct via votre account manager — indiquer les urgences dans l'objet.",
+            a: "service@hrmforce.com est joignable lun-ven 08h-18h (CET). Les demandes avant 18h sont traitées le jour même. Contact téléphonique direct via votre account manager, indiquer les urgences dans l'objet.",
             tags: ["service desk","horaires","urgent","support","joignable","email","contact"] },
       es: { q: "¿Cuál es el horario del service desk?",
-            a: "service@hrmforce.com está disponible lun-vie 08:00–18:00 (CET). Solicitudes antes de las 18:00 se atienden el mismo día. Contacto telefónico directo a través de su account manager — indique urgencias en el asunto.",
+            a: "service@hrmforce.com está disponible lun-vie 08:00–18:00 (CET). Solicitudes antes de las 18:00 se atienden el mismo día. Contacto telefónico directo a través de su account manager, indique urgencias en el asunto.",
             tags: ["service desk","horario","urgente","soporte","disponible","email","contacto"] },
       ro: { q: "Care este programul biroului de service?",
-            a: "service@hrmforce.com este disponibil lu-vi 08:00–18:00 (CET). Solicitările înainte de 18:00 se preiau în aceeași zi. Contact telefonic direct prin account managerul dvs. — marcați urgențele în subiect.",
+            a: "service@hrmforce.com este disponibil lu-vi 08:00–18:00 (CET). Solicitările înainte de 18:00 se preiau în aceeași zi. Contact telefonic direct prin account managerul dvs., marcați urgențele în subiect.",
             tags: ["service desk","program","urgent","suport","disponibil","email","contact"] }
     },
     {
@@ -588,22 +588,22 @@
     {
       id: "demo",
       nl: { q: "Kan ik een gratis demo aanvragen?",
-            a: "Ja. Vraag een vrijblijvende demo aan — een adviseur neemt binnen één werkdag contact op.\n\nDemo aanvragen: https://hrmforce.com/demo/",
+            a: "Ja. Vraag een vrijblijvende demo aan, een adviseur neemt binnen één werkdag contact op.\n\nDemo aanvragen: https://hrmforce.com/demo/",
             tags: ["demo","gratis","proberen","afspraak","vrijblijvend","adviseur","kennismaken"] },
       en: { q: "Can I request a free demo?",
-            a: "Yes. Request a no-obligation demo — a consultant will reach out within one business day.\n\nRequest a demo: https://hrmforce.com/en/demo-2/",
+            a: "Yes. Request a no-obligation demo, a consultant will reach out within one business day.\n\nRequest a demo: https://hrmforce.com/en/demo-2/",
             tags: ["demo","free","trial","appointment","no obligation","consultant","intro"] },
       de: { q: "Kann ich eine kostenlose Demo anfragen?",
-            a: "Ja. Fordern Sie eine unverbindliche Demo an — ein Berater meldet sich innerhalb eines Werktags.\n\nDemo: https://hrmforce.com/demo/",
+            a: "Ja. Fordern Sie eine unverbindliche Demo an, ein Berater meldet sich innerhalb eines Werktags.\n\nDemo: https://hrmforce.com/demo/",
             tags: ["demo","kostenlos","testen","termin","unverbindlich","berater"] },
       fr: { q: "Puis-je demander une démo gratuite ?",
-            a: "Oui. Demandez une démo sans engagement — un consultant vous contactera sous un jour ouvré.\n\nDémo : https://hrmforce.com/en/demo-2/",
+            a: "Oui. Demandez une démo sans engagement, un consultant vous contactera sous un jour ouvré.\n\nDémo : https://hrmforce.com/en/demo-2/",
             tags: ["demo","gratuite","essai","rendez-vous","sans engagement","consultant"] },
       es: { q: "¿Puedo solicitar una demo gratuita?",
-            a: "Sí. Solicite una demo sin compromiso — un consultor le contactará en un día laborable.\n\nDemo: https://hrmforce.com/en/demo-2/",
+            a: "Sí. Solicite una demo sin compromiso, un consultor le contactará en un día laborable.\n\nDemo: https://hrmforce.com/en/demo-2/",
             tags: ["demo","gratis","probar","cita","sin compromiso","consultor"] },
       ro: { q: "Pot solicita un demo gratuit?",
-            a: "Da. Solicitați un demo fără obligație — un consultant vă contactează în decurs de o zi lucrătoare.\n\nDemo: https://hrmforce.com/en/demo-2/",
+            a: "Da. Solicitați un demo fără obligație, un consultant vă contactează în decurs de o zi lucrătoare.\n\nDemo: https://hrmforce.com/en/demo-2/",
             tags: ["demo","gratuit","incercare","programare","fara obligatie","consultant"] }
     },
     {
@@ -736,7 +736,7 @@
   }
 
   // ============================================================
-  // LLM call — POSTs to the Cloudflare Worker. Falls back to the
+  // LLM call, POSTs to the Cloudflare Worker. Falls back to the
   // local keyword matcher if no ENDPOINT_URL is set or the call fails.
   // ============================================================
   function callLLM(history, lang, onProgress) {
@@ -803,7 +803,7 @@
   function linkify(text) {
     // 1. HTML-escape
     var t = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    // 2. Strip / convert leftover Markdown (defensive — Henry should not produce these,
+    // 2. Strip / convert leftover Markdown (defensive, Henry should not produce these,
     //    but if he slips, we render them as plain styled text rather than raw # / **)
     t = t.replace(/^#{1,6}\s+(.*)$/gm, '<strong>$1</strong>');           // headers → bold line
     t = t.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');       // **bold**
