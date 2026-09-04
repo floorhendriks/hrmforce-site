@@ -1,5 +1,5 @@
 // Tarieven-content per taal, gebruikt door src/components/Tarieven.astro.
-// NL = leidend. DE/FR/ES/RO zijn een eerste vertaalslag — laat nakijken door een native speaker.
+// NL = leidend. DE/FR/ES/RO zijn een eerste vertaalslag, laat nakijken door een native speaker.
 export const tarievenContent = {
   nl: {
     meta: { title: "Tarieven - hrmforce", description: "Bekijk de mogelijkheden en tarieven van hrmforce: eigen portal op licentiebasis of losse afname per assessment." },
@@ -75,7 +75,7 @@ Object.assign(tarievenContent.en.fit, { eyebrow: "Which fits?", title: "Quickly 
 tarievenContent.en.plansTitle = { eyebrow: "Licences", title: "Our packages" };
 tarievenContent.en.featuredBadge = "Most chosen";
 tarievenContent.en.plansNote = "Pay-as-you-go prices range from €19 to €99 per test. Annual licences are based on the number of employees or consultants; request a quote for a tailored price.";
-tarievenContent.en.plans[0].tagline = "Pay per candidate per report. No fixed costs — buy as you need.";
+tarievenContent.en.plans[0].tagline = "Pay per candidate per report. No fixed costs, buy as you need.";
 tarievenContent.en.plans[0].priceNote = "per test"; tarievenContent.en.plans[0].cta = "Book a demo";
 tarievenContent.en.plans[1].tagline = "Unlimited use of questionnaires. Annual licence based on the number of employees or consultants."; tarievenContent.en.plans[1].price = "On request"; tarievenContent.en.plans[1].priceNote = "annual licence"; tarievenContent.en.plans[1].cta = "Book a demo";
 tarievenContent.en.plans[2].tagline = "Unlimited use of questionnaires and all hrmforce features. Annual licence based on the number of employees or consultants."; tarievenContent.en.plans[2].price = "On request"; tarievenContent.en.plans[2].priceNote = "annual licence"; tarievenContent.en.plans[2].cta = "Book a demo";
@@ -85,7 +85,7 @@ Object.assign(tarievenContent.en.onb, { eyebrow: "Implementation", title: "Onboa
 tarievenContent.en.onb.tiers[0].price = "Free*";
 tarievenContent.en.faqSection = { eyebrow: "FAQ", title: "Frequently asked questions about pricing" };
 tarievenContent.en.faqs = [
-  { q: "What kind of questionnaires does hrmforce offer?", a: "hrmforce offers a broad range of questionnaires — personality tests, competency assessments, 360-degree feedback and employee satisfaction surveys — all designed to strengthen HR processes." },
+  { q: "What kind of questionnaires does hrmforce offer?", a: "hrmforce offers a broad range of questionnaires, personality tests, competency assessments, 360-degree feedback and employee satisfaction surveys, all designed to strengthen HR processes." },
   { q: "Can the questionnaires be tailored to our company's needs?", a: "Yes, we offer bespoke solutions where our questionnaires can be adapted to your organisation's specific needs and goals." },
   { q: "How does hrmforce integrate with our existing HR systems?", a: "Our software integrates easily with most HRIS, LMS and ERP systems via API or SSO, for a seamless data flow within your organisation." },
   { q: "How reliable and valid are the questionnaires?", a: "Our questionnaires are scientifically grounded and tested for high reliability and validity, and reviewed by NIP-registered psychologists." },
@@ -106,7 +106,7 @@ Object.assign(tarievenContent.de.fit, { eyebrow: "Was passt?", title: "Finden Si
 tarievenContent.de.plansTitle = { eyebrow: "Lizenzen", title: "Unsere Pakete" };
 tarievenContent.de.featuredBadge = "Am häufigsten gewählt";
 tarievenContent.de.plansNote = "Pay-as-you-go-Preise liegen zwischen 19 € und 99 € pro Test. Jahreslizenzen richten sich nach der Anzahl der Mitarbeiter oder Berater; fordern Sie ein individuelles Angebot an.";
-tarievenContent.de.plans[0].tagline = "Zahlen Sie pro Kandidat und Bericht. Keine Fixkosten — kaufen Sie nach Bedarf."; tarievenContent.de.plans[0].priceNote = "pro Test"; tarievenContent.de.plans[0].cta = "Demo anfragen";
+tarievenContent.de.plans[0].tagline = "Zahlen Sie pro Kandidat und Bericht. Keine Fixkosten, kaufen Sie nach Bedarf."; tarievenContent.de.plans[0].priceNote = "pro Test"; tarievenContent.de.plans[0].cta = "Demo anfragen";
 tarievenContent.de.plans[1].tagline = "Unbegrenzte Nutzung der Fragebögen. Jahreslizenz nach Anzahl der Mitarbeiter oder Berater."; tarievenContent.de.plans[1].price = "Auf Anfrage"; tarievenContent.de.plans[1].priceNote = "Jahreslizenz"; tarievenContent.de.plans[1].cta = "Demo anfragen";
 tarievenContent.de.plans[2].tagline = "Unbegrenzte Nutzung aller Fragebögen und Funktionen. Jahreslizenz nach Anzahl der Mitarbeiter oder Berater."; tarievenContent.de.plans[2].price = "Auf Anfrage"; tarievenContent.de.plans[2].priceNote = "Jahreslizenz"; tarievenContent.de.plans[2].cta = "Demo anfragen";
 Object.assign(tarievenContent.de.compare, { eyebrow: "Vergleichen", title: "Pakete vergleichen", featBadge: "Am häufigsten gewählt", head: ["Funktion", "Pay-as-you-go", "Pro"], cta: "Individuelles Angebot anfordern" });
@@ -115,14 +115,14 @@ Object.assign(tarievenContent.de.onb, { eyebrow: "Implementierung", title: "Onbo
 tarievenContent.de.onb.tiers[0].price = "Kostenlos*";
 tarievenContent.de.faqSection = { eyebrow: "Häufige Fragen", title: "Häufige Fragen zu den Preisen" };
 tarievenContent.de.faqs = [
-  { q: "Welche Fragebögen bietet hrmforce an?", a: "hrmforce bietet ein breites Spektrum an Fragebögen — Persönlichkeitstests, Kompetenz-Assessments, 360-Grad-Feedback und Mitarbeiterbefragungen — alle zur Stärkung Ihrer HR-Prozesse." },
+  { q: "Welche Fragebögen bietet hrmforce an?", a: "hrmforce bietet ein breites Spektrum an Fragebögen, Persönlichkeitstests, Kompetenz-Assessments, 360-Grad-Feedback und Mitarbeiterbefragungen, alle zur Stärkung Ihrer HR-Prozesse." },
   { q: "Können die Fragebögen an unser Unternehmen angepasst werden?", a: "Ja, wir bieten maßgeschneiderte Lösungen, bei denen unsere Fragebögen an die Bedürfnisse und Ziele Ihrer Organisation angepasst werden." },
   { q: "Wie integriert sich hrmforce in bestehende HR-Systeme?", a: "Unsere Software lässt sich über API oder SSO einfach in die meisten HRIS-, LMS- und ERP-Systeme integrieren." },
   { q: "Wie zuverlässig und valide sind die Fragebögen?", a: "Unsere Fragebögen sind wissenschaftlich fundiert, auf hohe Zuverlässigkeit und Validität geprüft und werden von NIP-registrierten Psychologen überprüft." },
   { q: "Wie werden Datenschutz und DSGVO gewährleistet?", a: "hrmforce hält die DSGVO streng ein. Alle Mitarbeiterdaten werden innerhalb der EU verarbeitet und sicher gespeichert." },
   { q: "Was kostet es?", a: "Die Kosten richten sich nach Bedarf und Umfang. Wir bieten flexible Modelle: Pay-as-you-go pro Assessment oder eine Jahreslizenz nach Mitarbeiterzahl." },
 ];
-tarievenContent.de.ctaBand = { title: "Haben Sie eine andere Frage?", text: "Unser Team hilft Ihnen gerne. Fordern Sie ein Angebot oder eine Demo an — wir stimmen die passende Lösung auf Ihre Situation ab.", primary: "Kontakt aufnehmen", secondary: "Mehr über hrmforce", hours: "Unsere Berater sind Montag bis Freitag von 08:00 bis 18:00 Uhr erreichbar." };
+tarievenContent.de.ctaBand = { title: "Haben Sie eine andere Frage?", text: "Unser Team hilft Ihnen gerne. Fordern Sie ein Angebot oder eine Demo an, wir stimmen die passende Lösung auf Ihre Situation ab.", primary: "Kontakt aufnehmen", secondary: "Mehr über hrmforce", hours: "Unsere Berater sind Montag bis Freitag von 08:00 bis 18:00 Uhr erreichbar." };
 
 tarievenContent.fr = clone(tarievenContent.nl);
 Object.assign(tarievenContent.fr.meta, { title: "Tarifs - hrmforce", description: "Découvrez les options et tarifs de hrmforce : votre propre portail sous licence ou paiement à l'évaluation." });
@@ -136,7 +136,7 @@ Object.assign(tarievenContent.fr.fit, { eyebrow: "Quelle formule ?", title: "Tro
 tarievenContent.fr.plansTitle = { eyebrow: "Licences", title: "Nos formules" };
 tarievenContent.fr.featuredBadge = "Le plus choisi";
 tarievenContent.fr.plansNote = "Les tarifs à l'unité vont de 19 € à 99 € par test. Les licences annuelles dépendent du nombre de collaborateurs ou de consultants ; demandez un devis sur mesure.";
-tarievenContent.fr.plans[0].tagline = "Payez par candidat et par rapport. Aucun coût fixe — achetez selon vos besoins."; tarievenContent.fr.plans[0].priceNote = "par test"; tarievenContent.fr.plans[0].cta = "Demander une démo";
+tarievenContent.fr.plans[0].tagline = "Payez par candidat et par rapport. Aucun coût fixe, achetez selon vos besoins."; tarievenContent.fr.plans[0].priceNote = "par test"; tarievenContent.fr.plans[0].cta = "Demander une démo";
 tarievenContent.fr.plans[1].tagline = "Utilisation illimitée des questionnaires. Licence annuelle selon le nombre de collaborateurs ou consultants."; tarievenContent.fr.plans[1].price = "Sur demande"; tarievenContent.fr.plans[1].priceNote = "licence annuelle"; tarievenContent.fr.plans[1].cta = "Demander une démo";
 tarievenContent.fr.plans[2].tagline = "Utilisation illimitée des questionnaires et de toutes les fonctionnalités. Licence annuelle selon le nombre de collaborateurs ou consultants."; tarievenContent.fr.plans[2].price = "Sur demande"; tarievenContent.fr.plans[2].priceNote = "licence annuelle"; tarievenContent.fr.plans[2].cta = "Demander une démo";
 Object.assign(tarievenContent.fr.compare, { eyebrow: "Comparer", title: "Comparer les formules", featBadge: "Le plus choisi", head: ["Fonctionnalité", "À l'unité", "Pro"], cta: "Demander un devis sur mesure" });
@@ -145,7 +145,7 @@ Object.assign(tarievenContent.fr.onb, { eyebrow: "Implémentation", title: "L'on
 tarievenContent.fr.onb.tiers[0].price = "Gratuit*";
 tarievenContent.fr.faqSection = { eyebrow: "FAQ", title: "Questions fréquentes sur les tarifs" };
 tarievenContent.fr.faqs = [
-  { q: "Quels types de questionnaires hrmforce propose-t-il ?", a: "hrmforce propose une large gamme de questionnaires — tests de personnalité, évaluations de compétences, feedback 360° et enquêtes de satisfaction — conçus pour renforcer vos processus RH." },
+  { q: "Quels types de questionnaires hrmforce propose-t-il ?", a: "hrmforce propose une large gamme de questionnaires, tests de personnalité, évaluations de compétences, feedback 360° et enquêtes de satisfaction, conçus pour renforcer vos processus RH." },
   { q: "Les questionnaires peuvent-ils être adaptés à notre entreprise ?", a: "Oui, nous proposons des solutions sur mesure adaptées aux besoins et objectifs de votre organisation." },
   { q: "Comment hrmforce s'intègre-t-il à nos systèmes RH ?", a: "Notre logiciel s'intègre facilement à la plupart des systèmes SIRH, LMS et ERP via API ou SSO." },
   { q: "Quelle est la fiabilité et la validité des questionnaires ?", a: "Nos questionnaires sont scientifiquement fondés, testés pour une haute fiabilité et validité, et revus par des psychologues agréés NIP." },
@@ -166,7 +166,7 @@ Object.assign(tarievenContent.es.fit, { eyebrow: "¿Qué encaja?", title: "Encue
 tarievenContent.es.plansTitle = { eyebrow: "Licencias", title: "Nuestros paquetes" };
 tarievenContent.es.featuredBadge = "El más elegido";
 tarievenContent.es.plansNote = "Los precios por uso van de 19 € a 99 € por test. Las licencias anuales se basan en el número de empleados o consultores; solicite un presupuesto a medida.";
-tarievenContent.es.plans[0].tagline = "Pague por candidato y por informe. Sin costes fijos — compre según necesite."; tarievenContent.es.plans[0].priceNote = "por test"; tarievenContent.es.plans[0].cta = "Solicitar una demo";
+tarievenContent.es.plans[0].tagline = "Pague por candidato y por informe. Sin costes fijos, compre según necesite."; tarievenContent.es.plans[0].priceNote = "por test"; tarievenContent.es.plans[0].cta = "Solicitar una demo";
 tarievenContent.es.plans[1].tagline = "Uso ilimitado de cuestionarios. Licencia anual según el número de empleados o consultores."; tarievenContent.es.plans[1].price = "Bajo solicitud"; tarievenContent.es.plans[1].priceNote = "licencia anual"; tarievenContent.es.plans[1].cta = "Solicitar una demo";
 tarievenContent.es.plans[2].tagline = "Uso ilimitado de cuestionarios y de todas las funciones. Licencia anual según el número de empleados o consultores."; tarievenContent.es.plans[2].price = "Bajo solicitud"; tarievenContent.es.plans[2].priceNote = "licencia anual"; tarievenContent.es.plans[2].cta = "Solicitar una demo";
 Object.assign(tarievenContent.es.compare, { eyebrow: "Comparar", title: "Comparar paquetes", featBadge: "El más elegido", head: ["Función", "Pago por uso", "Pro"], cta: "Solicitar un presupuesto a medida" });
@@ -175,7 +175,7 @@ Object.assign(tarievenContent.es.onb, { eyebrow: "Implementación", title: "Empe
 tarievenContent.es.onb.tiers[0].price = "Gratis*";
 tarievenContent.es.faqSection = { eyebrow: "Preguntas frecuentes", title: "Preguntas frecuentes sobre los precios" };
 tarievenContent.es.faqs = [
-  { q: "¿Qué tipo de cuestionarios ofrece hrmforce?", a: "hrmforce ofrece una amplia gama de cuestionarios — tests de personalidad, evaluaciones de competencias, feedback 360° y encuestas de satisfacción — diseñados para reforzar sus procesos de RR. HH." },
+  { q: "¿Qué tipo de cuestionarios ofrece hrmforce?", a: "hrmforce ofrece una amplia gama de cuestionarios, tests de personalidad, evaluaciones de competencias, feedback 360° y encuestas de satisfacción, diseñados para reforzar sus procesos de RR. HH." },
   { q: "¿Se pueden adaptar los cuestionarios a nuestra empresa?", a: "Sí, ofrecemos soluciones a medida adaptadas a las necesidades y objetivos de su organización." },
   { q: "¿Cómo se integra hrmforce con nuestros sistemas de RR. HH.?", a: "Nuestro software se integra fácilmente con la mayoría de sistemas HRIS, LMS y ERP mediante API o SSO." },
   { q: "¿Qué fiabilidad y validez tienen los cuestionarios?", a: "Nuestros cuestionarios tienen base científica, se prueban para alta fiabilidad y validez, y los revisan psicólogos colegiados NIP." },
@@ -197,7 +197,7 @@ Object.assign(tarievenContent.ro.fit, { eyebrow: "Ce se potrivește?", title: "G
 tarievenContent.ro.plansTitle = { eyebrow: "Licențe", title: "Pachetele noastre" };
 tarievenContent.ro.featuredBadge = "Cel mai ales";
 tarievenContent.ro.plansNote = "Prețurile per utilizare variază între 19 € și 99 € per test. Licențele anuale se bazează pe numărul de angajați sau consultanți; solicitați o ofertă personalizată.";
-tarievenContent.ro.plans[0].tagline = "Plătiți per candidat și per raport. Fără costuri fixe — cumpărați după nevoie."; tarievenContent.ro.plans[0].priceNote = "per test"; tarievenContent.ro.plans[0].cta = "Solicitați o demonstrație";
+tarievenContent.ro.plans[0].tagline = "Plătiți per candidat și per raport. Fără costuri fixe, cumpărați după nevoie."; tarievenContent.ro.plans[0].priceNote = "per test"; tarievenContent.ro.plans[0].cta = "Solicitați o demonstrație";
 tarievenContent.ro.plans[1].tagline = "Utilizare nelimitată a chestionarelor. Licență anuală în funcție de numărul de angajați sau consultanți."; tarievenContent.ro.plans[1].price = "La cerere"; tarievenContent.ro.plans[1].priceNote = "licență anuală"; tarievenContent.ro.plans[1].cta = "Solicitați o demonstrație";
 tarievenContent.ro.plans[2].tagline = "Utilizare nelimitată a chestionarelor și a tuturor funcțiilor. Licență anuală în funcție de numărul de angajați sau consultanți."; tarievenContent.ro.plans[2].price = "La cerere"; tarievenContent.ro.plans[2].priceNote = "licență anuală"; tarievenContent.ro.plans[2].cta = "Solicitați o demonstrație";
 Object.assign(tarievenContent.ro.compare, { eyebrow: "Comparați", title: "Comparați pachetele", featBadge: "Cel mai ales", head: ["Funcție", "Per utilizare", "Pro"], cta: "Solicitați o ofertă personalizată" });
@@ -206,7 +206,7 @@ Object.assign(tarievenContent.ro.onb, { eyebrow: "Implementare", title: "Onboard
 tarievenContent.ro.onb.tiers[0].price = "Gratuit*";
 tarievenContent.ro.faqSection = { eyebrow: "Întrebări frecvente", title: "Întrebări frecvente despre prețuri" };
 tarievenContent.ro.faqs = [
-  { q: "Ce tipuri de chestionare oferă hrmforce?", a: "hrmforce oferă o gamă largă de chestionare — teste de personalitate, evaluări de competențe, feedback 360° și sondaje de satisfacție — concepute pentru a întări procesele HR." },
+  { q: "Ce tipuri de chestionare oferă hrmforce?", a: "hrmforce oferă o gamă largă de chestionare, teste de personalitate, evaluări de competențe, feedback 360° și sondaje de satisfacție, concepute pentru a întări procesele HR." },
   { q: "Pot fi adaptate chestionarele la compania noastră?", a: "Da, oferim soluții personalizate adaptate nevoilor și obiectivelor organizației dvs." },
   { q: "Cum se integrează hrmforce cu sistemele noastre HR?", a: "Software-ul nostru se integrează ușor cu majoritatea sistemelor HRIS, LMS și ERP prin API sau SSO." },
   { q: "Cât de fiabile și valide sunt chestionarele?", a: "Chestionarele noastre au bază științifică, sunt testate pentru fiabilitate și validitate ridicate și sunt revizuite de psihologi înregistrați NIP." },
