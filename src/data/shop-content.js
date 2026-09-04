@@ -1,5 +1,5 @@
 // Shop-UI-teksten per taal, gebruikt door src/components/Shop.astro.
-// en/de/fr/es/ro eerste vertaalslag — native review aanbevolen.
+// en/de/fr/es/ro eerste vertaalslag, native review aanbevolen.
 // De productbeschrijvingen zelf komen uit Shopify en blijven ongewijzigd.
 export const shopContent = {
   nl: {
@@ -13,7 +13,7 @@ export const shopContent = {
       eyebrow: "Shop",
       title: "Assessments direct afnemen",
       intro:
-        "Losse afname zonder abonnement — ideaal voor pilots, incidentele trajecten of piekmomenten. Filter op HR-cyclus, segment of uitgever, reken veilig af en start binnen een uur. Ook instrumenten van partners als SHL, Talogy en PiCompany.",
+        "Losse afname zonder abonnement, ideaal voor pilots, incidentele trajecten of piekmomenten. Filter op HR-cyclus, segment of uitgever, reken veilig af en start binnen een uur. Ook instrumenten van partners als SHL, Talogy en PiCompany.",
       licencePre: "Structureel of op grotere schaal inzetten? Dan is een ",
       licenceLink: "eigen portal op licentiebasis",
       licencePost: " meestal voordeliger.",
@@ -57,7 +57,7 @@ export const shopContent = {
       eyebrow: "Shop",
       title: "Order assessments directly",
       intro:
-        "One-off purchase without a subscription — ideal for pilots, incidental projects or peak moments. Filter by HR cycle, segment or publisher, pay securely and start within an hour. Includes instruments from partners such as SHL, Talogy and PiCompany.",
+        "One-off purchase without a subscription, ideal for pilots, incidental projects or peak moments. Filter by HR cycle, segment or publisher, pay securely and start within an hour. Includes instruments from partners such as SHL, Talogy and PiCompany.",
       licencePre: "Deploying structurally or at larger scale? Then ",
       licenceLink: "your own portal on a licence basis",
       licencePost: " is usually more cost-effective.",
@@ -101,7 +101,7 @@ export const shopContent = {
       eyebrow: "Shop",
       title: "Assessments direkt bestellen",
       intro:
-        "Einzelabnahme ohne Abonnement — ideal für Pilotprojekte, gelegentliche Vorhaben oder Spitzenzeiten. Filtern Sie nach HR-Zyklus, Segment oder Anbieter, bezahlen Sie sicher und starten Sie innerhalb einer Stunde. Auch Instrumente von Partnern wie SHL, Talogy und PiCompany.",
+        "Einzelabnahme ohne Abonnement, ideal für Pilotprojekte, gelegentliche Vorhaben oder Spitzenzeiten. Filtern Sie nach HR-Zyklus, Segment oder Anbieter, bezahlen Sie sicher und starten Sie innerhalb einer Stunde. Auch Instrumente von Partnern wie SHL, Talogy und PiCompany.",
       licencePre: "Strukturell oder in größerem Umfang einsetzen? Dann ist ein ",
       licenceLink: "eigenes Portal auf Lizenzbasis",
       licencePost: " meist günstiger.",
@@ -145,7 +145,7 @@ export const shopContent = {
       eyebrow: "Boutique",
       title: "Commandez des évaluations directement",
       intro:
-        "Achat à l'unité sans abonnement — idéal pour les pilotes, les projets ponctuels ou les pics d'activité. Filtrez par cycle RH, segment ou éditeur, payez en toute sécurité et démarrez en une heure. Comprend aussi des instruments de partenaires comme SHL, Talogy et PiCompany.",
+        "Achat à l'unité sans abonnement, idéal pour les pilotes, les projets ponctuels ou les pics d'activité. Filtrez par cycle RH, segment ou éditeur, payez en toute sécurité et démarrez en une heure. Comprend aussi des instruments de partenaires comme SHL, Talogy et PiCompany.",
       licencePre: "Un déploiement structurel ou à plus grande échelle ? Dans ce cas, un ",
       licenceLink: "portail dédié sous licence",
       licencePost: " est généralement plus avantageux.",
@@ -189,7 +189,7 @@ export const shopContent = {
       eyebrow: "Tienda",
       title: "Contrate evaluaciones directamente",
       intro:
-        "Contratación suelta sin suscripción — ideal para pilotos, trayectos puntuales o momentos de pico. Filtre por ciclo de RR. HH., segmento o editor, pague de forma segura y empiece en una hora. También instrumentos de socios como SHL, Talogy y PiCompany.",
+        "Contratación suelta sin suscripción, ideal para pilotos, trayectos puntuales o momentos de pico. Filtre por ciclo de RR. HH., segmento o editor, pague de forma segura y empiece en una hora. También instrumentos de socios como SHL, Talogy y PiCompany.",
       licencePre: "¿Uso estructural o a mayor escala? En ese caso, un ",
       licenceLink: "portal propio con licencia",
       licencePost: " suele ser más ventajoso.",
@@ -233,7 +233,7 @@ export const shopContent = {
       eyebrow: "Magazin",
       title: "Comandați evaluări direct",
       intro:
-        "Achiziție individuală fără abonament — ideală pentru pilotări, proiecte punctuale sau perioade de vârf. Filtrați după ciclul HR, segment sau editor, plătiți în siguranță și începeți într-o oră. Include și instrumente de la parteneri precum SHL, Talogy și PiCompany.",
+        "Achiziție individuală fără abonament, ideală pentru pilotări, proiecte punctuale sau perioade de vârf. Filtrați după ciclul HR, segment sau editor, plătiți în siguranță și începeți într-o oră. Include și instrumente de la parteneri precum SHL, Talogy și PiCompany.",
       licencePre: "Utilizare structurală sau la scară mai mare? Atunci un ",
       licenceLink: "portal propriu pe bază de licență",
       licencePost: " este de obicei mai avantajos.",
