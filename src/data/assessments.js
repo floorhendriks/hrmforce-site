@@ -16,7 +16,7 @@ export const assessments = [
     extra: "Big Five Persoonlijkheid CanMeds test, speciaal voor de zorg.",
     traits: ["Neuroticisme", "Extraversie", "Openheid", "Aanpassen", "Consciëntieusheid"],
     intro: ["Je kiest een kandidaat op basis van een goed gesprek, maar onder druk blijkt het gedrag heel anders. Moeizame samenwerking, ziekmeldingen of iemand die niet op zijn plek zit, kosten je tijd en geld.", "De Big Fifty Personality-test van hrmforce is gebaseerd op het wetenschappelijk best onderbouwde Big Five-model en laat vóór de aanname zien hoe iemand echt werkt, samenwerkt en zich ontwikkelt. Zo baseer je je keuze op inzicht in plaats van onderbuikgevoel."],
-    body: ["In de rapportage wordt het persoonlijkheidsprofiel vertaald naar competenties — een combinatie van kennis, vaardigheden en gedrag.", "Ontdek direct wat de persoonlijkheid van je medewerkers zegt over hun ontwikkelpotentieel. 10.000+ professionals gingen je voor."],
+    body: ["In de rapportage wordt het persoonlijkheidsprofiel vertaald naar competenties, een combinatie van kennis, vaardigheden en gedrag.", "Ontdek direct wat de persoonlijkheid van je medewerkers zegt over hun ontwikkelpotentieel. 10.000+ professionals gingen je voor."],
     quote: { heading: "Betrouwbaar inzicht", text: "De Big Fifty Personality is niet zomaar een vragenlijst, maar een wetenschappelijk gevalideerd fundament. Het geeft organisaties een betrouwbaar kompas voor selectie en ontwikkeling.", author: "Floor Hendriks", role: "HR specialist", initials: "FH" },
     faq: [
       { q: "Wat meet de Big Fifty Personality-vragenlijst?", a: "Persoonlijkheid op basis van het internationaal erkende Big Five-model, aangevuld met subfacetten voor genuanceerder inzicht." },
@@ -47,7 +47,7 @@ export const assessments = [
     time: "10 minuten", form: "Vragenlijst", feedback: "Rapport met de belangrijkste drijfveren en hoe ze het werk beïnvloeden.", extra: "Goed te combineren met een persoonlijkheidstest.",
     traits: ["Prestatie", "Verbinding", "Autonomie", "Zekerheid", "Invloed"],
     intro: ["Iemand heeft de juiste papieren en toch dooft de motivatie. Verloop, half werk en mensen die niet passen bij de cultuur ontstaan vaak doordat de onderliggende drijfveren niet aansluiten bij het werk.", "De drijfverentest van hrmforce maakt zichtbaar wat iemand echt motiveert en energie geeft. Zo plaats je mensen op een rol en in een team waar ze willen blijven, en voorkom je dure mismatch."],
-    body: ["Drijfveren voorspellen betrokkenheid en passendheid bij een rol of cultuur — waardevol bij ontwikkeling en behoud."],
+    body: ["Drijfveren voorspellen betrokkenheid en passendheid bij een rol of cultuur, waardevol bij ontwikkeling en behoud."],
     quote: quoteFH,
     faq: [ { q: "Wat is het verschil met een persoonlijkheidstest?", a: "Persoonlijkheid beschrijft gedrag; drijfveren beschrijven motivatie. Samen geven ze een rijker beeld." } ],
     related: ["Persoonlijkheidstest: Big Five", "360 graden feedback"],
