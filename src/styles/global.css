@@ -417,3 +417,9 @@ footer a:hover{color:#fff;opacity:1}
   .hero .btns .btn,.ahero .btns .btn,.cta .btns .btn{width:100%}
   .trust{gap:14px;flex-direction:column}
 }
+
+/* Mobiele safeguard: voorkom horizontale overflow op smalle schermen */
+html{overflow-x:hidden;}
+@media (max-width:640px){
+  .price-grid,.plans-grid{grid-template-columns:1fr;}
+}
