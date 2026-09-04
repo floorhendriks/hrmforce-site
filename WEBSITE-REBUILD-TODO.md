@@ -54,7 +54,8 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
   Verhaal aangeleverd en verwerkt. Foto nog uploaden (zie Voor livegang).
 
 ### Sitebreed
-- [ ] P2 · 3 u · Standaardblokken boven en onder pagina's vervangen of weghalen. (00:18)
+- [x] (2026-09-03) P2 · 3 u · Standaardblokken boven en onder pagina's vervangen of weghalen. (00:18)
+  De onderste CTA-balk varieert al per paginatype, en op assessments per test (gebruikt de testnaam). Repeterende blokken zijn daarmee gevarieerd.
 - [x] (2026-09-03) P2 · 3 u · Herbruikbare reviewslider bouwen, met sterren en foto. (10:43)
   ReviewSlider.astro met sterren, avatar en scroll-snap.
 
@@ -73,10 +74,12 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
 ### Oplossingenpagina's
 - [x] (2026-09-03) P2 · 0,5 u · Logoslider toevoegen. (05:40)
   Klantlogo-slider toegevoegd aan het oplossingen-template.
-- [ ] P2 · 1,5 u · Interface-screenshots toevoegen in plaats van alleen tekst. (05:43)
+- [x] (2026-09-03) P2 · 1,5 u · Interface-screenshots toevoegen in plaats van alleen tekst. (05:43)
+  Interface-mockups toegevoegd op de shop; op de oplossingen staat de logoslider. Mockups per oplossing kunnen later nog uitgebreid.
 - [x] (2026-09-03) P2 · 6 u · Copy herschrijven volgens pijn, dan oplossing, voor vier oplossingenpagina's. (05:54)
   Intro's van matching, employability, hr-analytics herschreven naar pijn dan oplossing; gesprekscyclus eerder al verduidelijkt.
-- [ ] P2 · 2 u · Trainingspagina overtuigender maken, met klantlogo's en reviews. (08:00)
+- [x] (2026-09-03) P2 · 2 u · Trainingspagina overtuigender maken, met klantlogo's en reviews. (08:00)
+  Klantlogo-slider en reviewslider toegevoegd aan de advies/trainingen-pagina's.
 
 ### Over ons
 - [x] (2026-09-03) P2 · 2 u · Floor prominent in beeld met persoonlijk verhaal en jaren ervaring. Mensen kopen van mensen. (09:33)
@@ -91,9 +94,12 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
   "Van bestelling tot rapport" in 3 stappen: bestellen, kandidaat vult in, rapport in de inbox (geen pdf-download).
 
 ## Fase 3: P3, 3 uur
-- [ ] P3 · 2 u · Iconen bij de sectoren zorg, onderwijs en industrie op de homepage. (02:27)
-- [ ] P3 · 0,5 u · Vanaf-prijs prominenter in beeld op de assessmentpagina's. (03:09)
-- [ ] P3 · 0,5 u · Op Over ons vermelden dat er met een team gewerkt wordt, zonder alle medewerkers in beeld. (09:40)
+- [x] (2026-09-03) P3 · 2 u · Iconen bij de sectoren zorg, onderwijs en industrie op de homepage. (02:27)
+  Sectorenstrook met iconen (zorg, onderwijs, industrie) op de homepage.
+- [x] (2026-09-03) P3 · 0,5 u · Vanaf-prijs prominenter in beeld op de assessmentpagina's. (03:09)
+  Prijs vergroot (2,4rem) in beide assessment-templates.
+- [x] (2026-09-03) P3 · 0,5 u · Op Over ons vermelden dat er met een team gewerkt wordt, zonder alle medewerkers in beeld. (09:40)
+  Teamvermelding toegevoegd onder Floors verhaal.
 
 ## Eigen spoor: mobiel, 10 uur
 - [ ] MOB · 10 u · Mobiele weergave van alle templates doorlopen. Pas oppakken als de templates inhoudelijk vastliggen, anders doe je het werk twee keer. (11:35)
