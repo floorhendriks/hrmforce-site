@@ -109,6 +109,7 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
 - Kennisbank. Werd expliciet goed bevonden en is gelijk aan wat er al was. (08:26)
 
 ## Voor livegang
+- [ ] (2026-09-04) Favicon self-hosten. De favicon verwijst nu naar hrmforce.com/wp-content (net als het logo) en breekt na de domein-cutover. Zet de favicon-bestanden in de repo (public/) en verwijs relatief.
 - [ ] Voorlopige reviews vervangen door echte, verifieerbare reviews met naam en foto.
 - [ ] Foto van Floor uploaden als public/team/floor-hendriks.jpg (nu placeholder-avatar met auto-swap).
 - [ ] Klantlogo's zelf hosten in public/ voor de domeincutover (nu via hrmforce.com/wp-content).
