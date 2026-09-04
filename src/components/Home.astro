@@ -26,32 +26,32 @@ const vpIcons = {
 const reviews = c.reviews;
 const TESTI = {
   nl: { eyebrow: "Wat klanten zeggen", title: "Vertrouwd door HR-teams en adviseurs", items: [
-    { q: "De rapporten zijn meteen bruikbaar in ons selectiegesprek — geen vertaalslag meer nodig.", who: "HR-manager", org: "Zorgorganisatie, 300+ medewerkers" },
+    { q: "De rapporten zijn meteen bruikbaar in ons selectiegesprek, geen vertaalslag meer nodig.", who: "HR-manager", org: "Zorgorganisatie, 300+ medewerkers" },
     { q: "Wetenschappelijk onderbouwd én praktisch. Onze recruiters werken er dagelijks mee.", who: "Recruitmentlead", org: "Technische dienstverlener" },
     { q: "Snel opgezet, meertalig en betrouwbaar. De ondersteuning denkt echt mee.", who: "L&D-adviseur", org: "Financiële sector" } ],
     itc: "hrmforce is lid van de International Test Commission (ITC) en werkt volgens de internationale richtlijnen voor verantwoord testgebruik." },
   en: { eyebrow: "What clients say", title: "Trusted by HR teams and consultants", items: [
-    { q: "The reports are usable straight away in our selection interview — no translation needed.", who: "HR manager", org: "Healthcare organisation, 300+ staff" },
+    { q: "The reports are usable straight away in our selection interview, no translation needed.", who: "HR manager", org: "Healthcare organisation, 300+ staff" },
     { q: "Scientifically grounded and practical. Our recruiters use it every day.", who: "Recruitment lead", org: "Technical services provider" },
     { q: "Quick to set up, multilingual and reliable. Support really thinks along.", who: "L&D advisor", org: "Financial sector" } ],
     itc: "hrmforce is a member of the International Test Commission (ITC) and works to the international guidelines for responsible test use." },
   de: { eyebrow: "Was Kunden sagen", title: "Vertraut von HR-Teams und Beratern", items: [
-    { q: "Die Berichte sind sofort im Auswahlgespräch nutzbar — ohne Übersetzung.", who: "HR-Managerin", org: "Gesundheitsorganisation, 300+ Mitarbeitende" },
+    { q: "Die Berichte sind sofort im Auswahlgespräch nutzbar, ohne Übersetzung.", who: "HR-Managerin", org: "Gesundheitsorganisation, 300+ Mitarbeitende" },
     { q: "Wissenschaftlich fundiert und praktisch. Unsere Recruiter arbeiten täglich damit.", who: "Recruiting-Leiter", org: "Technischer Dienstleister" },
     { q: "Schnell eingerichtet, mehrsprachig und zuverlässig. Der Support denkt wirklich mit.", who: "L&D-Beraterin", org: "Finanzsektor" } ],
     itc: "hrmforce ist Mitglied der International Test Commission (ITC) und arbeitet nach den internationalen Richtlinien für verantwortungsvollen Testeinsatz." },
   fr: { eyebrow: "Ce que disent nos clients", title: "La confiance des équipes RH et consultants", items: [
-    { q: "Les rapports sont directement exploitables lors de l'entretien — sans traduction.", who: "Responsable RH", org: "Organisation de santé, 300+ salariés" },
+    { q: "Les rapports sont directement exploitables lors de l'entretien, sans traduction.", who: "Responsable RH", org: "Organisation de santé, 300+ salariés" },
     { q: "Scientifique et pratique. Nos recruteurs l'utilisent chaque jour.", who: "Responsable recrutement", org: "Prestataire technique" },
     { q: "Mise en place rapide, multilingue et fiable. Le support est à l'écoute.", who: "Conseillère L&D", org: "Secteur financier" } ],
     itc: "hrmforce est membre de l'International Test Commission (ITC) et applique les directives internationales pour un usage responsable des tests." },
   es: { eyebrow: "Lo que dicen los clientes", title: "La confianza de equipos de RR. HH. y consultores", items: [
-    { q: "Los informes se usan de inmediato en la entrevista — sin traducción.", who: "Responsable de RR. HH.", org: "Organización sanitaria, 300+ empleados" },
+    { q: "Los informes se usan de inmediato en la entrevista, sin traducción.", who: "Responsable de RR. HH.", org: "Organización sanitaria, 300+ empleados" },
     { q: "Con base científica y práctica. Nuestros reclutadores lo usan a diario.", who: "Responsable de selección", org: "Proveedor técnico" },
     { q: "Rápido de configurar, multilingüe y fiable. El soporte se implica de verdad.", who: "Asesora de L&D", org: "Sector financiero" } ],
     itc: "hrmforce es miembro de la International Test Commission (ITC) y trabaja según las directrices internacionales para un uso responsable de los tests." },
   ro: { eyebrow: "Ce spun clienții", title: "De încredere pentru echipe HR și consultanți", items: [
-    { q: "Rapoartele sunt utilizabile imediat în interviu — fără traducere.", who: "Manager HR", org: "Organizație medicală, 300+ angajați" },
+    { q: "Rapoartele sunt utilizabile imediat în interviu, fără traducere.", who: "Manager HR", org: "Organizație medicală, 300+ angajați" },
     { q: "Fundamentat științific și practic. Recrutorii noștri îl folosesc zilnic.", who: "Lead recrutare", org: "Furnizor de servicii tehnice" },
     { q: "Rapid de configurat, multilingv și fiabil. Suportul chiar te ajută.", who: "Consultant L&D", org: "Sector financiar" } ],
     itc: "hrmforce este membru al International Test Commission (ITC) și lucrează conform ghidurilor internaționale pentru utilizarea responsabilă a testelor." },
@@ -69,7 +69,7 @@ const faqLd = {
 ---
 <div class="sticky-cta" id="stickyCta" aria-hidden="true">
   <div class="wrap">
-    <span class="sc-text"><b>hrmforce</b> — {c.sticky.text}</span>
+    <span class="sc-text"><b>hrmforce</b>, {c.sticky.text}</span>
     <div class="sc-btns">
       <a href={assessHref} class="sc-ghost">{c.sticky.ghost}</a>
       <a href={contactHref} class="btn btn-primary sc-primary">{c.sticky.primary} →</a>
