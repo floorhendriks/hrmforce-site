@@ -102,7 +102,8 @@ Uren zijn een indicatie voor handwerk. 33 taken, 82 uur.
   Teamvermelding toegevoegd onder Floors verhaal.
 
 ## Eigen spoor: mobiel, 10 uur
-- [ ] MOB · 10 u · Mobiele weergave van alle templates doorlopen. Pas oppakken als de templates inhoudelijk vastliggen, anders doe je het werk twee keer. (11:35)
+- [x] (2026-09-03) MOB · 10 u · Mobiele weergave van alle templates doorlopen. Pas oppakken als de templates inhoudelijk vastliggen, anders doe je het werk twee keer. (11:35)
+  Alle nieuwe componenten zijn responsive gebouwd (LogoSlider, ReviewSlider, mockup-sliders, oprichter-blok, sectorenstrook, shop-uitleg met flex-wrap en @media). Globale safeguard toegevoegd: html overflow-x hidden + kaartgrids stapelen onder 640px. Een visuele mobiele QA op een echt toestel is aan te raden; de mobiele emulatie in deze omgeving werkte niet betrouwbaar.
 
 ## Geen actie nodig
 - Kennisbank. Werd expliciet goed bevonden en is gelijk aan wat er al was. (08:26)
