@@ -1,12 +1,12 @@
 // Cookie-consent-teksten per taal (nl/en/de/fr/es/ro).
-// NL is leidend; en/de/fr/es/ro zijn een eerste vertaalslag — native review aanbevolen.
+// NL is leidend; en/de/fr/es/ro zijn een eerste vertaalslag, native review aanbevolen.
 // De privacyverklaring-link wordt in CookieConsent.astro opgebouwd met
 // localizePath("/support/privacy-statement/", lang); bestaat die per taal (nog) niet,
 // dan valt de site terug op de NL-URL.
 export const consentContent = {
   nl: {
     title: "We respecteren je privacy",
-    body: "We gebruiken cookies om deze site te laten werken en — alleen met jouw toestemming — om het gebruik te meten. Je kiest zelf wat je toestaat. Zonder toestemming plaatsen we geen statistiek- of marketingcookies.",
+    body: "We gebruiken cookies om deze site te laten werken en, alleen met jouw toestemming, om het gebruik te meten. Je kiest zelf wat je toestaat. Zonder toestemming plaatsen we geen statistiek- of marketingcookies.",
     accept: "Accepteren",
     reject: "Alles weigeren",
     prefs: "Voorkeuren",
@@ -22,7 +22,7 @@ export const consentContent = {
   },
   en: {
     title: "We respect your privacy",
-    body: "We use cookies to make this site work and — only with your consent — to measure its use. You decide what to allow. Without consent we place no statistics or marketing cookies.",
+    body: "We use cookies to make this site work and, only with your consent, to measure its use. You decide what to allow. Without consent we place no statistics or marketing cookies.",
     accept: "Accept",
     reject: "Reject all",
     prefs: "Preferences",
@@ -38,7 +38,7 @@ export const consentContent = {
   },
   de: {
     title: "Wir respektieren Ihre Privatsphäre",
-    body: "Wir verwenden Cookies, damit diese Website funktioniert und — nur mit Ihrer Einwilligung — um die Nutzung zu messen. Sie entscheiden, was Sie zulassen. Ohne Einwilligung setzen wir keine Statistik- oder Marketing-Cookies.",
+    body: "Wir verwenden Cookies, damit diese Website funktioniert und, nur mit Ihrer Einwilligung, um die Nutzung zu messen. Sie entscheiden, was Sie zulassen. Ohne Einwilligung setzen wir keine Statistik- oder Marketing-Cookies.",
     accept: "Akzeptieren",
     reject: "Alle ablehnen",
     prefs: "Einstellungen",
@@ -54,7 +54,7 @@ export const consentContent = {
   },
   fr: {
     title: "Nous respectons votre vie privée",
-    body: "Nous utilisons des cookies pour faire fonctionner ce site et — uniquement avec votre consentement — pour en mesurer l'utilisation. Vous décidez de ce que vous autorisez. Sans consentement, aucun cookie de statistiques ou de marketing n'est déposé.",
+    body: "Nous utilisons des cookies pour faire fonctionner ce site et, uniquement avec votre consentement, pour en mesurer l'utilisation. Vous décidez de ce que vous autorisez. Sans consentement, aucun cookie de statistiques ou de marketing n'est déposé.",
     accept: "Accepter",
     reject: "Tout refuser",
     prefs: "Préférences",
@@ -70,7 +70,7 @@ export const consentContent = {
   },
   es: {
     title: "Respetamos tu privacidad",
-    body: "Usamos cookies para que este sitio funcione y — solo con tu consentimiento — para medir su uso. Tú decides qué permites. Sin consentimiento no colocamos cookies de estadísticas ni de marketing.",
+    body: "Usamos cookies para que este sitio funcione y, solo con tu consentimiento, para medir su uso. Tú decides qué permites. Sin consentimiento no colocamos cookies de estadísticas ni de marketing.",
     accept: "Aceptar",
     reject: "Rechazar todo",
     prefs: "Preferencias",
@@ -86,7 +86,7 @@ export const consentContent = {
   },
   ro: {
     title: "Îți respectăm confidențialitatea",
-    body: "Folosim cookie-uri pentru ca acest site să funcționeze și — doar cu acordul tău — pentru a măsura utilizarea. Tu decizi ce permiți. Fără consimțământ nu plasăm cookie-uri de statistică sau de marketing.",
+    body: "Folosim cookie-uri pentru ca acest site să funcționeze și, doar cu acordul tău, pentru a măsura utilizarea. Tu decizi ce permiți. Fără consimțământ nu plasăm cookie-uri de statistică sau de marketing.",
     accept: "Accept",
     reject: "Respinge tot",
     prefs: "Preferințe",
