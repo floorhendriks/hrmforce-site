@@ -7,6 +7,14 @@
 /assessments/cognitieve-capaciteitentest/  /assessments/cognitieve-test/      301
 /assessments/preselectie/disc-test/        /assessments/disc-test/            301
 /assessments/ontwikkelmatrix/              /assessments/ontwikkelassessment/  301
+# --- Losse 404-fixes (oude geïndexeerde URLs) ---
+/faq/big-fifty/                                           /assessments/big-five/               301
+/partner/flowpeople/                                      /partners/                           301
+/ro/testen/                                               /ro/online-assessments/              301
+/shop/fase-hr-cyclus/ontwikkeling/lencioni-teamdynamiek/  /assessments/lencioni-teamdynamiek/  301
+/shop/segment/gedrag/disc-vragenlijst-met-feedback/       /assessments/disc-test/              301
+/shop/segment/gedrag/disc-vragenlijst/                    /assessments/disc-test/              301
+
 /assessments/                              /assessment-overzicht/            301
 /hrm-oplossingen/recruitment/              /hrm-oplossingen/matching/         301
 /voorbereiden-assessment/                  /voorbereiding/                    301
