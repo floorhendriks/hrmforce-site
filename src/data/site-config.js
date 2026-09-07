@@ -16,4 +16,4 @@ export const SHOPIFY = {
 };
 
 // Vul je GA4 Measurement-ID in (G-XXXXXXXXXX). Leeg = geen tracking.
-export const ANALYTICS = { GA4_ID: "" };
+export const ANALYTICS = { GA4_ID: "G-L4WHLCQ1WY" };
