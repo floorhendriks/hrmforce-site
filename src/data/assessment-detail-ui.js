@@ -24,6 +24,7 @@ export const detailUi = {
     requestEyebrow: "Aanvragen", requestTitle: "{t} aanvragen", requestLead: "Vul het formulier in en krijg binnen 24 uur toegang.",
     firstName: "Voornaam *", workEmail: "Werk e-mail *", company: "Bedrijfsnaam", submit: "Verzenden",
     home: "Home",
+    practiceLink: "Oefenen met meer voorbeeldvragen", vvTitle: "Alle voorbeeldvragen ontvangen?", vvText: "Laat je e-mail achter en we sturen je een set voorbeeldvragen van {t}, plus uitleg over de rapportage.", vvPlaceholder: "jouw@werkmail.nl", vvButton: "Stuur mij de vragen", kcEyebrow: "Verder lezen", kcTitle: "Meer weten uit ons kenniscentrum", kcRead: "Lees het artikel",
   },
   en: {
     eyebrowAssessments: "Online assessments", crumbAssessments: "Online assessments",
@@ -47,6 +48,7 @@ export const detailUi = {
     requestEyebrow: "Request", requestTitle: "Request {t}", requestLead: "Fill in the form and get access within 24 hours.",
     firstName: "First name *", workEmail: "Work email *", company: "Company name", submit: "Send",
     home: "Home",
+    practiceLink: "Practise with more sample questions", vvTitle: "Receive all sample questions?", vvText: "Leave your email and we'll send you a set of sample questions for {t}, plus an explanation of the report.", vvPlaceholder: "you@workmail.com", vvButton: "Send me the questions", kcEyebrow: "Further reading", kcTitle: "More from our knowledge center", kcRead: "Read the article",
   },
   de: {
     eyebrowAssessments: "Online assessments", crumbAssessments: "Online assessments",
@@ -70,6 +72,7 @@ export const detailUi = {
     requestEyebrow: "Anfragen", requestTitle: "{t} anfragen", requestLead: "Füllen Sie das Formular aus und erhalten Sie innerhalb von 24 Stunden Zugang.",
     firstName: "Vorname *", workEmail: "Geschäftliche E-Mail *", company: "Firmenname", submit: "Absenden",
     home: "Home",
+    practiceLink: "Mit mehr Beispielfragen üben", vvTitle: "Alle Beispielfragen erhalten?", vvText: "Hinterlassen Sie Ihre E-Mail und wir senden Ihnen eine Reihe von Beispielfragen zu {t} sowie eine Erläuterung des Berichts.", vvPlaceholder: "sie@arbeitsmail.de", vvButton: "Senden Sie mir die Fragen", kcEyebrow: "Weiterlesen", kcTitle: "Mehr aus unserem Wissenszentrum", kcRead: "Artikel lesen",
   },
   fr: {
     eyebrowAssessments: "Évaluations en ligne", crumbAssessments: "Évaluations en ligne",
@@ -93,6 +96,7 @@ export const detailUi = {
     requestEyebrow: "Demander", requestTitle: "Demander {t}", requestLead: "Remplissez le formulaire et obtenez l'accès sous 24 heures.",
     firstName: "Prénom *", workEmail: "E-mail professionnel *", company: "Nom de l'entreprise", submit: "Envoyer",
     home: "Accueil",
+    practiceLink: "S'entraîner avec plus d'exemples de questions", vvTitle: "Recevoir tous les exemples de questions ?", vvText: "Laissez votre e-mail et nous vous enverrons une série d'exemples de questions de {t}, ainsi qu'une explication du rapport.", vvPlaceholder: "vous@emailpro.fr", vvButton: "Envoyez-moi les questions", kcEyebrow: "Pour aller plus loin", kcTitle: "Plus dans notre centre de connaissances", kcRead: "Lire l'article",
   },
   es: {
     eyebrowAssessments: "Evaluaciones online", crumbAssessments: "Evaluaciones online",
@@ -116,6 +120,7 @@ export const detailUi = {
     requestEyebrow: "Solicitar", requestTitle: "Solicitar {t}", requestLead: "Rellena el formulario y obtén acceso en 24 horas.",
     firstName: "Nombre *", workEmail: "Correo de trabajo *", company: "Nombre de la empresa", submit: "Enviar",
     home: "Inicio",
+    practiceLink: "Practicar con más preguntas de ejemplo", vvTitle: "¿Recibir todas las preguntas de ejemplo?", vvText: "Deja tu correo y te enviaremos un conjunto de preguntas de ejemplo de {t}, además de una explicación del informe.", vvPlaceholder: "tu@correolaboral.es", vvButton: "Envíame las preguntas", kcEyebrow: "Seguir leyendo", kcTitle: "Más en nuestro centro de conocimiento", kcRead: "Leer el artículo",
   },
   ro: {
     eyebrowAssessments: "Evaluări online", crumbAssessments: "Evaluări online",
@@ -139,5 +144,6 @@ export const detailUi = {
     requestEyebrow: "Solicită", requestTitle: "Solicită {t}", requestLead: "Completează formularul și obține acces în 24 de ore.",
     firstName: "Prenume *", workEmail: "E-mail de serviciu *", company: "Numele companiei", submit: "Trimite",
     home: "Home",
+    practiceLink: "Exersează cu mai multe întrebări exemplu", vvTitle: "Primești toate întrebările exemplu?", vvText: "Lasă-ne e-mailul și îți trimitem un set de întrebări exemplu pentru {t}, plus o explicație a raportului.", vvPlaceholder: "tu@emailserviciu.ro", vvButton: "Trimite-mi întrebările", kcEyebrow: "Lectură suplimentară", kcTitle: "Mai mult din centrul nostru de cunoștințe", kcRead: "Citește articolul",
   },
 };

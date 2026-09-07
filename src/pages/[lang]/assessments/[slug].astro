@@ -9,6 +9,9 @@ import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../../data/site-config.js"
 import { localizePath } from "../../../i18n/utils.js";
 import { examplesFor } from "../../../data/assessment-examples.js";
 import { generalFaq } from "../../../data/general-faq.js";
+import { oefentests } from "../../../data/oefentests.js";
+import { createClient } from "@sanity/client";
+import { kenniscentrumContent } from "../../../data/kenniscentrum-content.js";
 
 const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
 
@@ -16,8 +19,20 @@ const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
 // (beeld/slug/quote.author/quote.initials) + assessmentsI18n[lang][slug] (teksten).
 export async function getStaticPaths() {
   const langs = ["en", "de", "fr", "es", "ro"];
+  const stripHtml = (h) => (h || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  const excerpt = (h) => { const t = stripHtml(h); return t.length > 140 ? t.slice(0, 140).trim() + "\u2026" : t; };
+  const kw = (t) => (t || "").toLowerCase().split(/[^a-z0-9\u00e0-\u00ff]+/).filter((w) => w.length > 4);
+  const _kcClient = createClient({ projectId: "hqo56w28", dataset: "production", apiVersion: "2024-01-01", useCdn: false });
   const paths = [];
   for (const lang of langs) {
+    const match = kenniscentrumContent[lang]?.sanityMatch;
+    let arts = [];
+    if (match) {
+      try {
+        arts = await _kcClient.fetch(`*[_type == "article" && defined(path) && defined(body) && (${match})] | order(date desc)[0...60]{title, path, body}`);
+      } catch (e) { arts = []; }
+    }
+    const pool = (arts || []).filter((p) => p.path && p.title).map((p) => ({ title: p.title, path: p.path, excerpt: excerpt(p.body), words: new Set(kw(p.title)) }));
     for (const base of assessments) {
       const tr = assessmentsI18n[lang]?.[base.slug];
       if (!tr) continue;
@@ -32,13 +47,21 @@ export async function getStaticPaths() {
           initials: base.quote?.initials || "",
         },
       };
-      paths.push({ params: { lang, slug: base.slug }, props: { a: merged, lang } });
+      const hay = `${tr.title || ""} ${tr.phase || ""} ${tr.goal || ""} ${(tr.traits || []).join(" ")}`.toLowerCase();
+      const kc = pool
+        .map((p) => { let s = 0; p.words.forEach((w) => { if (hay.includes(w)) s += 1; }); return { p, s }; })
+        .filter((x) => x.s > 0)
+        .sort((x, y) => y.s - x.s)
+        .slice(0, 3)
+        .map((x) => ({ title: x.p.title, path: x.p.path, excerpt: x.p.excerpt }));
+      paths.push({ params: { lang, slug: base.slug }, props: { a: merged, lang, kc } });
     }
   }
   return paths;
 }
 
-const { a, lang } = Astro.props;
+const { a, lang, kc } = Astro.props;
+const _oefen = (oefentests || []).find((o) => o.assessmentSlug === a.slug);
 const t = detailUi[lang] || detailUi.en;
 const assessHref = localizePath("/online-assessments/", lang);
 const shop = shopInfo(a.slug);
@@ -209,6 +232,7 @@ const _offerLd = (shop && shop.price)
     <div class="eyebrow" style="color:var(--gold)">{ex.tag}</div>
     <h2 class="section-title">{ex.title}</h2>
     <p class="lead" style="margin-bottom:22px">{ex.intro}</p>
+    {_oefen && (<p style="margin:-8px 0 22px"><a href={localizePath(`/oefenen/${_oefen.slug}/`, lang)} class="btn btn-ghost">{t.practiceLink} &rarr;</a></p>)}
     <div style="display:flex;flex-direction:column;gap:12px">
       {ex.items.map((qq, i) => (
         <div style="display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow-xs)">
@@ -218,6 +242,18 @@ const _offerLd = (shop && shop.price)
       ))}
     </div>
     <p style="color:var(--muted);font-size:14px;margin-top:16px"><strong style="color:var(--navy)">{ex.scaleLabel}:</strong> {ex.scale}</p>
+    <div class="vv-cta">
+      <div class="vv-copy">
+        <strong>{t.vvTitle}</strong>
+        <span>{t.vvText.replace("{t}", a.title)}</span>
+      </div>
+      <form class="vv-form" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
+        <input type="hidden" name="onderwerp" value={`Voorbeeldvragen ${a.title}`} />
+        <input type="hidden" name="assessment" value={a.title} />
+        <input type="email" name="email" required placeholder={t.vvPlaceholder} aria-label={t.workEmail} />
+        <button type="submit" class="btn btn-primary">{t.vvButton}</button>
+      </form>
+    </div>
   </div></section>
 
   <section>
@@ -275,6 +311,26 @@ const _offerLd = (shop && shop.price)
       </div>
     </div>
   </section>
+
+  {kc && kc.length > 0 && (
+    <section>
+      <div class="wrap">
+        <div class="center">
+          <div class="eyebrow">{t.kcEyebrow}</div>
+          <h2 class="section-title" style="margin-bottom:36px">{t.kcTitle}</h2>
+        </div>
+        <div class="cards">
+          {kc.map((p) => (
+            <a class="card" href={p.path} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+              <h3>{p.title}</h3>
+              <p style="flex:1">{p.excerpt}</p>
+              <span class="readmore">{t.kcRead} &rarr;</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <section class="formsec" id="request">
     <div class="wrap">
@@ -334,4 +390,12 @@ const _offerLd = (shop && shop.price)
   .qshot figcaption{margin-top:10px;color:var(--muted);font-size:14px;text-align:center}
   @media(min-width:900px){ .qshot{flex-basis:46%} }
   .assess-usage{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line); color:var(--text); }
+  .vv-cta{margin-top:26px;display:flex;flex-wrap:wrap;align-items:center;gap:18px;justify-content:space-between;background:var(--navy);border-radius:16px;padding:22px 24px}
+  .vv-copy{display:flex;flex-direction:column;gap:4px;max-width:440px}
+  .vv-copy strong{color:#fff;font-size:1.05rem}
+  .vv-copy span{color:#c4d2e6;font-size:14px;line-height:1.5}
+  .vv-form{display:flex;gap:10px;flex-wrap:wrap}
+  .vv-form input[type=email]{border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;border-radius:10px;padding:11px 14px;font-size:15px;min-width:220px}
+  .vv-form input[type=email]::placeholder{color:#9fb2c9}
+  @media(max-width:620px){.vv-cta{flex-direction:column;align-items:stretch}.vv-form{flex-direction:column}.vv-form .btn{width:100%}}
 </style>
