@@ -1,0 +1,7 @@
+---
+import Base from "../../layouts/Base.astro";
+import WhitepaperIndex from "../../components/WhitepaperIndex.astro";
+import { WP_UI } from "../../data/whitepapers-content.js";
+const ui = WP_UI.fr;
+---
+<Base title={ui.idxMt} description={ui.idxMd} active=""><WhitepaperIndex ui={ui} lang="fr" /></Base>

@@ -8,6 +8,8 @@ import { getLangFromUrl, localizePath } from "../../i18n/utils.js";
 import { examplesFor } from "../../data/assessment-examples.js";
 import { generalFaq } from "../../data/general-faq.js";
 import { posts as kcPosts } from "../../data/blog.js";
+import validPaths from "../../data/valid-paths.js";
+import { navHref } from "../../i18n/utils.js";
 import { oefentests } from "../../data/oefentests.js";
 
 const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
@@ -274,7 +276,7 @@ const _offerLd = (shop && shop.price)
         </div>
         <div class="cards">
           {kcRelated.map((p) => (
-            <a class="card" href={localizePath(`/kenniscentrum/${p.slug}/`, lang)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+            <a class="card" href={navHref(`/kenniscentrum/${p.slug}/`, lang, validPaths)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
               <span class="eyebrow" style="color:var(--gold)">{p.category}</span>
               <h3>{p.title}</h3>
               <p style="flex:1">{p.excerpt}</p>

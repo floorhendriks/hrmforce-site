@@ -1,0 +1,8 @@
+---
+import Base from "../../../layouts/Base.astro";
+import WhitepaperDetail from "../../../components/WhitepaperDetail.astro";
+import { WHITEPAPERS, WP_UI } from "../../../data/whitepapers-content.js";
+export function getStaticPaths(){ return WHITEPAPERS.map((wp)=>({ params:{slug:wp.slug}, props:{wp} })); }
+const { wp } = Astro.props; const ui = WP_UI.es; const d = wp.i18n.es;
+---
+<Base title={`${d.title} | hrmforce`} description={d.summary} active=""><WhitepaperDetail wp={wp} ui={ui} lang="es" /></Base>

@@ -1,0 +1,57 @@
+---
+import { localizePath } from "../i18n/utils.js";
+import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../data/site-config.js";
+const { wp, ui, lang } = Astro.props;
+const d = wp.i18n[lang] ?? wp.i18n.nl;
+const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
+const wpHref = localizePath("/whitepapers/", lang);
+---
+<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={wpHref}>{ui.idxCrumb}</a> › <span>{d.title}</span></div></div>
+
+<section class="ahero"><div class="wrap" style="display:block">
+  <div class="eyebrow" style="color:var(--gold)">{ui.idxCrumb}</div>
+  <h1>{d.title}</h1>
+  <p style="color:#c4d2e6;font-size:18px;max-width:760px;margin-top:10px">{d.subtitle}</p>
+</div></section>
+
+<section><div class="wrap" style="max-width:760px">
+  <p class="lead">{d.summary}</p>
+  <h2 class="section-title" style="margin-top:26px">{ui.inside}</h2>
+  <ul class="traits">{d.inside.map((x) => <li>{x}</li>)}</ul>
+
+  <form class="wp-form formcard" id="wpform" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"} style="margin-top:26px">
+    <input type="hidden" name="onderwerp" value={`Whitepaper: ${d.title}`} />
+    <input type="hidden" name="whitepaper" value={d.title} />
+    <div class="eyebrow">{ui.form}</div>
+    <div class="fg" style="margin-top:10px"><label>{ui.email} *</label><input type="email" name="email" required placeholder="jouw@werkmail.nl" /></div>
+    <button type="submit" class="btn btn-primary">{ui.submit} &darr;</button>
+    <p class="note" style="margin-top:10px;font-size:13px;color:var(--muted)">{ui.note}</p>
+  </form>
+
+  <div class="wp-body" id="wpbody" hidden>
+    <p class="wp-unlocked" style="color:var(--blue);font-weight:600;margin:26px 0 10px">{ui.unlocked}</p>
+    {d.sections.map((s) => (
+      <div style="margin-bottom:22px">
+        <h2 class="section-title">{s.h}</h2>
+        <p style="font-size:17px;line-height:1.65;color:var(--text)">{s.p1}</p>
+        <p style="font-size:17px;line-height:1.65;color:var(--text)">{s.p2}</p>
+      </div>
+    ))}
+    <p style="padding:16px 20px;background:var(--bg-soft);border-left:4px solid var(--gold);border-radius:12px"><strong>{ui.takeawayLabel}:</strong> {d.takeaway}</p>
+    <div style="margin-top:22px"><a href={wpHref} class="btn btn-ghost">← {ui.back}</a> <a href={localizePath("/contact/", lang)} class="btn btn-primary" style="margin-left:8px">{ui.form} →</a></div>
+  </div>
+</div></section>
+
+<script is:inline>
+  (function () {
+    var f = document.getElementById("wpform"), body = document.getElementById("wpbody");
+    if (!f || !body) return;
+    function unlock(){ f.style.display = "none"; body.hidden = false; body.scrollIntoView({behavior:"smooth",block:"start"}); }
+    f.addEventListener("submit", function (e) {
+      var em = f.querySelector('input[type=email]'); if (em && !em.checkValidity()) return;
+      e.preventDefault();
+      try { fetch(f.action, { method: "POST", body: new FormData(f), headers: { Accept: "application/json" } }).catch(function(){}); } catch (x) {}
+      unlock();
+    });
+  })();
+</script>
