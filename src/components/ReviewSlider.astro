@@ -3,8 +3,10 @@
 // REAL = echte, verifieerbare Google-reviews van hrmforce (naam + citaat).
 // SAMPLE = sector-voorbeelden ter illustratie (mag blijven staan, wordt later aangevuld).
 const REAL = [
+  { who: "Hanneke de Bruin", org: "Google-review", stars: 5, quote: "Ik ben zeer onder de indruk van hrmforce. Goede kwaliteit, professionals zijn direct beschikbaar voor advies, heldere en goede testen en duidelijke rapportage." },
+  { who: "Esther Moolenaar", org: "Google-review", stars: 5, quote: "Enorm klantvriendelijk en meedenkend. hrmforce heeft mij geholpen talenten en ontwikkelpunten van mijn medewerkers in kaart te brengen, wat heeft gezorgd voor een enorm boost voor het bedrijf." },
+  { who: "Renate", org: "Google-review", stars: 5, quote: "Zeer prettig en professioneel contact en goede samenwerking met Floor." },
   { who: "Eric Hoogeweg", org: "Google-review", stars: 5, quote: "Goede dienstverlener met uitstekende tools voor talentontwikkeling. Zo help je organisaties vooruit." },
-  { who: "Esther Moolenaar", org: "Google-review", stars: 5, quote: "Enorm klantvriendelijk en meedenkend. hrmforce heeft mij geholpen talenten en ontwikkelpunten van mijn medewerkers in kaart te brengen, wat heeft gezorgd voor een enorme boost voor het bedrijf." },
   { who: "Juliëtte Kamphuis", org: "Google-review", stars: 5, quote: "Leuke gratis kleurentest gedaan. Prettige en snelle terugkoppeling." },
 ];
 const SAMPLE = [
@@ -56,3 +58,32 @@ const stars = (n) => "\u2605".repeat(n) + "\u2606".repeat(5 - n);
   .rs-meta small{ color:var(--muted); }
   @media(min-width:820px){ .rs-card{ flex-basis:calc(33.333% - 14px); } }
 </style>
+
+<script is:inline>
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.querySelectorAll(".reviewslider").forEach(function (sec) {
+      var track = sec.querySelector(".rs-track");
+      if (!track || track.children.length < 2) return;
+      // Volgorde per bezoek variëren (Fisher-Yates).
+      var cards = Array.prototype.slice.call(track.children);
+      for (var i = cards.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = cards[i]; cards[i] = cards[j]; cards[j] = t;
+      }
+      cards.forEach(function (c) { track.appendChild(c); });
+      if (reduce) return;
+      // Automatisch doorschuiven, pauzeert bij hover.
+      var idx = 0, paused = false;
+      track.addEventListener("mouseenter", function () { paused = true; });
+      track.addEventListener("mouseleave", function () { paused = false; });
+      setInterval(function () {
+        if (paused) return;
+        var kids = track.children;
+        var w = kids[0].getBoundingClientRect().width + 20;
+        idx = (idx + 1) % kids.length;
+        track.scrollTo({ left: Math.round(idx * w), behavior: "smooth" });
+      }, 4500);
+    });
+  })();
+</script>
