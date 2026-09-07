@@ -1,0 +1,21 @@
+---
+import { Image } from "astro:assets";
+const raster = import.meta.glob(
+  "/src/assets/media/**/*.{jpg,jpeg,png,gif,webp,JPG,JPEG,PNG,GIF,WEBP}",
+  { eager: true }
+);
+const { src, alt = "", ...rest } = Astro.props;
+function resolve(p) {
+  if (!p) return null;
+  const s = String(p);
+  const i = s.indexOf("uploads/");
+  if (i === -1) return null;
+  const rel = s.slice(i + "uploads/".length).replace(/^\/+/, "");
+  const mod = raster["/src/assets/media/" + rel];
+  return mod ? mod.default : null;
+}
+const meta = resolve(src);
+---
+{meta
+  ? <Image src={meta} alt={alt} format="webp" {...rest} />
+  : <img src={src} alt={alt} {...rest} />}

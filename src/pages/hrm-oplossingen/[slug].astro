@@ -1,4 +1,5 @@
 ---
+import Img from "../../components/Img.astro";
 import Base from "../../layouts/Base.astro";
 import { oplossingen } from "../../data/oplossingen.js";
 import { getLangFromUrl, localizePath } from "../../i18n/utils.js";
@@ -29,7 +30,7 @@ const solutionsHref = localizePath("/hrm-oplossingen/", lang);
       </div>
       {o.image && (
         <div class="ahero-media">
-          <img src={o.image} alt={o.title} loading="lazy" />
+          <Img src={o.image} alt={o.title} loading="lazy" />
         </div>
       )}
     </div>
@@ -50,7 +51,7 @@ const solutionsHref = localizePath("/hrm-oplossingen/", lang);
           <a href={localizePath("/contact/", lang)} class="btn btn-primary" style="margin-top:14px">{o.cta}</a>
         </div>
         <div class="pentagon">
-          {o.photo && <img class="sol-photo" src={o.photo} alt={o.title} loading="lazy" />}
+          {o.photo && <Img class="sol-photo" src={o.photo} alt={o.title} loading="lazy" />}
           <p style="color:var(--muted);font-size:14px">Wij laten je graag in een demo zien hoe deze oplossing werkt voor jouw organisatie.</p>
         </div>
       </div>

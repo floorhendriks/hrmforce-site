@@ -1,4 +1,5 @@
 ---
+import Img from "./Img.astro";
 // Herbruikbare klantlogo-slider (kleur, marquee). Gebruik op homepage, oplossingen en training.
 const LOGOS = [
   { name: "Rabobank", file: "2025/06/logo-Rabobank.png" },
@@ -37,7 +38,7 @@ const track = logos.concat(logos);
     <div class="ls-viewport" aria-label="Klantlogo's">
       <div class="ls-track">
         { track.map((l) => (
-          <span class="ls-item"><img src={base + l.file} alt={l.name} loading="eager" decoding="async" fetchpriority="low" /></span>
+          <span class="ls-item"><Img src={base + l.file} alt={l.name} loading="eager" decoding="async" fetchpriority="low" /></span>
         )) }
       </div>
     </div>

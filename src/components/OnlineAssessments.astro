@@ -1,4 +1,5 @@
 ---
+import Img from "./Img.astro";
 import { localizePath } from "../i18n/utils.js";
 const { c, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
@@ -96,8 +97,8 @@ const logos = [
         <p>{c.why.body}</p>
       </div>
       <div>
-        <img src="/upload-batch1/wp-content/uploads/2020/12/ass-afb3.png" alt="gesprekscyclus hrmforce" loading="lazy" />
-        <img src="/upload-batch1/wp-content/uploads/2020/12/ass-afb2.png" alt="online assessment portal hrmforce" loading="lazy" style="margin-top:16px" />
+        <Img src="/upload-batch1/wp-content/uploads/2020/12/ass-afb3.png" alt="gesprekscyclus hrmforce" loading="lazy" />
+        <Img src="/upload-batch1/wp-content/uploads/2020/12/ass-afb2.png" alt="online assessment portal hrmforce" loading="lazy" style="margin-top:16px" />
       </div>
     </div>
   </div>
@@ -116,7 +117,7 @@ const logos = [
     <div class="eyebrow">{c.clients.eyebrow}</div>
     <h2 class="section-title">{c.clients.title}</h2>
     <div class="logos">
-      {logos.map((l) => <img src={l.src} alt={l.alt} title={l.alt} loading="lazy" />)}
+      {logos.map((l) => <Img src={l.src} alt={l.alt} title={l.alt} loading="lazy" />)}
     </div>
   </div>
 </section>
@@ -142,7 +143,7 @@ const logos = [
 <section>
   <div class="wrap">
     <a href="https://www.youtube.com/watch?v=50gYB0KjtMw&ab_channel=hrmforce" target="_blank" rel="noopener">
-      <img src="/upload-batch1/wp-content/uploads/2022/03/youtube-afbeelding2.png" alt={c.video.alt} loading="lazy" style="max-width:100%;height:auto;border-radius:var(--radius)" />
+      <Img src="/upload-batch1/wp-content/uploads/2022/03/youtube-afbeelding2.png" alt={c.video.alt} loading="lazy" style="max-width:100%;height:auto;border-radius:var(--radius)" />
     </a>
     <div class="eyebrow" style="margin-top:28px">{c.video.eyebrow}</div>
     <h2 class="section-title">{c.video.title}</h2>

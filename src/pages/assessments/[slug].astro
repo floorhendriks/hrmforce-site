@@ -1,4 +1,5 @@
 ---
+import Img from "../../components/Img.astro";
 import Base from "../../layouts/Base.astro";
 import { assessments } from "../../data/assessments.js";
 import { shopInfo } from "../../data/assessment-shop.js";
@@ -98,7 +99,7 @@ const _offerLd = (shop && shop.price)
         <div class="screen">
           <span class="chip">Voorbeeldrapport</span>
           {a.image ? (
-            <img class="report-img" src={a.image} alt={a.title} loading="lazy" />
+            <Img class="report-img" src={a.image} alt={a.title} loading="lazy" />
           ) : (
             a.traits.map((t, i) => (
               <div class="traitbar"><span>{t}</span><div class="track"><div class="fill" style={`width:${40 + ((i * 13) % 50)}%`}></div></div></div>
@@ -114,9 +115,9 @@ const _offerLd = (shop && shop.price)
   <h2 class="qshots-h">Een kijkje in de vragenlijst</h2>
   <p class="qshots-lead">Zo ziet de vragenlijst er voor je kandidaten uit, van uitnodiging tot afronding.</p>
   <div class="qshots-track">
-    <figure class="qshot"><img src="/mockups/vragenlijst-intro.svg" alt="Startscherm van de vragenlijst" loading="eager" /><figcaption>Starten in eigen taal en tempo</figcaption></figure>
-    <figure class="qshot"><img src="/mockups/vragenlijst-vraag.svg" alt="Vraagscherm met antwoordschaal" loading="eager" /><figcaption>Stellingen met een duidelijke antwoordschaal</figcaption></figure>
-    <figure class="qshot"><img src="/mockups/vragenlijst-afgerond.svg" alt="Afrondscherm van de vragenlijst" loading="eager" /><figcaption>Uitkomsten bespreek je persoonlijk</figcaption></figure>
+    <figure class="qshot"><Img src="/mockups/vragenlijst-intro.svg" alt="Startscherm van de vragenlijst" loading="eager" /><figcaption>Starten in eigen taal en tempo</figcaption></figure>
+    <figure class="qshot"><Img src="/mockups/vragenlijst-vraag.svg" alt="Vraagscherm met antwoordschaal" loading="eager" /><figcaption>Stellingen met een duidelijke antwoordschaal</figcaption></figure>
+    <figure class="qshot"><Img src="/mockups/vragenlijst-afgerond.svg" alt="Afrondscherm van de vragenlijst" loading="eager" /><figcaption>Uitkomsten bespreek je persoonlijk</figcaption></figure>
   </div>
 </div></section>
 
@@ -206,7 +207,7 @@ const _offerLd = (shop && shop.price)
         <div class="cards">
           {related.map((r) => (
             <a class="card" href={localizePath(`/assessments/${r.slug}/`, lang)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
-              {r.image && <img class="rel-img" src={r.image} alt={r.title} loading="lazy" />}
+              {r.image && <Img class="rel-img" src={r.image} alt={r.title} loading="lazy" />}
               <h3>{r.title}</h3>
               <p style="flex:1">{r.goal}</p>
               <span class="readmore">Bekijk assessment &rarr;</span>

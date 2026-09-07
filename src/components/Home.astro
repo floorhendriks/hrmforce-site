@@ -1,4 +1,5 @@
 ---
+import Img from "./Img.astro";
 // Gedeelde homepage-component. Wordt per taal gevuld via `c` (content) + `lang`.
 import { clients } from "../data/home.js";
 import { localizePath, sanitizeBodyLinks } from "../i18n/utils.js";
@@ -199,7 +200,7 @@ const faqLd = {
     <div class="assess-grid">
       {c.featured.items.map((a) => (
         <a class="assess-card" href={lang === "nl" ? `/assessments/${a.slug}/` : assessHref}>
-          <div class="assess-img"><img src={a.image} alt={a.title} loading="lazy" /></div>
+          <div class="assess-img"><Img src={a.image} alt={a.title} loading="lazy" /></div>
           <div class="assess-body">
             <h3>{a.title}</h3>
             <p>{a.goal}</p>
@@ -242,7 +243,7 @@ const faqLd = {
 <section class="bg-soft testi">
   <div class="wrap" style="display:block">
     <div class="itc-bar">
-      <span class="itc-badge"><img src="https://images.weserv.nl/?url=www.intestcom.org/images/logo.png&output=webp&w=150&we" alt="International Test Commission (ITC)" loading="lazy" onerror="this.parentNode.classList.add('is-txt');this.remove();" /><em>ITC</em></span>
+      <span class="itc-badge"><Img src="https://images.weserv.nl/?url=www.intestcom.org/images/logo.png&output=webp&w=150&we" alt="International Test Commission (ITC)" loading="lazy" onerror="this.parentNode.classList.add('is-txt');this.remove();" /><em>ITC</em></span>
       <p>{ti.itc}</p>
     </div>
   </div>

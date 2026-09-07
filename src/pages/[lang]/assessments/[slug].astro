@@ -1,4 +1,5 @@
 ---
+import Img from "../../../components/Img.astro";
 import Base from "../../../layouts/Base.astro";
 import { assessments } from "../../../data/assessments.js";
 import { assessmentsI18n } from "../../../data/assessments-i18n.js";
@@ -110,7 +111,7 @@ const _offerLd = (shop && shop.price)
         <div class="screen">
           <span class="chip">{t.sampleReport}</span>
           {a.image ? (
-            <img class="report-img" src={a.image} alt={a.title} loading="lazy" />
+            <Img class="report-img" src={a.image} alt={a.title} loading="lazy" />
           ) : (
             a.traits.map((tr, i) => (
               <div class="traitbar"><span>{tr}</span><div class="track"><div class="fill" style={`width:${40 + ((i * 13) % 50)}%`}></div></div></div>
@@ -136,9 +137,9 @@ const _offerLd = (shop && shop.price)
       <h2 class="qshots-h">{q.h}</h2>
       <p class="qshots-lead">{q.l}</p>
       <div class="qshots-track">
-        <figure class="qshot"><img src="/mockups/vragenlijst-intro.svg" alt={q.c1} loading="eager" /><figcaption>{q.c1}</figcaption></figure>
-        <figure class="qshot"><img src="/mockups/vragenlijst-vraag.svg" alt={q.c2} loading="eager" /><figcaption>{q.c2}</figcaption></figure>
-        <figure class="qshot"><img src="/mockups/vragenlijst-afgerond.svg" alt={q.c3} loading="eager" /><figcaption>{q.c3}</figcaption></figure>
+        <figure class="qshot"><Img src="/mockups/vragenlijst-intro.svg" alt={q.c1} loading="eager" /><figcaption>{q.c1}</figcaption></figure>
+        <figure class="qshot"><Img src="/mockups/vragenlijst-vraag.svg" alt={q.c2} loading="eager" /><figcaption>{q.c2}</figcaption></figure>
+        <figure class="qshot"><Img src="/mockups/vragenlijst-afgerond.svg" alt={q.c3} loading="eager" /><figcaption>{q.c3}</figcaption></figure>
       </div>
     </div></section>
   );
@@ -246,7 +247,7 @@ const _offerLd = (shop && shop.price)
         <div class="cards">
           {related.map((r) => (
             <a class="card" href={localizePath(`/assessments/${r.slug}/`, lang)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
-              {r.image && <img class="rel-img" src={r.image} alt={r.title} loading="lazy" />}
+              {r.image && <Img class="rel-img" src={r.image} alt={r.title} loading="lazy" />}
               <h3>{r.title}</h3>
               <p style="flex:1">{r.goal}</p>
               <span class="readmore">{t.relatedRead} &rarr;</span>
