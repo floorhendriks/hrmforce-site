@@ -131,6 +131,7 @@ const orgLd = {
     <style is:global>
       /* Henry-bubbel boven de sticky demo-knop plaatsen */
       #hrmforce-chatbot { bottom: 88px !important; right: 20px !important; }
+      @media (max-width: 720px) { #hrmforce-chatbot { bottom: 20px !important; right: 14px !important; } }
     </style>
   </body>
 </html>
@@ -163,5 +164,10 @@ const orgLd = {
   .sticky-demo svg { flex-shrink: 0; }
   @media (max-width: 560px) {
     .sticky-demo { right: 14px; bottom: 14px; padding: 12px 18px; }
+  }
+  /* Op mobiel volstaan de header-CTA en de scroll-CTA-balk; de zwevende
+     demo-knop botst met de Henry-chatbubbel, dus die verbergen we. */
+  @media (max-width: 720px) {
+    .sticky-demo { display: none; }
   }
 </style>
