@@ -104,6 +104,7 @@ const orgLd = {
     />
     <title>{title}</title>
     <script type="application/ld+json" set:html={JSON.stringify(orgLd)} is:inline></script>
+    <script type="application/ld+json" is:inline set:html={JSON.stringify({"@context":"https://schema.org","@type":"WebSite",name:"hrmforce",url:"https://hrmforce.com/",potentialAction:{"@type":"SearchAction",target:{"@type":"EntryPoint",urlTemplate:"https://hrmforce.com/kenniscentrum/?q={search_term_string}"},"query-input":"required name=search_term_string"}})}></script>
   </head>
   <body>
     <Header active={active} />

@@ -1,0 +1,61 @@
+---
+import { VAC, REGIONS } from "../data/vacatures-content.js";
+import { localizePath } from "../i18n/utils.js";
+
+const { lang = "nl" } = Astro.props;
+const t = VAC[lang] || VAC.nl;
+const mailto = "mailto:service@hrmforce.com";
+---
+<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> &rsaquo; <span>{t.crumb}</span></div></div>
+
+<section class="ahero"><div class="wrap" style="display:block">
+  <div class="eyebrow" style="color:var(--gold)">{t.eyebrow}</div>
+  <h1>{t.hero}</h1>
+  <p style="color:#c4d2e6;font-size:18px;max-width:720px;margin-top:10px">{t.intro}</p>
+</div></section>
+
+<section><div class="wrap" style="max-width:900px">
+  <div class="vac-list">
+    {t.jobs.map((j, i) => (
+      <div class="vac-card">
+        <div class="vac-head">
+          <div>
+            <span class="vac-type">{j.type}</span>
+            <h2 class="vac-title">{j.title}</h2>
+            <span class="vac-loc">{j.loc}</span>
+          </div>
+          <a href={mailto} class="btn btn-primary vac-apply">{t.applyCta} &rarr;</a>
+        </div>
+        <p class="vac-desc">{j.desc}</p>
+        {i === 1 && (
+          <div class="vac-regions">
+            <span class="vac-regions-lbl">{t.regionsLabel}:</span>
+            {REGIONS.map((r) => <span class="vac-chip">{r}</span>)}
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+</div></section>
+
+<section class="bg-soft"><div class="wrap" style="max-width:760px;text-align:center">
+  <div class="eyebrow" style="justify-content:center">{t.openT}</div>
+  <h2 class="section-title">{t.openT}</h2>
+  <p class="lead" style="margin:10px auto 22px">{t.openP}</p>
+  <a href={mailto} class="btn btn-primary">{t.mailBtn}</a>
+</div></section>
+
+<style>
+  .vac-list{display:flex;flex-direction:column;gap:20px;margin-top:8px}
+  .vac-card{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:16px;padding:26px 28px;box-shadow:var(--shadow-xs)}
+  .vac-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap}
+  .vac-type{display:inline-block;background:var(--bg-soft);color:var(--navy);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:4px 10px;border-radius:var(--radius-pill)}
+  .vac-title{color:var(--navy);font-size:1.25rem;margin:8px 0 4px;letter-spacing:-.02em}
+  .vac-loc{color:var(--muted);font-size:14px}
+  .vac-apply{flex:none;white-space:nowrap}
+  .vac-desc{color:var(--text);font-size:15.5px;line-height:1.6;margin:16px 0 0}
+  .vac-regions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+  .vac-regions-lbl{color:var(--muted);font-size:13px;font-weight:700;margin-right:2px}
+  .vac-chip{background:var(--navy);color:#fff;font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:var(--radius-pill)}
+  @media(max-width:620px){.vac-apply{width:100%}}
+</style>

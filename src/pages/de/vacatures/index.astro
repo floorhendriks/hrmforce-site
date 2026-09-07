@@ -1,0 +1,7 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Vacatures from "../../../components/Vacatures.astro";
+import { VAC } from "../../../data/vacatures-content.js";
+const t = VAC.de;
+---
+<Base title={t.metaT} description={t.metaD} active="about"><Vacatures lang="de" /></Base>
