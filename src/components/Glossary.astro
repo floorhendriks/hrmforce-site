@@ -1,0 +1,37 @@
+---
+import { localizePath } from "../i18n/utils.js";
+const { t, lang } = Astro.props;
+const _canon = new URL(Astro.url.pathname, "https://hrmforce.com").href;
+const _ld = { "@context": "https://schema.org", "@type": "DefinedTermSet", name: t.hero.title, url: _canon,
+  hasDefinedTerm: t.terms.map((x) => ({ "@type": "DefinedTerm", name: x.term, description: x.def })) };
+const L = (p) => localizePath(p, lang);
+---
+<script type="application/ld+json" is:inline set:html={JSON.stringify(_ld)}></script>
+
+<div class="crumb"><div class="wrap"><a href={L("/")}>Home</a> › <span>{t.crumb}</span></div></div>
+
+<section class="ahero"><div class="wrap" style="display:block">
+  <div class="eyebrow" style="color:var(--gold)">{t.crumb}</div>
+  <h1>{t.hero.title}</h1>
+  <p style="color:#c4d2e6;font-size:18px;max-width:780px;margin-top:10px">{t.hero.intro}</p>
+</div></section>
+
+<section><div class="wrap" style="max-width:900px">
+  <div class="gl-list">
+    {t.terms.map((x) => (
+      <div class="gl-item" id={x.id}>
+        <h3 class="gl-term">{x.term}</h3>
+        <p class="gl-def">{x.def}</p>
+        {x.link && <a class="gl-link" href={L(x.link)}>{x.term} →</a>}
+      </div>
+    ))}
+  </div>
+</div></section>
+
+<style>
+  .gl-list{display:flex;flex-direction:column;gap:2px;margin-top:10px}
+  .gl-item{padding:20px 0;border-bottom:1px solid var(--line)}
+  .gl-term{color:var(--navy);font-size:1.15rem;margin:0 0 6px}
+  .gl-def{color:var(--text);font-size:16px;line-height:1.6;margin:0}
+  .gl-link{display:inline-block;margin-top:8px;color:var(--blue);font-weight:600;font-size:14px}
+</style>

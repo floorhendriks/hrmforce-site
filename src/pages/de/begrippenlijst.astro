@@ -1,0 +1,9 @@
+---
+import Base from "../../layouts/Base.astro";
+import Glossary from "../../components/Glossary.astro";
+import { glossaryContent } from "../../data/glossary-content.js";
+const t = glossaryContent.de;
+---
+<Base title={t.meta.title} description={t.meta.description} active="">
+  <Glossary t={t} lang="de" />
+</Base>

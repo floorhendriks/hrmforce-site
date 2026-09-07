@@ -1,0 +1,9 @@
+---
+import Base from "../../layouts/Base.astro";
+import Wetenschap from "../../components/Wetenschap.astro";
+import { wetenschapContent } from "../../data/wetenschap-content.js";
+const t = wetenschapContent.en;
+---
+<Base title={t.meta.title} description={t.meta.description} active="about">
+  <Wetenschap t={t} lang="en" />
+</Base>

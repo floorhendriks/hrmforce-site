@@ -24,7 +24,7 @@ export const ui = {
     "footer.training": "Trainingen", "footer.about": "Over ons", "footer.partners": "Partners",
     "footer.pricing": "Tarieven", "footer.support": "Support", "footer.vacancies": "Vacatures",
     "footer.rights": "Privacy Statement - Algemene voorwaarden",
-    "footer.cases": "Klantcases", "footer.integrations": "Integraties", "footer.trust": "Trust & security", "footer.cookieprefs": "Cookievoorkeuren",
+    "footer.cases": "Klantcases", "footer.integrations": "Integraties", "footer.trust": "Trust & security", "footer.science": "Wetenschappelijke verantwoording", "footer.glossary": "Begrippenlijst", "footer.cookieprefs": "Cookievoorkeuren",
   },
   en: {
     "topbar.login": "Login", "topbar.demo": "Free demo",
@@ -37,7 +37,7 @@ export const ui = {
     "footer.training": "Training", "footer.about": "About us", "footer.partners": "Partners",
     "footer.pricing": "Pricing", "footer.support": "Support", "footer.vacancies": "Careers",
     "footer.rights": "Privacy Statement - Terms & Conditions",
-    "footer.cases": "Client cases", "footer.integrations": "Integrations", "footer.trust": "Trust & security", "footer.cookieprefs": "Cookie preferences",
+    "footer.cases": "Client cases", "footer.integrations": "Integrations", "footer.trust": "Trust & security", "footer.science": "Scientific foundation", "footer.glossary": "Glossary", "footer.cookieprefs": "Cookie preferences",
   },
   de: {
     "topbar.login": "Einloggen", "topbar.demo": "Kostenlose Demo",
@@ -50,7 +50,7 @@ export const ui = {
     "footer.training": "Schulungen", "footer.about": "hrmforce", "footer.partners": "Partner",
     "footer.pricing": "Preise", "footer.support": "Support", "footer.vacancies": "Stellenangebote",
     "footer.rights": "Datenschutz - AGB",
-    "footer.cases": "Kundenreferenzen", "footer.integrations": "Integrationen", "footer.trust": "Trust & Security", "footer.cookieprefs": "Cookie-Einstellungen",
+    "footer.cases": "Kundenreferenzen", "footer.integrations": "Integrationen", "footer.trust": "Trust & Security", "footer.science": "Wissenschaftliche Fundierung", "footer.glossary": "Glossar", "footer.cookieprefs": "Cookie-Einstellungen",
   },
   fr: {
     "topbar.login": "Login", "topbar.demo": "Demander une démo",
@@ -63,7 +63,7 @@ export const ui = {
     "footer.training": "Formations", "footer.about": "À propos", "footer.partners": "Partenaires",
     "footer.pricing": "Tarifs", "footer.support": "Support", "footer.vacancies": "Carrières",
     "footer.rights": "Confidentialité - Conditions générales",
-    "footer.cases": "Cas clients", "footer.integrations": "Intégrations", "footer.trust": "Trust & security", "footer.cookieprefs": "Préférences de cookies",
+    "footer.cases": "Cas clients", "footer.integrations": "Intégrations", "footer.trust": "Trust & security", "footer.science": "Fondement scientifique", "footer.glossary": "Glossaire", "footer.cookieprefs": "Préférences de cookies",
   },
   es: {
     "topbar.login": "Login", "topbar.demo": "Prueba gratis",
@@ -76,7 +76,7 @@ export const ui = {
     "footer.training": "Cursos", "footer.about": "Lo que hacemos", "footer.partners": "Socios",
     "footer.pricing": "Precios", "footer.support": "Ayuda", "footer.vacancies": "Vacantes",
     "footer.rights": "Privacidad - Términos",
-    "footer.cases": "Casos de clientes", "footer.integrations": "Integraciones", "footer.trust": "Trust & security", "footer.cookieprefs": "Preferencias de cookies",
+    "footer.cases": "Casos de clientes", "footer.integrations": "Integraciones", "footer.trust": "Trust & security", "footer.science": "Fundamento científico", "footer.glossary": "Glosario", "footer.cookieprefs": "Preferencias de cookies",
   },
   ro: {
     "topbar.login": "Login", "topbar.demo": "Demo gratuită",
@@ -89,6 +89,6 @@ export const ui = {
     "footer.training": "Cursuri", "footer.about": "Ce facem noi", "footer.partners": "Parteneri",
     "footer.pricing": "Prețuri", "footer.support": "Asistență", "footer.vacancies": "Cariere",
     "footer.rights": "Confidențialitate - Termeni",
-    "footer.cases": "Studii de caz", "footer.integrations": "Integrări", "footer.trust": "Trust & security", "footer.cookieprefs": "Preferințe cookie-uri",
+    "footer.cases": "Studii de caz", "footer.integrations": "Integrări", "footer.trust": "Trust & security", "footer.science": "Fundament științific", "footer.glossary": "Glosar", "footer.cookieprefs": "Preferințe cookie-uri",
   },
 };
