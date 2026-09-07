@@ -1,7 +1,10 @@
 ---
 import Base from "../../layouts/Base.astro";
 import { posts as localPosts } from "../../data/blog.js";
-import { getLangFromUrl, localizePath } from "../../i18n/utils.js";
+import { getLangFromUrl, localizePath, navHref } from "../../i18n/utils.js";
+import { assessments } from "../../data/assessments.js";
+import { posts as allPosts } from "../../data/blog.js";
+import validPaths from "../../data/valid-paths.js";
 
 export async function getStaticPaths() {
   if (import.meta.env.SANITY_PROJECT_ID) {
@@ -24,6 +27,17 @@ if (!p) {
         metaDescription: pick(r.metaDescription, lang) };
 }
 const fmt = (d) => new Date(d).toLocaleDateString("nl-NL");
+// Pillar-cluster: gerelateerde assessments + verwante artikelen (interne links).
+const _hay = `${p.title||""} ${p.category||""} ${p.excerpt||""} ${(p.body||[]).join(" ")}`.toLowerCase();
+const _kw = (t) => (t||"").toLowerCase().split(/[^a-z0-9\u00e0-\u00ff]+/).filter((w) => w.length > 4);
+const relAssess = (assessments||[])
+  .map((a) => { const w=new Set([..._kw(a.title),..._kw(a.goal)]); let sc=0; w.forEach((x)=>{ if(_hay.includes(x)) sc++; }); return {a,sc}; })
+  .sort((x,y)=>y.sc-x.sc).slice(0,3).filter((x)=>x.sc>0).map((x)=>x.a);
+const relArticles = (allPosts||[])
+  .filter((q)=> q.slug !== (p.slug||Astro.params.slug))
+  .map((q)=>{ const w=new Set([..._kw(q.title),..._kw(q.category),..._kw(q.excerpt)]); let sc=0; w.forEach((x)=>{ if(_hay.includes(x)) sc++; }); return {q,sc}; })
+  .sort((x,y)=>y.sc-x.sc).slice(0,3).filter((x)=>x.sc>0).map((x)=>x.q);
+const RL = {nl:{a:"Gerelateerde assessments",art:"Verder lezen",view:"Bekijk assessment",read:"Lees artikel"},en:{a:"Related assessments",art:"Read more",view:"View assessment",read:"Read article"},de:{a:"Verwandte Assessments",art:"Weiterlesen",view:"Assessment ansehen",read:"Artikel lesen"},fr:{a:"Assessments liés",art:"Lire plus",view:"Voir l'assessment",read:"Lire l'article"},es:{a:"Evaluaciones relacionadas",art:"Leer más",view:"Ver evaluación",read:"Leer artículo"},ro:{a:"Evaluări conexe",art:"Citește mai mult",view:"Vezi evaluarea",read:"Citește articolul"}}[lang] || {a:"Gerelateerde assessments",art:"Verder lezen",view:"Bekijk assessment",read:"Lees artikel"};
 const _canon = new URL(Astro.url.pathname, "https://hrmforce.com").href;
 const _articleLd = {
   "@context": "https://schema.org",
@@ -55,4 +69,29 @@ const _articleLd = {
     {(p.body || []).map((para) => <p style="margin-bottom:16px;font-size:17px;color:var(--text)">{para}</p>)}
     <div style="margin-top:32px"><a href={localizePath("/kenniscentrum/", lang)} class="btn btn-ghost">← Naar het kenniscentrum</a></div>
   </div></section>
+
+  {(relAssess.length > 0 || relArticles.length > 0) && (
+    <section class="bg-soft"><div class="wrap">
+      {relAssess.length > 0 && (<>
+        <div class="eyebrow" style="color:var(--gold)">{RL.a}</div>
+        <div class="cards" style="margin-bottom:28px">
+          {relAssess.map((a) => (
+            <a class="card" href={localizePath(`/assessments/${a.slug}/`, lang)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+              <h3>{a.title}</h3><p style="flex:1">{a.goal}</p><span class="readmore">{RL.view} &rarr;</span>
+            </a>
+          ))}
+        </div>
+      </>)}
+      {relArticles.length > 0 && (<>
+        <div class="eyebrow">{RL.art}</div>
+        <div class="cards">
+          {relArticles.map((q) => (
+            <a class="card" href={navHref(`/kenniscentrum/${q.slug}/`, lang, validPaths)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+              <span class="eyebrow" style="color:var(--gold)">{q.category}</span><h3>{q.title}</h3><p style="flex:1">{q.excerpt}</p><span class="readmore">{RL.read} &rarr;</span>
+            </a>
+          ))}
+        </div>
+      </>)}
+    </div></section>
+  )}
 </Base>
