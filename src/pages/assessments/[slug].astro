@@ -8,6 +8,7 @@ import { getLangFromUrl, localizePath } from "../../i18n/utils.js";
 import { examplesFor } from "../../data/assessment-examples.js";
 import { generalFaq } from "../../data/general-faq.js";
 import { posts as kcPosts } from "../../data/blog.js";
+import { oefentests } from "../../data/oefentests.js";
 
 const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
 
@@ -50,6 +51,7 @@ const related = (a.related || [])
   .filter(Boolean)
   .slice(0, 3)
   .map((x) => ({ title: x.title, slug: x.slug, image: x.image, goal: x.goal }));
+const _oefen = (oefentests || []).find((o) => o.assessmentSlug === Astro.params.slug);
 const _canon = new URL(Astro.url.pathname, "https://hrmforce.com").href;
 const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
   { "@type": "ListItem", position: 1, name: "Home", item: "https://hrmforce.com/" },
@@ -183,6 +185,7 @@ const _offerLd = (shop && shop.price)
     <div class="eyebrow" style="color:var(--gold)">{ex.tag}</div>
     <h2 class="section-title">{ex.title}</h2>
     <p class="lead" style="margin-bottom:22px">{ex.intro}</p>
+    {_oefen && (<p style="margin:-8px 0 22px"><a href={`/oefenen/${_oefen.slug}/`} class="btn btn-ghost">Oefenen met meer voorbeeldvragen &rarr;</a></p>)}
     <div style="display:flex;flex-direction:column;gap:12px">
       {ex.items.map((qq, i) => (
         <div style="display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow-xs)">
