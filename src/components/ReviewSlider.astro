@@ -9,10 +9,11 @@ const SAMPLE = [
   { who: "Teamlead werving", org: "Overheid", stars: 5, quote: "Structuur in onze gesprekscyclus en minder verloop. De voortgang bijhouden kost ons nu bijna geen tijd meer." },
 ];
 const heading = Astro.props.heading ?? "Wat opdrachtgevers merken";
-const reviews = Astro.props.reviews ?? SAMPLE;
-const sample = Astro.props.sample ?? true;
+const reviews = Astro.props.reviews ?? [];
+const sample = Astro.props.sample ?? false;
 const stars = (n) => "\u2605".repeat(n) + "\u2606".repeat(5 - n);
 ---
+{reviews.length > 0 && (
 <section class="reviewslider">
   <div class="wrap">
     <div class="rs-head">
@@ -33,6 +34,7 @@ const stars = (n) => "\u2605".repeat(n) + "\u2606".repeat(5 - n);
     </div>
   </div>
 </section>
+)}
 <style>
   .reviewslider{ padding:48px 0; }
   .rs-head{ display:flex; align-items:center; gap:14px; margin:0 0 20px; flex-wrap:wrap; }
