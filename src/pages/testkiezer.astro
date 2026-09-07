@@ -1,0 +1,9 @@
+---
+import Base from "../layouts/Base.astro";
+import Testkiezer from "../components/Testkiezer.astro";
+import { testkiezerContent } from "../data/testkiezer-content.js";
+const t = testkiezerContent.nl;
+---
+<Base title={t.meta.title} description={t.meta.description} active="assessments">
+  <Testkiezer lang="nl" />
+</Base>

@@ -1,0 +1,75 @@
+---
+import { localizePath } from "../i18n/utils.js";
+import { testkiezerContent, TK_SLUGS } from "../data/testkiezer-content.js";
+import { assessments } from "../data/assessments.js";
+const { lang } = Astro.props;
+const t = testkiezerContent[lang] ?? testkiezerContent.nl;
+const bySlug = new Map(assessments.map((a) => [a.slug, a]));
+const recs = (key) => (TK_SLUGS[key] || []).map((s) => bySlug.get(s)).filter(Boolean);
+---
+<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+
+<section class="ahero"><div class="wrap" style="display:block">
+  <div class="eyebrow" style="color:var(--gold)">{t.crumb}</div>
+  <h1>{t.hero}</h1>
+  <p style="color:#c4d2e6;font-size:18px;max-width:780px;margin-top:10px">{t.intro}</p>
+</div></section>
+
+<section><div class="wrap" style="max-width:900px">
+  <h2 class="section-title" style="text-align:center">{t.question}</h2>
+  <div class="tk-opts" role="tablist">
+    {t.options.map((o) => (
+      <button type="button" class="tk-opt" data-key={o.key}>
+        <b>{o.label}</b><span>{o.desc}</span>
+      </button>
+    ))}
+  </div>
+
+  {t.options.map((o) => (
+    <div class="tk-result" data-result={o.key} hidden>
+      <div class="eyebrow" style="color:var(--gold)">{t.resultLabel}</div>
+      <p class="lead" style="margin:6px 0 20px">{o.resultIntro}</p>
+      <div class="cards">
+        {recs(o.key).map((a) => (
+          <a class="card" href={localizePath(`/assessments/${a.slug}/`, lang)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+            <h3>{a.title}</h3>
+            <p style="flex:1">{a.goal}</p>
+            <span class="readmore">{t.view} &rarr;</span>
+          </a>
+        ))}
+      </div>
+      <button type="button" class="btn btn-ghost tk-reset" style="margin-top:18px">{t.reset}</button>
+    </div>
+  ))}
+</div></section>
+
+<style>
+  .tk-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:26px 0}
+  .tk-opt{text-align:left;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;cursor:pointer;display:flex;flex-direction:column;gap:4px;transition:border-color .2s,box-shadow .2s}
+  .tk-opt:hover,.tk-opt[aria-selected="true"]{border-color:var(--gold);box-shadow:var(--shadow-sm)}
+  .tk-opt b{color:var(--navy);font-size:1.05rem}
+  .tk-opt span{color:var(--muted);font-size:14px}
+  .tk-result{margin-top:8px;animation:tk-fade .3s ease}
+  @keyframes tk-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+</style>
+
+<script is:inline>
+  (function () {
+    var opts = document.querySelectorAll(".tk-opt");
+    var results = document.querySelectorAll(".tk-result");
+    function show(key) {
+      results.forEach(function (r) { r.hidden = r.getAttribute("data-result") !== key; });
+      opts.forEach(function (o) { o.setAttribute("aria-selected", o.getAttribute("data-key") === key ? "true" : "false"); });
+      var res = document.querySelector('.tk-result[data-result="' + key + '"]');
+      if (res) res.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+    opts.forEach(function (o) { o.addEventListener("click", function () { show(o.getAttribute("data-key")); }); });
+    document.querySelectorAll(".tk-reset").forEach(function (b) {
+      b.addEventListener("click", function () {
+        results.forEach(function (r) { r.hidden = true; });
+        opts.forEach(function (o) { o.setAttribute("aria-selected", "false"); });
+        document.querySelector(".tk-opts").scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+    });
+  })();
+</script>

@@ -1,0 +1,9 @@
+---
+import Base from "../../layouts/Base.astro";
+import Kandidaten from "../../components/Kandidaten.astro";
+import { kandidatenContent } from "../../data/kandidaten-content.js";
+const t = kandidatenContent.de;
+---
+<Base title={t.meta.title} description={t.meta.description} active="">
+  <Kandidaten t={t} lang="de" />
+</Base>

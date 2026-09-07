@@ -1,0 +1,51 @@
+---
+import { localizePath } from "../i18n/utils.js";
+const { t, lang } = Astro.props;
+const contactHref = localizePath("/contact/", lang);
+const _canon = new URL(Astro.url.pathname, "https://hrmforce.com").href;
+const _faqLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: t.faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) };
+// Alleen /voorbereiding/ is meertalig; oefen-assessment en kleurentest zijn NL.
+const cardHref = (h) => (h === "/voorbereiding/" ? localizePath(h, lang) : h);
+---
+<script type="application/ld+json" is:inline set:html={JSON.stringify(_faqLd)}></script>
+
+<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+
+<section class="ahero"><div class="wrap" style="display:block">
+  <div class="eyebrow" style="color:var(--gold)">{t.crumb}</div>
+  <h1>{t.hero}</h1>
+  <p style="color:#c4d2e6;font-size:18px;max-width:780px;margin-top:10px">{t.intro}</p>
+</div></section>
+
+<section><div class="wrap">
+  <div class="cards">
+    {t.cards.map((c) => (
+      <a class="card" href={cardHref(c.href)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+        <h3>{c.title}</h3>
+        <p style="flex:1">{c.text}</p>
+        <span class="readmore">{c.label} &rarr;</span>
+      </a>
+    ))}
+  </div>
+</div></section>
+
+<section class="bg-soft"><div class="wrap" style="max-width:820px">
+  <div class="eyebrow">{t.reassure.title}</div>
+  <p class="lead" style="margin-top:8px">{t.reassure.text}</p>
+</div></section>
+
+<section><div class="wrap" style="max-width:820px">
+  <div class="center"><h2 class="section-title" style="margin-bottom:36px">{t.faqTitle}</h2></div>
+  {t.faq.map((f) => (
+    <div class="faq-item"><div class="faq-q">{f.q}<span class="pl">+</span></div><div class="faq-a"><p>{f.a}</p></div></div>
+  ))}
+</div></section>
+
+<section class="cta"><div class="wrap" style="padding:56px 0;text-align:center">
+  <h2 style="color:#fff">{t.cta.title}</h2>
+  <p style="color:rgba(255,255,255,.9);max-width:620px;margin:12px auto 0">{t.cta.text}</p>
+  <div class="btns" style="justify-content:center;margin-top:20px">
+    <a href={contactHref} class="btn btn-light">{t.cta.primary}</a>
+    <a href={localizePath("/voorbereiding/", lang)} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">{t.cta.secondary}</a>
+  </div>
+</div></section>

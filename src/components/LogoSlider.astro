@@ -1,6 +1,6 @@
 ---
 import Img from "./Img.astro";
-// Herbruikbare klantlogo-slider (kleur, marquee). Gebruik op homepage, oplossingen en training.
+// Herbruikbare klantlogo-slider (grijstint, kleur bij hover; marquee). Gebruik op homepage, oplossingen en training.
 const LOGOS = [
   { name: "Rabobank", file: "2025/06/logo-Rabobank.png" },
   { name: "Siemens", file: "2025/06/logo-siemens.jpg" },
@@ -52,7 +52,8 @@ const track = logos.concat(logos);
   .ls-track{ display:flex; align-items:center; gap:54px; width:max-content; animation:ls-scroll 48s linear infinite; }
   .ls-viewport:hover .ls-track{ animation-play-state:paused; }
   .ls-item{ flex:0 0 auto; display:flex; align-items:center; justify-content:center; height:56px; }
-  .ls-item img{ height:auto; width:auto; max-height:52px; max-width:150px; object-fit:contain; display:block; }
+  .ls-item img{ height:auto; width:auto; max-height:52px; max-width:150px; object-fit:contain; display:block; filter:grayscale(100%); opacity:.62; transition:filter .25s ease, opacity .25s ease; }
+  .ls-item img:hover{ filter:grayscale(0); opacity:1; }
   .ls-note{ text-align:center; color:var(--muted); font-size:13px; margin:16px auto 0; max-width:620px; }
   @keyframes ls-scroll{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
   @media (prefers-reduced-motion: reduce){ .ls-track{ animation:none; flex-wrap:wrap; justify-content:center; gap:28px 44px; } }

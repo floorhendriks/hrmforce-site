@@ -30,7 +30,7 @@ export const LOCALIZED_PAGES = new Set([
   "/", "/online-assessments/", "/hrm-oplossingen/", "/advies/", "/over-ons/",
   "/contact/", "/shop/", "/assessment-overzicht/", "/tarieven/", "/roi-rekentool/",
   "/klantcases/", "/kenniscentrum/", "/trust/", "/integraties/", "/voorbereiding/",
-  "/support/", "/support/f-a-q/", "/wetenschappelijke-verantwoording/", "/begrippenlijst/",
+  "/support/", "/support/f-a-q/", "/wetenschappelijke-verantwoording/", "/begrippenlijst/", "/voor-kandidaten/", "/testkiezer/",
 ]);
 
 // Assessment-detailpagina's (/assessments/<slug>/) zijn in alle talen gelokaliseerd.
