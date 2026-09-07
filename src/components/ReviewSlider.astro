@@ -9,7 +9,7 @@ const SAMPLE = [
   { who: "Teamlead werving", org: "Overheid", stars: 5, quote: "Structuur in onze gesprekscyclus en minder verloop. De voortgang bijhouden kost ons nu bijna geen tijd meer." },
 ];
 const heading = Astro.props.heading ?? "Wat opdrachtgevers merken";
-const reviews = Astro.props.reviews ?? [];
+const reviews = Astro.props.reviews ?? SAMPLE;
 const sample = Astro.props.sample ?? false;
 const stars = (n) => "\u2605".repeat(n) + "\u2606".repeat(5 - n);
 ---
