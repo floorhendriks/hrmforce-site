@@ -192,6 +192,18 @@ const _offerLd = (shop && shop.price)
       ))}
     </div>
     <p style="color:var(--muted);font-size:14px;margin-top:16px"><strong style="color:var(--navy)">{ex.scaleLabel}:</strong> {ex.scale}</p>
+    <div class="vv-cta">
+      <div class="vv-copy">
+        <strong>Alle voorbeeldvragen ontvangen?</strong>
+        <span>Laat je e-mail achter en we sturen je een set voorbeeldvragen van {a.title}, plus uitleg over de rapportage.</span>
+      </div>
+      <form class="vv-form" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
+        <input type="hidden" name="onderwerp" value={`Voorbeeldvragen ${a.title}`} />
+        <input type="hidden" name="assessment" value={a.title} />
+        <input type="email" name="email" required placeholder="jouw@werkmail.nl" aria-label="Werk e-mail" />
+        <button type="submit" class="btn btn-primary">Stuur mij de vragen</button>
+      </form>
+    </div>
   </div></section>
 
   <section>
@@ -329,4 +341,12 @@ const _offerLd = (shop && shop.price)
   .qshot figcaption{margin-top:10px;color:var(--muted);font-size:14px;text-align:center}
   @media(min-width:900px){ .qshot{flex-basis:46%} }
   .assess-usage{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line); color:var(--text); }
+  .vv-cta{margin-top:26px;display:flex;flex-wrap:wrap;align-items:center;gap:18px;justify-content:space-between;background:var(--navy);border-radius:16px;padding:22px 24px}
+  .vv-copy{display:flex;flex-direction:column;gap:4px;max-width:440px}
+  .vv-copy strong{color:#fff;font-size:1.05rem}
+  .vv-copy span{color:#c4d2e6;font-size:14px;line-height:1.5}
+  .vv-form{display:flex;gap:10px;flex-wrap:wrap}
+  .vv-form input[type=email]{border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;border-radius:10px;padding:11px 14px;font-size:15px;min-width:220px}
+  .vv-form input[type=email]::placeholder{color:#9fb2c9}
+  @media(max-width:620px){.vv-cta{flex-direction:column;align-items:stretch}.vv-form{flex-direction:column}.vv-form .btn{width:100%}}
 </style>

@@ -7,8 +7,24 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const year = new Date().getFullYear();
 const L = (p) => navHref(p, lang, validPaths);
+// Sitebrede trust-balk: korte, feitelijke signalen (per taal).
+const trustBarByLang = {
+  nl: ["Wetenschappelijk gevalideerd", "AVG-proof gegevensverwerking", "36+ online assessments", "Beschikbaar in 6 talen"],
+  en: ["Scientifically validated", "GDPR-compliant data handling", "36+ online assessments", "Available in 6 languages"],
+  de: ["Wissenschaftlich validiert", "DSGVO-konforme Datenverarbeitung", "36+ Online-Assessments", "In 6 Sprachen verfügbar"],
+  fr: ["Validé scientifiquement", "Traitement des données conforme au RGPD", "36+ évaluations en ligne", "Disponible en 6 langues"],
+  es: ["Validado científicamente", "Tratamiento de datos conforme al RGPD", "36+ evaluaciones online", "Disponible en 6 idiomas"],
+  ro: ["Validat științific", "Prelucrare a datelor conformă GDPR", "36+ evaluări online", "Disponibil în 6 limbi"],
+};
+const trustBar = trustBarByLang[lang] ?? trustBarByLang.nl;
+const _check = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`;
 ---
 <footer>
+  <div class="trustbar"><div class="wrap">
+    <ul class="tb-list">
+      {trustBar.map((item) => (<li><span class="tb-ic" set:html={_check}></span>{item}</li>))}
+    </ul>
+  </div></div>
   <div class="wrap">
     <div class="fgrid">
       <div>
@@ -55,6 +71,11 @@ const L = (p) => navHref(p, lang, validPaths);
 </footer>
 
 <style>
+  .trustbar{border-bottom:1px solid rgba(255,255,255,.12);padding:16px 0}
+  .tb-list{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:14px 28px;justify-content:center}
+  .tb-list li{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.9);font-size:14px;font-weight:600}
+  .tb-ic{display:inline-flex;color:var(--gold)}
+  @media(max-width:640px){.tb-list{gap:12px 20px}.tb-list li{font-size:13px}}
   .cookie-prefs-btn {
     background: none;
     border: none;
