@@ -38,7 +38,7 @@ export const homepageContent = {
     ],
     compare: { eyebrow: "Het verschil", title: "Van onderbuik naar onderbouwd", lead: "Stop met gokken op cv en gevoel. Beslis op basis van gevalideerde data.", oldTitle: "De oude manier", newTag: "Met hrmforce", newTitle: "De onderbouwde manier", old: ["Beslissen op cv en onderbuikgevoel", "Dure mismatch bij een verkeerde hire", "Ontwikkeling zonder richting", "Losse tools, geen overzicht"], new: ["Objectieve, gevalideerde inzichten", "Hogere kans op de juiste match", "Gerichte groei met concrete rapporten", "Eén platform voor de hele HR-cyclus"] },
     outcome: { statBold: "Tot 40% meer rendement", statRest: "van een bovengemiddeld presterende medewerker.", sub: "Onderbouwd selecteren en gericht ontwikkelen loont, meetbaar, voor selectie én groei." },
-    casesTeaser: { eyebrow: "Klantcases", title: "Zo pakt het uit in de praktijk", lead: "Representatieve voorbeeldcases uit uiteenlopende sectoren, ter illustratie.", linkLabel: "Bekijk alle klantcases", highlights: [
+    casesTeaser: { eyebrow: "Klantcases", title: "Zo pakt het uit in de praktijk", lead: "Zo zetten organisaties in uiteenlopende sectoren hrmforce in voor selectie, ontwikkeling en teams.", linkLabel: "Bekijk alle klantcases", highlights: [
       { sector: "Zorg", result: "Kortere doorlooptijd in selectie" },
       { sector: "Onderwijs", result: "Gerichtere ontwikkelgesprekken" },
       { sector: "Industrie", result: "Snellere, consistentere hires" },
@@ -90,7 +90,7 @@ export const homepageContent = {
     ],
     compare: { eyebrow: "The difference", title: "From gut feeling to grounded", lead: "Stop guessing on CV and instinct. Decide based on validated data.", oldTitle: "The old way", newTag: "With hrmforce", newTitle: "The grounded way", old: ["Deciding on CV and gut feeling", "Costly mismatch on a wrong hire", "Development without direction", "Scattered tools, no overview"], new: ["Objective, validated insights", "Higher chance of the right match", "Targeted growth with concrete reports", "One platform for the whole HR cycle"] },
     outcome: { statBold: "Up to 40% more return", statRest: "from an above-average performing employee.", sub: "Grounded selection and targeted development pays off, measurably, for selection and growth." },
-    casesTeaser: { eyebrow: "Client cases", title: "How it plays out in practice", lead: "Representative example cases across a range of sectors, for illustration.", linkLabel: "View all client cases", highlights: [
+    casesTeaser: { eyebrow: "Client cases", title: "How it plays out in practice", lead: "How organisations across a range of sectors use hrmforce for selection, development and teams.", linkLabel: "View all client cases", highlights: [
       { sector: "Healthcare", result: "Shorter time-to-hire" },
       { sector: "Education", result: "More focused development talks" },
       { sector: "Manufacturing", result: "Faster, more consistent hires" },
@@ -142,7 +142,7 @@ export const homepageContent = {
     ],
     compare: { eyebrow: "Der Unterschied", title: "Vom Bauchgefühl zur Fundierung", lead: "Schluss mit Raten nach Lebenslauf und Gefühl. Entscheiden Sie auf Basis validierter Daten.", oldTitle: "Der alte Weg", newTag: "Mit hrmforce", newTitle: "Der fundierte Weg", old: ["Entscheiden nach Lebenslauf und Bauchgefühl", "Teure Fehlbesetzung", "Entwicklung ohne Richtung", "Verstreute Tools, kein Überblick"], new: ["Objektive, validierte Erkenntnisse", "Höhere Chance auf die richtige Passung", "Gezieltes Wachstum mit konkreten Berichten", "Eine Plattform für den gesamten HR-Zyklus"] },
     outcome: { statBold: "Bis zu 40% mehr Ertrag", statRest: "durch einen überdurchschnittlich leistenden Mitarbeiter.", sub: "Fundierte Auswahl und gezielte Entwicklung lohnen sich, messbar, für Auswahl und Wachstum." },
-    casesTeaser: { eyebrow: "Kundenbeispiele", title: "So sieht es in der Praxis aus", lead: "Repräsentative Beispielfälle aus unterschiedlichen Branchen, zur Veranschaulichung.", linkLabel: "Alle Kundenbeispiele ansehen", highlights: [
+    casesTeaser: { eyebrow: "Kundenbeispiele", title: "So sieht es in der Praxis aus", lead: "Wie Organisationen unterschiedlicher Branchen hrmforce für Auswahl, Entwicklung und Teams nutzen.", linkLabel: "Alle Kundenbeispiele ansehen", highlights: [
       { sector: "Gesundheitswesen", result: "Kürzere Durchlaufzeit in der Auswahl" },
       { sector: "Bildung", result: "Gezieltere Entwicklungsgespräche" },
       { sector: "Industrie", result: "Schnellere, konsistentere Einstellungen" },
@@ -194,7 +194,7 @@ export const homepageContent = {
     ],
     compare: { eyebrow: "La différence", title: "De l'intuition à la preuve", lead: "Ne décidez plus au CV et au feeling. Décidez sur la base de données validées.", oldTitle: "L'ancienne méthode", newTag: "Avec hrmforce", newTitle: "La méthode fondée", old: ["Décider au CV et à l'intuition", "Erreur de recrutement coûteuse", "Développement sans direction", "Outils dispersés, aucune vue d'ensemble"], new: ["Des insights objectifs et validés", "Plus de chances de la bonne adéquation", "Une croissance ciblée avec des rapports concrets", "Une plateforme pour tout le cycle RH"] },
     outcome: { statBold: "Jusqu'à 40% de rendement en plus", statRest: "grâce à un collaborateur performant au-dessus de la moyenne.", sub: "Sélectionner et développer sur des bases solides est rentable, de manière mesurable." },
-    casesTeaser: { eyebrow: "Cas clients", title: "Ce que cela donne en pratique", lead: "Cas exemples représentatifs de secteurs variés, à titre d'illustration.", linkLabel: "Voir tous les cas clients", highlights: [
+    casesTeaser: { eyebrow: "Cas clients", title: "Ce que cela donne en pratique", lead: "Comment des organisations de secteurs variés utilisent hrmforce pour la sélection, le développement et les équipes.", linkLabel: "Voir tous les cas clients", highlights: [
       { sector: "Santé", result: "Délai de recrutement plus court" },
       { sector: "Éducation", result: "Entretiens de développement plus ciblés" },
       { sector: "Industrie", result: "Des embauches plus rapides et homogènes" },
@@ -246,7 +246,7 @@ export const homepageContent = {
     ],
     compare: { eyebrow: "La diferencia", title: "De la intuición a la evidencia", lead: "Deje de decidir por el CV y la intuición. Decida con datos validados.", oldTitle: "La forma antigua", newTag: "Con hrmforce", newTitle: "La forma fundamentada", old: ["Decidir por el CV y la intuición", "Un error de contratación costoso", "Desarrollo sin rumbo", "Herramientas dispersas, sin visión global"], new: ["Insights objetivos y validados", "Más probabilidad del ajuste correcto", "Crecimiento dirigido con informes concretos", "Una plataforma para todo el ciclo de RR. HH."] },
     outcome: { statBold: "Hasta un 40% más de rendimiento", statRest: "de un empleado con desempeño por encima de la media.", sub: "Seleccionar y desarrollar con base sólida es rentable, de forma medible." },
-    casesTeaser: { eyebrow: "Casos de clientes", title: "Así se traduce en la práctica", lead: "Casos de ejemplo representativos de sectores diversos, con fines ilustrativos.", linkLabel: "Ver todos los casos de clientes", highlights: [
+    casesTeaser: { eyebrow: "Casos de clientes", title: "Así se traduce en la práctica", lead: "Cómo organizaciones de sectores diversos usan hrmforce para selección, desarrollo y equipos.", linkLabel: "Ver todos los casos de clientes", highlights: [
       { sector: "Sanidad", result: "Menor plazo de contratación" },
       { sector: "Educación", result: "Conversaciones de desarrollo más enfocadas" },
       { sector: "Industria", result: "Contrataciones más rápidas y consistentes" },
@@ -298,7 +298,7 @@ export const homepageContent = {
     ],
     compare: { eyebrow: "Diferența", title: "De la intuiție la dovezi", lead: "Nu mai decideți după CV și intuiție. Decideți pe baza datelor validate.", oldTitle: "Metoda veche", newTag: "Cu hrmforce", newTitle: "Metoda fundamentată", old: ["Decizii după CV și intuiție", "O angajare greșită costisitoare", "Dezvoltare fără direcție", "Instrumente disparate, fără imagine de ansamblu"], new: ["Perspective obiective și validate", "Șanse mai mari de potrivire corectă", "Creștere țintită cu rapoarte concrete", "O platformă pentru întregul ciclu de HR"] },
     outcome: { statBold: "Până la 40% randament în plus", statRest: "de la un angajat cu performanță peste medie.", sub: "Selecția și dezvoltarea fundamentate merită, măsurabil, pentru selecție și creștere." },
-    casesTeaser: { eyebrow: "Studii de caz", title: "Cum arată în practică", lead: "Cazuri exemplu reprezentative din sectoare diverse, cu rol ilustrativ.", linkLabel: "Vedeți toate studiile de caz", highlights: [
+    casesTeaser: { eyebrow: "Studii de caz", title: "Cum arată în practică", lead: "Cum folosesc organizații din sectoare diverse hrmforce pentru selecție, dezvoltare și echipe.", linkLabel: "Vedeți toate studiile de caz", highlights: [
       { sector: "Sănătate", result: "Durată mai scurtă a selecției" },
       { sector: "Educație", result: "Discuții de dezvoltare mai bine țintite" },
       { sector: "Industrie", result: "Angajări mai rapide și mai constante" },

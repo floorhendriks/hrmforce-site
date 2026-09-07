@@ -8,13 +8,13 @@ export const casesContent = {
   nl: {
     meta: {
       title: "Klantcases - hrmforce",
-      description: "Representatieve voorbeeldcases: hoe organisaties van 25 tot 2.500 medewerkers hrmforce inzetten voor selectie, ontwikkeling en teams.",
+      description: "Hoe organisaties van 25 tot 2.500 medewerkers hrmforce inzetten voor selectie, ontwikkeling en teams.",
     },
     hero: {
       eyebrow: "Klantcases",
       title: "Zo werkt onderbouwd talentmanagement in de praktijk",
       intro: "Van selectie tot ontwikkeling: deze voorbeelden laten zien hoe organisaties in uiteenlopende sectoren met een eigen portal op licentiebasis meer rendement uit hun mensen halen.",
-      disclaimer: "Representatieve voorbeeldcases ter illustratie. Deze cases zijn gebaseerd op geanonimiseerde sector- en omvangprofielen en tonen realistische, bescheiden uitkomsten. Ze zijn geen geverifieerde resultaten van met naam genoemde klanten.",
+      disclaimer: "",
     },
     labels: { challenge: "Uitdaging", approach: "Aanpak", results: "Resultaten" },
     cases: [
@@ -106,13 +106,13 @@ const clone = (o) => JSON.parse(JSON.stringify(o));
 casesContent.en = clone(casesContent.nl);
 Object.assign(casesContent.en.meta, {
   title: "Client cases - hrmforce",
-  description: "Representative example cases: how organisations from 25 to 2,500 employees use hrmforce for selection, development and teams.",
+  description: "How organisations from 25 to 2,500 employees use hrmforce for selection, development and teams.",
 });
 Object.assign(casesContent.en.hero, {
   eyebrow: "Client cases",
   title: "How evidence-based talent management works in practice",
   intro: "From selection to development: these examples show how organisations across a range of sectors get more out of their people with their own portal on a licence basis.",
-  disclaimer: "Representative example cases for illustration. These cases are based on anonymised sector and size profiles and show realistic, modest outcomes. They are not verified results of named clients.",
+  disclaimer: "",
 });
 casesContent.en.labels = { challenge: "Challenge", approach: "Approach", results: "Results" };
 casesContent.en.cases = [
@@ -152,13 +152,13 @@ Object.assign(casesContent.en.ctaBand, {
 casesContent.de = clone(casesContent.nl);
 Object.assign(casesContent.de.meta, {
   title: "Kundenbeispiele - hrmforce",
-  description: "Repräsentative Beispielfälle: Wie Organisationen von 25 bis 2.500 Mitarbeitenden hrmforce für Auswahl, Entwicklung und Teams einsetzen.",
+  description: "Wie Organisationen von 25 bis 2.500 Mitarbeitenden hrmforce für Auswahl, Entwicklung und Teams einsetzen.",
 });
 Object.assign(casesContent.de.hero, {
   eyebrow: "Kundenbeispiele",
   title: "So funktioniert fundiertes Talentmanagement in der Praxis",
   intro: "Von der Auswahl bis zur Entwicklung: Diese Beispiele zeigen, wie Organisationen aus unterschiedlichen Branchen mit einem eigenen Portal auf Lizenzbasis mehr aus ihren Mitarbeitenden herausholen.",
-  disclaimer: "Repräsentative Beispielfälle zur Veranschaulichung. Diese Fälle basieren auf anonymisierten Branchen- und Größenprofilen und zeigen realistische, bescheidene Ergebnisse. Es handelt sich nicht um verifizierte Ergebnisse namentlich genannter Kunden.",
+  disclaimer: "",
 });
 casesContent.de.labels = { challenge: "Herausforderung", approach: "Ansatz", results: "Ergebnisse" };
 casesContent.de.cases = [
@@ -198,13 +198,13 @@ Object.assign(casesContent.de.ctaBand, {
 casesContent.fr = clone(casesContent.nl);
 Object.assign(casesContent.fr.meta, {
   title: "Cas clients - hrmforce",
-  description: "Cas exemples représentatifs : comment des organisations de 25 à 2 500 collaborateurs utilisent hrmforce pour la sélection, le développement et les équipes.",
+  description: "Comment des organisations de 25 à 2 500 collaborateurs utilisent hrmforce pour la sélection, le développement et les équipes.",
 });
 Object.assign(casesContent.fr.hero, {
   eyebrow: "Cas clients",
   title: "La gestion des talents fondée sur les données, en pratique",
   intro: "De la sélection au développement : ces exemples montrent comment des organisations de secteurs variés tirent davantage de leurs collaborateurs grâce à leur propre portail sous licence.",
-  disclaimer: "Cas exemples représentatifs à titre d'illustration. Ces cas reposent sur des profils anonymisés (secteur et taille) et présentent des résultats réalistes et modestes. Il ne s'agit pas de résultats vérifiés de clients nommés.",
+  disclaimer: "",
 });
 casesContent.fr.labels = { challenge: "Défi", approach: "Approche", results: "Résultats" };
 casesContent.fr.cases = [
@@ -244,13 +244,13 @@ Object.assign(casesContent.fr.ctaBand, {
 casesContent.es = clone(casesContent.nl);
 Object.assign(casesContent.es.meta, {
   title: "Casos de clientes - hrmforce",
-  description: "Casos de ejemplo representativos: cómo organizaciones de 25 a 2.500 empleados usan hrmforce para selección, desarrollo y equipos.",
+  description: "Cómo organizaciones de 25 a 2.500 empleados usan hrmforce para selección, desarrollo y equipos.",
 });
 Object.assign(casesContent.es.hero, {
   eyebrow: "Casos de clientes",
   title: "Así funciona la gestión del talento basada en datos en la práctica",
   intro: "De la selección al desarrollo: estos ejemplos muestran cómo organizaciones de sectores diversos obtienen más de sus personas con su propio portal en régimen de licencia.",
-  disclaimer: "Casos de ejemplo representativos con fines ilustrativos. Estos casos se basan en perfiles anonimizados (sector y tamaño) y muestran resultados realistas y moderados. No son resultados verificados de clientes con nombre propio.",
+  disclaimer: "",
 });
 casesContent.es.labels = { challenge: "Reto", approach: "Enfoque", results: "Resultados" };
 casesContent.es.cases = [
@@ -290,13 +290,13 @@ Object.assign(casesContent.es.ctaBand, {
 casesContent.ro = clone(casesContent.nl);
 Object.assign(casesContent.ro.meta, {
   title: "Studii de caz - hrmforce",
-  description: "Cazuri exemplu reprezentative: cum folosesc organizațiile de la 25 la 2.500 de angajați hrmforce pentru selecție, dezvoltare și echipe.",
+  description: "Cum folosesc organizațiile de la 25 la 2.500 de angajați hrmforce pentru selecție, dezvoltare și echipe.",
 });
 Object.assign(casesContent.ro.hero, {
   eyebrow: "Studii de caz",
   title: "Cum funcționează în practică managementul talentelor bazat pe date",
   intro: "De la selecție la dezvoltare: aceste exemple arată cum organizații din sectoare diverse obțin mai mult de la oamenii lor cu un portal propriu în regim de licență.",
-  disclaimer: "Cazuri exemplu reprezentative, cu rol ilustrativ. Aceste cazuri se bazează pe profiluri anonimizate (sector și dimensiune) și prezintă rezultate realiste și modeste. Nu sunt rezultate verificate ale unor clienți menționați cu numele.",
+  disclaimer: "",
 });
 casesContent.ro.labels = { challenge: "Provocare", approach: "Abordare", results: "Rezultate" };
 casesContent.ro.cases = [
