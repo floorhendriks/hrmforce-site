@@ -9,12 +9,12 @@ const year = new Date().getFullYear();
 const L = (p) => navHref(p, lang, validPaths);
 // Sitebrede trust-balk: korte, feitelijke signalen (per taal).
 const trustBarByLang = {
-  nl: ["Wetenschappelijk gevalideerd", "AVG-proof gegevensverwerking", "36+ online assessments", "Beschikbaar in 6 talen"],
-  en: ["Scientifically validated", "GDPR-compliant data handling", "36+ online assessments", "Available in 6 languages"],
-  de: ["Wissenschaftlich validiert", "DSGVO-konforme Datenverarbeitung", "36+ Online-Assessments", "In 6 Sprachen verfügbar"],
-  fr: ["Validé scientifiquement", "Traitement des données conforme au RGPD", "36+ évaluations en ligne", "Disponible en 6 langues"],
-  es: ["Validado científicamente", "Tratamiento de datos conforme al RGPD", "36+ evaluaciones online", "Disponible en 6 idiomas"],
-  ro: ["Validat științific", "Prelucrare a datelor conformă GDPR", "36+ evaluări online", "Disponibil în 6 limbi"],
+  nl: ["Wetenschappelijk gevalideerd", "AVG-proof gegevensverwerking", "36+ online assessments", "Beschikbaar in 14 talen"],
+  en: ["Scientifically validated", "GDPR-compliant data handling", "36+ online assessments", "Available in 14 languages"],
+  de: ["Wissenschaftlich validiert", "DSGVO-konforme Datenverarbeitung", "36+ Online-Assessments", "In 14 Sprachen verfügbar"],
+  fr: ["Validé scientifiquement", "Traitement des données conforme au RGPD", "36+ évaluations en ligne", "Disponible en 14 langues"],
+  es: ["Validado científicamente", "Tratamiento de datos conforme al RGPD", "36+ evaluaciones online", "Disponible en 14 idiomas"],
+  ro: ["Validat științific", "Prelucrare a datelor conformă GDPR", "36+ evaluări online", "Disponibil în 14 limbi"],
 };
 const trustBar = trustBarByLang[lang] ?? trustBarByLang.nl;
 const _check = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`;
