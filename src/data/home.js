@@ -225,16 +225,16 @@ export const home = {
 };
 
 export const clients = [
-  { name: "Rabobank", logo: "/upload-batch2/wp-content/uploads/2025/06/logo-Rabobank.png" },
-  { name: "Siemens", logo: "/upload-batch2/wp-content/uploads/2025/06/logo-siemens.jpg" },
-  { name: "Fugro", logo: "/upload-batch2/wp-content/uploads/2025/06/logo-fugro.jpg" },
-  { name: "Athlon", logo: "/upload-batch2/wp-content/uploads/2025/06/logo-athlon.jpg" },
-  { name: "Cordaan", logo: "/upload-batch2/wp-content/uploads/2025/06/logo-cordaan.jpg" },
-  { name: "Mitsubishi", logo: "/upload-batch2/wp-content/uploads/2025/07/logo-Mitsubishi.png" },
-  { name: "ArcelorMittal", logo: "/upload-batch2/wp-content/uploads/2025/06/logo-arcelorMittal.jpg" },
-  { name: "Royal HaskoningDHV", logo: "/upload-batch2/wp-content/uploads/2025/06/logo-RHDHV.jpg" },
-  { name: "Office Depot", logo: "/upload-batch2/wp-content/uploads/2025/07/logo-officedepot.png" },
-  { name: "vidaXL", logo: "/upload-batch2/wp-content/uploads/2025/06/logo-vidaXL.jpg" },
-  { name: "Wageningen Univ.", logo: "/upload-batch2/wp-content/uploads/2025/07/logo-Wageningen-University.jpg" },
-  { name: "City of Amsterdam", logo: "/upload-batch2/wp-content/uploads/2025/06/logo-cityofamsterdam.jpg" },
+  { name: "Rabobank", logo: "/media/wp-content/uploads/2025/06/logo-Rabobank.png" },
+  { name: "Siemens", logo: "/media/wp-content/uploads/2025/06/logo-siemens.jpg" },
+  { name: "Fugro", logo: "/media/wp-content/uploads/2025/06/logo-fugro.jpg" },
+  { name: "Athlon", logo: "/media/wp-content/uploads/2025/06/logo-athlon.jpg" },
+  { name: "Cordaan", logo: "/media/wp-content/uploads/2025/06/logo-cordaan.jpg" },
+  { name: "Mitsubishi", logo: "/media/wp-content/uploads/2025/07/logo-Mitsubishi.png" },
+  { name: "ArcelorMittal", logo: "/media/wp-content/uploads/2025/06/logo-arcelorMittal.jpg" },
+  { name: "Royal HaskoningDHV", logo: "/media/wp-content/uploads/2025/06/logo-RHDHV.jpg" },
+  { name: "Office Depot", logo: "/media/wp-content/uploads/2025/07/logo-officedepot.png" },
+  { name: "vidaXL", logo: "/media/wp-content/uploads/2025/06/logo-vidaXL.jpg" },
+  { name: "Wageningen Univ.", logo: "/media/wp-content/uploads/2025/07/logo-Wageningen-University.jpg" },
+  { name: "City of Amsterdam", logo: "/media/wp-content/uploads/2025/06/logo-cityofamsterdam.jpg" },
 ];

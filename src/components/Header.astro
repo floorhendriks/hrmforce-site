@@ -7,7 +7,7 @@ import validPaths from "../data/valid-paths.js";
 const { active = "" } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-const logo = "/upload-batch1/wp-content/uploads/2022/03/HRM-LOGO.svg";
+const logo = "/media/wp-content/uploads/2022/03/HRM-LOGO.svg";
 
 const nav = navFor(lang);
 const otherLangs = Object.keys(languages).filter((c) => c !== lang);

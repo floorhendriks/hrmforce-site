@@ -1,12 +1,12 @@
 // Homepage-content per taal, gebruikt door src/components/Home.astro.
 // NL = leidend. DE/FR/ES/RO zijn een eerste vertaalslag, laat nakijken door een native speaker.
 const IMG = {
-  "big-five": "/upload-batch1/wp-content/uploads/2021/01/big-fifty.svg",
-  "cognitieve-test": "/upload-batch1/wp-content/uploads/2021/01/abilityscan-1.svg",
-  "disc-test": "/upload-batch2/wp-content/uploads/2025/10/Disc-test-screen.png",
-  "drijfverentest": "/upload-batch1/wp-content/uploads/2021/01/drijfverentest-2.svg",
-  "360-graden-feedback": "/upload-batch1/wp-content/uploads/2021/02/360graden-feedback.svg",
-  "studiekeuzetest": "/upload-batch1/wp-content/uploads/2023/02/studiekeuze-test-hrmforce.webp",
+  "big-five": "/media/wp-content/uploads/2021/01/big-fifty.svg",
+  "cognitieve-test": "/media/wp-content/uploads/2021/01/abilityscan-1.svg",
+  "disc-test": "/media/wp-content/uploads/2025/10/Disc-test-screen.png",
+  "drijfverentest": "/media/wp-content/uploads/2021/01/drijfverentest-2.svg",
+  "360-graden-feedback": "/media/wp-content/uploads/2021/02/360graden-feedback.svg",
+  "studiekeuzetest": "/media/wp-content/uploads/2023/02/studiekeuze-test-hrmforce.webp",
 };
 const REV = {
   esther: { href: "https://www.google.com/maps/contrib/115910511765005052442/reviews", avatar: "https://lh3.googleusercontent.com/a/ACg8ocIhKQ63iBmiXYhMAhfrrkFkQaxjlYW2KO2B8gdpuQjOtNvXFQ=s128-c0x00000000-cc-rp-mo" },
