@@ -1,0 +1,8 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Toepassing from "../../../components/Toepassing.astro";
+import { landings } from "../../../data/landings.js";
+export function getStaticPaths(){ return landings.map((l)=>({ params:{slug:l.slug}, props:{l} })); }
+const { l } = Astro.props; const t=l.i18n.ro;
+---
+<Base title={t.metaTitle} description={t.metaDescription} active="solutions"><Toepassing l={l} lang="ro" /></Base>

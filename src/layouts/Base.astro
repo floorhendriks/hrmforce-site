@@ -19,6 +19,15 @@ const consentT = consentContent[lang] ?? consentContent.nl;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://hrmforce.com");
 const LOCALE_MAP = { nl: "nl_NL", en: "en_US", de: "de_DE", fr: "fr_FR", es: "es_ES", ro: "ro_RO" };
 const ogLocale = LOCALE_MAP[lang] || "nl_NL";
+const STICKY_DEMO = {
+  nl: { aria: "Plan een gratis demo", label: "Gratis demo" },
+  en: { aria: "Book a free demo", label: "Free demo" },
+  de: { aria: "Kostenlose Demo buchen", label: "Gratis-Demo" },
+  fr: { aria: "Réserver une démo gratuite", label: "Démo gratuite" },
+  es: { aria: "Reservar una demo gratuita", label: "Demo gratis" },
+  ro: { aria: "Rezervă o demonstrație gratuită", label: "Demo gratuit" },
+};
+const stickyDemo = STICKY_DEMO[lang] || STICKY_DEMO.nl;
 
 // hreflang: alternatieve taalversies voor pagina's die in alle 6 talen bestaan.
 const SITE = "https://hrmforce.com";
@@ -102,12 +111,12 @@ const orgLd = {
     <a
       class="sticky-demo"
       href={localizePath("/contact/", lang)}
-      aria-label="Plan een gratis demo"
+      aria-label={stickyDemo.aria}
     >
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      <span>Gratis demo</span>
+      <span>{stickyDemo.label}</span>
     </a>
     <Footer />
     <script>

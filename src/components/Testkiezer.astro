@@ -2,10 +2,16 @@
 import { localizePath } from "../i18n/utils.js";
 import { testkiezerContent, TK_SLUGS } from "../data/testkiezer-content.js";
 import { assessments } from "../data/assessments.js";
+import { assessmentsI18n } from "../data/assessments-i18n.js";
 const { lang } = Astro.props;
 const t = testkiezerContent[lang] ?? testkiezerContent.nl;
 const bySlug = new Map(assessments.map((a) => [a.slug, a]));
-const recs = (key) => (TK_SLUGS[key] || []).map((s) => bySlug.get(s)).filter(Boolean);
+const locAssess = (a) => {
+  if (lang === "nl" || !a) return a ? { slug: a.slug, title: a.title, goal: a.goal } : null;
+  const tr = assessmentsI18n[lang]?.[a.slug] || {};
+  return { slug: a.slug, title: tr.title || a.title, goal: tr.goal || a.goal };
+};
+const recs = (key) => (TK_SLUGS[key] || []).map((s) => bySlug.get(s)).filter(Boolean).map(locAssess);
 ---
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
 

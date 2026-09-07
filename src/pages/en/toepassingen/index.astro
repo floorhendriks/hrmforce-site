@@ -1,0 +1,7 @@
+---
+import Base from "../../../layouts/Base.astro";
+import ToepassingenIndex from "../../../components/ToepassingenIndex.astro";
+import { LAND_UI } from "../../../data/landings.js";
+const ui = LAND_UI.en;
+---
+<Base title={ui.idxTitle} description={ui.idxDesc} active="solutions"><ToepassingenIndex lang="en" /></Base>

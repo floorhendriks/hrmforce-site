@@ -1,0 +1,51 @@
+---
+import { landings, LAND_UI } from "../data/landings.js";
+import { localizePath } from "../i18n/utils.js";
+
+const { lang = "nl" } = Astro.props;
+const ui = LAND_UI[lang] || LAND_UI.nl;
+const usecases = landings.filter((l) => l.kind === "usecase");
+const sectors = landings.filter((l) => l.kind === "sector");
+const tp = (slug) => localizePath(`/toepassingen/${slug}/`, lang);
+const T = (l) => (l.i18n[lang] || l.i18n.nl);
+---
+<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>{ui.home}</a> &rsaquo; <span>{ui.toep}</span></div></div>
+
+<section class="ahero"><div class="wrap" style="display:block">
+  <div class="eyebrow" style="color:var(--gold)">{ui.toep}</div>
+  <h1>{ui.idxHero}</h1>
+  <p style="color:#c4d2e6;font-size:18px;max-width:760px;margin-top:10px">{ui.idxIntro}</p>
+</div></section>
+
+<section><div class="wrap">
+  <div class="eyebrow">{ui.perGoal}</div>
+  <h2 class="section-title" style="margin-bottom:32px">{ui.toep}</h2>
+  <div class="cards">
+    {usecases.map((l) => (
+      <a class="card" href={tp(l.slug)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+        <h3>{T(l).title}</h3><p style="flex:1">{T(l).intro}</p><span class="readmore">{ui.readmore} &rarr;</span>
+      </a>
+    ))}
+  </div>
+</div></section>
+
+<section class="bg-soft"><div class="wrap">
+  <div class="eyebrow" style="color:var(--gold)">{ui.perSector}</div>
+  <h2 class="section-title" style="margin-bottom:32px">{ui.sectors}</h2>
+  <div class="cards">
+    <a class="card" href={"/geschiktvoorzorg/"} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+      <h3>{ui.zorgT}</h3><p style="flex:1">{ui.zorgD}</p><span class="readmore">{ui.readmore} &rarr;</span>
+    </a>
+    {sectors.map((l) => (
+      <a class="card" href={tp(l.slug)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+        <h3>{T(l).title}</h3><p style="flex:1">{T(l).intro}</p><span class="readmore">{ui.readmore} &rarr;</span>
+      </a>
+    ))}
+  </div>
+</div></section>
+
+<section class="cta"><div class="wrap" style="padding:56px 0;text-align:center">
+  <h2 style="color:#fff">{ui.ctaT}</h2>
+  <p style="color:rgba(255,255,255,.9);max-width:620px;margin:12px auto 0">{ui.ctaD}</p>
+  <div class="btns" style="justify-content:center;margin-top:20px"><a href={localizePath("/contact/", lang)} class="btn btn-light">{ui.ctaBtn}</a></div>
+</div></section>

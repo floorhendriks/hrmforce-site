@@ -1,53 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
-import { landings } from "../../data/landings.js";
-
-const usecases = landings.filter((l) => l.kind === "usecase");
-const sectors = landings.filter((l) => l.kind === "sector");
+import ToepassingenIndex from "../../components/ToepassingenIndex.astro";
+import { LAND_UI } from "../../data/landings.js";
+const ui = LAND_UI.nl;
 ---
-<Base
-  title="Toepassingen en sectoren | Assessments van hrmforce"
-  description="Ontdek hoe je assessments inzet voor werving, ontwikkeling, leiderschap en jong talent, en per sector zoals zorg, onderwijs en industrie."
-  active="solutions"
->
-  <div class="crumb"><div class="wrap"><a href="/">Home</a> › <span>Toepassingen</span></div></div>
-
-  <section class="ahero"><div class="wrap" style="display:block">
-    <div class="eyebrow" style="color:var(--gold)">Toepassingen</div>
-    <h1>Waar wil je assessments voor inzetten?</h1>
-    <p style="color:#c4d2e6;font-size:18px;max-width:760px;margin-top:10px">Van werving tot ontwikkeling en van zorg tot industrie: bekijk hoe je onze wetenschappelijk gevalideerde assessments inzet voor jouw vraag.</p>
-  </div></section>
-
-  <section><div class="wrap">
-    <div class="eyebrow">Per doel</div>
-    <h2 class="section-title" style="margin-bottom:32px">Toepassingen</h2>
-    <div class="cards">
-      {usecases.map((l) => (
-        <a class="card" href={`/toepassingen/${l.slug}/`} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
-          <h3>{l.title}</h3><p style="flex:1">{l.intro}</p><span class="readmore">Lees meer &rarr;</span>
-        </a>
-      ))}
-    </div>
-  </div></section>
-
-  <section class="bg-soft"><div class="wrap">
-    <div class="eyebrow" style="color:var(--gold)">Per sector</div>
-    <h2 class="section-title" style="margin-bottom:32px">Sectoren</h2>
-    <div class="cards">
-      <a class="card" href="/geschiktvoorzorg/" style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
-        <h3>Assessments voor de zorg</h3><p style="flex:1">Objectief selecteren en ontwikkelen in zorg en welzijn, met vragenlijsten die passen bij de praktijk.</p><span class="readmore">Lees meer &rarr;</span>
-      </a>
-      {sectors.map((l) => (
-        <a class="card" href={`/toepassingen/${l.slug}/`} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
-          <h3>{l.title}</h3><p style="flex:1">{l.intro}</p><span class="readmore">Lees meer &rarr;</span>
-        </a>
-      ))}
-    </div>
-  </div></section>
-
-  <section class="cta"><div class="wrap" style="padding:56px 0;text-align:center">
-    <h2 style="color:#fff">Niet zeker welke aanpak past?</h2>
-    <p style="color:rgba(255,255,255,.9);max-width:620px;margin:12px auto 0">Plan een vrijblijvende demo, dan bekijken we samen welke instrumenten aansluiten bij jouw vraag.</p>
-    <div class="btns" style="justify-content:center;margin-top:20px"><a href="/contact/" class="btn btn-light">Plan een gratis demo</a></div>
-  </div></section>
-</Base>
+<Base title={ui.idxTitle} description={ui.idxDesc} active="solutions"><ToepassingenIndex lang="nl" /></Base>
