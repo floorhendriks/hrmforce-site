@@ -16,7 +16,7 @@ export const kenniscentrumContent = {
     dateLocale: "nl-NL",
     cats: { persoonlijkheid: "Persoonlijkheid & drijfveren", leiderschap: "Leiderschap & teams", assessment: "Assessments & tests", ontwikkeling: "Ontwikkeling & loopbaan", hr: "HR & organisatie", modellen: "Modellen & theorie", overig: "Overig" },
     // path match "/kenniscentrum/*" — NL-artikelen (geen taalprefix).
-    sanityMatch: `path match "/kenniscentrum/*"`,
+    sanityMatch: `string::startsWith(path, "/kenniscentrum/")`,
     empty: { title: "Binnenkort meer artikelen", lead: "We vertalen ons kenniscentrum stap voor stap. Ontdek in de tussentijd onze assessments of bekijk de mogelijkheden en tarieven.", ctaAssessments: "Bekijk de assessments", ctaTarieven: "Mogelijkheden & tarieven" },
   },
   en: {
@@ -32,7 +32,7 @@ export const kenniscentrumContent = {
     resetFilters: "Clear the filters",
     dateLocale: "en-GB",
     cats: { persoonlijkheid: "Personality & drives", leiderschap: "Leadership & teams", assessment: "Assessments & tests", ontwikkeling: "Development & career", hr: "HR & organisation", modellen: "Models & theory", overig: "Other" },
-    sanityMatch: `path match "/en/*" && (path match "*kenniscentrum*" || path match "*knowledge-center*" || path match "*knowledge-centre*")`,
+    sanityMatch: `string::startsWith(path, "/en/kenniscentrum/") || string::startsWith(path, "/en/knowledge-center/") || string::startsWith(path, "/en/knowledge-centre/")`,
     empty: { title: "More articles coming soon", lead: "We are translating our knowledge centre step by step. In the meantime, explore our assessments or review the options and pricing.", ctaAssessments: "View the assessments", ctaTarieven: "Options & pricing" },
   },
   de: {
@@ -48,7 +48,7 @@ export const kenniscentrumContent = {
     resetFilters: "Filter zurücksetzen",
     dateLocale: "de-DE",
     cats: { persoonlijkheid: "Persönlichkeit & Antriebe", leiderschap: "Führung & Teams", assessment: "Assessments & Tests", ontwikkeling: "Entwicklung & Laufbahn", hr: "HR & Organisation", modellen: "Modelle & Theorie", overig: "Sonstiges" },
-    sanityMatch: `path match "/de/*" && (path match "*kenniscentrum*" || path match "*wissenszentrum*" || path match "*wissenscenter*")`,
+    sanityMatch: `string::startsWith(path, "/de/kenniscentrum/") || string::startsWith(path, "/de/wissenszentrum/") || string::startsWith(path, "/de/wissenscenter/")`,
     empty: { title: "Bald weitere Artikel", lead: "Wir übersetzen unser Wissenszentrum Schritt für Schritt. Entdecken Sie in der Zwischenzeit unsere Assessments oder sehen Sie sich die Möglichkeiten und Preise an.", ctaAssessments: "Assessments ansehen", ctaTarieven: "Möglichkeiten & Preise" },
   },
   fr: {
@@ -64,7 +64,7 @@ export const kenniscentrumContent = {
     resetFilters: "Effacer les filtres",
     dateLocale: "fr-FR",
     cats: { persoonlijkheid: "Personnalité & motivations", leiderschap: "Leadership & équipes", assessment: "Évaluations & tests", ontwikkeling: "Développement & carrière", hr: "RH & organisation", modellen: "Modèles & théorie", overig: "Autre" },
-    sanityMatch: `path match "/fr/*" && (path match "*kenniscentrum*" || path match "*centre-de-connaissances*")`,
+    sanityMatch: `string::startsWith(path, "/fr/kenniscentrum/") || string::startsWith(path, "/fr/centre-de-connaissances/")`,
     empty: { title: "Bientôt plus d'articles", lead: "Nous traduisons notre centre de connaissances étape par étape. En attendant, découvrez nos évaluations ou consultez les possibilités et les tarifs.", ctaAssessments: "Voir les évaluations", ctaTarieven: "Possibilités & tarifs" },
   },
   es: {
@@ -80,7 +80,7 @@ export const kenniscentrumContent = {
     resetFilters: "Borrar los filtros",
     dateLocale: "es-ES",
     cats: { persoonlijkheid: "Personalidad y motivaciones", leiderschap: "Liderazgo y equipos", assessment: "Evaluaciones y tests", ontwikkeling: "Desarrollo y carrera", hr: "RR. HH. y organización", modellen: "Modelos y teoría", overig: "Otros" },
-    sanityMatch: `path match "/es/*" && (path match "*kenniscentrum*" || path match "*centro-de-conocimiento*")`,
+    sanityMatch: `string::startsWith(path, "/es/kenniscentrum/") || string::startsWith(path, "/es/centro-de-conocimiento/")`,
     empty: { title: "Pronto más artículos", lead: "Estamos traduciendo nuestro centro de conocimiento paso a paso. Mientras tanto, descubra nuestras evaluaciones o consulte las opciones y los precios.", ctaAssessments: "Ver las evaluaciones", ctaTarieven: "Opciones y precios" },
   },
   ro: {
@@ -96,7 +96,7 @@ export const kenniscentrumContent = {
     resetFilters: "Șterge filtrele",
     dateLocale: "ro-RO",
     cats: { persoonlijkheid: "Personalitate & motivații", leiderschap: "Leadership & echipe", assessment: "Evaluări & teste", ontwikkeling: "Dezvoltare & carieră", hr: "HR & organizație", modellen: "Modele & teorie", overig: "Altele" },
-    sanityMatch: `path match "/ro/*" && (path match "*kenniscentrum*" || path match "*centru-de-cuno*")`,
+    sanityMatch: `string::startsWith(path, "/ro/kenniscentrum/") || string::startsWith(path, "/ro/centru-de-cuno")`,
     empty: { title: "În curând mai multe articole", lead: "Traducem centrul nostru de cunoștințe pas cu pas. Între timp, descoperiți evaluările noastre sau consultați opțiunile și prețurile.", ctaAssessments: "Vezi evaluările", ctaTarieven: "Opțiuni & prețuri" },
   },
 };
