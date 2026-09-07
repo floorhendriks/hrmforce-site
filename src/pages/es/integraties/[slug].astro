@@ -1,0 +1,10 @@
+---
+import Base from "../../../layouts/Base.astro";
+import IntegratieDetail from "../../../components/IntegratieDetail.astro";
+import { INT_SYSTEMS, INT_UI } from "../../../data/integraties-detail.js";
+export function getStaticPaths(){ return INT_SYSTEMS.map((sys)=>({ params:{ slug: sys.slug }, props:{ sys } })); }
+const { sys } = Astro.props; const ui = INT_UI.es;
+---
+<Base title={`${ui.mtA}${sys.name}${ui.mtB}`} description={sys.blurb.es} active="solutions">
+  <IntegratieDetail sys={sys} ui={ui} lang="es" />
+</Base>

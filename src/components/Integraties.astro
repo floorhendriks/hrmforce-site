@@ -5,6 +5,8 @@ const { t, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
 const tarievenHref = localizePath("/tarieven/", lang);
 import { PARTNERS, PARTNER_CAT_ORDER, PARTNER_CATS, PARTNER_UI } from "../data/partners.js";
+import { INT_SYSTEMS } from "../data/integraties-detail.js";
+const intSysHeading = {nl:"Populaire koppelingen",en:"Popular integrations",de:"Beliebte Anbindungen",fr:"Intégrations populaires",es:"Integraciones populares",ro:"Integrări populare"}[lang] || "Populaire koppelingen";
 const pui = PARTNER_UI[lang] || PARTNER_UI.nl;
 const pcats = PARTNER_CATS[lang] || PARTNER_CATS.nl;
 ---
@@ -52,6 +54,17 @@ const pcats = PARTNER_CATS[lang] || PARTNER_CATS.nl;
     ))}
   </div>
   <p class="pt-empty" id="ptEmpty" hidden></p>
+</div></section>
+
+<section><div class="wrap">
+  <div class="eyebrow" style="color:var(--gold)">{intSysHeading}</div>
+  <div class="int-sys">
+    {INT_SYSTEMS.map((sy) => (
+      <a class="int-sys-link" href={localizePath(`/integraties/${sy.slug}/`, lang)}>
+        <b>{sy.name}</b><span>{sy.category}</span>
+      </a>
+    ))}
+  </div>
 </div></section>
 
 <section class="bg-soft"><div class="wrap">
@@ -105,6 +118,11 @@ const pcats = PARTNER_CATS[lang] || PARTNER_CATS.nl;
   .pt-cat { font-size: 11px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--gold); }
   .pt-card[hidden] { display: none !important; }
   .pt-empty { margin-top: 20px; color: var(--muted, #6b7280); }
+  .int-sys{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:22px}
+  .int-sys-link{display:flex;flex-direction:column;gap:2px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;text-decoration:none;transition:border-color .2s,box-shadow .2s}
+  .int-sys-link:hover{border-color:var(--gold);box-shadow:var(--shadow-sm)}
+  .int-sys-link b{color:var(--navy)}
+  .int-sys-link span{color:var(--muted);font-size:13px}
 </style>
 
 

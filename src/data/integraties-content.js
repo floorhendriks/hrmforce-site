@@ -25,7 +25,7 @@ export const integratiesContent = {
       eyebrow: "Voorbeelden",
       title: "Koppelbaar met o.a.",
       intro: "Afhankelijk van je situatie is hrmforce koppelbaar met veelgebruikte HR-systemen, onder andere:",
-      items: ["AFAS", "Visma", "Nmbrs", "SAP SuccessFactors"],
+      items: ["AFAS", "Nmbrs", "Visma", "Loket.nl", "Recruitee", "Carerix", "OTYS"],
       note: "Genoemde systemen zijn voorbeelden van koppelingen die mogelijk zijn; ze impliceren geen officieel partnerschap. Welke koppeling voor jou beschikbaar of zinvol is, bepalen we samen tijdens de intake.",
     },
     how: {
