@@ -24,8 +24,27 @@ if (!p) {
         metaDescription: pick(r.metaDescription, lang) };
 }
 const fmt = (d) => new Date(d).toLocaleDateString("nl-NL");
+const _canon = new URL(Astro.url.pathname, "https://hrmforce.com").href;
+const _articleLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: p.title,
+  description: p.metaDescription || p.excerpt,
+  articleSection: p.category,
+  datePublished: p.date,
+  dateModified: p.date,
+  inLanguage: lang,
+  mainEntityOfPage: { "@type": "WebPage", "@id": _canon },
+  author: { "@type": "Organization", name: "hrmforce" },
+  publisher: {
+    "@type": "Organization",
+    name: "hrmforce",
+    logo: { "@type": "ImageObject", url: "https://hrmforce.com/media/wp-content/uploads/2022/03/HRM-LOGO.svg" },
+  },
+};
 ---
 <Base title={`${p.title} | Hrmforce`} description={p.metaDescription || p.excerpt} active="">
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(_articleLd)}></script>
   <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={localizePath("/kenniscentrum/", lang)}>Kenniscentrum</a> › <span>{p.title}</span></div></div>
   <section class="ahero"><div class="wrap" style="display:block">
     <div class="eyebrow" style="color:var(--gold)">{p.category} · {fmt(p.date)}</div>

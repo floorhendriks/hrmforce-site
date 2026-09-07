@@ -7,6 +7,7 @@ import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../data/site-config.js";
 import { getLangFromUrl, localizePath } from "../../i18n/utils.js";
 import { examplesFor } from "../../data/assessment-examples.js";
 import { generalFaq } from "../../data/general-faq.js";
+import { posts as kcPosts } from "../../data/blog.js";
 
 const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
 
@@ -56,6 +57,19 @@ const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList", 
   { "@type": "ListItem", position: 3, name: a.title, item: _canon },
 ] };
 const _faqLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: (allFaq || []).map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) };
+// Relevante kenniscentrum-artikelen bij dit assessment (interne links voor SEO).
+const _hay = `${a.title||""} ${a.phase||""} ${a.goal||""} ${(a.traits||[]).join(" ")}`.toLowerCase();
+const _kw = (t) => (t||"").toLowerCase().split(/[^a-z0-9\u00e0-\u00ff]+/).filter((w) => w.length > 4);
+const kcRelated = (kcPosts || [])
+  .map((p) => {
+    const words = new Set([..._kw(p.title), ..._kw(p.category), ..._kw(p.excerpt)]);
+    let score = 0;
+    words.forEach((w) => { if (_hay.includes(w)) score += 1; });
+    return { p, score };
+  })
+  .sort((x, y) => y.score - x.score || new Date(y.p.date) - new Date(x.p.date))
+  .slice(0, 3)
+  .map((x) => x.p);
 const _offerLd = (shop && shop.price)
   ? { "@context": "https://schema.org", "@type": "Product", name: a.title, description: a.goal, brand: { "@type": "Brand", name: "hrmforce" }, ...(a.image ? { image: a.image } : {}), offers: { "@type": "Offer", price: String(shop.price), priceCurrency: "EUR", availability: "https://schema.org/InStock", url: _canon } }
   : { "@context": "https://schema.org", "@type": "Service", name: a.title, description: a.goal, provider: { "@type": "Organization", name: "hrmforce" }, areaServed: "EU" };
@@ -235,6 +249,27 @@ const _offerLd = (shop && shop.price)
       </div>
     </div>
   </section>
+
+  {kcRelated.length > 0 && (
+    <section>
+      <div class="wrap">
+        <div class="center">
+          <div class="eyebrow">Verder lezen</div>
+          <h2 class="section-title" style="margin-bottom:36px">Meer weten uit ons kenniscentrum</h2>
+        </div>
+        <div class="cards">
+          {kcRelated.map((p) => (
+            <a class="card" href={localizePath(`/kenniscentrum/${p.slug}/`, lang)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+              <span class="eyebrow" style="color:var(--gold)">{p.category}</span>
+              <h3>{p.title}</h3>
+              <p style="flex:1">{p.excerpt}</p>
+              <span class="readmore">Lees het artikel &rarr;</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <section class="formsec" id="request">
     <div class="wrap">
