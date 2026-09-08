@@ -160,9 +160,9 @@ const _offerLd = (shop && shop.price)
       <h2 class="qshots-h">{q.h}</h2>
       <p class="qshots-lead">{q.l}</p>
       <div class="qshots-track">
-        <figure class="qshot"><Img src="/mockups/vragenlijst-intro.svg" alt={q.c1} loading="eager" /><figcaption>{q.c1}</figcaption></figure>
-        <figure class="qshot"><Img src="/mockups/vragenlijst-vraag.svg" alt={q.c2} loading="eager" /><figcaption>{q.c2}</figcaption></figure>
-        <figure class="qshot"><Img src="/mockups/vragenlijst-afgerond.svg" alt={q.c3} loading="eager" /><figcaption>{q.c3}</figcaption></figure>
+        <figure class="qshot"><Img src={`/mockups/vragenlijst-intro.${lang}.svg`} alt={q.c1} loading="eager" /><figcaption>{q.c1}</figcaption></figure>
+        <figure class="qshot"><Img src={`/mockups/vragenlijst-vraag.${lang}.svg`} alt={q.c2} loading="eager" /><figcaption>{q.c2}</figcaption></figure>
+        <figure class="qshot"><Img src={`/mockups/vragenlijst-afgerond.${lang}.svg`} alt={q.c3} loading="eager" /><figcaption>{q.c3}</figcaption></figure>
       </div>
     </div></section>
   );

@@ -4,7 +4,8 @@ import { TOUR_UI, TOUR_IMGS } from "../data/rondleiding-content.js";
 import { localizePath } from "../i18n/utils.js";
 const { lang = "nl" } = Astro.props;
 const t = TOUR_UI[lang] || TOUR_UI.nl;
-const steps = t.steps.map((s, i) => ({ ...s, img: TOUR_IMGS[i] }));
+const _sfx = lang === "nl" ? "" : "." + lang;
+const steps = t.steps.map((s, i) => ({ ...s, img: `/mockups/vragenlijst-${TOUR_IMGS[i]}${_sfx}.svg` }));
 ---
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> &rsaquo; <span>{t.crumb}</span></div></div>
 

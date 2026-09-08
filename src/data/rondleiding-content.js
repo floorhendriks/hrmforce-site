@@ -1,5 +1,5 @@
 // Interactieve productrondleiding, 6 talen. Beelden gedeeld (mockups).
-export const TOUR_IMGS = ["/mockups/vragenlijst-intro.svg", "/mockups/vragenlijst-vraag.svg", "/mockups/vragenlijst-afgerond.svg"];
+export const TOUR_IMGS = ["intro", "vraag", "afgerond"];
 export const TOUR_UI = {
  "nl": {
   "metaT": "Productrondleiding | Zo werkt hrmforce",
