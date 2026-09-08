@@ -464,3 +464,12 @@ html{overflow-x:hidden;}
 .xblock-list li{position:relative;padding-left:26px;color:var(--navy);font-size:15px;font-weight:600;line-height:1.45}
 .xblock-list li::before{content:"";position:absolute;left:0;top:7px;width:14px;height:14px;border-radius:50%;background:var(--gold)}
 @media(max-width:640px){.xblock-list{grid-template-columns:1fr}}
+/* Assessment-detail: wetenschappelijk kader (Batch 4) */
+.theory-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 28px;box-shadow:var(--shadow-xs)}
+.theory-name{color:var(--navy);font-size:20px;margin:0 0 8px}
+.theory-desc{color:var(--text);font-size:16px;margin:0 0 18px}
+.theory-reflbl{color:var(--navy);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.theory-refs{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:8px}
+.theory-refs li{position:relative;padding-left:18px;color:var(--muted);font-size:14px;line-height:1.5}
+.theory-refs li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.theory-note{color:var(--muted);font-size:13px;font-style:italic;margin:0;border-top:1px solid var(--line);padding-top:14px}

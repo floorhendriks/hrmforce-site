@@ -5,7 +5,7 @@ export const detailUi = {
   nl: {
     eyebrowAssessments: "Online assessments", crumbAssessments: "Online assessments",
     phase: "Fase", goal: "Doel",
-    priceLabel: "Direct afnemen vanaf", priceNote: "per assessment · betaal achteraf",
+    priceLabel: "Maximale prijs via de shop", priceNote: "per assessment · via je eigen portal altijd voordeliger",
     demo: "Plan een gratis demo", orderLoose: "Los bestellen", inShop: "Bekijk in de shop",
     portalPre: "Structureel inzetten? Start met een ", portalLink: "eigen portal op licentiebasis",
     portalPost: ", onbeperkt afnemen tegen een vaste jaarprijs.",
@@ -29,7 +29,7 @@ export const detailUi = {
   en: {
     eyebrowAssessments: "Online assessments", crumbAssessments: "Online assessments",
     phase: "Phase", goal: "Goal",
-    priceLabel: "Take now from", priceNote: "per assessment · pay afterwards",
+    priceLabel: "Maximum price via the shop", priceNote: "per assessment · always cheaper via your own portal",
     demo: "Book a free demo", orderLoose: "Order individually", inShop: "View in the shop",
     portalPre: "Rolling it out structurally? Start with your ", portalLink: "own licensed portal",
     portalPost: ", unlimited use for a fixed annual price.",
@@ -53,7 +53,7 @@ export const detailUi = {
   de: {
     eyebrowAssessments: "Online assessments", crumbAssessments: "Online assessments",
     phase: "Phase", goal: "Ziel",
-    priceLabel: "Sofort einsetzen ab", priceNote: "pro Assessment · Zahlung im Nachhinein",
+    priceLabel: "Höchstpreis über den Shop", priceNote: "pro Assessment · über Ihr eigenes Portal immer günstiger",
     demo: "Kostenlose Demo buchen", orderLoose: "Einzeln bestellen", inShop: "Im Shop ansehen",
     portalPre: "Strukturell einsetzen? Starten Sie mit einem ", portalLink: "eigenen Portal auf Lizenzbasis",
     portalPost: ", unbegrenzte Nutzung zu einem festen Jahrespreis.",
@@ -77,7 +77,7 @@ export const detailUi = {
   fr: {
     eyebrowAssessments: "Évaluations en ligne", crumbAssessments: "Évaluations en ligne",
     phase: "Phase", goal: "Objectif",
-    priceLabel: "Utilisation immédiate à partir de", priceNote: "par évaluation · paiement ultérieur",
+    priceLabel: "Prix maximum via la boutique", priceNote: "par évaluation · toujours moins cher via votre propre portail",
     demo: "Réserver une démo gratuite", orderLoose: "Commander à l'unité", inShop: "Voir dans la boutique",
     portalPre: "Un déploiement structurel ? Commencez avec votre ", portalLink: "propre portail sous licence",
     portalPost: ", utilisation illimitée pour un prix annuel fixe.",
@@ -101,7 +101,7 @@ export const detailUi = {
   es: {
     eyebrowAssessments: "Evaluaciones online", crumbAssessments: "Evaluaciones online",
     phase: "Fase", goal: "Objetivo",
-    priceLabel: "Usar de inmediato desde", priceNote: "por evaluación · pago posterior",
+    priceLabel: "Precio máximo en la tienda", priceNote: "por evaluación · siempre más barato con tu propio portal",
     demo: "Reservar una demo gratis", orderLoose: "Pedir por unidad", inShop: "Ver en la tienda",
     portalPre: "¿Implementación estructural? Empieza con tu ", portalLink: "propio portal con licencia",
     portalPost: ", uso ilimitado por un precio anual fijo.",
@@ -125,7 +125,7 @@ export const detailUi = {
   ro: {
     eyebrowAssessments: "Evaluări online", crumbAssessments: "Evaluări online",
     phase: "Fază", goal: "Obiectiv",
-    priceLabel: "Utilizare imediată de la", priceNote: "per evaluare · plată ulterioară",
+    priceLabel: "Preț maxim prin magazin", priceNote: "per evaluare · întotdeauna mai ieftin prin propriul portal",
     demo: "Rezervă o demonstrație gratuită", orderLoose: "Comandă individual", inShop: "Vezi în magazin",
     portalPre: "Implementare structurală? Începe cu ", portalLink: "propriul portal pe bază de licență",
     portalPost: ", utilizare nelimitată la un preț anual fix.",

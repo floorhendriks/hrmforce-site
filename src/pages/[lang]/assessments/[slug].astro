@@ -9,6 +9,7 @@ import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../../data/site-config.js"
 import { localizePath } from "../../../i18n/utils.js";
 import { examplesFor } from "../../../data/assessment-examples.js";
 import { extraFor } from "../../../data/assessment-detail-extra.js";
+import { theoryFor } from "../../../data/assessment-theory.js";
 import { generalFaq } from "../../../data/general-faq.js";
 import QMock from "../../../components/QMock.astro";
 import { oefentests } from "../../../data/oefentests.js";
@@ -82,6 +83,7 @@ const related = (a.related || [])
 
 const ex = examplesFor(a.slug, lang);
 const extra = extraFor(a.slug, lang);
+const theory = theoryFor(a.slug, lang);
 const _specQ = new Set((a.faq || []).map((f) => (f.q || "").trim().toLowerCase()));
 const allFaq = [...(a.faq || []), ...generalFaq(lang).filter((g) => !_specQ.has((g.q || "").trim().toLowerCase()))];
 const faqTitle = t.faqTitle.replace("{t}", a.title);
@@ -231,6 +233,20 @@ const _offerLd = (shop && shop.price)
           {b.type === "text" && b.text && <p class="xblock-text">{b.text}</p>}
         </div>
       ))}
+    </div></section>
+  )}
+
+  {theory && (
+    <section><div class="wrap" style="max-width:880px">
+      <div class="eyebrow" style="color:var(--gold)">{theory.modelLabel}</div>
+      <h2 class="section-title">{theory.title}</h2>
+      <div class="theory-card">
+        <h3 class="theory-name">{theory.name}</h3>
+        <p class="theory-desc">{theory.desc}</p>
+        <div class="theory-reflbl">{theory.refLabel}</div>
+        <ul class="theory-refs">{theory.refs.map((r) => <li>{r}</li>)}</ul>
+        <p class="theory-note">{theory.note}</p>
+      </div>
     </div></section>
   )}
 
