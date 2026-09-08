@@ -1040,3 +1040,97 @@
   }
 
 })();
+
+/* Proactieve teaser (Salesforce-stijl): na een paar seconden toont Henry een
+   grotere prompt met een gerichte vraag; gebeurt er niets, dan klapt hij weer
+   in. Onafhankelijk van de rest van de widget. */
+(function () {
+  var MSG = {
+    nl: { t: "Vraag het aan Henry", q: "Kan ik je helpen de juiste test te kiezen?", c: "Stel je vraag" },
+    en: { t: "Ask Henry", q: "Can I help you choose the right test?", c: "Ask your question" },
+    de: { t: "Fragen Sie Henry", q: "Kann ich Ihnen bei der Testauswahl helfen?", c: "Stellen Sie Ihre Frage" },
+    fr: { t: "Demandez à Henry", q: "Puis-je vous aider à choisir le bon test ?", c: "Posez votre question" },
+    es: { t: "Pregunta a Henry", q: "¿Te ayudo a elegir el test adecuado?", c: "Haz tu pregunta" },
+    ro: { t: "Întreabă-l pe Henry", q: "Te pot ajuta să alegi testul potrivit?", c: "Pune întrebarea ta" }
+  };
+  var SHOW_AFTER = 8000, AUTO_HIDE = 14000;
+  function seen() { try { return sessionStorage.getItem("hfTeaserDone") === "1"; } catch (e) { return false; } }
+  function markSeen() { try { sessionStorage.setItem("hfTeaserDone", "1"); } catch (e) {} }
+
+  function start() {
+    if (seen()) return;
+    var root = document.getElementById("hrmforce-chatbot");
+    var bubble = document.getElementById("hrmf-bubble");
+    if (!root || !bubble) { return setTimeout(start, 1000); }
+
+    var lang = (document.documentElement.getAttribute("lang") || "nl").toLowerCase().split("-")[0];
+    var m = MSG[lang] || MSG.nl;
+
+    if (!document.getElementById("hf-teaser-css")) {
+      var st = document.createElement("style"); st.id = "hf-teaser-css";
+      st.textContent =
+        "#hf-teaser{position:fixed;z-index:999998;max-width:270px;background:#fff;border:1px solid #e6e8eb;border-radius:16px;box-shadow:0 14px 40px rgba(0,0,0,.22);padding:12px 14px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;transform:scale(.6);opacity:0;transform-origin:bottom right;transition:transform .28s cubic-bezier(.2,.8,.3,1.2),opacity .28s ease;cursor:pointer}" +
+        "#hf-teaser.in{transform:scale(1);opacity:1}" +
+        "#hf-teaser .hf-tz-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}" +
+        "#hf-teaser .hf-tz-av{width:30px;height:30px;border-radius:50%;background:#f5a623;color:#1a3a5c;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none}" +
+        "#hf-teaser .hf-tz-name{font-size:12.5px;font-weight:700;color:#1a3a5c}" +
+        "#hf-teaser .hf-tz-status{font-size:10.5px;color:#3aa76d;font-weight:700}" +
+        "#hf-teaser .hf-tz-q{font-size:13.5px;color:#1a3a5c;line-height:1.4;margin:2px 0 8px}" +
+        "#hf-teaser .hf-tz-cta{font-size:12.5px;font-weight:700;color:#0E468C}" +
+        "#hf-teaser .hf-tz-x{position:absolute;top:6px;right:8px;border:0;background:none;color:#9aa4b0;font-size:16px;line-height:1;cursor:pointer;padding:2px}" +
+        "#hf-teaser .hf-tz-x:hover{color:#1a3a5c}";
+      document.head.appendChild(st);
+    }
+
+    var tz = document.createElement("div");
+    tz.id = "hf-teaser";
+    tz.setAttribute("role", "button");
+    tz.innerHTML =
+      '<button class="hf-tz-x" aria-label="Sluiten">×</button>' +
+      '<div class="hf-tz-top"><div class="hf-tz-av">H</div><div><div class="hf-tz-name">' + m.t + '</div><div class="hf-tz-status">Online</div></div></div>' +
+      '<div class="hf-tz-q">' + m.q + '</div><div class="hf-tz-cta">' + m.c + ' &rarr;</div>';
+    document.body.appendChild(tz);
+
+    function place() {
+      var r = bubble.getBoundingClientRect();
+      var narrow = window.innerWidth < 520;
+      if (narrow) {
+        tz.style.right = Math.max(8, window.innerWidth - r.right) + "px";
+        tz.style.bottom = (window.innerHeight - r.top + 12) + "px";
+        tz.style.transformOrigin = "bottom right";
+      } else {
+        tz.style.right = (window.innerWidth - r.left + 12) + "px";
+        tz.style.bottom = (window.innerHeight - r.bottom) + "px";
+        tz.style.transformOrigin = "bottom right";
+      }
+    }
+    place();
+    var onResize = function () { place(); };
+    window.addEventListener("resize", onResize);
+
+    var hideTimer;
+    function remove(done) {
+      tz.classList.remove("in");
+      window.removeEventListener("resize", onResize);
+      clearTimeout(hideTimer);
+      setTimeout(function () { if (tz.parentNode) tz.parentNode.removeChild(tz); }, 300);
+      if (done) markSeen();
+    }
+    // "grow in"
+    requestAnimationFrame(function () { requestAnimationFrame(function () { tz.classList.add("in"); }); });
+    // shrink away if untouched
+    hideTimer = setTimeout(function () { remove(false); }, AUTO_HIDE);
+
+    tz.querySelector(".hf-tz-x").addEventListener("click", function (e) {
+      e.stopPropagation(); remove(true);
+    });
+    tz.addEventListener("click", function () {
+      remove(true);
+      if (!root.classList.contains("open")) bubble.click();
+    });
+  }
+
+  function boot() { setTimeout(start, SHOW_AFTER); }
+  if (document.readyState === "loading") document.addEventListener("DOMContent" + "Loaded", boot);
+  else boot();
+})();

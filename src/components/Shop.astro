@@ -304,7 +304,7 @@ const FAQ_DEFAULT = generalFaq(lang);
   @media (max-width: 880px) { .shop-usps { grid-template-columns: 1fr 1fr; } }
 
   /* Winkelmand-knop */
-  .cart-fab { position: fixed; right: 20px; bottom: 84px; z-index: 55; width: 56px; height: 56px; border-radius: 50%; background: var(--navy); color: #fff; border: 0; cursor: pointer; box-shadow: 0 12px 28px rgba(14,70,140,.4); display: flex; align-items: center; justify-content: center; }
+  .cart-fab { position: fixed; right: 20px; bottom: 160px; z-index: 55; width: 56px; height: 56px; border-radius: 50%; background: var(--navy); color: #fff; border: 0; cursor: pointer; box-shadow: 0 12px 28px rgba(14,70,140,.4); display: flex; align-items: center; justify-content: center; }
   .cart-fab:hover { background: var(--navy-deep); }
   .cart-fab-count { position: absolute; top: -4px; right: -4px; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: var(--gold); color: #3a2a00; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
   .cart-overlay { position: fixed; inset: 0; background: rgba(11,42,92,.5); z-index: 70; }
@@ -332,6 +332,7 @@ const FAQ_DEFAULT = generalFaq(lang);
 
   /* [hidden] moet altijd winnen van de display-regels hieronder,
      anders blijft een leeg overlay-paneel de pagina blokkeren (klikken lijken te 'hangen'). */
+  @media (max-width: 720px) { .cart-fab { bottom: 92px; right: 14px; } }
   .pm-overlay[hidden], .cart-overlay[hidden], .cart-drawer[hidden], .cart-fab[hidden] { display: none !important; }
 
   /* Product-detail-paneel */
@@ -712,6 +713,11 @@ const FAQ_DEFAULT = generalFaq(lang);
           variantId: v ? v.id : null, available: v ? v.availableForSale : false,
         };
       });
+      // Vaste bovenste rij: Big Fifty, Ability Scan, Motivation, 360 feedback (rest houdt titelvolgorde).
+      var PIN = [["big fifty", "big five", "big50"], ["ability scan", "cognitiev", "cognitieve", "capaciteit"], ["motivation", "drijfver"], ["360"]];
+      function pinRank(title) { var t = (title || "").toLowerCase(); for (var i = 0; i < PIN.length; i++) { for (var j = 0; j < PIN[i].length; j++) { if (t.indexOf(PIN[i][j]) > -1) return i; } } return 99; }
+      products.forEach(function (p, i) { p._pin = pinRank(p.title); p._ord = i; });
+      products.sort(function (a, b) { return a._pin !== b._pin ? a._pin - b._pin : a._ord - b._ord; });
       fillSelect(fCyclus, Object.keys(cycSet));
       fillSelect(fSegment, Object.keys(segSet));
       fillSelect(fUitgever, Object.keys(uitSet));
