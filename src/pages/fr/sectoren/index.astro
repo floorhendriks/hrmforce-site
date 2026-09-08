@@ -1,0 +1,9 @@
+---
+import Base from "../../../layouts/Base.astro";
+import SectorenIndex from "../../../components/SectorenIndex.astro";
+import { SEC_UI } from "../../../data/sectoren-content.js";
+const m = (SEC_UI["fr"] || SEC_UI.nl).meta;
+---
+<Base title={m.title} description={m.description} active="solutions">
+  <SectorenIndex />
+</Base>

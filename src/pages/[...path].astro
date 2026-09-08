@@ -12,9 +12,14 @@ export async function getStaticPaths() {
   const arts = await client.fetch(
     `*[_type == "article" && defined(path) && defined(body)]{path, title, body, date}`
   );
+  // Statische routes hebben voorrang; sluit paden uit die we nu als eigen
+  // pagina bouwen (bijv. de sectoren-index) om dubbele routes te voorkomen.
+  const OWN = new Set(["sectoren", "en/sectoren", "de/sectoren", "fr/sectoren", "es/sectoren", "ro/sectoren"]);
   return arts
     .filter((a) => a.path && a.path.includes("/"))
-    .map((a) => ({ params: { path: a.path.replace(/^\/+|\/+$/g, "") }, props: { article: a } }));
+    .map((a) => ({ p: a.path.replace(/^\/+|\/+$/g, ""), a }))
+    .filter((x) => !OWN.has(x.p))
+    .map((x) => ({ params: { path: x.p }, props: { article: x.a } }));
 }
 
 const { article } = Astro.props;
