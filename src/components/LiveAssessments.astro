@@ -1,0 +1,69 @@
+---
+import LogoSlider from "./LogoSlider.astro";
+import { getLangFromUrl, localizePath } from "../i18n/utils.js";
+import { liveAssessmentsFor } from "../data/live-assessments-content.js";
+
+const lang = getLangFromUrl(Astro.url);
+const { ui, options } = liveAssessmentsFor(lang);
+const homeHref = localizePath("/", lang);
+const adviesHref = localizePath("/advies/", lang);
+const contactHref = localizePath("/contact/", lang);
+const overzichtHref = localizePath("/assessment-overzicht/", lang);
+const testkiezerHref = localizePath("/testkiezer/", lang);
+---
+<div class="crumb">
+  <div class="wrap"><a href={homeHref}>Home</a> &rsaquo; <a href={adviesHref}>{ui.eyebrow}</a> &rsaquo; <span>{ui.h1}</span></div>
+</div>
+
+<section class="ahero">
+  <div class="wrap" style="display:block">
+    <div class="eyebrow" style="color:var(--gold)">{ui.eyebrow}</div>
+    <h1>{ui.h1}</h1>
+    <p style="color:#c4d2e6;font-size:19px;max-width:840px;margin-top:8px">{ui.lead}</p>
+    <div class="btns" style="margin-top:16px">
+      <a href={contactHref} class="btn btn-primary">{ui.ctaBtn1}</a>
+      <a href={overzichtHref} class="btn btn-light">{ui.ctaBtn2}</a>
+    </div>
+  </div>
+</section>
+
+<LogoSlider heading={ui.slider} />
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">{ui.eyebrow}</div>
+    <h2 class="section-title">{ui.secTitle}</h2>
+    <p class="lead" style="margin-bottom:24px">{ui.secLead}</p>
+    <div class="la-grid">
+      {options.map((o) => (
+        <a class="la-card" href={localizePath(o.href, lang)}>
+          <h3>{o.title}</h3>
+          <p>{o.desc}</p>
+          <span class="la-more">{ui.more} &rarr;</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <h2>{ui.ctaTitle}</h2>
+    <p>{ui.ctaText}</p>
+    <div class="btns">
+      <a href={contactHref} class="btn btn-primary">{ui.ctaBtn1}</a>
+      <a href={testkiezerHref} class="btn btn-light">{ui.ctaBtn2}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .la-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 8px; }
+  .la-card { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--gold); border-radius: 14px; padding: 22px; box-shadow: var(--shadow-xs); text-decoration: none; transition: transform .15s, box-shadow .15s; }
+  .la-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+  .la-card h3 { color: var(--navy); font-size: 17px; font-weight: 800; margin: 0 0 8px; }
+  .la-card p { color: var(--muted); font-size: 14px; line-height: 1.5; margin: 0 0 14px; flex: 1; }
+  .la-more { color: var(--navy); font-size: 14px; font-weight: 700; }
+  @media (max-width: 880px) { .la-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .la-grid { grid-template-columns: 1fr; } }
+</style>

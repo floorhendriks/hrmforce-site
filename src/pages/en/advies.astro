@@ -1,19 +1,16 @@
 ---
 import Base from "../../layouts/Base.astro";
+import LogoSlider from "../../components/LogoSlider.astro";
 
 const items = [
-  { h: "Assessments", p: "In every organization, people make decisions about people. Accepting or rejecting an applicant, allowing an existing employee to grow or not, or intervening in a (stagnant) career. These decisions affect the individual and the organization. Ultimately, personnel decisions determine how successful your organization is." },
-  { h: "Talent Management", p: "Applying the 80-20 principle to recruitment, it turns out that 20% of recruited candidates provide 80% of the results. More than ever, the focus of companies is on recruiting these top talents. However, the current economic conditions also make it necessary to recognize and utilize talent within the organization." },
-  { h: "Competency Management", p: "When implementing competency management, the vision and strategy of your organization are translated into objectives. Well-implemented competence management pays for itself more than once. It provides clarity and structure in all functions of the organization." },
-  { h: "Consultancy", p: "Your organization is changing. It grows, innovates or adapts. Not keeping up and changing means standing still. In times when technological innovation is so rapid, it even means going backwards. You choose an ambitious strategy and, as always, the realization of the strategy is the biggest challenge." },
-  { h: "Training", p: "Together we formulate the training goals and the most appropriate approach. We use a wide range of interventions. The working methods we use are innovative and based on scientific research, but above all they are surprising and inspiring. For optimal learning results, we tailor our interventions to your work situation." },
+  { h: "Training", p: "With a certification training from hrmforce you learn to work with our questionnaires and interpret results correctly. Check the training calendar and register directly.", href: "/en/advies/trainingen/", cta: "View training & calendar" },
+  { h: "Live Assessments", p: "Beyond the self-service online tests, our assessors guide live assessments: selection, development, career, executive and team analysis.", href: "/en/advies/assessments/", cta: "View all assessments" },
+  { h: "Talent Management", p: "Applying the 80-20 principle to recruitment, 20% of recruited candidates provide 80% of the results. It is essential to recognise and utilise talent within the organization, not only to recruit it.", href: "/en/hrm-oplossingen/", cta: "More information" },
+  { h: "Competency Management", p: "When implementing competency management, the vision and strategy of your organization are translated into objectives. Well-implemented competency management pays for itself and provides clarity and structure across all functions.", href: "/en/contact/", cta: "Get in touch" },
+  { h: "Consultancy", p: "Your organization grows, innovates or adapts. You choose an ambitious strategy, and as always the realization of that strategy is the biggest challenge. Our consultants help you get there.", href: "/en/contact/", cta: "Get in touch" },
 ];
 ---
-<Base
-  title="Hrmforce Consulting - hrmforce"
-  description="In addition to our online assessments and HRM solutions, you can also contact us for tailor-made consulting projects and various training courses."
-  active="advice"
->
+<Base title="Hrmforce Consulting - hrmforce" description="In addition to our online assessments and HRM solutions, you can contact us for tailor-made consulting projects and various training courses." active="advice">
   <div class="crumb">
     <div class="wrap"><a href="/en/">Home</a> › <span>Advice</span></div>
   </div>
@@ -22,31 +19,34 @@ const items = [
     <div class="wrap" style="display:block">
       <div class="eyebrow" style="color:var(--gold)">Advice</div>
       <h1>Hrmforce consulting</h1>
-      <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">In addition to our online assessments and HRM solutions, you can also contact us for <strong>tailor-made consulting projects</strong> and various training courses. Our experienced consultants will be happy to think along with you about your HRM issues.</p>
+      <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">In addition to our online assessments and HRM solutions, you can contact us for <strong>training</strong> and assessor-led <strong>live assessments</strong>. Our experienced consultants are happy to think along with your HRM issues.</p>
     </div>
   </section>
 
   <section>
     <div class="wrap">
-      <p style="color:var(--text);font-size:17px;max-width:820px;margin-bottom:14px">In addition to our <a href="/en/online-assessments/">online assessments</a> and <a href="/en/hrm-oplossingen/">HRM solutions</a>, you can also contact us for tailor-made consulting projects and various training courses. Our experienced consultants will be happy to think along with you about your HRM issues and can help implement and optimize the HR processes within your organization.</p>
-
+      <p style="color:var(--text);font-size:17px;max-width:820px;margin-bottom:14px">In addition to our <a href="/en/online-assessments/">online assessments</a> and <a href="/en/hrm-oplossingen/">HRM solutions</a>, you can contact us for tailor-made consulting projects and various training courses.</p>
       <div class="adv">
         {items.map((it) => (
           <div class="adv-block">
             <h2>{it.h}</h2>
             <p>{it.p}</p>
+            {it.href && <a class="btn btn-primary" href={it.href}>{it.cta}</a>}
           </div>
         ))}
       </div>
     </div>
   </section>
+
+  <LogoSlider heading="Organisations that went before you" />
 </Base>
 
 <style>
   .adv { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 28px; }
   .adv-block { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow); display: flex; flex-direction: column; }
   .adv-block h2 { color: var(--navy); font-size: 22px; font-weight: 800; margin-bottom: 12px; }
-  .adv-block p { color: var(--muted); font-size: 16px; margin-bottom: 0; flex: 1; }
+  .adv-block p { color: var(--muted); font-size: 16px; margin-bottom: 20px; flex: 1; }
+  .adv-block .btn { align-self: flex-start; }
   section p a { color: var(--blue); font-weight: 600; }
   @media (max-width: 880px) { .adv { grid-template-columns: 1fr; } }
 </style>

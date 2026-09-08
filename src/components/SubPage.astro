@@ -1,5 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
+import LogoSlider from "./LogoSlider.astro";
 import { routes } from "../i18n/ui.js";
 import { getLangFromUrl, localizePath } from "../i18n/utils.js";
 
@@ -57,11 +58,13 @@ const assessHref = localizePath(routes.assessments, lang);
       <div class="wrap">
         {page.intro?.map((p) => <p style="color:var(--text);font-size:17px;max-width:820px;margin-bottom:14px">{p}</p>)}
         <div class="cards" style="margin-top:34px">
-          {page.cards?.map((c) => (<div class="card"><h3>{c.h}</h3><p>{c.p}</p></div>))}
+          {page.cards?.map((c) => (<div class="card"><h3>{c.h}</h3><p>{c.p}</p>{c.href && <a class="btn btn-primary" href={c.href} style="align-self:flex-start;margin-top:6px">{c.cta || cta.secondary}</a>}</div>))}
         </div>
       </div>
     </section>
   )}
+
+  {page.slider && <LogoSlider heading={page.slider} />}
 
   <section class="cta">
     <div class="wrap">
