@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import { createClient } from "@sanity/client";
 import { shopInfo } from "../data/assessment-shop.js";
 import { localizePath, sanitizeBodyLinks } from "../i18n/utils.js";
+import LogoSlider from "../components/LogoSlider.astro";
 import validPaths from "../data/valid-paths.js";
 
 // Gemigreerde kenniscentrum-artikelen uit WordPress. Elk artikel-document in
@@ -14,7 +15,7 @@ export async function getStaticPaths() {
   );
   // Statische routes hebben voorrang; sluit paden uit die we nu als eigen
   // pagina bouwen (bijv. de sectoren-index) om dubbele routes te voorkomen.
-  const OWN = new Set(["sectoren", "en/sectoren", "de/sectoren", "fr/sectoren", "es/sectoren", "ro/sectoren"]);
+  const OWN = new Set(["sectoren", "en/sectoren", "de/sectoren", "fr/sectoren", "es/sectoren", "ro/sectoren", "sectoren/onderwijs"]);
   return arts
     .filter((a) => a.path && a.path.includes("/"))
     .map((a) => ({ p: a.path.replace(/^\/+|\/+$/g, ""), a }))
@@ -141,6 +142,8 @@ const body = sanitizeBodyLinks(article.body || "", lang, validPaths);
 // Partners-pagina: extra doorlink naar de integraties (alleen echte koppelingen).
 const _pathClean = (article.path || "").replace(/^\/+|\/+$/g, "");
 const isPartners = _pathClean === "partners" || _pathClean.endsWith("/partners");
+const _sliderH = { nl: "Organisaties die u voorgingen", en: "Organisations that went before you", de: "Organisationen, die vor Ihnen kamen", fr: "Les organisations qui vous ont précédé", es: "Organizaciones que te precedieron", ro: "Organizații care te-au precedat" };
+const showAdviesSlider = /^(en\/|de\/|fr\/|es\/|ro\/)?advies\//.test(_pathClean + "/") || _pathClean.indexOf("advies/") > -1;
 const integHref = localizePath("/integraties/", lang);
 const INTEG = {
   nl: { title: "Koppel hrmforce aan je systemen", text: "hrmforce integreert met je ATS, HR- en salarissystemen zoals AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix en OTYS.", btn: "Bekijk de integraties" },
@@ -200,6 +203,7 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
       </div>
     </div>
   </article>
+  {showAdviesSlider && <LogoSlider heading={_sliderH[lang] || _sliderH.nl} />}
 </Base>
 
 <style>

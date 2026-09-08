@@ -109,13 +109,6 @@ t.categories.forEach((c, i) => {
       count.textContent = n;
       none.hidden = n > 0;
     }
-    items.forEach((it) => {
-      const btn = it.querySelector(".faq-q");
-      btn.addEventListener("click", () => {
-        const open = it.classList.toggle("open");
-        btn.setAttribute("aria-expanded", open ? "true" : "false");
-      });
-    });
     tags.forEach((tg) => tg.addEventListener("click", () => {
       active = tg.dataset.tag;
       tags.forEach((x) => x.classList.toggle("is-active", x === tg));

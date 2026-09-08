@@ -15,6 +15,7 @@ const PREP_UI = {
 const prep = PREP_UI[lang] || PREP_UI.nl;
 const prepTests = oefentests.map((o) => ({ slug: o.slug, name: (o.i18n[lang] || o.i18n.nl).name })).sort((a, b) => a.name.localeCompare(b.name));
 const oefenBase = lang === "nl" ? "/oefenen/" : localizePath("/oefenen/", lang);
+const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voor deze zoekterm."}, en:{ph:"Search the preparation...", none:"Nothing found for this term."}, de:{ph:"In der Vorbereitung suchen...", none:"Nichts zu diesem Begriff gefunden."}, fr:{ph:"Rechercher dans la préparation...", none:"Rien trouvé pour ce terme."}, es:{ph:"Buscar en la preparación...", none:"No se encontró nada para este término."}, ro:{ph:"Caută în pregătire...", none:"Nimic găsit pentru acest termen."} }[lang] || {ph:"Zoek...", none:"Niets gevonden."};
 ---
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
 <section class="ahero"><div class="wrap" style="display:block">
@@ -22,7 +23,11 @@ const oefenBase = lang === "nl" ? "/oefenen/" : localizePath("/oefenen/", lang);
   <h1>{t.hero.title}</h1>
 </div></section>
 
-<section><div class="wrap"><div class="kc-body" set:html={sanitizeBodyLinks(t.body, lang, validPaths)}></div></div></section>
+<section><div class="wrap" style="display:block">
+  <input type="search" id="prepBodySearch" class="prep-search" placeholder={BODYUI.ph} aria-label={BODYUI.ph} />
+  <div class="kc-body" id="prepBody" set:html={sanitizeBodyLinks(t.body, lang, validPaths)}></div>
+  <p class="prep-none" id="prepBodyNone" hidden>{BODYUI.none}</p>
+</div></section>
 
 <section class="bg-soft"><div class="wrap" style="display:block">
   <div class="eyebrow" style="color:var(--gold)">{prep.title}</div>
@@ -87,6 +92,27 @@ const oefenBase = lang === "nl" ? "/oefenen/" : localizePath("/oefenen/", lang);
       let n = 0;
       cards.forEach((c) => { const ok = !q || (c.dataset.name || "").includes(q); c.style.display = ok ? "" : "none"; if (ok) n++; });
       none.hidden = n > 0;
+    });
+  })();
+</script>
+
+<script>
+  (function () {
+    var body = document.getElementById("prepBody");
+    var inp = document.getElementById("prepBodySearch");
+    var none = document.getElementById("prepBodyNone");
+    if (!body || !inp) return;
+    var blocks = Array.from(body.querySelectorAll("p, li, h2, h3, h4"));
+    inp.addEventListener("input", function () {
+      var q = (inp.value || "").trim().toLowerCase();
+      if (!q) { blocks.forEach(function (b) { b.style.display = ""; }); none.hidden = true; return; }
+      var any = 0;
+      blocks.forEach(function (b) {
+        var ok = (b.textContent || "").toLowerCase().indexOf(q) > -1;
+        b.style.display = ok ? "" : "none";
+        if (ok) any++;
+      });
+      none.hidden = any > 0;
     });
   })();
 </script>

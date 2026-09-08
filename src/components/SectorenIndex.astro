@@ -5,6 +5,7 @@ import { sectorsFor } from "../data/sectoren-content.js";
 
 const lang = getLangFromUrl(Astro.url);
 const { ui, sectors } = sectorsFor(lang);
+const _exLabel = { nl: "Voorbeeld", en: "Example", de: "Beispiel", fr: "Exemple", es: "Ejemplo", ro: "Exemplu" }[lang] || "Voorbeeld";
 const contactHref = localizePath("/contact/", lang);
 const assessHref = localizePath("/assessment-overzicht/", lang);
 const landHref = (slug) => localizePath(`/toepassingen/${slug}/`, lang);
@@ -31,6 +32,7 @@ const landHref = (slug) => localizePath(`/toepassingen/${slug}/`, lang);
       <article class="sec-card" data-key={s.key} data-search={(s.label + " " + s.blurb).toLowerCase()}>
         <h2 class="sec-name">{s.label}</h2>
         <p class="sec-blurb">{s.blurb}</p>
+        {s.casus && <p class="sec-casus"><span>{_exLabel}</span> {s.casus}</p>}
         {s.landing
           ? <a class="sec-link" href={landHref(s.landing)}>{ui.view} &rarr;</a>
           : <a class="sec-link" href={contactHref}>{ui.ask} &rarr;</a>}
@@ -64,6 +66,8 @@ const landHref = (slug) => localizePath(`/toepassingen/${slug}/`, lang);
   .sec-card{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:14px;padding:22px 24px;box-shadow:var(--shadow-xs);display:flex;flex-direction:column}
   .sec-name{color:var(--navy);font-size:1.15rem;margin:0 0 8px}
   .sec-blurb{color:var(--muted);font-size:14.5px;line-height:1.55;margin:0 0 14px;flex:1}
+  .sec-casus{background:var(--bg-soft,#f6f9fc);border-radius:10px;padding:10px 12px;color:var(--navy);font-size:13px;line-height:1.5;margin:0 0 14px}
+  .sec-casus span{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--blue);margin-right:6px}
   .sec-link{color:var(--navy);font-weight:700;font-size:14px;text-decoration:none}
   .sec-link:hover{color:var(--blue)}
   .sec-none{color:var(--muted);font-size:16px;text-align:center;padding:40px 0}

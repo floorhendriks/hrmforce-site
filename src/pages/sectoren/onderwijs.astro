@@ -1,0 +1,12 @@
+---
+import Base from "../../layouts/Base.astro";
+import Toepassing from "../../components/Toepassing.astro";
+import { landings } from "../../data/landings.js";
+// Vaste deep-link /sectoren/onderwijs/ (o.a. voor hrmforceonderwijs.nl),
+// hergebruikt de bestaande onderwijs-sectorlanding.
+const l = landings.find((x) => x.slug === "onderwijs");
+const t = l.i18n.nl;
+---
+<Base title={t.metaTitle} description={t.metaDescription} active="solutions">
+  <Toepassing l={l} lang="nl" />
+</Base>
