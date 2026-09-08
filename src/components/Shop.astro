@@ -714,8 +714,9 @@ const FAQ_DEFAULT = generalFaq(lang);
         };
       });
       // Vaste bovenste rij: Big Fifty, Ability Scan, Motivation, 360 feedback (rest houdt titelvolgorde).
-      var PIN = [["big fifty", "big five", "big50"], ["ability scan", "cognitiev", "cognitieve", "capaciteit"], ["motivation", "drijfver"], ["360"]];
-      function pinRank(title) { var t = (title || "").toLowerCase(); for (var i = 0; i < PIN.length; i++) { for (var j = 0; j < PIN[i].length; j++) { if (t.indexOf(PIN[i][j]) > -1) return i; } } return 99; }
+      // Vaste bovenste rij: exact de 4 hrmforce-vlaggenschepen (Reflector/Talogy/MQ-varianten blijven op titelvolgorde).
+      var PIN_EXACT = ["big 5 test | big fifty personality", "ability scan", "motivation", "360 graden feedback"];
+      function pinRank(title) { var t = (title || "").toLowerCase().trim(); var i = PIN_EXACT.indexOf(t); return i > -1 ? i : 99; }
       products.forEach(function (p, i) { p._pin = pinRank(p.title); p._ord = i; });
       products.sort(function (a, b) { return a._pin !== b._pin ? a._pin - b._pin : a._ord - b._ord; });
       fillSelect(fCyclus, Object.keys(cycSet));

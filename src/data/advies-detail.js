@@ -123,4 +123,88 @@ export const adviesDetail = [
     ],
     cta: "Plan een kennismaking",
   },
+  {
+    slug: "selectie-assessment",
+    title: "Selectie-assessment",
+    metaTitle: "Selectie-assessment | Onderbouwde selectiebeslissingen | Hrmforce",
+    metaDescription: "Een selectie-assessment onderbouwt je aannamebeslissing objectief en verhoogt de kans op een productieve, passende medewerker.",
+    intro: [
+      "Het aannemen van de juiste persoon is mensenwerk en gaat soms mis, met hoge kosten tot gevolg. Een selectie-assessment geeft objectief inzicht in geschiktheid, potentieel en risico's.",
+      "Onze assessoren combineren capaciteitentests, persoonlijkheids- en drijfverenvragenlijsten met een gesprek, en koppelen de uitkomsten persoonlijk terug.",
+    ],
+    body: [
+      "Je bepaalt vooraf samen met ons het functieprofiel en de competenties die er echt toe doen. Op basis daarvan stellen we het assessment samen, zodat je alleen meet wat relevant is.",
+      "Je ontvangt een helder advies over de match met de functie, met concrete aandachtspunten voor het vervolggesprek en de inwerkperiode.",
+    ],
+    bullets: [
+      "Objectieve onderbouwing van je aannamebeslissing",
+      "Inzicht in geschiktheid, potentieel en ontwikkelpunten",
+      "Praktische aandachtspunten voor gesprek en inwerken",
+      "Persoonlijke terugkoppeling door een assessor",
+    ],
+    cta: "Plan een selectie-assessment",
+  },
+  {
+    slug: "ontwikkel-assessment",
+    title: "Ontwikkel-assessment / potentieelbeoordeling",
+    metaTitle: "Ontwikkel-assessment | Potentieel en ontwikkelrichting | Hrmforce",
+    metaDescription: "Een ontwikkel-assessment brengt potentieel en ontwikkelrichting in kaart, als basis voor gerichte groei en loopbaanstappen.",
+    intro: [
+      "Wil je weten waar iemand het beste tot zijn recht komt en welke groei mogelijk is? Een ontwikkel-assessment, ook wel potentieelbeoordeling, maakt talenten en ontwikkelpunten zichtbaar.",
+      "De uitkomsten vormen de basis voor een concreet ontwikkelplan en geven richting aan loopbaanstappen.",
+    ],
+    body: [
+      "De ontwikkelmatrix combineert talent met huidig gedrag. Talent meten we met gevalideerde vragenlijsten: Big Fifty Personality (persoonlijkheid), Motivation (drijfveren) en een intelligentiemeting (Ability Analysis of een variant). Gedrag meten we met feedbackvragenlijsten: 360 feedback, Appraisal (90 graden) of de Competency Check.",
+      "Talent (horizontale as) en gedrag (verticale as) leiden samen tot vier kwadranten: talent laag en gedrag laag (mogelijke zwakte), talent laag en gedrag hoog (afwisselen met ander gedrag), talent hoog en gedrag laag (makkelijk te ontwikkelen) en talent hoog en gedrag hoog (mogelijke sterkte). Op basis van de ontwikkeltips start je direct met een digitaal ontwikkelplan.",
+    ],
+    bullets: [
+      "Talent via Big Fifty Personality, Motivation en een intelligentiemeting",
+      "Gedrag via 360 feedback, Appraisal of de Competency Check",
+      "Overzichtelijke ontwikkelmatrix met vier kwadranten",
+      "Concrete ontwikkeltips en een digitaal ontwikkelplan",
+    ],
+    cta: "Plan een ontwikkel-assessment",
+  },
+  {
+    slug: "executive-assessment",
+    title: "Executive assessment",
+    metaTitle: "Executive assessment | Voor management- en directiefuncties | Hrmforce",
+    metaDescription: "Een diepgaand executive assessment op maat voor management- en directiefuncties, met vertrouwelijke persoonlijke terugkoppeling.",
+    intro: [
+      "Bij benoemingen op management- en directieniveau is de impact groot en de foutmarge klein. Een executive assessment geeft diepgaand, onafhankelijk inzicht in leiderschap, drijfveren en strategisch vermogen.",
+      "We stellen het traject op maat samen en koppelen de bevindingen persoonlijk en vertrouwelijk terug.",
+    ],
+    body: [
+      "Het traject is bedoeld voor hoger management, bestuurs- en directiefuncties. Desgewenst starten we met een face-to-face intake voor een maatwerkprogramma, begeleid door een senior consultant.",
+      "Mogelijke onderdelen zijn een interview, tests voor intelligentie en persoonlijkheid, assessment-simulaties en 360 graden feedback. Je ontvangt een terugkoppeling aan de kandidaat en een schriftelijke rapportage met concrete ontwikkeltips, plus een terugkoppeling bij de opdrachtgever, desgewenst in een driegesprek.",
+    ],
+    bullets: [
+      "Voor hoger management, bestuur en directie",
+      "Interview, intelligentie- en persoonlijkheidstests, simulaties en 360 feedback",
+      "Face-to-face intake en maatwerkprogramma met senior consultant",
+      "Schriftelijke rapportage met ontwikkeltips en terugkoppeling bij de opdrachtgever",
+    ],
+    cta: "Bespreek een executive assessment",
+  },
+  {
+    slug: "teamanalyse",
+    title: "Teamanalyse / groepsassessment",
+    metaTitle: "Teamanalyse | Talenten en samenwerking in je team | Hrmforce",
+    metaDescription: "Een teamanalyse maakt talenten, teamrollen en ontwikkelpunten van een team zichtbaar en versterkt de samenwerking.",
+    intro: [
+      "Sterke teams ontstaan niet vanzelf. Een teamanalyse, ook wel groepsassessment, maakt zichtbaar welke talenten en rollen aanwezig zijn en waar de samenwerking beter kan.",
+      "De uitkomsten bespreken we in een teamsessie, met concrete afspraken voor betere samenwerking.",
+    ],
+    body: [
+      "We combineren individuele profielen met een teamanalyse en 360 feedback, zodat je zicht krijgt op rolverdeling, drijfveren en onderlinge dynamiek.",
+      "Zo werk je gericht aan vertrouwen, duidelijke rollen en resultaat.",
+    ],
+    bullets: [
+      "Zicht op talenten en teamrollen",
+      "Inzicht in samenwerking en onderlinge dynamiek",
+      "Een concreet teamontwikkelplan",
+      "Een begeleide teamsessie",
+    ],
+    cta: "Plan een teamanalyse",
+  },
 ];

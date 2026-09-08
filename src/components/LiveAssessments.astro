@@ -36,7 +36,7 @@ const testkiezerHref = localizePath("/testkiezer/", lang);
     <p class="lead" style="margin-bottom:24px">{ui.secLead}</p>
     <div class="la-grid">
       {options.map((o) => (
-        <a class="la-card" href={localizePath(o.href, lang)}>
+        <a class="la-card" href={o.nlOnly ? o.href : localizePath(o.href, lang)}>
           <h3>{o.title}</h3>
           <p>{o.desc}</p>
           <span class="la-more">{ui.more} &rarr;</span>
