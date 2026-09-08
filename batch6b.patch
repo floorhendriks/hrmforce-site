@@ -1,0 +1,289 @@
+From 981b734195e42e56d75d467fbbbb2311e1906341 Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Tue, 8 Sep 2026 19:33:51 +0200
+Subject: [PATCH] Batch 6b (6 talen): echte Sectoren-index met 18 sectoren
+ (kopje per sector, top-selector met chips + zoeken), doorlinks naar
+ sectorlandingspagina's of contact, klantenslider; catch-all sluit /sectoren
+ uit om routebotsing te vermijden
+
+---
+ src/components/SectorenIndex.astro | 98 ++++++++++++++++++++++++++++++
+ src/data/sectoren-content.js       | 38 ++++++++++++
+ src/pages/[...path].astro          |  7 ++-
+ src/pages/de/sectoren/index.astro  |  9 +++
+ src/pages/en/sectoren/index.astro  |  9 +++
+ src/pages/es/sectoren/index.astro  |  9 +++
+ src/pages/fr/sectoren/index.astro  |  9 +++
+ src/pages/ro/sectoren/index.astro  |  9 +++
+ src/pages/sectoren/index.astro     |  9 +++
+ 9 files changed, 196 insertions(+), 1 deletion(-)
+ create mode 100644 src/components/SectorenIndex.astro
+ create mode 100644 src/data/sectoren-content.js
+ create mode 100644 src/pages/de/sectoren/index.astro
+ create mode 100644 src/pages/en/sectoren/index.astro
+ create mode 100644 src/pages/es/sectoren/index.astro
+ create mode 100644 src/pages/fr/sectoren/index.astro
+ create mode 100644 src/pages/ro/sectoren/index.astro
+ create mode 100644 src/pages/sectoren/index.astro
+
+diff --git a/src/components/SectorenIndex.astro b/src/components/SectorenIndex.astro
+new file mode 100644
+index 0000000..53b82f2
+--- /dev/null
++++ b/src/components/SectorenIndex.astro
+@@ -0,0 +1,98 @@
++---
++import LogoSlider from "./LogoSlider.astro";
++import { getLangFromUrl, localizePath } from "../i18n/utils.js";
++import { sectorsFor } from "../data/sectoren-content.js";
++
++const lang = getLangFromUrl(Astro.url);
++const { ui, sectors } = sectorsFor(lang);
++const contactHref = localizePath("/contact/", lang);
++const assessHref = localizePath("/assessment-overzicht/", lang);
++const landHref = (slug) => localizePath(`/toepassingen/${slug}/`, lang);
++---
++<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{ui.eyebrow}</span></div></div>
++
++<section class="ahero"><div class="wrap" style="display:block">
++  <div class="eyebrow" style="color:var(--gold)">{ui.eyebrow}</div>
++  <h1>{ui.title}</h1>
++  <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:780px;margin-top:12px">{ui.intro}</p>
++</div></section>
++
++<section><div class="wrap" style="display:block">
++  <div class="sec-bar">
++    <input type="search" id="secSearch" class="sec-search" placeholder={ui.search} aria-label={ui.search} />
++    <div class="sec-chips" id="secChips">
++      <button type="button" class="sec-chip is-active" data-key="">{ui.all}</button>
++      {sectors.map((s) => <button type="button" class="sec-chip" data-key={s.key}>{s.label}</button>)}
++    </div>
++  </div>
++
++  <div class="sec-grid" id="secGrid">
++    {sectors.map((s) => (
++      <article class="sec-card" data-key={s.key} data-search={(s.label + " " + s.blurb).toLowerCase()}>
++        <h2 class="sec-name">{s.label}</h2>
++        <p class="sec-blurb">{s.blurb}</p>
++        {s.landing
++          ? <a class="sec-link" href={landHref(s.landing)}>{ui.view} &rarr;</a>
++          : <a class="sec-link" href={contactHref}>{ui.ask} &rarr;</a>}
++      </article>
++    ))}
++  </div>
++  <p class="sec-none" id="secNone" hidden>{ui.none}</p>
++</div></section>
++
++<LogoSlider heading="Organisaties die u voorgingen" />
++
++<section class="cta"><div class="wrap" style="padding:56px 0;text-align:center">
++  <h2 style="color:#fff">{ui.cta.title}</h2>
++  <p style="color:rgba(255,255,255,.9);max-width:640px;margin:12px auto 0">{ui.cta.text}</p>
++  <div class="btns" style="justify-content:center;margin-top:20px">
++    <a href={contactHref} class="btn btn-light">{ui.cta.primary}</a>
++    <a href={assessHref} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">{ui.cta.secondary}</a>
++  </div>
++</div></section>
++
++<style>
++  .sec-bar{margin-bottom:26px}
++  .sec-search{width:100%;max-width:420px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:15px;margin-bottom:14px}
++  .sec-chips{display:flex;flex-wrap:wrap;gap:8px}
++  .sec-chip{border:1px solid var(--line);background:#fff;color:var(--navy);font:inherit;font-size:13.5px;font-weight:700;padding:7px 14px;border-radius:999px;cursor:pointer;transition:.15s}
++  .sec-chip:hover{border-color:var(--navy)}
++  .sec-chip.is-active{background:var(--navy);color:#fff;border-color:var(--navy)}
++  .sec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
++  @media(max-width:980px){.sec-grid{grid-template-columns:1fr 1fr}}
++  @media(max-width:640px){.sec-grid{grid-template-columns:1fr}}
++  .sec-card{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:14px;padding:22px 24px;box-shadow:var(--shadow-xs);display:flex;flex-direction:column}
++  .sec-name{color:var(--navy);font-size:1.15rem;margin:0 0 8px}
++  .sec-blurb{color:var(--muted);font-size:14.5px;line-height:1.55;margin:0 0 14px;flex:1}
++  .sec-link{color:var(--navy);font-weight:700;font-size:14px;text-decoration:none}
++  .sec-link:hover{color:var(--blue)}
++  .sec-none{color:var(--muted);font-size:16px;text-align:center;padding:40px 0}
++</style>
++
++<script>
++  (function () {
++    const grid = document.getElementById("secGrid");
++    if (!grid) return;
++    const cards = Array.from(grid.querySelectorAll(".sec-card"));
++    const chips = Array.from(document.querySelectorAll(".sec-chip"));
++    const search = document.getElementById("secSearch");
++    const none = document.getElementById("secNone");
++    let active = "";
++    function apply() {
++      const q = (search.value || "").trim().toLowerCase();
++      let n = 0;
++      cards.forEach((c) => {
++        const ok = (!active || c.dataset.key === active) && (!q || (c.dataset.search || "").includes(q));
++        c.style.display = ok ? "" : "none";
++        if (ok) n++;
++      });
++      none.hidden = n > 0;
++    }
++    chips.forEach((ch) => ch.addEventListener("click", () => {
++      active = ch.dataset.key;
++      chips.forEach((x) => x.classList.toggle("is-active", x === ch));
++      apply();
++    }));
++    search.addEventListener("input", apply);
++  })();
++</script>
+diff --git a/src/data/sectoren-content.js b/src/data/sectoren-content.js
+new file mode 100644
+index 0000000..fbf9b0c
+--- /dev/null
++++ b/src/data/sectoren-content.js
+@@ -0,0 +1,38 @@
++// Sectoren-index: UI + sectoren met korte toelichting (6 talen).
++
++export const SEC_UI = {
++  nl: { meta: { title: "Sectoren | Assessments per sector | hrmforce", description: "Ontdek hoe hrmforce-assessments per sector werken: van zorg en onderwijs tot industrie, ICT, retail en meer. Selecteer je sector bovenin." }, eyebrow: "Sectoren", title: "Assessments toegespitst op jouw sector", intro: "Selecteer bovenin je sector. Per sector laten we zien hoe onderbouwde assessments helpen bij selectie, ontwikkeling en behoud, met normgroepen en een aanpak die past bij de praktijk.", select: "Selecteer je sector", all: "Alle sectoren", search: "Zoek een sector...", none: "Geen sector gevonden.", view: "Bekijk sector", ask: "Bespreek jouw sector", cta: { title: "Jouw sector niet gevonden of vragen?", text: "We werken in vrijwel elke sector. Bespreek met een specialist welke aanpak en normgroepen bij jouw organisatie passen.", primary: "Plan een demo", secondary: "Bekijk de assessments" } },
++  en: { meta: { title: "Sectors | Assessments by sector | hrmforce", description: "Discover how hrmforce assessments work per sector: from healthcare and education to manufacturing, IT, retail and more. Select your sector at the top." }, eyebrow: "Sectors", title: "Assessments tailored to your sector", intro: "Select your sector at the top. Per sector we show how evidence-based assessments help with selection, development and retention, with norm groups and an approach that fits practice.", select: "Select your sector", all: "All sectors", search: "Search a sector...", none: "No sector found.", view: "View sector", ask: "Discuss your sector", cta: { title: "Sector not listed or questions?", text: "We work in almost every sector. Discuss with a specialist which approach and norm groups fit your organisation.", primary: "Book a demo", secondary: "View the assessments" } },
++  de: { meta: { title: "Branchen | Assessments je Branche | hrmforce", description: "Entdecken Sie, wie hrmforce-Assessments je Branche funktionieren: von Gesundheit und Bildung bis Industrie, IT, Handel und mehr. Wählen Sie oben Ihre Branche." }, eyebrow: "Branchen", title: "Assessments zugeschnitten auf Ihre Branche", intro: "Wählen Sie oben Ihre Branche. Je Branche zeigen wir, wie fundierte Assessments bei Auswahl, Entwicklung und Bindung helfen, mit Normgruppen und einem praxisgerechten Ansatz.", select: "Branche wählen", all: "Alle Branchen", search: "Branche suchen...", none: "Keine Branche gefunden.", view: "Branche ansehen", ask: "Ihre Branche besprechen", cta: { title: "Branche nicht dabei oder Fragen?", text: "Wir arbeiten in fast jeder Branche. Besprechen Sie mit einem Spezialisten, welcher Ansatz und welche Normgruppen zu Ihrer Organisation passen.", primary: "Demo planen", secondary: "Assessments ansehen" } },
++  fr: { meta: { title: "Secteurs | Évaluations par secteur | hrmforce", description: "Découvrez comment les évaluations hrmforce fonctionnent par secteur : de la santé et l'éducation à l'industrie, l'IT, le commerce et plus. Sélectionnez votre secteur en haut." }, eyebrow: "Secteurs", title: "Des évaluations adaptées à votre secteur", intro: "Sélectionnez votre secteur en haut. Par secteur, nous montrons comment des évaluations fondées aident à la sélection, au développement et à la fidélisation, avec des groupes de référence et une approche adaptée au terrain.", select: "Sélectionnez votre secteur", all: "Tous les secteurs", search: "Rechercher un secteur...", none: "Aucun secteur trouvé.", view: "Voir le secteur", ask: "Parler de votre secteur", cta: { title: "Secteur absent ou des questions ?", text: "Nous travaillons dans presque tous les secteurs. Discutez avec un spécialiste de l'approche et des groupes de référence adaptés.", primary: "Planifier une démo", secondary: "Voir les évaluations" } },
++  es: { meta: { title: "Sectores | Evaluaciones por sector | hrmforce", description: "Descubre cómo funcionan las evaluaciones de hrmforce por sector: de sanidad y educación a industria, TI, retail y más. Selecciona tu sector arriba." }, eyebrow: "Sectores", title: "Evaluaciones adaptadas a tu sector", intro: "Selecciona tu sector arriba. Por sector mostramos cómo las evaluaciones basadas en evidencia ayudan en selección, desarrollo y retención, con grupos normativos y un enfoque práctico.", select: "Selecciona tu sector", all: "Todos los sectores", search: "Busca un sector...", none: "No se encontró el sector.", view: "Ver sector", ask: "Habla de tu sector", cta: { title: "¿No está tu sector o tienes dudas?", text: "Trabajamos en casi todos los sectores. Habla con un especialista sobre el enfoque y los grupos normativos que encajan.", primary: "Reservar una demo", secondary: "Ver las evaluaciones" } },
++  ro: { meta: { title: "Sectoare | Evaluări pe sector | hrmforce", description: "Descoperă cum funcționează evaluările hrmforce pe sector: de la sănătate și educație la industrie, IT, retail și altele. Selectează sectorul sus." }, eyebrow: "Sectoare", title: "Evaluări adaptate sectorului tău", intro: "Selectează sectorul tău sus. Pe sector arătăm cum ajută evaluările bazate pe dovezi la selecție, dezvoltare și retenție, cu grupuri normative și o abordare practică.", select: "Selectează sectorul", all: "Toate sectoarele", search: "Caută un sector...", none: "Niciun sector găsit.", view: "Vezi sectorul", ask: "Discută sectorul tău", cta: { title: "Sectorul lipsește sau ai întrebări?", text: "Lucrăm în aproape orice sector. Discută cu un specialist ce abordare și grupuri normative se potrivesc.", primary: "Programează un demo", secondary: "Vezi evaluările" } },
++};
++
++export const SECTORS = [
++  { key: "zorg", landing: "zorg", label: { nl: "Zorg", en: "Healthcare", de: "Gesundheitswesen", fr: "Santé", es: "Sanidad", ro: "Sănătate" }, blurb: { nl: "Werf en behoud zorgprofessionals met matching op houding, motivatie en veerkracht.", en: "Recruit and retain care professionals by matching on attitude, motivation and resilience.", de: "Pflegekräfte gewinnen und binden durch Matching von Haltung, Motivation und Resilienz.", fr: "Recrutez et fidélisez les soignants via l'adéquation attitude, motivation et résilience.", es: "Capta y retén a profesionales sanitarios con matching de actitud, motivación y resiliencia.", ro: "Recrutează și reține profesioniști din sănătate prin potrivirea atitudinii, motivației și rezilienței." } },
++  { key: "onderwijs", landing: "onderwijs", label: { nl: "Onderwijs", en: "Education", de: "Bildung", fr: "Éducation", es: "Educación", ro: "Educație" }, blurb: { nl: "Ondersteun docenten en staf met ontwikkelgesprekken en competentieprofielen per rol.", en: "Support teachers and staff with development talks and competency profiles per role.", de: "Unterstützen Sie Lehrkräfte mit Entwicklungsgesprächen und Kompetenzprofilen je Rolle.", fr: "Accompagnez enseignants et personnel avec entretiens et profils de compétences par poste.", es: "Apoya a docentes y personal con conversaciones de desarrollo y perfiles por puesto.", ro: "Sprijină profesorii cu discuții de dezvoltare și profiluri de competențe per rol." } },
++  { key: "industrie", landing: "industrie", label: { nl: "Industrie", en: "Manufacturing", de: "Industrie", fr: "Industrie", es: "Industria", ro: "Industrie" }, blurb: { nl: "Screen grote wervingsvolumes objectief met capaciteiten- en preselectietests.", en: "Screen high recruitment volumes objectively with ability and pre-selection tests.", de: "Große Einstellungsvolumina objektiv mit Leistungs- und Vorauswahltests screenen.", fr: "Triez de gros volumes objectivement avec tests d'aptitude et de présélection.", es: "Criba grandes volúmenes objetivamente con tests de aptitud y preselección.", ro: "Triază volume mari obiectiv cu teste de aptitudine și preselecție." } },
++  { key: "overheid", landing: null, label: { nl: "Overheid", en: "Government", de: "Öffentlicher Sektor", fr: "Secteur public", es: "Sector público", ro: "Sector public" }, blurb: { nl: "Breng structuur in de gesprekscyclus en onderbouw beoordelingen objectief.", en: "Bring structure to the review cycle and substantiate appraisals objectively.", de: "Struktur in den Gesprächszyklus bringen und Beurteilungen objektiv untermauern.", fr: "Structurez le cycle d'entretiens et objectivez les évaluations.", es: "Aporta estructura al ciclo de evaluación y fundamenta las valoraciones.", ro: "Structurează ciclul de evaluare și fundamentează evaluările obiectiv." } },
++  { key: "zakelijk", landing: null, label: { nl: "Zakelijke dienstverlening", en: "Professional services", de: "Unternehmensdienstleistungen", fr: "Services professionnels", es: "Servicios profesionales", ro: "Servicii profesionale" }, blurb: { nl: "Selecteer op potentieel en teamfit en ontwikkel talent gericht door.", en: "Select on potential and team fit and develop talent in a targeted way.", de: "Nach Potenzial und Teamfit auswählen und Talente gezielt entwickeln.", fr: "Sélectionnez sur le potentiel et l'adéquation, et développez les talents.", es: "Selecciona por potencial y encaje, y desarrolla el talento con foco.", ro: "Selectează după potențial și potrivire și dezvoltă talentul țintit." } },
++  { key: "retail", landing: null, label: { nl: "Retail / e-commerce", en: "Retail / e-commerce", de: "Einzelhandel / E-Commerce", fr: "Commerce / e-commerce", es: "Retail / e-commerce", ro: "Retail / e-commerce" }, blurb: { nl: "Match op klantgerichtheid en verlaag verloop met inzetbaarheidsscans.", en: "Match on customer focus and reduce turnover with employability scans.", de: "Auf Kundenorientierung matchen und Fluktuation mit Einsetzbarkeitsscans senken.", fr: "Adéquation orientation client et baisse du turnover via scans d'employabilité.", es: "Empareja por orientación al cliente y reduce rotación con escaneos de empleabilidad.", ro: "Potrivire pe orientarea către client și reducerea fluctuației cu scanări de angajabilitate." } },
++  { key: "ict", landing: null, label: { nl: "ICT / Technologie", en: "IT / Technology", de: "IT / Technologie", fr: "IT / Technologie", es: "TI / Tecnología", ro: "IT / Tehnologie" }, blurb: { nl: "Toets potentieel en teamfit vooraf en ontwikkel leiderschap schaalbaar.", en: "Assess potential and team fit up front and develop leadership at scale.", de: "Potenzial und Teamfit vorab prüfen und Führung skalierbar entwickeln.", fr: "Évaluez potentiel et adéquation en amont et développez le leadership à grande échelle.", es: "Evalúa potencial y encaje antes y desarrolla liderazgo a escala.", ro: "Evaluează potențialul și potrivirea din start și dezvoltă leadershipul scalabil." } },
++  { key: "bouw", landing: null, label: { nl: "Bouw", en: "Construction", de: "Bauwesen", fr: "Construction", es: "Construcción", ro: "Construcții" }, blurb: { nl: "Vul uitvoerende vacatures sneller met een korte, objectieve preselectie.", en: "Fill field vacancies faster with a short, objective pre-selection.", de: "Ausführende Stellen schneller mit kurzer, objektiver Vorauswahl besetzen.", fr: "Pourvoyez plus vite les postes de terrain avec une présélection courte et objective.", es: "Cubre vacantes de campo más rápido con una preselección breve y objetiva.", ro: "Ocupă mai rapid posturile de teren cu o preselecție scurtă și obiectivă." } },
++  { key: "logistiek", landing: null, label: { nl: "Logistiek", en: "Logistics", de: "Logistik", fr: "Logistique", es: "Logística", ro: "Logistică" }, blurb: { nl: "Stabiliseer piekwerving met gestandaardiseerde selectieassessments.", en: "Stabilise peak recruitment with standardised selection assessments.", de: "Spitzenrekrutierung mit standardisierten Auswahl-Assessments stabilisieren.", fr: "Stabilisez le recrutement de pointe avec des évaluations standardisées.", es: "Estabiliza el reclutamiento en picos con evaluaciones estandarizadas.", ro: "Stabilizează recrutarea de vârf cu evaluări standardizate." } },
++  { key: "financieel", landing: null, label: { nl: "Financiële dienstverlening", en: "Financial services", de: "Finanzdienstleistungen", fr: "Services financiers", es: "Servicios financieros", ro: "Servicii financiare" }, blurb: { nl: "Objectiveer beoordelingen met competentiegerichte niveaus per rol.", en: "Objectify appraisals with competency-based levels per role.", de: "Beurteilungen mit kompetenzbasierten Niveaus je Rolle objektivieren.", fr: "Objectivez les évaluations avec des niveaux par compétences par poste.", es: "Objetiva las evaluaciones con niveles por competencias por puesto.", ro: "Obiectivează evaluările cu niveluri pe competențe per rol." } },
++  { key: "nonprofit", landing: null, label: { nl: "Non-profit", en: "Non-profit", de: "Non-Profit", fr: "Non lucratif", es: "Sin ánimo de lucro", ro: "Non-profit" }, blurb: { nl: "Zet beperkt ontwikkelbudget gericht in met persoonlijkheids- en drijfverentests.", en: "Use limited development budget wisely with personality and drives tests.", de: "Begrenztes Budget gezielt mit Persönlichkeits- und Antriebstests einsetzen.", fr: "Utilisez un budget limité avec des tests de personnalité et de moteurs.", es: "Usa un presupuesto limitado con tests de personalidad y motivaciones.", ro: "Folosește un buget limitat cu teste de personalitate și motivații." } },
++  { key: "horeca", landing: null, label: { nl: "Horeca / Recreatie", en: "Hospitality / Leisure", de: "Gastgewerbe / Freizeit", fr: "Hôtellerie / Loisirs", es: "Hostelería / Ocio", ro: "Ospitalitate / Agrement" }, blurb: { nl: "Werf snel voor seizoenspieken en match op houding en klantgerichtheid.", en: "Recruit fast for seasonal peaks and match on attitude and customer focus.", de: "Schnell für Saisonspitzen rekrutieren und auf Haltung und Kundenfokus matchen.", fr: "Recrutez vite pour les pics et adéquation attitude/orientation client.", es: "Recluta rápido para picos y empareja por actitud y orientación al cliente.", ro: "Recrutează rapid pentru vârfuri și potrivire pe atitudine și client." } },
++  { key: "agrofood", landing: null, label: { nl: "Agri & Food", en: "Agri & Food", de: "Agrar & Lebensmittel", fr: "Agroalimentaire", es: "Agroalimentario", ro: "Agroalimentar" }, blurb: { nl: "Houd medewerkers duurzaam inzetbaar met scans en ontwikkelpaden.", en: "Keep staff sustainably employable with scans and development paths.", de: "Mitarbeiter nachhaltig einsetzbar halten mit Scans und Entwicklungspfaden.", fr: "Maintenez l'employabilité durable avec scans et parcours de développement.", es: "Mantén la empleabilidad sostenible con escaneos y rutas de desarrollo.", ro: "Menține angajabilitatea durabilă cu scanări și trasee de dezvoltare." } },
++  { key: "energie", landing: null, label: { nl: "Energie & Utilities", en: "Energy & Utilities", de: "Energie & Versorgung", fr: "Énergie & Services publics", es: "Energía & Utilities", ro: "Energie & Utilități" }, blurb: { nl: "Bouw sterke, wendbare teams tijdens transitie met team- en 360-analyses.", en: "Build strong, agile teams during transition with team and 360 analyses.", de: "Starke, agile Teams im Wandel mit Team- und 360-Analysen aufbauen.", fr: "Construisez des équipes agiles en transition avec analyses d'équipe et 360.", es: "Construye equipos ágiles en transición con análisis de equipo y 360.", ro: "Construiește echipe agile în tranziție cu analize de echipă și 360." } },
++  { key: "uitzend", landing: null, label: { nl: "Uitzenden & Werving", en: "Staffing & Recruitment", de: "Zeitarbeit & Personalvermittlung", fr: "Intérim & Recrutement", es: "ETT & Selección", ro: "Muncă temporară & Recrutare" }, blurb: { nl: "Beoordeel grote kandidaatstromen snel en objectief via API-koppeling.", en: "Assess large candidate flows fast and objectively via API integration.", de: "Große Kandidatenströme schnell und objektiv per API bewerten.", fr: "Évaluez de grands flux vite et objectivement via intégration API.", es: "Evalúa grandes flujos rápido y objetivo vía integración API.", ro: "Evaluează fluxuri mari rapid și obiectiv prin integrare API." } },
++  { key: "transport", landing: null, label: { nl: "Transport & Mobiliteit", en: "Transport & Mobility", de: "Transport & Mobilität", fr: "Transport & Mobilité", es: "Transporte & Movilidad", ro: "Transport & Mobilitate" }, blurb: { nl: "Selecteer betrouwbaar op veiligheid, nauwkeurigheid en stressbestendigheid.", en: "Select reliably on safety, accuracy and stress resistance.", de: "Zuverlässig auf Sicherheit, Genauigkeit und Stressresistenz auswählen.", fr: "Sélectionnez sur la sécurité, la précision et la résistance au stress.", es: "Selecciona por seguridad, precisión y resistencia al estrés.", ro: "Selectează pe siguranță, precizie și rezistență la stres." } },
++  { key: "telecom", landing: null, label: { nl: "Telecom & Media", en: "Telecom & Media", de: "Telekom & Medien", fr: "Télécom & Médias", es: "Telecom & Medios", ro: "Telecom & Media" }, blurb: { nl: "Vind commercieel en klantgericht talent en ontwikkel het gericht door.", en: "Find commercial, customer-focused talent and develop it in a targeted way.", de: "Kommerzielles, kundenorientiertes Talent finden und gezielt entwickeln.", fr: "Trouvez des talents commerciaux orientés client et développez-les.", es: "Encuentra talento comercial orientado al cliente y desarróllalo.", ro: "Găsește talent comercial orientat spre client și dezvoltă-l țintit." } },
++  { key: "vastgoed", landing: null, label: { nl: "Vastgoed & Facility", en: "Real estate & Facility", de: "Immobilien & Facility", fr: "Immobilier & Facility", es: "Inmobiliario & Facility", ro: "Imobiliare & Facility" }, blurb: { nl: "Match op klantgerichtheid en betrouwbaarheid voor beheer en service.", en: "Match on customer focus and reliability for management and service.", de: "Auf Kundenorientierung und Zuverlässigkeit für Verwaltung und Service matchen.", fr: "Adéquation orientation client et fiabilité pour gestion et service.", es: "Empareja por orientación al cliente y fiabilidad para gestión y servicio.", ro: "Potrivire pe orientarea către client și fiabilitate pentru administrare și servicii." } },
++];
++
++export function sectorsFor(lang) {
++  const L = (o) => (o[lang] || o.nl);
++  const ui = SEC_UI[lang] || SEC_UI.nl;
++  const sectors = SECTORS.map((s) => ({ key: s.key, landing: s.landing, label: L(s.label), blurb: L(s.blurb) }));
++  return { ui, sectors };
++}
+diff --git a/src/pages/[...path].astro b/src/pages/[...path].astro
+index 81f7332..3f68d90 100644
+--- a/src/pages/[...path].astro
++++ b/src/pages/[...path].astro
+@@ -12,9 +12,14 @@ export async function getStaticPaths() {
+   const arts = await client.fetch(
+     `*[_type == "article" && defined(path) && defined(body)]{path, title, body, date}`
+   );
++  // Statische routes hebben voorrang; sluit paden uit die we nu als eigen
++  // pagina bouwen (bijv. de sectoren-index) om dubbele routes te voorkomen.
++  const OWN = new Set(["sectoren", "en/sectoren", "de/sectoren", "fr/sectoren", "es/sectoren", "ro/sectoren"]);
+   return arts
+     .filter((a) => a.path && a.path.includes("/"))
+-    .map((a) => ({ params: { path: a.path.replace(/^\/+|\/+$/g, "") }, props: { article: a } }));
++    .map((a) => ({ p: a.path.replace(/^\/+|\/+$/g, ""), a }))
++    .filter((x) => !OWN.has(x.p))
++    .map((x) => ({ params: { path: x.p }, props: { article: x.a } }));
+ }
+ 
+ const { article } = Astro.props;
+diff --git a/src/pages/de/sectoren/index.astro b/src/pages/de/sectoren/index.astro
+new file mode 100644
+index 0000000..2572c24
+--- /dev/null
++++ b/src/pages/de/sectoren/index.astro
+@@ -0,0 +1,9 @@
++---
++import Base from "../../../layouts/Base.astro";
++import SectorenIndex from "../../../components/SectorenIndex.astro";
++import { SEC_UI } from "../../../data/sectoren-content.js";
++const m = (SEC_UI["de"] || SEC_UI.nl).meta;
++---
++<Base title={m.title} description={m.description} active="solutions">
++  <SectorenIndex />
++</Base>
+diff --git a/src/pages/en/sectoren/index.astro b/src/pages/en/sectoren/index.astro
+new file mode 100644
+index 0000000..1f2cc48
+--- /dev/null
++++ b/src/pages/en/sectoren/index.astro
+@@ -0,0 +1,9 @@
++---
++import Base from "../../../layouts/Base.astro";
++import SectorenIndex from "../../../components/SectorenIndex.astro";
++import { SEC_UI } from "../../../data/sectoren-content.js";
++const m = (SEC_UI["en"] || SEC_UI.nl).meta;
++---
++<Base title={m.title} description={m.description} active="solutions">
++  <SectorenIndex />
++</Base>
+diff --git a/src/pages/es/sectoren/index.astro b/src/pages/es/sectoren/index.astro
+new file mode 100644
+index 0000000..1a7cb2a
+--- /dev/null
++++ b/src/pages/es/sectoren/index.astro
+@@ -0,0 +1,9 @@
++---
++import Base from "../../../layouts/Base.astro";
++import SectorenIndex from "../../../components/SectorenIndex.astro";
++import { SEC_UI } from "../../../data/sectoren-content.js";
++const m = (SEC_UI["es"] || SEC_UI.nl).meta;
++---
++<Base title={m.title} description={m.description} active="solutions">
++  <SectorenIndex />
++</Base>
+diff --git a/src/pages/fr/sectoren/index.astro b/src/pages/fr/sectoren/index.astro
+new file mode 100644
+index 0000000..f1fa86e
+--- /dev/null
++++ b/src/pages/fr/sectoren/index.astro
+@@ -0,0 +1,9 @@
++---
++import Base from "../../../layouts/Base.astro";
++import SectorenIndex from "../../../components/SectorenIndex.astro";
++import { SEC_UI } from "../../../data/sectoren-content.js";
++const m = (SEC_UI["fr"] || SEC_UI.nl).meta;
++---
++<Base title={m.title} description={m.description} active="solutions">
++  <SectorenIndex />
++</Base>
+diff --git a/src/pages/ro/sectoren/index.astro b/src/pages/ro/sectoren/index.astro
+new file mode 100644
+index 0000000..9164d2b
+--- /dev/null
++++ b/src/pages/ro/sectoren/index.astro
+@@ -0,0 +1,9 @@
++---
++import Base from "../../../layouts/Base.astro";
++import SectorenIndex from "../../../components/SectorenIndex.astro";
++import { SEC_UI } from "../../../data/sectoren-content.js";
++const m = (SEC_UI["ro"] || SEC_UI.nl).meta;
++---
++<Base title={m.title} description={m.description} active="solutions">
++  <SectorenIndex />
++</Base>
+diff --git a/src/pages/sectoren/index.astro b/src/pages/sectoren/index.astro
+new file mode 100644
+index 0000000..70a7b0e
+--- /dev/null
++++ b/src/pages/sectoren/index.astro
+@@ -0,0 +1,9 @@
++---
++import Base from "../../layouts/Base.astro";
++import SectorenIndex from "../../components/SectorenIndex.astro";
++import { SEC_UI } from "../../data/sectoren-content.js";
++const m = (SEC_UI["nl"] || SEC_UI.nl).meta;
++---
++<Base title={m.title} description={m.description} active="solutions">
++  <SectorenIndex />
++</Base>
+-- 
+2.34.1
+

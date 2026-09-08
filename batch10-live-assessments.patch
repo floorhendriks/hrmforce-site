@@ -1,0 +1,290 @@
+From 1d2914ec9692f757314a5974750a7aecbff093ae Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Tue, 8 Sep 2026 22:30:43 +0200
+Subject: [PATCH 1/2] Fix-ronde 2 (B10): shop bovenste rij exact op de 4
+ hrmforce-vlaggenschepen (Big Fifty, Ability Scan, Motivation, 360 graden
+ feedback) i.p.v. Reflector/Talogy/MQ-varianten; Live Assessments-opties
+ linken nu naar echte detailpagina's: nieuwe advies-detailpagina's
+ selectie-assessment, ontwikkel-assessment (ontwikkelmatrix + 4 kwadranten),
+ executive-assessment (met echte onderdelen), teamanalyse; loopbaan-assessment
+ gekoppeld; elke optie een eigen relevante tekst
+
+---
+ src/components/LiveAssessments.astro |  2 +-
+ src/components/Shop.astro            |  5 +-
+ src/data/advies-detail.js            | 84 ++++++++++++++++++++++++++++
+ src/data/live-assessments-content.js | 12 ++--
+ 4 files changed, 94 insertions(+), 9 deletions(-)
+
+diff --git a/src/components/LiveAssessments.astro b/src/components/LiveAssessments.astro
+index 0bc99e4..1124c46 100644
+--- a/src/components/LiveAssessments.astro
++++ b/src/components/LiveAssessments.astro
+@@ -36,7 +36,7 @@ const testkiezerHref = localizePath("/testkiezer/", lang);
+     <p class="lead" style="margin-bottom:24px">{ui.secLead}</p>
+     <div class="la-grid">
+       {options.map((o) => (
+-        <a class="la-card" href={localizePath(o.href, lang)}>
++        <a class="la-card" href={o.nlOnly ? o.href : localizePath(o.href, lang)}>
+           <h3>{o.title}</h3>
+           <p>{o.desc}</p>
+           <span class="la-more">{ui.more} &rarr;</span>
+diff --git a/src/components/Shop.astro b/src/components/Shop.astro
+index 11a7f17..d9c004d 100644
+--- a/src/components/Shop.astro
++++ b/src/components/Shop.astro
+@@ -714,8 +714,9 @@ const FAQ_DEFAULT = generalFaq(lang);
+         };
+       });
+       // Vaste bovenste rij: Big Fifty, Ability Scan, Motivation, 360 feedback (rest houdt titelvolgorde).
+-      var PIN = [["big fifty", "big five", "big50"], ["ability scan", "cognitiev", "cognitieve", "capaciteit"], ["motivation", "drijfver"], ["360"]];
+-      function pinRank(title) { var t = (title || "").toLowerCase(); for (var i = 0; i < PIN.length; i++) { for (var j = 0; j < PIN[i].length; j++) { if (t.indexOf(PIN[i][j]) > -1) return i; } } return 99; }
++      // Vaste bovenste rij: exact de 4 hrmforce-vlaggenschepen (Reflector/Talogy/MQ-varianten blijven op titelvolgorde).
++      var PIN_EXACT = ["big 5 test | big fifty personality", "ability scan", "motivation", "360 graden feedback"];
++      function pinRank(title) { var t = (title || "").toLowerCase().trim(); var i = PIN_EXACT.indexOf(t); return i > -1 ? i : 99; }
+       products.forEach(function (p, i) { p._pin = pinRank(p.title); p._ord = i; });
+       products.sort(function (a, b) { return a._pin !== b._pin ? a._pin - b._pin : a._ord - b._ord; });
+       fillSelect(fCyclus, Object.keys(cycSet));
+diff --git a/src/data/advies-detail.js b/src/data/advies-detail.js
+index 60489e4..c229f2f 100644
+--- a/src/data/advies-detail.js
++++ b/src/data/advies-detail.js
+@@ -123,4 +123,88 @@ export const adviesDetail = [
+     ],
+     cta: "Plan een kennismaking",
+   },
++  {
++    slug: "selectie-assessment",
++    title: "Selectie-assessment",
++    metaTitle: "Selectie-assessment | Onderbouwde selectiebeslissingen | Hrmforce",
++    metaDescription: "Een selectie-assessment onderbouwt je aannamebeslissing objectief en verhoogt de kans op een productieve, passende medewerker.",
++    intro: [
++      "Het aannemen van de juiste persoon is mensenwerk en gaat soms mis, met hoge kosten tot gevolg. Een selectie-assessment geeft objectief inzicht in geschiktheid, potentieel en risico's.",
++      "Onze assessoren combineren capaciteitentests, persoonlijkheids- en drijfverenvragenlijsten met een gesprek, en koppelen de uitkomsten persoonlijk terug.",
++    ],
++    body: [
++      "Je bepaalt vooraf samen met ons het functieprofiel en de competenties die er echt toe doen. Op basis daarvan stellen we het assessment samen, zodat je alleen meet wat relevant is.",
++      "Je ontvangt een helder advies over de match met de functie, met concrete aandachtspunten voor het vervolggesprek en de inwerkperiode.",
++    ],
++    bullets: [
++      "Objectieve onderbouwing van je aannamebeslissing",
++      "Inzicht in geschiktheid, potentieel en ontwikkelpunten",
++      "Praktische aandachtspunten voor gesprek en inwerken",
++      "Persoonlijke terugkoppeling door een assessor",
++    ],
++    cta: "Plan een selectie-assessment",
++  },
++  {
++    slug: "ontwikkel-assessment",
++    title: "Ontwikkel-assessment / potentieelbeoordeling",
++    metaTitle: "Ontwikkel-assessment | Potentieel en ontwikkelrichting | Hrmforce",
++    metaDescription: "Een ontwikkel-assessment brengt potentieel en ontwikkelrichting in kaart, als basis voor gerichte groei en loopbaanstappen.",
++    intro: [
++      "Wil je weten waar iemand het beste tot zijn recht komt en welke groei mogelijk is? Een ontwikkel-assessment, ook wel potentieelbeoordeling, maakt talenten en ontwikkelpunten zichtbaar.",
++      "De uitkomsten vormen de basis voor een concreet ontwikkelplan en geven richting aan loopbaanstappen.",
++    ],
++    body: [
++      "De ontwikkelmatrix combineert talent met huidig gedrag. Talent meten we met gevalideerde vragenlijsten: Big Fifty Personality (persoonlijkheid), Motivation (drijfveren) en een intelligentiemeting (Ability Analysis of een variant). Gedrag meten we met feedbackvragenlijsten: 360 feedback, Appraisal (90 graden) of de Competency Check.",
++      "Talent (horizontale as) en gedrag (verticale as) leiden samen tot vier kwadranten: talent laag en gedrag laag (mogelijke zwakte), talent laag en gedrag hoog (afwisselen met ander gedrag), talent hoog en gedrag laag (makkelijk te ontwikkelen) en talent hoog en gedrag hoog (mogelijke sterkte). Op basis van de ontwikkeltips start je direct met een digitaal ontwikkelplan.",
++    ],
++    bullets: [
++      "Talent via Big Fifty Personality, Motivation en een intelligentiemeting",
++      "Gedrag via 360 feedback, Appraisal of de Competency Check",
++      "Overzichtelijke ontwikkelmatrix met vier kwadranten",
++      "Concrete ontwikkeltips en een digitaal ontwikkelplan",
++    ],
++    cta: "Plan een ontwikkel-assessment",
++  },
++  {
++    slug: "executive-assessment",
++    title: "Executive assessment",
++    metaTitle: "Executive assessment | Voor management- en directiefuncties | Hrmforce",
++    metaDescription: "Een diepgaand executive assessment op maat voor management- en directiefuncties, met vertrouwelijke persoonlijke terugkoppeling.",
++    intro: [
++      "Bij benoemingen op management- en directieniveau is de impact groot en de foutmarge klein. Een executive assessment geeft diepgaand, onafhankelijk inzicht in leiderschap, drijfveren en strategisch vermogen.",
++      "We stellen het traject op maat samen en koppelen de bevindingen persoonlijk en vertrouwelijk terug.",
++    ],
++    body: [
++      "Het traject is bedoeld voor hoger management, bestuurs- en directiefuncties. Desgewenst starten we met een face-to-face intake voor een maatwerkprogramma, begeleid door een senior consultant.",
++      "Mogelijke onderdelen zijn een interview, tests voor intelligentie en persoonlijkheid, assessment-simulaties en 360 graden feedback. Je ontvangt een terugkoppeling aan de kandidaat en een schriftelijke rapportage met concrete ontwikkeltips, plus een terugkoppeling bij de opdrachtgever, desgewenst in een driegesprek.",
++    ],
++    bullets: [
++      "Voor hoger management, bestuur en directie",
++      "Interview, intelligentie- en persoonlijkheidstests, simulaties en 360 feedback",
++      "Face-to-face intake en maatwerkprogramma met senior consultant",
++      "Schriftelijke rapportage met ontwikkeltips en terugkoppeling bij de opdrachtgever",
++    ],
++    cta: "Bespreek een executive assessment",
++  },
++  {
++    slug: "teamanalyse",
++    title: "Teamanalyse / groepsassessment",
++    metaTitle: "Teamanalyse | Talenten en samenwerking in je team | Hrmforce",
++    metaDescription: "Een teamanalyse maakt talenten, teamrollen en ontwikkelpunten van een team zichtbaar en versterkt de samenwerking.",
++    intro: [
++      "Sterke teams ontstaan niet vanzelf. Een teamanalyse, ook wel groepsassessment, maakt zichtbaar welke talenten en rollen aanwezig zijn en waar de samenwerking beter kan.",
++      "De uitkomsten bespreken we in een teamsessie, met concrete afspraken voor betere samenwerking.",
++    ],
++    body: [
++      "We combineren individuele profielen met een teamanalyse en 360 feedback, zodat je zicht krijgt op rolverdeling, drijfveren en onderlinge dynamiek.",
++      "Zo werk je gericht aan vertrouwen, duidelijke rollen en resultaat.",
++    ],
++    bullets: [
++      "Zicht op talenten en teamrollen",
++      "Inzicht in samenwerking en onderlinge dynamiek",
++      "Een concreet teamontwikkelplan",
++      "Een begeleide teamsessie",
++    ],
++    cta: "Plan een teamanalyse",
++  },
+ ];
+diff --git a/src/data/live-assessments-content.js b/src/data/live-assessments-content.js
+index 631ed8c..e1694d7 100644
+--- a/src/data/live-assessments-content.js
++++ b/src/data/live-assessments-content.js
+@@ -26,7 +26,7 @@ export const LA_OPTIONS = [
+     },
+   },
+   {
+-    key: "selectie-assessment", href: "/hrm-oplossingen/matching/",
++    key: "selectie-assessment", href: "/advies/selectie-assessment/", nlOnly: true,
+     title: { nl: "Selectie Assessment", en: "Selection Assessment", de: "Auswahl-Assessment", fr: "Évaluation de sélection", es: "Assessment de selección", ro: "Assessment de selecție" },
+     desc: {
+       nl: "Onderbouw je selectiebeslissing en verhoog de kans op productieve, passende medewerkers.",
+@@ -38,7 +38,7 @@ export const LA_OPTIONS = [
+     },
+   },
+   {
+-    key: "ontwikkel-assessment", href: "/assessments/ontwikkelassessment/",
++    key: "ontwikkel-assessment", href: "/advies/ontwikkel-assessment/", nlOnly: true,
+     title: { nl: "Ontwikkel Assessment / Potentieelbeoordeling", en: "Development Assessment / Potential review", de: "Entwicklungs-Assessment / Potenzialbeurteilung", fr: "Évaluation de développement / Potentiel", es: "Assessment de desarrollo / Evaluación de potencial", ro: "Assessment de dezvoltare / Evaluarea potențialului" },
+     desc: {
+       nl: "Breng ontwikkelpotentieel in kaart en geef gerichte richting aan groei en loopbaan.",
+@@ -50,7 +50,7 @@ export const LA_OPTIONS = [
+     },
+   },
+   {
+-    key: "loopbaan-assessment", href: "/assessments/loopbaanwaarden/",
++    key: "loopbaan-assessment", href: "/advies/loopbaan-assessment/", nlOnly: true,
+     title: { nl: "Loopbaan Assessment", en: "Career Assessment", de: "Laufbahn-Assessment", fr: "Évaluation de carrière", es: "Assessment de carrera", ro: "Assessment de carieră" },
+     desc: {
+       nl: "Gericht op de vraag 'wat wil ik?': van interesses en drijfveren naar passende loopbaankeuzes.",
+@@ -62,7 +62,7 @@ export const LA_OPTIONS = [
+     },
+   },
+   {
+-    key: "executive-assessment", href: "/contact/",
++    key: "executive-assessment", href: "/advies/executive-assessment/", nlOnly: true,
+     title: { nl: "Executive Assessment", en: "Executive Assessment", de: "Executive Assessment", fr: "Executive Assessment", es: "Executive Assessment", ro: "Executive Assessment" },
+     desc: {
+       nl: "Diepgaand assessment op maat voor management- en directiefuncties, met persoonlijke terugkoppeling.",
+@@ -74,7 +74,7 @@ export const LA_OPTIONS = [
+     },
+   },
+   {
+-    key: "teamanalyse", href: "/assessments/teamanalyse/",
++    key: "teamanalyse", href: "/advies/teamanalyse/", nlOnly: true,
+     title: { nl: "Teamanalyse / Groepsassessment", en: "Team analysis / Group assessment", de: "Teamanalyse / Gruppen-Assessment", fr: "Analyse d'équipe / Évaluation de groupe", es: "Análisis de equipo / Assessment grupal", ro: "Analiză de echipă / Assessment de grup" },
+     desc: {
+       nl: "Maak talenten en ontwikkelpunten van een team zichtbaar en versterk de samenwerking.",
+@@ -90,5 +90,5 @@ export const LA_OPTIONS = [
+ export function liveAssessmentsFor(lang) {
+   const ui = LA_UI[lang] || LA_UI.nl;
+   const L = (o) => o[lang] || o.nl;
+-  return { ui, options: LA_OPTIONS.map((o) => ({ key: o.key, href: o.href, title: L(o.title), desc: L(o.desc) })) };
++  return { ui, options: LA_OPTIONS.map((o) => ({ key: o.key, href: o.href, nlOnly: !!o.nlOnly, title: L(o.title), desc: L(o.desc) })) };
+ }
+-- 
+2.34.1
+
+
+From 9f4fed313db7b31f7f809e7ae2c881dd00863aa0 Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Tue, 8 Sep 2026 22:34:08 +0200
+Subject: [PATCH 2/2] Live Assessments teksten: ontwikkelmatrix (hoort bij
+ online Talent Scan) verwijderd uit ontwikkel-assessment; per Live Assessment
+ een schone, voordeel-gerichte tekst (selectie, ontwikkel/potentieel,
+ executive, teamanalyse)
+
+---
+ src/data/advies-detail.js | 38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
+
+diff --git a/src/data/advies-detail.js b/src/data/advies-detail.js
+index c229f2f..65bc868 100644
+--- a/src/data/advies-detail.js
++++ b/src/data/advies-detail.js
+@@ -137,10 +137,10 @@ export const adviesDetail = [
+       "Je ontvangt een helder advies over de match met de functie, met concrete aandachtspunten voor het vervolggesprek en de inwerkperiode.",
+     ],
+     bullets: [
+-      "Objectieve onderbouwing van je aannamebeslissing",
+-      "Inzicht in geschiktheid, potentieel en ontwikkelpunten",
+-      "Praktische aandachtspunten voor gesprek en inwerken",
+-      "Persoonlijke terugkoppeling door een assessor",
++      "Hogere kans op een productieve, passende medewerker",
++      "Minder mismatch en verloop in de eerste maanden",
++      "Een objectieve, eerlijke en navolgbare selectiebeslissing",
++      "Direct bruikbare gespreks- en inwerktips",
+     ],
+     cta: "Plan een selectie-assessment",
+   },
+@@ -150,18 +150,18 @@ export const adviesDetail = [
+     metaTitle: "Ontwikkel-assessment | Potentieel en ontwikkelrichting | Hrmforce",
+     metaDescription: "Een ontwikkel-assessment brengt potentieel en ontwikkelrichting in kaart, als basis voor gerichte groei en loopbaanstappen.",
+     intro: [
+-      "Wil je weten waar iemand het beste tot zijn recht komt en welke groei mogelijk is? Een ontwikkel-assessment, ook wel potentieelbeoordeling, maakt talenten en ontwikkelpunten zichtbaar.",
+-      "De uitkomsten vormen de basis voor een concreet ontwikkelplan en geven richting aan loopbaanstappen.",
++      "Waar komt iemand het best tot zijn recht en welke groei is haalbaar? Bij ontwikkeling, doorstroom en opvolging wil je die vraag onderbouwd beantwoorden, niet op gevoel.",
++      "Een ontwikkel-assessment (potentieelbeoordeling) maakt talenten, drijfveren en groeimogelijkheden zichtbaar en vertaalt die naar een concrete ontwikkelrichting.",
+     ],
+     body: [
+-      "De ontwikkelmatrix combineert talent met huidig gedrag. Talent meten we met gevalideerde vragenlijsten: Big Fifty Personality (persoonlijkheid), Motivation (drijfveren) en een intelligentiemeting (Ability Analysis of een variant). Gedrag meten we met feedbackvragenlijsten: 360 feedback, Appraisal (90 graden) of de Competency Check.",
+-      "Talent (horizontale as) en gedrag (verticale as) leiden samen tot vier kwadranten: talent laag en gedrag laag (mogelijke zwakte), talent laag en gedrag hoog (afwisselen met ander gedrag), talent hoog en gedrag laag (makkelijk te ontwikkelen) en talent hoog en gedrag hoog (mogelijke sterkte). Op basis van de ontwikkeltips start je direct met een digitaal ontwikkelplan.",
++      "Een assessor meet persoonlijkheid, drijfveren en cognitief vermogen en bekijkt die door de bril van de competenties die er in de rol toe doen. In een persoonlijk terugkoppelgesprek bespreken we de uitkomsten en de ontwikkelrichting.",
++      "Zo investeer je gericht in ontwikkeling die past bij de persoon en de organisatie, met een helder vertrekpunt voor een ontwikkelplan.",
+     ],
+     bullets: [
+-      "Talent via Big Fifty Personality, Motivation en een intelligentiemeting",
+-      "Gedrag via 360 feedback, Appraisal of de Competency Check",
+-      "Overzichtelijke ontwikkelmatrix met vier kwadranten",
+-      "Concrete ontwikkeltips en een digitaal ontwikkelplan",
++      "Gerichte ontwikkeling in plaats van losse trainingen",
++      "Zicht op potentieel voor doorstroom en opvolging",
++      "Meer motivatie en behoud van talent",
++      "Een concreet vertrekpunt voor een ontwikkelplan",
+     ],
+     cta: "Plan een ontwikkel-assessment",
+   },
+@@ -179,10 +179,10 @@ export const adviesDetail = [
+       "Mogelijke onderdelen zijn een interview, tests voor intelligentie en persoonlijkheid, assessment-simulaties en 360 graden feedback. Je ontvangt een terugkoppeling aan de kandidaat en een schriftelijke rapportage met concrete ontwikkeltips, plus een terugkoppeling bij de opdrachtgever, desgewenst in een driegesprek.",
+     ],
+     bullets: [
+-      "Voor hoger management, bestuur en directie",
+-      "Interview, intelligentie- en persoonlijkheidstests, simulaties en 360 feedback",
+-      "Face-to-face intake en maatwerkprogramma met senior consultant",
+-      "Schriftelijke rapportage met ontwikkeltips en terugkoppeling bij de opdrachtgever",
++      "Onderbouwde, onafhankelijke basis voor een zware benoeming",
++      "Diep inzicht in leiderschap, drijfveren en strategisch vermogen",
++      "Maatwerk en vertrouwelijk, met begeleiding door een senior consultant",
++      "Concrete ontwikkeltips en terugkoppeling bij de opdrachtgever",
+     ],
+     cta: "Bespreek een executive assessment",
+   },
+@@ -200,10 +200,10 @@ export const adviesDetail = [
+       "Zo werk je gericht aan vertrouwen, duidelijke rollen en resultaat.",
+     ],
+     bullets: [
+-      "Zicht op talenten en teamrollen",
+-      "Inzicht in samenwerking en onderlinge dynamiek",
++      "Duidelijke rolverdeling en meer wederzijds begrip",
++      "Sterkere samenwerking en minder frictie",
+       "Een concreet teamontwikkelplan",
+-      "Een begeleide teamsessie",
++      "Direct toepasbaar in een begeleide teamsessie",
+     ],
+     cta: "Plan een teamanalyse",
+   },
+-- 
+2.34.1
+

@@ -1,0 +1,27 @@
+From 8030cdd7f739da7799ed87332419b489c6dc0988 Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Tue, 8 Sep 2026 12:56:35 +0200
+Subject: [PATCH] Google-reviewbadge sitebreed aangezet:
+ REVIEWS_EXTERNAL.google -> Google Bedrijfsprofiel hrmforce (4,8 sterren,
+ stabiele CID-link)
+
+---
+ src/data/site-config.js | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/data/site-config.js b/src/data/site-config.js
+index 0e21c98..6f31ea2 100644
+--- a/src/data/site-config.js
++++ b/src/data/site-config.js
+@@ -30,7 +30,7 @@ export const MARKETING = {
+ // Externe reviewprofielen. Vul een URL in om de badge te tonen (leeg = verborgen).
+ // Zodra je een G2/Capterra/Trustpilot/Google-profiel hebt, plak je hier de link.
+ export const REVIEWS_EXTERNAL = {
+-  google: "",     // bv. "https://g.page/r/..../review"
++  google: "https://www.google.com/maps?cid=5974766714085643202", // hrmforce Google Bedrijfsprofiel (4,8 sterren)
+   g2: "",         // bv. "https://www.g2.com/products/hrmforce/reviews"
+   capterra: "",   // bv. "https://www.capterra.com/p/....../hrmforce/"
+   trustpilot: "", // bv. "https://www.trustpilot.com/review/hrmforce.com"
+-- 
+2.34.1
+

@@ -1,0 +1,233 @@
+From d895ea7b5c2e18140202e10f3f88c68b978ace49 Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Tue, 8 Sep 2026 15:59:24 +0200
+Subject: [PATCH] Contactfoto prominenter: persoonlijk fotoblok verplaatst naar
+ band direct onder de hero (i.p.v. onderin de formulierkolom) + eager-load,
+ groter portret; alle 6 talen
+
+---
+ src/pages/contact.astro    | 11 ++++++++++-
+ src/pages/de/contact.astro | 11 ++++++++++-
+ src/pages/en/contact.astro | 11 ++++++++++-
+ src/pages/es/contact.astro | 11 ++++++++++-
+ src/pages/fr/contact.astro | 11 ++++++++++-
+ src/pages/ro/contact.astro | 11 ++++++++++-
+ 6 files changed, 60 insertions(+), 6 deletions(-)
+
+diff --git a/src/pages/contact.astro b/src/pages/contact.astro
+index 2e40851..2b8adc2 100644
+--- a/src/pages/contact.astro
++++ b/src/pages/contact.astro
+@@ -71,6 +71,10 @@ const offices = [
+     </div>
+   </section>
+ 
++  <section class="bg-soft person-band-sec"><div class="wrap">
++    <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="eager" /><div><strong>Liever persoonlijk contact?</strong><span>We helpen je graag verder. Bel of mail gerust, we reageren snel.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
++  </div></section>
++
+   <section class="formsec">
+     <div class="wrap contact-grid">
+       <div class="contact-info">
+@@ -111,7 +115,7 @@ const offices = [
+       <div>
+         <div class="eyebrow">Contactformulier</div>
+         <h2 class="section-title" style="font-size:26px">Stuur ons een bericht</h2>
+-        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>Liever persoonlijk contact?</strong><span>We helpen je graag verder. Bel of mail gerust, we reageren snel.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
++        
+         <form
+           id="contactForm"
+           class="formcard"
+@@ -304,6 +308,11 @@ const offices = [
+   .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
+   .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
+   .person-card .person-name{color:var(--navy);font-weight:700;font-size:13px;margin-top:6px}
++
++  .person-band-sec{padding:22px 0}
++  .person-band-sec .person-card{max-width:640px;margin:0;padding:18px 22px;gap:20px}
++  .person-band-sec .person-card img{width:96px;height:96px}
++  .person-band-sec .person-card strong{font-size:17px}
+ </style>
+ 
+   <script is:inline>
+diff --git a/src/pages/de/contact.astro b/src/pages/de/contact.astro
+index d65b64e..c1337bf 100644
+--- a/src/pages/de/contact.astro
++++ b/src/pages/de/contact.astro
+@@ -76,6 +76,10 @@ const offices = [
+     </div>
+   </section>
+ 
++  <section class="bg-soft person-band-sec"><div class="wrap">
++    <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="eager" /><div><strong>Lieber persönlicher Kontakt?</strong><span>Wir helfen Ihnen gern weiter. Rufen Sie an oder mailen Sie, wir antworten schnell.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
++  </div></section>
++
+   <section class="formsec">
+     <div class="wrap contact-grid">
+       <div class="contact-info">
+@@ -116,7 +120,7 @@ const offices = [
+       <div>
+         <div class="eyebrow">Kontakt-Formular</div>
+         <h2 class="section-title" style="font-size:26px">Senden Sie uns eine Nachricht</h2>
+-        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>Lieber persönlicher Kontakt?</strong><span>Wir helfen Ihnen gern weiter. Rufen Sie an oder mailen Sie, wir antworten schnell.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
++        
+         <form
+           id="contactForm"
+           class="formcard"
+@@ -299,6 +303,11 @@ const offices = [
+   .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
+   .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
+   .person-card .person-name{color:var(--navy);font-weight:700;font-size:13px;margin-top:6px}
++
++  .person-band-sec{padding:22px 0}
++  .person-band-sec .person-card{max-width:640px;margin:0;padding:18px 22px;gap:20px}
++  .person-band-sec .person-card img{width:96px;height:96px}
++  .person-band-sec .person-card strong{font-size:17px}
+ </style>
+ 
+   <script is:inline>
+diff --git a/src/pages/en/contact.astro b/src/pages/en/contact.astro
+index f377361..a7126bf 100644
+--- a/src/pages/en/contact.astro
++++ b/src/pages/en/contact.astro
+@@ -66,6 +66,10 @@ const offices = [
+     </div>
+   </section>
+ 
++  <section class="bg-soft person-band-sec"><div class="wrap">
++    <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="eager" /><div><strong>Prefer personal contact?</strong><span>We're happy to help. Call or email us, we respond quickly.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
++  </div></section>
++
+   <section class="formsec">
+     <div class="wrap contact-grid">
+       <div class="contact-info">
+@@ -106,7 +110,7 @@ const offices = [
+       <div>
+         <div class="eyebrow">Contact form</div>
+         <h2 class="section-title" style="font-size:26px">Send us a message</h2>
+-        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>Prefer personal contact?</strong><span>We're happy to help. Call or email us, we respond quickly.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
++        
+         <form
+           id="contactForm"
+           class="formcard"
+@@ -297,6 +301,11 @@ const offices = [
+   .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
+   .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
+   .person-card .person-name{color:var(--navy);font-weight:700;font-size:13px;margin-top:6px}
++
++  .person-band-sec{padding:22px 0}
++  .person-band-sec .person-card{max-width:640px;margin:0;padding:18px 22px;gap:20px}
++  .person-band-sec .person-card img{width:96px;height:96px}
++  .person-band-sec .person-card strong{font-size:17px}
+ </style>
+ 
+   <script is:inline>
+diff --git a/src/pages/es/contact.astro b/src/pages/es/contact.astro
+index ab9ecbd..2ba8fc0 100644
+--- a/src/pages/es/contact.astro
++++ b/src/pages/es/contact.astro
+@@ -68,6 +68,10 @@ const offices = [
+     </div>
+   </section>
+ 
++  <section class="bg-soft person-band-sec"><div class="wrap">
++    <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="eager" /><div><strong>¿Prefieres el contacto personal?</strong><span>Estaremos encantados de ayudarte. Llama o escríbenos, respondemos rápido.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
++  </div></section>
++
+   <section class="formsec">
+     <div class="wrap contact-grid">
+       <div class="contact-info">
+@@ -107,7 +111,7 @@ const offices = [
+       <div>
+         <div class="eyebrow">Formulario de contacto</div>
+         <h2 class="section-title" style="font-size:26px">Envíenos un mensaje</h2>
+-        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>¿Prefieres el contacto personal?</strong><span>Estaremos encantados de ayudarte. Llama o escríbenos, respondemos rápido.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
++        
+         <form
+           id="contactForm"
+           class="formcard"
+@@ -287,6 +291,11 @@ const offices = [
+   .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
+   .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
+   .person-card .person-name{color:var(--navy);font-weight:700;font-size:13px;margin-top:6px}
++
++  .person-band-sec{padding:22px 0}
++  .person-band-sec .person-card{max-width:640px;margin:0;padding:18px 22px;gap:20px}
++  .person-band-sec .person-card img{width:96px;height:96px}
++  .person-band-sec .person-card strong{font-size:17px}
+ </style>
+ 
+   <script is:inline>
+diff --git a/src/pages/fr/contact.astro b/src/pages/fr/contact.astro
+index 5b39405..cee5f1b 100644
+--- a/src/pages/fr/contact.astro
++++ b/src/pages/fr/contact.astro
+@@ -27,6 +27,10 @@ const offices = [
+     </div>
+   </section>
+ 
++  <section class="bg-soft person-band-sec"><div class="wrap">
++    <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="eager" /><div><strong>Vous préférez un contact personnel ?</strong><span>Nous vous aidons volontiers. Appelez ou écrivez-nous, nous répondons vite.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
++  </div></section>
++
+   <section class="formsec">
+     <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start">
+       <div>
+@@ -34,7 +38,7 @@ const offices = [
+         <p style="margin-top:14px;color:var(--muted)"><strong>T :</strong> <a href="tel:+31888832188">+31 (0)88 88 321 88</a><br /><strong>E :</strong> <a href="mailto:service@hrmforce.com">service@hrmforce.com</a></p>
+         <p style="color:var(--muted)">Nos conseillers sont disponibles du lundi au vendredi de 08h00 à 18h00.</p>
+       </div>
+-      <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>Vous préférez un contact personnel ?</strong><span>Nous vous aidons volontiers. Appelez ou écrivez-nous, nous répondons vite.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
++      
+         <form class="formcard" action="https://formspree.io/f/JOUW_FORM_ID" method="POST">
+         <h2 class="section-title" style="font-size:22px;margin-top:0">Formulaire de contact</h2>
+         <div class="frow">
+@@ -91,4 +95,9 @@ const offices = [
+   .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
+   .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
+   .person-card .person-name{color:var(--navy);font-weight:700;font-size:13px;margin-top:6px}
++
++  .person-band-sec{padding:22px 0}
++  .person-band-sec .person-card{max-width:640px;margin:0;padding:18px 22px;gap:20px}
++  .person-band-sec .person-card img{width:96px;height:96px}
++  .person-band-sec .person-card strong{font-size:17px}
+ </style>
+diff --git a/src/pages/ro/contact.astro b/src/pages/ro/contact.astro
+index 220a60e..d3a2390 100644
+--- a/src/pages/ro/contact.astro
++++ b/src/pages/ro/contact.astro
+@@ -67,6 +67,10 @@ const offices = [
+     </div>
+   </section>
+ 
++  <section class="bg-soft person-band-sec"><div class="wrap">
++    <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="eager" /><div><strong>Preferi contactul personal?</strong><span>Te ajutăm cu plăcere. Sună sau scrie-ne, răspundem rapid.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
++  </div></section>
++
+   <section class="formsec">
+     <div class="wrap contact-grid">
+       <div class="contact-info">
+@@ -107,7 +111,7 @@ const offices = [
+       <div>
+         <div class="eyebrow">Formular de contact</div>
+         <h2 class="section-title" style="font-size:26px">Trimiteți-ne un mesaj</h2>
+-        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>Preferi contactul personal?</strong><span>Te ajutăm cu plăcere. Sună sau scrie-ne, răspundem rapid.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
++        
+         <form
+           id="contactForm"
+           class="formcard"
+@@ -210,6 +214,11 @@ const offices = [
+   .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
+   .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
+   .person-card .person-name{color:var(--navy);font-weight:700;font-size:13px;margin-top:6px}
++
++  .person-band-sec{padding:22px 0}
++  .person-band-sec .person-card{max-width:640px;margin:0;padding:18px 22px;gap:20px}
++  .person-band-sec .person-card img{width:96px;height:96px}
++  .person-band-sec .person-card strong{font-size:17px}
+ </style>
+ 
+   <script is:inline>
+-- 
+2.34.1
+

@@ -1,0 +1,1412 @@
+From ee642eedd9f997c3424a7d3a05df010490f856fb Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Mon, 7 Sep 2026 18:50:57 +0200
+Subject: [PATCH] Taalcorrectie + meertalig /toepassingen/: reviews/testkiezer
+ taalbewust, sticky demo-knop per taal, /toepassingen/ in 6 talen (component +
+ wrappers + i18n data + valid-paths)
+
+---
+ src/components/ReviewSlider.astro      |  26 +-
+ src/components/Testkiezer.astro        |   8 +-
+ src/components/Toepassing.astro        | 120 +++++
+ src/components/ToepassingenIndex.astro |  51 ++
+ src/data/landings.js                   | 674 ++++++++++++++++++++-----
+ src/data/reviews-content.js            |  15 +
+ src/data/valid-paths.js                |   2 +-
+ src/i18n/utils.js                      |   2 +-
+ src/layouts/Base.astro                 |  13 +-
+ src/pages/advies/[slug].astro          |   2 +-
+ src/pages/de/toepassingen/[slug].astro |   8 +
+ src/pages/de/toepassingen/index.astro  |   7 +
+ src/pages/en/toepassingen/[slug].astro |   8 +
+ src/pages/en/toepassingen/index.astro  |   7 +
+ src/pages/es/toepassingen/[slug].astro |   8 +
+ src/pages/es/toepassingen/index.astro  |   7 +
+ src/pages/fr/toepassingen/[slug].astro |   8 +
+ src/pages/fr/toepassingen/index.astro  |   7 +
+ src/pages/ro/toepassingen/[slug].astro |   8 +
+ src/pages/ro/toepassingen/index.astro  |   7 +
+ src/pages/shop.astro                   |   2 +-
+ src/pages/toepassingen/[slug].astro    | 109 +---
+ src/pages/toepassingen/index.astro     |  54 +-
+ 23 files changed, 856 insertions(+), 297 deletions(-)
+ create mode 100644 src/components/Toepassing.astro
+ create mode 100644 src/components/ToepassingenIndex.astro
+ create mode 100644 src/data/reviews-content.js
+ create mode 100644 src/pages/de/toepassingen/[slug].astro
+ create mode 100644 src/pages/de/toepassingen/index.astro
+ create mode 100644 src/pages/en/toepassingen/[slug].astro
+ create mode 100644 src/pages/en/toepassingen/index.astro
+ create mode 100644 src/pages/es/toepassingen/[slug].astro
+ create mode 100644 src/pages/es/toepassingen/index.astro
+ create mode 100644 src/pages/fr/toepassingen/[slug].astro
+ create mode 100644 src/pages/fr/toepassingen/index.astro
+ create mode 100644 src/pages/ro/toepassingen/[slug].astro
+ create mode 100644 src/pages/ro/toepassingen/index.astro
+
+diff --git a/src/components/ReviewSlider.astro b/src/components/ReviewSlider.astro
+index 1f51f37..647cde0 100644
+--- a/src/components/ReviewSlider.astro
++++ b/src/components/ReviewSlider.astro
+@@ -1,23 +1,11 @@
+ ---
+-// Herbruikbare reviewslider met sterren en avatar.
+-// REAL = echte, verifieerbare Google-reviews van hrmforce (naam + citaat).
+-// SAMPLE = sector-voorbeelden ter illustratie (mag blijven staan, wordt later aangevuld).
+-const REAL = [
+-  { who: "Hanneke de Bruin", org: "Google-review", stars: 5, quote: "Ik ben zeer onder de indruk van hrmforce. Goede kwaliteit, professionals zijn direct beschikbaar voor advies, heldere en goede testen en duidelijke rapportage." },
+-  { who: "Esther Moolenaar", org: "Google-review", stars: 5, quote: "Enorm klantvriendelijk en meedenkend. hrmforce heeft mij geholpen talenten en ontwikkelpunten van mijn medewerkers in kaart te brengen, wat heeft gezorgd voor een enorm boost voor het bedrijf." },
+-  { who: "Renate", org: "Google-review", stars: 5, quote: "Zeer prettig en professioneel contact en goede samenwerking met Floor." },
+-  { who: "Eric Hoogeweg", org: "Google-review", stars: 5, quote: "Goede dienstverlener met uitstekende tools voor talentontwikkeling. Zo help je organisaties vooruit." },
+-  { who: "Juliëtte Kamphuis", org: "Google-review", stars: 5, quote: "Leuke gratis kleurentest gedaan. Prettige en snelle terugkoppeling." },
+-];
+-const SAMPLE = [
+-  { who: "HR-adviseur", org: "Zorgorganisatie", stars: 5, quote: "De rapportages geven ons eindelijk een objectief gesprek in plaats van onderbuikgevoel. We selecteren sneller en met meer vertrouwen." },
+-  { who: "Recruiter", org: "Industrie", stars: 5, quote: "Binnen een dag reactie en heldere terugkoppeling. De mensen die we aannemen passen echt beter bij de functie." },
+-  { who: "Manager L&D", org: "Financiële dienstverlening", stars: 5, quote: "De ontwikkelrapporten maken loopbaangesprekken concreter. Medewerkers herkennen zich erin en gaan er zelf mee aan de slag." },
+-  { who: "HR-directeur", org: "Onderwijs", stars: 4, quote: "Wetenschappelijk onderbouwd en toch praktisch. De begeleiding door het team van hrmforce is prettig en snel." },
+-  { who: "Teamlead werving", org: "Overheid", stars: 5, quote: "Structuur in onze gesprekscyclus en minder verloop. De voortgang bijhouden kost ons nu bijna geen tijd meer." },
+-];
+-const heading = Astro.props.heading ?? "Wat opdrachtgevers merken";
+-const reviews = Astro.props.reviews ?? [...REAL, ...SAMPLE];
++// Herbruikbare reviewslider, taal-bewust. REAL = echte Google-reviews (citaat vertaald).
++import { getLangFromUrl } from "../i18n/utils.js";
++import { REVIEWS, REVIEW_HEADINGS } from "../data/reviews-content.js";
++const lang = getLangFromUrl(Astro.url);
++const reviews = Astro.props.reviews ?? REVIEWS[lang] ?? REVIEWS.nl;
++const headingKey = Astro.props.headingKey || "default";
++const heading = Astro.props.heading ?? (REVIEW_HEADINGS[headingKey]?.[lang] ?? REVIEW_HEADINGS.default[lang] ?? REVIEW_HEADINGS.default.nl);
+ const sample = Astro.props.sample ?? false;
+ const stars = (n) => "\u2605".repeat(n) + "\u2606".repeat(5 - n);
+ ---
+diff --git a/src/components/Testkiezer.astro b/src/components/Testkiezer.astro
+index d56526d..4c4d2a1 100644
+--- a/src/components/Testkiezer.astro
++++ b/src/components/Testkiezer.astro
+@@ -2,10 +2,16 @@
+ import { localizePath } from "../i18n/utils.js";
+ import { testkiezerContent, TK_SLUGS } from "../data/testkiezer-content.js";
+ import { assessments } from "../data/assessments.js";
++import { assessmentsI18n } from "../data/assessments-i18n.js";
+ const { lang } = Astro.props;
+ const t = testkiezerContent[lang] ?? testkiezerContent.nl;
+ const bySlug = new Map(assessments.map((a) => [a.slug, a]));
+-const recs = (key) => (TK_SLUGS[key] || []).map((s) => bySlug.get(s)).filter(Boolean);
++const locAssess = (a) => {
++  if (lang === "nl" || !a) return a ? { slug: a.slug, title: a.title, goal: a.goal } : null;
++  const tr = assessmentsI18n[lang]?.[a.slug] || {};
++  return { slug: a.slug, title: tr.title || a.title, goal: tr.goal || a.goal };
++};
++const recs = (key) => (TK_SLUGS[key] || []).map((s) => bySlug.get(s)).filter(Boolean).map(locAssess);
+ ---
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+ 
+diff --git a/src/components/Toepassing.astro b/src/components/Toepassing.astro
+new file mode 100644
+index 0000000..c5070f2
+--- /dev/null
++++ b/src/components/Toepassing.astro
+@@ -0,0 +1,120 @@
++---
++import { LAND_UI } from "../data/landings.js";
++import { assessments } from "../data/assessments.js";
++import { assessmentsI18n } from "../data/assessments-i18n.js";
++import { localizePath } from "../i18n/utils.js";
++import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../data/site-config.js";
++
++const { l, lang = "nl" } = Astro.props;
++const t = l.i18n[lang] || l.i18n.nl;
++const ui = LAND_UI[lang] || LAND_UI.nl;
++const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
++
++const bySlug = new Map(assessments.map((a) => [a.slug, a]));
++function locAssess(slug) {
++  const base = bySlug.get(slug);
++  if (!base) return null;
++  if (lang === "nl") return { slug, title: base.title, goal: base.goal };
++  const loc = assessmentsI18n?.[lang]?.[slug];
++  return { slug, title: loc?.title || base.title, goal: loc?.goal || base.goal };
++}
++const linked = (l.assessmentSlugs || []).map(locAssess).filter(Boolean);
++
++const toepPath = localizePath("/toepassingen/", lang);
++const contactPath = localizePath("/contact/", lang);
++const onlinePath = localizePath("/online-assessments/", lang);
++const assessPath = (slug) => localizePath(`/assessments/${slug}/`, lang);
++
++const _canon = new URL(Astro.url.pathname, "https://hrmforce.com").href;
++const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
++  { "@type": "ListItem", position: 1, name: ui.home, item: "https://hrmforce.com/" },
++  { "@type": "ListItem", position: 2, name: ui.toep, item: `https://hrmforce.com${toepPath}` },
++  { "@type": "ListItem", position: 3, name: t.title, item: _canon },
++] };
++const _svcLd = { "@context": "https://schema.org", "@type": "Service", name: t.title, description: t.metaDescription, provider: { "@type": "Organization", name: "hrmforce" }, areaServed: "EU" };
++const _faqLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: (t.faq || []).map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) };
++---
++<script type="application/ld+json" is:inline set:html={JSON.stringify(_crumbLd)}></script>
++<script type="application/ld+json" is:inline set:html={JSON.stringify(_svcLd)}></script>
++<script type="application/ld+json" is:inline set:html={JSON.stringify(_faqLd)}></script>
++
++<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>{ui.home}</a> &rsaquo; <a href={toepPath}>{ui.toep}</a> &rsaquo; <span>{t.title}</span></div></div>
++
++<section class="ahero"><div class="wrap" style="display:block">
++  <div class="eyebrow" style="color:var(--gold)">{t.eyebrow}</div>
++  <h1>{t.hero}</h1>
++  <p style="color:#c4d2e6;font-size:18px;max-width:760px;margin-top:10px">{t.intro}</p>
++  <div class="btns" style="margin-top:18px">
++    <a href={contactPath} class="btn btn-primary">{ui.demo} &rarr;</a>
++    <a href={onlinePath} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">{ui.allass}</a>
++  </div>
++</div></section>
++
++<section><div class="wrap">
++  <div class="eyebrow">{ui.painsEy}</div>
++  <h2 class="section-title">{ui.painsT}</h2>
++  <div class="lp-pains">
++    {t.pains.map((p) => (<div class="lp-pain"><span aria-hidden="true">&bull;</span><p>{p}</p></div>))}
++  </div>
++</div></section>
++
++<section class="bg-soft"><div class="wrap">
++  <div class="eyebrow" style="color:var(--gold)">{ui.apEy}</div>
++  <h2 class="section-title">{ui.apT}</h2>
++  <div class="lp-grid">
++    {t.approach.map((a) => (<div class="lp-card"><h3>{a.h}</h3><p>{a.p}</p></div>))}
++  </div>
++</div></section>
++
++{linked.length > 0 && (
++  <section><div class="wrap">
++    <div class="center"><div class="eyebrow">{ui.linkEy}</div>
++      <h2 class="section-title" style="margin-bottom:36px">{ui.linkT}</h2></div>
++    <div class="cards">
++      {linked.map((a) => (
++        <a class="card" href={assessPath(a.slug)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
++          <h3>{a.title}</h3>
++          <p style="flex:1">{a.goal}</p>
++          <span class="readmore">{ui.linkCta} &rarr;</span>
++        </a>
++      ))}
++    </div>
++  </div></section>
++)}
++
++{t.faq.length > 0 && (
++  <section class="bg-soft"><div class="wrap" style="max-width:820px">
++    <div class="center"><div class="eyebrow">{ui.faqEy}</div>
++      <h2 class="section-title" style="margin-bottom:36px">{ui.faqPre} {t.title.toLowerCase()}</h2></div>
++    {t.faq.map((f) => (
++      <div class="faq-item"><div class="faq-q">{f.q}<span class="pl">+</span></div><div class="faq-a"><p>{f.a}</p></div></div>
++    ))}
++  </div></section>
++)}
++
++<section class="formsec" id="request"><div class="wrap">
++  <div class="center"><div class="eyebrow">{ui.formEy}</div>
++    <h2 class="section-title">{ui.formT}</h2>
++    <p class="lead" style="margin-bottom:36px">{ui.formLead}</p></div>
++  <form class="formcard" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
++    <input type="hidden" name="onderwerp" value={`${ui.interest}: ${t.title}`} />
++    <div class="frow">
++      <div class="fg"><label>{ui.fn} *</label><input type="text" name="voornaam" required /></div>
++      <div class="fg"><label>{ui.we} *</label><input type="email" name="email" required /></div>
++    </div>
++    <div class="fg"><label>{ui.comp}</label><input type="text" name="bedrijf" /></div>
++    <button type="submit" class="btn btn-primary">{ui.send}</button>
++  </form>
++</div></section>
++
++<style>
++  .lp-pains{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
++  .lp-pain{display:flex;gap:12px;background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow-xs)}
++  .lp-pain span{color:var(--gold);font-weight:800;font-size:20px;line-height:1.2}
++  .lp-pain p{margin:0;color:var(--navy);font-weight:600;font-size:15px;line-height:1.5}
++  .lp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:26px}
++  .lp-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px}
++  .lp-card h3{color:var(--navy);font-size:1.1rem;margin:0 0 8px}
++  .lp-card p{color:var(--muted);font-size:15px;line-height:1.6;margin:0}
++  @media(max-width:820px){.lp-pains,.lp-grid{grid-template-columns:1fr}}
++</style>
+diff --git a/src/components/ToepassingenIndex.astro b/src/components/ToepassingenIndex.astro
+new file mode 100644
+index 0000000..a414809
+--- /dev/null
++++ b/src/components/ToepassingenIndex.astro
+@@ -0,0 +1,51 @@
++---
++import { landings, LAND_UI } from "../data/landings.js";
++import { localizePath } from "../i18n/utils.js";
++
++const { lang = "nl" } = Astro.props;
++const ui = LAND_UI[lang] || LAND_UI.nl;
++const usecases = landings.filter((l) => l.kind === "usecase");
++const sectors = landings.filter((l) => l.kind === "sector");
++const tp = (slug) => localizePath(`/toepassingen/${slug}/`, lang);
++const T = (l) => (l.i18n[lang] || l.i18n.nl);
++---
++<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>{ui.home}</a> &rsaquo; <span>{ui.toep}</span></div></div>
++
++<section class="ahero"><div class="wrap" style="display:block">
++  <div class="eyebrow" style="color:var(--gold)">{ui.toep}</div>
++  <h1>{ui.idxHero}</h1>
++  <p style="color:#c4d2e6;font-size:18px;max-width:760px;margin-top:10px">{ui.idxIntro}</p>
++</div></section>
++
++<section><div class="wrap">
++  <div class="eyebrow">{ui.perGoal}</div>
++  <h2 class="section-title" style="margin-bottom:32px">{ui.toep}</h2>
++  <div class="cards">
++    {usecases.map((l) => (
++      <a class="card" href={tp(l.slug)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
++        <h3>{T(l).title}</h3><p style="flex:1">{T(l).intro}</p><span class="readmore">{ui.readmore} &rarr;</span>
++      </a>
++    ))}
++  </div>
++</div></section>
++
++<section class="bg-soft"><div class="wrap">
++  <div class="eyebrow" style="color:var(--gold)">{ui.perSector}</div>
++  <h2 class="section-title" style="margin-bottom:32px">{ui.sectors}</h2>
++  <div class="cards">
++    <a class="card" href={"/geschiktvoorzorg/"} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
++      <h3>{ui.zorgT}</h3><p style="flex:1">{ui.zorgD}</p><span class="readmore">{ui.readmore} &rarr;</span>
++    </a>
++    {sectors.map((l) => (
++      <a class="card" href={tp(l.slug)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
++        <h3>{T(l).title}</h3><p style="flex:1">{T(l).intro}</p><span class="readmore">{ui.readmore} &rarr;</span>
++      </a>
++    ))}
++  </div>
++</div></section>
++
++<section class="cta"><div class="wrap" style="padding:56px 0;text-align:center">
++  <h2 style="color:#fff">{ui.ctaT}</h2>
++  <p style="color:rgba(255,255,255,.9);max-width:620px;margin:12px auto 0">{ui.ctaD}</p>
++  <div class="btns" style="justify-content:center;margin-top:20px"><a href={localizePath("/contact/", lang)} class="btn btn-light">{ui.ctaBtn}</a></div>
++</div></section>
+diff --git a/src/data/landings.js b/src/data/landings.js
+index 78b6879..cab39d9 100644
+--- a/src/data/landings.js
++++ b/src/data/landings.js
+@@ -1,142 +1,584 @@
+-// Toepassings- en sectorlandingspagina's. Generiek geschreven: geen verzonnen
+-// cijfers of klantnamen. Elke pagina linkt naar bestaande assessment-detailpagina's.
++// Toepassings- en sectorlandingspagina's, meertalig (nl/en/de/fr/es/ro). Generiek
++// geschreven: geen verzonnen cijfers of klantnamen. Elke pagina linkt naar bestaande
++// assessment-detailpagina's. Gegenereerd; niet handmatig los bewerken.
+ export const landings = [
+   {
+     slug: "werving-en-selectie", kind: "usecase",
+-    title: "Assessments voor werving en selectie",
+-    metaTitle: "Assessments voor werving en selectie | hrmforce",
+-    metaDescription: "Selecteer objectiever met wetenschappelijk gevalideerde assessments. Meet capaciteiten, persoonlijkheid en drijfveren en neem betere aannamebeslissingen.",
+-    eyebrow: "Toepassing", hero: "Beter kiezen, met minder onderbuikgevoel",
+-    intro: "Een verkeerde aanname kost tijd, geld en energie. Met objectieve assessments voeg je betrouwbare informatie toe aan je selectie, zodat je beslist op basis van meer dan cv en eerste indruk.",
+-    pains: [
+-      "Kandidaten presenteren zich sterk in het gesprek, maar hoe voorspel je werkgedrag?",
+-      "Selectiebeslissingen leunen vaak op gevoel en zijn lastig uit te leggen.",
+-      "Een mismatch merk je pas na de proeftijd, als de kosten al zijn gemaakt.",
+-    ],
+-    approach: [
+-      { h: "Meet wat telt voor de functie", p: "Combineer een capaciteitentest met een persoonlijkheidsvragenlijst en meet gericht de eigenschappen die er voor de rol toe doen." },
+-      { h: "Vergelijk eerlijk en gestructureerd", p: "Iedere kandidaat doorloopt dezelfde meting, waardoor je mensen op vergelijkbare gronden beoordeelt en onbewuste aannames beperkt." },
+-      { h: "Direct bruikbaar in het gesprek", p: "Je ontvangt een helder rapport met gespreksvragen, zodat je het interview verdiept in plaats van herhaalt." },
+-    ],
+     assessmentSlugs: ["big-five", "cognitieve-test", "disc-test", "competentie-check", "job-profiler", "intake-candidate"],
+-    faq: [
+-      { q: "Vervangt een assessment het sollicitatiegesprek?", a: "Nee. Een assessment is aanvullende informatie. Je combineert de uitkomst met het gesprek en andere bronnen tot een compleet beeld." },
+-      { q: "Hoe ervaren kandidaten dit?", a: "Kandidaten vullen de vragenlijst online in eigen tempo in en hebben recht op feedback op hun resultaten. Een zorgvuldig proces versterkt je werkgeversimago." },
+-    ],
++    i18n: {
++      nl: {
++        title: "Assessments voor werving en selectie", metaTitle: "Assessments voor werving en selectie | hrmforce",
++        metaDescription: "Selecteer objectiever met wetenschappelijk gevalideerde assessments. Meet capaciteiten, persoonlijkheid en drijfveren en neem betere aannamebeslissingen.", eyebrow: "Toepassing",
++        hero: "Beter kiezen, met minder onderbuikgevoel",
++        intro: "Een verkeerde aanname kost tijd, geld en energie. Met objectieve assessments voeg je betrouwbare informatie toe aan je selectie, zodat je beslist op basis van meer dan cv en eerste indruk.",
++        pains: ["Kandidaten presenteren zich sterk in het gesprek, maar hoe voorspel je werkgedrag?", "Selectiebeslissingen leunen vaak op gevoel en zijn lastig uit te leggen.", "Een mismatch merk je pas na de proeftijd, als de kosten al zijn gemaakt."],
++        approach: [{ h: "Meet wat telt voor de functie", p: "Combineer een capaciteitentest met een persoonlijkheidsvragenlijst en meet gericht de eigenschappen die er voor de rol toe doen." }, { h: "Vergelijk eerlijk en gestructureerd", p: "Iedere kandidaat doorloopt dezelfde meting, waardoor je mensen op vergelijkbare gronden beoordeelt en onbewuste aannames beperkt." }, { h: "Direct bruikbaar in het gesprek", p: "Je ontvangt een helder rapport met gespreksvragen, zodat je het interview verdiept in plaats van herhaalt." }],
++        faq: [{ q: "Vervangt een assessment het sollicitatiegesprek?", a: "Nee. Een assessment is aanvullende informatie. Je combineert de uitkomst met het gesprek en andere bronnen tot een compleet beeld." }, { q: "Hoe ervaren kandidaten dit?", a: "Kandidaten vullen de vragenlijst online in eigen tempo in en hebben recht op feedback op hun resultaten. Een zorgvuldig proces versterkt je werkgeversimago." }],
++      },
++      en: {
++        title: "Assessments for recruitment and selection", metaTitle: "Assessments for recruitment and selection | hrmforce",
++        metaDescription: "Select more objectively with scientifically validated assessments. Measure ability, personality and drivers and make better hiring decisions.", eyebrow: "Application",
++        hero: "Choose better, with less gut feeling",
++        intro: "A wrong hire costs time, money and energy. With objective assessments you add reliable information to your selection, so you decide on more than CV and first impression.",
++        pains: ["Candidates present themselves well in the interview, but how do you predict work behaviour?", "Selection decisions often rely on feeling and are hard to explain.", "A mismatch only shows after the probation period, when the cost is already made."],
++        approach: [{ h: "Measure what matters for the role", p: "Combine an ability test with a personality questionnaire and target the traits that matter for the role." }, { h: "Compare fairly and structured", p: "Every candidate goes through the same measurement, so you assess people on comparable grounds and limit unconscious assumptions." }, { h: "Directly usable in the interview", p: "You receive a clear report with interview questions, so you deepen the conversation instead of repeating it." }],
++        faq: [{ q: "Does an assessment replace the job interview?", a: "No. An assessment is additional information. You combine the outcome with the interview and other sources into a complete picture." }, { q: "How do candidates experience this?", a: "Candidates complete the questionnaire online at their own pace and are entitled to feedback on their results. A careful process strengthens your employer brand." }],
++      },
++      de: {
++        title: "Assessments für Recruiting und Auswahl", metaTitle: "Assessments für Recruiting und Auswahl | hrmforce",
++        metaDescription: "Wählen Sie objektiver mit wissenschaftlich validierten Assessments. Messen Sie Fähigkeit, Persönlichkeit und Antriebe und treffen Sie bessere Einstellungsentscheidungen.", eyebrow: "Anwendung",
++        hero: "Besser wählen, mit weniger Bauchgefühl",
++        intro: "Eine Fehlbesetzung kostet Zeit, Geld und Energie. Mit objektiven Assessments fügen Sie Ihrer Auswahl verlässliche Informationen hinzu und entscheiden über mehr als Lebenslauf und ersten Eindruck.",
++        pains: ["Kandidaten präsentieren sich im Gespräch stark, aber wie sagt man Arbeitsverhalten vorher?", "Auswahlentscheidungen beruhen oft auf Gefühl und sind schwer erklärbar.", "Eine Fehlbesetzung zeigt sich erst nach der Probezeit, wenn die Kosten schon entstanden sind."],
++        approach: [{ h: "Messen, was für die Stelle zählt", p: "Kombinieren Sie einen Fähigkeitstest mit einem Persönlichkeitsfragebogen und messen Sie gezielt die relevanten Merkmale." }, { h: "Fair und strukturiert vergleichen", p: "Jeder Kandidat durchläuft dieselbe Messung, sodass Sie auf vergleichbarer Grundlage beurteilen und unbewusste Annahmen begrenzen." }, { h: "Direkt im Gespräch nutzbar", p: "Sie erhalten einen klaren Bericht mit Gesprächsfragen, um das Interview zu vertiefen statt zu wiederholen." }],
++        faq: [{ q: "Ersetzt ein Assessment das Vorstellungsgespräch?", a: "Nein. Ein Assessment ist ergänzende Information. Sie kombinieren das Ergebnis mit dem Gespräch und anderen Quellen zu einem vollständigen Bild." }, { q: "Wie erleben Kandidaten das?", a: "Kandidaten füllen den Fragebogen online in eigenem Tempo aus und haben Anspruch auf Feedback. Ein sorgfältiger Prozess stärkt Ihr Arbeitgeberimage." }],
++      },
++      fr: {
++        title: "Assessments pour le recrutement et la sélection", metaTitle: "Assessments pour le recrutement et la sélection | hrmforce",
++        metaDescription: "Sélectionnez plus objectivement avec des assessments validés scientifiquement. Mesurez aptitude, personnalité et motivations et prenez de meilleures décisions d'embauche.", eyebrow: "Application",
++        hero: "Mieux choisir, avec moins d'intuition",
++        intro: "Une mauvaise embauche coûte du temps, de l'argent et de l'énergie. Avec des assessments objectifs, vous ajoutez des informations fiables à votre sélection et décidez sur plus que le CV et la première impression.",
++        pains: ["Les candidats se présentent bien en entretien, mais comment prédire le comportement au travail ?", "Les décisions de sélection reposent souvent sur le ressenti et sont difficiles à expliquer.", "Une erreur n'apparaît qu'après la période d'essai, quand le coût est déjà engagé."],
++        approach: [{ h: "Mesurer ce qui compte pour le poste", p: "Combinez un test d'aptitude et un questionnaire de personnalité et ciblez les traits pertinents pour le rôle." }, { h: "Comparer équitablement et de façon structurée", p: "Chaque candidat passe la même mesure, ce qui permet d'évaluer sur des bases comparables et de limiter les biais." }, { h: "Directement utilisable en entretien", p: "Vous recevez un rapport clair avec des questions d'entretien, pour approfondir plutôt que répéter." }],
++        faq: [{ q: "Un assessment remplace-t-il l'entretien ?", a: "Non. Un assessment est une information complémentaire. Vous combinez le résultat avec l'entretien et d'autres sources pour une vision complète." }, { q: "Comment les candidats le vivent-ils ?", a: "Les candidats remplissent le questionnaire en ligne à leur rythme et ont droit à un retour. Un processus soigné renforce votre marque employeur." }],
++      },
++      es: {
++        title: "Evaluaciones para selección de personal", metaTitle: "Evaluaciones para selección de personal | hrmforce",
++        metaDescription: "Selecciona de forma más objetiva con evaluaciones validadas científicamente. Mide aptitud, personalidad y motivaciones y toma mejores decisiones de contratación.", eyebrow: "Aplicación",
++        hero: "Elegir mejor, con menos intuición",
++        intro: "Una mala contratación cuesta tiempo, dinero y energía. Con evaluaciones objetivas añades información fiable a tu selección y decides con más que el CV y la primera impresión.",
++        pains: ["Los candidatos se presentan bien en la entrevista, pero ¿cómo predices el comportamiento laboral?", "Las decisiones de selección se basan a menudo en la intuición y son difíciles de explicar.", "Un desajuste solo se nota tras el periodo de prueba, cuando el coste ya está hecho."],
++        approach: [{ h: "Mide lo que importa para el puesto", p: "Combina un test de aptitud con un cuestionario de personalidad y mide los rasgos relevantes para el rol." }, { h: "Compara de forma justa y estructurada", p: "Cada candidato realiza la misma medición, así evalúas sobre bases comparables y limitas los sesgos." }, { h: "Directamente útil en la entrevista", p: "Recibes un informe claro con preguntas de entrevista, para profundizar en lugar de repetir." }],
++        faq: [{ q: "¿Sustituye una evaluación a la entrevista?", a: "No. Una evaluación es información complementaria. Combinas el resultado con la entrevista y otras fuentes para una imagen completa." }, { q: "¿Cómo lo viven los candidatos?", a: "Los candidatos completan el cuestionario en línea a su ritmo y tienen derecho a feedback. Un proceso cuidado refuerza tu marca como empleador." }],
++      },
++      ro: {
++        title: "Evaluări pentru recrutare și selecție", metaTitle: "Evaluări pentru recrutare și selecție | hrmforce",
++        metaDescription: "Selectează mai obiectiv cu evaluări validate științific. Măsoară aptitudinea, personalitatea și factorii motivaționali și ia decizii de angajare mai bune.", eyebrow: "Aplicație",
++        hero: "Alege mai bine, cu mai puțină intuiție",
++        intro: "O angajare greșită costă timp, bani și energie. Cu evaluări obiective adaugi informații fiabile selecției și decizi pe baza a mai mult decât CV-ul și prima impresie.",
++        pains: ["Candidații se prezintă bine la interviu, dar cum prezici comportamentul la muncă?", "Deciziile de selecție se bazează des pe intuiție și sunt greu de explicat.", "O nepotrivire se vede abia după perioada de probă, când costul este deja făcut."],
++        approach: [{ h: "Măsoară ce contează pentru post", p: "Combină un test de aptitudini cu un chestionar de personalitate și măsoară trăsăturile relevante pentru rol." }, { h: "Compară corect și structurat", p: "Fiecare candidat parcurge aceeași măsurare, astfel evaluezi pe baze comparabile și limitezi prejudecățile." }, { h: "Direct utilizabil în interviu", p: "Primești un raport clar cu întrebări de interviu, ca să aprofundezi în loc să repeți." }],
++        faq: [{ q: "Înlocuiește o evaluare interviul?", a: "Nu. O evaluare este informație suplimentară. Combini rezultatul cu interviul și alte surse pentru o imagine completă." }, { q: "Cum resimt candidații acest lucru?", a: "Candidații completează chestionarul online în ritmul lor și au dreptul la feedback. Un proces atent îți întărește imaginea de angajator." }],
++      },
++    },
+   },
+   {
+     slug: "ontwikkeling", kind: "usecase",
+-    title: "Assessments voor ontwikkeling en groei",
+-    metaTitle: "Assessments voor ontwikkeling en groei | hrmforce",
+-    metaDescription: "Maak ontwikkeling concreet met assessments die sterktes en groeirichting in kaart brengen. Voer betere loopbaan- en ontwikkelgesprekken.",
+-    eyebrow: "Toepassing", hero: "Van onderbuikgevoel naar gericht ontwikkelen",
+-    intro: "Ontwikkeling werkt het best als ze gebaseerd is op inzicht. Assessments maken sterktes en ontwikkelpunten bespreekbaar, zodat medewerkers zelf aan de slag kunnen met hun groei.",
+-    pains: [
+-      "Ontwikkelgesprekken blijven vaag en leiden zelden tot concrete acties.",
+-      "Medewerkers weten niet goed waar hun kracht ligt of wat een logische volgende stap is.",
+-      "Investeringen in opleiding sluiten niet altijd aan bij wat iemand nodig heeft.",
+-    ],
+-    approach: [
+-      { h: "Inzicht als startpunt", p: "Breng persoonlijkheid, drijfveren en competenties in kaart en gebruik de uitkomst als basis voor een persoonlijk ontwikkelplan." },
+-      { h: "Feedback van meerdere kanten", p: "Met 360-graden-feedback koppel je zelfbeeld aan hoe collega's het gedrag ervaren, een krachtige spiegel voor groei." },
+-      { h: "Onderdeel van de gesprekscyclus", p: "Herhaal metingen in de tijd en volg voortgang, zodat ontwikkeling geen eenmalige actie is maar een doorlopend proces." },
+-    ],
+     assessmentSlugs: ["ontwikkelassessment", "360-graden-feedback", "drijfverentest", "competentie-check", "duurzame-inzetbaarheid-scan"],
+-    faq: [
+-      { q: "Is een ontwikkelassessment alleen voor leidinggevenden?", a: "Nee. Iedere medewerker heeft baat bij inzicht in sterktes en ontwikkelpunten, ongeacht functie of niveau." },
+-      { q: "Wat levert het de medewerker op?", a: "Herkenbare inzichten en concrete handvatten om zelf richting te geven aan de eigen loopbaan en groei." },
+-    ],
++    i18n: {
++      nl: {
++        title: "Assessments voor ontwikkeling en groei", metaTitle: "Assessments voor ontwikkeling en groei | hrmforce",
++        metaDescription: "Maak ontwikkeling concreet met assessments die sterktes en groeirichting in kaart brengen. Voer betere loopbaan- en ontwikkelgesprekken.", eyebrow: "Toepassing",
++        hero: "Van onderbuikgevoel naar gericht ontwikkelen",
++        intro: "Ontwikkeling werkt het best als ze gebaseerd is op inzicht. Assessments maken sterktes en ontwikkelpunten bespreekbaar, zodat medewerkers zelf aan de slag kunnen met hun groei.",
++        pains: ["Ontwikkelgesprekken blijven vaag en leiden zelden tot concrete acties.", "Medewerkers weten niet goed waar hun kracht ligt of wat een logische volgende stap is.", "Investeringen in opleiding sluiten niet altijd aan bij wat iemand nodig heeft."],
++        approach: [{ h: "Inzicht als startpunt", p: "Breng persoonlijkheid, drijfveren en competenties in kaart en gebruik de uitkomst als basis voor een persoonlijk ontwikkelplan." }, { h: "Feedback van meerdere kanten", p: "Met 360-graden-feedback koppel je zelfbeeld aan hoe collega's het gedrag ervaren, een krachtige spiegel voor groei." }, { h: "Onderdeel van de gesprekscyclus", p: "Herhaal metingen in de tijd en volg voortgang, zodat ontwikkeling geen eenmalige actie is maar een doorlopend proces." }],
++        faq: [{ q: "Is een ontwikkelassessment alleen voor leidinggevenden?", a: "Nee. Iedere medewerker heeft baat bij inzicht in sterktes en ontwikkelpunten, ongeacht functie of niveau." }, { q: "Wat levert het de medewerker op?", a: "Herkenbare inzichten en concrete handvatten om zelf richting te geven aan de eigen loopbaan en groei." }],
++      },
++      en: {
++        title: "Assessments for development and growth", metaTitle: "Assessments for development and growth | hrmforce",
++        metaDescription: "Make development concrete with assessments that map strengths and growth direction. Hold better career and development conversations.", eyebrow: "Application",
++        hero: "From gut feeling to targeted development",
++        intro: "Development works best when based on insight. Assessments make strengths and development points discussable, so employees can work on their own growth.",
++        pains: ["Development conversations stay vague and rarely lead to concrete actions.", "Employees don't quite know where their strength lies or what a logical next step is.", "Training investments don't always match what someone needs."],
++        approach: [{ h: "Insight as a starting point", p: "Map personality, drivers and competencies and use the outcome as a basis for a personal development plan." }, { h: "Feedback from multiple sides", p: "With 360-degree feedback you link self-image to how colleagues experience the behaviour, a powerful mirror for growth." }, { h: "Part of the interview cycle", p: "Repeat measurements over time and track progress, so development is a continuous process rather than a one-off." }],
++        faq: [{ q: "Is a development assessment only for managers?", a: "No. Every employee benefits from insight into strengths and development points, regardless of role or level." }, { q: "What does the employee gain?", a: "Recognisable insights and concrete handles to steer their own career and growth." }],
++      },
++      de: {
++        title: "Assessments für Entwicklung und Wachstum", metaTitle: "Assessments für Entwicklung und Wachstum | hrmforce",
++        metaDescription: "Machen Sie Entwicklung konkret mit Assessments, die Stärken und Wachstumsrichtung erfassen. Führen Sie bessere Laufbahn- und Entwicklungsgespräche.", eyebrow: "Anwendung",
++        hero: "Vom Bauchgefühl zur gezielten Entwicklung",
++        intro: "Entwicklung gelingt am besten auf Basis von Erkenntnissen. Assessments machen Stärken und Entwicklungspunkte besprechbar, sodass Mitarbeitende an ihrem Wachstum arbeiten können.",
++        pains: ["Entwicklungsgespräche bleiben vage und führen selten zu konkreten Maßnahmen.", "Mitarbeitende wissen nicht genau, wo ihre Stärke liegt oder was ein logischer nächster Schritt ist.", "Investitionen in Weiterbildung passen nicht immer zum tatsächlichen Bedarf."],
++        approach: [{ h: "Erkenntnis als Ausgangspunkt", p: "Erfassen Sie Persönlichkeit, Antriebe und Kompetenzen und nutzen Sie das Ergebnis als Basis für einen persönlichen Entwicklungsplan." }, { h: "Feedback aus mehreren Richtungen", p: "Mit 360-Grad-Feedback verknüpfen Sie Selbstbild mit der Wahrnehmung der Kollegen, ein starker Spiegel für Wachstum." }, { h: "Teil des Gesprächszyklus", p: "Wiederholen Sie Messungen und verfolgen Sie Fortschritt, sodass Entwicklung ein fortlaufender Prozess ist." }],
++        faq: [{ q: "Ist ein Entwicklungs-Assessment nur für Führungskräfte?", a: "Nein. Jeder Mitarbeitende profitiert von Einblick in Stärken und Entwicklungspunkte, unabhängig von Rolle oder Ebene." }, { q: "Was bringt es dem Mitarbeitenden?", a: "Nachvollziehbare Erkenntnisse und konkrete Ansatzpunkte, um die eigene Laufbahn und Entwicklung zu steuern." }],
++      },
++      fr: {
++        title: "Assessments pour le développement et la croissance", metaTitle: "Assessments pour le développement et la croissance | hrmforce",
++        metaDescription: "Rendez le développement concret avec des assessments qui cartographient forces et axes de progression. Menez de meilleurs entretiens de carrière et de développement.", eyebrow: "Application",
++        hero: "De l'intuition au développement ciblé",
++        intro: "Le développement fonctionne mieux fondé sur l'analyse. Les assessments rendent forces et axes de progrès discutables, pour que les collaborateurs travaillent leur croissance.",
++        pains: ["Les entretiens de développement restent vagues et mènent rarement à des actions concrètes.", "Les collaborateurs ne savent pas bien où est leur force ni quelle est l'étape suivante logique.", "Les investissements en formation ne correspondent pas toujours au besoin réel."],
++        approach: [{ h: "L'analyse comme point de départ", p: "Cartographiez personnalité, motivations et compétences et utilisez le résultat comme base d'un plan de développement personnel." }, { h: "Un feedback à 360°", p: "Avec le feedback 360°, vous reliez l'image de soi à la perception des collègues, un miroir puissant pour la croissance." }, { h: "Intégré au cycle d'entretiens", p: "Répétez les mesures et suivez les progrès, pour que le développement soit un processus continu." }],
++        faq: [{ q: "Un assessment de développement est-il réservé aux managers ?", a: "Non. Chaque collaborateur profite d'un éclairage sur ses forces et axes de progrès, quel que soit son niveau." }, { q: "Qu'y gagne le collaborateur ?", a: "Des insights reconnaissables et des leviers concrets pour orienter sa carrière et sa croissance." }],
++      },
++      es: {
++        title: "Evaluaciones para el desarrollo y el crecimiento", metaTitle: "Evaluaciones para el desarrollo y el crecimiento | hrmforce",
++        metaDescription: "Haz concreto el desarrollo con evaluaciones que mapean fortalezas y dirección de crecimiento. Ten mejores conversaciones de carrera y desarrollo.", eyebrow: "Aplicación",
++        hero: "De la intuición al desarrollo dirigido",
++        intro: "El desarrollo funciona mejor cuando se basa en el análisis. Las evaluaciones hacen conversables fortalezas y puntos de mejora, para que las personas trabajen su crecimiento.",
++        pains: ["Las conversaciones de desarrollo quedan vagas y rara vez llevan a acciones concretas.", "Las personas no saben bien dónde está su fortaleza ni cuál es el siguiente paso lógico.", "Las inversiones en formación no siempre coinciden con lo que se necesita."],
++        approach: [{ h: "El análisis como punto de partida", p: "Mapea personalidad, motivaciones y competencias y usa el resultado como base de un plan de desarrollo personal." }, { h: "Feedback desde varios lados", p: "Con el feedback 360° vinculas la autoimagen con la percepción de los colegas, un espejo potente para crecer." }, { h: "Parte del ciclo de entrevistas", p: "Repite mediciones y sigue el progreso, para que el desarrollo sea un proceso continuo." }],
++        faq: [{ q: "¿La evaluación de desarrollo es solo para mandos?", a: "No. Toda persona se beneficia de conocer sus fortalezas y puntos de mejora, sea cual sea su nivel." }, { q: "¿Qué gana la persona?", a: "Ideas reconocibles y pautas concretas para dirigir su propia carrera y crecimiento." }],
++      },
++      ro: {
++        title: "Evaluări pentru dezvoltare și creștere", metaTitle: "Evaluări pentru dezvoltare și creștere | hrmforce",
++        metaDescription: "Fă dezvoltarea concretă cu evaluări care cartografiază puncte forte și direcția de creștere. Poartă discuții mai bune de carieră și dezvoltare.", eyebrow: "Aplicație",
++        hero: "De la intuiție la dezvoltare țintită",
++        intro: "Dezvoltarea funcționează cel mai bine bazată pe date. Evaluările fac discutabile punctele forte și de dezvoltare, ca oamenii să lucreze la creșterea lor.",
++        pains: ["Discuțiile de dezvoltare rămân vagi și rar duc la acțiuni concrete.", "Oamenii nu știu bine unde le este forța sau care e următorul pas logic.", "Investițiile în formare nu se potrivesc mereu cu ce este nevoie."],
++        approach: [{ h: "Perspectiva ca punct de plecare", p: "Cartografiază personalitatea, motivațiile și competențele și folosește rezultatul ca bază pentru un plan de dezvoltare personal." }, { h: "Feedback din mai multe direcții", p: "Cu feedback 360° legi autoimaginea de percepția colegilor, o oglindă puternică pentru creștere." }, { h: "Parte din ciclul de discuții", p: "Repetă măsurătorile și urmărește progresul, ca dezvoltarea să fie un proces continuu." }],
++        faq: [{ q: "Evaluarea de dezvoltare este doar pentru manageri?", a: "Nu. Orice angajat beneficiază de perspectiva asupra punctelor forte și de dezvoltare, indiferent de nivel." }, { q: "Ce câștigă angajatul?", a: "Perspective ușor de recunoscut și repere concrete pentru a-și ghida cariera și creșterea." }],
++      },
++    },
+   },
+   {
+     slug: "leidinggevenden", kind: "usecase",
+-    title: "Assessments voor leidinggevenden",
+-    metaTitle: "Assessments voor leidinggevenden en leiderschap | hrmforce",
+-    metaDescription: "Onderbouw leiderschapsontwikkeling en -selectie met assessments. Krijg inzicht in stijl, drijfveren en veerkracht van (aankomend) leidinggevenden.",
+-    eyebrow: "Toepassing", hero: "Leiders die teams meenemen in verandering",
+-    intro: "Goed leiderschap is te ontwikkelen, mits je weet waar je staat. Assessments geven leidinggevenden inzicht in hun stijl, drijfveren en veerkracht, als basis voor gerichte groei.",
+-    pains: [
+-      "Leiderschapstrajecten missen richting doordat een objectief startpunt ontbreekt.",
+-      "Bij de doorgroei naar een leidinggevende rol is onduidelijk of iemand er klaar voor is.",
+-      "Onder druk valt gedrag soms terug, terwijl juist dan sturing nodig is.",
+-    ],
+-    approach: [
+-      { h: "Zicht op stijl en gedrag", p: "Breng leiderschapsgedrag en voorkeuren in kaart en bespreek wat dit betekent voor het team en de organisatie." },
+-      { h: "Drijfveren en veerkracht", p: "Begrijp wat iemand motiveert en hoe iemand omgaat met druk, zodat ontwikkeling aansluit bij de persoon." },
+-      { h: "Groei onderbouwd met data", p: "Combineer assessment- en 360-data tot een gericht ontwikkelpad met concrete leerdoelen." },
+-    ],
+     assessmentSlugs: ["leiderschapstest", "360-graden-feedback", "drijfverentest", "mentale-veerkracht-scan", "lencioni-teamdynamiek"],
+-    faq: [
+-      { q: "Kun je hiermee ook potentieel voor leiderschap herkennen?", a: "Ja. Assessments helpen om aanleg en ontwikkelpunten voor een leidinggevende rol zichtbaar te maken, als aanvulling op prestaties en gesprek." },
+-      { q: "Werkt dit ook voor teams?", a: "Zeker. Naast individuele inzichten kun je teamdynamiek in kaart brengen om samenwerking en rolverdeling te versterken." },
+-    ],
++    i18n: {
++      nl: {
++        title: "Assessments voor leidinggevenden", metaTitle: "Assessments voor leidinggevenden | hrmforce",
++        metaDescription: "Onderbouw leiderschapsontwikkeling en -selectie met assessments. Krijg inzicht in stijl, drijfveren en veerkracht van (aankomend) leidinggevenden.", eyebrow: "Toepassing",
++        hero: "Leiders die teams meenemen in verandering",
++        intro: "Goed leiderschap is te ontwikkelen, mits je weet waar je staat. Assessments geven leidinggevenden inzicht in hun stijl, drijfveren en veerkracht, als basis voor gerichte groei.",
++        pains: ["Leiderschapstrajecten missen richting doordat een objectief startpunt ontbreekt.", "Bij de doorgroei naar een leidinggevende rol is onduidelijk of iemand er klaar voor is.", "Onder druk valt gedrag soms terug, terwijl juist dan sturing nodig is."],
++        approach: [{ h: "Zicht op stijl en gedrag", p: "Breng leiderschapsgedrag en voorkeuren in kaart en bespreek wat dit betekent voor het team en de organisatie." }, { h: "Drijfveren en veerkracht", p: "Begrijp wat iemand motiveert en hoe iemand omgaat met druk, zodat ontwikkeling aansluit bij de persoon." }, { h: "Groei onderbouwd met data", p: "Combineer assessment- en 360-data tot een gericht ontwikkelpad met concrete leerdoelen." }],
++        faq: [{ q: "Kun je hiermee ook potentieel voor leiderschap herkennen?", a: "Ja. Assessments helpen om aanleg en ontwikkelpunten voor een leidinggevende rol zichtbaar te maken, als aanvulling op prestaties en gesprek." }, { q: "Werkt dit ook voor teams?", a: "Zeker. Naast individuele inzichten kun je teamdynamiek in kaart brengen om samenwerking en rolverdeling te versterken." }],
++      },
++      en: {
++        title: "Assessments for managers and leadership", metaTitle: "Assessments for managers and leadership | hrmforce",
++        metaDescription: "Underpin leadership development and selection with assessments. Gain insight into style, drivers and resilience of (aspiring) managers.", eyebrow: "Application",
++        hero: "Leaders who take teams along in change",
++        intro: "Good leadership can be developed, provided you know where you stand. Assessments give managers insight into their style, drivers and resilience, as a basis for targeted growth.",
++        pains: ["Leadership programmes lack direction because an objective starting point is missing.", "When growing into a management role it's unclear whether someone is ready.", "Under pressure behaviour sometimes regresses, precisely when steering is needed."],
++        approach: [{ h: "Insight into style and behaviour", p: "Map leadership behaviour and preferences and discuss what this means for the team and the organisation." }, { h: "Drivers and resilience", p: "Understand what motivates someone and how they handle pressure, so development fits the person." }, { h: "Growth grounded in data", p: "Combine assessment and 360 data into a targeted development path with concrete learning goals." }],
++        faq: [{ q: "Can you also spot leadership potential with this?", a: "Yes. Assessments help make aptitude and development points for a management role visible, complementing performance and conversation." }, { q: "Does this also work for teams?", a: "Certainly. Besides individual insights you can map team dynamics to strengthen collaboration and role division." }],
++      },
++      de: {
++        title: "Assessments für Führungskräfte", metaTitle: "Assessments für Führungskräfte | hrmforce",
++        metaDescription: "Untermauern Sie Führungsentwicklung und -auswahl mit Assessments. Gewinnen Sie Einblick in Stil, Antriebe und Resilienz (angehender) Führungskräfte.", eyebrow: "Anwendung",
++        hero: "Führungskräfte, die Teams durch Veränderung führen",
++        intro: "Gute Führung ist entwickelbar, sofern Sie wissen, wo Sie stehen. Assessments geben Führungskräften Einblick in Stil, Antriebe und Resilienz als Basis für gezieltes Wachstum.",
++        pains: ["Führungsprogramme haben keine Richtung, weil ein objektiver Ausgangspunkt fehlt.", "Beim Aufstieg in eine Führungsrolle ist unklar, ob jemand bereit ist.", "Unter Druck fällt Verhalten manchmal zurück, gerade wenn Steuerung nötig ist."],
++        approach: [{ h: "Einblick in Stil und Verhalten", p: "Erfassen Sie Führungsverhalten und Vorlieben und besprechen Sie, was das für Team und Organisation bedeutet." }, { h: "Antriebe und Resilienz", p: "Verstehen Sie, was jemanden motiviert und wie er mit Druck umgeht, damit Entwicklung zur Person passt." }, { h: "Wachstum datenbasiert", p: "Kombinieren Sie Assessment- und 360-Daten zu einem gezielten Entwicklungspfad mit konkreten Lernzielen." }],
++        faq: [{ q: "Erkennt man damit auch Führungspotenzial?", a: "Ja. Assessments machen Anlagen und Entwicklungspunkte für eine Führungsrolle sichtbar, ergänzend zu Leistung und Gespräch." }, { q: "Funktioniert das auch für Teams?", a: "Sicher. Neben individuellen Erkenntnissen können Sie Teamdynamik erfassen, um Zusammenarbeit und Rollenverteilung zu stärken." }],
++      },
++      fr: {
++        title: "Assessments pour les managers et le leadership", metaTitle: "Assessments pour les managers et le leadership | hrmforce",
++        metaDescription: "Étayez le développement et la sélection du leadership avec des assessments. Comprenez le style, les motivations et la résilience des managers (en devenir).", eyebrow: "Application",
++        hero: "Des leaders qui entraînent les équipes dans le changement",
++        intro: "Un bon leadership se développe, à condition de savoir où l'on en est. Les assessments donnent aux managers un éclairage sur leur style, leurs motivations et leur résilience, base d'une croissance ciblée.",
++        pains: ["Les parcours de leadership manquent de direction faute de point de départ objectif.", "Lors du passage à un rôle de manager, on ne sait pas si la personne est prête.", "Sous pression, le comportement régresse parfois, justement quand il faut piloter."],
++        approach: [{ h: "Éclairage sur le style et le comportement", p: "Cartographiez le comportement de leadership et les préférences et discutez de leur impact sur l'équipe et l'organisation." }, { h: "Motivations et résilience", p: "Comprenez ce qui motive une personne et comment elle gère la pression, pour un développement adapté." }, { h: "Croissance fondée sur les données", p: "Combinez les données d'assessment et 360 en un parcours de développement ciblé avec des objectifs concrets." }],
++        faq: [{ q: "Peut-on aussi repérer le potentiel de leadership ?", a: "Oui. Les assessments rendent visibles les aptitudes et axes de progrès pour un rôle de manager, en complément de la performance et de l'entretien." }, { q: "Cela fonctionne-t-il aussi pour les équipes ?", a: "Bien sûr. Au-delà des insights individuels, vous pouvez cartographier la dynamique d'équipe pour renforcer collaboration et répartition des rôles." }],
++      },
++      es: {
++        title: "Evaluaciones para mandos y liderazgo", metaTitle: "Evaluaciones para mandos y liderazgo | hrmforce",
++        metaDescription: "Fundamenta el desarrollo y la selección de liderazgo con evaluaciones. Conoce el estilo, las motivaciones y la resiliencia de mandos (en formación).", eyebrow: "Aplicación",
++        hero: "Líderes que llevan a los equipos en el cambio",
++        intro: "El buen liderazgo se desarrolla, siempre que sepas dónde estás. Las evaluaciones dan a los mandos una visión de su estilo, motivaciones y resiliencia, base de un crecimiento dirigido.",
++        pains: ["Los itinerarios de liderazgo carecen de dirección por falta de un punto de partida objetivo.", "Al ascender a un rol de mando no está claro si la persona está lista.", "Bajo presión el comportamiento a veces retrocede, justo cuando hace falta dirigir."],
++        approach: [{ h: "Visión del estilo y el comportamiento", p: "Mapea el comportamiento de liderazgo y las preferencias y comenta qué significa para el equipo y la organización." }, { h: "Motivaciones y resiliencia", p: "Entiende qué motiva a alguien y cómo gestiona la presión, para un desarrollo que encaje con la persona." }, { h: "Crecimiento basado en datos", p: "Combina datos de evaluación y 360 en un itinerario de desarrollo con objetivos concretos." }],
++        faq: [{ q: "¿Se puede detectar también potencial de liderazgo?", a: "Sí. Las evaluaciones hacen visibles la aptitud y los puntos de mejora para un rol de mando, como complemento al desempeño y la conversación." }, { q: "¿Funciona también para equipos?", a: "Por supuesto. Además de la visión individual, puedes mapear la dinámica de equipo para reforzar la colaboración y el reparto de roles." }],
++      },
++      ro: {
++        title: "Evaluări pentru manageri și leadership", metaTitle: "Evaluări pentru manageri și leadership | hrmforce",
++        metaDescription: "Fundamentează dezvoltarea și selecția de leadership cu evaluări. Înțelege stilul, motivațiile și reziliența managerilor (în devenire).", eyebrow: "Aplicație",
++        hero: "Lideri care duc echipele prin schimbare",
++        intro: "Un leadership bun se poate dezvolta, dacă știi unde te afli. Evaluările dau managerilor perspectivă asupra stilului, motivațiilor și rezilienței, bază pentru o creștere țintită.",
++        pains: ["Programele de leadership nu au direcție fiindcă lipsește un punct de plecare obiectiv.", "La promovarea într-un rol de conducere nu e clar dacă persoana e pregătită.", "Sub presiune comportamentul regresează uneori, tocmai când e nevoie de direcție."],
++        approach: [{ h: "Perspectivă asupra stilului și comportamentului", p: "Cartografiază comportamentul de leadership și preferințele și discută ce înseamnă pentru echipă și organizație." }, { h: "Motivații și reziliență", p: "Înțelege ce motivează o persoană și cum gestionează presiunea, pentru o dezvoltare potrivită." }, { h: "Creștere bazată pe date", p: "Combină datele de evaluare și 360 într-un traseu de dezvoltare cu obiective concrete." }],
++        faq: [{ q: "Se poate identifica și potențialul de leadership?", a: "Da. Evaluările fac vizibile aptitudinea și punctele de dezvoltare pentru un rol de conducere, complementar performanței și discuției." }, { q: "Funcționează și pentru echipe?", a: "Desigur. Pe lângă perspectivele individuale, poți cartografia dinamica echipei pentru a întări colaborarea și distribuția rolurilor." }],
++      },
++    },
+   },
+   {
+     slug: "jong-talent", kind: "usecase",
+-    title: "Assessments voor jong talent en studiekeuze",
+-    metaTitle: "Assessments voor jong talent en studiekeuze | hrmforce",
+-    metaDescription: "Help jongeren en starters richting kiezen met studiekeuze- en beroepskeuzetests. Breng interesses, capaciteiten en talenten objectief in beeld.",
+-    eyebrow: "Toepassing", hero: "Richting geven aan een beginnende loopbaan",
+-    intro: "Kiezen aan het begin van een loopbaan is lastig. Assessments brengen interesses, capaciteiten en talenten in beeld, zodat jongeren en starters een onderbouwde keuze maken.",
+-    pains: [
+-      "Studie- en beroepskeuzes worden gemaakt zonder goed zicht op eigen talenten.",
+-      "Starters twijfelen of een richting bij hen past, met uitval of switchen tot gevolg.",
+-      "Begeleiders missen een objectief startpunt voor het loopbaangesprek.",
+-    ],
+-    approach: [
+-      { h: "Interesses en talenten in beeld", p: "Meet waar iemand energie van krijgt en waar de aanleg ligt, als basis voor een passende richting." },
+-      { h: "Capaciteiten meewegen", p: "Een capaciteitentest laat zien welk leer- en werkniveau past, onafhankelijk van cijfers alleen." },
+-      { h: "Concreet gesprek over keuzes", p: "De uitkomst geeft begeleiders en jongeren een gezamenlijke taal om opties te wegen." },
+-    ],
+     assessmentSlugs: ["studiekeuzetest", "beroepskeuze-test", "cognitieve-test", "interesse-scan", "leerstijlen"],
+-    faq: [
+-      { q: "Vanaf welke leeftijd is dit geschikt?", a: "De studie- en beroepskeuze-instrumenten zijn geschikt voor jongeren die voor een opleidings- of loopbaankeuze staan, en voor starters." },
+-      { q: "Bepaalt de test de keuze?", a: "Nee. De test geeft inzicht en gespreksstof; de keuze blijft altijd aan de jongere zelf, samen met begeleiding." },
+-    ],
++    i18n: {
++      nl: {
++        title: "Assessments voor jong talent en studiekeuze", metaTitle: "Assessments voor jong talent en studiekeuze | hrmforce",
++        metaDescription: "Help jongeren en starters richting kiezen met studiekeuze- en beroepskeuzetests. Breng interesses, capaciteiten en talenten objectief in beeld.", eyebrow: "Toepassing",
++        hero: "Richting geven aan een beginnende loopbaan",
++        intro: "Kiezen aan het begin van een loopbaan is lastig. Assessments brengen interesses, capaciteiten en talenten in beeld, zodat jongeren en starters een onderbouwde keuze maken.",
++        pains: ["Studie- en beroepskeuzes worden gemaakt zonder goed zicht op eigen talenten.", "Starters twijfelen of een richting bij hen past, met uitval of switchen tot gevolg.", "Begeleiders missen een objectief startpunt voor het loopbaangesprek."],
++        approach: [{ h: "Interesses en talenten in beeld", p: "Meet waar iemand energie van krijgt en waar de aanleg ligt, als basis voor een passende richting." }, { h: "Capaciteiten meewegen", p: "Een capaciteitentest laat zien welk leer- en werkniveau past, onafhankelijk van cijfers alleen." }, { h: "Concreet gesprek over keuzes", p: "De uitkomst geeft begeleiders en jongeren een gezamenlijke taal om opties te wegen." }],
++        faq: [{ q: "Vanaf welke leeftijd is dit geschikt?", a: "De studie- en beroepskeuze-instrumenten zijn geschikt voor jongeren die voor een opleidings- of loopbaankeuze staan, en voor starters." }, { q: "Bepaalt de test de keuze?", a: "Nee. De test geeft inzicht en gespreksstof; de keuze blijft altijd aan de jongere zelf, samen met begeleiding." }],
++      },
++      en: {
++        title: "Assessments for young talent and study choice", metaTitle: "Assessments for young talent and study choice | hrmforce",
++        metaDescription: "Help young people and starters choose direction with study- and career-choice tests. Map interests, abilities and talents objectively.", eyebrow: "Application",
++        hero: "Giving direction to an early career",
++        intro: "Choosing at the start of a career is hard. Assessments map interests, abilities and talents, so young people and starters make a grounded choice.",
++        pains: ["Study and career choices are made without a good view of one's own talents.", "Starters doubt whether a direction fits, leading to drop-out or switching.", "Counsellors lack an objective starting point for the career conversation."],
++        approach: [{ h: "Interests and talents in view", p: "Measure what gives someone energy and where the aptitude lies, as a basis for a fitting direction." }, { h: "Weighing abilities", p: "An ability test shows which learning and work level fits, independent of grades alone." }, { h: "A concrete conversation about choices", p: "The outcome gives counsellors and young people a shared language to weigh options." }],
++        faq: [{ q: "From what age is this suitable?", a: "The study- and career-choice instruments are suitable for young people facing an education or career choice, and for starters." }, { q: "Does the test decide the choice?", a: "No. The test gives insight and discussion material; the choice always remains with the young person, together with guidance." }],
++      },
++      de: {
++        title: "Assessments für junge Talente und Studienwahl", metaTitle: "Assessments für junge Talente und Studienwahl | hrmforce",
++        metaDescription: "Helfen Sie jungen Menschen und Berufseinsteigern bei der Orientierung mit Studien- und Berufswahltests. Erfassen Sie Interessen, Fähigkeiten und Talente objektiv.", eyebrow: "Anwendung",
++        hero: "Orientierung für den Berufsstart",
++        intro: "Die Wahl am Anfang einer Laufbahn ist schwierig. Assessments erfassen Interessen, Fähigkeiten und Talente, sodass junge Menschen und Einsteiger fundiert wählen.",
++        pains: ["Studien- und Berufswahl erfolgt ohne guten Blick auf die eigenen Talente.", "Einsteiger zweifeln, ob eine Richtung passt, mit Abbruch oder Wechsel als Folge.", "Begleiter haben keinen objektiven Ausgangspunkt für das Laufbahngespräch."],
++        approach: [{ h: "Interessen und Talente sichtbar", p: "Messen Sie, was jemandem Energie gibt und wo die Anlage liegt, als Basis für eine passende Richtung." }, { h: "Fähigkeiten einbeziehen", p: "Ein Fähigkeitstest zeigt, welches Lern- und Arbeitsniveau passt, unabhängig von Noten allein." }, { h: "Konkretes Gespräch über Optionen", p: "Das Ergebnis gibt Begleitern und Jugendlichen eine gemeinsame Sprache, um Optionen abzuwägen." }],
++        faq: [{ q: "Ab welchem Alter ist das geeignet?", a: "Die Studien- und Berufswahlinstrumente eignen sich für junge Menschen vor einer Ausbildungs- oder Laufbahnwahl und für Einsteiger." }, { q: "Bestimmt der Test die Wahl?", a: "Nein. Der Test gibt Einblick und Gesprächsstoff; die Wahl bleibt beim jungen Menschen, gemeinsam mit Begleitung." }],
++      },
++      fr: {
++        title: "Assessments pour les jeunes talents et l'orientation", metaTitle: "Assessments pour les jeunes talents et l'orientation | hrmforce",
++        metaDescription: "Aidez les jeunes et débutants à choisir une direction avec des tests d'orientation scolaire et professionnelle. Cartographiez intérêts, aptitudes et talents.", eyebrow: "Application",
++        hero: "Donner une direction à un début de carrière",
++        intro: "Choisir en début de carrière est difficile. Les assessments cartographient intérêts, aptitudes et talents, pour que jeunes et débutants fassent un choix fondé.",
++        pains: ["Les choix d'études et de métier se font sans bonne vision de ses talents.", "Les débutants doutent qu'une voie leur convienne, d'où abandon ou réorientation.", "Les accompagnateurs manquent d'un point de départ objectif pour l'entretien d'orientation."],
++        approach: [{ h: "Intérêts et talents en vue", p: "Mesurez ce qui donne de l'énergie et où se situe l'aptitude, comme base d'une direction adaptée." }, { h: "Prendre en compte les aptitudes", p: "Un test d'aptitude montre quel niveau d'apprentissage et de travail convient, au-delà des seules notes." }, { h: "Un échange concret sur les choix", p: "Le résultat donne aux accompagnateurs et aux jeunes un langage commun pour peser les options." }],
++        faq: [{ q: "À partir de quel âge est-ce adapté ?", a: "Les outils d'orientation conviennent aux jeunes face à un choix d'études ou de carrière, et aux débutants." }, { q: "Le test décide-t-il du choix ?", a: "Non. Le test apporte un éclairage et matière à échange ; le choix reste au jeune, avec l'accompagnement." }],
++      },
++      es: {
++        title: "Evaluaciones para jóvenes talentos y orientación", metaTitle: "Evaluaciones para jóvenes talentos y orientación | hrmforce",
++        metaDescription: "Ayuda a jóvenes y personas que empiezan a elegir dirección con tests de orientación académica y profesional. Mapea intereses, aptitudes y talentos.", eyebrow: "Aplicación",
++        hero: "Dar dirección a una carrera que empieza",
++        intro: "Elegir al inicio de una carrera es difícil. Las evaluaciones mapean intereses, aptitudes y talentos, para que jóvenes y quienes empiezan tomen una decisión fundamentada.",
++        pains: ["Las elecciones de estudios y profesión se hacen sin una buena visión de los propios talentos.", "Quienes empiezan dudan si una dirección encaja, con abandono o cambio como consecuencia.", "Los orientadores carecen de un punto de partida objetivo para la conversación de carrera."],
++        approach: [{ h: "Intereses y talentos a la vista", p: "Mide qué da energía a alguien y dónde está la aptitud, como base de una dirección adecuada." }, { h: "Tener en cuenta las aptitudes", p: "Un test de aptitud muestra qué nivel de aprendizaje y trabajo encaja, más allá de las notas." }, { h: "Una conversación concreta sobre las opciones", p: "El resultado da a orientadores y jóvenes un lenguaje común para sopesar opciones." }],
++        faq: [{ q: "¿Desde qué edad es adecuado?", a: "Los instrumentos de orientación sirven para jóvenes ante una elección de estudios o carrera, y para quienes empiezan." }, { q: "¿Decide el test la elección?", a: "No. El test aporta visión y material de conversación; la elección siempre es del joven, junto con la orientación." }],
++      },
++      ro: {
++        title: "Evaluări pentru tinere talente și orientare", metaTitle: "Evaluări pentru tinere talente și orientare | hrmforce",
++        metaDescription: "Ajută tinerii și debutanții să aleagă o direcție cu teste de orientare școlară și profesională. Cartografiază interese, aptitudini și talente.", eyebrow: "Aplicație",
++        hero: "Dai direcție unei cariere la început",
++        intro: "Alegerea la începutul carierei este dificilă. Evaluările cartografiază interese, aptitudini și talente, ca tinerii și debutanții să facă o alegere fundamentată.",
++        pains: ["Alegerile de studii și profesie se fac fără o bună vedere asupra propriilor talente.", "Debutanții se îndoiesc că o direcție li se potrivește, ceea ce duce la abandon sau schimbare.", "Consilierii nu au un punct de plecare obiectiv pentru discuția de carieră."],
++        approach: [{ h: "Interese și talente vizibile", p: "Măsoară ce dă energie cuiva și unde este aptitudinea, ca bază pentru o direcție potrivită." }, { h: "Ia în calcul aptitudinile", p: "Un test de aptitudini arată ce nivel de învățare și muncă se potrivește, dincolo de note." }, { h: "O discuție concretă despre opțiuni", p: "Rezultatul dă consilierilor și tinerilor un limbaj comun pentru a cântări opțiunile." }],
++        faq: [{ q: "De la ce vârstă este potrivit?", a: "Instrumentele de orientare sunt potrivite pentru tinerii în fața unei alegeri de studii sau carieră și pentru debutanți." }, { q: "Testul decide alegerea?", a: "Nu. Testul oferă perspectivă și subiect de discuție; alegerea rămâne mereu a tânărului, împreună cu îndrumarea." }],
++      },
++    },
+   },
+   {
+     slug: "onderwijs", kind: "sector",
+-    title: "Assessments voor het onderwijs",
+-    metaTitle: "Assessments voor het onderwijs | hrmforce",
+-    metaDescription: "Assessments voor onderwijsinstellingen: van studiekeuze en toelating tot ontwikkeling van docenten en teams. Wetenschappelijk onderbouwd en meertalig.",
+-    eyebrow: "Sector", hero: "Onderbouwde keuzes in het onderwijs",
+-    intro: "Onderwijsinstellingen zetten assessments in bij studiekeuze en toelating, én bij de ontwikkeling van docenten en teams. Objectief inzicht helpt studenten en medewerkers verder.",
+-    pains: [
+-      "Studenten kiezen een richting die niet past, met studievertraging of uitval.",
+-      "Bij toelating ontbreekt een objectief beeld van aanleg en motivatie.",
+-      "Professionalisering van docenten mist soms een concreet startpunt.",
+-    ],
+-    approach: [
+-      { h: "Studiekeuze en instroom", p: "Breng interesses en capaciteiten in kaart, zodat studenten beter geïnformeerd kiezen en instromen." },
+-      { h: "Ontwikkeling van medewerkers", p: "Ondersteun de groei van docenten en onderwijsteams met inzicht in competenties en samenwerking." },
+-      { h: "Meertalig en toegankelijk", p: "Vragenlijsten zijn in meerdere talen beschikbaar en online af te nemen, passend bij een diverse populatie." },
+-    ],
+     assessmentSlugs: ["studiekeuzetest", "cognitieve-test", "big-five", "360-graden-feedback", "interesse-scan"],
+-    faq: [
+-      { q: "Zijn de instrumenten geschikt voor studenten?", a: "Ja. Er zijn instrumenten specifiek gericht op studie- en beroepskeuze, naast instrumenten voor de ontwikkeling van medewerkers." },
+-      { q: "Kunnen we dit op grotere schaal inzetten?", a: "Ja. Met een eigen omgeving op licentiebasis neem je eenvoudig en tegen een vaste prijs op grotere schaal af." },
+-    ],
++    i18n: {
++      nl: {
++        title: "Assessments voor het onderwijs", metaTitle: "Assessments voor het onderwijs | hrmforce",
++        metaDescription: "Assessments voor onderwijsinstellingen: van studiekeuze en toelating tot ontwikkeling van docenten en teams. Wetenschappelijk onderbouwd en meertalig.", eyebrow: "Sector",
++        hero: "Onderbouwde keuzes in het onderwijs",
++        intro: "Onderwijsinstellingen zetten assessments in bij studiekeuze en toelating, én bij de ontwikkeling van docenten en teams. Objectief inzicht helpt studenten en medewerkers verder.",
++        pains: ["Studenten kiezen een richting die niet past, met studievertraging of uitval.", "Bij toelating ontbreekt een objectief beeld van aanleg en motivatie.", "Professionalisering van docenten mist soms een concreet startpunt."],
++        approach: [{ h: "Studiekeuze en instroom", p: "Breng interesses en capaciteiten in kaart, zodat studenten beter geïnformeerd kiezen en instromen." }, { h: "Ontwikkeling van medewerkers", p: "Ondersteun de groei van docenten en onderwijsteams met inzicht in competenties en samenwerking." }, { h: "Meertalig en toegankelijk", p: "Vragenlijsten zijn in meerdere talen beschikbaar en online af te nemen, passend bij een diverse populatie." }],
++        faq: [{ q: "Zijn de instrumenten geschikt voor studenten?", a: "Ja. Er zijn instrumenten specifiek gericht op studie- en beroepskeuze, naast instrumenten voor de ontwikkeling van medewerkers." }, { q: "Kunnen we dit op grotere schaal inzetten?", a: "Ja. Met een eigen omgeving op licentiebasis neem je eenvoudig en tegen een vaste prijs op grotere schaal af." }],
++      },
++      en: {
++        title: "Assessments for education", metaTitle: "Assessments for education | hrmforce",
++        metaDescription: "Assessments for educational institutions: from study choice and admission to development of teachers and teams. Scientifically grounded and multilingual.", eyebrow: "Sector",
++        hero: "Grounded choices in education",
++        intro: "Educational institutions use assessments for study choice and admission, and for the development of teachers and teams. Objective insight helps students and staff move forward.",
++        pains: ["Students choose a direction that doesn't fit, causing delays or drop-out.", "At admission an objective view of aptitude and motivation is missing.", "Teacher professionalisation sometimes lacks a concrete starting point."],
++        approach: [{ h: "Study choice and intake", p: "Map interests and abilities so students choose and enrol better informed." }, { h: "Development of staff", p: "Support the growth of teachers and education teams with insight into competencies and collaboration." }, { h: "Multilingual and accessible", p: "Questionnaires are available in several languages and can be taken online, suiting a diverse population." }],
++        faq: [{ q: "Are the instruments suitable for students?", a: "Yes. There are instruments specifically for study and career choice, alongside instruments for staff development." }, { q: "Can we deploy this at larger scale?", a: "Yes. With your own environment on a licence basis you administer easily and at a fixed price at larger scale." }],
++      },
++      de: {
++        title: "Assessments für den Bildungsbereich", metaTitle: "Assessments für den Bildungsbereich | hrmforce",
++        metaDescription: "Assessments für Bildungseinrichtungen: von Studienwahl und Zulassung bis zur Entwicklung von Lehrkräften und Teams. Wissenschaftlich fundiert und mehrsprachig.", eyebrow: "Branche",
++        hero: "Fundierte Entscheidungen im Bildungsbereich",
++        intro: "Bildungseinrichtungen nutzen Assessments bei Studienwahl und Zulassung sowie bei der Entwicklung von Lehrkräften und Teams. Objektive Erkenntnisse bringen Studierende und Mitarbeitende weiter.",
++        pains: ["Studierende wählen eine unpassende Richtung, mit Verzögerung oder Abbruch.", "Bei der Zulassung fehlt ein objektives Bild von Anlage und Motivation.", "Der Professionalisierung von Lehrkräften fehlt manchmal ein konkreter Ausgangspunkt."],
++        approach: [{ h: "Studienwahl und Zugang", p: "Erfassen Sie Interessen und Fähigkeiten, damit Studierende besser informiert wählen und einsteigen." }, { h: "Entwicklung der Mitarbeitenden", p: "Unterstützen Sie das Wachstum von Lehrkräften und Bildungsteams mit Einblick in Kompetenzen und Zusammenarbeit." }, { h: "Mehrsprachig und zugänglich", p: "Fragebögen sind in mehreren Sprachen verfügbar und online durchführbar, passend zu einer vielfältigen Population." }],
++        faq: [{ q: "Sind die Instrumente für Studierende geeignet?", a: "Ja. Es gibt Instrumente speziell für Studien- und Berufswahl sowie Instrumente für die Mitarbeiterentwicklung." }, { q: "Können wir das in größerem Umfang einsetzen?", a: "Ja. Mit einer eigenen Umgebung auf Lizenzbasis führen Sie einfach und zum Festpreis in größerem Umfang durch." }],
++      },
++      fr: {
++        title: "Assessments pour l'éducation", metaTitle: "Assessments pour l'éducation | hrmforce",
++        metaDescription: "Assessments pour les établissements d'enseignement : de l'orientation et l'admission au développement des enseignants et des équipes. Fondé scientifiquement et multilingue.", eyebrow: "Secteur",
++        hero: "Des choix fondés dans l'éducation",
++        intro: "Les établissements utilisent les assessments pour l'orientation et l'admission, et pour le développement des enseignants et des équipes. Un éclairage objectif fait avancer étudiants et personnel.",
++        pains: ["Les étudiants choisissent une voie inadaptée, d'où retards ou abandons.", "À l'admission, une vision objective des aptitudes et de la motivation manque.", "La professionnalisation des enseignants manque parfois d'un point de départ concret."],
++        approach: [{ h: "Orientation et admission", p: "Cartographiez intérêts et aptitudes pour que les étudiants choisissent et s'inscrivent mieux informés." }, { h: "Développement du personnel", p: "Soutenez la croissance des enseignants et des équipes avec un éclairage sur les compétences et la collaboration." }, { h: "Multilingue et accessible", p: "Les questionnaires sont disponibles en plusieurs langues et en ligne, adaptés à une population diverse." }],
++        faq: [{ q: "Les outils conviennent-ils aux étudiants ?", a: "Oui. Il existe des outils dédiés à l'orientation scolaire et professionnelle, ainsi que des outils pour le développement du personnel." }, { q: "Peut-on déployer à plus grande échelle ?", a: "Oui. Avec votre propre environnement sous licence, vous administrez facilement et à prix fixe à plus grande échelle." }],
++      },
++      es: {
++        title: "Evaluaciones para la educación", metaTitle: "Evaluaciones para la educación | hrmforce",
++        metaDescription: "Evaluaciones para centros educativos: de la orientación y admisión al desarrollo de docentes y equipos. Con base científica y multilingüe.", eyebrow: "Sector",
++        hero: "Decisiones fundamentadas en la educación",
++        intro: "Los centros educativos usan evaluaciones para orientación y admisión, y para el desarrollo de docentes y equipos. Una visión objetiva ayuda a estudiantes y personal.",
++        pains: ["Los estudiantes eligen una dirección que no encaja, con retrasos o abandono.", "En la admisión falta una visión objetiva de aptitud y motivación.", "La profesionalización del profesorado a veces carece de un punto de partida concreto."],
++        approach: [{ h: "Orientación y admisión", p: "Mapea intereses y aptitudes para que los estudiantes elijan e ingresen mejor informados." }, { h: "Desarrollo del personal", p: "Apoya el crecimiento de docentes y equipos con visión de competencias y colaboración." }, { h: "Multilingüe y accesible", p: "Los cuestionarios están disponibles en varios idiomas y en línea, adecuados a una población diversa." }],
++        faq: [{ q: "¿Son adecuados los instrumentos para estudiantes?", a: "Sí. Hay instrumentos específicos de orientación académica y profesional, además de instrumentos para el desarrollo del personal." }, { q: "¿Podemos usarlo a mayor escala?", a: "Sí. Con tu propio entorno con licencia administras con facilidad y a precio fijo a mayor escala." }],
++      },
++      ro: {
++        title: "Evaluări pentru educație", metaTitle: "Evaluări pentru educație | hrmforce",
++        metaDescription: "Evaluări pentru instituții de învățământ: de la orientare și admitere la dezvoltarea cadrelor didactice și a echipelor. Fundamentat științific și multilingv.", eyebrow: "Sector",
++        hero: "Decizii fundamentate în educație",
++        intro: "Instituțiile de învățământ folosesc evaluări la orientare și admitere și la dezvoltarea cadrelor didactice și a echipelor. Perspectiva obiectivă ajută studenții și personalul.",
++        pains: ["Studenții aleg o direcție nepotrivită, ceea ce duce la întârzieri sau abandon.", "La admitere lipsește o imagine obiectivă a aptitudinii și motivației.", "Profesionalizării cadrelor didactice îi lipsește uneori un punct de plecare concret."],
++        approach: [{ h: "Orientare și admitere", p: "Cartografiază interese și aptitudini ca studenții să aleagă și să se înscrie mai bine informați." }, { h: "Dezvoltarea personalului", p: "Sprijină creșterea cadrelor didactice și a echipelor cu perspectivă asupra competențelor și colaborării." }, { h: "Multilingv și accesibil", p: "Chestionarele sunt disponibile în mai multe limbi și online, potrivite unei populații diverse." }],
++        faq: [{ q: "Sunt instrumentele potrivite pentru studenți?", a: "Da. Există instrumente dedicate orientării școlare și profesionale, pe lângă instrumente pentru dezvoltarea personalului." }, { q: "Le putem folosi la scară mai mare?", a: "Da. Cu propriul mediu pe bază de licență administrezi ușor și la preț fix la scară mai mare." }],
++      },
++    },
+   },
+   {
+     slug: "industrie", kind: "sector",
+-    title: "Assessments voor de industrie en techniek",
+-    metaTitle: "Assessments voor de industrie en techniek | hrmforce",
+-    metaDescription: "Assessments voor industrie en techniek: objectief selecteren, teams versterken en medewerkers duurzaam inzetbaar houden. Wetenschappelijk gevalideerd.",
+-    eyebrow: "Sector", hero: "Vakmensen vinden, binden en ontwikkelen",
+-    intro: "In industrie en techniek is de arbeidsmarkt krap en telt elke aanname. Assessments helpen om objectief te selecteren, teams te versterken en mensen duurzaam inzetbaar te houden.",
+-    pains: [
+-      "Krappe arbeidsmarkt maakt elke verkeerde aanname extra kostbaar.",
+-      "Vakinhoud is te toetsen, maar hoe beoordeel je samenwerking en veerkracht?",
+-      "Fysiek en mentaal zwaar werk vraagt aandacht voor duurzame inzetbaarheid.",
+-    ],
+-    approach: [
+-      { h: "Objectief selecteren", p: "Meet capaciteiten en werkgedrag naast vakkennis, zodat nieuwe medewerkers beter passen bij de functie en het team." },
+-      { h: "Sterkere teams", p: "Breng team- en samenwerkingsdynamiek in kaart en verbeter de onderlinge afstemming op de werkvloer." },
+-      { h: "Duurzaam inzetbaar", p: "Krijg zicht op belastbaarheid en veerkracht, zodat je tijdig kunt sturen op inzetbaarheid." },
+-    ],
+     assessmentSlugs: ["cognitieve-test", "disc-test", "competentie-check", "mentale-veerkracht-scan", "teamanalyse", "duurzame-inzetbaarheid-scan"],
+-    faq: [
+-      { q: "Werken de vragenlijsten ook voor productiemedewerkers?", a: "Ja. Er zijn non-verbale capaciteitentests die onafhankelijk van taal en opleiding het denkvermogen meten, geschikt voor uiteenlopende functies." },
+-      { q: "Kunnen we meertalig afnemen?", a: "Ja. De vragenlijsten zijn in meerdere talen beschikbaar, handig bij een internationale personeelssamenstelling." },
+-    ],
++    i18n: {
++      nl: {
++        title: "Assessments voor de industrie en techniek", metaTitle: "Assessments voor de industrie en techniek | hrmforce",
++        metaDescription: "Assessments voor industrie en techniek: objectief selecteren, teams versterken en medewerkers duurzaam inzetbaar houden. Wetenschappelijk gevalideerd.", eyebrow: "Sector",
++        hero: "Vakmensen vinden, binden en ontwikkelen",
++        intro: "In industrie en techniek is de arbeidsmarkt krap en telt elke aanname. Assessments helpen om objectief te selecteren, teams te versterken en mensen duurzaam inzetbaar te houden.",
++        pains: ["Krappe arbeidsmarkt maakt elke verkeerde aanname extra kostbaar.", "Vakinhoud is te toetsen, maar hoe beoordeel je samenwerking en veerkracht?", "Fysiek en mentaal zwaar werk vraagt aandacht voor duurzame inzetbaarheid."],
++        approach: [{ h: "Objectief selecteren", p: "Meet capaciteiten en werkgedrag naast vakkennis, zodat nieuwe medewerkers beter passen bij de functie en het team." }, { h: "Sterkere teams", p: "Breng team- en samenwerkingsdynamiek in kaart en verbeter de onderlinge afstemming op de werkvloer." }, { h: "Duurzaam inzetbaar", p: "Krijg zicht op belastbaarheid en veerkracht, zodat je tijdig kunt sturen op inzetbaarheid." }],
++        faq: [{ q: "Werken de vragenlijsten ook voor productiemedewerkers?", a: "Ja. Er zijn non-verbale capaciteitentests die onafhankelijk van taal en opleiding het denkvermogen meten, geschikt voor uiteenlopende functies." }, { q: "Kunnen we meertalig afnemen?", a: "Ja. De vragenlijsten zijn in meerdere talen beschikbaar, handig bij een internationale personeelssamenstelling." }],
++      },
++      en: {
++        title: "Assessments for industry and engineering", metaTitle: "Assessments for industry and engineering | hrmforce",
++        metaDescription: "Assessments for industry and engineering: select objectively, strengthen teams and keep employees sustainably employable. Scientifically validated.", eyebrow: "Sector",
++        hero: "Find, bind and develop skilled people",
++        intro: "In industry and engineering the labour market is tight and every hire counts. Assessments help you select objectively, strengthen teams and keep people sustainably employable.",
++        pains: ["A tight labour market makes every wrong hire extra costly.", "Technical skills can be tested, but how do you assess collaboration and resilience?", "Physically and mentally demanding work calls for attention to sustainable employability."],
++        approach: [{ h: "Select objectively", p: "Measure ability and work behaviour alongside expertise, so new employees fit the role and the team better." }, { h: "Stronger teams", p: "Map team and collaboration dynamics and improve alignment on the shop floor." }, { h: "Sustainably employable", p: "Get insight into workload capacity and resilience, so you can steer on employability in time." }],
++        faq: [{ q: "Do the questionnaires also work for production staff?", a: "Yes. There are non-verbal ability tests that measure thinking capacity independent of language and education, suitable for varied roles." }, { q: "Can we administer multilingually?", a: "Yes. The questionnaires are available in several languages, handy for an international workforce." }],
++      },
++      de: {
++        title: "Assessments für Industrie und Technik", metaTitle: "Assessments für Industrie und Technik | hrmforce",
++        metaDescription: "Assessments für Industrie und Technik: objektiv auswählen, Teams stärken und Mitarbeitende nachhaltig einsetzbar halten. Wissenschaftlich validiert.", eyebrow: "Branche",
++        hero: "Fachkräfte finden, binden und entwickeln",
++        intro: "In Industrie und Technik ist der Arbeitsmarkt angespannt und jede Einstellung zählt. Assessments helfen, objektiv auszuwählen, Teams zu stärken und Menschen nachhaltig einsetzbar zu halten.",
++        pains: ["Ein angespannter Arbeitsmarkt macht jede Fehlbesetzung besonders kostspielig.", "Fachwissen ist prüfbar, aber wie beurteilt man Zusammenarbeit und Resilienz?", "Körperlich und mental fordernde Arbeit erfordert Aufmerksamkeit für nachhaltige Einsetzbarkeit."],
++        approach: [{ h: "Objektiv auswählen", p: "Messen Sie Fähigkeiten und Arbeitsverhalten neben Fachwissen, damit neue Mitarbeitende besser zur Stelle und zum Team passen." }, { h: "Stärkere Teams", p: "Erfassen Sie Team- und Kooperationsdynamik und verbessern Sie die Abstimmung am Arbeitsplatz." }, { h: "Nachhaltig einsetzbar", p: "Gewinnen Sie Einblick in Belastbarkeit und Resilienz, um rechtzeitig auf Einsetzbarkeit zu steuern." }],
++        faq: [{ q: "Funktionieren die Fragebögen auch für Produktionsmitarbeitende?", a: "Ja. Es gibt non-verbale Fähigkeitstests, die das Denkvermögen unabhängig von Sprache und Bildung messen, geeignet für verschiedene Funktionen." }, { q: "Können wir mehrsprachig durchführen?", a: "Ja. Die Fragebögen sind in mehreren Sprachen verfügbar, praktisch bei internationaler Belegschaft." }],
++      },
++      fr: {
++        title: "Assessments pour l'industrie et la technique", metaTitle: "Assessments pour l'industrie et la technique | hrmforce",
++        metaDescription: "Assessments pour l'industrie et la technique : sélectionner objectivement, renforcer les équipes et maintenir l'employabilité durable. Validé scientifiquement.", eyebrow: "Secteur",
++        hero: "Trouver, fidéliser et développer les experts",
++        intro: "Dans l'industrie et la technique, le marché du travail est tendu et chaque embauche compte. Les assessments aident à sélectionner objectivement, renforcer les équipes et préserver l'employabilité durable.",
++        pains: ["Un marché tendu rend chaque mauvaise embauche extra coûteuse.", "Le savoir-faire se teste, mais comment évaluer collaboration et résilience ?", "Un travail physiquement et mentalement exigeant demande de l'attention à l'employabilité durable."],
++        approach: [{ h: "Sélectionner objectivement", p: "Mesurez aptitudes et comportement au travail au-delà de l'expertise, pour que les nouveaux collaborateurs correspondent mieux au poste et à l'équipe." }, { h: "Des équipes plus fortes", p: "Cartographiez la dynamique d'équipe et de collaboration et améliorez l'alignement sur le terrain." }, { h: "Employabilité durable", p: "Obtenez un éclairage sur la capacité de charge et la résilience, pour piloter l'employabilité à temps." }],
++        faq: [{ q: "Les questionnaires conviennent-ils aussi aux opérateurs de production ?", a: "Oui. Il existe des tests d'aptitude non verbaux qui mesurent la réflexion indépendamment de la langue et de la formation, adaptés à des postes variés." }, { q: "Peut-on administrer en plusieurs langues ?", a: "Oui. Les questionnaires sont disponibles en plusieurs langues, pratique pour une main-d'œuvre internationale." }],
++      },
++      es: {
++        title: "Evaluaciones para la industria y la técnica", metaTitle: "Evaluaciones para la industria y la técnica | hrmforce",
++        metaDescription: "Evaluaciones para industria y técnica: seleccionar de forma objetiva, reforzar equipos y mantener la empleabilidad sostenible. Validado científicamente.", eyebrow: "Sector",
++        hero: "Encontrar, fidelizar y desarrollar a los expertos",
++        intro: "En la industria y la técnica el mercado laboral está tenso y cada contratación cuenta. Las evaluaciones ayudan a seleccionar de forma objetiva, reforzar equipos y mantener la empleabilidad sostenible.",
++        pains: ["Un mercado tenso encarece aún más cada contratación errónea.", "El conocimiento técnico se evalúa, pero ¿cómo valoras la colaboración y la resiliencia?", "El trabajo física y mentalmente exigente requiere atención a la empleabilidad sostenible."],
++        approach: [{ h: "Seleccionar de forma objetiva", p: "Mide aptitudes y comportamiento laboral junto al conocimiento técnico, para que los nuevos encajen mejor en el puesto y el equipo." }, { h: "Equipos más fuertes", p: "Mapea la dinámica de equipo y colaboración y mejora la coordinación en planta." }, { h: "Empleabilidad sostenible", p: "Obtén visión de la capacidad de carga y la resiliencia, para dirigir la empleabilidad a tiempo." }],
++        faq: [{ q: "¿Funcionan los cuestionarios para personal de producción?", a: "Sí. Hay tests de aptitud no verbales que miden el razonamiento independiente del idioma y la formación, adecuados para diversos puestos." }, { q: "¿Podemos administrar en varios idiomas?", a: "Sí. Los cuestionarios están disponibles en varios idiomas, útil para una plantilla internacional." }],
++      },
++      ro: {
++        title: "Evaluări pentru industrie și tehnică", metaTitle: "Evaluări pentru industrie și tehnică | hrmforce",
++        metaDescription: "Evaluări pentru industrie și tehnică: selecție obiectivă, echipe mai puternice și angajați menținuți sustenabil în activitate. Validat științific.", eyebrow: "Sector",
++        hero: "Găsește, fidelizează și dezvoltă specialiștii",
++        intro: "În industrie și tehnică piața muncii este tensionată și fiecare angajare contează. Evaluările ajută la selecție obiectivă, întărirea echipelor și menținerea sustenabilă a angajaților.",
++        pains: ["O piață tensionată face fiecare angajare greșită și mai costisitoare.", "Cunoștințele tehnice se testează, dar cum evaluezi colaborarea și reziliența?", "Munca solicitantă fizic și mental cere atenție la inserabilitatea sustenabilă."],
++        approach: [{ h: "Selecție obiectivă", p: "Măsoară aptitudini și comportament de muncă pe lângă expertiză, ca noii angajați să se potrivească mai bine postului și echipei." }, { h: "Echipe mai puternice", p: "Cartografiază dinamica de echipă și colaborare și îmbunătățește coordonarea la locul de muncă." }, { h: "Inserabilitate sustenabilă", p: "Obține perspectivă asupra capacității de efort și rezilienței, ca să gestionezi inserabilitatea la timp." }],
++        faq: [{ q: "Funcționează chestionarele și pentru personalul de producție?", a: "Da. Există teste de aptitudini non-verbale care măsoară capacitatea de gândire independent de limbă și educație, potrivite pentru roluri diverse." }, { q: "Putem administra multilingv?", a: "Da. Chestionarele sunt disponibile în mai multe limbi, util pentru o forță de muncă internațională." }],
++      },
++    },
+   },
+ ];
++
++export const LAND_UI = {
++  "nl": {
++    "home": "Home",
++    "toep": "Toepassingen",
++    "demo": "Plan een gratis demo",
++    "allass": "Bekijk alle assessments",
++    "painsEy": "Herkenbaar?",
++    "painsT": "Waar loop je tegenaan",
++    "apEy": "Onze aanpak",
++    "apT": "Zo helpt hrmforce",
++    "linkEy": "Passende instrumenten",
++    "linkT": "Assessments die hier vaak bij passen",
++    "linkCta": "Bekijk assessment",
++    "faqEy": "Veelgestelde vragen",
++    "faqPre": "Vragen over",
++    "formEy": "Sparren?",
++    "formT": "Ontdek wat past bij jouw situatie",
++    "formLead": "Laat je gegevens achter, dan denken we vrijblijvend mee over de juiste aanpak.",
++    "interest": "Interesse",
++    "fn": "Voornaam",
++    "we": "Werk e-mail",
++    "comp": "Bedrijfsnaam",
++    "send": "Verzenden",
++    "idxTitle": "Toepassingen en sectoren | Assessments van hrmforce",
++    "idxDesc": "Ontdek hoe je assessments inzet voor werving, ontwikkeling, leiderschap en jong talent, en per sector zoals zorg, onderwijs en industrie.",
++    "idxHero": "Waar wil je assessments voor inzetten?",
++    "idxIntro": "Van werving tot ontwikkeling en van zorg tot industrie: bekijk hoe je onze wetenschappelijk gevalideerde assessments inzet voor jouw vraag.",
++    "perGoal": "Per doel",
++    "perSector": "Per sector",
++    "sectors": "Sectoren",
++    "readmore": "Lees meer",
++    "zorgT": "Assessments voor de zorg",
++    "zorgD": "Objectief selecteren en ontwikkelen in zorg en welzijn, met vragenlijsten die passen bij de praktijk.",
++    "ctaT": "Niet zeker welke aanpak past?",
++    "ctaD": "Plan een vrijblijvende demo, dan bekijken we samen welke instrumenten aansluiten bij jouw vraag.",
++    "ctaBtn": "Plan een gratis demo"
++  },
++  "en": {
++    "home": "Home",
++    "toep": "Applications",
++    "demo": "Book a free demo",
++    "allass": "View all assessments",
++    "painsEy": "Sound familiar?",
++    "painsT": "What you're running into",
++    "apEy": "Our approach",
++    "apT": "How hrmforce helps",
++    "linkEy": "Suitable instruments",
++    "linkT": "Assessments that often fit here",
++    "linkCta": "View assessment",
++    "faqEy": "Frequently asked questions",
++    "faqPre": "Questions about",
++    "formEy": "Want to spar?",
++    "formT": "Discover what fits your situation",
++    "formLead": "Leave your details and we'll think along, with no obligation, about the right approach.",
++    "interest": "Interest",
++    "fn": "First name",
++    "we": "Work email",
++    "comp": "Company name",
++    "send": "Send",
++    "idxTitle": "Applications and sectors | Assessments by hrmforce",
++    "idxDesc": "Discover how to use assessments for recruitment, development, leadership and young talent, and per sector such as care, education and industry.",
++    "idxHero": "What do you want to use assessments for?",
++    "idxIntro": "From recruitment to development and from care to industry: see how to use our scientifically validated assessments for your question.",
++    "perGoal": "By goal",
++    "perSector": "By sector",
++    "sectors": "Sectors",
++    "readmore": "Read more",
++    "zorgT": "Assessments for healthcare",
++    "zorgD": "Select and develop objectively in care and welfare, with questionnaires that suit practice.",
++    "ctaT": "Not sure which approach fits?",
++    "ctaD": "Book a no-obligation demo and we'll look together at which instruments match your question.",
++    "ctaBtn": "Book a free demo"
++  },
++  "de": {
++    "home": "Home",
++    "toep": "Anwendungen",
++    "demo": "Kostenlose Demo buchen",
++    "allass": "Alle Assessments ansehen",
++    "painsEy": "Kommt Ihnen das bekannt vor?",
++    "painsT": "Woran es hakt",
++    "apEy": "Unser Ansatz",
++    "apT": "So hilft hrmforce",
++    "linkEy": "Passende Instrumente",
++    "linkT": "Assessments, die hier oft passen",
++    "linkCta": "Assessment ansehen",
++    "faqEy": "Häufig gestellte Fragen",
++    "faqPre": "Fragen zu",
++    "formEy": "Austauschen?",
++    "formT": "Entdecken Sie, was zu Ihrer Situation passt",
++    "formLead": "Hinterlassen Sie Ihre Daten, dann denken wir unverbindlich über den richtigen Ansatz mit.",
++    "interest": "Interesse",
++    "fn": "Vorname",
++    "we": "Geschäftliche E-Mail",
++    "comp": "Firmenname",
++    "send": "Senden",
++    "idxTitle": "Anwendungen und Branchen | Assessments von hrmforce",
++    "idxDesc": "Entdecken Sie, wie Sie Assessments für Recruiting, Entwicklung, Führung und junge Talente einsetzen, und je Branche wie Pflege, Bildung und Industrie.",
++    "idxHero": "Wofür möchten Sie Assessments einsetzen?",
++    "idxIntro": "Von Recruiting bis Entwicklung und von Pflege bis Industrie: Sehen Sie, wie Sie unsere wissenschaftlich validierten Assessments für Ihre Frage einsetzen.",
++    "perGoal": "Nach Ziel",
++    "perSector": "Nach Branche",
++    "sectors": "Branchen",
++    "readmore": "Mehr lesen",
++    "zorgT": "Assessments für die Pflege",
++    "zorgD": "Objektiv auswählen und entwickeln in Pflege und Sozialwesen, mit Fragebögen, die zur Praxis passen.",
++    "ctaT": "Unsicher, welcher Ansatz passt?",
++    "ctaD": "Buchen Sie eine unverbindliche Demo, dann schauen wir gemeinsam, welche Instrumente zu Ihrer Frage passen.",
++    "ctaBtn": "Kostenlose Demo buchen"
++  },
++  "fr": {
++    "home": "Accueil",
++    "toep": "Applications",
++    "demo": "Réserver une démo gratuite",
++    "allass": "Voir tous les assessments",
++    "painsEy": "Cela vous parle ?",
++    "painsT": "Ce à quoi vous êtes confronté",
++    "apEy": "Notre approche",
++    "apT": "Comment hrmforce aide",
++    "linkEy": "Instruments adaptés",
++    "linkT": "Les assessments qui conviennent souvent ici",
++    "linkCta": "Voir l'assessment",
++    "faqEy": "Questions fréquentes",
++    "faqPre": "Questions sur",
++    "formEy": "Envie d'échanger ?",
++    "formT": "Découvrez ce qui convient à votre situation",
++    "formLead": "Laissez vos coordonnées et nous réfléchirons avec vous, sans engagement, à la bonne approche.",
++    "interest": "Intérêt",
++    "fn": "Prénom",
++    "we": "E-mail professionnel",
++    "comp": "Nom de l'entreprise",
++    "send": "Envoyer",
++    "idxTitle": "Applications et secteurs | Assessments de hrmforce",
++    "idxDesc": "Découvrez comment utiliser les assessments pour le recrutement, le développement, le leadership et les jeunes talents, et par secteur comme la santé, l'éducation et l'industrie.",
++    "idxHero": "Pour quoi voulez-vous utiliser les assessments ?",
++    "idxIntro": "Du recrutement au développement et de la santé à l'industrie : voyez comment utiliser nos assessments validés scientifiquement pour votre question.",
++    "perGoal": "Par objectif",
++    "perSector": "Par secteur",
++    "sectors": "Secteurs",
++    "readmore": "En savoir plus",
++    "zorgT": "Assessments pour la santé",
++    "zorgD": "Sélectionner et développer objectivement dans la santé et le social, avec des questionnaires adaptés à la pratique.",
++    "ctaT": "Vous ne savez pas quelle approche convient ?",
++    "ctaD": "Réservez une démo sans engagement et nous verrons ensemble quels instruments correspondent à votre question.",
++    "ctaBtn": "Réserver une démo gratuite"
++  },
++  "es": {
++    "home": "Inicio",
++    "toep": "Aplicaciones",
++    "demo": "Reservar una demo gratuita",
++    "allass": "Ver todas las evaluaciones",
++    "painsEy": "¿Te suena?",
++    "painsT": "A lo que te enfrentas",
++    "apEy": "Nuestro enfoque",
++    "apT": "Así ayuda hrmforce",
++    "linkEy": "Instrumentos adecuados",
++    "linkT": "Evaluaciones que suelen encajar aquí",
++    "linkCta": "Ver evaluación",
++    "faqEy": "Preguntas frecuentes",
++    "faqPre": "Preguntas sobre",
++    "formEy": "¿Quieres comentarlo?",
++    "formT": "Descubre qué encaja con tu situación",
++    "formLead": "Deja tus datos y pensaremos contigo, sin compromiso, en el enfoque adecuado.",
++    "interest": "Interés",
++    "fn": "Nombre",
++    "we": "Correo profesional",
++    "comp": "Nombre de la empresa",
++    "send": "Enviar",
++    "idxTitle": "Aplicaciones y sectores | Evaluaciones de hrmforce",
++    "idxDesc": "Descubre cómo usar las evaluaciones para selección, desarrollo, liderazgo y talento joven, y por sector como sanidad, educación e industria.",
++    "idxHero": "¿Para qué quieres usar las evaluaciones?",
++    "idxIntro": "De la selección al desarrollo y de la sanidad a la industria: mira cómo usar nuestras evaluaciones validadas científicamente para tu pregunta.",
++    "perGoal": "Por objetivo",
++    "perSector": "Por sector",
++    "sectors": "Sectores",
++    "readmore": "Leer más",
++    "zorgT": "Evaluaciones para la sanidad",
++    "zorgD": "Seleccionar y desarrollar de forma objetiva en sanidad y bienestar, con cuestionarios adaptados a la práctica.",
++    "ctaT": "¿No sabes qué enfoque encaja?",
++    "ctaD": "Reserva una demo sin compromiso y veremos juntos qué instrumentos se ajustan a tu pregunta.",
++    "ctaBtn": "Reservar una demo gratuita"
++  },
++  "ro": {
++    "home": "Acasă",
++    "toep": "Aplicații",
++    "demo": "Rezervă o demonstrație gratuită",
++    "allass": "Vezi toate evaluările",
++    "painsEy": "Sună cunoscut?",
++    "painsT": "Cu ce te confrunți",
++    "apEy": "Abordarea noastră",
++    "apT": "Cum ajută hrmforce",
++    "linkEy": "Instrumente potrivite",
++    "linkT": "Evaluări care se potrivesc adesea aici",
++    "linkCta": "Vezi evaluarea",
++    "faqEy": "Întrebări frecvente",
++    "faqPre": "Întrebări despre",
++    "formEy": "Vrei să discutăm?",
++    "formT": "Descoperă ce se potrivește situației tale",
++    "formLead": "Lasă-ne datele tale și ne gândim împreună, fără obligații, la abordarea potrivită.",
++    "interest": "Interes",
++    "fn": "Prenume",
++    "we": "E-mail de serviciu",
++    "comp": "Numele companiei",
++    "send": "Trimite",
++    "idxTitle": "Aplicații și sectoare | Evaluări de la hrmforce",
++    "idxDesc": "Descoperă cum folosești evaluările pentru recrutare, dezvoltare, leadership și tineri talentați, și pe sectoare precum sănătate, educație și industrie.",
++    "idxHero": "Pentru ce vrei să folosești evaluările?",
++    "idxIntro": "De la recrutare la dezvoltare și de la sănătate la industrie: vezi cum folosești evaluările noastre validate științific pentru întrebarea ta.",
++    "perGoal": "După obiectiv",
++    "perSector": "După sector",
++    "sectors": "Sectoare",
++    "readmore": "Citește mai mult",
++    "zorgT": "Evaluări pentru sănătate",
++    "zorgD": "Selectează și dezvoltă obiectiv în sănătate și asistență socială, cu chestionare potrivite practicii.",
++    "ctaT": "Nu ești sigur ce abordare se potrivește?",
++    "ctaD": "Rezervă o demonstrație fără obligații și vedem împreună ce instrumente se potrivesc întrebării tale.",
++    "ctaBtn": "Rezervă o demonstrație gratuită"
++  }
++};
+diff --git a/src/data/reviews-content.js b/src/data/reviews-content.js
+new file mode 100644
+index 0000000..62fde14
+--- /dev/null
++++ b/src/data/reviews-content.js
+@@ -0,0 +1,15 @@
++// Meertalige reviews (referenties). REAL = echte Google-reviews (citaat vertaald, naam behouden).
++export const REVIEW_HEADINGS = {
++  default: { nl:"Wat opdrachtgevers merken", en:"What clients notice", de:"Was Auftraggeber bemerken", fr:"Ce que les clients constatent", es:"Lo que notan los clientes", ro:"Ce observă clienții" },
++  clients: { nl:"Wat opdrachtgevers merken", en:"What clients notice", de:"Was Auftraggeber bemerken", fr:"Ce que les clients constatent", es:"Lo que notan los clientes", ro:"Ce observă clienții" },
++  buyers: { nl:"Wat kopers zeggen", en:"What buyers say", de:"Was Käufer sagen", fr:"Ce que disent les acheteurs", es:"Lo que dicen los compradores", ro:"Ce spun cumpărătorii" },
++};
++
++export const REVIEWS = {
++  nl: [{who:"Hanneke de Bruin",org:"Google-review",stars:5,quote:"Ik ben zeer onder de indruk van hrmforce. Goede kwaliteit, professionals zijn direct beschikbaar voor advies, heldere en goede testen en duidelijke rapportage."},{who:"Esther Moolenaar",org:"Google-review",stars:5,quote:"Enorm klantvriendelijk en meedenkend. hrmforce heeft mij geholpen talenten en ontwikkelpunten van mijn medewerkers in kaart te brengen, wat heeft gezorgd voor een enorm boost voor het bedrijf."},{who:"Renate",org:"Google-review",stars:5,quote:"Zeer prettig en professioneel contact en goede samenwerking met Floor."},{who:"Eric Hoogeweg",org:"Google-review",stars:5,quote:"Goede dienstverlener met uitstekende tools voor talentontwikkeling. Zo help je organisaties vooruit."},{who:"Juliëtte Kamphuis",org:"Google-review",stars:5,quote:"Leuke gratis kleurentest gedaan. Prettige en snelle terugkoppeling."},{who:"HR-adviseur",org:"Zorgorganisatie",stars:5,quote:"De rapportages geven ons eindelijk een objectief gesprek in plaats van onderbuikgevoel. We selecteren sneller en met meer vertrouwen."},{who:"Recruiter",org:"Industrie",stars:5,quote:"Binnen een dag reactie en heldere terugkoppeling. De mensen die we aannemen passen echt beter bij de functie."},{who:"Manager L&D",org:"Financiële dienstverlening",stars:5,quote:"De ontwikkelrapporten maken loopbaangesprekken concreter. Medewerkers herkennen zich erin en gaan er zelf mee aan de slag."},{who:"HR-directeur",org:"Onderwijs",stars:4,quote:"Wetenschappelijk onderbouwd en toch praktisch. De begeleiding door het team van hrmforce is prettig en snel."},{who:"Teamlead werving",org:"Overheid",stars:5,quote:"Structuur in onze gesprekscyclus en minder verloop. De voortgang bijhouden kost ons nu bijna geen tijd meer."}],
++  en: [{who:"Hanneke de Bruin",org:"Google review",stars:5,quote:"I'm very impressed with hrmforce. Great quality, professionals are immediately available for advice, clear and good tests and clear reporting."},{who:"Esther Moolenaar",org:"Google review",stars:5,quote:"Extremely customer-friendly and helpful. hrmforce helped me map the talents and development points of my employees, which gave the company a huge boost."},{who:"Renate",org:"Google review",stars:5,quote:"Very pleasant and professional contact and good cooperation with Floor."},{who:"Eric Hoogeweg",org:"Google review",stars:5,quote:"Good service provider with excellent tools for talent development. This is how you move organisations forward."},{who:"Juliëtte Kamphuis",org:"Google review",stars:5,quote:"Did a nice free colour test. Pleasant and quick feedback."},{who:"HR advisor",org:"Healthcare organisation",stars:5,quote:"The reports finally give us an objective conversation instead of gut feeling. We select faster and with more confidence."},{who:"Recruiter",org:"Manufacturing",stars:5,quote:"A response within a day and clear feedback. The people we hire really fit the role better."},{who:"L&D manager",org:"Financial services",stars:5,quote:"The development reports make career conversations more concrete. Employees recognise themselves in them and act on them."},{who:"HR director",org:"Education",stars:4,quote:"Scientifically grounded yet practical. The support from the hrmforce team is pleasant and fast."},{who:"Recruitment team lead",org:"Government",stars:5,quote:"Structure in our interview cycle and less turnover. Tracking progress now takes us almost no time."}],
++  de: [{who:"Hanneke de Bruin",org:"Google-Rezension",stars:5,quote:"Ich bin sehr beeindruckt von hrmforce. Gute Qualität, Fachleute sind sofort für Beratung verfügbar, klare und gute Tests und verständliche Berichte."},{who:"Esther Moolenaar",org:"Google-Rezension",stars:5,quote:"Äußerst kundenfreundlich und mitdenkend. hrmforce hat mir geholfen, Talente und Entwicklungspunkte meiner Mitarbeitenden zu erfassen, was dem Unternehmen einen enormen Schub gab."},{who:"Renate",org:"Google-Rezension",stars:5,quote:"Sehr angenehmer und professioneller Kontakt und gute Zusammenarbeit mit Floor."},{who:"Eric Hoogeweg",org:"Google-Rezension",stars:5,quote:"Guter Dienstleister mit ausgezeichneten Tools für Talententwicklung. So bringt man Organisationen voran."},{who:"Juliëtte Kamphuis",org:"Google-Rezension",stars:5,quote:"Habe einen schönen kostenlosen Farbtest gemacht. Angenehmes und schnelles Feedback."},{who:"HR-Berater",org:"Gesundheitsorganisation",stars:5,quote:"Die Berichte geben uns endlich ein objektives Gespräch statt Bauchgefühl. Wir wählen schneller und mit mehr Vertrauen."},{who:"Recruiter",org:"Industrie",stars:5,quote:"Innerhalb eines Tages eine Antwort und klares Feedback. Die Menschen, die wir einstellen, passen wirklich besser zur Stelle."},{who:"L&D-Manager",org:"Finanzdienstleistung",stars:5,quote:"Die Entwicklungsberichte machen Laufbahngespräche konkreter. Mitarbeitende erkennen sich darin und werden selbst aktiv."},{who:"HR-Direktor",org:"Bildung",stars:4,quote:"Wissenschaftlich fundiert und dennoch praktisch. Die Begleitung durch das hrmforce-Team ist angenehm und schnell."},{who:"Teamleiter Recruiting",org:"Öffentlicher Sektor",stars:5,quote:"Struktur in unserem Gesprächszyklus und weniger Fluktuation. Fortschritt zu verfolgen kostet uns jetzt kaum Zeit."}],
++  fr: [{who:"Hanneke de Bruin",org:"Avis Google",stars:5,quote:"Je suis très impressionnée par hrmforce. Grande qualité, des professionnels disponibles immédiatement pour conseiller, des tests clairs et de bons rapports."},{who:"Esther Moolenaar",org:"Avis Google",stars:5,quote:"Extrêmement à l'écoute et de bon conseil. hrmforce m'a aidée à cartographier les talents et axes de progrès de mes collaborateurs, ce qui a donné un vrai coup d'accélérateur à l'entreprise."},{who:"Renate",org:"Avis Google",stars:5,quote:"Contact très agréable et professionnel et bonne collaboration avec Floor."},{who:"Eric Hoogeweg",org:"Avis Google",stars:5,quote:"Bon prestataire avec d'excellents outils de développement des talents. C'est ainsi qu'on fait avancer les organisations."},{who:"Juliëtte Kamphuis",org:"Avis Google",stars:5,quote:"J'ai fait un chouette test des couleurs gratuit. Retour agréable et rapide."},{who:"Conseiller RH",org:"Organisation de santé",stars:5,quote:"Les rapports nous offrent enfin un échange objectif plutôt qu'une intuition. Nous sélectionnons plus vite et avec plus de confiance."},{who:"Recruteur",org:"Industrie",stars:5,quote:"Une réponse en une journée et un retour clair. Les personnes que nous recrutons correspondent vraiment mieux au poste."},{who:"Responsable L&D",org:"Services financiers",stars:5,quote:"Les rapports de développement rendent les entretiens de carrière plus concrets. Les collaborateurs s'y reconnaissent et passent à l'action."},{who:"Directeur RH",org:"Éducation",stars:4,quote:"Fondé scientifiquement et pourtant pratique. L'accompagnement de l'équipe hrmforce est agréable et rapide."},{who:"Chef d'équipe recrutement",org:"Secteur public",stars:5,quote:"De la structure dans notre cycle d'entretiens et moins de turnover. Suivre les progrès ne nous prend presque plus de temps."}],
++  es: [{who:"Hanneke de Bruin",org:"Reseña de Google",stars:5,quote:"Estoy muy impresionada con hrmforce. Gran calidad, profesionales disponibles de inmediato para asesorar, tests claros y buenos informes."},{who:"Esther Moolenaar",org:"Reseña de Google",stars:5,quote:"Muy cercano y colaborador. hrmforce me ayudó a mapear los talentos y puntos de desarrollo de mis empleados, lo que dio un gran impulso a la empresa."},{who:"Renate",org:"Reseña de Google",stars:5,quote:"Contacto muy agradable y profesional y buena colaboración con Floor."},{who:"Eric Hoogeweg",org:"Reseña de Google",stars:5,quote:"Buen proveedor con excelentes herramientas para el desarrollo del talento. Así se hace avanzar a las organizaciones."},{who:"Juliëtte Kamphuis",org:"Reseña de Google",stars:5,quote:"Hice un test de colores gratuito muy agradable. Feedback ameno y rápido."},{who:"Asesor de RR. HH.",org:"Organización sanitaria",stars:5,quote:"Los informes por fin nos dan una conversación objetiva en lugar de intuición. Seleccionamos más rápido y con más confianza."},{who:"Reclutador",org:"Industria",stars:5,quote:"Respuesta en un día y feedback claro. Las personas que contratamos encajan mucho mejor en el puesto."},{who:"Responsable de L&D",org:"Servicios financieros",stars:5,quote:"Los informes de desarrollo hacen más concretas las conversaciones de carrera. Las personas se reconocen en ellos y actúan."},{who:"Director de RR. HH.",org:"Educación",stars:4,quote:"Con base científica y a la vez práctico. El acompañamiento del equipo de hrmforce es agradable y rápido."},{who:"Líder de equipo de selección",org:"Sector público",stars:5,quote:"Estructura en nuestro ciclo de entrevistas y menos rotación. Seguir el progreso ya casi no nos lleva tiempo."}],
++  ro: [{who:"Hanneke de Bruin",org:"Recenzie Google",stars:5,quote:"Sunt foarte impresionată de hrmforce. Calitate bună, profesioniști disponibili imediat pentru consiliere, teste clare și rapoarte clare."},{who:"Esther Moolenaar",org:"Recenzie Google",stars:5,quote:"Extrem de prietenos și implicat. hrmforce m-a ajutat să cartografiez talentele și punctele de dezvoltare ale angajaților, ceea ce a dat un impuls uriaș companiei."},{who:"Renate",org:"Recenzie Google",stars:5,quote:"Contact foarte plăcut și profesionist și o bună colaborare cu Floor."},{who:"Eric Hoogeweg",org:"Recenzie Google",stars:5,quote:"Furnizor bun cu instrumente excelente pentru dezvoltarea talentelor. Așa ajuți organizațiile să avanseze."},{who:"Juliëtte Kamphuis",org:"Recenzie Google",stars:5,quote:"Am făcut un test de culori gratuit plăcut. Feedback prietenos și rapid."},{who:"Consilier HR",org:"Organizație de sănătate",stars:5,quote:"Rapoartele ne oferă în sfârșit o discuție obiectivă în loc de intuiție. Selectăm mai repede și cu mai multă încredere."},{who:"Recruiter",org:"Industrie",stars:5,quote:"Răspuns în aceeași zi și feedback clar. Oamenii pe care îi angajăm se potrivesc mult mai bine postului."},{who:"Manager L&D",org:"Servicii financiare",stars:5,quote:"Rapoartele de dezvoltare fac discuțiile de carieră mai concrete. Angajații se recunosc în ele și trec la acțiune."},{who:"Director HR",org:"Educație",stars:4,quote:"Fundamentat științific și totuși practic. Îndrumarea echipei hrmforce este plăcută și rapidă."},{who:"Team lead recrutare",org:"Sector public",stars:5,quote:"Structură în ciclul nostru de discuții și fluctuație mai mică. Urmărirea progresului aproape că nu ne mai ia timp."}],
++};
+diff --git a/src/data/valid-paths.js b/src/data/valid-paths.js
+index 7a5f095..93d94cc 100644
+--- a/src/data/valid-paths.js
++++ b/src/data/valid-paths.js
+@@ -26,6 +26,6 @@ try {
+ 
+ const STATIC = ["/","/%3Fpage_id=12073/","/%3Fpage_id=12199/","/%3Fpage_id=12326/","/%3Fpage_id=12390/","/%3Fpage_id=12401/","/%3Fpage_id=12532/","/%3Fpage_id=12631/","/%3Fpage_id=13499/","/%3Fpage_id=13540/","/%3Fpage_id=14534/","/%3Fpage_id=15495/","/%3Fpage_id=19506/","/%3Fpage_id=20413/","/%3Fpage_id=21104/","/%3Fpage_id=21979/","/%3Fpage_id=22199/","/%3Fpage_id=23609/","/%3Fpage_id=23955/","/%3Fpage_id=24624/","/%3Fpage_id=6325/","/%3Fpage_id=6397/","/%3Fpage_id=7219/","/%3Fpage_id=7960/","/%3Fpage_id=7962/","/%3Fpage_id=8355/","/%3Fpage_id=8358/","/%3Fpage_id=8361/","/%3Fpage_id=8364/","/%3Fpage_id=8392/","/%3Fpage_id=8394/","/%3Fpage_id=8396/","/%3Fpage_id=8564/","/%3Fpage_id=8578/","/%3Fpage_id=8613/","/%3Fpage_id=8638/","/%3Fpage_id=8649/","/%3Fpage_id=9790/","/advies/","/advies/certificatietraining/","/advies/loopbaan-assessment/","/advies/medezeggenschap/","/advies/team-training/","/advies/training-het-goede-gesprek/","/assessments/15pf/","/assessments/360-graden-feedback/","/assessments/ability-scan/","/assessments/appraisal/","/assessments/beroepskeuze-test/","/assessments/big-five/","/assessments/canmeds/","/assessments/coaching-screener-scan/","/assessments/cognitieve-test/","/assessments/communicatiestijlen-test/","/assessments/competentie-check/","/assessments/conflictstijlen-test/","/assessments/disc-test/","/assessments/drijfverentest/","/assessments/duurzame-inzetbaarheid-scan/","/assessments/exit-assessment/","/assessments/groepsrollen/","/assessments/intake-candidate/","/assessments/interesse-scan/","/assessments/job-profiler/","/assessments/lean-scan/","/assessments/leerstijlen/","/assessments/leiderschapstest/","/assessments/lencioni-teamdynamiek/","/assessments/levensloop-scan/","/assessments/loopbaanwaarden/","/assessments/mentale-veerkracht-scan/","/assessments/ontwikkelassessment/","/assessments/pulse-survey/","/assessments/referentie-check/","/assessments/studiekeuzetest/","/assessments/teamanalyse/","/assessments/tevredenheidsonderzoek-medewerkers/","/assessments/typology/","/assessments/value-drives/","/assessments/verkoopvaardigheden/","/contact/","/de/","/de/%3Fpage_id=12073/","/de/%3Fpage_id=12199/","/de/%3Fpage_id=12326/","/de/%3Fpage_id=12390/","/de/%3Fpage_id=12401/","/de/%3Fpage_id=12532/","/de/%3Fpage_id=12631/","/de/%3Fpage_id=13499/","/de/%3Fpage_id=13540/","/de/%3Fpage_id=15495/","/de/%3Fpage_id=18517/","/de/%3Fpage_id=19506/","/de/%3Fpage_id=20413/","/de/%3Fpage_id=21104/","/de/%3Fpage_id=21979/","/de/%3Fpage_id=22199/","/de/%3Fpage_id=23609/","/de/%3Fpage_id=23955/","/de/%3Fpage_id=6325/","/de/%3Fpage_id=6397/","/de/%3Fpage_id=7219/","/de/%3Fpage_id=7960/","/de/%3Fpage_id=7962/","/de/%3Fpage_id=8355/","/de/%3Fpage_id=8358/","/de/%3Fpage_id=8361/","/de/%3Fpage_id=8364/","/de/%3Fpage_id=8392/","/de/%3Fpage_id=8394/","/de/%3Fpage_id=8396/","/de/%3Fpage_id=8564/","/de/%3Fpage_id=8578/","/de/%3Fpage_id=8613/","/de/%3Fpage_id=8638/","/de/%3Fpage_id=8649/","/de/%3Fpage_id=9790/","/de/advies/","/de/assessments/15pf/","/de/assessments/360-graden-feedback/","/de/assessments/ability-scan/","/de/assessments/appraisal/","/de/assessments/beroepskeuze-test/","/de/assessments/big-five/","/de/assessments/canmeds/","/de/assessments/coaching-screener-scan/","/de/assessments/cognitieve-test/","/de/assessments/communicatiestijlen-test/","/de/assessments/competentie-check/","/de/assessments/conflictstijlen-test/","/de/assessments/disc-test/","/de/assessments/drijfverentest/","/de/assessments/duurzame-inzetbaarheid-scan/","/de/assessments/exit-assessment/","/de/assessments/groepsrollen/","/de/assessments/intake-candidate/","/de/assessments/interesse-scan/","/de/assessments/job-profiler/","/de/assessments/lean-scan/","/de/assessments/leerstijlen/","/de/assessments/leiderschapstest/","/de/assessments/lencioni-teamdynamiek/","/de/assessments/levensloop-scan/","/de/assessments/loopbaanwaarden/","/de/assessments/mentale-veerkracht-scan/","/de/assessments/ontwikkelassessment/","/de/assessments/pulse-survey/","/de/assessments/referentie-check/","/de/assessments/studiekeuzetest/","/de/assessments/teamanalyse/","/de/assessments/tevredenheidsonderzoek-medewerkers/","/de/assessments/typology/","/de/assessments/value-drives/","/de/assessments/verkoopvaardigheden/","/de/contact/","/de/hrm-oplossingen/","/de/integraties/","/de/kenniscentrum/","/de/klantcases/","/de/over-ons/","/de/roi-rekentool/","/de/support/","/de/trust/","/de/voorbereiding/","/en/","/en/%3Fpage_id=12073/","/en/%3Fpage_id=12199/","/en/%3Fpage_id=12326/","/en/%3Fpage_id=12390/","/en/%3Fpage_id=12401/","/en/%3Fpage_id=12532/","/en/%3Fpage_id=12631/","/en/%3Fpage_id=13499/","/en/%3Fpage_id=13540/","/en/%3Fpage_id=15495/","/en/%3Fpage_id=15922/","/en/%3Fpage_id=16099/","/en/%3Fpage_id=17810/","/en/%3Fpage_id=19503/","/en/%3Fpage_id=19506/","/en/%3Fpage_id=20413/","/en/%3Fpage_id=21104/","/en/%3Fpage_id=21298/","/en/%3Fpage_id=21979/","/en/%3Fpage_id=22199/","/en/%3Fpage_id=23609/","/en/%3Fpage_id=23955/","/en/%3Fpage_id=6325/","/en/%3Fpage_id=6397/","/en/%3Fpage_id=7219/","/en/%3Fpage_id=7960/","/en/%3Fpage_id=7962/","/en/%3Fpage_id=8355/","/en/%3Fpage_id=8358/","/en/%3Fpage_id=8361/","/en/%3Fpage_id=8364/","/en/%3Fpage_id=8392/","/en/%3Fpage_id=8394/","/en/%3Fpage_id=8396/","/en/%3Fpage_id=8564/","/en/%3Fpage_id=8578/","/en/%3Fpage_id=8613/","/en/%3Fpage_id=8638/","/en/%3Fpage_id=8649/","/en/%3Fpage_id=9790/","/en/advies/","/en/assessments/15pf/","/en/assessments/360-graden-feedback/","/en/assessments/ability-scan/","/en/assessments/appraisal/","/en/assessments/beroepskeuze-test/","/en/assessments/big-five/","/en/assessments/canmeds/","/en/assessments/coaching-screener-scan/","/en/assessments/cognitieve-test/","/en/assessments/communicatiestijlen-test/","/en/assessments/competentie-check/","/en/assessments/conflictstijlen-test/","/en/assessments/disc-test/","/en/assessments/drijfverentest/","/en/assessments/duurzame-inzetbaarheid-scan/","/en/assessments/exit-assessment/","/en/assessments/groepsrollen/","/en/assessments/intake-candidate/","/en/assessments/interesse-scan/","/en/assessments/job-profiler/","/en/assessments/lean-scan/","/en/assessments/leerstijlen/","/en/assessments/leiderschapstest/","/en/assessments/lencioni-teamdynamiek/","/en/assessments/levensloop-scan/","/en/assessments/loopbaanwaarden/","/en/assessments/mentale-veerkracht-scan/","/en/assessments/ontwikkelassessment/","/en/assessments/pulse-survey/","/en/assessments/referentie-check/","/en/assessments/studiekeuzetest/","/en/assessments/teamanalyse/","/en/assessments/tevredenheidsonderzoek-medewerkers/","/en/assessments/typology/","/en/assessments/value-drives/","/en/assessments/verkoopvaardigheden/","/en/contact/","/en/hrm-oplossingen/","/en/integraties/","/en/kenniscentrum/","/en/klantcases/","/en/over-ons/","/en/roi-rekentool/","/en/support/","/en/trust/","/en/voorbereiding/","/es/","/es/%3Fpage_id=12073/","/es/%3Fpage_id=12199/","/es/%3Fpage_id=12326/","/es/%3Fpage_id=12390/","/es/%3Fpage_id=12401/","/es/%3Fpage_id=12532/","/es/%3Fpage_id=12631/","/es/%3Fpage_id=13499/","/es/%3Fpage_id=13540/","/es/%3Fpage_id=15495/","/es/%3Fpage_id=18519/","/es/%3Fpage_id=19506/","/es/%3Fpage_id=20413/","/es/%3Fpage_id=21104/","/es/%3Fpage_id=21979/","/es/%3Fpage_id=22199/","/es/%3Fpage_id=23609/","/es/%3Fpage_id=23682/","/es/%3Fpage_id=23955/","/es/%3Fpage_id=6325/","/es/%3Fpage_id=6397/","/es/%3Fpage_id=7219/","/es/%3Fpage_id=7960/","/es/%3Fpage_id=7962/","/es/%3Fpage_id=8355/","/es/%3Fpage_id=8358/","/es/%3Fpage_id=8361/","/es/%3Fpage_id=8364/","/es/%3Fpage_id=8392/","/es/%3Fpage_id=8394/","/es/%3Fpage_id=8396/","/es/%3Fpage_id=8564/","/es/%3Fpage_id=8578/","/es/%3Fpage_id=8613/","/es/%3Fpage_id=8638/","/es/%3Fpage_id=8649/","/es/%3Fpage_id=9790/","/es/advies/","/es/assessments/15pf/","/es/assessments/360-graden-feedback/","/es/assessments/ability-scan/","/es/assessments/appraisal/","/es/assessments/beroepskeuze-test/","/es/assessments/big-five/","/es/assessments/canmeds/","/es/assessments/coaching-screener-scan/","/es/assessments/cognitieve-test/","/es/assessments/communicatiestijlen-test/","/es/assessments/competentie-check/","/es/assessments/conflictstijlen-test/","/es/assessments/disc-test/","/es/assessments/drijfverentest/","/es/assessments/duurzame-inzetbaarheid-scan/","/es/assessments/exit-assessment/","/es/assessments/groepsrollen/","/es/assessments/intake-candidate/","/es/assessments/interesse-scan/","/es/assessments/job-profiler/","/es/assessments/lean-scan/","/es/assessments/leerstijlen/","/es/assessments/leiderschapstest/","/es/assessments/lencioni-teamdynamiek/","/es/assessments/levensloop-scan/","/es/assessments/loopbaanwaarden/","/es/assessments/mentale-veerkracht-scan/","/es/assessments/ontwikkelassessment/","/es/assessments/pulse-survey/","/es/assessments/referentie-check/","/es/assessments/studiekeuzetest/","/es/assessments/teamanalyse/","/es/assessments/tevredenheidsonderzoek-medewerkers/","/es/assessments/typology/","/es/assessments/value-drives/","/es/assessments/verkoopvaardigheden/","/es/contact/","/es/hrm-oplossingen/","/es/integraties/","/es/kenniscentrum/","/es/klantcases/","/es/online-assessments/","/es/over-ons/","/es/roi-rekentool/","/es/support/","/es/trust/","/es/voorbereiding/","/fr/","/fr/%3Fpage_id=12073/","/fr/%3Fpage_id=12199/","/fr/%3Fpage_id=12326/","/fr/%3Fpage_id=12390/","/fr/%3Fpage_id=12401/","/fr/%3Fpage_id=12532/","/fr/%3Fpage_id=12631/","/fr/%3Fpage_id=13499/","/fr/%3Fpage_id=13540/","/fr/%3Fpage_id=15495/","/fr/%3Fpage_id=18516/","/fr/%3Fpage_id=19506/","/fr/%3Fpage_id=20413/","/fr/%3Fpage_id=21104/","/fr/%3Fpage_id=21979/","/fr/%3Fpage_id=22199/","/fr/%3Fpage_id=23609/","/fr/%3Fpage_id=23955/","/fr/%3Fpage_id=6325/","/fr/%3Fpage_id=6397/","/fr/%3Fpage_id=7219/","/fr/%3Fpage_id=7960/","/fr/%3Fpage_id=7962/","/fr/%3Fpage_id=8355/","/fr/%3Fpage_id=8358/","/fr/%3Fpage_id=8361/","/fr/%3Fpage_id=8364/","/fr/%3Fpage_id=8392/","/fr/%3Fpage_id=8394/","/fr/%3Fpage_id=8396/","/fr/%3Fpage_id=8564/","/fr/%3Fpage_id=8578/","/fr/%3Fpage_id=8613/","/fr/%3Fpage_id=8638/","/fr/%3Fpage_id=8649/","/fr/%3Fpage_id=9790/","/fr/advies/","/fr/assessments/15pf/","/fr/assessments/360-graden-feedback/","/fr/assessments/ability-scan/","/fr/assessments/appraisal/","/fr/assessments/beroepskeuze-test/","/fr/assessments/big-five/","/fr/assessments/canmeds/","/fr/assessments/coaching-screener-scan/","/fr/assessments/cognitieve-test/","/fr/assessments/communicatiestijlen-test/","/fr/assessments/competentie-check/","/fr/assessments/conflictstijlen-test/","/fr/assessments/disc-test/","/fr/assessments/drijfverentest/","/fr/assessments/duurzame-inzetbaarheid-scan/","/fr/assessments/exit-assessment/","/fr/assessments/groepsrollen/","/fr/assessments/intake-candidate/","/fr/assessments/interesse-scan/","/fr/assessments/job-profiler/","/fr/assessments/lean-scan/","/fr/assessments/leerstijlen/","/fr/assessments/leiderschapstest/","/fr/assessments/lencioni-teamdynamiek/","/fr/assessments/levensloop-scan/","/fr/assessments/loopbaanwaarden/","/fr/assessments/mentale-veerkracht-scan/","/fr/assessments/ontwikkelassessment/","/fr/assessments/pulse-survey/","/fr/assessments/referentie-check/","/fr/assessments/studiekeuzetest/","/fr/assessments/teamanalyse/","/fr/assessments/tevredenheidsonderzoek-medewerkers/","/fr/assessments/typology/","/fr/assessments/value-drives/","/fr/assessments/verkoopvaardigheden/","/fr/contact/","/fr/hrm-oplossingen/","/fr/integraties/","/fr/kenniscentrum/","/fr/klantcases/","/fr/online-assessments/","/fr/over-ons/","/fr/roi-rekentool/","/fr/shop/","/fr/support/","/fr/trust/","/fr/voorbereiding/","/geschiktvoorzorg/","/geschiktvoorzorg/klantcases/","/geschiktvoorzorg/over-ons/","/hrm-oplossingen/","/inschrijfformulier-trainingen/","/integraties/","/kenniscentrum/","/kenniscentrum/burn-out-herkennen-bij-topperformers/","/kenniscentrum/intelligentietest-volwassenen/","/kenniscentrum/leiderschapsontwikkeling-data/","/kenniscentrum/matrigma-capaciteitentest/","/kenniscentrum/ontwikkelassessment-belangrijk/","/kenniscentrum/talent-management-system-software/","/klantcases/","/odion/","/oefen-assessment-maken/","/online-assessments/","/over-ons/","/partner/selier-van-duppen/","/ro/","/ro/%3Fpage_id=12073/","/ro/%3Fpage_id=12199/","/ro/%3Fpage_id=12326/","/ro/%3Fpage_id=12390/","/ro/%3Fpage_id=12401/","/ro/%3Fpage_id=12532/","/ro/%3Fpage_id=12631/","/ro/%3Fpage_id=13499/","/ro/%3Fpage_id=13540/","/ro/%3Fpage_id=15495/","/ro/%3Fpage_id=16875/","/ro/%3Fpage_id=18518/","/ro/%3Fpage_id=19506/","/ro/%3Fpage_id=20413/","/ro/%3Fpage_id=21104/","/ro/%3Fpage_id=21979/","/ro/%3Fpage_id=22199/","/ro/%3Fpage_id=23609/","/ro/%3Fpage_id=23955/","/ro/%3Fpage_id=6325/","/ro/%3Fpage_id=6397/","/ro/%3Fpage_id=7219/","/ro/%3Fpage_id=7960/","/ro/%3Fpage_id=7962/","/ro/%3Fpage_id=8355/","/ro/%3Fpage_id=8358/","/ro/%3Fpage_id=8361/","/ro/%3Fpage_id=8364/","/ro/%3Fpage_id=8392/","/ro/%3Fpage_id=8394/","/ro/%3Fpage_id=8396/","/ro/%3Fpage_id=8564/","/ro/%3Fpage_id=8578/","/ro/%3Fpage_id=8613/","/ro/%3Fpage_id=8638/","/ro/%3Fpage_id=8649/","/ro/%3Fpage_id=9790/","/ro/advies/","/ro/assessments/15pf/","/ro/assessments/360-graden-feedback/","/ro/assessments/ability-scan/","/ro/assessments/appraisal/","/ro/assessments/beroepskeuze-test/","/ro/assessments/big-five/","/ro/assessments/canmeds/","/ro/assessments/coaching-screener-scan/","/ro/assessments/cognitieve-test/","/ro/assessments/communicatiestijlen-test/","/ro/assessments/competentie-check/","/ro/assessments/conflictstijlen-test/","/ro/assessments/disc-test/","/ro/assessments/drijfverentest/","/ro/assessments/duurzame-inzetbaarheid-scan/","/ro/assessments/exit-assessment/","/ro/assessments/groepsrollen/","/ro/assessments/intake-candidate/","/ro/assessments/interesse-scan/","/ro/assessments/job-profiler/","/ro/assessments/lean-scan/","/ro/assessments/leerstijlen/","/ro/assessments/leiderschapstest/","/ro/assessments/lencioni-teamdynamiek/","/ro/assessments/levensloop-scan/","/ro/assessments/loopbaanwaarden/","/ro/assessments/mentale-veerkracht-scan/","/ro/assessments/ontwikkelassessment/","/ro/assessments/pulse-survey/","/ro/assessments/referentie-check/","/ro/assessments/studiekeuzetest/","/ro/assessments/teamanalyse/","/ro/assessments/tevredenheidsonderzoek-medewerkers/","/ro/assessments/typology/","/ro/assessments/value-drives/","/ro/assessments/verkoopvaardigheden/","/ro/contact/","/ro/hrm-oplossingen/","/ro/integraties/","/ro/kenniscentrum/","/ro/klantcases/","/ro/online-assessments/","/ro/over-ons/","/ro/roi-rekentool/","/ro/support/","/ro/trust/","/ro/voorbereiding/","/roi-rekentool/","/shop/","/support/","/trust/","/voorbereiding/"];
+ 
+-const EXTRA = ["/oefenen/big-five/","/oefenen/disc/","/oefenen/cognitieve-test/","/oefenen/drijfveren/","/en/oefenen/big-five/","/en/oefenen/disc/","/en/oefenen/cognitieve-test/","/en/oefenen/drijfveren/","/de/oefenen/big-five/","/de/oefenen/disc/","/de/oefenen/cognitieve-test/","/de/oefenen/drijfveren/","/fr/oefenen/big-five/","/fr/oefenen/disc/","/fr/oefenen/cognitieve-test/","/fr/oefenen/drijfveren/","/es/oefenen/big-five/","/es/oefenen/disc/","/es/oefenen/cognitieve-test/","/es/oefenen/drijfveren/","/ro/oefenen/big-five/","/ro/oefenen/disc/","/ro/oefenen/cognitieve-test/","/ro/oefenen/drijfveren/","/whitepapers/","/en/whitepapers/","/de/whitepapers/","/fr/whitepapers/","/es/whitepapers/","/ro/whitepapers/","/whitepapers/objectief-werven/","/whitepapers/beoordelen-naar-ontwikkelen/","/en/whitepapers/objectief-werven/","/en/whitepapers/beoordelen-naar-ontwikkelen/","/de/whitepapers/objectief-werven/","/de/whitepapers/beoordelen-naar-ontwikkelen/","/fr/whitepapers/objectief-werven/","/fr/whitepapers/beoordelen-naar-ontwikkelen/","/es/whitepapers/objectief-werven/","/es/whitepapers/beoordelen-naar-ontwikkelen/","/ro/whitepapers/objectief-werven/","/ro/whitepapers/beoordelen-naar-ontwikkelen/","/integraties/afas/","/integraties/nmbrs/","/integraties/visma/","/integraties/loket/","/integraties/recruitee/","/integraties/carerix/","/integraties/otys/","/en/integraties/afas/","/en/integraties/nmbrs/","/en/integraties/visma/","/en/integraties/loket/","/en/integraties/recruitee/","/en/integraties/carerix/","/en/integraties/otys/","/de/integraties/afas/","/de/integraties/nmbrs/","/de/integraties/visma/","/de/integraties/loket/","/de/integraties/recruitee/","/de/integraties/carerix/","/de/integraties/otys/","/fr/integraties/afas/","/fr/integraties/nmbrs/","/fr/integraties/visma/","/fr/integraties/loket/","/fr/integraties/recruitee/","/fr/integraties/carerix/","/fr/integraties/otys/","/es/integraties/afas/","/es/integraties/nmbrs/","/es/integraties/visma/","/es/integraties/loket/","/es/integraties/recruitee/","/es/integraties/carerix/","/es/integraties/otys/","/ro/integraties/afas/","/ro/integraties/nmbrs/","/ro/integraties/visma/","/ro/integraties/loket/","/ro/integraties/recruitee/","/ro/integraties/carerix/","/ro/integraties/otys/","/testkiezer/","/en/testkiezer/","/de/testkiezer/","/fr/testkiezer/","/es/testkiezer/","/ro/testkiezer/","/voor-kandidaten/","/en/voor-kandidaten/","/de/voor-kandidaten/","/fr/voor-kandidaten/","/es/voor-kandidaten/","/ro/voor-kandidaten/","/begrippenlijst/","/en/begrippenlijst/","/de/begrippenlijst/","/fr/begrippenlijst/","/es/begrippenlijst/","/ro/begrippenlijst/","/wetenschappelijke-verantwoording/","/en/wetenschappelijke-verantwoording/","/de/wetenschappelijke-verantwoording/","/fr/wetenschappelijke-verantwoording/","/es/wetenschappelijke-verantwoording/","/ro/wetenschappelijke-verantwoording/"];
++const EXTRA = ["/oefenen/big-five/","/oefenen/disc/","/oefenen/cognitieve-test/","/oefenen/drijfveren/","/en/oefenen/big-five/","/en/oefenen/disc/","/en/oefenen/cognitieve-test/","/en/oefenen/drijfveren/","/de/oefenen/big-five/","/de/oefenen/disc/","/de/oefenen/cognitieve-test/","/de/oefenen/drijfveren/","/fr/oefenen/big-five/","/fr/oefenen/disc/","/fr/oefenen/cognitieve-test/","/fr/oefenen/drijfveren/","/es/oefenen/big-five/","/es/oefenen/disc/","/es/oefenen/cognitieve-test/","/es/oefenen/drijfveren/","/ro/oefenen/big-five/","/ro/oefenen/disc/","/ro/oefenen/cognitieve-test/","/ro/oefenen/drijfveren/","/whitepapers/","/en/whitepapers/","/de/whitepapers/","/fr/whitepapers/","/es/whitepapers/","/ro/whitepapers/","/whitepapers/objectief-werven/","/whitepapers/beoordelen-naar-ontwikkelen/","/en/whitepapers/objectief-werven/","/en/whitepapers/beoordelen-naar-ontwikkelen/","/de/whitepapers/objectief-werven/","/de/whitepapers/beoordelen-naar-ontwikkelen/","/fr/whitepapers/objectief-werven/","/fr/whitepapers/beoordelen-naar-ontwikkelen/","/es/whitepapers/objectief-werven/","/es/whitepapers/beoordelen-naar-ontwikkelen/","/ro/whitepapers/objectief-werven/","/ro/whitepapers/beoordelen-naar-ontwikkelen/","/integraties/afas/","/integraties/nmbrs/","/integraties/visma/","/integraties/loket/","/integraties/recruitee/","/integraties/carerix/","/integraties/otys/","/en/integraties/afas/","/en/integraties/nmbrs/","/en/integraties/visma/","/en/integraties/loket/","/en/integraties/recruitee/","/en/integraties/carerix/","/en/integraties/otys/","/de/integraties/afas/","/de/integraties/nmbrs/","/de/integraties/visma/","/de/integraties/loket/","/de/integraties/recruitee/","/de/integraties/carerix/","/de/integraties/otys/","/fr/integraties/afas/","/fr/integraties/nmbrs/","/fr/integraties/visma/","/fr/integraties/loket/","/fr/integraties/recruitee/","/fr/integraties/carerix/","/fr/integraties/otys/","/es/integraties/afas/","/es/integraties/nmbrs/","/es/integraties/visma/","/es/integraties/loket/","/es/integraties/recruitee/","/es/integraties/carerix/","/es/integraties/otys/","/ro/integraties/afas/","/ro/integraties/nmbrs/","/ro/integraties/visma/","/ro/integraties/loket/","/ro/integraties/recruitee/","/ro/integraties/carerix/","/ro/integraties/otys/","/testkiezer/","/en/testkiezer/","/de/testkiezer/","/fr/testkiezer/","/es/testkiezer/","/ro/testkiezer/","/voor-kandidaten/","/en/voor-kandidaten/","/de/voor-kandidaten/","/fr/voor-kandidaten/","/es/voor-kandidaten/","/ro/voor-kandidaten/","/begrippenlijst/","/en/begrippenlijst/","/de/begrippenlijst/","/fr/begrippenlijst/","/es/begrippenlijst/","/ro/begrippenlijst/","/wetenschappelijke-verantwoording/","/en/wetenschappelijke-verantwoording/","/de/wetenschappelijke-verantwoording/","/fr/wetenschappelijke-verantwoording/","/es/wetenschappelijke-verantwoording/","/ro/wetenschappelijke-verantwoording/","/toepassingen/","/toepassingen/werving-en-selectie/","/toepassingen/ontwikkeling/","/toepassingen/leidinggevenden/","/toepassingen/jong-talent/","/toepassingen/onderwijs/","/toepassingen/industrie/","/en/toepassingen/","/en/toepassingen/werving-en-selectie/","/en/toepassingen/ontwikkeling/","/en/toepassingen/leidinggevenden/","/en/toepassingen/jong-talent/","/en/toepassingen/onderwijs/","/en/toepassingen/industrie/","/de/toepassingen/","/de/toepassingen/werving-en-selectie/","/de/toepassingen/ontwikkeling/","/de/toepassingen/leidinggevenden/","/de/toepassingen/jong-talent/","/de/toepassingen/onderwijs/","/de/toepassingen/industrie/","/fr/toepassingen/","/fr/toepassingen/werving-en-selectie/","/fr/toepassingen/ontwikkeling/","/fr/toepassingen/leidinggevenden/","/fr/toepassingen/jong-talent/","/fr/toepassingen/onderwijs/","/fr/toepassingen/industrie/","/es/toepassingen/","/es/toepassingen/werving-en-selectie/","/es/toepassingen/ontwikkeling/","/es/toepassingen/leidinggevenden/","/es/toepassingen/jong-talent/","/es/toepassingen/onderwijs/","/es/toepassingen/industrie/","/ro/toepassingen/","/ro/toepassingen/werving-en-selectie/","/ro/toepassingen/ontwikkeling/","/ro/toepassingen/leidinggevenden/","/ro/toepassingen/jong-talent/","/ro/toepassingen/onderwijs/","/ro/toepassingen/industrie/"];
+ 
+ export default Array.from(new Set([...STATIC, ...EXTRA, ...sanityPaths]));
+diff --git a/src/i18n/utils.js b/src/i18n/utils.js
+index e490651..9e6f77f 100644
+--- a/src/i18n/utils.js
++++ b/src/i18n/utils.js
+@@ -30,7 +30,7 @@ export const LOCALIZED_PAGES = new Set([
+   "/", "/online-assessments/", "/hrm-oplossingen/", "/advies/", "/over-ons/",
+   "/contact/", "/shop/", "/assessment-overzicht/", "/tarieven/", "/roi-rekentool/",
+   "/klantcases/", "/kenniscentrum/", "/trust/", "/integraties/", "/voorbereiding/",
+-  "/support/", "/support/f-a-q/", "/wetenschappelijke-verantwoording/", "/begrippenlijst/", "/voor-kandidaten/", "/testkiezer/", "/whitepapers/",
++  "/support/", "/support/f-a-q/", "/wetenschappelijke-verantwoording/", "/begrippenlijst/", "/voor-kandidaten/", "/testkiezer/", "/whitepapers/", "/toepassingen/",
+ ]);
+ 
+ // Assessment-detailpagina's (/assessments/<slug>/) zijn in alle talen gelokaliseerd.
+diff --git a/src/layouts/Base.astro b/src/layouts/Base.astro
+index 9d8565c..5efe3d0 100644
+--- a/src/layouts/Base.astro
++++ b/src/layouts/Base.astro
+@@ -19,6 +19,15 @@ const consentT = consentContent[lang] ?? consentContent.nl;
+ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://hrmforce.com");
+ const LOCALE_MAP = { nl: "nl_NL", en: "en_US", de: "de_DE", fr: "fr_FR", es: "es_ES", ro: "ro_RO" };
+ const ogLocale = LOCALE_MAP[lang] || "nl_NL";
++const STICKY_DEMO = {
++  nl: { aria: "Plan een gratis demo", label: "Gratis demo" },
++  en: { aria: "Book a free demo", label: "Free demo" },
++  de: { aria: "Kostenlose Demo buchen", label: "Gratis-Demo" },
++  fr: { aria: "Réserver une démo gratuite", label: "Démo gratuite" },
++  es: { aria: "Reservar una demo gratuita", label: "Demo gratis" },
++  ro: { aria: "Rezervă o demonstrație gratuită", label: "Demo gratuit" },
++};
++const stickyDemo = STICKY_DEMO[lang] || STICKY_DEMO.nl;
+ 
+ // hreflang: alternatieve taalversies voor pagina's die in alle 6 talen bestaan.
+ const SITE = "https://hrmforce.com";
+@@ -102,12 +111,12 @@ const orgLd = {
+     <a
+       class="sticky-demo"
+       href={localizePath("/contact/", lang)}
+-      aria-label="Plan een gratis demo"
++      aria-label={stickyDemo.aria}
+     >
+       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+       </svg>
+-      <span>Gratis demo</span>
++      <span>{stickyDemo.label}</span>
+     </a>
+     <Footer />
+     <script>
+diff --git a/src/pages/advies/[slug].astro b/src/pages/advies/[slug].astro
+index 07cbff9..722c5be 100644
+--- a/src/pages/advies/[slug].astro
++++ b/src/pages/advies/[slug].astro
+@@ -63,5 +63,5 @@ const adviesHref = localizePath("/advies/", lang);
+   </section>
+ 
+   <LogoSlider heading="Vertrouwd door 1.200+ organisaties" />
+-  <ReviewSlider heading="Wat opdrachtgevers merken" />
++  <ReviewSlider headingKey="clients" />
+ </Base>
+diff --git a/src/pages/de/toepassingen/[slug].astro b/src/pages/de/toepassingen/[slug].astro
+new file mode 100644
+index 0000000..adc789f
+--- /dev/null
++++ b/src/pages/de/toepassingen/[slug].astro
+@@ -0,0 +1,8 @@
++---
++import Base from "../../../layouts/Base.astro";
++import Toepassing from "../../../components/Toepassing.astro";
++import { landings } from "../../../data/landings.js";
++export function getStaticPaths(){ return landings.map((l)=>({ params:{slug:l.slug}, props:{l} })); }
++const { l } = Astro.props; const t=l.i18n.de;
++---
++<Base title={t.metaTitle} description={t.metaDescription} active="solutions"><Toepassing l={l} lang="de" /></Base>
+diff --git a/src/pages/de/toepassingen/index.astro b/src/pages/de/toepassingen/index.astro
+new file mode 100644
+index 0000000..1131a5c
+--- /dev/null
++++ b/src/pages/de/toepassingen/index.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import ToepassingenIndex from "../../../components/ToepassingenIndex.astro";
++import { LAND_UI } from "../../../data/landings.js";
++const ui = LAND_UI.de;
++---
++<Base title={ui.idxTitle} description={ui.idxDesc} active="solutions"><ToepassingenIndex lang="de" /></Base>
+diff --git a/src/pages/en/toepassingen/[slug].astro b/src/pages/en/toepassingen/[slug].astro
+new file mode 100644
+index 0000000..f9ecbaf
+--- /dev/null
++++ b/src/pages/en/toepassingen/[slug].astro
+@@ -0,0 +1,8 @@
++---
++import Base from "../../../layouts/Base.astro";
++import Toepassing from "../../../components/Toepassing.astro";
++import { landings } from "../../../data/landings.js";
++export function getStaticPaths(){ return landings.map((l)=>({ params:{slug:l.slug}, props:{l} })); }
++const { l } = Astro.props; const t=l.i18n.en;
++---
++<Base title={t.metaTitle} description={t.metaDescription} active="solutions"><Toepassing l={l} lang="en" /></Base>
+diff --git a/src/pages/en/toepassingen/index.astro b/src/pages/en/toepassingen/index.astro
+new file mode 100644
+index 0000000..32131bf
+--- /dev/null
++++ b/src/pages/en/toepassingen/index.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import ToepassingenIndex from "../../../components/ToepassingenIndex.astro";
++import { LAND_UI } from "../../../data/landings.js";
++const ui = LAND_UI.en;
++---
++<Base title={ui.idxTitle} description={ui.idxDesc} active="solutions"><ToepassingenIndex lang="en" /></Base>
+diff --git a/src/pages/es/toepassingen/[slug].astro b/src/pages/es/toepassingen/[slug].astro
+new file mode 100644
+index 0000000..12f771c
+--- /dev/null
++++ b/src/pages/es/toepassingen/[slug].astro
+@@ -0,0 +1,8 @@
++---
++import Base from "../../../layouts/Base.astro";
++import Toepassing from "../../../components/Toepassing.astro";
++import { landings } from "../../../data/landings.js";
++export function getStaticPaths(){ return landings.map((l)=>({ params:{slug:l.slug}, props:{l} })); }
++const { l } = Astro.props; const t=l.i18n.es;
++---
++<Base title={t.metaTitle} description={t.metaDescription} active="solutions"><Toepassing l={l} lang="es" /></Base>
+diff --git a/src/pages/es/toepassingen/index.astro b/src/pages/es/toepassingen/index.astro
+new file mode 100644
+index 0000000..8c334ce
+--- /dev/null
++++ b/src/pages/es/toepassingen/index.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import ToepassingenIndex from "../../../components/ToepassingenIndex.astro";
++import { LAND_UI } from "../../../data/landings.js";
++const ui = LAND_UI.es;
++---
++<Base title={ui.idxTitle} description={ui.idxDesc} active="solutions"><ToepassingenIndex lang="es" /></Base>
+diff --git a/src/pages/fr/toepassingen/[slug].astro b/src/pages/fr/toepassingen/[slug].astro
+new file mode 100644
+index 0000000..6d4c8d4
+--- /dev/null
++++ b/src/pages/fr/toepassingen/[slug].astro
+@@ -0,0 +1,8 @@
++---
++import Base from "../../../layouts/Base.astro";
++import Toepassing from "../../../components/Toepassing.astro";
++import { landings } from "../../../data/landings.js";
++export function getStaticPaths(){ return landings.map((l)=>({ params:{slug:l.slug}, props:{l} })); }
++const { l } = Astro.props; const t=l.i18n.fr;
++---
++<Base title={t.metaTitle} description={t.metaDescription} active="solutions"><Toepassing l={l} lang="fr" /></Base>
+diff --git a/src/pages/fr/toepassingen/index.astro b/src/pages/fr/toepassingen/index.astro
+new file mode 100644
+index 0000000..cbf3f39
+--- /dev/null
++++ b/src/pages/fr/toepassingen/index.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import ToepassingenIndex from "../../../components/ToepassingenIndex.astro";
++import { LAND_UI } from "../../../data/landings.js";
++const ui = LAND_UI.fr;
++---
++<Base title={ui.idxTitle} description={ui.idxDesc} active="solutions"><ToepassingenIndex lang="fr" /></Base>
+diff --git a/src/pages/ro/toepassingen/[slug].astro b/src/pages/ro/toepassingen/[slug].astro
+new file mode 100644
+index 0000000..dc82ba4
+--- /dev/null
++++ b/src/pages/ro/toepassingen/[slug].astro
+@@ -0,0 +1,8 @@
++---
++import Base from "../../../layouts/Base.astro";
++import Toepassing from "../../../components/Toepassing.astro";
++import { landings } from "../../../data/landings.js";
++export function getStaticPaths(){ return landings.map((l)=>({ params:{slug:l.slug}, props:{l} })); }
++const { l } = Astro.props; const t=l.i18n.ro;
++---
++<Base title={t.metaTitle} description={t.metaDescription} active="solutions"><Toepassing l={l} lang="ro" /></Base>
+diff --git a/src/pages/ro/toepassingen/index.astro b/src/pages/ro/toepassingen/index.astro
+new file mode 100644
+index 0000000..62812e6
+--- /dev/null
++++ b/src/pages/ro/toepassingen/index.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import ToepassingenIndex from "../../../components/ToepassingenIndex.astro";
++import { LAND_UI } from "../../../data/landings.js";
++const ui = LAND_UI.ro;
++---
++<Base title={ui.idxTitle} description={ui.idxDesc} active="solutions"><ToepassingenIndex lang="ro" /></Base>
+diff --git a/src/pages/shop.astro b/src/pages/shop.astro
+index 0b333c7..0a53332 100644
+--- a/src/pages/shop.astro
++++ b/src/pages/shop.astro
+@@ -22,5 +22,5 @@ const t = shopContent.nl;
+       <img src="/mockups/vragenlijst-afgerond.svg" alt="Afrondscherm van de vragenlijst" loading="eager" style="flex:0 0 auto;width:82%;max-width:520px;border-radius:12px;border:1px solid var(--line);scroll-snap-align:center" />
+     </div>
+   </section>
+-  <ReviewSlider heading="Wat kopers zeggen" />
++  <ReviewSlider headingKey="buyers" />
+ </Base>
+diff --git a/src/pages/toepassingen/[slug].astro b/src/pages/toepassingen/[slug].astro
+index ba3c24b..600e537 100644
+--- a/src/pages/toepassingen/[slug].astro
++++ b/src/pages/toepassingen/[slug].astro
+@@ -1,109 +1,8 @@
+ ---
+ import Base from "../../layouts/Base.astro";
++import Toepassing from "../../components/Toepassing.astro";
+ import { landings } from "../../data/landings.js";
+-import { assessments } from "../../data/assessments.js";
+-import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../data/site-config.js";
+-
+-export function getStaticPaths() {
+-  return landings.map((l) => ({ params: { slug: l.slug }, props: { l } }));
+-}
+-
+-const { l } = Astro.props;
+-const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
+-const bySlug = new Map(assessments.map((a) => [a.slug, a]));
+-const linked = (l.assessmentSlugs || []).map((s) => bySlug.get(s)).filter(Boolean);
+-const _canon = new URL(Astro.url.pathname, "https://hrmforce.com").href;
+-const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+-  { "@type": "ListItem", position: 1, name: "Home", item: "https://hrmforce.com/" },
+-  { "@type": "ListItem", position: 2, name: "Toepassingen", item: "https://hrmforce.com/toepassingen/" },
+-  { "@type": "ListItem", position: 3, name: l.title, item: _canon },
+-] };
+-const _svcLd = { "@context": "https://schema.org", "@type": "Service", name: l.title, description: l.metaDescription, provider: { "@type": "Organization", name: "hrmforce" }, areaServed: "EU" };
+-const _faqLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: (l.faq || []).map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) };
++export function getStaticPaths(){ return landings.map((l)=>({ params:{slug:l.slug}, props:{l} })); }
++const { l } = Astro.props; const t=l.i18n.nl;
+ ---
+-<Base title={l.metaTitle} description={l.metaDescription} active="solutions">
+-  <script type="application/ld+json" is:inline set:html={JSON.stringify(_crumbLd)}></script>
+-  <script type="application/ld+json" is:inline set:html={JSON.stringify(_svcLd)}></script>
+-  <script type="application/ld+json" is:inline set:html={JSON.stringify(_faqLd)}></script>
+-
+-  <div class="crumb"><div class="wrap"><a href="/">Home</a> › <a href="/toepassingen/">Toepassingen</a> › <span>{l.title}</span></div></div>
+-
+-  <section class="ahero"><div class="wrap" style="display:block">
+-    <div class="eyebrow" style="color:var(--gold)">{l.eyebrow}</div>
+-    <h1>{l.hero}</h1>
+-    <p style="color:#c4d2e6;font-size:18px;max-width:760px;margin-top:10px">{l.intro}</p>
+-    <div class="btns" style="margin-top:18px">
+-      <a href="/contact/" class="btn btn-primary">Plan een gratis demo &rarr;</a>
+-      <a href="/online-assessments/" class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">Bekijk alle assessments</a>
+-    </div>
+-  </div></section>
+-
+-  <section><div class="wrap">
+-    <div class="eyebrow">Herkenbaar?</div>
+-    <h2 class="section-title">Waar loop je tegenaan</h2>
+-    <div class="lp-pains">
+-      {l.pains.map((p) => (<div class="lp-pain"><span aria-hidden="true">•</span><p>{p}</p></div>))}
+-    </div>
+-  </div></section>
+-
+-  <section class="bg-soft"><div class="wrap">
+-    <div class="eyebrow" style="color:var(--gold)">Onze aanpak</div>
+-    <h2 class="section-title">Zo helpt hrmforce</h2>
+-    <div class="lp-grid">
+-      {l.approach.map((a) => (<div class="lp-card"><h3>{a.h}</h3><p>{a.p}</p></div>))}
+-    </div>
+-  </div></section>
+-
+-  {linked.length > 0 && (
+-    <section><div class="wrap">
+-      <div class="center"><div class="eyebrow">Passende instrumenten</div>
+-        <h2 class="section-title" style="margin-bottom:36px">Assessments die hier vaak bij passen</h2></div>
+-      <div class="cards">
+-        {linked.map((a) => (
+-          <a class="card" href={`/assessments/${a.slug}/`} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+-            <h3>{a.title}</h3>
+-            <p style="flex:1">{a.goal}</p>
+-            <span class="readmore">Bekijk assessment &rarr;</span>
+-          </a>
+-        ))}
+-      </div>
+-    </div></section>
+-  )}
+-
+-  {l.faq.length > 0 && (
+-    <section class="bg-soft"><div class="wrap" style="max-width:820px">
+-      <div class="center"><div class="eyebrow">Veelgestelde vragen</div>
+-        <h2 class="section-title" style="margin-bottom:36px">Vragen over {l.title.toLowerCase()}</h2></div>
+-      {l.faq.map((f) => (
+-        <div class="faq-item"><div class="faq-q">{f.q}<span class="pl">+</span></div><div class="faq-a"><p>{f.a}</p></div></div>
+-      ))}
+-    </div></section>
+-  )}
+-
+-  <section class="formsec" id="request"><div class="wrap">
+-    <div class="center"><div class="eyebrow">Sparren?</div>
+-      <h2 class="section-title">Ontdek wat past bij jouw situatie</h2>
+-      <p class="lead" style="margin-bottom:36px">Laat je gegevens achter, dan denken we vrijblijvend mee over de juiste aanpak.</p></div>
+-    <form class="formcard" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
+-      <input type="hidden" name="onderwerp" value={`Interesse: ${l.title}`} />
+-      <div class="frow">
+-        <div class="fg"><label>Voornaam *</label><input type="text" name="voornaam" required /></div>
+-        <div class="fg"><label>Werk e-mail *</label><input type="email" name="email" required /></div>
+-      </div>
+-      <div class="fg"><label>Bedrijfsnaam</label><input type="text" name="bedrijf" /></div>
+-      <button type="submit" class="btn btn-primary">Verzenden</button>
+-    </form>
+-  </div></section>
+-</Base>
+-
+-<style>
+-  .lp-pains{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
+-  .lp-pain{display:flex;gap:12px;background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow-xs)}
+-  .lp-pain span{color:var(--gold);font-weight:800;font-size:20px;line-height:1.2}
+-  .lp-pain p{margin:0;color:var(--navy);font-weight:600;font-size:15px;line-height:1.5}
+-  .lp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:26px}
+-  .lp-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px}
+-  .lp-card h3{color:var(--navy);font-size:1.1rem;margin:0 0 8px}
+-  .lp-card p{color:var(--muted);font-size:15px;line-height:1.6;margin:0}
+-  @media(max-width:820px){.lp-pains,.lp-grid{grid-template-columns:1fr}}
+-</style>
++<Base title={t.metaTitle} description={t.metaDescription} active="solutions"><Toepassing l={l} lang="nl" /></Base>
+diff --git a/src/pages/toepassingen/index.astro b/src/pages/toepassingen/index.astro
+index 9f461b4..02526ba 100644
+--- a/src/pages/toepassingen/index.astro
++++ b/src/pages/toepassingen/index.astro
+@@ -1,53 +1,7 @@
+ ---
+ import Base from "../../layouts/Base.astro";
+-import { landings } from "../../data/landings.js";
+-
+-const usecases = landings.filter((l) => l.kind === "usecase");
+-const sectors = landings.filter((l) => l.kind === "sector");
++import ToepassingenIndex from "../../components/ToepassingenIndex.astro";
++import { LAND_UI } from "../../data/landings.js";
++const ui = LAND_UI.nl;
+ ---
+-<Base
+-  title="Toepassingen en sectoren | Assessments van hrmforce"
+-  description="Ontdek hoe je assessments inzet voor werving, ontwikkeling, leiderschap en jong talent, en per sector zoals zorg, onderwijs en industrie."
+-  active="solutions"
+->
+-  <div class="crumb"><div class="wrap"><a href="/">Home</a> › <span>Toepassingen</span></div></div>
+-
+-  <section class="ahero"><div class="wrap" style="display:block">
+-    <div class="eyebrow" style="color:var(--gold)">Toepassingen</div>
+-    <h1>Waar wil je assessments voor inzetten?</h1>
+-    <p style="color:#c4d2e6;font-size:18px;max-width:760px;margin-top:10px">Van werving tot ontwikkeling en van zorg tot industrie: bekijk hoe je onze wetenschappelijk gevalideerde assessments inzet voor jouw vraag.</p>
+-  </div></section>
+-
+-  <section><div class="wrap">
+-    <div class="eyebrow">Per doel</div>
+-    <h2 class="section-title" style="margin-bottom:32px">Toepassingen</h2>
+-    <div class="cards">
+-      {usecases.map((l) => (
+-        <a class="card" href={`/toepassingen/${l.slug}/`} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+-          <h3>{l.title}</h3><p style="flex:1">{l.intro}</p><span class="readmore">Lees meer &rarr;</span>
+-        </a>
+-      ))}
+-    </div>
+-  </div></section>
+-
+-  <section class="bg-soft"><div class="wrap">
+-    <div class="eyebrow" style="color:var(--gold)">Per sector</div>
+-    <h2 class="section-title" style="margin-bottom:32px">Sectoren</h2>
+-    <div class="cards">
+-      <a class="card" href="/geschiktvoorzorg/" style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+-        <h3>Assessments voor de zorg</h3><p style="flex:1">Objectief selecteren en ontwikkelen in zorg en welzijn, met vragenlijsten die passen bij de praktijk.</p><span class="readmore">Lees meer &rarr;</span>
+-      </a>
+-      {sectors.map((l) => (
+-        <a class="card" href={`/toepassingen/${l.slug}/`} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+-          <h3>{l.title}</h3><p style="flex:1">{l.intro}</p><span class="readmore">Lees meer &rarr;</span>
+-        </a>
+-      ))}
+-    </div>
+-  </div></section>
+-
+-  <section class="cta"><div class="wrap" style="padding:56px 0;text-align:center">
+-    <h2 style="color:#fff">Niet zeker welke aanpak past?</h2>
+-    <p style="color:rgba(255,255,255,.9);max-width:620px;margin:12px auto 0">Plan een vrijblijvende demo, dan bekijken we samen welke instrumenten aansluiten bij jouw vraag.</p>
+-    <div class="btns" style="justify-content:center;margin-top:20px"><a href="/contact/" class="btn btn-light">Plan een gratis demo</a></div>
+-  </div></section>
+-</Base>
++<Base title={ui.idxTitle} description={ui.idxDesc} active="solutions"><ToepassingenIndex lang="nl" /></Base>
+-- 
+2.34.1
+

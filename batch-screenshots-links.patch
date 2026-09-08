@@ -1,0 +1,211 @@
+From 6d3b1ee734bd2ecf918a19ffa91ebf2ee47c5c71 Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Tue, 8 Sep 2026 12:12:00 +0200
+Subject: [PATCH 1/2] Assessment-screenshots dynamisch: 'kijkje in de
+ vragenlijst' toont nu de echte testnaam + een echte voorbeeldvraag van dat
+ assessment (per taal) i.p.v. altijd Big Five; inline SVG met echt
+ hrmforce-logo (QMock)
+
+---
+ src/components/QMock.astro                | 80 +++++++++++++++++++++++
+ src/pages/[lang]/assessments/[slug].astro |  7 +-
+ src/pages/assessments/[slug].astro        |  7 +-
+ 3 files changed, 88 insertions(+), 6 deletions(-)
+ create mode 100644 src/components/QMock.astro
+
+diff --git a/src/components/QMock.astro b/src/components/QMock.astro
+new file mode 100644
+index 0000000..40c2105
+--- /dev/null
++++ b/src/components/QMock.astro
+@@ -0,0 +1,80 @@
++---
++// Dynamische "kijkje in de vragenlijst"-mockup als inline SVG. Toont de echte
++// testnaam (intro) en een echte voorbeeldvraag van dit assessment (vraag),
++// per taal. Logo via externe referentie (mag binnen inline SVG in de DOM).
++const { screen = "intro", lang = "nl", testName = "", question = "", scaleNote = "" } = Astro.props;
++const LOGO = "/media/wp-content/uploads/2022/03/HRM-LOGO.svg";
++
++const L = {
++  nl: { qn:"VRAGENLIJST", welcome:"Welkom bij", intro:"Je krijgt een reeks vragen. Geef per vraag aan wat het best bij je past.", b1:"Duurt enkele minuten", b2:"Er zijn geen goede of foute antwoorden", b3:"Antwoord spontaan, dat geeft het beste beeld", start:"Start de vragenlijst", own:"In je eigen taal en tempo", right:"Vragenlijst", sample:"VOORBEELDVRAAG", note:"Kies wat het best bij je past.", prev:"Vorige", next:"Volgende", chip:"Voorbeeld" },
++  en: { qn:"QUESTIONNAIRE", welcome:"Welcome to", intro:"You'll get a series of questions. For each, indicate what fits you best.", b1:"Takes a few minutes", b2:"There are no right or wrong answers", b3:"Answer spontaneously, that gives the best picture", start:"Start the questionnaire", own:"In your own language and pace", right:"Questionnaire", sample:"SAMPLE QUESTION", note:"Choose what fits you best.", prev:"Previous", next:"Next", chip:"Example" },
++  de: { qn:"FRAGEBOGEN", welcome:"Willkommen beim", intro:"Sie erhalten eine Reihe von Fragen. Geben Sie jeweils an, was am besten zu Ihnen passt.", b1:"Dauert einige Minuten", b2:"Es gibt keine richtigen oder falschen Antworten", b3:"Antworten Sie spontan, das ergibt das beste Bild", start:"Fragebogen starten", own:"In Ihrer Sprache und Ihrem Tempo", right:"Fragebogen", sample:"BEISPIELFRAGE", note:"Wählen Sie, was am besten zu Ihnen passt.", prev:"Zurück", next:"Weiter", chip:"Beispiel" },
++  fr: { qn:"QUESTIONNAIRE", welcome:"Bienvenue au", intro:"Vous recevrez une série de questions. Pour chacune, indiquez ce qui vous correspond le mieux.", b1:"Dure quelques minutes", b2:"Il n'y a pas de bonnes ou mauvaises réponses", b3:"Répondez spontanément, cela donne le meilleur aperçu", start:"Démarrer le questionnaire", own:"Dans votre langue et à votre rythme", right:"Questionnaire", sample:"EXEMPLE DE QUESTION", note:"Choisissez ce qui vous correspond le mieux.", prev:"Précédent", next:"Suivant", chip:"Exemple" },
++  es: { qn:"CUESTIONARIO", welcome:"Bienvenido a", intro:"Recibirás una serie de preguntas. En cada una, indica lo que mejor encaja contigo.", b1:"Dura unos minutos", b2:"No hay respuestas correctas o incorrectas", b3:"Responde de forma espontánea, así se obtiene la mejor imagen", start:"Iniciar el cuestionario", own:"En tu idioma y a tu ritmo", right:"Cuestionario", sample:"PREGUNTA DE EJEMPLO", note:"Elige lo que mejor encaja contigo.", prev:"Anterior", next:"Siguiente", chip:"Ejemplo" },
++  ro: { qn:"CHESTIONAR", welcome:"Bine ai venit la", intro:"Primești o serie de întrebări. La fiecare, indică ce ți se potrivește cel mai bine.", b1:"Durează câteva minute", b2:"Nu există răspunsuri corecte sau greșite", b3:"Răspunde spontan, așa obții cea mai bună imagine", start:"Începe chestionarul", own:"În limba și ritmul tău", right:"Chestionar", sample:"ÎNTREBARE EXEMPLU", note:"Alege ce ți se potrivește cel mai bine.", prev:"Înapoi", next:"Înainte", chip:"Exemplu" },
++}[lang] || {};
++
++function wrap(txt, max) {
++  const words = String(txt || "").split(/\s+/);
++  const lines = []; let cur = "";
++  for (const w of words) {
++    if ((cur + " " + w).trim().length > max) { if (cur) lines.push(cur); cur = w; }
++    else cur = (cur + " " + w).trim();
++  }
++  if (cur) lines.push(cur);
++  return lines.slice(0, 4);
++}
++const aria = `${screen === "intro" ? L.qn : L.sample} - hrmforce`;
++const wLines = wrap(`${L.welcome} ${testName}`, 30);
++const wFont = wLines.length > 1 ? 26 : 30;
++const qLines = wrap(question, 40);
++const qFont = qLines.length >= 3 ? 22 : 26;
++---
++{screen === "intro" && (
++  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label={aria}>
++    <rect width="1200" height="760" fill="#EEF3F9"/>
++    <rect x="0" y="0" width="1200" height="72" fill="#FFFFFF"/>
++    <rect x="0" y="71" width="1200" height="1" fill="#E2E8F0"/>
++    <image href={LOGO} x="48" y="20" width="122" height="27.7"/>
++    <text x="1152" y="44" text-anchor="end" font-size="15" fill="#6B7A90">{L.right}</text>
++    <rect x="240" y="150" width="720" height="470" rx="18" fill="#FFFFFF" stroke="#E2E8F0"/>
++    <text x="290" y="228" font-size="14" font-weight="700" letter-spacing="1" fill="#0E468C">{L.qn}</text>
++    {wLines.map((ln, i) => (<text x="290" y={264 + i * (wFont + 6)} font-size={wFont} font-weight="800" fill="#1F2D45">{ln}</text>))}
++    <text x="290" y={264 + wLines.length * (wFont + 6) + 22} font-size="16" fill="#6B7A90">{L.intro}</text>
++    <g>
++      <circle cx="304" cy="372" r="16" fill="#EAF0F8"/>
++      <text x="336" y="378" font-size="16" font-weight="600" fill="#1F2D45">{L.b1}</text>
++      <circle cx="304" cy="420" r="16" fill="#EAF0F8"/>
++      <text x="304" y="426" text-anchor="middle" font-size="16" font-weight="800" fill="#0E468C">?</text>
++      <text x="336" y="426" font-size="16" font-weight="600" fill="#1F2D45">{L.b2}</text>
++      <circle cx="304" cy="468" r="16" fill="#EAF0F8"/>
++      <text x="336" y="474" font-size="16" font-weight="600" fill="#1F2D45">{L.b3}</text>
++    </g>
++    <rect x="290" y="524" width="260" height="56" rx="12" fill="#0E468C"/>
++    <text x="420" y="559" text-anchor="middle" font-size="17" font-weight="700" fill="#FFFFFF">{L.start}</text>
++    <text x="574" y="559" font-size="15" fill="#6B7A90">{L.own}</text>
++  </svg>
++)}
++{screen === "vraag" && (
++  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label={aria}>
++    <rect width="1200" height="760" fill="#EEF3F9"/>
++    <rect x="0" y="0" width="1200" height="72" fill="#FFFFFF"/>
++    <rect x="0" y="71" width="1200" height="1" fill="#E2E8F0"/>
++    <image href={LOGO} x="48" y="20" width="122" height="27.7"/>
++    <text x="1152" y="44" text-anchor="end" font-size="15" fill="#6B7A90">{testName}</text>
++    <rect x="240" y="130" width="720" height="500" rx="18" fill="#FFFFFF" stroke="#E2E8F0"/>
++    <text x="290" y="200" font-size="14" font-weight="700" letter-spacing="1" fill="#0E468C">{L.sample}</text>
++    {qLines.map((ln, i) => (<text x="290" y={252 + i * (qFont + 8)} font-size={qFont} font-weight="700" fill="#1F2D45">{ln}</text>))}
++    <text x="290" y={252 + qLines.length * (qFont + 8) + 20} font-size="15" fill="#6B7A90">{scaleNote || L.note}</text>
++    <g>
++      {[350, 488, 626, 764, 902].map((cx, i) => (
++        <circle cx={cx} cy="470" r={i === 2 ? 18 : 15} fill={i === 2 ? "#0E468C" : "#F0F4FA"} stroke="#D9E2EE"/>
++      ))}
++      <line x1="365" y1="470" x2="887" y2="470" stroke="#E2E8F0" stroke-width="2" opacity="0.6"/>
++    </g>
++    <rect x="240" y="650" width="140" height="52" rx="12" fill="#F6F8FB" stroke="#E2E8F0"/>
++    <text x="310" y="682" text-anchor="middle" font-size="16" font-weight="600" fill="#475569">{L.prev}</text>
++    <rect x="820" y="650" width="140" height="52" rx="12" fill="#0E468C"/>
++    <text x="890" y="682" text-anchor="middle" font-size="16" font-weight="700" fill="#FFFFFF">{L.next}</text>
++  </svg>
++)}
+diff --git a/src/pages/[lang]/assessments/[slug].astro b/src/pages/[lang]/assessments/[slug].astro
+index fb54ae1..61a0e4b 100644
+--- a/src/pages/[lang]/assessments/[slug].astro
++++ b/src/pages/[lang]/assessments/[slug].astro
+@@ -9,6 +9,7 @@ import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../../data/site-config.js"
+ import { localizePath } from "../../../i18n/utils.js";
+ import { examplesFor } from "../../../data/assessment-examples.js";
+ import { generalFaq } from "../../../data/general-faq.js";
++import QMock from "../../../components/QMock.astro";
+ import { oefentests } from "../../../data/oefentests.js";
+ import { createClient } from "@sanity/client";
+ import { kenniscentrumContent } from "../../../data/kenniscentrum-content.js";
+@@ -160,8 +161,8 @@ const _offerLd = (shop && shop.price)
+       <h2 class="qshots-h">{q.h}</h2>
+       <p class="qshots-lead">{q.l}</p>
+       <div class="qshots-track">
+-        <figure class="qshot"><Img src={`/mockups/vragenlijst-intro.${lang}.svg`} alt={q.c1} loading="eager" /><figcaption>{q.c1}</figcaption></figure>
+-        <figure class="qshot"><Img src={`/mockups/vragenlijst-vraag.${lang}.svg`} alt={q.c2} loading="eager" /><figcaption>{q.c2}</figcaption></figure>
++        <figure class="qshot"><QMock screen="intro" lang={lang} testName={a.title} /><figcaption>{q.c1}</figcaption></figure>
++        <figure class="qshot"><QMock screen="vraag" lang={lang} testName={a.title} question={(ex.items && ex.items[0]) || ""} scaleNote={ex.scale} /><figcaption>{q.c2}</figcaption></figure>
+         <figure class="qshot"><Img src={`/mockups/vragenlijst-afgerond.${lang}.svg`} alt={q.c3} loading="eager" /><figcaption>{q.c3}</figcaption></figure>
+       </div>
+     </div></section>
+@@ -386,7 +387,7 @@ const _offerLd = (shop && shop.price)
+   .qshots-lead{color:var(--muted);max-width:620px;margin:0 0 22px}
+   .qshots-track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;-webkit-overflow-scrolling:touch}
+   .qshot{flex:0 0 88%;max-width:680px;scroll-snap-align:center;margin:0}
+-  .qshot img{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow-sm);display:block}
++  .qshot img,.qshot svg{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow-sm);display:block}
+   .qshot figcaption{margin-top:10px;color:var(--muted);font-size:14px;text-align:center}
+   @media(min-width:900px){ .qshot{flex-basis:46%} }
+   .assess-usage{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line); color:var(--text); }
+diff --git a/src/pages/assessments/[slug].astro b/src/pages/assessments/[slug].astro
+index f30b88d..f764cbd 100644
+--- a/src/pages/assessments/[slug].astro
++++ b/src/pages/assessments/[slug].astro
+@@ -11,6 +11,7 @@ import { posts as kcPosts } from "../../data/blog.js";
+ import validPaths from "../../data/valid-paths.js";
+ import { navHref } from "../../i18n/utils.js";
+ import { oefentests } from "../../data/oefentests.js";
++import QMock from "../../components/QMock.astro";
+ 
+ const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
+ 
+@@ -133,8 +134,8 @@ const _offerLd = (shop && shop.price)
+   <h2 class="qshots-h">Een kijkje in de vragenlijst</h2>
+   <p class="qshots-lead">Zo ziet de vragenlijst er voor je kandidaten uit, van uitnodiging tot afronding.</p>
+   <div class="qshots-track">
+-    <figure class="qshot"><Img src="/mockups/vragenlijst-intro.svg" alt="Startscherm van de vragenlijst" loading="eager" /><figcaption>Starten in eigen taal en tempo</figcaption></figure>
+-    <figure class="qshot"><Img src="/mockups/vragenlijst-vraag.svg" alt="Vraagscherm met antwoordschaal" loading="eager" /><figcaption>Stellingen met een duidelijke antwoordschaal</figcaption></figure>
++    <figure class="qshot"><QMock screen="intro" lang="nl" testName={a.title} /><figcaption>Starten in eigen taal en tempo</figcaption></figure>
++    <figure class="qshot"><QMock screen="vraag" lang="nl" testName={a.title} question={(ex.items && ex.items[0]) || ""} scaleNote={ex.scale} /><figcaption>Een voorbeeldvraag uit deze vragenlijst</figcaption></figure>
+     <figure class="qshot"><Img src="/mockups/vragenlijst-afgerond.svg" alt="Afrondscherm van de vragenlijst" loading="eager" /><figcaption>Uitkomsten bespreek je persoonlijk</figcaption></figure>
+   </div>
+ </div></section>
+@@ -342,7 +343,7 @@ const _offerLd = (shop && shop.price)
+   .qshots-lead{color:var(--muted);max-width:620px;margin:0 0 22px}
+   .qshots-track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;-webkit-overflow-scrolling:touch}
+   .qshot{flex:0 0 88%;max-width:680px;scroll-snap-align:center;margin:0}
+-  .qshot img{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow-sm);display:block}
++  .qshot img,.qshot svg{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow-sm);display:block}
+   .qshot figcaption{margin-top:10px;color:var(--muted);font-size:14px;text-align:center}
+   @media(min-width:900px){ .qshot{flex-basis:46%} }
+   .assess-usage{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line); color:var(--text); }
+-- 
+2.34.1
+
+
+From 08ffafdbebd52c6c3f526f12ca11102810813d39 Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Tue, 8 Sep 2026 12:16:41 +0200
+Subject: [PATCH 2/2] Interne links: oude WooCommerce-links (/product/,
+ /winkel/, typo /roduct/) remappen naar /shop/ (o.a. kleurentest-CTA 'Start je
+ Big 5 test'); oefen-assessment-maken-link valt terug op NL i.p.v.
+ niet-bestaand /taal/-pad. Volledige linkaudit: 0 kapotte interne links over
+ 3109 pagina's
+
+---
+ src/components/Oefenen.astro | 2 +-
+ src/i18n/utils.js            | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/components/Oefenen.astro b/src/components/Oefenen.astro
+index 31a5b12..40fdde6 100644
+--- a/src/components/Oefenen.astro
++++ b/src/components/Oefenen.astro
+@@ -60,7 +60,7 @@ const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList",
+     <div class="fg"><label>{ui.email} *</label><input type="email" name="email" required /></div>
+     <button type="submit" class="btn btn-primary">{ui.submit}</button>
+   </form>
+-  <p style="text-align:center;margin-top:20px"><a href={localizePath("/oefen-assessment-maken/", lang)} style="color:var(--blue);font-weight:600">{ui.full} →</a></p>
++  <p style="text-align:center;margin-top:20px"><a href="/oefen-assessment-maken/" style="color:var(--blue);font-weight:600">{ui.full} →</a></p>
+ </div></section>
+ 
+ <style>
+diff --git a/src/i18n/utils.js b/src/i18n/utils.js
+index 892bc2b..ec752ac 100644
+--- a/src/i18n/utils.js
++++ b/src/i18n/utils.js
+@@ -75,6 +75,7 @@ const SECTION_ROOTS = {
+   "assessments": "/online-assessments/", "online-assessments": "/online-assessments/",
+   "kenniscentrum": "/kenniscentrum/", "shop": "/shop/", "support": "/support/",
+   "over-ons": "/over-ons/", "tarieven": "/tarieven/",
++  "winkel": "/shop/", "product": "/shop/", "roduct": "/shop/", "winkelmand": "/shop/",
+ };
+ 
+ // Herschrijft oude/gebroken interne links in gemigreerde HTML naar een geldige
+-- 
+2.34.1
+

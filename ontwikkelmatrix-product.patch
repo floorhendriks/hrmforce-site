@@ -1,0 +1,131 @@
+From 014317b8d514b315ab3ef86998b5e879e70982f5 Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Tue, 8 Sep 2026 22:58:09 +0200
+Subject: [PATCH] Ontwikkelmatrix als apart product: eigen detailpagina (Big
+ Fifty + 360 feedback, vier kwadranten, vanaf 188 euro), in
+ assessment-overzicht (6 talen) en shop-mapping; oude redirect en slug-alias
+ ontwikkelmatrix->ontwikkelassessment verwijderd zodat de pagina bereikbaar is
+
+---
+ public/_redirects             |  1 -
+ src/data/assessment-shop.js   |  1 +
+ src/data/assessments.js       | 13 +++++++++++++
+ src/data/overzicht-content.js |  6 ++++++
+ src/i18n/utils.js             |  1 -
+ 5 files changed, 20 insertions(+), 2 deletions(-)
+
+diff --git a/public/_redirects b/public/_redirects
+index 26a5df4..d9d444d 100644
+--- a/public/_redirects
++++ b/public/_redirects
+@@ -6,7 +6,6 @@
+ /assessments/big-fifty/                    /assessments/big-five/             301
+ /assessments/cognitieve-capaciteitentest/  /assessments/cognitieve-test/      301
+ /assessments/preselectie/disc-test/        /assessments/disc-test/            301
+-/assessments/ontwikkelmatrix/              /assessments/ontwikkelassessment/  301
+ # --- Losse 404-fixes (oude geïndexeerde URLs) ---
+ /faq/big-fifty/                                           /assessments/big-five/               301
+ /partner/flowpeople/                                      /partners/                           301
+diff --git a/src/data/assessment-shop.js b/src/data/assessment-shop.js
+index e0601e8..347e97c 100644
+--- a/src/data/assessment-shop.js
++++ b/src/data/assessment-shop.js
+@@ -11,6 +11,7 @@ export const shopMap = {
+   "drijfverentest": { handle: "motivation", price: "74.00", segments: ["Drijfveren"], uitgever: "hrmforce" },
+   "ability-scan": { handle: "ability-scan", price: "74.00", segments: ["Capaciteiten"], uitgever: "hrmforce" },
+   "ontwikkelassessment": { handle: "ontwikkelmatrix", price: "208.00", segments: [], uitgever: "hrmforce" },
++  "ontwikkelmatrix": { handle: "ontwikkelmatrix-big50-360", price: "188.00", segments: ["Ontwikkeling"], uitgever: "hrmforce" },
+   "studiekeuzetest": { handle: "studiekeuzetest-basis", price: "49.00", segments: [], uitgever: "hrmforce" },
+   "lencioni-teamdynamiek": { handle: "lencioni-teamdynamiek", price: "39.00", segments: [], uitgever: "hrmforce" },
+   "pulse-survey": { handle: "pulse-survey", price: "34.00", segments: [], uitgever: "hrmforce" },
+diff --git a/src/data/assessments.js b/src/data/assessments.js
+index 30c5293..a42b5b8 100644
+--- a/src/data/assessments.js
++++ b/src/data/assessments.js
+@@ -130,6 +130,19 @@ export const assessments = [
+     faq: [ { q: "Geschikt voor aankomende leiders?", a: "Ja, juist ook om potentieel en ontwikkelrichting te bepalen." } ],
+     related: ["Persoonlijkheidstest: Big Five", "360 graden feedback"],
+   },
++  {
++    image: "/media/wp-content/uploads/2021/01/ontwikkelmatrix-hrmforce-v2.png",
++    slug: "ontwikkelmatrix", title: "Ontwikkelmatrix",
++    metaTitle: "Ontwikkelmatrix | Talent en gedrag in vier kwadranten | Hrmforce", metaDescription: "De Ontwikkelmatrix combineert talent uit de Big Fifty met gedrag uit de 360 graden feedback en plaatst medewerkers in vier ontwikkelkwadranten met concrete ontwikkeltips.",
++    phase: "Ontwikkeling", goal: "Talent en zichtbaar gedrag naast elkaar leggen om de juiste ontwikkelrichting te bepalen.",
++    time: "Big Fifty (ca. 25 min) + 360 feedback", form: "Combinatie van persoonlijkheidstest en feedbackronde", feedback: "Overzichtelijke matrix met vier kwadranten en ontwikkeltips per profiel.", extra: "Ideaal als basis voor ontwikkelgesprekken en teamontwikkeling.",
++    traits: ["Talent uit Big Fifty", "Gedrag uit 360 feedback", "Vier ontwikkelkwadranten"],
++    intro: ["De Ontwikkelmatrix brengt in één beeld samen wat iemand van nature kan (talent) en wat anderen in de praktijk zien (gedrag). Zo wordt direct duidelijk waar talent al benut wordt en waar nog groei mogelijk is."],
++    body: ["De matrix zet talent uit de Big Fifty persoonlijkheidstest op de horizontale as en gedrag uit de 360 graden feedback op de verticale as. Die combinatie levert vier ontwikkelkwadranten op: benut talent, onbenut talent, aangeleerd gedrag en ontwikkelkans. Elk kwadrant komt met concrete ontwikkeltips, zodat een medewerker precies weet welke stap logisch is.", "Omdat de Ontwikkelmatrix twee gevalideerde instrumenten combineert, geeft ze een rijker en eerlijker beeld dan een enkele test: niet alleen wat iemand in potentie kan, maar ook hoe dat in de dagelijkse praktijk tot uiting komt."],
++    quote: quoteFH,
++    faq: [ { q: "Waarop is de Ontwikkelmatrix gebaseerd?", a: "Op twee instrumenten: talent uit de Big Fifty persoonlijkheidstest en gedrag uit de 360 graden feedback." }, { q: "Wat maakt de matrix bruikbaar in een ontwikkelgesprek?", a: "De vier kwadranten geven direct een gespreksrichting en per kwadrant zijn er concrete ontwikkeltips." } ],
++    related: ["Persoonlijkheidstest: Big Five", "360 graden feedback"],
++  },
+   {
+     image: "/media/wp-content/uploads/2021/01/ontwikkelmatrix-hrmforce-v2.png",
+     slug: "ontwikkelassessment", title: "Ontwikkelassessment",
+diff --git a/src/data/overzicht-content.js b/src/data/overzicht-content.js
+index 2eaebbe..6b589e3 100644
+--- a/src/data/overzicht-content.js
++++ b/src/data/overzicht-content.js
+@@ -16,6 +16,7 @@ export const ovContent = {
+       { slug: "drijfverentest", title: "Drijfverentest", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Duidelijk helpen begrijpen wat motivatie verhoogt en verlaagt." },
+       { slug: "ability-scan", title: "Ability Scan | Cognitieve capaciteitentest", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Hoe snel kan je problemen begrijpen, een mening vormen en nieuwe dingen aanleren. Daaruit gemiddelde niveau opmaken: mbo, hbo of Master." },
+       { slug: "ontwikkelassessment", title: "Ontwikkelassessment", cats: ["Ontwikkeling"], goal: "Valide overzicht van welke competenties ontwikkeling behoeven en welke al goed gaan." },
++      { slug: "ontwikkelmatrix", title: "Ontwikkelmatrix", cats: ["Ontwikkeling", "Evalueren"], goal: "Talent (Big Fifty) en gedrag (360 feedback) samengebracht in vier ontwikkelkwadranten, met concrete ontwikkeltips per profiel." },
+       { slug: "studiekeuzetest", title: "Studiekeuzetest", cats: ["Ontwikkeling", "Studiekeuze"], goal: "Op basis van interesses scholieren, studenten en werknemers inzicht geven in de best passende opleidingen." },
+       { slug: "lencioni-teamdynamiek", title: "Lencioni Teamdynamiek", cats: ["Ontwikkeling"], goal: "De Lencioni vragenlijst is ontworpen om teams te helpen de teamdynamiek te begrijpen en te evalueren door de aanwezigheid en impact van de vijf disfuncties in teamwork te meten." },
+       { slug: "pulse-survey", title: "Pulse Survey", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "De mogelijkheid bieden aan organisaties om met behulp van onze standaard vragenlijsten en vragendatabase zelf vragenlijsten te ontwerpen en deze te versturen naar sollicitanten en medewerkers." },
+@@ -76,6 +77,7 @@ applyLang(ovContent.en, ["(Pre)Selection", "Evaluation", "Development", "Study c
+   ["Drivers test", "Clearly help understand what raises and lowers motivation."],
+   ["Ability Scan | Cognitive ability test", "How quickly you can understand problems, form an opinion and learn new things. From this an average level is derived: vocational, bachelor or Master."],
+   ["Development assessment", "A valid overview of which competencies need development and which are already strong."],
++  ["Development matrix", "Talent (Big Fifty) and behaviour (360 feedback) combined into four development quadrants, with concrete development tips per profile."],
+   ["Study choice test", "Based on interests, give pupils, students and employees insight into the best-fitting study programmes."],
+   ["Lencioni Team Dynamics", "The Lencioni questionnaire is designed to help teams understand and evaluate team dynamics by measuring the presence and impact of the five dysfunctions in teamwork."],
+   ["Pulse Survey", "Enable organisations to design their own questionnaires using our standard questionnaires and question database, and send them to applicants and employees."],
+@@ -120,6 +122,7 @@ applyLang(ovContent.de, ["(Vor)Auswahl", "Bewertung", "Entwicklung", "Studienwah
+   ["Motivationstest", "Klar verständlich machen, was die Motivation erhöht und senkt."],
+   ["Ability Scan | Kognitiver Fähigkeitstest", "Wie schnell jemand Probleme versteht, sich eine Meinung bildet und Neues lernt. Daraus wird ein durchschnittliches Niveau abgeleitet: Berufsausbildung, Bachelor oder Master."],
+   ["Entwicklungsassessment", "Ein valider Überblick, welche Kompetenzen Entwicklung benötigen und welche bereits stark sind."],
++  ["Entwicklungsmatrix", "Talent (Big Fifty) und Verhalten (360-Feedback) in vier Entwicklungsquadranten vereint, mit konkreten Entwicklungstipps je Profil."],
+   ["Studienwahltest", "Auf Basis der Interessen Schülern, Studierenden und Mitarbeitenden Einblick in die am besten passenden Ausbildungen geben."],
+   ["Lencioni Teamdynamik", "Der Lencioni-Fragebogen wurde entwickelt, um Teams zu helfen, die Teamdynamik zu verstehen und zu bewerten, indem das Vorhandensein und die Wirkung der fünf Dysfunktionen in der Teamarbeit gemessen werden."],
+   ["Pulse Survey", "Organisationen die Möglichkeit bieten, mithilfe unserer Standardfragebögen und Fragendatenbank eigene Fragebögen zu erstellen und an Bewerber und Mitarbeitende zu senden."],
+@@ -164,6 +167,7 @@ applyLang(ovContent.fr, ["(Pré)Sélection", "Évaluation", "Développement", "O
+   ["Test des motivations", "Aider à comprendre clairement ce qui augmente et diminue la motivation."],
+   ["Ability Scan | Test d'aptitudes cognitives", "À quelle vitesse une personne comprend les problèmes, se forge une opinion et apprend. On en déduit un niveau moyen : professionnel, licence ou master."],
+   ["Assessment de développement", "Un aperçu valide des compétences à développer et de celles déjà solides."],
++  ["Matrice de développement", "Talent (Big Fifty) et comportement (feedback 360) réunis en quatre quadrants de développement, avec des conseils concrets par profil."],
+   ["Test d'orientation", "Sur la base des intérêts, donner aux élèves, étudiants et employés un aperçu des formations les plus adaptées."],
+   ["Dynamique d'équipe Lencioni", "Le questionnaire Lencioni est conçu pour aider les équipes à comprendre et évaluer la dynamique d'équipe en mesurant la présence et l'impact des cinq dysfonctionnements du travail en équipe."],
+   ["Pulse Survey", "Permettre aux organisations de concevoir leurs propres questionnaires à l'aide de nos questionnaires standard et de notre base de questions, et de les envoyer aux candidats et aux employés."],
+@@ -208,6 +212,7 @@ applyLang(ovContent.es, ["(Pre)Selección", "Evaluación", "Desarrollo", "Orient
+   ["Test de motivaciones", "Ayudar a comprender claramente qué aumenta y qué reduce la motivación."],
+   ["Ability Scan | Test de capacidad cognitiva", "Con qué rapidez una persona comprende problemas, se forma una opinión y aprende. De ahí se deduce un nivel medio: formación profesional, grado o máster."],
+   ["Assessment de desarrollo", "Una visión válida de qué competencias necesitan desarrollo y cuáles ya son sólidas."],
++  ["Matriz de desarrollo", "Talento (Big Fifty) y comportamiento (feedback 360) combinados en cuatro cuadrantes de desarrollo, con consejos concretos por perfil."],
+   ["Test de orientación de estudios", "A partir de los intereses, dar a alumnos, estudiantes y empleados una visión de las formaciones que mejor se adaptan."],
+   ["Dinámica de equipo Lencioni", "El cuestionario Lencioni está diseñado para ayudar a los equipos a comprender y evaluar la dinámica de equipo midiendo la presencia y el impacto de las cinco disfunciones del trabajo en equipo."],
+   ["Pulse Survey", "Permitir a las organizaciones diseñar sus propios cuestionarios con nuestros cuestionarios estándar y base de preguntas, y enviarlos a candidatos y empleados."],
+@@ -252,6 +257,7 @@ applyLang(ovContent.ro, ["(Pre)Selecție", "Evaluare", "Dezvoltare", "Orientare"
+   ["Test al motivațiilor", "Ajutor pentru a înțelege clar ce crește și ce scade motivația."],
+   ["Ability Scan | Test de capacitate cognitivă", "Cât de repede înțelege o persoană problemele, își formează o opinie și învață. De aici se deduce un nivel mediu: profesional, licență sau master."],
+   ["Assessment de dezvoltare", "O imagine validă asupra competențelor care necesită dezvoltare și a celor deja solide."],
++  ["Matrice de dezvoltare", "Talent (Big Fifty) și comportament (feedback 360) reunite în patru cadrane de dezvoltare, cu sfaturi concrete pentru fiecare profil."],
+   ["Test de orientare în studii", "Pe baza intereselor, oferă elevilor, studenților și angajaților o imagine asupra celor mai potrivite programe de studiu."],
+   ["Dinamica echipei Lencioni", "Chestionarul Lencioni este conceput pentru a ajuta echipele să înțeleagă și să evalueze dinamica echipei prin măsurarea prezenței și impactului celor cinci disfuncții ale muncii în echipă."],
+   ["Pulse Survey", "Oferă organizațiilor posibilitatea de a-și crea propriile chestionare folosind chestionarele noastre standard și baza de întrebări, și de a le trimite candidaților și angajaților."],
+diff --git a/src/i18n/utils.js b/src/i18n/utils.js
+index ec752ac..16f8402 100644
+--- a/src/i18n/utils.js
++++ b/src/i18n/utils.js
+@@ -67,7 +67,6 @@ const ASSESS_SLUG_MAP = {
+   "big-fifty": "big-five",
+   "cognitieve-capaciteitentest": "cognitieve-test",
+   "motivation": "drijfverentest",
+-  "ontwikkelmatrix": "ontwikkelassessment",
+ };
+ // Sectie-hoofdpagina's voor een nette fallback per rubriek.
+ const SECTION_ROOTS = {
+-- 
+2.34.1
+

@@ -1,0 +1,237 @@
+From 45737024b468ef861219bd370275076c7d3cb6e4 Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Tue, 8 Sep 2026 17:15:37 +0200
+Subject: [PATCH] Batch 2: QMock toont per test het juiste antwoordtype
+ (keuze-opties bij DISC/cognitief/skills i.p.v. 5-punts schaal), skills-mock
+ procesgericht (lean-scan), waarom-assessments beeld in lijn met tekst (1
+ omkaderd beeld, gecentreerd)
+
+---
+ src/components/OnlineAssessments.astro    |  5 ++--
+ src/components/QMock.astro                | 34 +++++++++++++++++------
+ src/data/assessment-examples.js           | 29 ++++++++++++++++---
+ src/pages/[lang]/assessments/[slug].astro |  2 +-
+ src/pages/assessments/[slug].astro        |  2 +-
+ src/styles/global.css                     |  4 ++-
+ 6 files changed, 58 insertions(+), 18 deletions(-)
+
+diff --git a/src/components/OnlineAssessments.astro b/src/components/OnlineAssessments.astro
+index 4f45728..2f26d2b 100644
+--- a/src/components/OnlineAssessments.astro
++++ b/src/components/OnlineAssessments.astro
+@@ -96,9 +96,8 @@ const logos = [
+         <h2 class="section-title">{c.why.title}</h2>
+         <p>{c.why.body}</p>
+       </div>
+-      <div>
+-        <Img src="/media/wp-content/uploads/2020/12/ass-afb3.png" alt="gesprekscyclus hrmforce" loading="lazy" />
+-        <Img src="/media/wp-content/uploads/2020/12/ass-afb2.png" alt="online assessment portal hrmforce" loading="lazy" style="margin-top:16px" />
++      <div class="explain-fig">
++        <Img src="/media/wp-content/uploads/2020/12/ass-afb2.png" alt="online assessment portal hrmforce" loading="lazy" />
+       </div>
+     </div>
+   </div>
+diff --git a/src/components/QMock.astro b/src/components/QMock.astro
+index 637b86c..329b485 100644
+--- a/src/components/QMock.astro
++++ b/src/components/QMock.astro
+@@ -2,7 +2,7 @@
+ // Dynamische "kijkje in de vragenlijst"-mockup als inline SVG. Toont de echte
+ // testnaam (intro) en een echte voorbeeldvraag van dit assessment (vraag),
+ // per taal. Logo via externe referentie (mag binnen inline SVG in de DOM).
+-const { screen = "intro", lang = "nl", testName = "", question = "", scaleNote = "" } = Astro.props;
++const { screen = "intro", lang = "nl", testName = "", question = "", scaleNote = "", answer = "scale", options = [] } = Astro.props;
+ import { LOGO_INNER } from "../data/hrmforce-logo-inner.js";
+ const _uid = Math.random().toString(36).slice(2, 8) + (screen === "vraag" ? "v" : "i");
+ const logoSvg = `<g transform="translate(48,19) scale(0.55)">${LOGO_INNER.replaceAll("{UID}", _uid + "_")}</g>`;
+@@ -31,6 +31,11 @@ const wLines = wrap(`${L.welcome} ${testName}`, 30);
+ const wFont = wLines.length > 1 ? 26 : 30;
+ const qLines = wrap(question, 40);
+ const qFont = qLines.length >= 3 ? 22 : 26;
++const isChoice = answer === "choice" && Array.isArray(options) && options.length > 0;
++const noteY = 252 + qLines.length * (qFont + 8) + 22;
++const optStartY = noteY + 26;
++const optH = 52, optGap = 14;
++const optRows = (options || []).slice(0, 4).map((label, i) => ({ label, y: optStartY + i * (optH + optGap) }));
+ ---
+ {screen === "intro" && (
+   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label={aria}>
+@@ -67,13 +72,26 @@ const qFont = qLines.length >= 3 ? 22 : 26;
+     <rect x="240" y="130" width="720" height="500" rx="18" fill="#FFFFFF" stroke="#E2E8F0"/>
+     <text x="290" y="200" font-size="14" font-weight="700" letter-spacing="1" fill="#0E468C">{L.sample}</text>
+     {qLines.map((ln, i) => (<text x="290" y={252 + i * (qFont + 8)} font-size={qFont} font-weight="700" fill="#1F2D45">{ln}</text>))}
+-    <text x="290" y={252 + qLines.length * (qFont + 8) + 20} font-size="15" fill="#6B7A90">{scaleNote || L.note}</text>
+-    <g>
+-      {[350, 488, 626, 764, 902].map((cx, i) => (
+-        <circle cx={cx} cy="470" r={i === 2 ? 18 : 15} fill={i === 2 ? "#0E468C" : "#F0F4FA"} stroke="#D9E2EE"/>
+-      ))}
+-      <line x1="365" y1="470" x2="887" y2="470" stroke="#E2E8F0" stroke-width="2" opacity="0.6"/>
+-    </g>
++    <text x="290" y={noteY} font-size="15" fill="#6B7A90">{scaleNote || L.note}</text>
++    {isChoice ? (
++      <g>
++        {optRows.map((o, i) => (
++          <g>
++            <rect x="290" y={o.y} width="620" height={optH} rx="12" fill={i === 0 ? "#EAF1FB" : "#F6F8FB"} stroke={i === 0 ? "#0E468C" : "#E2E8F0"}/>
++            <circle cx="322" cy={o.y + optH / 2} r="11" fill="#FFFFFF" stroke={i === 0 ? "#0E468C" : "#C7D2E0"} stroke-width="2"/>
++            {i === 0 && (<circle cx="322" cy={o.y + optH / 2} r="5" fill="#0E468C"/>)}
++            <text x="352" y={o.y + optH / 2 + 6} font-size="17" font-weight="600" fill="#1F2D45">{o.label}</text>
++          </g>
++        ))}
++      </g>
++    ) : (
++      <g>
++        {[350, 488, 626, 764, 902].map((cx, i) => (
++          <circle cx={cx} cy="470" r={i === 2 ? 18 : 15} fill={i === 2 ? "#0E468C" : "#F0F4FA"} stroke="#D9E2EE"/>
++        ))}
++        <line x1="365" y1="470" x2="887" y2="470" stroke="#E2E8F0" stroke-width="2" opacity="0.6"/>
++      </g>
++    )}
+     <rect x="240" y="650" width="140" height="52" rx="12" fill="#F6F8FB" stroke="#E2E8F0"/>
+     <text x="310" y="682" text-anchor="middle" font-size="16" font-weight="600" fill="#475569">{L.prev}</text>
+     <rect x="820" y="650" width="140" height="52" rx="12" fill="#0E468C"/>
+diff --git a/src/data/assessment-examples.js b/src/data/assessment-examples.js
+index 6a08bc0..781360d 100644
+--- a/src/data/assessment-examples.js
++++ b/src/data/assessment-examples.js
+@@ -33,7 +33,7 @@ const LIKERT = { nl: "Helemaal oneens — Oneens — Neutraal — Eens — Helem
+ 
+ export const EXAMPLES = {
+   personality: {
+-    scale: LIKERT,
++    scale: LIKERT, answer: "scale",
+     items: {
+       nl: ["Ik voel me op mijn gemak in een groep onbekende mensen.", "Ik plan mijn werk graag ruim van tevoren.", "Ik blijf rustig als er onverwacht iets misgaat."],
+       en: ["I feel at ease in a group of people I don't know.", "I like to plan my work well in advance.", "I stay calm when something unexpectedly goes wrong."],
+@@ -45,6 +45,11 @@ export const EXAMPLES = {
+   },
+   cognitive: {
+     scale: { nl: "Meerkeuze — kies het juiste antwoord", en: "Multiple choice — pick the correct answer", de: "Multiple Choice — wählen Sie die richtige Antwort", fr: "Choix multiple — choisissez la bonne réponse", es: "Opción múltiple — elige la respuesta correcta", ro: "Alegere multiplă — alege răspunsul corect" },
++    answer: "choice",
++    mock: {
++      q: { nl: "Welk getal komt logisch na: 2, 4, 8, 16, …?", en: "Which number logically follows: 2, 4, 8, 16, …?", de: "Welche Zahl folgt logisch: 2, 4, 8, 16, …?", fr: "Quel nombre suit logiquement : 2, 4, 8, 16, … ?", es: "¿Qué número sigue lógicamente: 2, 4, 8, 16, …?", ro: "Ce număr urmează logic: 2, 4, 8, 16, …?" },
++      options: { nl: ["24", "30", "32", "64"], en: ["24", "30", "32", "64"], de: ["24", "30", "32", "64"], fr: ["24", "30", "32", "64"], es: ["24", "30", "32", "64"], ro: ["24", "30", "32", "64"] },
++    },
+     items: {
+       nl: ["Welk getal komt logisch na: 2, 4, 8, 16, …?", "‘Boek’ verhoudt zich tot ‘lezen’ zoals ‘vork’ tot …?", "Als alle A’s B zijn en alle B’s C, dan zijn alle A’s …?"],
+       en: ["Which number logically follows: 2, 4, 8, 16, …?", "‘Book’ is to ‘reading’ as ‘fork’ is to …?", "If all A’s are B and all B’s are C, then all A’s are …?"],
+@@ -56,6 +61,11 @@ export const EXAMPLES = {
+   },
+   disc: {
+     scale: { nl: "Kies wat het best (en minst) bij je past", en: "Choose what fits you best (and least)", de: "Wählen Sie, was am besten (und am wenigsten) passt", fr: "Choisissez ce qui vous correspond le mieux (et le moins)", es: "Elige lo que mejor (y menos) te describe", ro: "Alege ce ți se potrivește cel mai bine (și cel mai puțin)" },
++    answer: "choice",
++    mock: {
++      q: { nl: "Kies het woord dat het best bij je past.", en: "Pick the word that fits you best.", de: "Wählen Sie das Wort, das am besten zu Ihnen passt.", fr: "Choisissez le mot qui vous correspond le mieux.", es: "Elige la palabra que mejor te describe.", ro: "Alege cuvântul care ți se potrivește cel mai bine." },
++      options: { nl: ["Daadkrachtig", "Enthousiast", "Geduldig", "Nauwkeurig"], en: ["Decisive", "Enthusiastic", "Patient", "Precise"], de: ["Entschlossen", "Enthusiastisch", "Geduldig", "Genau"], fr: ["Déterminé", "Enthousiaste", "Patient", "Précis"], es: ["Decidido", "Entusiasta", "Paciente", "Preciso"], ro: ["Hotărât", "Entuziast", "Răbdător", "Precis"] },
++    },
+     items: {
+       nl: ["Kies het woord dat het best bij je past: Daadkrachtig / Enthousiast / Geduldig / Nauwkeurig.", "Wat past het minst bij je: Direct / Sociaal / Kalm / Kritisch.", "In een team ben ik vooral: Sturend / Inspirerend / Ondersteunend / Analyserend."],
+       en: ["Pick the word that fits you best: Decisive / Enthusiastic / Patient / Precise.", "Which fits you least: Direct / Sociable / Calm / Critical.", "In a team I am mainly: Directing / Inspiring / Supporting / Analysing."],
+@@ -67,6 +77,7 @@ export const EXAMPLES = {
+   },
+   drives: {
+     scale: { nl: "Onbelangrijk — Heel belangrijk", en: "Not important — Very important", de: "Unwichtig — Sehr wichtig", fr: "Pas important — Très important", es: "Nada importante — Muy importante", ro: "Neimportant — Foarte important" },
++    answer: "scale",
+     items: {
+       nl: ["Hoe belangrijk is het voor jou om je werk zelfstandig in te richten?", "Hoe belangrijk is het om te blijven leren en jezelf te ontwikkelen?", "Hoe belangrijk zijn waardering en erkenning van collega’s?"],
+       en: ["How important is it for you to organise your work independently?", "How important is it to keep learning and developing yourself?", "How important are appreciation and recognition from colleagues?"],
+@@ -78,6 +89,7 @@ export const EXAMPLES = {
+   },
+   feedback360: {
+     scale: { nl: "Nooit — Zelden — Soms — Vaak — Altijd", en: "Never — Rarely — Sometimes — Often — Always", de: "Nie — Selten — Manchmal — Oft — Immer", fr: "Jamais — Rarement — Parfois — Souvent — Toujours", es: "Nunca — Rara vez — A veces — A menudo — Siempre", ro: "Niciodată — Rar — Uneori — Des — Întotdeauna" },
++    answer: "scale",
+     items: {
+       nl: ["Deze collega communiceert helder en op tijd.", "Deze collega neemt verantwoordelijkheid voor resultaten.", "Deze collega staat open voor feedback van anderen."],
+       en: ["This colleague communicates clearly and on time.", "This colleague takes responsibility for results.", "This colleague is open to feedback from others."],
+@@ -89,6 +101,7 @@ export const EXAMPLES = {
+   },
+   interest: {
+     scale: { nl: "Spreekt me niet aan — Spreekt me erg aan", en: "Not appealing — Very appealing", de: "Spricht mich nicht an — Spricht mich sehr an", fr: "Ne m'attire pas — M'attire beaucoup", es: "No me atrae — Me atrae mucho", ro: "Nu mă atrage — Mă atrage foarte mult" },
++    answer: "scale",
+     items: {
+       nl: ["Ik werk graag met mijn handen aan concrete resultaten.", "Ik los graag ingewikkelde problemen op met cijfers of data.", "Ik help en begeleid graag andere mensen."],
+       en: ["I enjoy working with my hands on concrete results.", "I enjoy solving complex problems with numbers or data.", "I enjoy helping and guiding other people."],
+@@ -99,7 +112,7 @@ export const EXAMPLES = {
+     },
+   },
+   team: {
+-    scale: LIKERT,
++    scale: LIKERT, answer: "scale",
+     items: {
+       nl: ["In ons team weten we wat we van elkaar kunnen verwachten.", "We spreken elkaar aan als afspraken niet worden nagekomen.", "Besluiten worden in ons team door iedereen gedragen."],
+       en: ["In our team we know what to expect from one another.", "We address each other when agreements aren't kept.", "Decisions in our team are supported by everyone."],
+@@ -110,7 +123,7 @@ export const EXAMPLES = {
+     },
+   },
+   wellbeing: {
+-    scale: LIKERT,
++    scale: LIKERT, answer: "scale",
+     items: {
+       nl: ["Ik heb voldoende energie voor mijn werk.", "Ik kan werk en privé goed in balans houden.", "Ik herstel snel na een drukke of stressvolle periode."],
+       en: ["I have enough energy for my work.", "I can keep a good balance between work and private life.", "I recover quickly after a busy or stressful period."],
+@@ -122,6 +135,11 @@ export const EXAMPLES = {
+   },
+   skills: {
+     scale: { nl: "Kies de meest passende aanpak", en: "Choose the most appropriate approach", de: "Wählen Sie den passendsten Ansatz", fr: "Choisissez l'approche la plus adaptée", es: "Elige el enfoque más adecuado", ro: "Alege abordarea cea mai potrivită" },
++    answer: "choice",
++    mock: {
++      q: { nl: "Een proces verloopt inefficiënt. Welke stap zet je als eerste?", en: "A process runs inefficiently. What is your first step?", de: "Ein Prozess läuft ineffizient. Welchen Schritt gehen Sie zuerst?", fr: "Un processus est inefficace. Quelle est votre première étape ?", es: "Un proceso es ineficiente. ¿Cuál es tu primer paso?", ro: "Un proces este ineficient. Care este primul tău pas?" },
++      options: { nl: ["Breng eerst de knelpunten in kaart", "Los meteen het grootste symptoom op", "Vraag om een extra budget", "Wacht op instructies van boven"], en: ["Map the bottlenecks first", "Fix the biggest symptom right away", "Ask for extra budget", "Wait for instructions from above"], de: ["Zuerst die Engpässe erfassen", "Sofort das größte Symptom beheben", "Zusätzliches Budget anfragen", "Auf Anweisungen von oben warten"], fr: ["Cartographier d'abord les points de blocage", "Corriger tout de suite le principal symptôme", "Demander un budget supplémentaire", "Attendre les instructions de la hiérarchie"], es: ["Mapear primero los cuellos de botella", "Resolver de inmediato el mayor síntoma", "Pedir presupuesto adicional", "Esperar instrucciones de arriba"], ro: ["Cartografiază mai întâi blocajele", "Rezolvă imediat cel mai mare simptom", "Cere buget suplimentar", "Așteaptă instrucțiuni de sus"] },
++    },
+     items: {
+       nl: ["Een klant twijfelt over de prijs. Wat doe je als eerste?", "Een proces verloopt inefficiënt. Welke stap zet je als eerste?", "Je krijgt tegenstrijdige opdrachten. Hoe pak je dit aan?"],
+       en: ["A client hesitates about the price. What do you do first?", "A process runs inefficiently. What is your first step?", "You receive conflicting instructions. How do you handle this?"],
+@@ -139,5 +157,8 @@ export function examplesFor(slug, lang) {
+   const type = slugType[slug] || "personality";
+   const set = EXAMPLES[type];
+   const L = (o) => o[lang] || o.nl;
+-  return { title: ui.title, intro: ui.intro, scaleLabel: ui.scaleLabel, tag: ui.tag, scale: L(set.scale), items: L(set.items) };
++  const answer = set.answer || "scale";
++  const mockQuestion = set.mock ? L(set.mock.q) : (L(set.items)[0] || "");
++  const mockOptions = set.mock ? L(set.mock.options) : null;
++  return { title: ui.title, intro: ui.intro, scaleLabel: ui.scaleLabel, tag: ui.tag, scale: L(set.scale), items: L(set.items), answer, mockQuestion, mockOptions };
+ }
+diff --git a/src/pages/[lang]/assessments/[slug].astro b/src/pages/[lang]/assessments/[slug].astro
+index 61a0e4b..314dd98 100644
+--- a/src/pages/[lang]/assessments/[slug].astro
++++ b/src/pages/[lang]/assessments/[slug].astro
+@@ -162,7 +162,7 @@ const _offerLd = (shop && shop.price)
+       <p class="qshots-lead">{q.l}</p>
+       <div class="qshots-track">
+         <figure class="qshot"><QMock screen="intro" lang={lang} testName={a.title} /><figcaption>{q.c1}</figcaption></figure>
+-        <figure class="qshot"><QMock screen="vraag" lang={lang} testName={a.title} question={(ex.items && ex.items[0]) || ""} scaleNote={ex.scale} /><figcaption>{q.c2}</figcaption></figure>
++        <figure class="qshot"><QMock screen="vraag" lang={lang} testName={a.title} question={ex.mockQuestion} scaleNote={ex.scale} answer={ex.answer} options={ex.mockOptions || []} /><figcaption>{q.c2}</figcaption></figure>
+         <figure class="qshot"><Img src={`/mockups/vragenlijst-afgerond.${lang}.svg`} alt={q.c3} loading="eager" /><figcaption>{q.c3}</figcaption></figure>
+       </div>
+     </div></section>
+diff --git a/src/pages/assessments/[slug].astro b/src/pages/assessments/[slug].astro
+index f764cbd..b5a4f1a 100644
+--- a/src/pages/assessments/[slug].astro
++++ b/src/pages/assessments/[slug].astro
+@@ -135,7 +135,7 @@ const _offerLd = (shop && shop.price)
+   <p class="qshots-lead">Zo ziet de vragenlijst er voor je kandidaten uit, van uitnodiging tot afronding.</p>
+   <div class="qshots-track">
+     <figure class="qshot"><QMock screen="intro" lang="nl" testName={a.title} /><figcaption>Starten in eigen taal en tempo</figcaption></figure>
+-    <figure class="qshot"><QMock screen="vraag" lang="nl" testName={a.title} question={(ex.items && ex.items[0]) || ""} scaleNote={ex.scale} /><figcaption>Een voorbeeldvraag uit deze vragenlijst</figcaption></figure>
++    <figure class="qshot"><QMock screen="vraag" lang="nl" testName={a.title} question={ex.mockQuestion} scaleNote={ex.scale} answer={ex.answer} options={ex.mockOptions || []} /><figcaption>Een voorbeeldvraag uit deze vragenlijst</figcaption></figure>
+     <figure class="qshot"><Img src="/mockups/vragenlijst-afgerond.svg" alt="Afrondscherm van de vragenlijst" loading="eager" /><figcaption>Uitkomsten bespreek je persoonlijk</figcaption></figure>
+   </div>
+ </div></section>
+diff --git a/src/styles/global.css b/src/styles/global.css
+index 389efe4..5fc5680 100644
+--- a/src/styles/global.css
++++ b/src/styles/global.css
+@@ -318,7 +318,9 @@ footer a:hover{color:#fff;opacity:1}
+ .info-grid .v,.info-grid .val{color:var(--muted);font-size:15px}
+ @media(max-width:880px){.info-grid{grid-template-columns:1fr 1fr}}
+ 
+-.explain{display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:start}
++.explain{display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:center}
++.explain-fig{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);background:#fff}
++.explain-fig img{display:block;width:100%;height:auto}
+ .explain p{margin-bottom:14px;color:var(--text)}
+ .traits{list-style:none;margin:18px 0;padding:0}
+ .traits li{padding:12px 0 12px 34px;position:relative;border-bottom:1px dashed var(--line);font-weight:600;color:var(--navy)}
+-- 
+2.34.1
+

@@ -1,0 +1,1385 @@
+From 94459dc4b323d05a5262b8ed935484df364434ae Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Tue, 8 Sep 2026 18:37:01 +0200
+Subject: [PATCH 1/2] Batch 5 (NL): advies-overzicht herordend (Training
+ bovenaan, Live Assessments i.p.v. Adviestrajecten) + klantenslider; rijke
+ Trainingen-pagina met certificatietraining, trainingskalender en inschrijven;
+ Live Assessments-pagina met alle assessments klikbaar;
+ gesprekscyclus-illustratie (SVG) i.p.v. vragenlijst-beeld bij HR
+ Gesprekscyclus
+
+---
+ public/mockups/gesprekscyclus.svg  |  36 ++++++++
+ src/data/oplossingen.js            |   2 +-
+ src/pages/advies.astro             |  21 +++--
+ src/pages/advies/assessments.astro |  68 +++++++++++++++
+ src/pages/advies/trainingen.astro  | 131 +++++++++++++++++++++++++++++
+ 5 files changed, 248 insertions(+), 10 deletions(-)
+ create mode 100644 public/mockups/gesprekscyclus.svg
+ create mode 100644 src/pages/advies/assessments.astro
+ create mode 100644 src/pages/advies/trainingen.astro
+
+diff --git a/public/mockups/gesprekscyclus.svg b/public/mockups/gesprekscyclus.svg
+new file mode 100644
+index 0000000..572cb94
+--- /dev/null
++++ b/public/mockups/gesprekscyclus.svg
+@@ -0,0 +1,36 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 460" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="HR-gesprekscyclus van hrmforce: bila, bila+, ontwikkelgesprek en jaargesprek">
++  <rect width="640" height="460" rx="18" fill="#EEF3F9"/>
++  <text x="320" y="46" text-anchor="middle" font-size="20" font-weight="800" fill="#1F2D45">De HR-gesprekscyclus</text>
++  <text x="320" y="72" text-anchor="middle" font-size="14" fill="#6B7A90">Eén doorlopende jaarcyclus in vier gesprekken</text>
++  <!-- circular arrows -->
++  <circle cx="320" cy="258" r="128" fill="none" stroke="#CBD8E8" stroke-width="2" stroke-dasharray="4 7"/>
++  <g fill="#0e468c">
++    <polygon points="448,258 438,251 438,265"/>
++    <polygon points="192,258 202,251 202,265"/>
++  </g>
++  <!-- center hub -->
++  <circle cx="320" cy="258" r="52" fill="#0e468c"/>
++  <text x="320" y="252" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">continu</text>
++  <text x="320" y="270" text-anchor="middle" font-size="14" font-weight="700" fill="#fcc11b">bijsturen</text>
++  <!-- 4 nodes -->
++  <g>
++    <circle cx="320" cy="130" r="46" fill="#fff" stroke="#0e468c" stroke-width="2"/>
++    <text x="320" y="126" text-anchor="middle" font-size="14" font-weight="800" fill="#0e468c">Bila</text>
++    <text x="320" y="146" text-anchor="middle" font-size="11" fill="#6B7A90">werkafspraken</text>
++  </g>
++  <g>
++    <circle cx="448" cy="258" r="46" fill="#fff" stroke="#0e468c" stroke-width="2"/>
++    <text x="448" y="254" text-anchor="middle" font-size="14" font-weight="800" fill="#0e468c">Bila+</text>
++    <text x="448" y="274" text-anchor="middle" font-size="11" fill="#6B7A90">verdieping</text>
++  </g>
++  <g>
++    <circle cx="320" cy="386" r="46" fill="#fff" stroke="#0e468c" stroke-width="2"/>
++    <text x="320" y="380" text-anchor="middle" font-size="13" font-weight="800" fill="#0e468c">Ontwikkel-</text>
++    <text x="320" y="396" text-anchor="middle" font-size="13" font-weight="800" fill="#0e468c">gesprek</text>
++  </g>
++  <g>
++    <circle cx="192" cy="258" r="46" fill="#fff" stroke="#0e468c" stroke-width="2"/>
++    <text x="192" y="254" text-anchor="middle" font-size="13" font-weight="800" fill="#0e468c">Jaar-</text>
++    <text x="192" y="272" text-anchor="middle" font-size="13" font-weight="800" fill="#0e468c">gesprek</text>
++  </g>
++</svg>
+diff --git a/src/data/oplossingen.js b/src/data/oplossingen.js
+index 9414434..dac2dca 100644
+--- a/src/data/oplossingen.js
++++ b/src/data/oplossingen.js
+@@ -48,7 +48,7 @@ export const oplossingen = [
+       "Jaargesprek en volledige jaarcyclus",
+       "Automatische voortgangsbewaking en concrete actielijsten",
+     ],
+-    image: "/media/wp-content/uploads/2017/02/appraisal-hrmforce.jpg",
++    image: "/mockups/gesprekscyclus.svg",
+     photo: "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=900",
+     cta: "Bespreek met een HR-specialist welke ontwikkelaanpak bij jullie team past",
+   },
+diff --git a/src/pages/advies.astro b/src/pages/advies.astro
+index c9f6e2e..88e7de8 100644
+--- a/src/pages/advies.astro
++++ b/src/pages/advies.astro
+@@ -1,15 +1,16 @@
+ ---
+ import Base from "../layouts/Base.astro";
++import LogoSlider from "../components/LogoSlider.astro";
+ 
+ const items = [
+-  { h: "Assessments", p: "In elke organisatie beslissen mensen over mensen. Een sollicitant aannemen of afwijzen, een zittende medewerker wel of niet laten doorgroeien of interveniëren in een (stagnerende) loopbaan. Deze besluiten raken individu én organisatie. Uiteindelijk bepalen personele beslissingen hoe succesvol je organisatie is.", href: "/advies/assessments/" },
+-  { h: "Talent Management", p: "Als men de 80-20-regel toepast op recruitment, blijkt dat 20% van de aangeworven kandidaten voor 80% van de resultaten zorgt. Meer dan ooit ligt de focus van bedrijven op het werven van deze talenten. Door de huidige economische omstandigheden is het echter ook noodzakelijk om talent in de organisatie te herkennen en te benutten.", href: "/advies/talent-management/" },
+-  { h: "Competentie Management", p: "Bij het invoeren van competentiemanagement worden de visie & strategie van uw organisatie vertaald in doelstellingen. Goed geïmplementeerd competentiemanagement verdient zich dubbel en dwars terug. Het zorgt voor helderheid en structuur in alle functies van de organisatie.", href: "/advies/competentie-management/" },
+-  { h: "Consultancy", p: "Uw organisatie verandert. Zij groeit, vernieuwt of past zich aan. Niet meegaan en veranderen betekent stilstaan. In tijden waarin de technologische innovatie zo snel gaat, betekent het zelfs achteruitgaan. U kiest voor een ambitieuze strategie en zoals altijd is de realisatie van de strategie de grootste uitdaging.", href: null },
+-  { h: "Training", p: "Samen formuleren we de juiste probleemstelling en de best passende aanpak. We kunnen hiervoor een breed scala aan interventies inzetten. De werkvormen die we toepassen zijn vernieuwend en gebaseerd op wetenschappelijk onderzoek, maar bovenal verrassend en inspirerend. Voor een optimaal leerrendement laten we onze interventies aansluiten op jouw werksituatie.", href: "/advies/trainingen/" },
+-  { h: "Loopbaan", p: "Een loopbaantraject van hrmforce is gericht op de toekomst en het verlangen: ‘Wat wil ik?’. De deelnemer wil iets met zijn of haar loopbaan maar heeft moeite met het richting geven, weet niet precies wat hij of zij wil of kan interesses niet goed vertalen naar mogelijke functies. Daarnaast spelen op de achtergrond de vragen ‘Wie ben ik?’ en ‘Wat kan ik?’ vaak mee.", href: "/advies/" },
+-  { h: "Coaching", p: "kunt u benutten om de kandidaten te laten zoeken naar mogelijke beroepen en actueel beschikbare vacatures op basis van hun persoonlijkheid, motivatie en gedrag.", href: null },
+-  { h: "Selectie Begeleiding", p: "Een nieuw persoon binnen de organisatie inlijven voor impactvolle functies is voor een organisatie geen dagelijkse bezigheid. Als assessoren bieden wij met onze expertise in gedragsonderzoeken de mogelijkheid om objectief geschiktheid te beoordelen tijdens alles fases van het werving en selectieproces.", href: null },
++  { h: "Training", p: "Word met de certificatietraining van hrmforce een gecertificeerd gebruiker: je leert onze vragenlijsten inzetten, resultaten correct interpreteren en zorgvuldig terugkoppelen. Daarnaast bieden we trainingen op maat, zoals 'Het goede gesprek'. Bekijk de trainingskalender en schrijf je direct in.", href: "/advies/trainingen/", cta: "Bekijk trainingen & kalender" },
++  { h: "Live Assessments", p: "Naast de zelfservice online tests begeleiden onze assessoren live assessments: van selectie- en ontwikkelassessments tot loopbaan- en teamtrajecten. Je bekijkt alle beschikbare assessments en zet ze gericht in voor jouw vraagstuk.", href: "/advies/assessments/", cta: "Bekijk alle assessments" },
++  { h: "Talent Management", p: "Als men de 80-20-regel toepast op recruitment, blijkt dat 20% van de aangeworven kandidaten voor 80% van de resultaten zorgt. Meer dan ooit ligt de focus op het werven van deze talenten. Door de huidige economische omstandigheden is het ook noodzakelijk om talent in de organisatie te herkennen en te benutten.", href: "/advies/talent-management/", cta: "Meer informatie" },
++  { h: "Competentie Management", p: "Bij het invoeren van competentiemanagement worden de visie & strategie van je organisatie vertaald in doelstellingen. Goed geimplementeerd competentiemanagement verdient zich dubbel en dwars terug. Het zorgt voor helderheid en structuur in alle functies van de organisatie.", href: "/advies/competentie-management/", cta: "Meer informatie" },
++  { h: "Loopbaan", p: "Een loopbaantraject van hrmforce is gericht op de toekomst en het verlangen: 'Wat wil ik?'. De deelnemer wil iets met zijn of haar loopbaan maar heeft moeite met het richting geven. Op de achtergrond spelen de vragen 'Wie ben ik?' en 'Wat kan ik?' vaak mee.", href: "/advies/loopbaan-assessment/", cta: "Meer informatie" },
++  { h: "Consultancy", p: "Je organisatie verandert. Zij groeit, vernieuwt of past zich aan. In tijden waarin de technologische innovatie zo snel gaat, betekent stilstaan zelfs achteruitgaan. Je kiest voor een ambitieuze strategie en zoals altijd is de realisatie daarvan de grootste uitdaging.", href: "/contact/", cta: "Neem contact op" },
++  { h: "Coaching", p: "Zet coaching in om medewerkers te laten groeien op basis van hun persoonlijkheid, motivatie en gedrag, en om mogelijke beroepen en loopbaanstappen te verkennen die bij hen passen.", href: "/contact/", cta: "Neem contact op" },
++  { h: "Selectie Begeleiding", p: "Een nieuw persoon binnen de organisatie halen voor impactvolle functies is geen dagelijkse bezigheid. Als assessoren beoordelen wij met onze expertise in gedragsonderzoek objectief de geschiktheid tijdens alle fases van het werving- en selectieproces.", href: "/contact/", cta: "Neem contact op" },
+ ];
+ ---
+ <Base
+@@ -38,13 +39,15 @@ const items = [
+           <div class="adv-block">
+             <h2>{it.h}</h2>
+             <p>{it.p}</p>
+-            {it.href && <a class="btn btn-primary" href={it.href}>Meer informatie</a>}
++            {it.href && <a class="btn btn-primary" href={it.href}>{it.cta || "Meer informatie"}</a>}
+           </div>
+         ))}
+       </div>
+     </div>
+   </section>
+ 
++<LogoSlider heading="Organisaties die u voorgingen" />
++
+   <section class="cta">
+     <div class="wrap">
+       <h2>Benieuwd wat het juiste adviestraject jou oplevert?</h2>
+diff --git a/src/pages/advies/assessments.astro b/src/pages/advies/assessments.astro
+new file mode 100644
+index 0000000..97805c9
+--- /dev/null
++++ b/src/pages/advies/assessments.astro
+@@ -0,0 +1,68 @@
++---
++import Base from "../../layouts/Base.astro";
++import LogoSlider from "../../components/LogoSlider.astro";
++import { assessments } from "../../data/assessments.js";
++
++// Alle assessments klikbaar tonen, gegroepeerd is niet nodig: één net raster.
++const list = assessments.map((a) => ({ title: a.title, slug: a.slug, goal: a.goal || "", phase: a.phase || "" }));
++---
++<Base title="Live Assessments | Door assessoren begeleid | hrmforce" description="Naast onze online tests begeleiden onze assessoren live assessments voor selectie, ontwikkeling en loopbaan. Bekijk alle beschikbare assessments." active="advice">
++  <div class="crumb">
++    <div class="wrap"><a href="/">Home</a> &rsaquo; <a href="/advies/">Advies</a> &rsaquo; <span>Live Assessments</span></div>
++  </div>
++
++  <section class="ahero">
++    <div class="wrap" style="display:block">
++      <div class="eyebrow" style="color:var(--gold)">Advies</div>
++      <h1>Live Assessments</h1>
++      <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">Naast de zelfservice online tests begeleiden onze <strong>assessoren</strong> live assessments: van selectie- en ontwikkelassessments tot loopbaan- en teamtrajecten. We stellen op basis van je vraagstuk de juiste combinatie van vragenlijsten samen en koppelen de uitkomsten persoonlijk terug.</p>
++      <div class="btns" style="margin-top:16px">
++        <a href="/contact/" class="btn btn-primary">Plan een gratis demo</a>
++        <a href="/assessment-overzicht/" class="btn btn-light">Naar het volledige overzicht</a>
++      </div>
++    </div>
++  </section>
++
++  <LogoSlider heading="Organisaties die u voorgingen" />
++
++  <section>
++    <div class="wrap">
++      <div class="eyebrow">Beschikbare assessments</div>
++      <h2 class="section-title">Alle assessments, klikbaar</h2>
++      <p class="lead" style="margin-bottom:24px">Elk assessment is los in te zetten of te combineren binnen een begeleid traject. Klik door voor de uitleg, voorbeeldvragen en de wetenschappelijke onderbouwing.</p>
++      <div class="la-grid">
++        {list.map((a) => (
++          <a class="la-card" href={`/assessments/${a.slug}/`}>
++            <h3>{a.title}</h3>
++            {a.goal && <p>{a.goal}</p>}
++            {a.phase && <span class="la-phase">{a.phase}</span>}
++            <span class="la-more">Bekijk assessment &rarr;</span>
++          </a>
++        ))}
++      </div>
++    </div>
++  </section>
++
++  <section class="cta">
++    <div class="wrap">
++      <h2>Niet zeker welk assessment past?</h2>
++      <p>Onze assessoren denken met je mee en stellen het traject samen op basis van jouw doel en functie.</p>
++      <div class="btns">
++        <a href="/contact/" class="btn btn-primary">Plan een demo</a>
++        <a href="/testkiezer/" class="btn btn-light">Gebruik de testkiezer</a>
++      </div>
++    </div>
++  </section>
++</Base>
++
++<style>
++  .la-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 8px; }
++  .la-card { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--gold); border-radius: 14px; padding: 20px 22px; box-shadow: var(--shadow-xs); text-decoration: none; transition: transform .15s, box-shadow .15s; }
++  .la-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
++  .la-card h3 { color: var(--navy); font-size: 17px; font-weight: 800; margin: 0 0 8px; }
++  .la-card p { color: var(--muted); font-size: 14px; line-height: 1.5; margin: 0 0 12px; flex: 1; }
++  .la-phase { color: var(--blue); font-size: 12px; font-weight: 700; margin-bottom: 10px; }
++  .la-more { color: var(--navy); font-size: 14px; font-weight: 700; }
++  @media (max-width: 880px) { .la-grid { grid-template-columns: 1fr 1fr; } }
++  @media (max-width: 560px) { .la-grid { grid-template-columns: 1fr; } }
++</style>
+diff --git a/src/pages/advies/trainingen.astro b/src/pages/advies/trainingen.astro
+new file mode 100644
+index 0000000..037b783
+--- /dev/null
++++ b/src/pages/advies/trainingen.astro
+@@ -0,0 +1,131 @@
++---
++import Base from "../../layouts/Base.astro";
++import LogoSlider from "../../components/LogoSlider.astro";
++import Img from "../../components/Img.astro";
++
++// Trainingskalender: alleen komende data tonen (peildatum bij build).
++const kalender = [
++  { datum: "24 sep 2026", tijd: "09:30 - 16:30", soort: "Certificatietraining", max: "Max. 12", locatie: "Hoeve Rijlaarsdam, Nieuwveenseweg 59, 2421 LB Nieuwkoop", prijs: "€ 595,-" },
++  { datum: "19 nov 2026", tijd: "09:30 - 16:30", soort: "Certificatietraining", max: "Max. 12", locatie: "Hoeve Rijlaarsdam, Nieuwveenseweg 59, 2421 LB Nieuwkoop", prijs: "€ 595,-" },
++];
++
++const leerdoelen = [
++  "Zelfstandig nieuwe kandidaten invoeren, instellingen wijzigen en vragenlijsten versturen",
++  "Resultaten van vragenlijsten interpreteren voor loopbaan- en ontwikkelvragen",
++  "De basis leggen voor een coachingtraject en feedbackgesprekken voeren",
++  "Inzicht krijgen in je eigen profiel op de verschillende vragenlijsten",
++  "Concrete feedbackgesprekken voeren en evalueren onder begeleiding van een professional",
++  "De theorie rond persoonlijkheid en competenties leren",
++];
++
++const trainingen = [
++  { h: "Certificatietraining", p: "Word gecertificeerd hrmforce-gebruiker: implementatie, gebruik en interpretatie van de vragenlijsten in de praktijk.", href: "/advies/certificatietraining/" },
++  { h: "'Het goede gesprek'", p: "Voor medewerkers en leidinggevenden. Extra waardevol als er diversiteit in de groep is.", href: "/advies/training-het-goede-gesprek/" },
++  { h: "Medezeggenschapstraining", p: "Voor leden van de medezeggenschapsraad van scholen.", href: "/advies/medezeggenschap/" },
++];
++---
++<Base title="Trainingen & certificatietraining | hrmforce" description="Word met de certificatietraining van hrmforce een gecertificeerd gebruiker. Bekijk de trainingskalender en schrijf je direct in." active="advice">
++  <div class="crumb">
++    <div class="wrap"><a href="/">Home</a> &rsaquo; <a href="/advies/">Advies</a> &rsaquo; <span>Trainingen</span></div>
++  </div>
++
++  <section class="ahero">
++    <div class="wrap" style="display:block">
++      <div class="eyebrow" style="color:var(--gold)">Advies</div>
++      <h1>Trainingen &amp; cursussen</h1>
++      <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">Met een <strong>certificatietraining</strong> van hrmforce leer je werken met onze vragenlijsten en oplossingen: je leert resultaten correct te interpreteren en zorgvuldig terug te koppelen. Op verzoek bieden we, vaak samen met onze partners, aanvullende trainingen op maat.</p>
++      <div class="btns" style="margin-top:16px">
++        <a href="/inschrijfformulier-trainingen/" class="btn btn-primary">Direct inschrijven</a>
++        <a href="#kalender" class="btn btn-light">Bekijk de kalender</a>
++      </div>
++    </div>
++  </section>
++
++  <LogoSlider heading="Organisaties die u voorgingen" />
++
++  <section>
++    <div class="wrap">
++      <div class="explain">
++        <div>
++          <div class="eyebrow">Certificatietraining</div>
++          <h2 class="section-title">Word gecertificeerd hrmforce-gebruiker</h2>
++          <p>We organiseren live trainingen waarin je leert werken met hrmforce en de mogelijkheid krijgt om een gecertificeerd gebruiker te worden. Onze aanpak is nuchter en no-nonsense, concreet en indringend, maar met gevoel voor humor en flair.</p>
++          <p style="font-weight:700;color:var(--navy);margin-top:14px">Voor wie?</p>
++          <p>Medewerkers die hun interne deskundigheid in het werken met vragenlijsten willen verhogen, en managers die coachend leidinggeven, (loopbaan)begeleiders, coaches, HR-verantwoordelijken, opleiders/trainers en P&amp;O-deskundigen die met hrmforce willen werken.</p>
++          <p style="font-weight:700;color:var(--navy);margin-top:14px">Wat leer je?</p>
++          <ul class="traits">{leerdoelen.map((d) => <li>{d}</li>)}</ul>
++        </div>
++        <div class="explain-fig">
++          <Img src="/media/wp-content/uploads/2020/12/ass-afb1.png" alt="Trainingssituatie hrmforce" loading="lazy" />
++        </div>
++      </div>
++    </div>
++  </section>
++
++  <section id="kalender" class="bg-soft">
++    <div class="wrap">
++      <div class="eyebrow" style="color:var(--gold)">Trainingskalender</div>
++      <h2 class="section-title">Komende trainingsdata</h2>
++      <p class="lead" style="margin-bottom:20px">Een overzicht van de eerstvolgende trainingen, met locatie en prijs. Inschrijven kan direct online; gedurende het jaar komen er nieuwe data bij.</p>
++      <div class="kal-wrap">
++        <table class="kal">
++          <thead><tr><th>Datum + tijd</th><th>Training</th><th>Deelnemers</th><th>Locatie</th><th>Prijs p.p.</th></tr></thead>
++          <tbody>
++            {kalender.map((r) => (
++              <tr>
++                <td><strong>{r.datum}</strong><br /><span class="kal-sub">{r.tijd}</span></td>
++                <td>{r.soort}</td>
++                <td>{r.max}</td>
++                <td class="kal-sub">{r.locatie}</td>
++                <td><strong>{r.prijs}</strong></td>
++              </tr>
++            ))}
++          </tbody>
++        </table>
++      </div>
++      <div class="btns" style="margin-top:22px"><a href="/inschrijfformulier-trainingen/" class="btn btn-primary">Inschrijven voor een training</a></div>
++    </div>
++  </section>
++
++  <section>
++    <div class="wrap">
++      <div class="eyebrow">Aanbod</div>
++      <h2 class="section-title">Onze trainingen</h2>
++      <div class="adv">
++        {trainingen.map((t) => (
++          <div class="adv-block">
++            <h3>{t.h}</h3>
++            <p>{t.p}</p>
++            <a class="btn btn-primary" href={t.href}>Lees meer</a>
++          </div>
++        ))}
++      </div>
++      <p style="color:var(--muted);font-size:15px;margin-top:20px">Trainingen zijn voor groepen vanaf 6 personen op maat af te nemen. Doe altijd eerst een nulmeting, zodat je na afloop kunt vaststellen of de investering rendeert. <a href="/contact/" style="color:var(--blue);font-weight:600">Neem contact op</a> voor de mogelijkheden.</p>
++    </div>
++  </section>
++
++  <section class="cta">
++    <div class="wrap">
++      <h2>Klaar om je in te schrijven?</h2>
++      <p>Bekijk de kalender en reserveer je plek, of stem samen met een adviseur de best passende aanpak af.</p>
++      <div class="btns">
++        <a href="/inschrijfformulier-trainingen/" class="btn btn-primary">Inschrijven</a>
++        <a href="/contact/" class="btn btn-light">Vraag advies</a>
++      </div>
++    </div>
++  </section>
++</Base>
++
++<style>
++  .adv { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 28px; }
++  .adv-block { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; box-shadow: var(--shadow-xs); display: flex; flex-direction: column; }
++  .adv-block h3 { color: var(--navy); font-size: 19px; font-weight: 800; margin-bottom: 10px; }
++  .adv-block p { color: var(--muted); font-size: 15px; margin-bottom: 18px; flex: 1; }
++  .adv-block .btn { align-self: flex-start; }
++  .kal-wrap { overflow-x: auto; }
++  .kal { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
++  .kal th { text-align: left; background: var(--navy); color: #fff; font-size: 13px; text-transform: uppercase; letter-spacing: .5px; padding: 12px 14px; }
++  .kal td { padding: 14px; border-top: 1px solid var(--line); font-size: 15px; color: var(--navy); vertical-align: top; }
++  .kal-sub { color: var(--muted); font-size: 13.5px; }
++  @media (max-width: 880px) { .adv { grid-template-columns: 1fr; } }
++</style>
+-- 
+2.34.1
+
+
+From ddbae7a13f034a7c5c6d401415f288b002bc3f9e Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Tue, 8 Sep 2026 18:53:35 +0200
+Subject: [PATCH 2/2] Batch 5 (6 talen): Live Assessments overgenomen van
+ hrmforce.com/advies/assessments (E-Assessment, Selectie,
+ Ontwikkel/Potentieel, Loopbaan, Executive, Teamanalyse) als klikbare kaarten
+ met gelokaliseerde doorlinks; Trainingen-pagina meertalig
+ (certificatietraining, trainingskalender, inschrijven); advies-overzicht in
+ alle 6 talen herordend (Training + Live Assessments) met klantenslider;
+ SubPage kaart-links + slider; gesprekscyclus-illustratie
+
+---
+ src/components/LiveAssessments.astro  |  69 ++++++++++++
+ src/components/SubPage.astro          |   5 +-
+ src/components/Trainingen.astro       | 117 ++++++++++++++++++++
+ src/data/live-assessments-content.js  |  94 ++++++++++++++++
+ src/data/pages.js                     |   6 +-
+ src/data/trainingen-content.js        | 152 ++++++++++++++++++++++++++
+ src/pages/advies/assessments.astro    |  67 +-----------
+ src/pages/advies/trainingen.astro     | 128 +---------------------
+ src/pages/de/advies/assessments.astro |   7 ++
+ src/pages/de/advies/trainingen.astro  |   7 ++
+ src/pages/en/advies.astro             |  28 ++---
+ src/pages/en/advies/assessments.astro |   7 ++
+ src/pages/en/advies/trainingen.astro  |   7 ++
+ src/pages/es/advies.astro             |  35 +++---
+ src/pages/es/advies/assessments.astro |   7 ++
+ src/pages/es/advies/trainingen.astro  |   7 ++
+ src/pages/fr/advies/assessments.astro |   7 ++
+ src/pages/fr/advies/trainingen.astro  |   7 ++
+ src/pages/ro/advies/assessments.astro |   7 ++
+ src/pages/ro/advies/trainingen.astro  |   7 ++
+ 20 files changed, 543 insertions(+), 228 deletions(-)
+ create mode 100644 src/components/LiveAssessments.astro
+ create mode 100644 src/components/Trainingen.astro
+ create mode 100644 src/data/live-assessments-content.js
+ create mode 100644 src/data/trainingen-content.js
+ create mode 100644 src/pages/de/advies/assessments.astro
+ create mode 100644 src/pages/de/advies/trainingen.astro
+ create mode 100644 src/pages/en/advies/assessments.astro
+ create mode 100644 src/pages/en/advies/trainingen.astro
+ create mode 100644 src/pages/es/advies/assessments.astro
+ create mode 100644 src/pages/es/advies/trainingen.astro
+ create mode 100644 src/pages/fr/advies/assessments.astro
+ create mode 100644 src/pages/fr/advies/trainingen.astro
+ create mode 100644 src/pages/ro/advies/assessments.astro
+ create mode 100644 src/pages/ro/advies/trainingen.astro
+
+diff --git a/src/components/LiveAssessments.astro b/src/components/LiveAssessments.astro
+new file mode 100644
+index 0000000..0bc99e4
+--- /dev/null
++++ b/src/components/LiveAssessments.astro
+@@ -0,0 +1,69 @@
++---
++import LogoSlider from "./LogoSlider.astro";
++import { getLangFromUrl, localizePath } from "../i18n/utils.js";
++import { liveAssessmentsFor } from "../data/live-assessments-content.js";
++
++const lang = getLangFromUrl(Astro.url);
++const { ui, options } = liveAssessmentsFor(lang);
++const homeHref = localizePath("/", lang);
++const adviesHref = localizePath("/advies/", lang);
++const contactHref = localizePath("/contact/", lang);
++const overzichtHref = localizePath("/assessment-overzicht/", lang);
++const testkiezerHref = localizePath("/testkiezer/", lang);
++---
++<div class="crumb">
++  <div class="wrap"><a href={homeHref}>Home</a> &rsaquo; <a href={adviesHref}>{ui.eyebrow}</a> &rsaquo; <span>{ui.h1}</span></div>
++</div>
++
++<section class="ahero">
++  <div class="wrap" style="display:block">
++    <div class="eyebrow" style="color:var(--gold)">{ui.eyebrow}</div>
++    <h1>{ui.h1}</h1>
++    <p style="color:#c4d2e6;font-size:19px;max-width:840px;margin-top:8px">{ui.lead}</p>
++    <div class="btns" style="margin-top:16px">
++      <a href={contactHref} class="btn btn-primary">{ui.ctaBtn1}</a>
++      <a href={overzichtHref} class="btn btn-light">{ui.ctaBtn2}</a>
++    </div>
++  </div>
++</section>
++
++<LogoSlider heading={ui.slider} />
++
++<section>
++  <div class="wrap">
++    <div class="eyebrow">{ui.eyebrow}</div>
++    <h2 class="section-title">{ui.secTitle}</h2>
++    <p class="lead" style="margin-bottom:24px">{ui.secLead}</p>
++    <div class="la-grid">
++      {options.map((o) => (
++        <a class="la-card" href={localizePath(o.href, lang)}>
++          <h3>{o.title}</h3>
++          <p>{o.desc}</p>
++          <span class="la-more">{ui.more} &rarr;</span>
++        </a>
++      ))}
++    </div>
++  </div>
++</section>
++
++<section class="cta">
++  <div class="wrap">
++    <h2>{ui.ctaTitle}</h2>
++    <p>{ui.ctaText}</p>
++    <div class="btns">
++      <a href={contactHref} class="btn btn-primary">{ui.ctaBtn1}</a>
++      <a href={testkiezerHref} class="btn btn-light">{ui.ctaBtn2}</a>
++    </div>
++  </div>
++</section>
++
++<style>
++  .la-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 8px; }
++  .la-card { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--gold); border-radius: 14px; padding: 22px; box-shadow: var(--shadow-xs); text-decoration: none; transition: transform .15s, box-shadow .15s; }
++  .la-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
++  .la-card h3 { color: var(--navy); font-size: 17px; font-weight: 800; margin: 0 0 8px; }
++  .la-card p { color: var(--muted); font-size: 14px; line-height: 1.5; margin: 0 0 14px; flex: 1; }
++  .la-more { color: var(--navy); font-size: 14px; font-weight: 700; }
++  @media (max-width: 880px) { .la-grid { grid-template-columns: 1fr 1fr; } }
++  @media (max-width: 560px) { .la-grid { grid-template-columns: 1fr; } }
++</style>
+diff --git a/src/components/SubPage.astro b/src/components/SubPage.astro
+index 9408223..584dd25 100644
+--- a/src/components/SubPage.astro
++++ b/src/components/SubPage.astro
+@@ -1,5 +1,6 @@
+ ---
+ import Base from "../layouts/Base.astro";
++import LogoSlider from "./LogoSlider.astro";
+ import { routes } from "../i18n/ui.js";
+ import { getLangFromUrl, localizePath } from "../i18n/utils.js";
+ 
+@@ -57,12 +58,14 @@ const assessHref = localizePath(routes.assessments, lang);
+       <div class="wrap">
+         {page.intro?.map((p) => <p style="color:var(--text);font-size:17px;max-width:820px;margin-bottom:14px">{p}</p>)}
+         <div class="cards" style="margin-top:34px">
+-          {page.cards?.map((c) => (<div class="card"><h3>{c.h}</h3><p>{c.p}</p></div>))}
++          {page.cards?.map((c) => (<div class="card"><h3>{c.h}</h3><p>{c.p}</p>{c.href && <a class="btn btn-primary" href={c.href} style="align-self:flex-start;margin-top:6px">{c.cta || cta.secondary}</a>}</div>))}
+         </div>
+       </div>
+     </section>
+   )}
+ 
++  {page.slider && <LogoSlider heading={page.slider} />}
++
+   <section class="cta">
+     <div class="wrap">
+       <h2>{cta.title}</h2>
+diff --git a/src/components/Trainingen.astro b/src/components/Trainingen.astro
+new file mode 100644
+index 0000000..06feaae
+--- /dev/null
++++ b/src/components/Trainingen.astro
+@@ -0,0 +1,117 @@
++---
++import LogoSlider from "./LogoSlider.astro";
++import Img from "./Img.astro";
++import { getLangFromUrl, localizePath } from "../i18n/utils.js";
++import { trainingenFor } from "../data/trainingen-content.js";
++
++const lang = getLangFromUrl(Astro.url);
++const t = trainingenFor(lang);
++const homeHref = localizePath("/", lang);
++const adviesHref = localizePath("/advies/", lang);
++const contactHref = localizePath("/contact/", lang);
++const signupHref = lang === "nl" ? "/inschrijfformulier-trainingen/" : contactHref;
++const cardHref = (nlHref) => (lang === "nl" ? nlHref : contactHref);
++---
++<div class="crumb">
++  <div class="wrap"><a href={homeHref}>Home</a> &rsaquo; <a href={adviesHref}>{t.eyebrow}</a> &rsaquo; <span>{t.h1}</span></div>
++</div>
++
++<section class="ahero">
++  <div class="wrap" style="display:block">
++    <div class="eyebrow" style="color:var(--gold)">{t.eyebrow}</div>
++    <h1>{t.h1}</h1>
++    <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px" set:html={t.lead}></p>
++    <div class="btns" style="margin-top:16px">
++      <a href={signupHref} class="btn btn-primary">{t.signupBtn}</a>
++      <a href="#kalender" class="btn btn-light">{t.calBtn}</a>
++    </div>
++  </div>
++</section>
++
++<LogoSlider heading={t.slider} />
++
++<section>
++  <div class="wrap">
++    <div class="explain">
++      <div>
++        <div class="eyebrow">{t.certEyebrow}</div>
++        <h2 class="section-title">{t.certTitle}</h2>
++        <p>{t.certP}</p>
++        <p style="font-weight:700;color:var(--navy);margin-top:14px">{t.forWho}</p>
++        <p>{t.forWhoP}</p>
++        <p style="font-weight:700;color:var(--navy);margin-top:14px">{t.whatLabel}</p>
++        <ul class="traits">{t.leerdoelen.map((d) => <li>{d}</li>)}</ul>
++      </div>
++      <div class="explain-fig">
++        <Img src="/media/wp-content/uploads/2020/12/ass-afb1.png" alt="hrmforce" loading="lazy" />
++      </div>
++    </div>
++  </div>
++</section>
++
++<section id="kalender" class="bg-soft">
++  <div class="wrap">
++    <div class="eyebrow" style="color:var(--gold)">{t.certEyebrow}</div>
++    <h2 class="section-title">{t.kalTitle}</h2>
++    <p class="lead" style="margin-bottom:20px">{t.kalLead}</p>
++    <div class="kal-wrap">
++      <table class="kal">
++        <thead><tr><th>{t.kalH.datum}</th><th>{t.kalH.training}</th><th>{t.kalH.deelnemers}</th><th>{t.kalH.locatie}</th><th>{t.kalH.prijs}</th></tr></thead>
++        <tbody>
++          {t.kalender.map((r) => (
++            <tr>
++              <td><strong>{r.datum}</strong><br /><span class="kal-sub">{r.tijd}</span></td>
++              <td>{r.soort}</td>
++              <td>{r.max}</td>
++              <td class="kal-sub">{r.locatie}</td>
++              <td><strong>{r.prijs}</strong></td>
++            </tr>
++          ))}
++        </tbody>
++      </table>
++    </div>
++    <div class="btns" style="margin-top:22px"><a href={signupHref} class="btn btn-primary">{t.kalBtn}</a></div>
++  </div>
++</section>
++
++<section>
++  <div class="wrap">
++    <div class="eyebrow">{t.aanbodEyebrow}</div>
++    <h2 class="section-title">{t.aanbodTitle}</h2>
++    <div class="adv">
++      {t.trainingen.map((tr) => (
++        <div class="adv-block">
++          <h3>{tr.h}</h3>
++          <p>{tr.p}</p>
++          <a class="btn btn-primary" href={cardHref(tr.nlHref)}>{t.forMoreInfo}</a>
++        </div>
++      ))}
++    </div>
++    <p style="color:var(--muted);font-size:15px;margin-top:20px">{t.aanbodNote} <a href={contactHref} style="color:var(--blue);font-weight:600">{t.contactWord}</a>.</p>
++  </div>
++</section>
++
++<section class="cta">
++  <div class="wrap">
++    <h2>{t.ctaTitle}</h2>
++    <p>{t.ctaText}</p>
++    <div class="btns">
++      <a href={signupHref} class="btn btn-primary">{t.ctaBtn1}</a>
++      <a href={contactHref} class="btn btn-light">{t.ctaBtn2}</a>
++    </div>
++  </div>
++</section>
++
++<style>
++  .adv { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 28px; }
++  .adv-block { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; box-shadow: var(--shadow-xs); display: flex; flex-direction: column; }
++  .adv-block h3 { color: var(--navy); font-size: 19px; font-weight: 800; margin-bottom: 10px; }
++  .adv-block p { color: var(--muted); font-size: 15px; margin-bottom: 18px; flex: 1; }
++  .adv-block .btn { align-self: flex-start; }
++  .kal-wrap { overflow-x: auto; }
++  .kal { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
++  .kal th { text-align: left; background: var(--navy); color: #fff; font-size: 13px; text-transform: uppercase; letter-spacing: .5px; padding: 12px 14px; }
++  .kal td { padding: 14px; border-top: 1px solid var(--line); font-size: 15px; color: var(--navy); vertical-align: top; }
++  .kal-sub { color: var(--muted); font-size: 13.5px; }
++  @media (max-width: 880px) { .adv { grid-template-columns: 1fr; } }
++</style>
+diff --git a/src/data/live-assessments-content.js b/src/data/live-assessments-content.js
+new file mode 100644
+index 0000000..631ed8c
+--- /dev/null
++++ b/src/data/live-assessments-content.js
+@@ -0,0 +1,94 @@
++// Live Assessments (door assessoren begeleide assessment-diensten).
++// Overgenomen van hrmforce.com/advies/assessments/ ("De 5 verschillende
++// assessment opties"). Per taal, met gelokaliseerde doel-links.
++
++export const LA_UI = {
++  nl: { eyebrow: "Advies", h1: "Live Assessments", lead: "Een assessment is een belangrijk hulpmiddel voor de juiste beslissing bij selectie en ontwikkeling. Onze assessoren begeleiden je live: van praktijksimulaties en capaciteitentests tot persoonlijkheidsvragenlijsten. Zo krijg je inzicht dat anders verborgen blijft.", secTitle: "De assessment-opties", secLead: "Kies de assessmentvorm die past bij je vraagstuk. Klik door voor de uitleg.", more: "Meer informatie", slider: "Organisaties die u voorgingen", ctaTitle: "Niet zeker welk assessment past?", ctaText: "Onze assessoren denken met je mee en stellen het traject samen op basis van jouw doel en functie.", ctaBtn1: "Plan een gratis demo", ctaBtn2: "Naar het volledige overzicht" },
++  en: { eyebrow: "Advice", h1: "Live Assessments", lead: "An assessment is a key tool for making the right decision in selection and development. Our assessors guide you live: from practical simulations and ability tests to personality questionnaires. This reveals insight that would otherwise stay hidden.", secTitle: "The assessment options", secLead: "Choose the assessment format that fits your challenge. Click through for details.", more: "More information", slider: "Organisations that went before you", ctaTitle: "Not sure which assessment fits?", ctaText: "Our assessors think along with you and compose the track based on your goal and role.", ctaBtn1: "Book a free demo", ctaBtn2: "See the full overview" },
++  de: { eyebrow: "Beratung", h1: "Live Assessments", lead: "Ein Assessment ist ein wichtiges Hilfsmittel für die richtige Entscheidung bei Auswahl und Entwicklung. Unsere Assessoren begleiten Sie live: von Praxissimulationen und Leistungstests bis zu Persönlichkeitsfragebögen. So gewinnen Sie Einblicke, die sonst verborgen bleiben.", secTitle: "Die Assessment-Optionen", secLead: "Wählen Sie das Assessment-Format, das zu Ihrer Fragestellung passt. Klicken Sie für Details.", more: "Mehr Informationen", slider: "Organisationen, die vor Ihnen kamen", ctaTitle: "Unsicher, welches Assessment passt?", ctaText: "Unsere Assessoren denken mit und stellen den Weg auf Basis Ihres Ziels und Ihrer Rolle zusammen.", ctaBtn1: "Kostenlose Demo buchen", ctaBtn2: "Zur vollständigen Übersicht" },
++  fr: { eyebrow: "Conseil", h1: "Live Assessments", lead: "Une évaluation est un outil clé pour prendre la bonne décision en matière de sélection et de développement. Nos assesseurs vous accompagnent en direct : des simulations pratiques et tests d'aptitude aux questionnaires de personnalité. Cela révèle des informations autrement invisibles.", secTitle: "Les options d'évaluation", secLead: "Choisissez le format d'évaluation adapté à votre problématique. Cliquez pour les détails.", more: "Plus d'informations", slider: "Les organisations qui vous ont précédé", ctaTitle: "Vous ne savez pas quelle évaluation choisir ?", ctaText: "Nos assesseurs réfléchissent avec vous et composent le parcours selon votre objectif et votre poste.", ctaBtn1: "Réserver une démo gratuite", ctaBtn2: "Voir l'aperçu complet" },
++  es: { eyebrow: "Asesoría", h1: "Live Assessments", lead: "Una evaluación es una herramienta clave para tomar la decisión correcta en selección y desarrollo. Nuestros asesores te acompañan en directo: desde simulaciones prácticas y pruebas de aptitud hasta cuestionarios de personalidad. Así se revela información que de otro modo permanece oculta.", secTitle: "Las opciones de evaluación", secLead: "Elige el formato de evaluación que se ajuste a tu necesidad. Haz clic para más detalles.", more: "Más información", slider: "Organizaciones que te precedieron", ctaTitle: "¿No sabes qué evaluación encaja?", ctaText: "Nuestros asesores piensan contigo y componen el trayecto según tu objetivo y puesto.", ctaBtn1: "Reserva una demo gratuita", ctaBtn2: "Ver el resumen completo" },
++  ro: { eyebrow: "Consultanță", h1: "Live Assessments", lead: "O evaluare este un instrument esențial pentru decizia corectă în selecție și dezvoltare. Asesorii noștri te ghidează live: de la simulări practice și teste de aptitudini la chestionare de personalitate. Astfel obții informații care altfel rămân ascunse.", secTitle: "Opțiunile de evaluare", secLead: "Alege formatul de evaluare potrivit nevoii tale. Dă clic pentru detalii.", more: "Mai multe informații", slider: "Organizații care te-au precedat", ctaTitle: "Nu ești sigur ce evaluare se potrivește?", ctaText: "Asesorii noștri gândesc împreună cu tine și compun traseul în funcție de obiectivul și postul tău.", ctaBtn1: "Programează un demo gratuit", ctaBtn2: "Vezi prezentarea completă" },
++};
++
++// hrefKey wordt met localizePath omgezet naar de juiste taal.
++export const LA_OPTIONS = [
++  {
++    key: "e-assessment", href: "/online-assessments/",
++    title: { nl: "E-Assessment", en: "E-Assessment", de: "E-Assessment", fr: "E-Assessment", es: "E-Assessment", ro: "E-Assessment" },
++    desc: {
++      nl: "Volledig online assessment dat kandidaten zelfstandig maken, met directe, objectieve rapportages.",
++      en: "Fully online assessment candidates complete independently, with instant, objective reports.",
++      de: "Vollständig online durchgeführtes Assessment mit sofortigen, objektiven Berichten.",
++      fr: "Évaluation entièrement en ligne réalisée en autonomie, avec des rapports instantanés et objectifs.",
++      es: "Evaluación totalmente online que los candidatos completan de forma autónoma, con informes objetivos e inmediatos.",
++      ro: "Evaluare complet online pe care candidații o completează autonom, cu rapoarte imediate și obiective.",
++    },
++  },
++  {
++    key: "selectie-assessment", href: "/hrm-oplossingen/matching/",
++    title: { nl: "Selectie Assessment", en: "Selection Assessment", de: "Auswahl-Assessment", fr: "Évaluation de sélection", es: "Assessment de selección", ro: "Assessment de selecție" },
++    desc: {
++      nl: "Onderbouw je selectiebeslissing en verhoog de kans op productieve, passende medewerkers.",
++      en: "Underpin your selection decision and increase the chance of productive, well-matched employees.",
++      de: "Untermauern Sie Ihre Auswahlentscheidung und erhöhen Sie die Chance auf passende, produktive Mitarbeiter.",
++      fr: "Étayez votre décision de sélection et augmentez les chances d'avoir des collaborateurs productifs et adaptés.",
++      es: "Fundamenta tu decisión de selección y aumenta la probabilidad de empleados productivos y adecuados.",
++      ro: "Fundamentează decizia de selecție și crește șansa unor angajați productivi și potriviți.",
++    },
++  },
++  {
++    key: "ontwikkel-assessment", href: "/assessments/ontwikkelassessment/",
++    title: { nl: "Ontwikkel Assessment / Potentieelbeoordeling", en: "Development Assessment / Potential review", de: "Entwicklungs-Assessment / Potenzialbeurteilung", fr: "Évaluation de développement / Potentiel", es: "Assessment de desarrollo / Evaluación de potencial", ro: "Assessment de dezvoltare / Evaluarea potențialului" },
++    desc: {
++      nl: "Breng ontwikkelpotentieel in kaart en geef gerichte richting aan groei en loopbaan.",
++      en: "Map development potential and give targeted direction to growth and career.",
++      de: "Erfassen Sie das Entwicklungspotenzial und geben Sie Wachstum und Laufbahn gezielt Richtung.",
++      fr: "Cartographiez le potentiel de développement et orientez la croissance et la carrière.",
++      es: "Mapea el potencial de desarrollo y da dirección al crecimiento y la carrera.",
++      ro: "Cartografiază potentialul de dezvoltare și oferă direcție creșterii și carierei.",
++    },
++  },
++  {
++    key: "loopbaan-assessment", href: "/assessments/loopbaanwaarden/",
++    title: { nl: "Loopbaan Assessment", en: "Career Assessment", de: "Laufbahn-Assessment", fr: "Évaluation de carrière", es: "Assessment de carrera", ro: "Assessment de carieră" },
++    desc: {
++      nl: "Gericht op de vraag 'wat wil ik?': van interesses en drijfveren naar passende loopbaankeuzes.",
++      en: "Focused on 'what do I want?': from interests and drives to fitting career choices.",
++      de: "Fokus auf 'was will ich?': von Interessen und Antrieben zu passenden Laufbahnentscheidungen.",
++      fr: "Centré sur 'que veux-je ?' : des intérêts et moteurs vers des choix de carrière adaptés.",
++      es: "Centrado en '¿qué quiero?': de intereses y motivaciones a decisiones de carrera adecuadas.",
++      ro: "Concentrat pe 'ce vreau?': de la interese și motivații la alegeri de carieră potrivite.",
++    },
++  },
++  {
++    key: "executive-assessment", href: "/contact/",
++    title: { nl: "Executive Assessment", en: "Executive Assessment", de: "Executive Assessment", fr: "Executive Assessment", es: "Executive Assessment", ro: "Executive Assessment" },
++    desc: {
++      nl: "Diepgaand assessment op maat voor management- en directiefuncties, met persoonlijke terugkoppeling.",
++      en: "In-depth bespoke assessment for management and executive roles, with personal feedback.",
++      de: "Tiefgehendes maßgeschneidertes Assessment für Management- und Führungspositionen, mit persönlicher Rückmeldung.",
++      fr: "Évaluation approfondie sur mesure pour les postes de direction, avec restitution personnelle.",
++      es: "Assessment a medida y en profundidad para puestos directivos, con devolución personal.",
++      ro: "Assessment aprofundat, personalizat, pentru poziții de management, cu feedback personal.",
++    },
++  },
++  {
++    key: "teamanalyse", href: "/assessments/teamanalyse/",
++    title: { nl: "Teamanalyse / Groepsassessment", en: "Team analysis / Group assessment", de: "Teamanalyse / Gruppen-Assessment", fr: "Analyse d'équipe / Évaluation de groupe", es: "Análisis de equipo / Assessment grupal", ro: "Analiză de echipă / Assessment de grup" },
++    desc: {
++      nl: "Maak talenten en ontwikkelpunten van een team zichtbaar en versterk de samenwerking.",
++      en: "Make a team's talents and development points visible and strengthen collaboration.",
++      de: "Machen Sie Talente und Entwicklungspunkte eines Teams sichtbar und stärken Sie die Zusammenarbeit.",
++      fr: "Rendez visibles les talents et points de développement d'une équipe et renforcez la collaboration.",
++      es: "Haz visibles los talentos y puntos de desarrollo de un equipo y refuerza la colaboración.",
++      ro: "Fă vizibile talentele și punctele de dezvoltare ale unei echipe și întărește colaborarea.",
++    },
++  },
++];
++
++export function liveAssessmentsFor(lang) {
++  const ui = LA_UI[lang] || LA_UI.nl;
++  const L = (o) => o[lang] || o.nl;
++  return { ui, options: LA_OPTIONS.map((o) => ({ key: o.key, href: o.href, title: L(o.title), desc: L(o.desc) })) };
++}
+diff --git a/src/data/pages.js b/src/data/pages.js
+index 0a6c3b5..6d48b19 100644
+--- a/src/data/pages.js
++++ b/src/data/pages.js
+@@ -19,7 +19,7 @@ export const pages = {
+ 
+   de: {
+     "hrm-oplossingen": { metaTitle: "HRM-Lösungen | Hrmforce", metaDescription: "Von Matching und Auswahl bis HR-Analytik: die HRM-Lösungen von hrmforce unterstützen jeden Schritt des HR-Zyklus.", eyebrow: "HRM-Lösungen", title: "Tools für jeden Schritt des HR-Zyklus", lead: "Recruitment, Entwicklung, Beschäftigungsfähigkeit und Analytik, gebündelt in einer Plattform, verbunden mit Ihren bestehenden HR-Systemen.", intro: ["Die HRM-Lösungen von hrmforce unterstützen Sie bei Auswahl, Entwicklung und Austritt. Unsere Module arbeiten mit den meistgenutzten ATS-, HR- und Payroll-Systemen über API oder SSO zusammen."], cards: [ {h:"Matching & Auswahl", p:"Finden Sie die beste Passung für Funktion und Team mit bewährten Fragebögen und Fähigkeitstests."}, {h:"HR-Gesprächszyklus", p:"Digitaler Entwicklungszyklus für Leistungs- und Beurteilungsgespräche."}, {h:"Beschäftigungsfähigkeit", p:"Halten Sie Mitarbeiter nachhaltig einsetzbar mit Scans und Entwicklungspfaden."}, {h:"HR-Analytik", p:"Steuern Sie datenbasiert: klare Dashboards zu Talent, Teams und Entwicklung."}, {h:"Branchen", p:"Ansatz und Normgruppen, zugeschnitten auf Ihre Branche."} ] },
+-    advies: { metaTitle: "Beratung nach Maß | Hrmforce", metaDescription: "Maßgeschneiderte Beratung, Schulungen und Begleitung rund um Assessments, Kompetenz- und Talentmanagement.", eyebrow: "Beratung", title: "Maßgeschneiderte Beratung und Schulungen", lead: "Unsere Spezialisten und NIP-registrierten Psychologen helfen Ihnen, das Maximum aus Assessments und HR-Tools herauszuholen.", intro: ["Ob es um die Wahl des richtigen Instruments, die Interpretation der Ergebnisse oder die Schulung Ihres eigenen HR-Teams geht: Wir stellen einen Weg zusammen, der zu Ihrer Fragestellung passt."], cards: [ {h:"Assessments", p:"Beratung zum Einsatz von Assessments für Auswahl und Entwicklung."}, {h:"Schulungen", p:"Zertifizierung und Schulungen für HR-Fachleute und Führungskräfte."}, {h:"Kompetenzmanagement", p:"Erfassen Sie Kompetenzen und verknüpfen Sie sie mit Entwicklung."}, {h:"Talentmanagement", p:"Strategische Talentpolitik, vom Potenzial zur Leistung."} ] },
++    advies: { metaTitle: "Beratung nach Maß | Hrmforce", metaDescription: "Maßgeschneiderte Beratung, Schulungen und Begleitung rund um Assessments, Kompetenz- und Talentmanagement.", eyebrow: "Beratung", title: "Maßgeschneiderte Beratung und Schulungen", lead: "Unsere Spezialisten und NIP-registrierten Psychologen helfen Ihnen, das Maximum aus Assessments und HR-Tools herauszuholen.", intro: ["Ob es um die Wahl des richtigen Instruments, die Interpretation der Ergebnisse oder die Schulung Ihres eigenen HR-Teams geht: Wir stellen einen Weg zusammen, der zu Ihrer Fragestellung passt."], cards: [ {h:"Schulungen", p:"Zertifizierung und Schulungen für HR-Fachleute und Führungskräfte. Sehen Sie den Trainingskalender und melden Sie sich direkt an.", href:"/de/advies/trainingen/", cta:"Schulungen & Kalender"}, {h:"Live Assessments", p:"Über die Self-Service-Onlinetests hinaus begleiten unsere Assessoren Live-Assessments: Auswahl, Entwicklung, Laufbahn, Executive und Teamanalyse.", href:"/de/advies/assessments/", cta:"Alle Assessments ansehen"}, {h:"Kompetenzmanagement", p:"Erfassen Sie Kompetenzen und verknüpfen Sie sie mit Entwicklung."}, {h:"Talentmanagement", p:"Strategische Talentpolitik, vom Potenzial zur Leistung."} ], slider: "Organisationen, die vor Ihnen kamen" },
+     "over-ons": { metaTitle: "Über Hrmforce | Talentmanagement & Assessments", metaDescription: "Hrmforce ist die am schnellsten wachsende Online-Entwicklungsplattform für Talentmanagement.", eyebrow: "Über uns", title: "Vom Talent zum Ergebnis", lead: "Hrmforce ist die am schnellsten wachsende Online-Entwicklungsplattform für Talentmanagement, mit dem umfassendsten Angebot an Assessments in den Niederlanden.", intro: ["Seit 2009 helfen wir HR-Managern weltweit, mehr aus ihren Mitarbeitern herauszuholen. Unsere Instrumente sind wissenschaftlich fundiert und werden von NIP-registrierten Psychologen geprüft."], cards: [ {h:"Wissenschaftlich fundiert", p:"Aufgebaut auf bewährten Modellen wie den Big Five und der klassischen Testtheorie."}, {h:"Persönliche Begleitung", p:"Spezialisten, die mitdenken, keine Black Box."}, {h:"1.200+ Organisationen", p:"Von selbstständigen Coaches bis zu Ministerien und großen Arbeitgebern."}, {h:"100.000+ Tests pro Jahr", p:"Jährlich mehr als hunderttausend durchgeführte Assessments."} ] },
+     support: { metaTitle: "Support | Hrmforce", metaDescription: "Hilfe nötig? Sehen Sie sich die Vorbereitung und FAQ an oder kontaktieren Sie unseren Servicedesk.", eyebrow: "Support", title: "Wie können wir helfen?", lead: "Antworten auf Ihre Fragen zu Assessments, Konten und Berichten, oder direkter Kontakt zu unserem Servicedesk.", intro: ["Unser Servicedesk steht für Unterstützung und Erläuterung bereit. Unten finden Sie die meistgenutzten Themen."], cards: [ {h:"Vorbereitung auf ein Assessment", p:"Was können Kandidaten erwarten und wie bereiten sie sich vor?"}, {h:"Häufig gestellte Fragen", p:"Antworten auf die häufigsten Fragen zu unseren Tools."}, {h:"Kontakt aufnehmen", p:"Erreichen Sie den Servicedesk per Telefon oder E-Mail."}, {h:"Datenschutz & DSGVO", p:"Wie wir mit personenbezogenen Daten und Aufbewahrungsfristen umgehen."} ] },
+     contact: { metaTitle: "Kontakt | Hrmforce", metaDescription: "Kontaktieren Sie hrmforce oder fordern Sie eine unverbindliche Demo an.", eyebrow: "Kontakt", title: "Kontakt aufnehmen", lead: "Fragen oder eine unverbindliche Demo? Hinterlassen Sie Ihre Daten, wir melden uns schnell.", isContact: true, form: {name:"Name", company:"Firma", email:"Geschäftliche E-Mail", phone:"Telefonnummer", message:"Ihre Frage oder Nachricht", submit:"Senden"} },
+@@ -27,7 +27,7 @@ export const pages = {
+ 
+   fr: {
+     "hrm-oplossingen": { metaTitle: "Solutions RH | Hrmforce", metaDescription: "Du matching et de la sélection à l'analytique RH : les solutions RH de hrmforce soutiennent chaque étape du cycle RH.", eyebrow: "Solutions RH", title: "Des outils pour chaque étape du cycle RH", lead: "Recrutement, développement, employabilité et analytique, réunis dans une plateforme, intégrés à vos systèmes RH existants.", intro: ["Les solutions RH de hrmforce vous accompagnent dans la sélection, le développement et le départ. Nos modules s'intègrent aux systèmes ATS, RH et de paie les plus utilisés via API ou SSO."], cards: [ {h:"Matching & sélection", p:"Trouvez la meilleure adéquation au poste et à l'équipe avec des questionnaires et tests d'aptitude éprouvés."}, {h:"Cycle d'entretiens RH", p:"Cycle de développement numérique pour les entretiens de performance et d'évaluation."}, {h:"Employabilité", p:"Maintenez l'employabilité durable de vos collaborateurs avec des scans et parcours de développement."}, {h:"Analytique RH", p:"Pilotez par la donnée : des tableaux de bord clairs sur le talent, les équipes et le développement."}, {h:"Secteurs", p:"Approche et groupes de référence adaptés à votre secteur."} ] },
+-    advies: { metaTitle: "Conseil sur mesure | Hrmforce", metaDescription: "Parcours de conseil, formations et accompagnement sur mesure autour des évaluations, de la gestion des compétences et des talents.", eyebrow: "Conseil", title: "Parcours de conseil et formations sur mesure", lead: "Nos spécialistes et psychologues agréés NIP vous aident à tirer le meilleur des évaluations et des outils RH.", intro: ["Qu'il s'agisse du choix du bon instrument, de l'interprétation des résultats ou de la formation de votre propre équipe RH : nous composons un parcours adapté à votre problématique."], cards: [ {h:"Évaluations", p:"Conseil sur le déploiement des évaluations pour la sélection et le développement."}, {h:"Formations", p:"Certification et formations pour les professionnels RH et les managers."}, {h:"Gestion des compétences", p:"Cartographiez les compétences et reliez-les au développement."}, {h:"Gestion des talents", p:"Politique stratégique des talents, du potentiel à la performance."} ] },
++    advies: { metaTitle: "Conseil sur mesure | Hrmforce", metaDescription: "Parcours de conseil, formations et accompagnement sur mesure autour des évaluations, de la gestion des compétences et des talents.", eyebrow: "Conseil", title: "Parcours de conseil et formations sur mesure", lead: "Nos spécialistes et psychologues agréés NIP vous aident à tirer le meilleur des évaluations et des outils RH.", intro: ["Qu'il s'agisse du choix du bon instrument, de l'interprétation des résultats ou de la formation de votre propre équipe RH : nous composons un parcours adapté à votre problématique."], cards: [ {h:"Formations", p:"Certification et formations pour les professionnels RH et les managers. Consultez le calendrier et inscrivez-vous directement.", href:"/fr/advies/trainingen/", cta:"Formations & calendrier"}, {h:"Live Assessments", p:"Au-delà des tests en ligne en libre-service, nos assesseurs accompagnent des évaluations en direct : sélection, développement, carrière, executive et analyse d'équipe.", href:"/fr/advies/assessments/", cta:"Voir toutes les évaluations"}, {h:"Gestion des compétences", p:"Cartographiez les compétences et reliez-les au développement."}, {h:"Gestion des talents", p:"Politique stratégique des talents, du potentiel à la performance."} ], slider: "Les organisations qui vous ont précédé" },
+     "over-ons": { metaTitle: "À propos de Hrmforce | Gestion des talents & évaluations", metaDescription: "Hrmforce est la plateforme de développement en ligne pour la gestion des talents à la croissance la plus rapide.", eyebrow: "À propos", title: "Du talent au résultat", lead: "Hrmforce est la plateforme de développement en ligne pour la gestion des talents à la croissance la plus rapide, avec la gamme d'évaluations la plus complète des Pays-Bas.", intro: ["Depuis 2009, nous aidons les responsables RH du monde entier à tirer le meilleur de leurs collaborateurs. Nos instruments sont fondés scientifiquement et revus par des psychologues agréés NIP."], cards: [ {h:"Fondé scientifiquement", p:"Construit sur des modèles éprouvés comme les Big Five et la théorie classique des tests."}, {h:"Accompagnement personnel", p:"Des spécialistes qui réfléchissent avec vous, pas de boîte noire."}, {h:"1 200+ organisations", p:"Des coachs indépendants aux ministères et grands employeurs."}, {h:"100 000+ tests par an", p:"Plus de cent mille évaluations réalisées chaque année."} ] },
+     support: { metaTitle: "Support | Hrmforce", metaDescription: "Besoin d'aide ? Consultez la préparation et la FAQ ou contactez notre service d'assistance.", eyebrow: "Support", title: "Comment pouvons-nous aider ?", lead: "Des réponses à vos questions sur les évaluations, les comptes et les rapports, ou un contact direct avec notre service d'assistance.", intro: ["Notre service d'assistance est disponible pour le support et les explications. Vous trouverez ci-dessous les sujets les plus consultés."], cards: [ {h:"Préparation à une évaluation", p:"À quoi les candidats peuvent-ils s'attendre et comment se préparent-ils ?"}, {h:"Questions fréquentes", p:"Réponses aux questions les plus courantes sur nos outils."}, {h:"Nous contacter", p:"Joignez le service d'assistance par téléphone ou e-mail."}, {h:"Confidentialité & RGPD", p:"Comment nous traitons les données personnelles et les durées de conservation."} ] },
+     contact: { metaTitle: "Contact | Hrmforce", metaDescription: "Contactez hrmforce ou demandez une démo sans engagement.", eyebrow: "Contact", title: "Nous contacter", lead: "Des questions ou une démo sans engagement ? Laissez vos coordonnées, nous vous recontactons rapidement.", isContact: true, form: {name:"Nom", company:"Entreprise", email:"E-mail professionnel", phone:"Numéro de téléphone", message:"Votre question ou message", submit:"Envoyer"} },
+@@ -43,7 +43,7 @@ export const pages = {
+ 
+   ro: {
+     "hrm-oplossingen": { metaTitle: "Soluții HRM | Hrmforce", metaDescription: "De la matching și selecție la analitica HR: soluțiile hrmforce susțin fiecare etapă a ciclului HR.", eyebrow: "Soluții HRM", title: "Instrumente pentru fiecare etapă a ciclului HR", lead: "Recrutare, dezvoltare, capacitate de angajare și analitică, reunite într-o platformă, integrate cu sistemele HR existente.", intro: ["Soluțiile HRM de la hrmforce vă susțin în selecție, dezvoltare și ieșire. Modulele noastre se integrează cu cele mai folosite sisteme ATS, HR și de salarizare prin API sau SSO."], cards: [ {h:"Matching & selecție", p:"Găsiți cea mai bună potrivire pentru rol și echipă cu chestionare și teste de aptitudini dovedite."}, {h:"Ciclul de interviuri HR", p:"Ciclu de dezvoltare digital pentru interviuri de performanță și evaluare."}, {h:"Capacitate de angajare", p:"Mențineți angajații angajabili durabil cu scanări și trasee de dezvoltare."}, {h:"Analitică HR", p:"Conduceți pe baza datelor: tablouri de bord clare despre talent, echipe și dezvoltare."}, {h:"Sectoare", p:"Abordare și grupuri de referință adaptate sectorului dvs."} ] },
+-    advies: { metaTitle: "Consultanță personalizată | Hrmforce", metaDescription: "Trasee de consultanță, cursuri și îndrumare personalizate despre evaluări, managementul competențelor și al talentelor.", eyebrow: "Consultanță", title: "Trasee de consultanță și cursuri personalizate", lead: "Specialiștii noștri și psihologii înregistrați NIP vă ajută să obțineți maximul din evaluări și instrumentele HR.", intro: ["Fie că este vorba de alegerea instrumentului potrivit, interpretarea rezultatelor sau formarea propriei echipe HR: compunem un traseu potrivit pentru nevoia dvs."], cards: [ {h:"Evaluări", p:"Consultanță privind utilizarea evaluărilor pentru selecție și dezvoltare."}, {h:"Cursuri", p:"Certificare și cursuri pentru profesioniștii HR și manageri."}, {h:"Managementul competențelor", p:"Cartografiați competențele și legați-le de dezvoltare."}, {h:"Managementul talentelor", p:"Politică strategică a talentelor, de la potențial la performanță."} ] },
++    advies: { metaTitle: "Consultanță personalizată | Hrmforce", metaDescription: "Trasee de consultanță, cursuri și îndrumare personalizate despre evaluări, managementul competențelor și al talentelor.", eyebrow: "Consultanță", title: "Trasee de consultanță și cursuri personalizate", lead: "Specialiștii noștri și psihologii înregistrați NIP vă ajută să obțineți maximul din evaluări și instrumentele HR.", intro: ["Fie că este vorba de alegerea instrumentului potrivit, interpretarea rezultatelor sau formarea propriei echipe HR: compunem un traseu potrivit pentru nevoia dvs."], cards: [ {h:"Cursuri", p:"Certificare și cursuri pentru profesioniștii HR și manageri. Vezi calendarul și înscrie-te direct.", href:"/ro/advies/trainingen/", cta:"Cursuri & calendar"}, {h:"Live Assessments", p:"Dincolo de testele online self-service, asesorii noștri ghidează evaluări live: selecție, dezvoltare, carieră, executive și analiză de echipă.", href:"/ro/advies/assessments/", cta:"Vezi toate evaluările"}, {h:"Managementul competențelor", p:"Cartografiați competențele și legați-le de dezvoltare."}, {h:"Managementul talentelor", p:"Politică strategică a talentelor, de la potențial la performanță."} ], slider: "Organizații care te-au precedat" },
+     "over-ons": { metaTitle: "Despre Hrmforce | Managementul talentelor și evaluări", metaDescription: "Hrmforce este platforma de dezvoltare online cu cea mai rapidă creștere pentru managementul talentelor.", eyebrow: "Despre noi", title: "De la talent la rezultate", lead: "Hrmforce este platforma de dezvoltare online cu cea mai rapidă creștere pentru managementul talentelor, cu cea mai completă gamă de evaluări din Țările de Jos.", intro: ["Din 2009 ajutăm managerii HR din întreaga lume să obțină mai mult de la angajații lor. Instrumentele noastre sunt fundamentate științific și revizuite de psihologi înregistrați NIP."], cards: [ {h:"Fundamentat științific", p:"Construit pe modele dovedite precum Big Five și teoria clasică a testelor."}, {h:"Îndrumare personală", p:"Specialiști care gândesc împreună cu dvs., fără cutie neagră."}, {h:"1.200+ organizații", p:"De la coachi independenți la ministere și mari angajatori."}, {h:"100.000+ teste pe an", p:"Peste o sută de mii de evaluări realizate anual."} ] },
+     support: { metaTitle: "Asistență | Hrmforce", metaDescription: "Aveți nevoie de ajutor? Consultați pregătirea și întrebările frecvente sau contactați serviciul nostru de asistență.", eyebrow: "Asistență", title: "Cum vă putem ajuta?", lead: "Răspunsuri la întrebările despre evaluări, conturi și rapoarte, sau contact direct cu serviciul de asistență.", intro: ["Serviciul nostru de asistență este disponibil pentru suport și explicații. Mai jos găsiți cele mai consultate subiecte."], cards: [ {h:"Pregătirea evaluării", p:"La ce se pot aștepta candidații și cum se pregătesc?"}, {h:"Întrebări frecvente", p:"Răspunsuri la cele mai frecvente întrebări despre instrumentele noastre."}, {h:"Contactați-ne", p:"Contactați serviciul de asistență prin telefon sau e-mail."}, {h:"Confidențialitate & GDPR", p:"Cum gestionăm datele personale și perioadele de păstrare."} ] },
+     contact: { metaTitle: "Contact | Hrmforce", metaDescription: "Contactați hrmforce sau solicitați o demonstrație fără angajament.", eyebrow: "Contact", title: "Contactați-ne", lead: "Întrebări sau o demonstrație fără angajament? Lăsați datele dvs. și vă contactăm rapid.", isContact: true, form: {name:"Nume", company:"Companie", email:"E-mail de serviciu", phone:"Număr de telefon", message:"Întrebarea sau mesajul dvs.", submit:"Trimite"} },
+diff --git a/src/data/trainingen-content.js b/src/data/trainingen-content.js
+new file mode 100644
+index 0000000..a86ca9b
+--- /dev/null
++++ b/src/data/trainingen-content.js
+@@ -0,0 +1,152 @@
++// Trainingen & certificatietraining, per taal. Kalenderdata is taalneutraal.
++// Overgenomen van hrmforce.com/advies/trainingen/ en /trainingskalender/.
++
++export const TR_KALENDER = [
++  { datum: "24 sep 2026", tijd: "09:30 - 16:30", soort: "Certificatietraining", max: "Max. 12", locatie: "Hoeve Rijlaarsdam, Nieuwveenseweg 59, 2421 LB Nieuwkoop", prijs: "€ 595,-" },
++  { datum: "19 nov 2026", tijd: "09:30 - 16:30", soort: "Certificatietraining", max: "Max. 12", locatie: "Hoeve Rijlaarsdam, Nieuwveenseweg 59, 2421 LB Nieuwkoop", prijs: "€ 595,-" },
++];
++
++const T = {
++  nl: {
++    eyebrow: "Advies", h1: "Trainingen & cursussen",
++    lead: "Met een <strong>certificatietraining</strong> van hrmforce leer je werken met onze vragenlijsten en oplossingen: je leert resultaten correct te interpreteren en zorgvuldig terug te koppelen. Op verzoek bieden we, vaak samen met onze partners, aanvullende trainingen op maat.",
++    signupBtn: "Direct inschrijven", calBtn: "Bekijk de kalender",
++    certEyebrow: "Certificatietraining", certTitle: "Word gecertificeerd hrmforce-gebruiker",
++    certP: "We organiseren live trainingen waarin je leert werken met hrmforce en de mogelijkheid krijgt om een gecertificeerd gebruiker te worden. Onze aanpak is nuchter en no-nonsense, concreet en indringend, maar met gevoel voor humor en flair.",
++    forWho: "Voor wie?", forWhoP: "Medewerkers die hun interne deskundigheid in het werken met vragenlijsten willen verhogen, en managers die coachend leidinggeven, (loopbaan)begeleiders, coaches, HR-verantwoordelijken, opleiders/trainers en P&O-deskundigen die met hrmforce willen werken.",
++    whatLabel: "Wat leer je?",
++    leerdoelen: ["Zelfstandig nieuwe kandidaten invoeren, instellingen wijzigen en vragenlijsten versturen", "Resultaten van vragenlijsten interpreteren voor loopbaan- en ontwikkelvragen", "De basis leggen voor een coachingtraject en feedbackgesprekken voeren", "Inzicht krijgen in je eigen profiel op de verschillende vragenlijsten", "Concrete feedbackgesprekken voeren en evalueren onder begeleiding van een professional", "De theorie rond persoonlijkheid en competenties leren"],
++    kalTitle: "Komende trainingsdata", kalLead: "Een overzicht van de eerstvolgende trainingen, met locatie en prijs. Inschrijven kan direct online; gedurende het jaar komen er nieuwe data bij.",
++    kalH: { datum: "Datum + tijd", training: "Training", deelnemers: "Deelnemers", locatie: "Locatie", prijs: "Prijs p.p." },
++    kalBtn: "Inschrijven voor een training",
++    aanbodEyebrow: "Aanbod", aanbodTitle: "Onze trainingen",
++    aanbodNote: "Trainingen zijn voor groepen vanaf 6 personen op maat af te nemen. Doe altijd eerst een nulmeting, zodat je na afloop kunt vaststellen of de investering rendeert.",
++    contactWord: "Neem contact op", forMoreInfo: "Lees meer",
++    ctaTitle: "Klaar om je in te schrijven?", ctaText: "Bekijk de kalender en reserveer je plek, of stem samen met een adviseur de best passende aanpak af.",
++    ctaBtn1: "Inschrijven", ctaBtn2: "Vraag advies", slider: "Organisaties die u voorgingen",
++    trainingen: [
++      { h: "Certificatietraining", p: "Word gecertificeerd hrmforce-gebruiker: implementatie, gebruik en interpretatie van de vragenlijsten in de praktijk.", nlHref: "/advies/certificatietraining/" },
++      { h: "'Het goede gesprek'", p: "Voor medewerkers en leidinggevenden. Extra waardevol als er diversiteit in de groep is.", nlHref: "/advies/training-het-goede-gesprek/" },
++      { h: "Medezeggenschapstraining", p: "Voor leden van de medezeggenschapsraad van scholen.", nlHref: "/advies/medezeggenschap/" },
++    ],
++  },
++  en: {
++    eyebrow: "Advice", h1: "Training & courses",
++    lead: "With a <strong>certification training</strong> from hrmforce you learn to work with our questionnaires and solutions: how to interpret results correctly and feed them back carefully. On request we offer, often with our partners, additional tailor-made training.",
++    signupBtn: "Register now", calBtn: "View the calendar",
++    certEyebrow: "Certification training", certTitle: "Become a certified hrmforce user",
++    certP: "We organise live trainings where you learn to work with hrmforce and can become a certified user. Our approach is down-to-earth and no-nonsense, concrete and incisive, but with a sense of humour and flair.",
++    forWho: "For whom?", forWhoP: "Employees who want to increase their in-house expertise in working with questionnaires, and managers who lead by coaching, (career) counsellors, coaches, HR leads, trainers and HR professionals who want to work with hrmforce.",
++    whatLabel: "What will you learn?",
++    leerdoelen: ["Independently add new candidates, change settings and send questionnaires", "Interpret questionnaire results for career and development questions", "Lay the basis for a coaching track and conduct feedback conversations", "Gain insight into your own profile across the questionnaires", "Conduct and evaluate concrete feedback conversations under professional guidance", "Learn the theory around personality and competencies"],
++    kalTitle: "Upcoming training dates", kalLead: "An overview of the next trainings, with location and price. You can register directly online; new dates are added throughout the year.",
++    kalH: { datum: "Date + time", training: "Training", deelnemers: "Participants", locatie: "Location", prijs: "Price p.p." },
++    kalBtn: "Register for a training",
++    aanbodEyebrow: "Offering", aanbodTitle: "Our trainings",
++    aanbodNote: "Trainings can be delivered tailor-made for groups of 6 or more. Always do a baseline measurement first, so you can determine afterwards whether the investment pays off.",
++    contactWord: "Get in touch", forMoreInfo: "Read more",
++    ctaTitle: "Ready to sign up?", ctaText: "Check the calendar and reserve your spot, or align the best approach together with an advisor.",
++    ctaBtn1: "Register", ctaBtn2: "Ask for advice", slider: "Organisations that went before you",
++    trainingen: [
++      { h: "Certification training", p: "Become a certified hrmforce user: implementation, use and interpretation of the questionnaires in practice.", nlHref: "/advies/certificatietraining/" },
++      { h: "'The good conversation'", p: "For employees and managers. Especially valuable when there is diversity in the group.", nlHref: "/advies/training-het-goede-gesprek/" },
++      { h: "Works council training", p: "For members of the works council of schools.", nlHref: "/advies/medezeggenschap/" },
++    ],
++  },
++  de: {
++    eyebrow: "Beratung", h1: "Schulungen & Kurse",
++    lead: "Mit einer <strong>Zertifizierungsschulung</strong> von hrmforce lernen Sie, mit unseren Fragebögen und Lösungen zu arbeiten: Ergebnisse richtig zu interpretieren und sorgfältig zurückzumelden. Auf Wunsch bieten wir, oft mit unseren Partnern, zusätzliche maßgeschneiderte Schulungen.",
++    signupBtn: "Jetzt anmelden", calBtn: "Kalender ansehen",
++    certEyebrow: "Zertifizierungsschulung", certTitle: "Werden Sie zertifizierter hrmforce-Nutzer",
++    certP: "Wir organisieren Live-Schulungen, in denen Sie lernen, mit hrmforce zu arbeiten, und die Möglichkeit erhalten, ein zertifizierter Nutzer zu werden. Unser Ansatz ist nüchtern und unkompliziert, konkret und eindringlich, aber mit Humor und Flair.",
++    forWho: "Für wen?", forWhoP: "Mitarbeiter, die ihre interne Expertise im Umgang mit Fragebögen erhöhen möchten, sowie Führungskräfte mit Coaching-Stil, (Laufbahn-)Begleiter, Coaches, HR-Verantwortliche, Ausbilder/Trainer und Personalfachleute, die mit hrmforce arbeiten wollen.",
++    whatLabel: "Was lernen Sie?",
++    leerdoelen: ["Selbstständig neue Kandidaten anlegen, Einstellungen ändern und Fragebögen versenden", "Fragebogenergebnisse für Laufbahn- und Entwicklungsfragen interpretieren", "Die Basis für einen Coaching-Prozess legen und Feedbackgespräche führen", "Einblick in das eigene Profil über die Fragebögen gewinnen", "Konkrete Feedbackgespräche führen und evaluieren unter professioneller Begleitung", "Die Theorie zu Persönlichkeit und Kompetenzen lernen"],
++    kalTitle: "Kommende Schulungstermine", kalLead: "Eine Übersicht der nächsten Schulungen mit Ort und Preis. Die Anmeldung ist direkt online möglich; im Laufe des Jahres kommen neue Termine hinzu.",
++    kalH: { datum: "Datum + Zeit", training: "Schulung", deelnemers: "Teilnehmer", locatie: "Ort", prijs: "Preis p.P." },
++    kalBtn: "Für eine Schulung anmelden",
++    aanbodEyebrow: "Angebot", aanbodTitle: "Unsere Schulungen",
++    aanbodNote: "Schulungen sind für Gruppen ab 6 Personen maßgeschneidert buchbar. Führen Sie immer zuerst eine Nullmessung durch, damit Sie danach feststellen können, ob sich die Investition lohnt.",
++    contactWord: "Kontakt aufnehmen", forMoreInfo: "Mehr lesen",
++    ctaTitle: "Bereit zur Anmeldung?", ctaText: "Sehen Sie sich den Kalender an und reservieren Sie Ihren Platz, oder stimmen Sie gemeinsam mit einem Berater den passenden Ansatz ab.",
++    ctaBtn1: "Anmelden", ctaBtn2: "Beratung anfragen", slider: "Organisationen, die vor Ihnen kamen",
++    trainingen: [
++      { h: "Zertifizierungsschulung", p: "Werden Sie zertifizierter hrmforce-Nutzer: Implementierung, Nutzung und Interpretation der Fragebögen in der Praxis.", nlHref: "/advies/certificatietraining/" },
++      { h: "'Das gute Gespräch'", p: "Für Mitarbeiter und Führungskräfte. Besonders wertvoll bei Vielfalt in der Gruppe.", nlHref: "/advies/training-het-goede-gesprek/" },
++      { h: "Schulung Mitbestimmung", p: "Für Mitglieder des Mitbestimmungsrats von Schulen.", nlHref: "/advies/medezeggenschap/" },
++    ],
++  },
++  fr: {
++    eyebrow: "Conseil", h1: "Formations & cours",
++    lead: "Avec une <strong>formation de certification</strong> de hrmforce, vous apprenez à utiliser nos questionnaires et solutions : interpréter correctement les résultats et les restituer avec soin. Sur demande, nous proposons, souvent avec nos partenaires, des formations sur mesure supplémentaires.",
++    signupBtn: "S'inscrire", calBtn: "Voir le calendrier",
++    certEyebrow: "Formation de certification", certTitle: "Devenez utilisateur certifié hrmforce",
++    certP: "Nous organisons des formations en direct où vous apprenez à utiliser hrmforce et pouvez devenir un utilisateur certifié. Notre approche est pragmatique et sans détour, concrète et percutante, mais avec humour et allure.",
++    forWho: "Pour qui ?", forWhoP: "Les collaborateurs qui veulent renforcer leur expertise interne des questionnaires, et les managers au style coaching, conseillers (de carrière), coachs, responsables RH, formateurs et professionnels RH qui souhaitent travailler avec hrmforce.",
++    whatLabel: "Qu'allez-vous apprendre ?",
++    leerdoelen: ["Ajouter des candidats, modifier des paramètres et envoyer des questionnaires en autonomie", "Interpréter les résultats pour des questions de carrière et de développement", "Poser les bases d'un parcours de coaching et mener des entretiens de feedback", "Comprendre votre propre profil sur les différents questionnaires", "Mener et évaluer des entretiens de feedback concrets sous supervision d'un professionnel", "Apprendre la théorie de la personnalité et des compétences"],
++    kalTitle: "Prochaines dates de formation", kalLead: "Un aperçu des prochaines formations, avec lieu et prix. L'inscription se fait directement en ligne ; de nouvelles dates s'ajoutent tout au long de l'année.",
++    kalH: { datum: "Date + heure", training: "Formation", deelnemers: "Participants", locatie: "Lieu", prijs: "Prix p.p." },
++    kalBtn: "S'inscrire à une formation",
++    aanbodEyebrow: "Offre", aanbodTitle: "Nos formations",
++    aanbodNote: "Les formations sont proposées sur mesure pour des groupes de 6 personnes ou plus. Faites toujours d'abord une mesure de référence, afin de déterminer ensuite si l'investissement est rentable.",
++    contactWord: "Nous contacter", forMoreInfo: "En savoir plus",
++    ctaTitle: "Prêt à vous inscrire ?", ctaText: "Consultez le calendrier et réservez votre place, ou définissez ensemble avec un conseiller l'approche la plus adaptée.",
++    ctaBtn1: "S'inscrire", ctaBtn2: "Demander conseil", slider: "Les organisations qui vous ont précédé",
++    trainingen: [
++      { h: "Formation de certification", p: "Devenez utilisateur certifié hrmforce : mise en oeuvre, utilisation et interprétation des questionnaires en pratique.", nlHref: "/advies/certificatietraining/" },
++      { h: "'Le bon entretien'", p: "Pour les collaborateurs et les managers. Particulièrement utile en cas de diversité dans le groupe.", nlHref: "/advies/training-het-goede-gesprek/" },
++      { h: "Formation représentation du personnel", p: "Pour les membres du conseil de représentation des écoles.", nlHref: "/advies/medezeggenschap/" },
++    ],
++  },
++  es: {
++    eyebrow: "Asesoría", h1: "Formación y cursos",
++    lead: "Con una <strong>formación de certificación</strong> de hrmforce aprendes a trabajar con nuestros cuestionarios y soluciones: a interpretar correctamente los resultados y devolverlos con cuidado. A petición ofrecemos, a menudo con nuestros socios, formación adicional a medida.",
++    signupBtn: "Inscríbete ahora", calBtn: "Ver el calendario",
++    certEyebrow: "Formación de certificación", certTitle: "Conviértete en usuario certificado de hrmforce",
++    certP: "Organizamos formaciones en directo donde aprendes a trabajar con hrmforce y puedes convertirte en usuario certificado. Nuestro enfoque es realista y directo, concreto e incisivo, pero con sentido del humor y estilo.",
++    forWho: "¿Para quién?", forWhoP: "Empleados que quieren aumentar su experiencia interna con cuestionarios, y directivos con estilo de coaching, orientadores (de carrera), coaches, responsables de RR. HH., formadores y profesionales de RR. HH. que quieren trabajar con hrmforce.",
++    whatLabel: "¿Qué aprenderás?",
++    leerdoelen: ["Añadir candidatos, cambiar ajustes y enviar cuestionarios de forma autónoma", "Interpretar resultados para cuestiones de carrera y desarrollo", "Sentar la base de un proceso de coaching y mantener conversaciones de feedback", "Comprender tu propio perfil en los distintos cuestionarios", "Mantener y evaluar conversaciones de feedback concretas con acompañamiento profesional", "Aprender la teoría sobre personalidad y competencias"],
++    kalTitle: "Próximas fechas de formación", kalLead: "Un resumen de las próximas formaciones, con ubicación y precio. La inscripción es directa en línea; se añaden nuevas fechas a lo largo del año.",
++    kalH: { datum: "Fecha + hora", training: "Formación", deelnemers: "Participantes", locatie: "Ubicación", prijs: "Precio p.p." },
++    kalBtn: "Inscribirse en una formación",
++    aanbodEyebrow: "Oferta", aanbodTitle: "Nuestras formaciones",
++    aanbodNote: "Las formaciones se ofrecen a medida para grupos de 6 personas o más. Haz siempre primero una medición de referencia, para poder determinar después si la inversión es rentable.",
++    contactWord: "Contáctanos", forMoreInfo: "Leer más",
++    ctaTitle: "¿Listo para inscribirte?", ctaText: "Consulta el calendario y reserva tu plaza, o define junto a un asesor el enfoque más adecuado.",
++    ctaBtn1: "Inscribirse", ctaBtn2: "Pedir asesoramiento", slider: "Organizaciones que te precedieron",
++    trainingen: [
++      { h: "Formación de certificación", p: "Conviértete en usuario certificado de hrmforce: implementación, uso e interpretación de los cuestionarios en la práctica.", nlHref: "/advies/certificatietraining/" },
++      { h: "'La buena conversación'", p: "Para empleados y directivos. Especialmente valiosa cuando hay diversidad en el grupo.", nlHref: "/advies/training-het-goede-gesprek/" },
++      { h: "Formación de representación", p: "Para miembros del consejo de representación de los centros educativos.", nlHref: "/advies/medezeggenschap/" },
++    ],
++  },
++  ro: {
++    eyebrow: "Consultanță", h1: "Cursuri & training",
++    lead: "Cu un <strong>curs de certificare</strong> de la hrmforce înveți să lucrezi cu chestionarele și soluțiile noastre: să interpretezi corect rezultatele și să le comunici cu grijă. La cerere oferim, adesea împreună cu partenerii noștri, training suplimentar personalizat.",
++    signupBtn: "Înscrie-te acum", calBtn: "Vezi calendarul",
++    certEyebrow: "Curs de certificare", certTitle: "Devino utilizator certificat hrmforce",
++    certP: "Organizăm cursuri live în care înveți să lucrezi cu hrmforce și poți deveni utilizator certificat. Abordarea noastră este pragmatică și directă, concretă și pătrunzătoare, dar cu simțul umorului și cu stil.",
++    forWho: "Pentru cine?", forWhoP: "Angajați care vor să își crească expertiza internă în lucrul cu chestionare, precum și manageri cu stil de coaching, consilieri (de carieră), coachi, responsabili HR, traineri și specialiști HR care vor să lucreze cu hrmforce.",
++    whatLabel: "Ce vei învăța?",
++    leerdoelen: ["Să adaugi candidați, să modifici setări și să trimiți chestionare în mod autonom", "Să interpretezi rezultatele pentru întrebări de carieră și dezvoltare", "Să pui bazele unui proces de coaching și să porți conversații de feedback", "Să înțelegi propriul profil la diferitele chestionare", "Să porți și să evaluezi conversații de feedback concrete, sub îndrumare profesională", "Să înveți teoria despre personalitate și competențe"],
++    kalTitle: "Următoarele date de training", kalLead: "O prezentare a următoarelor cursuri, cu locație și preț. Înscrierea se face direct online; pe parcursul anului se adaugă date noi.",
++    kalH: { datum: "Data + ora", training: "Training", deelnemers: "Participanți", locatie: "Locație", prijs: "Preț pe pers." },
++    kalBtn: "Înscrie-te la un training",
++    aanbodEyebrow: "Ofertă", aanbodTitle: "Cursurile noastre",
++    aanbodNote: "Cursurile pot fi organizate personalizat pentru grupuri de minimum 6 persoane. Fă întotdeauna mai întâi o măsurare de referință, ca să poți stabili apoi dacă investiția este rentabilă.",
++    contactWord: "Contactează-ne", forMoreInfo: "Află mai mult",
++    ctaTitle: "Gata să te înscrii?", ctaText: "Consultă calendarul și rezervă-ți locul, sau stabilește împreună cu un consultant abordarea potrivită.",
++    ctaBtn1: "Înscrie-te", ctaBtn2: "Cere consultanță", slider: "Organizații care te-au precedat",
++    trainingen: [
++      { h: "Curs de certificare", p: "Devino utilizator certificat hrmforce: implementarea, utilizarea și interpretarea chestionarelor în practică.", nlHref: "/advies/certificatietraining/" },
++      { h: "'Conversația bună'", p: "Pentru angajați și manageri. Deosebit de valoroasă când există diversitate în grup.", nlHref: "/advies/training-het-goede-gesprek/" },
++      { h: "Training pentru reprezentare", p: "Pentru membrii consiliului de reprezentare al școlilor.", nlHref: "/advies/medezeggenschap/" },
++    ],
++  },
++};
++
++export function trainingenFor(lang) {
++  return { ...(T[lang] || T.nl), kalender: TR_KALENDER };
++}
+diff --git a/src/pages/advies/assessments.astro b/src/pages/advies/assessments.astro
+index 97805c9..1f94701 100644
+--- a/src/pages/advies/assessments.astro
++++ b/src/pages/advies/assessments.astro
+@@ -1,68 +1,7 @@
+ ---
+ import Base from "../../layouts/Base.astro";
+-import LogoSlider from "../../components/LogoSlider.astro";
+-import { assessments } from "../../data/assessments.js";
+-
+-// Alle assessments klikbaar tonen, gegroepeerd is niet nodig: één net raster.
+-const list = assessments.map((a) => ({ title: a.title, slug: a.slug, goal: a.goal || "", phase: a.phase || "" }));
++import LiveAssessments from "../../components/LiveAssessments.astro";
+ ---
+-<Base title="Live Assessments | Door assessoren begeleid | hrmforce" description="Naast onze online tests begeleiden onze assessoren live assessments voor selectie, ontwikkeling en loopbaan. Bekijk alle beschikbare assessments." active="advice">
+-  <div class="crumb">
+-    <div class="wrap"><a href="/">Home</a> &rsaquo; <a href="/advies/">Advies</a> &rsaquo; <span>Live Assessments</span></div>
+-  </div>
+-
+-  <section class="ahero">
+-    <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Advies</div>
+-      <h1>Live Assessments</h1>
+-      <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">Naast de zelfservice online tests begeleiden onze <strong>assessoren</strong> live assessments: van selectie- en ontwikkelassessments tot loopbaan- en teamtrajecten. We stellen op basis van je vraagstuk de juiste combinatie van vragenlijsten samen en koppelen de uitkomsten persoonlijk terug.</p>
+-      <div class="btns" style="margin-top:16px">
+-        <a href="/contact/" class="btn btn-primary">Plan een gratis demo</a>
+-        <a href="/assessment-overzicht/" class="btn btn-light">Naar het volledige overzicht</a>
+-      </div>
+-    </div>
+-  </section>
+-
+-  <LogoSlider heading="Organisaties die u voorgingen" />
+-
+-  <section>
+-    <div class="wrap">
+-      <div class="eyebrow">Beschikbare assessments</div>
+-      <h2 class="section-title">Alle assessments, klikbaar</h2>
+-      <p class="lead" style="margin-bottom:24px">Elk assessment is los in te zetten of te combineren binnen een begeleid traject. Klik door voor de uitleg, voorbeeldvragen en de wetenschappelijke onderbouwing.</p>
+-      <div class="la-grid">
+-        {list.map((a) => (
+-          <a class="la-card" href={`/assessments/${a.slug}/`}>
+-            <h3>{a.title}</h3>
+-            {a.goal && <p>{a.goal}</p>}
+-            {a.phase && <span class="la-phase">{a.phase}</span>}
+-            <span class="la-more">Bekijk assessment &rarr;</span>
+-          </a>
+-        ))}
+-      </div>
+-    </div>
+-  </section>
+-
+-  <section class="cta">
+-    <div class="wrap">
+-      <h2>Niet zeker welk assessment past?</h2>
+-      <p>Onze assessoren denken met je mee en stellen het traject samen op basis van jouw doel en functie.</p>
+-      <div class="btns">
+-        <a href="/contact/" class="btn btn-primary">Plan een demo</a>
+-        <a href="/testkiezer/" class="btn btn-light">Gebruik de testkiezer</a>
+-      </div>
+-    </div>
+-  </section>
++<Base title="Live Assessments | Door assessoren begeleid | hrmforce" description="Onze assessoren begeleiden live assessments: selectie, ontwikkeling, loopbaan, executive en teamanalyse. Bekijk alle opties." active="advice">
++  <LiveAssessments />
+ </Base>
+-
+-<style>
+-  .la-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 8px; }
+-  .la-card { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--gold); border-radius: 14px; padding: 20px 22px; box-shadow: var(--shadow-xs); text-decoration: none; transition: transform .15s, box-shadow .15s; }
+-  .la-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+-  .la-card h3 { color: var(--navy); font-size: 17px; font-weight: 800; margin: 0 0 8px; }
+-  .la-card p { color: var(--muted); font-size: 14px; line-height: 1.5; margin: 0 0 12px; flex: 1; }
+-  .la-phase { color: var(--blue); font-size: 12px; font-weight: 700; margin-bottom: 10px; }
+-  .la-more { color: var(--navy); font-size: 14px; font-weight: 700; }
+-  @media (max-width: 880px) { .la-grid { grid-template-columns: 1fr 1fr; } }
+-  @media (max-width: 560px) { .la-grid { grid-template-columns: 1fr; } }
+-</style>
+diff --git a/src/pages/advies/trainingen.astro b/src/pages/advies/trainingen.astro
+index 037b783..b2ce3da 100644
+--- a/src/pages/advies/trainingen.astro
++++ b/src/pages/advies/trainingen.astro
+@@ -1,131 +1,7 @@
+ ---
+ import Base from "../../layouts/Base.astro";
+-import LogoSlider from "../../components/LogoSlider.astro";
+-import Img from "../../components/Img.astro";
+-
+-// Trainingskalender: alleen komende data tonen (peildatum bij build).
+-const kalender = [
+-  { datum: "24 sep 2026", tijd: "09:30 - 16:30", soort: "Certificatietraining", max: "Max. 12", locatie: "Hoeve Rijlaarsdam, Nieuwveenseweg 59, 2421 LB Nieuwkoop", prijs: "€ 595,-" },
+-  { datum: "19 nov 2026", tijd: "09:30 - 16:30", soort: "Certificatietraining", max: "Max. 12", locatie: "Hoeve Rijlaarsdam, Nieuwveenseweg 59, 2421 LB Nieuwkoop", prijs: "€ 595,-" },
+-];
+-
+-const leerdoelen = [
+-  "Zelfstandig nieuwe kandidaten invoeren, instellingen wijzigen en vragenlijsten versturen",
+-  "Resultaten van vragenlijsten interpreteren voor loopbaan- en ontwikkelvragen",
+-  "De basis leggen voor een coachingtraject en feedbackgesprekken voeren",
+-  "Inzicht krijgen in je eigen profiel op de verschillende vragenlijsten",
+-  "Concrete feedbackgesprekken voeren en evalueren onder begeleiding van een professional",
+-  "De theorie rond persoonlijkheid en competenties leren",
+-];
+-
+-const trainingen = [
+-  { h: "Certificatietraining", p: "Word gecertificeerd hrmforce-gebruiker: implementatie, gebruik en interpretatie van de vragenlijsten in de praktijk.", href: "/advies/certificatietraining/" },
+-  { h: "'Het goede gesprek'", p: "Voor medewerkers en leidinggevenden. Extra waardevol als er diversiteit in de groep is.", href: "/advies/training-het-goede-gesprek/" },
+-  { h: "Medezeggenschapstraining", p: "Voor leden van de medezeggenschapsraad van scholen.", href: "/advies/medezeggenschap/" },
+-];
++import Trainingen from "../../components/Trainingen.astro";
+ ---
+ <Base title="Trainingen & certificatietraining | hrmforce" description="Word met de certificatietraining van hrmforce een gecertificeerd gebruiker. Bekijk de trainingskalender en schrijf je direct in." active="advice">
+-  <div class="crumb">
+-    <div class="wrap"><a href="/">Home</a> &rsaquo; <a href="/advies/">Advies</a> &rsaquo; <span>Trainingen</span></div>
+-  </div>
+-
+-  <section class="ahero">
+-    <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Advies</div>
+-      <h1>Trainingen &amp; cursussen</h1>
+-      <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">Met een <strong>certificatietraining</strong> van hrmforce leer je werken met onze vragenlijsten en oplossingen: je leert resultaten correct te interpreteren en zorgvuldig terug te koppelen. Op verzoek bieden we, vaak samen met onze partners, aanvullende trainingen op maat.</p>
+-      <div class="btns" style="margin-top:16px">
+-        <a href="/inschrijfformulier-trainingen/" class="btn btn-primary">Direct inschrijven</a>
+-        <a href="#kalender" class="btn btn-light">Bekijk de kalender</a>
+-      </div>
+-    </div>
+-  </section>
+-
+-  <LogoSlider heading="Organisaties die u voorgingen" />
+-
+-  <section>
+-    <div class="wrap">
+-      <div class="explain">
+-        <div>
+-          <div class="eyebrow">Certificatietraining</div>
+-          <h2 class="section-title">Word gecertificeerd hrmforce-gebruiker</h2>
+-          <p>We organiseren live trainingen waarin je leert werken met hrmforce en de mogelijkheid krijgt om een gecertificeerd gebruiker te worden. Onze aanpak is nuchter en no-nonsense, concreet en indringend, maar met gevoel voor humor en flair.</p>
+-          <p style="font-weight:700;color:var(--navy);margin-top:14px">Voor wie?</p>
+-          <p>Medewerkers die hun interne deskundigheid in het werken met vragenlijsten willen verhogen, en managers die coachend leidinggeven, (loopbaan)begeleiders, coaches, HR-verantwoordelijken, opleiders/trainers en P&amp;O-deskundigen die met hrmforce willen werken.</p>
+-          <p style="font-weight:700;color:var(--navy);margin-top:14px">Wat leer je?</p>
+-          <ul class="traits">{leerdoelen.map((d) => <li>{d}</li>)}</ul>
+-        </div>
+-        <div class="explain-fig">
+-          <Img src="/media/wp-content/uploads/2020/12/ass-afb1.png" alt="Trainingssituatie hrmforce" loading="lazy" />
+-        </div>
+-      </div>
+-    </div>
+-  </section>
+-
+-  <section id="kalender" class="bg-soft">
+-    <div class="wrap">
+-      <div class="eyebrow" style="color:var(--gold)">Trainingskalender</div>
+-      <h2 class="section-title">Komende trainingsdata</h2>
+-      <p class="lead" style="margin-bottom:20px">Een overzicht van de eerstvolgende trainingen, met locatie en prijs. Inschrijven kan direct online; gedurende het jaar komen er nieuwe data bij.</p>
+-      <div class="kal-wrap">
+-        <table class="kal">
+-          <thead><tr><th>Datum + tijd</th><th>Training</th><th>Deelnemers</th><th>Locatie</th><th>Prijs p.p.</th></tr></thead>
+-          <tbody>
+-            {kalender.map((r) => (
+-              <tr>
+-                <td><strong>{r.datum}</strong><br /><span class="kal-sub">{r.tijd}</span></td>
+-                <td>{r.soort}</td>
+-                <td>{r.max}</td>
+-                <td class="kal-sub">{r.locatie}</td>
+-                <td><strong>{r.prijs}</strong></td>
+-              </tr>
+-            ))}
+-          </tbody>
+-        </table>
+-      </div>
+-      <div class="btns" style="margin-top:22px"><a href="/inschrijfformulier-trainingen/" class="btn btn-primary">Inschrijven voor een training</a></div>
+-    </div>
+-  </section>
+-
+-  <section>
+-    <div class="wrap">
+-      <div class="eyebrow">Aanbod</div>
+-      <h2 class="section-title">Onze trainingen</h2>
+-      <div class="adv">
+-        {trainingen.map((t) => (
+-          <div class="adv-block">
+-            <h3>{t.h}</h3>
+-            <p>{t.p}</p>
+-            <a class="btn btn-primary" href={t.href}>Lees meer</a>
+-          </div>
+-        ))}
+-      </div>
+-      <p style="color:var(--muted);font-size:15px;margin-top:20px">Trainingen zijn voor groepen vanaf 6 personen op maat af te nemen. Doe altijd eerst een nulmeting, zodat je na afloop kunt vaststellen of de investering rendeert. <a href="/contact/" style="color:var(--blue);font-weight:600">Neem contact op</a> voor de mogelijkheden.</p>
+-    </div>
+-  </section>
+-
+-  <section class="cta">
+-    <div class="wrap">
+-      <h2>Klaar om je in te schrijven?</h2>
+-      <p>Bekijk de kalender en reserveer je plek, of stem samen met een adviseur de best passende aanpak af.</p>
+-      <div class="btns">
+-        <a href="/inschrijfformulier-trainingen/" class="btn btn-primary">Inschrijven</a>
+-        <a href="/contact/" class="btn btn-light">Vraag advies</a>
+-      </div>
+-    </div>
+-  </section>
++  <Trainingen />
+ </Base>
+-
+-<style>
+-  .adv { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 28px; }
+-  .adv-block { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; box-shadow: var(--shadow-xs); display: flex; flex-direction: column; }
+-  .adv-block h3 { color: var(--navy); font-size: 19px; font-weight: 800; margin-bottom: 10px; }
+-  .adv-block p { color: var(--muted); font-size: 15px; margin-bottom: 18px; flex: 1; }
+-  .adv-block .btn { align-self: flex-start; }
+-  .kal-wrap { overflow-x: auto; }
+-  .kal { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+-  .kal th { text-align: left; background: var(--navy); color: #fff; font-size: 13px; text-transform: uppercase; letter-spacing: .5px; padding: 12px 14px; }
+-  .kal td { padding: 14px; border-top: 1px solid var(--line); font-size: 15px; color: var(--navy); vertical-align: top; }
+-  .kal-sub { color: var(--muted); font-size: 13.5px; }
+-  @media (max-width: 880px) { .adv { grid-template-columns: 1fr; } }
+-</style>
+diff --git a/src/pages/de/advies/assessments.astro b/src/pages/de/advies/assessments.astro
+new file mode 100644
+index 0000000..ec9f662
+--- /dev/null
++++ b/src/pages/de/advies/assessments.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import LiveAssessments from "../../../components/LiveAssessments.astro";
++---
++<Base title="Live Assessments | Von Assessoren begleitet | hrmforce" description="Unsere Assessoren begleiten Live-Assessments: Auswahl, Entwicklung, Laufbahn, Executive und Teamanalyse. Alle Optionen entdecken." active="advice">
++  <LiveAssessments />
++</Base>
+diff --git a/src/pages/de/advies/trainingen.astro b/src/pages/de/advies/trainingen.astro
+new file mode 100644
+index 0000000..bf512f2
+--- /dev/null
++++ b/src/pages/de/advies/trainingen.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import Trainingen from "../../../components/Trainingen.astro";
++---
++<Base title="Schulungen & Zertifizierung | hrmforce" description="Werden Sie mit der Zertifizierungsschulung von hrmforce zertifizierter Nutzer. Kalender ansehen und direkt anmelden." active="advice">
++  <Trainingen />
++</Base>
+diff --git a/src/pages/en/advies.astro b/src/pages/en/advies.astro
+index c3f38b5..1049c49 100644
+--- a/src/pages/en/advies.astro
++++ b/src/pages/en/advies.astro
+@@ -1,19 +1,16 @@
+ ---
+ import Base from "../../layouts/Base.astro";
++import LogoSlider from "../../components/LogoSlider.astro";
+ 
+ const items = [
+-  { h: "Assessments", p: "In every organization, people make decisions about people. Accepting or rejecting an applicant, allowing an existing employee to grow or not, or intervening in a (stagnant) career. These decisions affect the individual and the organization. Ultimately, personnel decisions determine how successful your organization is." },
+-  { h: "Talent Management", p: "Applying the 80-20 principle to recruitment, it turns out that 20% of recruited candidates provide 80% of the results. More than ever, the focus of companies is on recruiting these top talents. However, the current economic conditions also make it necessary to recognize and utilize talent within the organization." },
+-  { h: "Competency Management", p: "When implementing competency management, the vision and strategy of your organization are translated into objectives. Well-implemented competence management pays for itself more than once. It provides clarity and structure in all functions of the organization." },
+-  { h: "Consultancy", p: "Your organization is changing. It grows, innovates or adapts. Not keeping up and changing means standing still. In times when technological innovation is so rapid, it even means going backwards. You choose an ambitious strategy and, as always, the realization of the strategy is the biggest challenge." },
+-  { h: "Training", p: "Together we formulate the training goals and the most appropriate approach. We use a wide range of interventions. The working methods we use are innovative and based on scientific research, but above all they are surprising and inspiring. For optimal learning results, we tailor our interventions to your work situation." },
++  { h: "Training", p: "With a certification training from hrmforce you learn to work with our questionnaires and interpret results correctly. Check the training calendar and register directly.", href: "/en/advies/trainingen/", cta: "View training & calendar" },
++  { h: "Live Assessments", p: "Beyond the self-service online tests, our assessors guide live assessments: selection, development, career, executive and team analysis.", href: "/en/advies/assessments/", cta: "View all assessments" },
++  { h: "Talent Management", p: "Applying the 80-20 principle to recruitment, 20% of recruited candidates provide 80% of the results. It is essential to recognise and utilise talent within the organization, not only to recruit it.", href: "/en/hrm-oplossingen/", cta: "More information" },
++  { h: "Competency Management", p: "When implementing competency management, the vision and strategy of your organization are translated into objectives. Well-implemented competency management pays for itself and provides clarity and structure across all functions.", href: "/en/contact/", cta: "Get in touch" },
++  { h: "Consultancy", p: "Your organization grows, innovates or adapts. You choose an ambitious strategy, and as always the realization of that strategy is the biggest challenge. Our consultants help you get there.", href: "/en/contact/", cta: "Get in touch" },
+ ];
+ ---
+-<Base
+-  title="Hrmforce Consulting - hrmforce"
+-  description="In addition to our online assessments and HRM solutions, you can also contact us for tailor-made consulting projects and various training courses."
+-  active="advice"
+->
++<Base title="Hrmforce Consulting - hrmforce" description="In addition to our online assessments and HRM solutions, you can contact us for tailor-made consulting projects and various training courses." active="advice">
+   <div class="crumb">
+     <div class="wrap"><a href="/en/">Home</a> › <span>Advice</span></div>
+   </div>
+@@ -22,31 +19,34 @@ const items = [
+     <div class="wrap" style="display:block">
+       <div class="eyebrow" style="color:var(--gold)">Advice</div>
+       <h1>Hrmforce consulting</h1>
+-      <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">In addition to our online assessments and HRM solutions, you can also contact us for <strong>tailor-made consulting projects</strong> and various training courses. Our experienced consultants will be happy to think along with you about your HRM issues.</p>
++      <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">In addition to our online assessments and HRM solutions, you can contact us for <strong>training</strong> and assessor-led <strong>live assessments</strong>. Our experienced consultants are happy to think along with your HRM issues.</p>
+     </div>
+   </section>
+ 
+   <section>
+     <div class="wrap">
+-      <p style="color:var(--text);font-size:17px;max-width:820px;margin-bottom:14px">In addition to our <a href="/en/online-assessments/">online assessments</a> and <a href="/en/hrm-oplossingen/">HRM solutions</a>, you can also contact us for tailor-made consulting projects and various training courses. Our experienced consultants will be happy to think along with you about your HRM issues and can help implement and optimize the HR processes within your organization.</p>
+-
++      <p style="color:var(--text);font-size:17px;max-width:820px;margin-bottom:14px">In addition to our <a href="/en/online-assessments/">online assessments</a> and <a href="/en/hrm-oplossingen/">HRM solutions</a>, you can contact us for tailor-made consulting projects and various training courses.</p>
+       <div class="adv">
+         {items.map((it) => (
+           <div class="adv-block">
+             <h2>{it.h}</h2>
+             <p>{it.p}</p>
++            {it.href && <a class="btn btn-primary" href={it.href}>{it.cta}</a>}
+           </div>
+         ))}
+       </div>
+     </div>
+   </section>
++
++  <LogoSlider heading="Organisations that went before you" />
+ </Base>
+ 
+ <style>
+   .adv { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 28px; }
+   .adv-block { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+   .adv-block h2 { color: var(--navy); font-size: 22px; font-weight: 800; margin-bottom: 12px; }
+-  .adv-block p { color: var(--muted); font-size: 16px; margin-bottom: 0; flex: 1; }
++  .adv-block p { color: var(--muted); font-size: 16px; margin-bottom: 20px; flex: 1; }
++  .adv-block .btn { align-self: flex-start; }
+   section p a { color: var(--blue); font-weight: 600; }
+   @media (max-width: 880px) { .adv { grid-template-columns: 1fr; } }
+ </style>
+diff --git a/src/pages/en/advies/assessments.astro b/src/pages/en/advies/assessments.astro
+new file mode 100644
+index 0000000..6f85be1
+--- /dev/null
++++ b/src/pages/en/advies/assessments.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import LiveAssessments from "../../../components/LiveAssessments.astro";
++---
++<Base title="Live Assessments | Assessor-led | hrmforce" description="Our assessors guide live assessments: selection, development, career, executive and team analysis. Explore all options." active="advice">
++  <LiveAssessments />
++</Base>
+diff --git a/src/pages/en/advies/trainingen.astro b/src/pages/en/advies/trainingen.astro
+new file mode 100644
+index 0000000..6ae630f
+--- /dev/null
++++ b/src/pages/en/advies/trainingen.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import Trainingen from "../../../components/Trainingen.astro";
++---
++<Base title="Training & certification | hrmforce" description="Become a certified hrmforce user with our certification training. Check the calendar and register directly." active="advice">
++  <Trainingen />
++</Base>
+diff --git a/src/pages/es/advies.astro b/src/pages/es/advies.astro
+index 74ec326..276da61 100644
+--- a/src/pages/es/advies.astro
++++ b/src/pages/es/advies.astro
+@@ -1,49 +1,44 @@
+ ---
+ import Base from "../../layouts/Base.astro";
++import LogoSlider from "../../components/LogoSlider.astro";
+ 
+ const items = [
+-  { h: "Evaluaciones", p: "En toda organización, las personas toman decisiones sobre personas: contratar o rechazar a un candidato, permitir o no que un empleado actual crezca, o intervenir en una carrera que se ha estancado. Estas decisiones afectan tanto al individuo como a la organización. Al final, las decisiones sobre el personal determinan el éxito de tu organización.", href: "/es/advies/" },
+-  { h: "Gestión del Talento", p: "Si aplicamos la regla 80/20 al reclutamiento, descubrimos que el 20 % de los candidatos contratados genera el 80 % de los resultados. Más que nunca, las empresas se centran en captar estos talentos. Sin embargo, debido a las condiciones económicas actuales, también es necesario identificar y aprovechar el talento dentro de la organización.", href: "/es/advies/" },
+-  { h: "Gestión de Competencias", p: "Al implementar la gestión por competencias, la visión y la estrategia de tu organización se traducen en objetivos claros. Una gestión de competencias bien implementada se amortiza con creces: aporta claridad y estructura a todas las funciones de la organización.", href: "/es/advies/" },
+-  { h: "Consultoría", p: "Tu organización cambia: crece, se renueva o se adapta. No evolucionar significa quedarse quieto, y en una época en la que la innovación tecnológica avanza tan rápido, incluso retroceder. Si eliges una estrategia ambiciosa, como siempre, la mayor dificultad será su ejecución.", href: null },
+-  { h: "Formación", p: "Juntos formulamos el problema adecuado y el enfoque más apropiado. Podemos emplear para ello una amplia gama de intervenciones. Las metodologías que aplicamos son innovadoras y se basan en investigaciones científicas, pero, sobre todo, son sorprendentes e inspiradoras. Para un rendimiento óptimo del aprendizaje, adaptamos nuestras intervenciones a tu situación laboral.", href: "/es/advies/" },
+-  { h: "Carrera profesional", p: "Un itinerario profesional de hrmforce está orientado al futuro y a la motivación: “¿Qué quiero?”. El participante desea avanzar en su carrera, pero le cuesta definir una dirección, no sabe exactamente qué quiere o no logra traducir sus intereses en posibles funciones. Además, en segundo plano suelen aparecer las preguntas “¿Quién soy?” y “¿Qué puedo hacer?”.", href: null },
+-  { h: "Coaching", p: "Puedes utilizarlo para que los candidatos exploren posibles profesiones y vacantes actuales en función de su personalidad, motivación y comportamiento.", href: null },
+-  { h: "Acompañamiento en selección", p: "Incorporar a una nueva persona en la organización para funciones de gran impacto no es una tarea cotidiana. Como asesores, ofrecemos con nuestra experiencia en estudios de comportamiento la posibilidad de evaluar objetivamente la idoneidad durante todas las fases del proceso de reclutamiento y selección.", href: null },
++  { h: "Formación", p: "Con una formación de certificación de hrmforce aprendes a trabajar con nuestros cuestionarios e interpretar los resultados correctamente. Consulta el calendario e inscríbete directamente.", href: "/es/advies/trainingen/", cta: "Ver formación y calendario" },
++  { h: "Live Assessments", p: "Más allá de las pruebas online de autoservicio, nuestros asesores guían evaluaciones en directo: selección, desarrollo, carrera, executive y análisis de equipo.", href: "/es/advies/assessments/", cta: "Ver todas las evaluaciones" },
++  { h: "Gestión del Talento", p: "Aplicando el principio 80-20 al reclutamiento, el 20% de los candidatos aporta el 80% de los resultados. Es esencial reconocer y aprovechar el talento dentro de la organización.", href: "/es/hrm-oplossingen/", cta: "Más información" },
++  { h: "Gestión de Competencias", p: "Al implementar la gestión por competencias, la visión y la estrategia de tu organización se traducen en objetivos, aportando claridad y estructura a todas las funciones.", href: "/es/contact/", cta: "Contáctanos" },
++  { h: "Consultoría", p: "Tu organización crece, innova o se adapta. Eliges una estrategia ambiciosa y, como siempre, su realización es el mayor reto. Nuestros consultores te ayudan a lograrlo.", href: "/es/contact/", cta: "Contáctanos" },
+ ];
+ ---
+-<Base
+-  title="Asesoría de Hrmforce - hrmforce"
+-  description="Además de nuestras evaluaciones en línea y soluciones de RR. HH., puedes contar con nosotros para proyectos de asesoría a medida y diversas formaciones."
+-  active="advice"
+->
++<Base title="Asesoría de hrmforce - hrmforce" description="Además de nuestras evaluaciones online y soluciones de RR. HH., puedes contar con formación y evaluaciones en directo guiadas por asesores." active="advice">
+   <div class="crumb">
+-    <div class="wrap"><a href="/es/">Home</a> › <span>Asesoría de Hrmforce</span></div>
++    <div class="wrap"><a href="/es/">Home</a> › <span>Asesoría</span></div>
+   </div>
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Asesoría de Hrmforce</div>
+-      <h1>Asesoría de Hrmforce</h1>
+-      <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">Además de nuestras <strong>evaluaciones en línea</strong> y soluciones de RR. HH., puedes contar con nosotros para <strong>proyectos de asesoría a medida</strong> y diversas formaciones. Te ayudamos a implementar y optimizar los procesos de RR. HH. dentro de tu organización.</p>
++      <div class="eyebrow" style="color:var(--gold)">Asesoría</div>
++      <h1>Asesoría de hrmforce</h1>
++      <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">Además de nuestras evaluaciones online y soluciones de RR. HH., puedes contar con <strong>formación</strong> y <strong>evaluaciones en directo</strong> guiadas por asesores. Nuestros consultores piensan contigo sobre tus retos de RR. HH.</p>
+     </div>
+   </section>
+ 
+   <section>
+     <div class="wrap">
+-      <p style="color:var(--text);font-size:17px;max-width:820px;margin-bottom:14px">Además de nuestras <a href="/es/hrm-oplossingen/">evaluaciones en línea</a> y <a href="/es/hrm-oplossingen/">soluciones de RR. HH.</a>, puedes contar con nosotros para <strong>proyectos de asesoría a medida</strong> y diversas formaciones. Te ayudamos a implementar y optimizar los procesos de RR. HH. dentro de tu organización.</p>
+-
++      <p style="color:var(--text);font-size:17px;max-width:820px;margin-bottom:14px">Además de nuestras <a href="/es/online-assessments/">evaluaciones online</a> y <a href="/es/hrm-oplossingen/">soluciones de RR. HH.</a>, puedes contar con proyectos de asesoría a medida y diversos cursos.</p>
+       <div class="adv">
+         {items.map((it) => (
+           <div class="adv-block">
+             <h2>{it.h}</h2>
+             <p>{it.p}</p>
+-            {it.href && <a class="btn btn-primary" href={it.href}>Más información</a>}
++            {it.href && <a class="btn btn-primary" href={it.href}>{it.cta}</a>}
+           </div>
+         ))}
+       </div>
+     </div>
+   </section>
++
++  <LogoSlider heading="Organizaciones que te precedieron" />
+ </Base>
+ 
+ <style>
+diff --git a/src/pages/es/advies/assessments.astro b/src/pages/es/advies/assessments.astro
+new file mode 100644
+index 0000000..030ccf4
+--- /dev/null
++++ b/src/pages/es/advies/assessments.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import LiveAssessments from "../../../components/LiveAssessments.astro";
++---
++<Base title="Live Assessments | Guiado por asesores | hrmforce" description="Nuestros asesores guían evaluaciones en directo: selección, desarrollo, carrera, executive y análisis de equipo. Explora todas las opciones." active="advice">
++  <LiveAssessments />
++</Base>
+diff --git a/src/pages/es/advies/trainingen.astro b/src/pages/es/advies/trainingen.astro
+new file mode 100644
+index 0000000..295ee2f
+--- /dev/null
++++ b/src/pages/es/advies/trainingen.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import Trainingen from "../../../components/Trainingen.astro";
++---
++<Base title="Formacion y certificacion | hrmforce" description="Conviertete en usuario certificado de hrmforce con nuestra formacion de certificacion. Consulta el calendario e inscribete." active="advice">
++  <Trainingen />
++</Base>
+diff --git a/src/pages/fr/advies/assessments.astro b/src/pages/fr/advies/assessments.astro
+new file mode 100644
+index 0000000..9c4c793
+--- /dev/null
++++ b/src/pages/fr/advies/assessments.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import LiveAssessments from "../../../components/LiveAssessments.astro";
++---
++<Base title="Live Assessments | Accompagné par des assesseurs | hrmforce" description="Nos assesseurs accompagnent des évaluations en direct : sélection, développement, carrière, executive et analyse d'équipe. Découvrez toutes les options." active="advice">
++  <LiveAssessments />
++</Base>
+diff --git a/src/pages/fr/advies/trainingen.astro b/src/pages/fr/advies/trainingen.astro
+new file mode 100644
+index 0000000..c243bda
+--- /dev/null
++++ b/src/pages/fr/advies/trainingen.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import Trainingen from "../../../components/Trainingen.astro";
++---
++<Base title="Formations & certification | hrmforce" description="Devenez utilisateur certifie hrmforce avec notre formation de certification. Consultez le calendrier et inscrivez-vous." active="advice">
++  <Trainingen />
++</Base>
+diff --git a/src/pages/ro/advies/assessments.astro b/src/pages/ro/advies/assessments.astro
+new file mode 100644
+index 0000000..15e0106
+--- /dev/null
++++ b/src/pages/ro/advies/assessments.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import LiveAssessments from "../../../components/LiveAssessments.astro";
++---
++<Base title="Live Assessments | Ghidat de asesori | hrmforce" description="Asesorii noștri ghidează evaluări live: selecție, dezvoltare, carieră, executive și analiză de echipă. Descoperă toate opțiunile." active="advice">
++  <LiveAssessments />
++</Base>
+diff --git a/src/pages/ro/advies/trainingen.astro b/src/pages/ro/advies/trainingen.astro
+new file mode 100644
+index 0000000..13729a5
+--- /dev/null
++++ b/src/pages/ro/advies/trainingen.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import Trainingen from "../../../components/Trainingen.astro";
++---
++<Base title="Training & certificare | hrmforce" description="Devino utilizator certificat hrmforce cu cursul nostru de certificare. Vezi calendarul si inscrie-te direct." active="advice">
++  <Trainingen />
++</Base>
+-- 
+2.34.1
+

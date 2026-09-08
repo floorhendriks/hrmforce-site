@@ -1,0 +1,506 @@
+From 1bfab6a793bb107059a47c65238d2f1defc0c0e3 Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Tue, 8 Sep 2026 20:57:38 +0200
+Subject: [PATCH] Fix-ronde (B9): FAQ dubbele accordion-toggle verholpen
+ (antwoorden klappen weer open); nav 'Adviestrajecten' -> Training + Live
+ Assessments (6 talen, ook zoekindex); contact-e-mails Belgie/Frankrijk/India
+ (belgium@/france@/india@) in alle taalversies; Big Fifty rapportagemodules
+ overgenomen uit voorbeeldrapportage (Algemeen profiel, Persoonlijk rapport,
+ DISC, Kleurenrapportage, Interview rapport, Overzicht scores, Teamprofiel,
+ Verbindend leiderschap); klantenslider op advies-Sanity-subpagina's (o.a.
+ Competentiemanagement); voorbeeldcasus per sector op sectoren-index (18, 6
+ talen); voorbereiding eerste tekst doorzoekbaar; /sectoren/onderwijs/ als
+ deep-link-pagina (voor hrmforceonderwijs.nl); kapot trainingsbeeld ass-afb1
+ -> ass-afb2
+
+---
+ src/components/Faq.astro            |  7 -------
+ src/components/SectorenIndex.astro  |  4 ++++
+ src/components/Trainingen.astro     |  2 +-
+ src/components/Voorbereiding.astro  | 28 +++++++++++++++++++++++++++-
+ src/data/assessment-detail-extra.js | 24 ++++++++++++------------
+ src/data/menu-content.js            | 14 +++++++-------
+ src/data/sectoren-content.js        | 24 +++++++++++++++++++++++-
+ src/pages/[...path].astro           |  6 +++++-
+ src/pages/contact.astro             |  6 +++---
+ src/pages/de/contact.astro          |  6 +++---
+ src/pages/en/contact.astro          |  6 +++---
+ src/pages/es/contact.astro          |  6 +++---
+ src/pages/fr/contact.astro          |  6 +++---
+ src/pages/ro/contact.astro          |  6 +++---
+ src/pages/sectoren/onderwijs.astro  | 12 ++++++++++++
+ 15 files changed, 109 insertions(+), 48 deletions(-)
+ create mode 100644 src/pages/sectoren/onderwijs.astro
+
+diff --git a/src/components/Faq.astro b/src/components/Faq.astro
+index 6139251..c9ec055 100644
+--- a/src/components/Faq.astro
++++ b/src/components/Faq.astro
+@@ -109,13 +109,6 @@ t.categories.forEach((c, i) => {
+       count.textContent = n;
+       none.hidden = n > 0;
+     }
+-    items.forEach((it) => {
+-      const btn = it.querySelector(".faq-q");
+-      btn.addEventListener("click", () => {
+-        const open = it.classList.toggle("open");
+-        btn.setAttribute("aria-expanded", open ? "true" : "false");
+-      });
+-    });
+     tags.forEach((tg) => tg.addEventListener("click", () => {
+       active = tg.dataset.tag;
+       tags.forEach((x) => x.classList.toggle("is-active", x === tg));
+diff --git a/src/components/SectorenIndex.astro b/src/components/SectorenIndex.astro
+index 53b82f2..acc5f0e 100644
+--- a/src/components/SectorenIndex.astro
++++ b/src/components/SectorenIndex.astro
+@@ -5,6 +5,7 @@ import { sectorsFor } from "../data/sectoren-content.js";
+ 
+ const lang = getLangFromUrl(Astro.url);
+ const { ui, sectors } = sectorsFor(lang);
++const _exLabel = { nl: "Voorbeeld", en: "Example", de: "Beispiel", fr: "Exemple", es: "Ejemplo", ro: "Exemplu" }[lang] || "Voorbeeld";
+ const contactHref = localizePath("/contact/", lang);
+ const assessHref = localizePath("/assessment-overzicht/", lang);
+ const landHref = (slug) => localizePath(`/toepassingen/${slug}/`, lang);
+@@ -31,6 +32,7 @@ const landHref = (slug) => localizePath(`/toepassingen/${slug}/`, lang);
+       <article class="sec-card" data-key={s.key} data-search={(s.label + " " + s.blurb).toLowerCase()}>
+         <h2 class="sec-name">{s.label}</h2>
+         <p class="sec-blurb">{s.blurb}</p>
++        {s.casus && <p class="sec-casus"><span>{_exLabel}</span> {s.casus}</p>}
+         {s.landing
+           ? <a class="sec-link" href={landHref(s.landing)}>{ui.view} &rarr;</a>
+           : <a class="sec-link" href={contactHref}>{ui.ask} &rarr;</a>}
+@@ -64,6 +66,8 @@ const landHref = (slug) => localizePath(`/toepassingen/${slug}/`, lang);
+   .sec-card{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:14px;padding:22px 24px;box-shadow:var(--shadow-xs);display:flex;flex-direction:column}
+   .sec-name{color:var(--navy);font-size:1.15rem;margin:0 0 8px}
+   .sec-blurb{color:var(--muted);font-size:14.5px;line-height:1.55;margin:0 0 14px;flex:1}
++  .sec-casus{background:var(--bg-soft,#f6f9fc);border-radius:10px;padding:10px 12px;color:var(--navy);font-size:13px;line-height:1.5;margin:0 0 14px}
++  .sec-casus span{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--blue);margin-right:6px}
+   .sec-link{color:var(--navy);font-weight:700;font-size:14px;text-decoration:none}
+   .sec-link:hover{color:var(--blue)}
+   .sec-none{color:var(--muted);font-size:16px;text-align:center;padding:40px 0}
+diff --git a/src/components/Trainingen.astro b/src/components/Trainingen.astro
+index 06feaae..14cad27 100644
+--- a/src/components/Trainingen.astro
++++ b/src/components/Trainingen.astro
+@@ -43,7 +43,7 @@ const cardHref = (nlHref) => (lang === "nl" ? nlHref : contactHref);
+         <ul class="traits">{t.leerdoelen.map((d) => <li>{d}</li>)}</ul>
+       </div>
+       <div class="explain-fig">
+-        <Img src="/media/wp-content/uploads/2020/12/ass-afb1.png" alt="hrmforce" loading="lazy" />
++        <Img src="/media/wp-content/uploads/2020/12/ass-afb2.png" alt="hrmforce" loading="lazy" />
+       </div>
+     </div>
+   </div>
+diff --git a/src/components/Voorbereiding.astro b/src/components/Voorbereiding.astro
+index d63fda9..20be860 100644
+--- a/src/components/Voorbereiding.astro
++++ b/src/components/Voorbereiding.astro
+@@ -15,6 +15,7 @@ const PREP_UI = {
+ const prep = PREP_UI[lang] || PREP_UI.nl;
+ const prepTests = oefentests.map((o) => ({ slug: o.slug, name: (o.i18n[lang] || o.i18n.nl).name })).sort((a, b) => a.name.localeCompare(b.name));
+ const oefenBase = lang === "nl" ? "/oefenen/" : localizePath("/oefenen/", lang);
++const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voor deze zoekterm."}, en:{ph:"Search the preparation...", none:"Nothing found for this term."}, de:{ph:"In der Vorbereitung suchen...", none:"Nichts zu diesem Begriff gefunden."}, fr:{ph:"Rechercher dans la préparation...", none:"Rien trouvé pour ce terme."}, es:{ph:"Buscar en la preparación...", none:"No se encontró nada para este término."}, ro:{ph:"Caută în pregătire...", none:"Nimic găsit pentru acest termen."} }[lang] || {ph:"Zoek...", none:"Niets gevonden."};
+ ---
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+ <section class="ahero"><div class="wrap" style="display:block">
+@@ -22,7 +23,11 @@ const oefenBase = lang === "nl" ? "/oefenen/" : localizePath("/oefenen/", lang);
+   <h1>{t.hero.title}</h1>
+ </div></section>
+ 
+-<section><div class="wrap"><div class="kc-body" set:html={sanitizeBodyLinks(t.body, lang, validPaths)}></div></div></section>
++<section><div class="wrap" style="display:block">
++  <input type="search" id="prepBodySearch" class="prep-search" placeholder={BODYUI.ph} aria-label={BODYUI.ph} />
++  <div class="kc-body" id="prepBody" set:html={sanitizeBodyLinks(t.body, lang, validPaths)}></div>
++  <p class="prep-none" id="prepBodyNone" hidden>{BODYUI.none}</p>
++</div></section>
+ 
+ <section class="bg-soft"><div class="wrap" style="display:block">
+   <div class="eyebrow" style="color:var(--gold)">{prep.title}</div>
+@@ -90,3 +95,24 @@ const oefenBase = lang === "nl" ? "/oefenen/" : localizePath("/oefenen/", lang);
+     });
+   })();
+ </script>
++
++<script>
++  (function () {
++    var body = document.getElementById("prepBody");
++    var inp = document.getElementById("prepBodySearch");
++    var none = document.getElementById("prepBodyNone");
++    if (!body || !inp) return;
++    var blocks = Array.from(body.querySelectorAll("p, li, h2, h3, h4"));
++    inp.addEventListener("input", function () {
++      var q = (inp.value || "").trim().toLowerCase();
++      if (!q) { blocks.forEach(function (b) { b.style.display = ""; }); none.hidden = true; return; }
++      var any = 0;
++      blocks.forEach(function (b) {
++        var ok = (b.textContent || "").toLowerCase().indexOf(q) > -1;
++        b.style.display = ok ? "" : "none";
++        if (ok) any++;
++      });
++      none.hidden = any > 0;
++    });
++  })();
++</script>
+diff --git a/src/data/assessment-detail-extra.js b/src/data/assessment-detail-extra.js
+index a9a8b99..dbfb4ad 100644
+--- a/src/data/assessment-detail-extra.js
++++ b/src/data/assessment-detail-extra.js
+@@ -18,20 +18,20 @@ export const detailExtra = {
+         type: "list",
+         title: { nl: "Rapportagemogelijkheden", en: "Reporting options", de: "Berichtsoptionen", fr: "Options de rapport", es: "Opciones de informe", ro: "Opțiuni de raportare" },
+         lead: {
+-          nl: "Vanuit één afname kies je de rapportage die past bij je doel:",
+-          en: "From a single assessment you choose the report that fits your goal:",
+-          de: "Aus einer einzigen Durchführung wählen Sie den Bericht, der zu Ihrem Ziel passt:",
+-          fr: "À partir d'une seule passation, vous choisissez le rapport adapté à votre objectif :",
+-          es: "A partir de una sola aplicación eliges el informe que se ajusta a tu objetivo:",
+-          ro: "Dintr-o singură aplicare alegi raportul potrivit obiectivului tău:",
++          nl: "Vanuit één afname bevat de rapportage meerdere onderdelen en modules:",
++          en: "From a single assessment the report contains several parts and modules:",
++          de: "Aus einer einzigen Durchführung enthält der Bericht mehrere Teile und Module:",
++          fr: "À partir d'une seule passation, le rapport contient plusieurs parties et modules :",
++          es: "A partir de una sola aplicación, el informe contiene varias partes y módulos:",
++          ro: "Dintr-o singură aplicare, raportul conține mai multe părți și module:",
+         },
+         items: {
+-          nl: ["Signalenrapport: snelle signalen en aandachtspunten", "Persoonlijk rapport: uitgebreid beeld van de persoonlijkheid", "Competentierapport: vertaling naar werkgerelateerde competenties", "Verbindend leiderschap: inzicht in leiderschaps- en samenwerkingsstijl", "Teamflow: hoe iemand bijdraagt aan de dynamiek van een team"],
+-          en: ["Signals report: quick signals and points of attention", "Personal report: an extensive picture of the personality", "Competency report: translation into work-related competencies", "Connective leadership: insight into leadership and collaboration style", "Team flow: how someone contributes to team dynamics"],
+-          de: ["Signalbericht: schnelle Signale und Aufmerksamkeitspunkte", "Persönlicher Bericht: umfassendes Bild der Persönlichkeit", "Kompetenzbericht: Übersetzung in arbeitsbezogene Kompetenzen", "Verbindende Führung: Einblick in Führungs- und Kooperationsstil", "Teamflow: wie jemand zur Teamdynamik beiträgt"],
+-          fr: ["Rapport de signaux : signaux rapides et points d'attention", "Rapport personnel : image complète de la personnalité", "Rapport de compétences : traduction en compétences professionnelles", "Leadership fédérateur : aperçu du style de leadership et de collaboration", "Team flow : comment une personne contribue à la dynamique d'équipe"],
+-          es: ["Informe de señales: señales rápidas y puntos de atención", "Informe personal: una imagen amplia de la personalidad", "Informe de competencias: traducción a competencias laborales", "Liderazgo conector: perspectiva del estilo de liderazgo y colaboración", "Team flow: cómo contribuye alguien a la dinámica del equipo"],
+-          ro: ["Raport de semnale: semnale rapide și puncte de atenție", "Raport personal: o imagine amplă a personalității", "Raport de competențe: traducere în competențe legate de muncă", "Leadership conectiv: perspectivă asupra stilului de leadership și colaborare", "Team flow: cum contribuie cineva la dinamica echipei"],
++          nl: ["Algemeen profiel: beschrijving op de onderliggende persoonlijkheidsfactoren", "Persoonlijk rapport: uitgebreide, persoonlijke terugkoppeling", "DISC-rapportage: gedrags- en communicatiestijl", "Kleurenrapportage: kleurtypologie (o.b.v. Jung), met goede- en slechte-dag-gedrag", "Interview rapport: gerichte interviewvragen op basis van de scores", "Overzicht scores op factoren: alle factoren in één overzicht", "Teamprofiel: teamrollen, samenwerking en het perspectief van anderen", "Verbindend leiderschap: leiderschaps- en samenwerkingsstijl"],
++          en: ["General profile: description across the underlying personality factors", "Personal report: an extensive, personal read-back", "DISC report: behaviour and communication style", "Colour report: colour typology (based on Jung), with good-day and bad-day behaviour", "Interview report: targeted interview questions based on the scores", "Overview of factor scores: all factors in one overview", "Team profile: team roles, collaboration and the perspective of others", "Connective leadership: leadership and collaboration style"],
++          de: ["Allgemeines Profil: Beschreibung über die zugrunde liegenden Persönlichkeitsfaktoren", "Persönlicher Bericht: umfassende, persönliche Rückmeldung", "DISC-Bericht: Verhaltens- und Kommunikationsstil", "Farbbericht: Farbtypologie (auf Basis von Jung), mit Gut-Tag- und Schlecht-Tag-Verhalten", "Interviewbericht: gezielte Interviewfragen auf Basis der Werte", "Übersicht der Faktorwerte: alle Faktoren in einer Übersicht", "Teamprofil: Teamrollen, Zusammenarbeit und die Perspektive anderer", "Verbindende Führung: Führungs- und Kooperationsstil"],
++          fr: ["Profil général : description sur les facteurs de personnalité sous-jacents", "Rapport personnel : restitution personnelle et détaillée", "Rapport DISC : style de comportement et de communication", "Rapport couleurs : typologie de couleurs (basée sur Jung), avec comportement bon jour / mauvais jour", "Rapport d'entretien : questions d'entretien ciblées basées sur les scores", "Aperçu des scores par facteur : tous les facteurs en un aperçu", "Profil d'équipe : rôles d'équipe, collaboration et perspective des autres", "Leadership fédérateur : style de leadership et de collaboration"],
++          es: ["Perfil general: descripción sobre los factores de personalidad subyacentes", "Informe personal: una devolución personal y amplia", "Informe DISC: estilo de comportamiento y comunicación", "Informe de colores: tipología de colores (basada en Jung), con conducta de buen día y mal día", "Informe de entrevista: preguntas de entrevista dirigidas según las puntuaciones", "Resumen de puntuaciones por factor: todos los factores en un resumen", "Perfil de equipo: roles de equipo, colaboración y la perspectiva de los demás", "Liderazgo conector: estilo de liderazgo y colaboración"],
++          ro: ["Profil general: descriere pe factorii de personalitate subiacenți", "Raport personal: o transmitere personală și amplă", "Raport DISC: stil de comportament și comunicare", "Raport de culori: tipologie de culori (bazată pe Jung), cu comportament în zi bună și zi rea", "Raport de interviu: întrebări de interviu țintite pe baza scorurilor", "Prezentare a scorurilor pe factori: toți factorii într-o singură prezentare", "Profil de echipă: roluri de echipă, colaborare și perspectiva celorlalți", "Leadership conectiv: stil de leadership și colaborare"],
+         },
+       },
+     ],
+diff --git a/src/data/menu-content.js b/src/data/menu-content.js
+index fcca4bb..cd73055 100644
+--- a/src/data/menu-content.js
++++ b/src/data/menu-content.js
+@@ -18,7 +18,7 @@ const A = {
+     { p: "/shop/" },
+   ],
+   software: ["/hrm-oplossingen/matching/", "/hrm-oplossingen/development/", "/hrm-oplossingen/employability/", "/hrm-oplossingen/hr-analytics/"],
+-  advies: ["/advies/", "/advies/trainingen/", "/advies/competentie-management/", "/advies/talent-management/"],
++  advies: ["/advies/trainingen/", "/advies/assessments/", "/advies/competentie-management/", "/advies/talent-management/"],
+   meer: ["/integraties/", "/sectoren/"],
+   kennisbank: ["/kenniscentrum/", "/klantcases/", "/roi-rekentool/", "/voorbereiding/", "/support/f-a-q/"],
+   about: ["/over-ons/", "/trust/", "/partners/", "/vacatures/", "/contact/"],
+@@ -31,7 +31,7 @@ const LABELS = {
+     groups: { software: "Software", advies: "Advies & trainingen", meer: "Meer" },
+     assessments: ["360 graden feedback", "Persoonlijkheidstest (Big 5)", "Drijfverentest", "Cognitieve test", "DISC Test", "Studiekeuzetest", "Mentale veerkracht scan", "Lencioni Teamdynamiek", "Leiderschapstest", "Ontwikkelassessment", "Ontdek alle assessments", "Shop"],
+     software: ["Matching & selectie", "HR-gesprekscyclus", "Employability", "HR-analytics"],
+-    advies: ["Adviestrajecten", "Trainingen", "Competentiemanagement", "Talentmanagement"],
++    advies: ["Training", "Live Assessments", "Competentiemanagement", "Talentmanagement"],
+     meer: ["Integraties", "Sectoren"],
+     kennisbank: ["Kenniscentrum", "Klantcases", "ROI-rekentool", "Voorbereiding", "FAQ"],
+     about: ["Over hrmforce", "Trust & security", "Partners", "Vacatures", "Contact"],
+@@ -42,7 +42,7 @@ const LABELS = {
+     groups: { software: "Software", advies: "Advice & training", meer: "More" },
+     assessments: ["360-degree feedback", "Personality test (Big 5)", "Motivational drivers test", "Cognitive ability test", "DISC test", "Study choice test", "Mental resilience scan", "Lencioni team dynamics", "Leadership test", "Development assessment", "Discover all assessments", "Shop"],
+     software: ["Matching & selection", "HR review cycle", "Employability", "HR analytics"],
+-    advies: ["Advisory tracks", "Training", "Competency management", "Talent management"],
++    advies: ["Training", "Live Assessments", "Competency management", "Talent management"],
+     meer: ["Integrations", "Sectors"],
+     kennisbank: ["Knowledge centre", "Client cases", "ROI calculator", "Preparation", "FAQ"],
+     about: ["About hrmforce", "Trust & security", "Partners", "Careers", "Contact"],
+@@ -53,7 +53,7 @@ const LABELS = {
+     groups: { software: "Software", advies: "Beratung & Schulungen", meer: "Mehr" },
+     assessments: ["360-Grad-Feedback", "Persönlichkeitstest (Big 5)", "Motivationstest", "Kognitiver Test", "DISC-Test", "Studienwahltest", "Scan mentale Widerstandskraft", "Lencioni Teamdynamik", "Führungstest", "Entwicklungsassessment", "Alle Assessments entdecken", "Shop"],
+     software: ["Matching & Auswahl", "HR-Gesprächszyklus", "Beschäftigungsfähigkeit", "HR-Analytik"],
+-    advies: ["Beratungswege", "Schulungen", "Kompetenzmanagement", "Talentmanagement"],
++    advies: ["Schulungen", "Live Assessments", "Kompetenzmanagement", "Talentmanagement"],
+     meer: ["Integrationen", "Branchen"],
+     kennisbank: ["Wissenszentrum", "Kundenreferenzen", "ROI-Rechner", "Vorbereitung", "FAQ"],
+     about: ["Über hrmforce", "Trust & Security", "Partner", "Stellenangebote", "Kontakt"],
+@@ -64,7 +64,7 @@ const LABELS = {
+     groups: { software: "Logiciel", advies: "Conseil & formations", meer: "Plus" },
+     assessments: ["Feedback à 360 degrés", "Test de personnalité (Big 5)", "Test des motivations", "Test cognitif", "Test DISC", "Test d'orientation", "Scan de résilience mentale", "Dynamique d'équipe Lencioni", "Test de leadership", "Évaluation de développement", "Découvrir toutes les évaluations", "Boutique"],
+     software: ["Matching & sélection", "Cycle d'entretiens RH", "Employabilité", "Analytique RH"],
+-    advies: ["Parcours de conseil", "Formations", "Gestion des compétences", "Gestion des talents"],
++    advies: ["Formations", "Live Assessments", "Gestion des compétences", "Gestion des talents"],
+     meer: ["Intégrations", "Secteurs"],
+     kennisbank: ["Centre de connaissances", "Cas clients", "Calculateur de ROI", "Préparation", "FAQ"],
+     about: ["À propos de hrmforce", "Confiance & sécurité", "Partenaires", "Carrières", "Contact"],
+@@ -75,7 +75,7 @@ const LABELS = {
+     groups: { software: "Software", advies: "Asesoría y formación", meer: "Más" },
+     assessments: ["Feedback de 360 grados", "Test de personalidad (Big 5)", "Test de motivaciones", "Test cognitivo", "Test DISC", "Test de orientación académica", "Escáner de resiliencia mental", "Dinámica de equipo Lencioni", "Test de liderazgo", "Evaluación de desarrollo", "Descubrir todas las evaluaciones", "Shop"],
+     software: ["Matching y selección", "Ciclo de entrevistas de RR. HH.", "Empleabilidad", "Analítica de RR. HH."],
+-    advies: ["Trayectos de asesoría", "Formación", "Gestión de competencias", "Gestión del talento"],
++    advies: ["Formación", "Live Assessments", "Gestión de competencias", "Gestión del talento"],
+     meer: ["Integraciones", "Sectores"],
+     kennisbank: ["Centro de conocimiento", "Casos de clientes", "Calculadora de ROI", "Preparación", "FAQ"],
+     about: ["Sobre hrmforce", "Confianza y seguridad", "Socios", "Vacantes", "Contacto"],
+@@ -86,7 +86,7 @@ const LABELS = {
+     groups: { software: "Software", advies: "Consultanță & cursuri", meer: "Mai mult" },
+     assessments: ["Feedback 360 de grade", "Test de personalitate (Big 5)", "Test al motivațiilor", "Test cognitiv", "Test DISC", "Test de orientare în studii", "Scanare a rezilienței mentale", "Dinamica echipei Lencioni", "Test de leadership", "Evaluare de dezvoltare", "Descoperiți toate evaluările", "Shop"],
+     software: ["Matching și selecție", "Ciclul de evaluări HR", "Angajabilitate", "Analiză HR"],
+-    advies: ["Trasee de consultanță", "Cursuri", "Managementul competențelor", "Managementul talentelor"],
++    advies: ["Cursuri", "Live Assessments", "Managementul competențelor", "Managementul talentelor"],
+     meer: ["Integrări", "Sectoare"],
+     kennisbank: ["Centru de cunoștințe", "Studii de caz", "Calculator ROI", "Pregătire", "FAQ"],
+     about: ["Despre hrmforce", "Încredere și securitate", "Parteneri", "Cariere", "Contact"],
+diff --git a/src/data/sectoren-content.js b/src/data/sectoren-content.js
+index fbf9b0c..153d0cb 100644
+--- a/src/data/sectoren-content.js
++++ b/src/data/sectoren-content.js
+@@ -30,9 +30,31 @@ export const SECTORS = [
+   { key: "vastgoed", landing: null, label: { nl: "Vastgoed & Facility", en: "Real estate & Facility", de: "Immobilien & Facility", fr: "Immobilier & Facility", es: "Inmobiliario & Facility", ro: "Imobiliare & Facility" }, blurb: { nl: "Match op klantgerichtheid en betrouwbaarheid voor beheer en service.", en: "Match on customer focus and reliability for management and service.", de: "Auf Kundenorientierung und Zuverlässigkeit für Verwaltung und Service matchen.", fr: "Adéquation orientation client et fiabilité pour gestion et service.", es: "Empareja por orientación al cliente y fiabilidad para gestión y servicio.", ro: "Potrivire pe orientarea către client și fiabilitate pentru administrare și servicii." } },
+ ];
+ 
++
++export const SECTOR_CASUS = {
++  zorg: { nl: "Een zorgorganisatie (±180 mdw) verlaagde vroegtijdig verloop door persoonlijkheids- en veerkrachtmeting vast in de selectie op te nemen.", en: "A care organisation (±180 staff) cut early turnover by adding personality and resilience testing as a fixed selection step.", de: "Eine Pflegeorganisation (±180 MA) senkte frühe Fluktuation, indem Persönlichkeits- und Resilienztests fest in die Auswahl kamen.", fr: "Une organisation de santé (±180 collab.) a réduit le turnover précoce en intégrant des tests de personnalité et de résilience à la sélection.", es: "Una organización sanitaria (±180 empl.) redujo la rotación temprana añadiendo tests de personalidad y resiliencia a la selección.", ro: "O organizație din sănătate (±180 ang.) a redus fluctuația timpurie adăugând teste de personalitate și reziliență în selecție." },
++  onderwijs: { nl: "Een onderwijsinstelling (±320 mdw) maakte ontwikkelgesprekken concreter met 360 feedback en competentieprofielen per rol.", en: "An education institution (±320 staff) made development talks concrete with 360 feedback and competency profiles per role.", de: "Eine Bildungseinrichtung (±320 MA) machte Entwicklungsgespräche konkret mit 360-Feedback und Kompetenzprofilen je Rolle.", fr: "Un établissement éducatif (±320 collab.) a concrétisé les entretiens de développement avec du feedback 360 et des profils par poste.", es: "Un centro educativo (±320 empl.) concretó las conversaciones de desarrollo con feedback 360 y perfiles por puesto.", ro: "O instituție de învățământ (±320 ang.) a concretizat discuțiile de dezvoltare cu feedback 360 și profiluri per rol." },
++  industrie: { nl: "Een productiebedrijf (±950 mdw) versnelde de voorselectie met een capaciteitentest, gekoppeld aan het ATS.", en: "A manufacturer (±950 staff) sped up pre-selection with an ability test linked to the ATS.", de: "Ein Produktionsbetrieb (±950 MA) beschleunigte die Vorauswahl mit einem Leistungstest, verknüpft mit dem ATS.", fr: "Un industriel (±950 collab.) a accéléré la présélection avec un test d'aptitude relié à l'ATS.", es: "Un fabricante (±950 empl.) agilizó la preselección con un test de aptitud conectado al ATS.", ro: "Un producător (±950 ang.) a accelerat preselecția cu un test de aptitudine legat de ATS." },
++  overheid: { nl: "Een overheidsorganisatie bracht structuur in de gesprekscyclus met heldere competentieniveaus per rol.", en: "A government body brought structure to the review cycle with clear competency levels per role.", de: "Eine Behörde brachte Struktur in den Gesprächszyklus mit klaren Kompetenzniveaus je Rolle.", fr: "Un organisme public a structuré le cycle d'entretiens avec des niveaux de compétences clairs par poste.", es: "Un organismo público estructuró el ciclo de evaluación con niveles de competencias claros por puesto.", ro: "O instituție publică a structurat ciclul de evaluare cu niveluri clare de competențe per rol." },
++  zakelijk: { nl: "Een adviesbureau selecteerde op potentieel en teamfit en versnelde de doorgroei van consultants.", en: "A consultancy selected on potential and team fit and accelerated consultant progression.", de: "Eine Beratung wählte nach Potenzial und Teamfit und beschleunigte den Aufstieg der Berater.", fr: "Un cabinet de conseil a sélectionné sur le potentiel et l'adéquation et accéléré l'évolution des consultants.", es: "Una consultora seleccionó por potencial y encaje y aceleró la progresión de consultores.", ro: "O firmă de consultanță a selectat pe potențial și potrivire și a accelerat progresul consultanților." },
++  retail: { nl: "Een retailer (±1.400 mdw) verhoogde interne doorstroom met inzetbaarheidsscans en ontwikkelpaden.", en: "A retailer (±1,400 staff) increased internal mobility with employability scans and development paths.", de: "Ein Einzelhändler (±1.400 MA) erhöhte die interne Mobilität mit Einsetzbarkeitsscans und Entwicklungspfaden.", fr: "Un distributeur (±1 400 collab.) a accru la mobilité interne avec des scans d'employabilité et des parcours.", es: "Un minorista (±1.400 empl.) aumentó la movilidad interna con escaneos de empleabilidad y rutas de desarrollo.", ro: "Un retailer (±1.400 ang.) a crescut mobilitatea internă cu scanări de angajabilitate și trasee de dezvoltare." },
++  ict: { nl: "Een scale-up toetste potentieel en teamfit vooraf en bouwde een schaalbaar leiderschapsprogramma.", en: "A scale-up assessed potential and team fit up front and built a scalable leadership programme.", de: "Ein Scale-up prüfte Potenzial und Teamfit vorab und baute ein skalierbares Führungsprogramm.", fr: "Une scale-up a évalué le potentiel et l'adéquation en amont et bâti un programme de leadership scalable.", es: "Una scale-up evaluó potencial y encaje antes y creó un programa de liderazgo escalable.", ro: "Un scale-up a evaluat potențialul și potrivirea din start și a construit un program de leadership scalabil." },
++  bouw: { nl: "Een bouwbedrijf vulde uitvoerende vacatures sneller met een korte, objectieve preselectie.", en: "A construction firm filled field vacancies faster with a short, objective pre-selection.", de: "Ein Bauunternehmen besetzte ausführende Stellen schneller mit kurzer, objektiver Vorauswahl.", fr: "Une entreprise de construction a pourvu plus vite les postes de terrain avec une présélection courte.", es: "Una constructora cubrió antes las vacantes de campo con una preselección breve y objetiva.", ro: "O firmă de construcții a ocupat mai repede posturile de teren cu o preselecție scurtă și obiectivă." },
++  logistiek: { nl: "Een logistiek bedrijf stabiliseerde piekwerving met een gestandaardiseerd selectieassessment.", en: "A logistics company stabilised peak recruitment with a standardised selection assessment.", de: "Ein Logistikunternehmen stabilisierte Spitzenrekrutierung mit einem standardisierten Auswahl-Assessment.", fr: "Une entreprise logistique a stabilisé le recrutement de pointe avec une évaluation standardisée.", es: "Una empresa logística estabilizó el reclutamiento en picos con una evaluación estandarizada.", ro: "O firmă de logistică a stabilizat recrutarea de vârf cu o evaluare standardizată." },
++  financieel: { nl: "Een financiële dienstverlener objectiveerde beoordelingen met competentiegerichte niveaus.", en: "A financial services firm objectified appraisals with competency-based levels.", de: "Ein Finanzdienstleister objektivierte Beurteilungen mit kompetenzbasierten Niveaus.", fr: "Un acteur des services financiers a objectivé les évaluations avec des niveaux par compétences.", es: "Una entidad financiera objetivó las evaluaciones con niveles por competencias.", ro: "O firmă de servicii financiare a obiectivat evaluările cu niveluri pe competențe." },
++  nonprofit: { nl: "Een non-profit zette beperkt ontwikkelbudget gericht in met persoonlijkheids- en drijfverentests.", en: "A non-profit used a limited development budget wisely with personality and drives tests.", de: "Eine Non-Profit setzte begrenztes Budget gezielt mit Persönlichkeits- und Antriebstests ein.", fr: "Une association a utilisé un budget limité avec des tests de personnalité et de moteurs.", es: "Una ONG usó un presupuesto limitado con tests de personalidad y motivaciones.", ro: "Un ONG a folosit un buget limitat cu teste de personalitate și motivații." },
++  horeca: { nl: "Een horecaketen wierf sneller voor seizoenspieken en matchte op houding en klantgerichtheid.", en: "A hospitality chain recruited faster for seasonal peaks and matched on attitude and customer focus.", de: "Eine Gastronomiekette rekrutierte schneller für Saisonspitzen und matchte auf Haltung und Kundenfokus.", fr: "Une chaîne d'hôtellerie a recruté plus vite pour les pics et adéquation attitude/orientation client.", es: "Una cadena de hostelería reclutó antes para picos y emparejó por actitud y orientación al cliente.", ro: "Un lanț ospitalier a recrutat mai repede pentru vârfuri și a potrivit pe atitudine și orientare spre client." },
++  agrofood: { nl: "Een voedselproducent hield medewerkers duurzaam inzetbaar met scans en ontwikkelpaden.", en: "A food producer kept staff sustainably employable with scans and development paths.", de: "Ein Lebensmittelhersteller hielt Mitarbeiter nachhaltig einsetzbar mit Scans und Entwicklungspfaden.", fr: "Un producteur alimentaire a maintenu l'employabilité durable avec scans et parcours de développement.", es: "Un productor de alimentos mantuvo la empleabilidad sostenible con escaneos y rutas de desarrollo.", ro: "Un producător alimentar a menținut angajabilitatea durabilă cu scanări și trasee de dezvoltare." },
++  energie: { nl: "Een energiebedrijf bouwde tijdens een transitie sterkere teams met team- en 360-analyses.", en: "An energy company built stronger teams during a transition with team and 360 analyses.", de: "Ein Energieunternehmen baute im Wandel stärkere Teams mit Team- und 360-Analysen.", fr: "Une entreprise d'énergie a bâti des équipes plus fortes en transition avec analyses d'équipe et 360.", es: "Una empresa de energía creó equipos más fuertes en una transición con análisis de equipo y 360.", ro: "O companie de energie a construit echipe mai puternice în tranziție cu analize de echipă și 360." },
++  uitzend: { nl: "Een uitzendorganisatie beoordeelde grote kandidaatstromen snel en objectief via API-koppeling.", en: "A staffing agency assessed large candidate flows fast and objectively via API integration.", de: "Ein Personaldienstleister bewertete große Kandidatenströme schnell und objektiv per API.", fr: "Une agence d'intérim a évalué de grands flux vite et objectivement via intégration API.", es: "Una ETT evaluó grandes flujos rápido y objetivo vía integración API.", ro: "O agenție de muncă temporară a evaluat fluxuri mari rapid și obiectiv prin integrare API." },
++  transport: { nl: "Een vervoersbedrijf selecteerde betrouwbaar op veiligheid, nauwkeurigheid en stressbestendigheid.", en: "A transport company selected reliably on safety, accuracy and stress resistance.", de: "Ein Transportunternehmen wählte zuverlässig nach Sicherheit, Genauigkeit und Stressresistenz.", fr: "Une entreprise de transport a sélectionné sur la sécurité, la précision et la résistance au stress.", es: "Una empresa de transporte seleccionó por seguridad, precisión y resistencia al estrés.", ro: "O firmă de transport a selectat pe siguranță, precizie și rezistență la stres." },
++  telecom: { nl: "Een telecomaanbieder vond commercieel en klantgericht talent en ontwikkelde dat gericht door.", en: "A telecom provider found commercial, customer-focused talent and developed it in a targeted way.", de: "Ein Telekomanbieter fand kommerzielles, kundenorientiertes Talent und entwickelte es gezielt.", fr: "Un opérateur télécom a trouvé des talents commerciaux orientés client et les a développés.", es: "Un operador de telecom encontró talento comercial orientado al cliente y lo desarrolló.", ro: "Un operator telecom a găsit talent comercial orientat spre client și l-a dezvoltat țintit." },
++  vastgoed: { nl: "Een vastgoedbeheerder matchte op klantgerichtheid en betrouwbaarheid voor beheer en service.", en: "A property manager matched on customer focus and reliability for management and service.", de: "Ein Immobilienverwalter matchte auf Kundenorientierung und Zuverlässigkeit für Verwaltung und Service.", fr: "Un gestionnaire immobilier a fait correspondre orientation client et fiabilité pour la gestion et le service.", es: "Un gestor inmobiliario emparejó por orientación al cliente y fiabilidad para gestión y servicio.", ro: "Un administrator imobiliar a potrivit orientarea spre client și fiabilitatea pentru administrare și servicii." },
++};
++
+ export function sectorsFor(lang) {
+   const L = (o) => (o[lang] || o.nl);
+   const ui = SEC_UI[lang] || SEC_UI.nl;
+-  const sectors = SECTORS.map((s) => ({ key: s.key, landing: s.landing, label: L(s.label), blurb: L(s.blurb) }));
++  const sectors = SECTORS.map((s) => ({ key: s.key, landing: s.landing, label: L(s.label), blurb: L(s.blurb), casus: (SECTOR_CASUS[s.key] ? (SECTOR_CASUS[s.key][lang] || SECTOR_CASUS[s.key].nl) : "") }));
+   return { ui, sectors };
+ }
+diff --git a/src/pages/[...path].astro b/src/pages/[...path].astro
+index 2d33d20..0171c34 100644
+--- a/src/pages/[...path].astro
++++ b/src/pages/[...path].astro
+@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
+ import { createClient } from "@sanity/client";
+ import { shopInfo } from "../data/assessment-shop.js";
+ import { localizePath, sanitizeBodyLinks } from "../i18n/utils.js";
++import LogoSlider from "../components/LogoSlider.astro";
+ import validPaths from "../data/valid-paths.js";
+ 
+ // Gemigreerde kenniscentrum-artikelen uit WordPress. Elk artikel-document in
+@@ -14,7 +15,7 @@ export async function getStaticPaths() {
+   );
+   // Statische routes hebben voorrang; sluit paden uit die we nu als eigen
+   // pagina bouwen (bijv. de sectoren-index) om dubbele routes te voorkomen.
+-  const OWN = new Set(["sectoren", "en/sectoren", "de/sectoren", "fr/sectoren", "es/sectoren", "ro/sectoren"]);
++  const OWN = new Set(["sectoren", "en/sectoren", "de/sectoren", "fr/sectoren", "es/sectoren", "ro/sectoren", "sectoren/onderwijs"]);
+   return arts
+     .filter((a) => a.path && a.path.includes("/"))
+     .map((a) => ({ p: a.path.replace(/^\/+|\/+$/g, ""), a }))
+@@ -141,6 +142,8 @@ const body = sanitizeBodyLinks(article.body || "", lang, validPaths);
+ // Partners-pagina: extra doorlink naar de integraties (alleen echte koppelingen).
+ const _pathClean = (article.path || "").replace(/^\/+|\/+$/g, "");
+ const isPartners = _pathClean === "partners" || _pathClean.endsWith("/partners");
++const _sliderH = { nl: "Organisaties die u voorgingen", en: "Organisations that went before you", de: "Organisationen, die vor Ihnen kamen", fr: "Les organisations qui vous ont précédé", es: "Organizaciones que te precedieron", ro: "Organizații care te-au precedat" };
++const showAdviesSlider = /^(en\/|de\/|fr\/|es\/|ro\/)?advies\//.test(_pathClean + "/") || _pathClean.indexOf("advies/") > -1;
+ const integHref = localizePath("/integraties/", lang);
+ const INTEG = {
+   nl: { title: "Koppel hrmforce aan je systemen", text: "hrmforce integreert met je ATS, HR- en salarissystemen zoals AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix en OTYS.", btn: "Bekijk de integraties" },
+@@ -200,6 +203,7 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
+       </div>
+     </div>
+   </article>
++  {showAdviesSlider && <LogoSlider heading={_sliderH[lang] || _sliderH.nl} />}
+ </Base>
+ 
+ <style>
+diff --git a/src/pages/contact.astro b/src/pages/contact.astro
+index 604041f..f510860 100644
+--- a/src/pages/contact.astro
++++ b/src/pages/contact.astro
+@@ -18,21 +18,21 @@ const offices = [
+     regels: ["Bridge Building", "Keizer Karellaan 584", "1082 Sint-Agatha-Berchem", "Belgium"],
+     tel: "+32 495 66 58 97",
+     telHref: "tel:+32495665897",
+-    mail: "n.kesteloot@hrmforce.com",
++    mail: "belgium@hrmforce.com",
+   },
+   {
+     naam: "hrmforce France",
+     regels: ["5 Place de la Pyramide Tour Ariane", "92800 Paris, Hauts-de-Seine", "France"],
+     tel: "+31 (0)88 88 321 88",
+     telHref: "tel:+31888832188",
+-    mail: "service@hrmforce.com",
++    mail: "france@hrmforce.com",
+   },
+   {
+     naam: "hrmforce India",
+     regels: ["Plot #27, 1-4-190/27/1/A, Phase-I", "Bhaskara Rao Nagar Sainikpuri P.O.", "Secunderabad – 500 094", "Telangana, India"],
+     tel: "+91 89787 86121",
+     telHref: "tel:+918978786121",
+-    mail: "service@hrmforce.com",
++    mail: "india@hrmforce.com",
+   },
+   {
+     naam: "hrmforce Romania",
+diff --git a/src/pages/de/contact.astro b/src/pages/de/contact.astro
+index dd9fb22..9ce0c9f 100644
+--- a/src/pages/de/contact.astro
++++ b/src/pages/de/contact.astro
+@@ -22,21 +22,21 @@ const offices = [
+     regels: ["Bridge Building", "Keizer Karellaan 584", "1082 Sint-Agatha-Berchem", "Belgium"],
+     tel: "+31 (0)88 88 321 88",
+     telHref: "tel:+31888832188",
+-    mail: "service@hrmforce.com",
++    mail: "belgium@hrmforce.com",
+   },
+   {
+     naam: "hrmforce France",
+     regels: ["5 Place de la Pyramide Tour Ariane", "92800, Paris, Hauts-de-Seine", "France"],
+     tel: "+31 (0)88 88 321 88",
+     telHref: "tel:+31888832188",
+-    mail: "service@hrmforce.com",
++    mail: "france@hrmforce.com",
+   },
+   {
+     naam: "hrmforce India",
+     regels: ["Plot #27, 1-4-190/27/1/A, Phase-I,", "Bhaskara Rao Nagar Sainikpuri P.O.", "Secunderabad – 500 094", "Telangana, India"],
+     tel: "+91 89787 86121",
+     telHref: "tel:+918978786121",
+-    mail: "service@hrmforce.com",
++    mail: "india@hrmforce.com",
+   },
+   {
+     naam: "hrmforce Romania",
+diff --git a/src/pages/en/contact.astro b/src/pages/en/contact.astro
+index ee64f77..77b8266 100644
+--- a/src/pages/en/contact.astro
++++ b/src/pages/en/contact.astro
+@@ -14,21 +14,21 @@ const offices = [
+     regels: ["Bridge Building", "Keizer Karellaan 584", "1082 Sint-Agatha-Berchem", "Belgium"],
+     tel: "+31 (0)88 88 321 88",
+     telHref: "tel:+31888832188",
+-    mail: "service@hrmforce.com",
++    mail: "belgium@hrmforce.com",
+   },
+   {
+     naam: "hrmforce France",
+     regels: ["5 Place de la Pyramide Tour Ariane", "92800, Paris, Hauts-de-Seine", "France"],
+     tel: "+31 (0)88 88 321 88",
+     telHref: "tel:+31888832188",
+-    mail: "service@hrmforce.com",
++    mail: "france@hrmforce.com",
+   },
+   {
+     naam: "hrmforce India",
+     regels: ["Plot #27, 1-4-190/27/1/A, Phase-I,", "Bhaskara Rao Nagar Sainikpuri P.O.", "Secunderabad – 500 094", "Telangana, India"],
+     tel: "+91 89787 86121",
+     telHref: "tel:+918978786121",
+-    mail: "service@hrmforce.com",
++    mail: "india@hrmforce.com",
+   },
+   {
+     naam: "hrmforce Romania",
+diff --git a/src/pages/es/contact.astro b/src/pages/es/contact.astro
+index 315f590..daa45c1 100644
+--- a/src/pages/es/contact.astro
++++ b/src/pages/es/contact.astro
+@@ -14,21 +14,21 @@ const offices = [
+     regels: ["Bridge Building", "Keizer Karellaan 584", "1082 Sint-Agatha-Berchem", "Belgium"],
+     tel: "+31 (0)88 88 321 88",
+     telHref: "tel:+31888832188",
+-    mail: "office@hrmforce.com",
++    mail: "belgium@hrmforce.com",
+   },
+   {
+     naam: "hrmforce France",
+     regels: ["5 Place de la Pyramide Tour Ariane", "92800, Paris, Hauts-de-Seine", "France"],
+     tel: "+31 (0)88 88 321 88",
+     telHref: "tel:+31888832188",
+-    mail: "office@hrmforce.com",
++    mail: "france@hrmforce.com",
+   },
+   {
+     naam: "hrmforce India",
+     regels: ["Plot #27, 1-4-190/27/1/A, Phase-I", "Bhaskara Rao Nagar Sainikpuri P.O.", "Secunderabad – 500 094", "Telangana", "India"],
+     tel: "+91 89787 86121",
+     telHref: "tel:+918978786121",
+-    mail: "office@hrmforce.com",
++    mail: "india@hrmforce.com",
+   },
+   {
+     naam: "hrmforce Romania",
+diff --git a/src/pages/fr/contact.astro b/src/pages/fr/contact.astro
+index 7365de2..95e8aef 100644
+--- a/src/pages/fr/contact.astro
++++ b/src/pages/fr/contact.astro
+@@ -4,9 +4,9 @@ import Base from "../../layouts/Base.astro";
+ const offices = [
+   { h: "hrmforce head office", lines: ["Solitudolaan 396", "1096 DS Amsterdam", "The Netherlands"], tel: "+31 (0)88 88 321 88", telHref: "tel:+31888832188", mail: "service@hrmforce.com", extra: ["CoC Amsterdam: 34369982", "Bank: NL31RABO0155758411", "VAT: NL821671480B01"] },
+   { h: "hrmforce Germany", lines: ["Theodorstrasse 105", "40472 Dusseldorf", "Germany"], tel: "+31888832188", telHref: "tel:+31888832188", mail: "service@hrmforce.com" },
+-  { h: "hrmforce Belgium", lines: ["Bridge Building", "Keizer Karellaan 584", "1082 Sint-Agatha-Berchem", "Belgium"], tel: "+31 (0)88 88 321 88", telHref: "tel:+31888832188", mail: "service@hrmforce.com" },
+-  { h: "hrmforce France", lines: ["5 Place de la Pyramide Tour Ariane", "92800, Paris, Hauts-de-Seine", "France"], tel: "+31 (0)88 88 321 88", telHref: "tel:+31888832188", mail: "service@hrmforce.com" },
+-  { h: "hrmforce India", lines: ["Plot #27, 1-4-190/27/1/A, Phase-I,", "Bhaskara Rao Nagar Sainikpuri P.O.", "Secunderabad – 500 094", "Telangana", "India"], tel: "+91 89787 86121", telHref: "tel:+918978786121", mail: "service@hrmforce.com" },
++  { h: "hrmforce Belgium", lines: ["Bridge Building", "Keizer Karellaan 584", "1082 Sint-Agatha-Berchem", "Belgium"], tel: "+31 (0)88 88 321 88", telHref: "tel:+31888832188", mail: "belgium@hrmforce.com" },
++  { h: "hrmforce France", lines: ["5 Place de la Pyramide Tour Ariane", "92800, Paris, Hauts-de-Seine", "France"], tel: "+31 (0)88 88 321 88", telHref: "tel:+31888832188", mail: "france@hrmforce.com" },
++  { h: "hrmforce India", lines: ["Plot #27, 1-4-190/27/1/A, Phase-I,", "Bhaskara Rao Nagar Sainikpuri P.O.", "Secunderabad – 500 094", "Telangana", "India"], tel: "+91 89787 86121", telHref: "tel:+918978786121", mail: "india@hrmforce.com" },
+   { h: "hrmforce Romania", lines: ["Ploiesti Street, No 9", "400157 Cluj-Napoca", "Romania"], tel: "+31 (0)88 88 321 88", telHref: "tel:+31888832188", mail: "office@hrmforce.com", extra: ["CoC: J12/1828/2011", "Bank: RO11BRMA099910004661926", "VAT: RO 28852231"] },
+   { h: "hrmforce Spain", lines: ["Carrer de les Barques 2 – 2nd floor", "46002 València", "Valencia", "Spain"], tel: "+31 (0)88 88 321 88", telHref: "tel:+31888832188", mail: "atencioncliente@hrmforce.com" },
+ ];
+diff --git a/src/pages/ro/contact.astro b/src/pages/ro/contact.astro
+index 25334d2..3ae3b99 100644
+--- a/src/pages/ro/contact.astro
++++ b/src/pages/ro/contact.astro
+@@ -14,21 +14,21 @@ const offices = [
+     regels: ["Bridge Building", "Keizer Karellaan 584", "1082 Sint-Agatha-Berchem", "Belgium"],
+     tel: "+31 (0)88 88 321 88",
+     telHref: "tel:+31888832188",
+-    mail: "service@hrmforce.com",
++    mail: "belgium@hrmforce.com",
+   },
+   {
+     naam: "hrmforce France",
+     regels: ["5 Place de la Pyramide Tour Ariane", "92800, Paris, Hauts-de-Seine", "France"],
+     tel: "+31 (0)88 88 321 88",
+     telHref: "tel:+31888832188",
+-    mail: "service@hrmforce.com",
++    mail: "france@hrmforce.com",
+   },
+   {
+     naam: "hrmforce India",
+     regels: ["Plot #27, 1-4-190/27/1/A, Phase-I", "Bhaskara Rao Nagar Sainikpuri P.O.", "Secunderabad – 500 094", "Telangana, India"],
+     tel: "+91 89787 86121",
+     telHref: "tel:+918978786121",
+-    mail: "service@hrmforce.com",
++    mail: "india@hrmforce.com",
+   },
+   {
+     naam: "hrmforce Romania",
+diff --git a/src/pages/sectoren/onderwijs.astro b/src/pages/sectoren/onderwijs.astro
+new file mode 100644
+index 0000000..ec09ee6
+--- /dev/null
++++ b/src/pages/sectoren/onderwijs.astro
+@@ -0,0 +1,12 @@
++---
++import Base from "../../layouts/Base.astro";
++import Toepassing from "../../components/Toepassing.astro";
++import { landings } from "../../data/landings.js";
++// Vaste deep-link /sectoren/onderwijs/ (o.a. voor hrmforceonderwijs.nl),
++// hergebruikt de bestaande onderwijs-sectorlanding.
++const l = landings.find((x) => x.slug === "onderwijs");
++const t = l.i18n.nl;
++---
++<Base title={t.metaTitle} description={t.metaDescription} active="solutions">
++  <Toepassing l={l} lang="nl" />
++</Base>
+-- 
+2.34.1
+

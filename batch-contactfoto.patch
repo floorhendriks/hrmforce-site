@@ -1,0 +1,491 @@
+From b8d83759a6747ac7f4d78f2abb48e168d9d25c05 Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Tue, 8 Sep 2026 15:49:19 +0200
+Subject: [PATCH] Contact: persoonlijk fotoblok met Floor Hendriks
+ (geoptimaliseerde WebP, 16KB) op alle 6 contactpagina's, met warme
+ uitnodiging per taal
+
+---
+ public/media/team/floor-hendriks.webp | Bin 0 -> 16130 bytes
+ src/pages/contact.astro               |   7 +++++++
+ src/pages/de/contact.astro            |   7 +++++++
+ src/pages/en/contact.astro            |   7 +++++++
+ src/pages/es/contact.astro            |   7 +++++++
+ src/pages/fr/contact.astro            |   9 ++++++++-
+ src/pages/ro/contact.astro            |   7 +++++++
+ 7 files changed, 43 insertions(+), 1 deletion(-)
+ create mode 100644 public/media/team/floor-hendriks.webp
+
+diff --git a/public/media/team/floor-hendriks.webp b/public/media/team/floor-hendriks.webp
+new file mode 100644
+index 0000000000000000000000000000000000000000..76b337e43f824d6c277f106c3c69c7d0fa9d9a3e
+GIT binary patch
+literal 16130
+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
+E19@PeqW}N^
+
+literal 0
+HcmV?d00001
+
+diff --git a/src/pages/contact.astro b/src/pages/contact.astro
+index 55f4b84..2e40851 100644
+--- a/src/pages/contact.astro
++++ b/src/pages/contact.astro
+@@ -111,6 +111,7 @@ const offices = [
+       <div>
+         <div class="eyebrow">Contactformulier</div>
+         <h2 class="section-title" style="font-size:26px">Stuur ons een bericht</h2>
++        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>Liever persoonlijk contact?</strong><span>We helpen je graag verder. Bel of mail gerust, we reageren snel.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
+         <form
+           id="contactForm"
+           class="formcard"
+@@ -297,6 +298,12 @@ const offices = [
+   .next-steps li{margin:3px 0}
+   .ns-proof{color:var(--muted);font-size:13px;padding-top:8px;border-top:1px solid var(--line)}
+   .ns-stars{color:var(--gold);letter-spacing:1px}
++
++  .person-card{display:flex;gap:16px;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 20px}
++  .person-card img{width:72px;height:72px;border-radius:50%;object-fit:cover;flex:none;border:2px solid #fff;box-shadow:var(--shadow-xs)}
++  .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
++  .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
++  .person-card .person-name{color:var(--navy);font-weight:700;font-size:13px;margin-top:6px}
+ </style>
+ 
+   <script is:inline>
+diff --git a/src/pages/de/contact.astro b/src/pages/de/contact.astro
+index 7c01e3b..d65b64e 100644
+--- a/src/pages/de/contact.astro
++++ b/src/pages/de/contact.astro
+@@ -116,6 +116,7 @@ const offices = [
+       <div>
+         <div class="eyebrow">Kontakt-Formular</div>
+         <h2 class="section-title" style="font-size:26px">Senden Sie uns eine Nachricht</h2>
++        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>Lieber persönlicher Kontakt?</strong><span>Wir helfen Ihnen gern weiter. Rufen Sie an oder mailen Sie, wir antworten schnell.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
+         <form
+           id="contactForm"
+           class="formcard"
+@@ -292,6 +293,12 @@ const offices = [
+   .next-steps li{margin:3px 0}
+   .ns-proof{color:var(--muted);font-size:13px;padding-top:8px;border-top:1px solid var(--line)}
+   .ns-stars{color:var(--gold);letter-spacing:1px}
++
++  .person-card{display:flex;gap:16px;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 20px}
++  .person-card img{width:72px;height:72px;border-radius:50%;object-fit:cover;flex:none;border:2px solid #fff;box-shadow:var(--shadow-xs)}
++  .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
++  .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
++  .person-card .person-name{color:var(--navy);font-weight:700;font-size:13px;margin-top:6px}
+ </style>
+ 
+   <script is:inline>
+diff --git a/src/pages/en/contact.astro b/src/pages/en/contact.astro
+index 496550b..f377361 100644
+--- a/src/pages/en/contact.astro
++++ b/src/pages/en/contact.astro
+@@ -106,6 +106,7 @@ const offices = [
+       <div>
+         <div class="eyebrow">Contact form</div>
+         <h2 class="section-title" style="font-size:26px">Send us a message</h2>
++        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>Prefer personal contact?</strong><span>We're happy to help. Call or email us, we respond quickly.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
+         <form
+           id="contactForm"
+           class="formcard"
+@@ -290,6 +291,12 @@ const offices = [
+   .next-steps li{margin:3px 0}
+   .ns-proof{color:var(--muted);font-size:13px;padding-top:8px;border-top:1px solid var(--line)}
+   .ns-stars{color:var(--gold);letter-spacing:1px}
++
++  .person-card{display:flex;gap:16px;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 20px}
++  .person-card img{width:72px;height:72px;border-radius:50%;object-fit:cover;flex:none;border:2px solid #fff;box-shadow:var(--shadow-xs)}
++  .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
++  .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
++  .person-card .person-name{color:var(--navy);font-weight:700;font-size:13px;margin-top:6px}
+ </style>
+ 
+   <script is:inline>
+diff --git a/src/pages/es/contact.astro b/src/pages/es/contact.astro
+index a1d858d..ab9ecbd 100644
+--- a/src/pages/es/contact.astro
++++ b/src/pages/es/contact.astro
+@@ -107,6 +107,7 @@ const offices = [
+       <div>
+         <div class="eyebrow">Formulario de contacto</div>
+         <h2 class="section-title" style="font-size:26px">Envíenos un mensaje</h2>
++        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>¿Prefieres el contacto personal?</strong><span>Estaremos encantados de ayudarte. Llama o escríbenos, respondemos rápido.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
+         <form
+           id="contactForm"
+           class="formcard"
+@@ -280,6 +281,12 @@ const offices = [
+   .next-steps li{margin:3px 0}
+   .ns-proof{color:var(--muted);font-size:13px;padding-top:8px;border-top:1px solid var(--line)}
+   .ns-stars{color:var(--gold);letter-spacing:1px}
++
++  .person-card{display:flex;gap:16px;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 20px}
++  .person-card img{width:72px;height:72px;border-radius:50%;object-fit:cover;flex:none;border:2px solid #fff;box-shadow:var(--shadow-xs)}
++  .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
++  .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
++  .person-card .person-name{color:var(--navy);font-weight:700;font-size:13px;margin-top:6px}
+ </style>
+ 
+   <script is:inline>
+diff --git a/src/pages/fr/contact.astro b/src/pages/fr/contact.astro
+index 676c266..5b39405 100644
+--- a/src/pages/fr/contact.astro
++++ b/src/pages/fr/contact.astro
+@@ -34,7 +34,8 @@ const offices = [
+         <p style="margin-top:14px;color:var(--muted)"><strong>T :</strong> <a href="tel:+31888832188">+31 (0)88 88 321 88</a><br /><strong>E :</strong> <a href="mailto:service@hrmforce.com">service@hrmforce.com</a></p>
+         <p style="color:var(--muted)">Nos conseillers sont disponibles du lundi au vendredi de 08h00 à 18h00.</p>
+       </div>
+-      <form class="formcard" action="https://formspree.io/f/JOUW_FORM_ID" method="POST">
++      <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>Vous préférez un contact personnel ?</strong><span>Nous vous aidons volontiers. Appelez ou écrivez-nous, nous répondons vite.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
++        <form class="formcard" action="https://formspree.io/f/JOUW_FORM_ID" method="POST">
+         <h2 class="section-title" style="font-size:22px;margin-top:0">Formulaire de contact</h2>
+         <div class="frow">
+           <div class="fg"><label>Prénom *</label><input type="text" name="prenom" required /></div>
+@@ -84,4 +85,10 @@ const offices = [
+   .next-steps li{margin:3px 0}
+   .ns-proof{color:var(--muted);font-size:13px;padding-top:8px;border-top:1px solid var(--line)}
+   .ns-stars{color:var(--gold);letter-spacing:1px}
++
++  .person-card{display:flex;gap:16px;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 20px}
++  .person-card img{width:72px;height:72px;border-radius:50%;object-fit:cover;flex:none;border:2px solid #fff;box-shadow:var(--shadow-xs)}
++  .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
++  .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
++  .person-card .person-name{color:var(--navy);font-weight:700;font-size:13px;margin-top:6px}
+ </style>
+diff --git a/src/pages/ro/contact.astro b/src/pages/ro/contact.astro
+index bb41da3..220a60e 100644
+--- a/src/pages/ro/contact.astro
++++ b/src/pages/ro/contact.astro
+@@ -107,6 +107,7 @@ const offices = [
+       <div>
+         <div class="eyebrow">Formular de contact</div>
+         <h2 class="section-title" style="font-size:26px">Trimiteți-ne un mesaj</h2>
++        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>Preferi contactul personal?</strong><span>Te ajutăm cu plăcere. Sună sau scrie-ne, răspundem rapid.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
+         <form
+           id="contactForm"
+           class="formcard"
+@@ -203,6 +204,12 @@ const offices = [
+   .next-steps li{margin:3px 0}
+   .ns-proof{color:var(--muted);font-size:13px;padding-top:8px;border-top:1px solid var(--line)}
+   .ns-stars{color:var(--gold);letter-spacing:1px}
++
++  .person-card{display:flex;gap:16px;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 20px}
++  .person-card img{width:72px;height:72px;border-radius:50%;object-fit:cover;flex:none;border:2px solid #fff;box-shadow:var(--shadow-xs)}
++  .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
++  .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
++  .person-card .person-name{color:var(--navy);font-weight:700;font-size:13px;margin-top:6px}
+ </style>
+ 
+   <script is:inline>
+-- 
+2.34.1
+

@@ -1,0 +1,330 @@
+From 4309b02ddf40a5db5983faa059f1874ed74a6477 Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Tue, 8 Sep 2026 17:52:34 +0200
+Subject: [PATCH] Batch 3: per-assessment portaalnamen + rapportage/niveaus
+ (Big Fifty Personality + 5 rapportages, Motivation + 17 indicatoren +
+ engagement score, Talent Scan, 360 met 4 niveaus + maatwerkmodel, Job
+ Profiler competentiegericht vraagtype), alias-callout + xblock-secties (6
+ talen)
+
+---
+ src/data/assessment-detail-extra.js       | 152 ++++++++++++++++++++++
+ src/data/assessment-examples.js           |  14 +-
+ src/pages/[lang]/assessments/[slug].astro |  18 +++
+ src/pages/assessments/[slug].astro        |  18 +++
+ src/styles/global.css                     |  11 ++
+ 5 files changed, 212 insertions(+), 1 deletion(-)
+ create mode 100644 src/data/assessment-detail-extra.js
+
+diff --git a/src/data/assessment-detail-extra.js b/src/data/assessment-detail-extra.js
+new file mode 100644
+index 0000000..a9a8b99
+--- /dev/null
++++ b/src/data/assessment-detail-extra.js
+@@ -0,0 +1,152 @@
++// Extra detail-content per assessment: portaalnaam (alias) en aanvullende
++// blokken zoals rapportagemogelijkheden, beheersingsniveaus en maatwerkmodel.
++// Alleen feitelijke, door hrmforce aangeleverde informatie.
++
++export const detailExtra = {
++  "big-five": {
++    alias: { nl: "Big Fifty Personality", en: "Big Fifty Personality", de: "Big Fifty Personality", fr: "Big Fifty Personality", es: "Big Fifty Personality", ro: "Big Fifty Personality" },
++    aliasNote: {
++      nl: "Bij hrmforce heet deze persoonlijkheidstest de <strong>Big Fifty Personality</strong>.",
++      en: "At hrmforce this personality test is called the <strong>Big Fifty Personality</strong>.",
++      de: "Bei hrmforce heißt dieser Persönlichkeitstest <strong>Big Fifty Personality</strong>.",
++      fr: "Chez hrmforce, ce test de personnalité s'appelle la <strong>Big Fifty Personality</strong>.",
++      es: "En hrmforce esta prueba de personalidad se llama <strong>Big Fifty Personality</strong>.",
++      ro: "La hrmforce acest test de personalitate se numește <strong>Big Fifty Personality</strong>.",
++    },
++    blocks: [
++      {
++        type: "list",
++        title: { nl: "Rapportagemogelijkheden", en: "Reporting options", de: "Berichtsoptionen", fr: "Options de rapport", es: "Opciones de informe", ro: "Opțiuni de raportare" },
++        lead: {
++          nl: "Vanuit één afname kies je de rapportage die past bij je doel:",
++          en: "From a single assessment you choose the report that fits your goal:",
++          de: "Aus einer einzigen Durchführung wählen Sie den Bericht, der zu Ihrem Ziel passt:",
++          fr: "À partir d'une seule passation, vous choisissez le rapport adapté à votre objectif :",
++          es: "A partir de una sola aplicación eliges el informe que se ajusta a tu objetivo:",
++          ro: "Dintr-o singură aplicare alegi raportul potrivit obiectivului tău:",
++        },
++        items: {
++          nl: ["Signalenrapport: snelle signalen en aandachtspunten", "Persoonlijk rapport: uitgebreid beeld van de persoonlijkheid", "Competentierapport: vertaling naar werkgerelateerde competenties", "Verbindend leiderschap: inzicht in leiderschaps- en samenwerkingsstijl", "Teamflow: hoe iemand bijdraagt aan de dynamiek van een team"],
++          en: ["Signals report: quick signals and points of attention", "Personal report: an extensive picture of the personality", "Competency report: translation into work-related competencies", "Connective leadership: insight into leadership and collaboration style", "Team flow: how someone contributes to team dynamics"],
++          de: ["Signalbericht: schnelle Signale und Aufmerksamkeitspunkte", "Persönlicher Bericht: umfassendes Bild der Persönlichkeit", "Kompetenzbericht: Übersetzung in arbeitsbezogene Kompetenzen", "Verbindende Führung: Einblick in Führungs- und Kooperationsstil", "Teamflow: wie jemand zur Teamdynamik beiträgt"],
++          fr: ["Rapport de signaux : signaux rapides et points d'attention", "Rapport personnel : image complète de la personnalité", "Rapport de compétences : traduction en compétences professionnelles", "Leadership fédérateur : aperçu du style de leadership et de collaboration", "Team flow : comment une personne contribue à la dynamique d'équipe"],
++          es: ["Informe de señales: señales rápidas y puntos de atención", "Informe personal: una imagen amplia de la personalidad", "Informe de competencias: traducción a competencias laborales", "Liderazgo conector: perspectiva del estilo de liderazgo y colaboración", "Team flow: cómo contribuye alguien a la dinámica del equipo"],
++          ro: ["Raport de semnale: semnale rapide și puncte de atenție", "Raport personal: o imagine amplă a personalității", "Raport de competențe: traducere în competențe legate de muncă", "Leadership conectiv: perspectivă asupra stilului de leadership și colaborare", "Team flow: cum contribuie cineva la dinamica echipei"],
++        },
++      },
++    ],
++  },
++
++  "drijfverentest": {
++    alias: { nl: "Motivation", en: "Motivation", de: "Motivation", fr: "Motivation", es: "Motivation", ro: "Motivation" },
++    aliasNote: {
++      nl: "Deze test staat in het hrmforce-portaal bekend als <strong>Motivation</strong>.",
++      en: "In the hrmforce portal this test is known as <strong>Motivation</strong>.",
++      de: "Im hrmforce-Portal ist dieser Test als <strong>Motivation</strong> bekannt.",
++      fr: "Dans le portail hrmforce, ce test est connu sous le nom de <strong>Motivation</strong>.",
++      es: "En el portal de hrmforce esta prueba se conoce como <strong>Motivation</strong>.",
++      ro: "În portalul hrmforce acest test este cunoscut ca <strong>Motivation</strong>.",
++    },
++    blocks: [
++      {
++        type: "list",
++        title: { nl: "Wat de Motivation-rapportage laat zien", en: "What the Motivation report shows", de: "Was der Motivation-Bericht zeigt", fr: "Ce que montre le rapport Motivation", es: "Qué muestra el informe Motivation", ro: "Ce arată raportul Motivation" },
++        lead: {
++          nl: "De rapportage brengt de drijfveren in kaart via 17 onderliggende indicatoren en vertaalt de vergelijking tussen de ideale en de huidige werksituatie naar een engagement score die laat zien hoe betrokken iemand is. De 17 indicatoren zijn:",
++          en: "The report maps the drives through 17 underlying indicators and translates the comparison between the ideal and current work situation into an engagement score that shows how engaged someone is. The 17 indicators are:",
++          de: "Der Bericht erfasst die Antriebe über 17 zugrunde liegende Indikatoren und übersetzt den Vergleich zwischen idealer und aktueller Arbeitssituation in einen Engagement-Score, der zeigt, wie engagiert jemand ist. Die 17 Indikatoren sind:",
++          fr: "Le rapport cartographie les motivations via 17 indicateurs sous-jacents et traduit la comparaison entre la situation de travail idéale et actuelle en un score d'engagement qui montre le niveau d'implication. Les 17 indicateurs sont :",
++          es: "El informe mapea las motivaciones mediante 17 indicadores subyacentes y traduce la comparación entre la situación laboral ideal y la actual en una puntuación de engagement que muestra cuán comprometida está una persona. Los 17 indicadores son:",
++          ro: "Raportul cartografiază motivațiile prin 17 indicatori subiacenți și traduce comparația dintre situația de muncă ideală și cea actuală într-un scor de engagement care arată cât de implicat este cineva. Cei 17 indicatori sunt:",
++        },
++        items: {
++          nl: ["Afwisseling", "Balans werk-privé", "Beloning", "Commercie", "Competitie", "Erkenning", "Positieve faalangst", "Idealen", "Onafhankelijkheid", "Ontwikkeling", "Promotie", "Sociale interactie", "Status", "Uitdaging", "Verantwoordelijkheid", "Werkdruk", "Werkomgeving"],
++          en: ["Variety", "Work-life balance", "Reward", "Commerce", "Competition", "Recognition", "Positive fear of failure", "Ideals", "Independence", "Development", "Promotion", "Social interaction", "Status", "Challenge", "Responsibility", "Work pressure", "Work environment"],
++          de: ["Abwechslung", "Work-Life-Balance", "Belohnung", "Kommerz", "Wettbewerb", "Anerkennung", "Positive Versagensangst", "Ideale", "Unabhängigkeit", "Entwicklung", "Aufstieg", "Soziale Interaktion", "Status", "Herausforderung", "Verantwortung", "Arbeitsdruck", "Arbeitsumfeld"],
++          fr: ["Variété", "Équilibre vie pro-perso", "Rémunération", "Commerce", "Compétition", "Reconnaissance", "Peur positive de l'échec", "Idéaux", "Indépendance", "Développement", "Promotion", "Interaction sociale", "Statut", "Défi", "Responsabilité", "Pression au travail", "Environnement de travail"],
++          es: ["Variedad", "Equilibrio vida-trabajo", "Recompensa", "Comercio", "Competición", "Reconocimiento", "Miedo positivo al fracaso", "Ideales", "Independencia", "Desarrollo", "Promoción", "Interacción social", "Estatus", "Reto", "Responsabilidad", "Presión laboral", "Entorno laboral"],
++          ro: ["Varietate", "Echilibru muncă-viață", "Recompensă", "Comerț", "Competiție", "Recunoaștere", "Teama pozitivă de eșec", "Idealuri", "Independență", "Dezvoltare", "Promovare", "Interacțiune socială", "Statut", "Provocare", "Responsabilitate", "Presiunea muncii", "Mediul de lucru"],
++        },
++      },
++    ],
++  },
++
++  "ontwikkelassessment": {
++    alias: { nl: "Talent Scan", en: "Talent Scan", de: "Talent Scan", fr: "Talent Scan", es: "Talent Scan", ro: "Talent Scan" },
++    aliasNote: {
++      nl: "Dit ontwikkelassessment heet in het hrmforce-portaal de <strong>Talent Scan</strong>.",
++      en: "In the hrmforce portal this development assessment is called the <strong>Talent Scan</strong>.",
++      de: "Im hrmforce-Portal heißt dieses Entwicklungs-Assessment <strong>Talent Scan</strong>.",
++      fr: "Dans le portail hrmforce, cet assessment de développement s'appelle le <strong>Talent Scan</strong>.",
++      es: "En el portal de hrmforce esta evaluación de desarrollo se llama <strong>Talent Scan</strong>.",
++      ro: "În portalul hrmforce această evaluare de dezvoltare se numește <strong>Talent Scan</strong>.",
++    },
++    blocks: [],
++  },
++
++  "360-graden-feedback": {
++    blocks: [
++      {
++        type: "list",
++        title: { nl: "Alle competenties, meetbaar op 4 niveaus", en: "All competencies, measurable at 4 levels", de: "Alle Kompetenzen, messbar auf 4 Niveaus", fr: "Toutes les compétences, mesurables sur 4 niveaux", es: "Todas las competencias, medibles en 4 niveles", ro: "Toate competențele, măsurabile pe 4 niveluri" },
++        lead: {
++          nl: "In de 360 graden feedback beoordeel je elke competentie op vier beheersingsniveaus, zodat je gericht kunt ontwikkelen:",
++          en: "In the 360-degree feedback you assess every competency at four proficiency levels, so you can develop in a targeted way:",
++          de: "Beim 360-Grad-Feedback bewerten Sie jede Kompetenz auf vier Beherrschungsniveaus, um gezielt zu entwickeln:",
++          fr: "Dans le feedback 360 degrés, vous évaluez chaque compétence sur quatre niveaux de maîtrise, pour un développement ciblé :",
++          es: "En el feedback de 360 grados evalúas cada competencia en cuatro niveles de dominio, para desarrollar de forma dirigida:",
++          ro: "În feedback-ul la 360 de grade evaluezi fiecare competență pe patru niveluri de stăpânire, pentru o dezvoltare țintită:",
++        },
++        items: {
++          nl: ["Beginner: eerste stappen, met begeleiding", "Operationeel: zelfstandig in de dagelijkse praktijk", "Tactisch: vertaalt naar plannen en verbetert processen", "Strategisch: stuurt op langetermijnkoers en visie"],
++          en: ["Beginner: first steps, with guidance", "Operational: independent in daily practice", "Tactical: translates into plans and improves processes", "Strategic: steers on long-term direction and vision"],
++          de: ["Anfänger: erste Schritte, mit Begleitung", "Operativ: selbstständig in der täglichen Praxis", "Taktisch: übersetzt in Pläne und verbessert Prozesse", "Strategisch: steuert langfristige Ausrichtung und Vision"],
++          fr: ["Débutant : premiers pas, avec accompagnement", "Opérationnel : autonome dans la pratique quotidienne", "Tactique : traduit en plans et améliore les processus", "Stratégique : oriente la direction et la vision à long terme"],
++          es: ["Principiante: primeros pasos, con acompañamiento", "Operativo: autónomo en la práctica diaria", "Táctico: traduce en planes y mejora procesos", "Estratégico: dirige el rumbo y la visión a largo plazo"],
++          ro: ["Începător: primii pași, cu îndrumare", "Operațional: autonom în practica zilnică", "Tactic: transpune în planuri și îmbunătățește procese", "Strategic: orientează direcția și viziunea pe termen lung"],
++        },
++      },
++      {
++        type: "text",
++        title: { nl: "Ook een maatwerkmodel", en: "A custom model too", de: "Auch ein maßgeschneidertes Modell", fr: "Aussi un modèle sur mesure", es: "También un modelo a medida", ro: "Și un model personalizat" },
++        text: {
++          nl: "Naast het standaard competentiemodel kun je een eigen, op je organisatie afgestemd competentiemodel laten inrichten, met je eigen competenties en niveaus.",
++          en: "Besides the standard competency model, you can have a custom model set up that fits your organisation, with your own competencies and levels.",
++          de: "Neben dem Standard-Kompetenzmodell können Sie ein eigenes, auf Ihre Organisation abgestimmtes Modell einrichten lassen, mit eigenen Kompetenzen und Niveaus.",
++          fr: "Outre le modèle de compétences standard, vous pouvez faire configurer un modèle sur mesure adapté à votre organisation, avec vos propres compétences et niveaux.",
++          es: "Además del modelo de competencias estándar, puedes configurar un modelo a medida que se ajuste a tu organización, con tus propias competencias y niveles.",
++          ro: "Pe lângă modelul standard de competențe, poți configura un model personalizat, adaptat organizației tale, cu propriile competențe și niveluri.",
++        },
++      },
++    ],
++  },
++
++  "job-profiler": {
++    aliasNote: {
++      nl: "De <strong>Job Profiler</strong> is een competentiegerichte profiler van functies: je legt per competentie vast hoe belangrijk die is voor de functie. Het kijkje in de vragenlijst laat dat zien.",
++      en: "The <strong>Job Profiler</strong> is a competency-based profiler of roles: for each competency you set how important it is for the role. The questionnaire preview reflects this.",
++      de: "Der <strong>Job Profiler</strong> ist ein kompetenzorientierter Profiler von Stellen: pro Kompetenz legen Sie fest, wie wichtig sie für die Stelle ist. Die Fragebogen-Vorschau zeigt dies.",
++      fr: "Le <strong>Job Profiler</strong> est un profileur de postes axé sur les compétences : pour chaque compétence, vous définissez son importance pour le poste. L'aperçu du questionnaire le reflète.",
++      es: "El <strong>Job Profiler</strong> es un perfilador de puestos basado en competencias: para cada competencia defines su importancia para el puesto. La vista previa del cuestionario lo refleja.",
++      ro: "<strong>Job Profiler</strong> este un profiler al posturilor bazat pe competențe: pentru fiecare competență stabilești cât de importantă este pentru post. Previzualizarea chestionarului reflectă acest lucru.",
++    },
++    blocks: [],
++  },
++};
++
++export function extraFor(slug, lang) {
++  const e = detailExtra[slug];
++  if (!e) return null;
++  const L = (o) => (o ? (o[lang] || o.nl) : "");
++  return {
++    alias: e.alias ? L(e.alias) : "",
++    aliasNote: e.aliasNote ? L(e.aliasNote) : "",
++    blocks: (e.blocks || []).map((b) => ({
++      type: b.type,
++      title: L(b.title),
++      lead: b.lead ? L(b.lead) : "",
++      text: b.text ? L(b.text) : "",
++      items: b.items ? (b.items[lang] || b.items.nl) : [],
++    })),
++  };
++}
+diff --git a/src/data/assessment-examples.js b/src/data/assessment-examples.js
+index 781360d..be85464 100644
+--- a/src/data/assessment-examples.js
++++ b/src/data/assessment-examples.js
+@@ -26,7 +26,7 @@ export const slugType = {
+   "mentale-veerkracht-scan": "wellbeing", "duurzame-inzetbaarheid-scan": "wellbeing",
+   "levensloop-scan": "wellbeing", "coaching-screener-scan": "wellbeing",
+   "pulse-survey": "wellbeing", "tevredenheidsonderzoek-medewerkers": "wellbeing", "exit-assessment": "wellbeing",
+-  "verkoopvaardigheden": "skills", "lean-scan": "skills", "job-profiler": "skills",
++  "verkoopvaardigheden": "skills", "lean-scan": "skills", "job-profiler": "jobprofile",
+ };
+ 
+ const LIKERT = { nl: "Helemaal oneens — Oneens — Neutraal — Eens — Helemaal eens", en: "Strongly disagree — Disagree — Neutral — Agree — Strongly agree", de: "Stimme gar nicht zu — Neutral — Stimme voll zu", fr: "Pas du tout d'accord — Neutre — Tout à fait d'accord", es: "Muy en desacuerdo — Neutral — Muy de acuerdo", ro: "Total dezacord — Neutru — Total de acord" };
+@@ -149,6 +149,18 @@ export const EXAMPLES = {
+       ro: ["Un client ezită din cauza prețului. Ce faci mai întâi?", "Un proces este ineficient. Care este primul tău pas?", "Primești instrucțiuni contradictorii. Cum procedezi?"],
+     },
+   },
++  jobprofile: {
++    scale: { nl: "Niet nodig — Essentieel voor de functie", en: "Not needed — Essential for the role", de: "Nicht nötig — Unverzichtbar für die Stelle", fr: "Pas nécessaire — Essentiel pour le poste", es: "No necesario — Esencial para el puesto", ro: "Nu este necesar — Esențial pentru post" },
++    answer: "scale",
++    items: {
++      nl: ["Hoe belangrijk is 'analytisch vermogen' voor deze functie?", "Hoe belangrijk is 'klantgerichtheid' voor deze functie?", "Hoe belangrijk is 'plannen en organiseren' voor deze functie?"],
++      en: ["How important is 'analytical ability' for this role?", "How important is 'customer focus' for this role?", "How important is 'planning and organising' for this role?"],
++      de: ["Wie wichtig ist 'analytisches Denken' für diese Stelle?", "Wie wichtig ist 'Kundenorientierung' für diese Stelle?", "Wie wichtig ist 'Planen und Organisieren' für diese Stelle?"],
++      fr: ["Quelle importance a 'la capacité d'analyse' pour ce poste ?", "Quelle importance a 'l'orientation client' pour ce poste ?", "Quelle importance a 'la planification et l'organisation' pour ce poste ?"],
++      es: ["¿Qué importancia tiene 'la capacidad analítica' para este puesto?", "¿Qué importancia tiene 'la orientación al cliente' para este puesto?", "¿Qué importancia tiene 'planificar y organizar' para este puesto?"],
++      ro: ["Cât de importantă este 'capacitatea analitică' pentru acest post?", "Cât de importantă este 'orientarea către client' pentru acest post?", "Cât de importantă este 'planificarea și organizarea' pentru acest post?"],
++    },
++  },
+ };
+ 
+ // Handige helper: geeft {title,intro,scaleLabel,tag,scale,items} voor een slug+taal.
+diff --git a/src/pages/[lang]/assessments/[slug].astro b/src/pages/[lang]/assessments/[slug].astro
+index 314dd98..c47dbf4 100644
+--- a/src/pages/[lang]/assessments/[slug].astro
++++ b/src/pages/[lang]/assessments/[slug].astro
+@@ -8,6 +8,7 @@ import { shopInfo } from "../../../data/assessment-shop.js";
+ import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../../data/site-config.js";
+ import { localizePath } from "../../../i18n/utils.js";
+ import { examplesFor } from "../../../data/assessment-examples.js";
++import { extraFor } from "../../../data/assessment-detail-extra.js";
+ import { generalFaq } from "../../../data/general-faq.js";
+ import QMock from "../../../components/QMock.astro";
+ import { oefentests } from "../../../data/oefentests.js";
+@@ -80,6 +81,7 @@ const related = (a.related || [])
+   });
+ 
+ const ex = examplesFor(a.slug, lang);
++const extra = extraFor(a.slug, lang);
+ const _specQ = new Set((a.faq || []).map((f) => (f.q || "").trim().toLowerCase()));
+ const allFaq = [...(a.faq || []), ...generalFaq(lang).filter((g) => !_specQ.has((g.q || "").trim().toLowerCase()))];
+ const faqTitle = t.faqTitle.replace("{t}", a.title);
+@@ -187,6 +189,7 @@ const _offerLd = (shop && shop.price)
+       <div class="explain">
+         <div>
+           {a.intro.map((p) => <p>{p}</p>)}
++          {extra && extra.aliasNote && (<p class="alias-note" set:html={extra.aliasNote}></p>)}
+           {a.traits.length > 0 && <ul class="traits">{a.traits.map((tr) => <li>{tr}</li>)}</ul>}
+           {a.body.map((p) => <p>{p}</p>)}
+           {(() => {
+@@ -216,6 +219,21 @@ const _offerLd = (shop && shop.price)
+     </div>
+   </section>
+ 
++  {extra && extra.blocks && extra.blocks.length > 0 && (
++    <section class="bg-soft"><div class="wrap" style="max-width:880px">
++      {extra.blocks.map((b) => (
++        <div class="xblock">
++          <h3 class="xblock-h">{b.title}</h3>
++          {b.lead && <p class="xblock-lead">{b.lead}</p>}
++          {b.type === "list" && b.items.length > 0 && (
++            <ul class="xblock-list">{b.items.map((it) => <li>{it}</li>)}</ul>
++          )}
++          {b.type === "text" && b.text && <p class="xblock-text">{b.text}</p>}
++        </div>
++      ))}
++    </div></section>
++  )}
++
+   {a.quote.text && (
+     <section class="quote">
+       <div class="wrap">
+diff --git a/src/pages/assessments/[slug].astro b/src/pages/assessments/[slug].astro
+index b5a4f1a..9ad20bd 100644
+--- a/src/pages/assessments/[slug].astro
++++ b/src/pages/assessments/[slug].astro
+@@ -6,6 +6,7 @@ import { shopInfo } from "../../data/assessment-shop.js";
+ import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../data/site-config.js";
+ import { getLangFromUrl, localizePath } from "../../i18n/utils.js";
+ import { examplesFor } from "../../data/assessment-examples.js";
++import { extraFor } from "../../data/assessment-detail-extra.js";
+ import { generalFaq } from "../../data/general-faq.js";
+ import { posts as kcPosts } from "../../data/blog.js";
+ import validPaths from "../../data/valid-paths.js";
+@@ -41,6 +42,7 @@ if (!a) {
+ }
+ const assessHref = localizePath("/online-assessments/", lang);
+ const ex = examplesFor(Astro.params.slug, lang);
++const extra = extraFor(Astro.params.slug, lang);
+ const _specQ = new Set((a.faq || []).map((f) => (f.q || "").trim().toLowerCase()));
+ const allFaq = [...(a.faq || []), ...generalFaq(lang).filter((g) => !_specQ.has((g.q || "").trim().toLowerCase()))];
+ 
+@@ -158,6 +160,7 @@ const _offerLd = (shop && shop.price)
+       <div class="explain">
+         <div>
+           {a.intro.map((p) => <p>{p}</p>)}
++          {extra && extra.aliasNote && (<p class="alias-note" set:html={extra.aliasNote}></p>)}
+           {a.traits.length > 0 && <ul class="traits">{a.traits.map((t) => <li>{t}</li>)}</ul>}
+           {a.body.map((p) => <p>{p}</p>)}
+           <p class="assess-usage">{[a.traits && a.traits.length ? "De test meet " + a.traits.join(", ") + ". " : "", a.phase ? "Je zet deze test in binnen de HR-cyclus: " + a.phase + ". " : "", a.feedback ? a.feedback + " " : "", a.time ? "Invullen duurt " + a.time + (a.form ? " (" + a.form + ")" : "") + " en je ontvangt de uitkomsten in je inbox, zonder pdf om te downloaden." : ""].join("")}</p>
+@@ -171,6 +174,21 @@ const _offerLd = (shop && shop.price)
+     </div>
+   </section>
+ 
++  {extra && extra.blocks && extra.blocks.length > 0 && (
++    <section class="bg-soft"><div class="wrap" style="max-width:880px">
++      {extra.blocks.map((b) => (
++        <div class="xblock">
++          <h3 class="xblock-h">{b.title}</h3>
++          {b.lead && <p class="xblock-lead">{b.lead}</p>}
++          {b.type === "list" && b.items.length > 0 && (
++            <ul class="xblock-list">{b.items.map((it) => <li>{it}</li>)}</ul>
++          )}
++          {b.type === "text" && b.text && <p class="xblock-text">{b.text}</p>}
++        </div>
++      ))}
++    </div></section>
++  )}
++
+   {a.quote.text && (
+     <section class="quote">
+       <div class="wrap">
+diff --git a/src/styles/global.css b/src/styles/global.css
+index 5fc5680..e063d4b 100644
+--- a/src/styles/global.css
++++ b/src/styles/global.css
+@@ -453,3 +453,14 @@ html{overflow-x:hidden;}
+ .mv-bar{height:10px;border-radius:6px;background:rgba(255,255,255,.14);position:relative;overflow:hidden}
+ .mv-bar::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--w);background:linear-gradient(90deg,var(--blue),var(--gold));border-radius:6px}
+ @media(max-width:820px){.match-sec{grid-template-columns:1fr;gap:26px}}
++/* Assessment-detail: alias-callout + rapportage/niveau-blokken (Batch 3) */
++.alias-note{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:12px 16px;margin:4px 0 16px;color:var(--navy);font-size:15px;box-shadow:var(--shadow-xs)}
++.xblock{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 28px;box-shadow:var(--shadow-xs)}
++.xblock + .xblock{margin-top:20px}
++.xblock-h{color:var(--navy);font-size:22px;margin:0 0 8px}
++.xblock-lead{color:var(--text);font-size:16px;margin:0 0 16px}
++.xblock-text{color:var(--text);font-size:16px;margin:0}
++.xblock-list{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:10px 24px}
++.xblock-list li{position:relative;padding-left:26px;color:var(--navy);font-size:15px;font-weight:600;line-height:1.45}
++.xblock-list li::before{content:"";position:absolute;left:0;top:7px;width:14px;height:14px;border-radius:50%;background:var(--gold)}
++@media(max-width:640px){.xblock-list{grid-template-columns:1fr}}
+-- 
+2.34.1
+

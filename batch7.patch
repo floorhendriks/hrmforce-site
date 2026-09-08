@@ -1,0 +1,747 @@
+From 5984f6119a363ecaaca14f8a6a32dccccc7b5f9e Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Tue, 8 Sep 2026 20:13:42 +0200
+Subject: [PATCH] Batch 7 (6 talen): contact kaart toegevoegd op alle
+ taalversies (fix FR) + nettere head-office weergave; partners doorlink naar
+ integraties (echte koppelingen); Over ons USP-blok (onafhankelijk/geen
+ private equity, Nederlands bedrijf, eigen R&D, eigen IT in eigen beheer,
+ compleet aanbod, scherp geprijsd); FAQ uitgebreid naar 26 vragen met zoeken +
+ tag cloud + werkende accordion + categorie Bestellen/prijzen/portal;
+ voorbereiding doorzoekbaar (bereid je voor per test met oefenlinks)
+
+---
+ src/components/Faq.astro           | 119 +++++++++++++++++++++++------
+ src/components/Voorbereiding.astro |  53 +++++++++++++
+ src/data/faq-content.js            |  78 +++++++++++++++++++
+ src/pages/[...path].astro          |  28 +++++++
+ src/pages/contact.astro            |  38 ++++-----
+ src/pages/de/contact.astro         |   5 ++
+ src/pages/de/over-ons.astro        |  10 +++
+ src/pages/en/contact.astro         |   5 ++
+ src/pages/en/over-ons.astro        |  10 +++
+ src/pages/es/contact.astro         |   5 ++
+ src/pages/es/over-ons.astro        |  10 +++
+ src/pages/fr/contact.astro         |   5 ++
+ src/pages/fr/over-ons.astro        |  10 +++
+ src/pages/over-ons.astro           |  10 +++
+ src/pages/ro/contact.astro         |   5 ++
+ src/pages/ro/over-ons.astro        |  10 +++
+ src/styles/global.css              |   7 ++
+ 17 files changed, 362 insertions(+), 46 deletions(-)
+
+diff --git a/src/components/Faq.astro b/src/components/Faq.astro
+index c9538f2..6139251 100644
+--- a/src/components/Faq.astro
++++ b/src/components/Faq.astro
+@@ -3,6 +3,23 @@ import { localizePath, sanitizeBodyLinks } from "../i18n/utils.js";
+ import validPaths from "../data/valid-paths.js";
+ const { t, lang } = Astro.props;
+ const contactHref = localizePath("/contact/", lang);
++
++const UI = {
++  nl: { search: "Zoek een vraag...", all: "Alle", count: "vragen", none: "Geen vragen gevonden. Probeer een andere zoekterm of tag.", themes: "Thema's" },
++  en: { search: "Search a question...", all: "All", count: "questions", none: "No questions found. Try another term or tag.", themes: "Themes" },
++  de: { search: "Frage suchen...", all: "Alle", count: "Fragen", none: "Keine Fragen gefunden. Versuchen Sie einen anderen Begriff oder Tag.", themes: "Themen" },
++  fr: { search: "Rechercher une question...", all: "Toutes", count: "questions", none: "Aucune question trouvée. Essayez un autre terme ou tag.", themes: "Thèmes" },
++  es: { search: "Busca una pregunta...", all: "Todas", count: "preguntas", none: "No se encontraron preguntas. Prueba otro término o etiqueta.", themes: "Temas" },
++  ro: { search: "Caută o întrebare...", all: "Toate", count: "întrebări", none: "Nicio întrebare găsită. Încearcă alt termen sau etichetă.", themes: "Teme" },
++};
++const ui = UI[lang] || UI.nl;
++
++// Alle items platslaan met hun categorie als tag.
++const tags = t.categories.map((c, i) => ({ key: "c" + i, label: c.title }));
++const items = [];
++t.categories.forEach((c, i) => {
++  c.items.forEach((f) => items.push({ tag: "c" + i, tagLabel: c.title, q: f.q, a: f.a }));
++});
+ ---
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={localizePath("/support/", lang)}>{t.crumb.support}</a> › <span>{t.crumb.faq}</span></div></div>
+ 
+@@ -12,25 +29,30 @@ const contactHref = localizePath("/contact/", lang);
+   <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px" set:html={sanitizeBodyLinks(t.hero.intro, lang, validPaths)}></p>
+ </div></section>
+ 
+-{t.categories.map((cat) => (
+-  <section class="faq-cat"><div class="wrap">
+-    <div class="cat-head">
+-      <span class="cat-num">{cat.num}</span>
+-      <div>
+-        <h2 class="section-title" style="margin-bottom:6px">{cat.title}</h2>
+-        <p class="muted">{cat.intro}</p>
+-      </div>
++<section><div class="wrap" style="display:block">
++  <div class="faq-controls">
++    <input type="search" id="faqSearch" class="faq-search" placeholder={ui.search} aria-label={ui.search} />
++    <div class="faq-tags" id="faqTags">
++      <button type="button" class="faq-tag is-active" data-tag="">{ui.all}</button>
++      {tags.map((tg) => <button type="button" class="faq-tag" data-tag={tg.key}>{tg.label}</button>)}
+     </div>
+-    <div class="faq-list">
+-      {cat.items.map((f) => (
+-        <div class="faq-item">
+-          <div class="faq-q">{f.q}<span class="pl">+</span></div>
+-          <div class="faq-a" set:html={sanitizeBodyLinks(f.a, lang, validPaths)}></div>
+-        </div>
+-      ))}
+-    </div>
+-  </div></section>
+-))}
++    <p class="faq-count"><span id="faqCount">{items.length}</span> {ui.count}</p>
++  </div>
++
++  <div class="faq-list" id="faqList">
++    {items.map((f) => (
++      <div class="faq-item" data-tag={f.tag} data-q={f.q.toLowerCase()}>
++        <button type="button" class="faq-q" aria-expanded="false">
++          <span>{f.q}</span>
++          <span class="tagpill">{f.tagLabel}</span>
++          <span class="pl">+</span>
++        </button>
++        <div class="faq-a" set:html={sanitizeBodyLinks(f.a, lang, validPaths)}></div>
++      </div>
++    ))}
++  </div>
++  <p class="faq-none" id="faqNone" hidden>{ui.none}</p>
++</div></section>
+ 
+ <section class="cta"><div class="wrap" style="padding:56px 0;text-align:center">
+   <h2 style="color:#fff">{t.cta.title}</h2>
+@@ -40,14 +62,65 @@ const contactHref = localizePath("/contact/", lang);
+     <a href={contactHref} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">{t.cta.btnContact}</a>
+   </div>
+ </div></section>
++
+ <style>
+-  .faq-cat{padding-top:34px}
+-  .faq-cat:nth-child(odd){background:var(--bg-soft,#f6f9fc)}
+-  .cat-head{display:flex;gap:18px;align-items:flex-start;margin-bottom:8px}
+-  .cat-num{font-size:2rem;font-weight:800;color:var(--gold);line-height:1;flex:0 0 auto}
+-  .faq-list{max-width:860px;margin-top:20px}
++  .faq-controls{margin-bottom:22px}
++  .faq-search{width:100%;max-width:480px;padding:12px 15px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:15px;margin-bottom:14px}
++  .faq-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
++  .faq-tag{border:1px solid var(--line);background:#fff;color:var(--navy);font:inherit;font-size:13px;font-weight:700;padding:7px 14px;border-radius:999px;cursor:pointer;transition:.15s}
++  .faq-tag:hover{border-color:var(--navy)}
++  .faq-tag.is-active{background:var(--navy);color:#fff;border-color:var(--navy)}
++  .faq-count{color:var(--muted);font-size:14px;font-weight:700;margin:0}
++  .faq-list{max-width:900px}
++  .faq-item{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:#fff;overflow:hidden}
++  .faq-q{width:100%;display:flex;align-items:center;gap:12px;text-align:left;background:none;border:0;padding:16px 18px;font:inherit;font-size:16px;font-weight:700;color:var(--navy);cursor:pointer}
++  .faq-q > span:first-child{flex:1}
++  .tagpill{flex:none;font-size:11px;font-weight:700;color:var(--blue);background:#eaf1fb;padding:3px 9px;border-radius:999px;text-transform:uppercase;letter-spacing:.4px}
++  .faq-q .pl{flex:none;font-size:22px;color:var(--gold);line-height:1;transition:transform .2s}
++  .faq-item.open .faq-q .pl{transform:rotate(45deg)}
++  .faq-a{max-height:0;overflow:hidden;padding:0 18px;transition:max-height .25s ease,padding .25s ease;color:var(--text)}
++  .faq-item.open .faq-a{max-height:1200px;padding:0 18px 18px}
+   .faq-a :global(p){margin:0 0 12px}
+   .faq-a :global(ul),.faq-a :global(ol){margin:0 0 12px 20px}
+   .faq-a :global(li){margin:5px 0}
+   .faq-a :global(a){color:var(--blue)}
++  .faq-none{color:var(--muted);font-size:16px;text-align:center;padding:40px 0}
++  @media(max-width:640px){.tagpill{display:none}}
+ </style>
++
++<script>
++  (function () {
++    const list = document.getElementById("faqList");
++    if (!list) return;
++    const items = Array.from(list.querySelectorAll(".faq-item"));
++    const search = document.getElementById("faqSearch");
++    const tags = Array.from(document.querySelectorAll(".faq-tag"));
++    const count = document.getElementById("faqCount");
++    const none = document.getElementById("faqNone");
++    let active = "";
++    function apply() {
++      const q = (search.value || "").trim().toLowerCase();
++      let n = 0;
++      items.forEach((it) => {
++        const ok = (!active || it.dataset.tag === active) && (!q || (it.dataset.q || "").includes(q));
++        it.style.display = ok ? "" : "none";
++        if (ok) n++;
++      });
++      count.textContent = n;
++      none.hidden = n > 0;
++    }
++    items.forEach((it) => {
++      const btn = it.querySelector(".faq-q");
++      btn.addEventListener("click", () => {
++        const open = it.classList.toggle("open");
++        btn.setAttribute("aria-expanded", open ? "true" : "false");
++      });
++    });
++    tags.forEach((tg) => tg.addEventListener("click", () => {
++      active = tg.dataset.tag;
++      tags.forEach((x) => x.classList.toggle("is-active", x === tg));
++      apply();
++    }));
++    search.addEventListener("input", apply);
++  })();
++</script>
+diff --git a/src/components/Voorbereiding.astro b/src/components/Voorbereiding.astro
+index 02fbbce..d63fda9 100644
+--- a/src/components/Voorbereiding.astro
++++ b/src/components/Voorbereiding.astro
+@@ -1,8 +1,20 @@
+ ---
+ import { localizePath, sanitizeBodyLinks } from "../i18n/utils.js";
+ import validPaths from "../data/valid-paths.js";
++import { oefentests } from "../data/oefentests.js";
+ const { t, lang } = Astro.props;
+ const contactHref = localizePath("/contact/", lang);
++const PREP_UI = {
++  nl: { title: "Bereid je voor per test", intro: "Zoek je test en oefen met echte voorbeeldvragen. Zo weet je precies wat je kunt verwachten.", search: "Zoek je test...", none: "Geen test gevonden.", practice: "Oefen deze test" },
++  en: { title: "Prepare per test", intro: "Find your test and practise with real example questions, so you know exactly what to expect.", search: "Search your test...", none: "No test found.", practice: "Practise this test" },
++  de: { title: "Vorbereitung je Test", intro: "Finden Sie Ihren Test und üben Sie mit echten Beispielfragen, damit Sie genau wissen, was Sie erwartet.", search: "Test suchen...", none: "Kein Test gefunden.", practice: "Diesen Test üben" },
++  fr: { title: "Préparez-vous par test", intro: "Trouvez votre test et entraînez-vous avec de vrais exemples de questions, pour savoir exactement à quoi vous attendre.", search: "Recherchez votre test...", none: "Aucun test trouvé.", practice: "S'entraîner à ce test" },
++  es: { title: "Prepárate por test", intro: "Encuentra tu test y practica con preguntas de ejemplo reales, para saber exactamente qué esperar.", search: "Busca tu test...", none: "No se encontró el test.", practice: "Practica este test" },
++  ro: { title: "Pregătește-te pe test", intro: "Găsește-ți testul și exersează cu întrebări exemplu reale, ca să știi exact la ce să te aștepți.", search: "Caută-ți testul...", none: "Niciun test găsit.", practice: "Exersează acest test" },
++};
++const prep = PREP_UI[lang] || PREP_UI.nl;
++const prepTests = oefentests.map((o) => ({ slug: o.slug, name: (o.i18n[lang] || o.i18n.nl).name })).sort((a, b) => a.name.localeCompare(b.name));
++const oefenBase = lang === "nl" ? "/oefenen/" : localizePath("/oefenen/", lang);
+ ---
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+ <section class="ahero"><div class="wrap" style="display:block">
+@@ -12,6 +24,22 @@ const contactHref = localizePath("/contact/", lang);
+ 
+ <section><div class="wrap"><div class="kc-body" set:html={sanitizeBodyLinks(t.body, lang, validPaths)}></div></div></section>
+ 
++<section class="bg-soft"><div class="wrap" style="display:block">
++  <div class="eyebrow" style="color:var(--gold)">{prep.title}</div>
++  <h2 class="section-title">{prep.title}</h2>
++  <p style="max-width:820px;color:var(--muted);margin-bottom:18px">{prep.intro}</p>
++  <input type="search" id="prepSearch" class="prep-search" placeholder={prep.search} aria-label={prep.search} />
++  <div class="prep-grid" id="prepGrid">
++    {prepTests.map((pt) => (
++      <a class="prep-card" href={`${oefenBase}${pt.slug}/`} data-name={pt.name.toLowerCase()}>
++        <span class="prep-name">{pt.name}</span>
++        <span class="prep-link">{prep.practice} &rarr;</span>
++      </a>
++    ))}
++  </div>
++  <p class="prep-none" id="prepNone" hidden>{prep.none}</p>
++</div></section>
++
+ <section class="bg-soft"><div class="wrap">
+   <div class="eyebrow">{t.contact.eyebrow}</div>
+   <h2 class="section-title">{t.contact.title}</h2>
+@@ -36,4 +64,29 @@ const contactHref = localizePath("/contact/", lang);
+   .kc-body :global(.btn){color:#fff}
+   .contact-list{list-style:none;margin:0;padding:0;font-size:17px;line-height:2}
+   .contact-list a{color:var(--blue,#4691CE)}
++  .prep-search{width:100%;max-width:420px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:15px;margin-bottom:16px}
++  .prep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
++  .prep-card{display:flex;flex-direction:column;gap:8px;background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:16px 18px;text-decoration:none}
++  .prep-card:hover{box-shadow:var(--shadow-sm)}
++  .prep-name{color:var(--navy);font-weight:800;font-size:15px}
++  .prep-link{color:var(--blue);font-weight:700;font-size:13.5px}
++  .prep-none{color:var(--muted);text-align:center;padding:30px 0}
++  @media(max-width:880px){.prep-grid{grid-template-columns:1fr 1fr}}
++  @media(max-width:560px){.prep-grid{grid-template-columns:1fr}}
+ </style>
++
++<script>
++  (function () {
++    const grid = document.getElementById("prepGrid");
++    if (!grid) return;
++    const cards = Array.from(grid.querySelectorAll(".prep-card"));
++    const search = document.getElementById("prepSearch");
++    const none = document.getElementById("prepNone");
++    search.addEventListener("input", () => {
++      const q = (search.value || "").trim().toLowerCase();
++      let n = 0;
++      cards.forEach((c) => { const ok = !q || (c.dataset.name || "").includes(q); c.style.display = ok ? "" : "none"; if (ok) n++; });
++      none.hidden = n > 0;
++    });
++  })();
++</script>
+diff --git a/src/data/faq-content.js b/src/data/faq-content.js
+index fa184aa..4531b90 100644
+--- a/src/data/faq-content.js
++++ b/src/data/faq-content.js
+@@ -124,6 +124,19 @@ export const faqContent = {
+             a: `<p>Het team helpt je graag verder. Mail naar <a href="mailto:service@hrmforce.com">service@hrmforce.com</a> of bel <a href="tel:+31888832188">+31 (0)88 88 321 88</a>. Voor uitgebreide hulp en handleidingen kijk je op de <a href="/support/">supportpagina</a> en in het <a href="/kenniscentrum/">kenniscentrum</a>.</p>`
+           }
+         ]
++      }
++          ,
++      {
++        num: "05",
++        title: "Bestellen, prijzen en portal",
++        intro: "Over de shop, prijzen, je eigen portal en koppelingen.",
++        items: [
++          { q: "Kan ik losse assessments bestellen zonder abonnement?", a: `<p>Ja. Via de <a href="/shop/">shop</a> neem je losse assessments af tegen de maximale prijs; je betaalt achteraf. Zet je ze structureel in, dan is een eigen portal op licentiebasis altijd voordeliger.</p>` },
++          { q: "Wat kost een eigen portal?", a: `<p>Een portal werkt op licentiebasis met een vaste jaarprijs voor onbeperkt gebruik. Bekijk de mogelijkheden op de <a href="/tarieven/">tarievenpagina</a> of vraag een demo aan.</p>` },
++          { q: "Met welke systemen integreert hrmforce?", a: `<p>hrmforce koppelt met veelgebruikte ATS-, HR- en salarissystemen zoals AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix en OTYS. Zie <a href="/integraties/">integraties</a>.</p>` },
++          { q: "Kan ik het portal in mijn eigen huisstijl krijgen?", a: `<p>Ja. Rapportages en het portal zijn met white-labelopties in je eigen huisstijl in te richten.</p>` },
++          { q: "Bieden jullie training bij het gebruik?", a: `<p>Ja. Met de <a href="/advies/trainingen/">certificatietraining</a> word je gecertificeerd gebruiker. Bekijk de trainingskalender en schrijf je direct in.</p>` }
++        ]
+       }
+     ],
+     cta: {
+@@ -257,6 +270,19 @@ export const faqContent = {
+             a: `<p>The team is happy to help you further. Email <a href="mailto:service@hrmforce.com">service@hrmforce.com</a> or call <a href="tel:+31888832188">+31 (0)88 88 321 88</a>. For extensive help and manuals, take a look at the <a href="/support/">support page</a> and the <a href="/kenniscentrum/">knowledge centre</a>.</p>`
+           }
+         ]
++      }
++          ,
++      {
++        num: "05",
++        title: "Ordering, pricing and portal",
++        intro: "About the shop, pricing, your own portal and integrations.",
++        items: [
++          { q: "Can I order individual assessments without a subscription?", a: `<p>Yes. Via the <a href="/en/shop/">shop</a> you take individual assessments at the maximum price; you pay afterwards. If you use them structurally, your own licensed portal is always cheaper.</p>` },
++          { q: "What does an own portal cost?", a: `<p>A portal works on a licence basis with a fixed annual price for unlimited use. See the options on the <a href="/en/tarieven/">pricing page</a> or request a demo.</p>` },
++          { q: "Which systems does hrmforce integrate with?", a: `<p>hrmforce connects with common ATS, HR and payroll systems such as AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix and OTYS. See <a href="/en/integraties/">integrations</a>.</p>` },
++          { q: "Can I get the portal in my own branding?", a: `<p>Yes. Reports and the portal can be set up in your own branding with white-label options.</p>` },
++          { q: "Do you offer training for using it?", a: `<p>Yes. With the <a href="/en/advies/trainingen/">certification training</a> you become a certified user. Check the training calendar and register directly.</p>` }
++        ]
+       }
+     ],
+     cta: {
+@@ -390,6 +416,19 @@ export const faqContent = {
+             a: `<p>Das Team hilft Ihnen gerne weiter. Mailen Sie an <a href="mailto:service@hrmforce.com">service@hrmforce.com</a> oder rufen Sie <a href="tel:+31888832188">+31 (0)88 88 321 88</a> an. Fuer ausfuehrliche Hilfe und Anleitungen schauen Sie auf die <a href="/support/">Supportseite</a> und in das <a href="/kenniscentrum/">Wissenszentrum</a>.</p>`
+           }
+         ]
++      }
++          ,
++      {
++        num: "05",
++        title: "Bestellung, Preise und Portal",
++        intro: "Über den Shop, Preise, Ihr eigenes Portal und Integrationen.",
++        items: [
++          { q: "Kann ich einzelne Assessments ohne Abonnement bestellen?", a: `<p>Ja. Über den <a href="/de/shop/">Shop</a> nehmen Sie einzelne Assessments zum Höchstpreis ab; Sie zahlen im Nachhinein. Bei struktureller Nutzung ist ein eigenes Lizenzportal immer günstiger.</p>` },
++          { q: "Was kostet ein eigenes Portal?", a: `<p>Ein Portal läuft auf Lizenzbasis mit einem festen Jahrespreis für unbegrenzte Nutzung. Sehen Sie die Optionen auf der <a href="/de/tarieven/">Preisseite</a> oder fordern Sie eine Demo an.</p>` },
++          { q: "Mit welchen Systemen integriert sich hrmforce?", a: `<p>hrmforce verbindet sich mit gängigen ATS-, HR- und Lohnsystemen wie AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix und OTYS. Siehe <a href="/de/integraties/">Integrationen</a>.</p>` },
++          { q: "Kann ich das Portal im eigenen Branding erhalten?", a: `<p>Ja. Berichte und Portal lassen sich mit White-Label-Optionen im eigenen Branding einrichten.</p>` },
++          { q: "Bieten Sie Schulungen für die Nutzung an?", a: `<p>Ja. Mit der <a href="/de/advies/trainingen/">Zertifizierungsschulung</a> werden Sie zertifizierter Nutzer. Sehen Sie den Kalender und melden Sie sich direkt an.</p>` }
++        ]
+       }
+     ],
+     cta: {
+@@ -523,6 +562,19 @@ export const faqContent = {
+             a: `<p>L'equipe se fera un plaisir de vous aider. Envoyez un e-mail a <a href="mailto:service@hrmforce.com">service@hrmforce.com</a> ou appelez le <a href="tel:+31888832188">+31 (0)88 88 321 88</a>. Pour une aide detaillee et des manuels, consultez la <a href="/support/">page de support</a> et le <a href="/kenniscentrum/">centre de connaissances</a>.</p>`
+           }
+         ]
++      }
++          ,
++      {
++        num: "05",
++        title: "Commande, tarifs et portail",
++        intro: "À propos de la boutique, des tarifs, de votre portail et des intégrations.",
++        items: [
++          { q: "Puis-je commander des évaluations à l'unité sans abonnement ?", a: `<p>Oui. Via la <a href="/fr/shop/">boutique</a>, vous prenez des évaluations à l'unité au prix maximum ; vous payez ensuite. En usage structurel, un portail sous licence est toujours moins cher.</p>` },
++          { q: "Combien coûte un portail dédié ?", a: `<p>Un portail fonctionne sous licence avec un prix annuel fixe pour un usage illimité. Voir les options sur la <a href="/fr/tarieven/">page tarifs</a> ou demandez une démo.</p>` },
++          { q: "Avec quels systèmes hrmforce s'intègre-t-il ?", a: `<p>hrmforce se connecte aux systèmes ATS, RH et paie courants comme AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix et OTYS. Voir <a href="/fr/integraties/">intégrations</a>.</p>` },
++          { q: "Puis-je obtenir le portail à ma charte graphique ?", a: `<p>Oui. Les rapports et le portail peuvent être configurés à votre charte avec des options en marque blanche.</p>` },
++          { q: "Proposez-vous une formation à l'utilisation ?", a: `<p>Oui. Avec la <a href="/fr/advies/trainingen/">formation de certification</a>, vous devenez utilisateur certifié. Consultez le calendrier et inscrivez-vous.</p>` }
++        ]
+       }
+     ],
+     cta: {
+@@ -656,6 +708,19 @@ export const faqContent = {
+             a: `<p>El equipo te ayudara con mucho gusto. Escribe a <a href="mailto:service@hrmforce.com">service@hrmforce.com</a> o llama al <a href="tel:+31888832188">+31 (0)88 88 321 88</a>. Para ayuda detallada y manuales, consulta la <a href="/support/">pagina de soporte</a> y el <a href="/kenniscentrum/">centro de conocimiento</a>.</p>`
+           }
+         ]
++      }
++          ,
++      {
++        num: "05",
++        title: "Pedidos, precios y portal",
++        intro: "Sobre la tienda, los precios, tu propio portal y las integraciones.",
++        items: [
++          { q: "¿Puedo pedir evaluaciones sueltas sin suscripción?", a: `<p>Sí. A través de la <a href="/es/shop/">tienda</a> tomas evaluaciones sueltas al precio máximo; pagas después. En uso estructural, un portal propio con licencia siempre es más barato.</p>` },
++          { q: "¿Cuánto cuesta un portal propio?", a: `<p>Un portal funciona por licencia con un precio anual fijo para uso ilimitado. Consulta las opciones en la <a href="/es/tarieven/">página de precios</a> o solicita una demo.</p>` },
++          { q: "¿Con qué sistemas se integra hrmforce?", a: `<p>hrmforce se conecta con sistemas ATS, RR. HH. y nómina habituales como AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix y OTYS. Ver <a href="/es/integraties/">integraciones</a>.</p>` },
++          { q: "¿Puedo tener el portal con mi propia imagen de marca?", a: `<p>Sí. Los informes y el portal se pueden configurar con tu imagen de marca mediante opciones de marca blanca.</p>` },
++          { q: "¿Ofrecéis formación para su uso?", a: `<p>Sí. Con la <a href="/es/advies/trainingen/">formación de certificación</a> te conviertes en usuario certificado. Consulta el calendario e inscríbete.</p>` }
++        ]
+       }
+     ],
+     cta: {
+@@ -789,6 +854,19 @@ export const faqContent = {
+             a: `<p>Echipa te ajuta cu placere. Trimite un e-mail la <a href="mailto:service@hrmforce.com">service@hrmforce.com</a> sau suna la <a href="tel:+31888832188">+31 (0)88 88 321 88</a>. Pentru ajutor detaliat si manuale, consulta <a href="/support/">pagina de suport</a> si <a href="/kenniscentrum/">centrul de cunostinte</a>.</p>`
+           }
+         ]
++      }
++          ,
++      {
++        num: "05",
++        title: "Comenzi, prețuri și portal",
++        intro: "Despre magazin, prețuri, propriul portal și integrări.",
++        items: [
++          { q: "Pot comanda evaluări individuale fără abonament?", a: `<p>Da. Prin <a href="/ro/shop/">magazin</a> iei evaluări individuale la prețul maxim; plătești ulterior. La utilizare structurală, un portal propriu cu licență este întotdeauna mai ieftin.</p>` },
++          { q: "Cât costă un portal propriu?", a: `<p>Un portal funcționează pe bază de licență, cu un preț anual fix pentru utilizare nelimitată. Vezi opțiunile pe <a href="/ro/tarieven/">pagina de prețuri</a> sau cere un demo.</p>` },
++          { q: "Cu ce sisteme se integrează hrmforce?", a: `<p>hrmforce se conectează cu sisteme ATS, HR și payroll uzuale precum AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix și OTYS. Vezi <a href="/ro/integraties/">integrări</a>.</p>` },
++          { q: "Pot obține portalul în propriul brand?", a: `<p>Da. Rapoartele și portalul pot fi configurate în propriul brand, cu opțiuni white-label.</p>` },
++          { q: "Oferiți training pentru utilizare?", a: `<p>Da. Cu <a href="/ro/advies/trainingen/">cursul de certificare</a> devii utilizator certificat. Vezi calendarul și înscrie-te direct.</p>` }
++        ]
+       }
+     ],
+     cta: {
+diff --git a/src/pages/[...path].astro b/src/pages/[...path].astro
+index 3f68d90..2d33d20 100644
+--- a/src/pages/[...path].astro
++++ b/src/pages/[...path].astro
+@@ -138,6 +138,19 @@ const _articleLd = {
+ 
+ // Body splitsen: contextuele kaart na de eerste </h2> (anders vóór de eindband).
+ const body = sanitizeBodyLinks(article.body || "", lang, validPaths);
++// Partners-pagina: extra doorlink naar de integraties (alleen echte koppelingen).
++const _pathClean = (article.path || "").replace(/^\/+|\/+$/g, "");
++const isPartners = _pathClean === "partners" || _pathClean.endsWith("/partners");
++const integHref = localizePath("/integraties/", lang);
++const INTEG = {
++  nl: { title: "Koppel hrmforce aan je systemen", text: "hrmforce integreert met je ATS, HR- en salarissystemen zoals AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix en OTYS.", btn: "Bekijk de integraties" },
++  en: { title: "Connect hrmforce to your systems", text: "hrmforce integrates with your ATS, HR and payroll systems such as AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix and OTYS.", btn: "View the integrations" },
++  de: { title: "Verbinden Sie hrmforce mit Ihren Systemen", text: "hrmforce integriert sich mit Ihren ATS-, HR- und Lohnsystemen wie AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix und OTYS.", btn: "Integrationen ansehen" },
++  fr: { title: "Connectez hrmforce à vos systèmes", text: "hrmforce s'intègre à vos systèmes ATS, RH et paie comme AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix et OTYS.", btn: "Voir les intégrations" },
++  es: { title: "Conecta hrmforce con tus sistemas", text: "hrmforce se integra con tus sistemas ATS, RR. HH. y nómina como AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix y OTYS.", btn: "Ver las integraciones" },
++  ro: { title: "Conectează hrmforce la sistemele tale", text: "hrmforce se integrează cu sistemele tale ATS, HR și payroll precum AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix și OTYS.", btn: "Vezi integrările" },
++};
++const INT = INTEG[lang] || INTEG.nl;
+ const cut = body.indexOf("</h2>");
+ const bodyTop = cut !== -1 ? body.slice(0, cut + 5) : body;
+ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
+@@ -149,6 +162,17 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
+       <h1>{article.title}</h1>
+       <div class="kc-body" set:html={bodyTop}></div>
+ 
++      {isPartners && (
++        <div class="kc-integ">
++          <div>
++            <div class="ctx-tag">Integraties</div>
++            <h3>{INT.title}</h3>
++            <p>{INT.text}</p>
++          </div>
++          <a class="btn btn-primary" href={integHref}>{INT.btn} &rarr;</a>
++        </div>
++      )}
++
+       {rec && (
+         <div class="kc-ctx">
+           <span class="ic">
+@@ -206,6 +230,10 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
+   .kc-ctx .ctx-btn:hover { background: var(--accent-hover); }
+   @media (max-width: 620px) { .kc-ctx { flex-direction: column; align-items: flex-start; } .kc-ctx .ctx-btn { width: 100%; text-align: center; } }
+ 
++  .kc-integ { display:flex; gap:20px; align-items:center; justify-content:space-between; flex-wrap:wrap; background:#fff; border:1px solid var(--line); border-left:3px solid var(--gold); border-radius:16px; padding:22px 26px; margin:24px 0; box-shadow:var(--shadow-xs); }
++  .kc-integ h3 { color:var(--navy); font-size:1.15rem; margin:6px 0 6px; }
++  .kc-integ p { color:var(--muted); font-size:14.5px; margin:0; max-width:640px; }
++  .kc-integ .ctx-tag { color:var(--blue); font-weight:800; font-size:12px; text-transform:uppercase; letter-spacing:.5px; }
+   .kc-endcta { background: var(--bg); border: 1px solid var(--line); border-top: 3px solid var(--gold); border-radius: 16px; padding: 30px; margin-top: 40px; text-align: center; }
+   .kc-endcta h3 { color: var(--navy); font-size: 1.3rem; margin-bottom: 8px; }
+   .kc-endcta p { color: var(--muted); font-size: 15px; max-width: 540px; margin: 0 auto 18px; }
+diff --git a/src/pages/contact.astro b/src/pages/contact.astro
+index 2e40851..604041f 100644
+--- a/src/pages/contact.astro
++++ b/src/pages/contact.astro
+@@ -74,29 +74,15 @@ const offices = [
+   <section class="formsec">
+     <div class="wrap contact-grid">
+       <div class="contact-info">
+-        <div class="eyebrow">hrmforce head office</div>
+-        <h2 class="section-title" style="font-size:26px">Amsterdam</h2>
+-        <p class="addr">
+-          Solitudolaan 396<br />
+-          1096 DS Amsterdam<br />
+-          The Netherlands
+-        </p>
+-
+-        <ul class="contact-list">
+-          <li><span class="lbl">Telefoon</span> <a href="tel:+31888832188">+31 (0)88 88 321 88</a></li>
+-          <li><span class="lbl">E-mail</span> <a href="mailto:service@hrmforce.com">service@hrmforce.com</a></li>
+-        </ul>
+-
+-        <p class="hours">
+-          <strong>Bereikbaarheid</strong><br />
+-          Onze adviseurs zijn bereikbaar op maandag t/m vrijdag van 08:00 – 18:00 uur.
+-        </p>
+-
+-        <ul class="legal">
+-          <li><span class="lbl">KvK Amsterdam</span> 34369982</li>
+-          <li><span class="lbl">BTW / VAT</span> NL821671480B01</li>
+-          <li><span class="lbl">Bank</span> NL31 RABO 0155 7584 11</li>
+-        </ul>
++        <div class="office-box">
++          <div class="eyebrow">hrmforce head office</div>
++          <h2 class="section-title" style="font-size:26px;margin-top:4px">Amsterdam</h2>
++          <p class="addr">Solitudolaan 396<br />1096 DS Amsterdam<br />The Netherlands</p>
++          <div class="ci-row"><span class="ci-lbl">Telefoon</span><a href="tel:+31888832188">+31 (0)88 88 321 88</a></div>
++          <div class="ci-row"><span class="ci-lbl">E-mail</span><a href="mailto:service@hrmforce.com">service@hrmforce.com</a></div>
++          <p class="hours"><strong>Bereikbaarheid</strong><br />Onze adviseurs zijn bereikbaar op maandag t/m vrijdag van 08:00 tot 18:00 uur.</p>
++          <p class="ci-legal">KvK Amsterdam 34369982 &middot; BTW NL821671480B01 &middot; IBAN NL31 RABO 0155 7584 11</p>
++        </div>
+ 
+         <div class="map">
+           <iframe
+@@ -231,6 +217,12 @@ const offices = [
+       margin-bottom: 18px;
+     }
+     .hours strong { color: var(--navy); }
++    .office-box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 28px;box-shadow:var(--shadow-xs);margin-bottom:18px}
++    .office-box .addr{margin-bottom:16px}
++    .ci-row{display:flex;gap:12px;align-items:baseline;padding:7px 0;font-size:15px;border-bottom:1px solid var(--line)}
++    .ci-lbl{min-width:90px;color:var(--navy);font-weight:700;font-size:12.5px;text-transform:uppercase;letter-spacing:.4px}
++    .ci-row a{color:var(--blue);font-weight:600}
++    .ci-legal{color:var(--muted);font-size:12.5px;margin:14px 0 0;padding-top:14px;border-top:1px solid var(--line);line-height:1.7}
+     .map {
+       margin-top: 8px;
+       border-radius: var(--radius);
+diff --git a/src/pages/de/contact.astro b/src/pages/de/contact.astro
+index d65b64e..dd9fb22 100644
+--- a/src/pages/de/contact.astro
++++ b/src/pages/de/contact.astro
+@@ -177,6 +177,9 @@ const offices = [
+           </div>
+         ))}
+       </div>
++      <div class="cmap">
++        <iframe title="Standort hrmforce Amsterdam" src="https://maps.google.com/maps?q=Solitudolaan%20396%2C%201096%20DS%20Amsterdam&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
++      </div>
+     </div>
+   </section>
+ 
+@@ -299,6 +302,8 @@ const offices = [
+   .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
+   .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
+   .person-card .person-name{color:var(--navy);font-weight:700;font-size:13px;margin-top:6px}
++  .cmap{margin-top:28px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line)}
++  .cmap iframe{width:100%;height:340px;border:0;display:block}
+ </style>
+ 
+   <script is:inline>
+diff --git a/src/pages/de/over-ons.astro b/src/pages/de/over-ons.astro
+index 23b41aa..9378ef7 100644
+--- a/src/pages/de/over-ons.astro
++++ b/src/pages/de/over-ons.astro
+@@ -40,6 +40,16 @@ const domains = [
+       <p>Als führender Anbieter von HRM-Software helfen wir Unternehmen, effizienter zu arbeiten, indem wir neue Arbeitsweisen und neue Partnerschaften schaffen. Da wir selbst Unternehmer sind, unterstützen wir unsere Kunden beim Ausbau ihrer Organisationen, indem wir die Zusammenarbeit fördern und langfristige Beziehungen aufbauen. Gemeinsam können wir als Unternehmen unsere soziale Verantwortung nehmen. Wir sind in mehreren Ländern tätig. Unsere lokalen Vertriebspartner können Sie direkt mit hrmforce in Kontakt bringen. Außerdem gibt es ein globales Support-Team in den unten genannten Ländern.</p>
+       <p><Img src="/media/wp-content/uploads/2017/02/World_Supportteam-500x9999.png" alt="Globales Support-Team von hrmforce" loading="lazy" /></p>
+ 
++      <h2 class="section-title">Warum hrmforce</h2>
++      <div class="usps">
++        <div class="usp"><h3>100% unabhängig</h3><p>Keine Private Equity oder externen Investoren: hrmforce ist vollständig in Eigenbesitz. So wählen wir die lange Sicht und Sie als Kunde.</p></div>
++        <div class="usp"><h3>Niederländisches Unternehmen</h3><p>Gegründet und ansässig in den Niederlanden, mit einem Team, das Ihre Sprache und Ihren Arbeitsmarkt kennt.</p></div>
++        <div class="usp"><h3>Eigene R&amp;D</h3><p>Wir entwickeln und validieren unsere Fragebögen und Modelle im eigenen Haus, laufend verbessert auf Basis neuer Erkenntnisse.</p></div>
++        <div class="usp"><h3>Eigene IT in Eigenregie</h3><p>Wir bauen und betreiben unsere Plattform selbst. Das bedeutet schnelle Weiterentwicklung, sichere Daten und keine Abhängigkeit von Dritten.</p></div>
++        <div class="usp"><h3>Umfassendstes Angebot</h3><p>36+ wissenschaftlich fundierte Assessments für Auswahl, Entwicklung, Teams und Beschäftigungsfähigkeit, unter einem Dach.</p></div>
++        <div class="usp"><h3>Attraktiv bepreist</h3><p>Ein Lizenzportal ist deutlich günstiger und umfangreicher als einzelne Tools.</p></div>
++      </div>
++
+       <h2 class="section-title">Bereitstellung von Software für HRM</h2>
+       <p>Wir unterstützen Unternehmen mit Informationstechnologie, indem wir fortschrittliche Online-Assessments, HRM-Lösungen und ein hohes Serviceniveau anbieten.</p>
+ 
+diff --git a/src/pages/en/contact.astro b/src/pages/en/contact.astro
+index f377361..ee64f77 100644
+--- a/src/pages/en/contact.astro
++++ b/src/pages/en/contact.astro
+@@ -176,6 +176,9 @@ const offices = [
+           </div>
+         ))}
+       </div>
++      <div class="cmap">
++        <iframe title="hrmforce Amsterdam location" src="https://maps.google.com/maps?q=Solitudolaan%20396%2C%201096%20DS%20Amsterdam&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
++      </div>
+     </div>
+   </section>
+ 
+@@ -297,6 +300,8 @@ const offices = [
+   .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
+   .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
+   .person-card .person-name{color:var(--navy);font-weight:700;font-size:13px;margin-top:6px}
++  .cmap{margin-top:28px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line)}
++  .cmap iframe{width:100%;height:340px;border:0;display:block}
+ </style>
+ 
+   <script is:inline>
+diff --git a/src/pages/en/over-ons.astro b/src/pages/en/over-ons.astro
+index fc52727..7d30796 100644
+--- a/src/pages/en/over-ons.astro
++++ b/src/pages/en/over-ons.astro
+@@ -31,6 +31,16 @@ const domains = [
+       <p>As a leading provider of HRM software, we help organizations operate more efficiently by creating new ways of working and new partnerships. Because we are entrepreneurs ourselves, we support our customers to grow their organizations by encouraging collaboration and building long-term relationships. Together, we can be socially responsible. We are active in several countries. Our local distributors can put you in direct contact with hrmforce. In addition, there is a global support team in the highlighted countries below.</p>
+       <p><Img src="/media/wp-content/uploads/2017/02/World_Supportteam-500x9999.png" alt="Global support team of hrmforce" loading="lazy" /></p>
+ 
++      <h2 class="section-title">Why hrmforce</h2>
++      <div class="usps">
++        <div class="usp"><h3>100% independent</h3><p>No private equity or external investors: hrmforce is fully self-owned. That lets us choose the long term and you as our client.</p></div>
++        <div class="usp"><h3>Dutch company</h3><p>Founded and based in the Netherlands, with a team that knows your language and labour market.</p></div>
++        <div class="usp"><h3>Own R&amp;D</h3><p>We develop and validate our questionnaires and models in-house, continuously improved on new insights.</p></div>
++        <div class="usp"><h3>Own IT, fully in-house</h3><p>We build and run our platform ourselves. That means fast development, secure data and no dependence on third parties.</p></div>
++        <div class="usp"><h3>Most complete offering</h3><p>36+ scientifically grounded assessments for selection, development, teams and employability, under one roof.</p></div>
++        <div class="usp"><h3>Sharply priced</h3><p>A licensed portal is considerably cheaper and more extensive than separate tools.</p></div>
++      </div>
++
+       <h2 class="section-title">Providing software for HRM</h2>
+       <p>We serve businesses with information technology by delivering sophisticated <a href="/en/online-assessments/">assessments</a>, HRM solutions and high quality services.</p>
+ 
+diff --git a/src/pages/es/contact.astro b/src/pages/es/contact.astro
+index ab9ecbd..315f590 100644
+--- a/src/pages/es/contact.astro
++++ b/src/pages/es/contact.astro
+@@ -173,6 +173,9 @@ const offices = [
+           </div>
+         ))}
+       </div>
++      <div class="cmap">
++        <iframe title="Ubicación de hrmforce Amsterdam" src="https://maps.google.com/maps?q=Solitudolaan%20396%2C%201096%20DS%20Amsterdam&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
++      </div>
+     </div>
+   </section>
+ 
+@@ -287,6 +290,8 @@ const offices = [
+   .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
+   .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
+   .person-card .person-name{color:var(--navy);font-weight:700;font-size:13px;margin-top:6px}
++  .cmap{margin-top:28px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line)}
++  .cmap iframe{width:100%;height:340px;border:0;display:block}
+ </style>
+ 
+   <script is:inline>
+diff --git a/src/pages/es/over-ons.astro b/src/pages/es/over-ons.astro
+index 309be54..c836e05 100644
+--- a/src/pages/es/over-ons.astro
++++ b/src/pages/es/over-ons.astro
+@@ -31,6 +31,16 @@ const domains = [
+       <p>Como proveedor líder de software de gestión de recursos humanos, ayudamos a las organizaciones a operar de forma más eficiente creando nuevas formas de trabajo y nuevas asociaciones. Siendo nosotros mismos empresarios, ayudamos a nuestros clientes a hacer crecer sus organizaciones fomentando la colaboración y estableciendo relaciones a largo plazo. Juntos, podemos ser empresas socialmente responsables. Operamos en varios países. Nuestros distribuidores locales pueden ponerle en contacto directo con hrmforce. También hay un equipo de apoyo global en los países que se destacan a continuación</p>
+       <p><Img src="/media/wp-content/uploads/2017/02/World_Supportteam-500x9999.png" alt="Equipo de apoyo global de hrmforce" loading="lazy" /></p>
+ 
++      <h2 class="section-title">Por qué hrmforce</h2>
++      <div class="usps">
++        <div class="usp"><h3>100% independiente</h3><p>Sin private equity ni inversores externos: hrmforce es totalmente propio. Así elegimos el largo plazo y a ti como cliente.</p></div>
++        <div class="usp"><h3>Empresa neerlandesa</h3><p>Fundada y con sede en los Países Bajos, con un equipo que conoce tu idioma y tu mercado laboral.</p></div>
++        <div class="usp"><h3>I+D propia</h3><p>Desarrollamos y validamos nuestros cuestionarios y modelos internamente, mejorados de forma continua con nuevos conocimientos.</p></div>
++        <div class="usp"><h3>TI propia, en casa</h3><p>Construimos y operamos nuestra plataforma nosotros mismos. Eso significa desarrollo rápido, datos seguros y ninguna dependencia de terceros.</p></div>
++        <div class="usp"><h3>Oferta más completa</h3><p>36+ evaluaciones con base científica para selección, desarrollo, equipos y empleabilidad, bajo un mismo techo.</p></div>
++        <div class="usp"><h3>Precio competitivo</h3><p>Un portal con licencia es bastante más barato y más completo que herramientas sueltas.</p></div>
++      </div>
++
+       <h2 class="section-title">Suministro de software para la gestión de recursos humanos</h2>
+       <p>Servimos a las organizaciones con tecnología de la información proporcionando evaluaciones avanzadas en línea, soluciones de gestión de recursos humanos y un alto nivel de servicio.</p>
+ 
+diff --git a/src/pages/fr/contact.astro b/src/pages/fr/contact.astro
+index 5b39405..7365de2 100644
+--- a/src/pages/fr/contact.astro
++++ b/src/pages/fr/contact.astro
+@@ -66,6 +66,9 @@ const offices = [
+           </div>
+         ))}
+       </div>
++      <div class="cmap">
++        <iframe title="Emplacement hrmforce Amsterdam" src="https://maps.google.com/maps?q=Solitudolaan%20396%2C%201096%20DS%20Amsterdam&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
++      </div>
+     </div>
+   </section>
+ </Base>
+@@ -91,4 +94,6 @@ const offices = [
+   .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
+   .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
+   .person-card .person-name{color:var(--navy);font-weight:700;font-size:13px;margin-top:6px}
++  .cmap{margin-top:28px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line)}
++  .cmap iframe{width:100%;height:340px;border:0;display:block}
+ </style>
+diff --git a/src/pages/fr/over-ons.astro b/src/pages/fr/over-ons.astro
+index 757bbb5..e449191 100644
+--- a/src/pages/fr/over-ons.astro
++++ b/src/pages/fr/over-ons.astro
+@@ -31,6 +31,16 @@ const domains = [
+       <p>En tant que principal fournisseur de logiciels de GRH, nous soutenons les organisations pour qu'elles fonctionnent de manière plus efficace en instaurant de nouvelles méthodes de travail et de nouveaux partenariats. Étant nous-mêmes des entrepreneurs, nous aidons nos clients à développer leurs organisations en les incitant à coopérer et à établir des relations à long terme. Tous ensemble, nous pourrons entreprendre de façon socialement responsable. Nous sommes actifs dans plusieurs pays. Les distributeurs locaux peuvent vous mettre en contact direct avec hrmforce. En outre, une équipe d'assistance internationale est présente dans les pays indiqués ci-dessous.</p>
+       <p><Img src="/media/wp-content/uploads/2017/02/World_Supportteam-500x9999.png" alt="Équipe d'assistance internationale de hrmforce" loading="lazy" /></p>
+ 
++      <h2 class="section-title">Pourquoi hrmforce</h2>
++      <div class="usps">
++        <div class="usp"><h3>100% indépendant</h3><p>Pas de private equity ni d'investisseurs externes : hrmforce est entièrement détenu par ses fondateurs. Nous choisissons le long terme et vous comme client.</p></div>
++        <div class="usp"><h3>Entreprise néerlandaise</h3><p>Fondée et basée aux Pays-Bas, avec une équipe qui connaît votre langue et votre marché du travail.</p></div>
++        <div class="usp"><h3>R&amp;D interne</h3><p>Nous développons et validons nos questionnaires et modèles en interne, améliorés en continu selon les nouvelles connaissances.</p></div>
++        <div class="usp"><h3>IT interne, en propre</h3><p>Nous construisons et exploitons notre plateforme nous-mêmes. Cela signifie un développement rapide, des données sécurisées et aucune dépendance à des tiers.</p></div>
++        <div class="usp"><h3>Offre la plus complète</h3><p>36+ évaluations scientifiquement fondées pour la sélection, le développement, les équipes et l'employabilité, sous un même toit.</p></div>
++        <div class="usp"><h3>Prix compétitif</h3><p>Un portail sous licence est nettement moins cher et plus complet que des outils séparés.</p></div>
++      </div>
++
+       <h2 class="section-title">Fourniture de logiciels pour GRH</h2>
+       <p>Nous proposons aux organisations des technologies de l'information en leur fournissant des tests en ligne avancés, des outils de GRH et un excellent niveau de service.</p>
+ 
+diff --git a/src/pages/over-ons.astro b/src/pages/over-ons.astro
+index f6f2215..c56e07f 100644
+--- a/src/pages/over-ons.astro
++++ b/src/pages/over-ons.astro
+@@ -58,6 +58,16 @@ const domains = [
+       <p>Samen kunnen we maatschappelijk verantwoord ondernemen. We zijn <strong>actief in meerdere landen</strong>. Onze lokale distributeurs kunnen je direct in contact brengen met hrmforce. Daarnaast is er een wereldwijd support team in de onderstaande gemarkeerde landen.</p>
+       <p><Img src="/media/wp-content/uploads/2017/02/World_Supportteam-500x9999.png" alt="Wereldwijd support team van hrmforce" loading="lazy" /></p>
+ 
++      <h2 class="section-title">Waarom hrmforce</h2>
++      <div class="usps">
++        <div class="usp"><h3>100% onafhankelijk</h3><p>Geen private equity of externe investeerders: hrmforce is volledig in eigen beheer. Zo kiezen we voor de lange termijn en voor jou als klant.</p></div>
++        <div class="usp"><h3>Nederlands bedrijf</h3><p>Opgericht en gevestigd in Nederland, met een team dat jouw taal en arbeidsmarkt kent.</p></div>
++        <div class="usp"><h3>Eigen R&amp;D</h3><p>Onze vragenlijsten en modellen ontwikkelen en valideren we in eigen huis, doorlopend verbeterd op basis van nieuwe inzichten.</p></div>
++        <div class="usp"><h3>Eigen IT in eigen beheer</h3><p>Ons platform bouwen en beheren we zelf. Dat betekent snelle doorontwikkeling, veilige data en geen afhankelijkheid van derden.</p></div>
++        <div class="usp"><h3>Meest complete aanbod</h3><p>36+ wetenschappelijk onderbouwde assessments voor selectie, ontwikkeling, teams en employability, onder een dak.</p></div>
++        <div class="usp"><h3>Scherp geprijsd</h3><p>Een eigen portal op licentiebasis is fors voordeliger en uitgebreider dan losse tools.</p></div>
++      </div>
++
+       <h2 class="section-title">Software leveren voor HRM</h2>
+       <p>We bedienen organisaties met informatie technologie door het leveren van geavanceerde <a href="/assessment-overzicht/">online assessments</a>, HRM oplossingen en een hoog serviceniveau.</p>
+ 
+diff --git a/src/pages/ro/contact.astro b/src/pages/ro/contact.astro
+index 220a60e..25334d2 100644
+--- a/src/pages/ro/contact.astro
++++ b/src/pages/ro/contact.astro
+@@ -172,6 +172,9 @@ const offices = [
+           </div>
+         ))}
+       </div>
++      <div class="cmap">
++        <iframe title="Locația hrmforce Amsterdam" src="https://maps.google.com/maps?q=Solitudolaan%20396%2C%201096%20DS%20Amsterdam&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
++      </div>
+     </div>
+   </section>
+ 
+@@ -210,6 +213,8 @@ const offices = [
+   .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
+   .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
+   .person-card .person-name{color:var(--navy);font-weight:700;font-size:13px;margin-top:6px}
++  .cmap{margin-top:28px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line)}
++  .cmap iframe{width:100%;height:340px;border:0;display:block}
+ </style>
+ 
+   <script is:inline>
+diff --git a/src/pages/ro/over-ons.astro b/src/pages/ro/over-ons.astro
+index e621bde..fdabd60 100644
+--- a/src/pages/ro/over-ons.astro
++++ b/src/pages/ro/over-ons.astro
+@@ -31,6 +31,16 @@ const domains = [
+       <p>În calitate de furnizor lider de software HRM, ajutăm organizațiile să funcționeze mai eficient prin crearea de noi modalități de lucru și noi parteneriate. Fiind noi înșine antreprenori, ne sprijinim clienții să își dezvolte organizațiile prin încurajarea colaborării și construirea unor relații pe termen lung. Împreună, putem fi întreprinderi responsabile din punct de vedere social. Ne desfășurăm activitatea în mai multe țări. Distribuitorii noștri locali vă pot pune în contact direct cu hrmforce. Există, de asemenea, o echipă de asistență globală în țările evidențiate mai jos.</p>
+       <p><Img src="/media/wp-content/uploads/2017/02/World_Supportteam-500x9999.png" alt="Echipă de asistență globală hrmforce" loading="lazy" /></p>
+ 
++      <h2 class="section-title">De ce hrmforce</h2>
++      <div class="usps">
++        <div class="usp"><h3>100% independent</h3><p>Fără private equity sau investitori externi: hrmforce este complet în proprietate proprie. Astfel alegem termenul lung și pe tine ca client.</p></div>
++        <div class="usp"><h3>Companie neerlandeză</h3><p>Fondată și cu sediul în Țările de Jos, cu o echipă care îți cunoaște limba și piața muncii.</p></div>
++        <div class="usp"><h3>R&amp;D propriu</h3><p>Ne dezvoltăm și validăm chestionarele și modelele intern, îmbunătățite continuu pe baza noilor cunoștințe.</p></div>
++        <div class="usp"><h3>IT propriu, în regie proprie</h3><p>Ne construim și administrăm platforma singuri. Asta înseamnă dezvoltare rapidă, date sigure și nicio dependență de terți.</p></div>
++        <div class="usp"><h3>Cea mai completă ofertă</h3><p>36+ evaluări fundamentate științific pentru selecție, dezvoltare, echipe și angajabilitate, sub un singur acoperiș.</p></div>
++        <div class="usp"><h3>Preț competitiv</h3><p>Un portal cu licență este considerabil mai ieftin și mai complet decât instrumente separate.</p></div>
++      </div>
++
+       <h2 class="section-title">Furnizarea de software pentru managementul resurselor umane</h2>
+       <p>Servim organizațiile cu ajutorul tehnologiei informației, furnizând evaluări online avansate, soluții HRM și un nivel ridicat de servicii.</p>
+ 
+diff --git a/src/styles/global.css b/src/styles/global.css
+index f763302..c56343c 100644
+--- a/src/styles/global.css
++++ b/src/styles/global.css
+@@ -473,3 +473,10 @@ html{overflow-x:hidden;}
+ .theory-refs li{position:relative;padding-left:18px;color:var(--muted);font-size:14px;line-height:1.5}
+ .theory-refs li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+ .theory-note{color:var(--muted);font-size:13px;font-style:italic;margin:0;border-top:1px solid var(--line);padding-top:14px}
++/* Over ons: USP-grid (Batch 7) */
++.usps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:8px 0 30px}
++.usp{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:18px 20px}
++.usp h3{color:var(--navy);font-size:16px;margin:0 0 6px}
++.usp p{color:var(--muted);font-size:14px;line-height:1.5;margin:0}
++@media(max-width:880px){.usps{grid-template-columns:1fr 1fr}}
++@media(max-width:560px){.usps{grid-template-columns:1fr}}
+-- 
+2.34.1
+

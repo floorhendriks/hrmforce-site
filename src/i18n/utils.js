@@ -67,7 +67,6 @@ const ASSESS_SLUG_MAP = {
   "big-fifty": "big-five",
   "cognitieve-capaciteitentest": "cognitieve-test",
   "motivation": "drijfverentest",
-  "ontwikkelmatrix": "ontwikkelassessment",
 };
 // Sectie-hoofdpagina's voor een nette fallback per rubriek.
 const SECTION_ROOTS = {

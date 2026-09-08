@@ -1,0 +1,392 @@
+From 548294ab55dca3d31f0fca49c860152f81350a62 Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Mon, 7 Sep 2026 22:49:52 +0200
+Subject: [PATCH] Vacatures-pagina in 6 talen (stage Business Development +
+ internationale reseller/partner-rollen), footer-link werkt nu;
+ WebSite+SearchAction JSON-LD sitebreed (sitelinks-searchbox)
+
+---
+ src/components/Vacatures.astro     |  61 ++++++++++
+ src/data/vacatures-content.js      | 172 +++++++++++++++++++++++++++++
+ src/data/valid-paths.js            |   2 +-
+ src/i18n/utils.js                  |   2 +-
+ src/layouts/Base.astro             |   1 +
+ src/pages/de/vacatures/index.astro |   7 ++
+ src/pages/en/vacatures/index.astro |   7 ++
+ src/pages/es/vacatures/index.astro |   7 ++
+ src/pages/fr/vacatures/index.astro |   7 ++
+ src/pages/ro/vacatures/index.astro |   7 ++
+ src/pages/vacatures/index.astro    |   7 ++
+ 11 files changed, 278 insertions(+), 2 deletions(-)
+ create mode 100644 src/components/Vacatures.astro
+ create mode 100644 src/data/vacatures-content.js
+ create mode 100644 src/pages/de/vacatures/index.astro
+ create mode 100644 src/pages/en/vacatures/index.astro
+ create mode 100644 src/pages/es/vacatures/index.astro
+ create mode 100644 src/pages/fr/vacatures/index.astro
+ create mode 100644 src/pages/ro/vacatures/index.astro
+ create mode 100644 src/pages/vacatures/index.astro
+
+diff --git a/src/components/Vacatures.astro b/src/components/Vacatures.astro
+new file mode 100644
+index 0000000..7216f6c
+--- /dev/null
++++ b/src/components/Vacatures.astro
+@@ -0,0 +1,61 @@
++---
++import { VAC, REGIONS } from "../data/vacatures-content.js";
++import { localizePath } from "../i18n/utils.js";
++
++const { lang = "nl" } = Astro.props;
++const t = VAC[lang] || VAC.nl;
++const mailto = "mailto:service@hrmforce.com";
++---
++<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> &rsaquo; <span>{t.crumb}</span></div></div>
++
++<section class="ahero"><div class="wrap" style="display:block">
++  <div class="eyebrow" style="color:var(--gold)">{t.eyebrow}</div>
++  <h1>{t.hero}</h1>
++  <p style="color:#c4d2e6;font-size:18px;max-width:720px;margin-top:10px">{t.intro}</p>
++</div></section>
++
++<section><div class="wrap" style="max-width:900px">
++  <div class="vac-list">
++    {t.jobs.map((j, i) => (
++      <div class="vac-card">
++        <div class="vac-head">
++          <div>
++            <span class="vac-type">{j.type}</span>
++            <h2 class="vac-title">{j.title}</h2>
++            <span class="vac-loc">{j.loc}</span>
++          </div>
++          <a href={mailto} class="btn btn-primary vac-apply">{t.applyCta} &rarr;</a>
++        </div>
++        <p class="vac-desc">{j.desc}</p>
++        {i === 1 && (
++          <div class="vac-regions">
++            <span class="vac-regions-lbl">{t.regionsLabel}:</span>
++            {REGIONS.map((r) => <span class="vac-chip">{r}</span>)}
++          </div>
++        )}
++      </div>
++    ))}
++  </div>
++</div></section>
++
++<section class="bg-soft"><div class="wrap" style="max-width:760px;text-align:center">
++  <div class="eyebrow" style="justify-content:center">{t.openT}</div>
++  <h2 class="section-title">{t.openT}</h2>
++  <p class="lead" style="margin:10px auto 22px">{t.openP}</p>
++  <a href={mailto} class="btn btn-primary">{t.mailBtn}</a>
++</div></section>
++
++<style>
++  .vac-list{display:flex;flex-direction:column;gap:20px;margin-top:8px}
++  .vac-card{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:16px;padding:26px 28px;box-shadow:var(--shadow-xs)}
++  .vac-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap}
++  .vac-type{display:inline-block;background:var(--bg-soft);color:var(--navy);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:4px 10px;border-radius:var(--radius-pill)}
++  .vac-title{color:var(--navy);font-size:1.25rem;margin:8px 0 4px;letter-spacing:-.02em}
++  .vac-loc{color:var(--muted);font-size:14px}
++  .vac-apply{flex:none;white-space:nowrap}
++  .vac-desc{color:var(--text);font-size:15.5px;line-height:1.6;margin:16px 0 0}
++  .vac-regions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
++  .vac-regions-lbl{color:var(--muted);font-size:13px;font-weight:700;margin-right:2px}
++  .vac-chip{background:var(--navy);color:#fff;font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:var(--radius-pill)}
++  @media(max-width:620px){.vac-apply{width:100%}}
++</style>
+diff --git a/src/data/vacatures-content.js b/src/data/vacatures-content.js
+new file mode 100644
+index 0000000..c60e155
+--- /dev/null
++++ b/src/data/vacatures-content.js
+@@ -0,0 +1,172 @@
++// Vacatures-content per taal (nl/en/de/fr/es/ro). Bron: hrmforce.com/vacatures.
++export const REGIONS = ["Peru", "Argentina", "Colombia", "Ecuador", "Mexico", "Spain"];
++export const VAC = {
++ "nl": {
++  "metaT": "Vacatures bij hrmforce | Werken bij hrmforce",
++  "metaD": "Bekijk onze openstaande vacatures. Herken je jezelf er niet in, maar denk je van waarde te zijn? Stuur een open sollicitatie.",
++  "crumb": "Vacatures",
++  "eyebrow": "Werken bij hrmforce",
++  "hero": "Openstaande vacatures",
++  "intro": "Hieronder vind je onze openstaande vacatures. Interesse? Mail naar service@hrmforce.com of bel +31 (0)88 88 321 88.",
++  "regionsLabel": "Regio",
++  "viewCta": "Bekijk de vacature",
++  "applyCta": "Solliciteer",
++  "openT": "Open sollicitatie",
++  "openP": "We zijn altijd op zoek naar talent. Herken je jezelf niet in bovenstaande vacatures, maar denk je toch van waarde te zijn? Stuur een open sollicitatie naar service@hrmforce.com.",
++  "mailBtn": "Mail je sollicitatie",
++  "jobs": [
++   {
++    "title": "Stage Business Development",
++    "type": "Stage",
++    "loc": "Amsterdam / hybride",
++    "desc": "We zoeken een enthousiaste hbo- of wo-student voor een meeloop- of onderzoeksstage. Als opdracht voer je een klanttevredenheidsonderzoek uit. Profiel: enthousiast, vloeiend in Engels, doorzetter en representatief."
++   },
++   {
++    "title": "Zelfstandige HR Business Partner / Value Added Reseller / Distributeur",
++    "type": "Partner / reseller",
++    "loc": "Internationaal",
++    "desc": "Voor de internationale groei zoeken we zelfstandige partners die hrmforce vertegenwoordigen en distribueren in hun regio. Je bouwt een eigen klantportfolio op met onze wetenschappelijk gevalideerde assessments en talentmanagement-software."
++   }
++  ]
++ },
++ "en": {
++  "metaT": "Careers at hrmforce | Work at hrmforce",
++  "metaD": "View our open positions. Don't see a fitting role but think you can add value? Send an open application.",
++  "crumb": "Careers",
++  "eyebrow": "Work at hrmforce",
++  "hero": "Open positions",
++  "intro": "Below are our current openings. Interested? Email service@hrmforce.com or call +31 (0)88 88 321 88.",
++  "regionsLabel": "Region",
++  "viewCta": "View the vacancy",
++  "applyCta": "Apply",
++  "openT": "Open application",
++  "openP": "We're always looking for talent. Don't see a fitting role above but think you can add value? Send an open application to service@hrmforce.com.",
++  "mailBtn": "Email your application",
++  "jobs": [
++   {
++    "title": "Business Development Internship",
++    "type": "Internship",
++    "loc": "Amsterdam / hybrid",
++    "desc": "We're looking for an enthusiastic bachelor's or master's student for a work placement or research internship. Your assignment: run a customer satisfaction study. Profile: enthusiastic, fluent in English, a go-getter and presentable."
++   },
++   {
++    "title": "Independent HR Business Partner / Value Added Reseller / Distributor",
++    "type": "Partner / reseller",
++    "loc": "International",
++    "desc": "For our international growth we're looking for independent partners to represent and distribute hrmforce in their region. You build your own client portfolio with our scientifically validated assessments and talent-management software."
++   }
++  ]
++ },
++ "de": {
++  "metaT": "Karriere bei hrmforce | Arbeiten bei hrmforce",
++  "metaD": "Sehen Sie unsere offenen Stellen. Keine passende Rolle dabei, aber Sie glauben, einen Mehrwert zu bieten? Senden Sie eine Initiativbewerbung.",
++  "crumb": "Karriere",
++  "eyebrow": "Arbeiten bei hrmforce",
++  "hero": "Offene Stellen",
++  "intro": "Nachfolgend finden Sie unsere offenen Stellen. Interesse? Mailen Sie an service@hrmforce.com oder rufen Sie +31 (0)88 88 321 88 an.",
++  "regionsLabel": "Region",
++  "viewCta": "Stelle ansehen",
++  "applyCta": "Bewerben",
++  "openT": "Initiativbewerbung",
++  "openP": "Wir suchen immer nach Talenten. Keine passende Stelle dabei, aber Sie glauben, einen Mehrwert zu bieten? Senden Sie eine Initiativbewerbung an service@hrmforce.com.",
++  "mailBtn": "Bewerbung per E-Mail",
++  "jobs": [
++   {
++    "title": "Praktikum Business Development",
++    "type": "Praktikum",
++    "loc": "Amsterdam / hybrid",
++    "desc": "Wir suchen eine/n engagierte/n Bachelor- oder Masterstudent/in für ein Praktikum oder Forschungspraktikum. Ihre Aufgabe: eine Kundenzufriedenheitsstudie durchführen. Profil: engagiert, fließend Englisch, durchsetzungsstark und repräsentativ."
++   },
++   {
++    "title": "Selbstständige/r HR Business Partner / Value Added Reseller / Distributor",
++    "type": "Partner / Reseller",
++    "loc": "International",
++    "desc": "Für unser internationales Wachstum suchen wir selbstständige Partner, die hrmforce in ihrer Region vertreten und vertreiben. Sie bauen ein eigenes Kundenportfolio mit unseren wissenschaftlich validierten Assessments und der Talentmanagement-Software auf."
++   }
++  ]
++ },
++ "fr": {
++  "metaT": "Carrières chez hrmforce | Travailler chez hrmforce",
++  "metaD": "Découvrez nos postes ouverts. Pas de rôle adapté mais vous pensez pouvoir apporter de la valeur ? Envoyez une candidature spontanée.",
++  "crumb": "Carrières",
++  "eyebrow": "Travailler chez hrmforce",
++  "hero": "Postes ouverts",
++  "intro": "Voici nos postes ouverts. Intéressé ? Écrivez à service@hrmforce.com ou appelez le +31 (0)88 88 321 88.",
++  "regionsLabel": "Région",
++  "viewCta": "Voir l'offre",
++  "applyCta": "Postuler",
++  "openT": "Candidature spontanée",
++  "openP": "Nous recherchons toujours des talents. Aucun poste adapté ci-dessus mais vous pensez pouvoir apporter de la valeur ? Envoyez une candidature spontanée à service@hrmforce.com.",
++  "mailBtn": "Envoyer votre candidature",
++  "jobs": [
++   {
++    "title": "Stage Business Development",
++    "type": "Stage",
++    "loc": "Amsterdam / hybride",
++    "desc": "Nous recherchons un(e) étudiant(e) de licence ou master enthousiaste pour un stage d'immersion ou de recherche. Mission : réaliser une enquête de satisfaction client. Profil : enthousiaste, anglais courant, persévérant(e) et présentable."
++   },
++   {
++    "title": "Partenaire RH indépendant / Value Added Reseller / Distributeur",
++    "type": "Partenaire / revendeur",
++    "loc": "International",
++    "desc": "Pour notre croissance internationale, nous recherchons des partenaires indépendants pour représenter et distribuer hrmforce dans leur région. Vous développez votre propre portefeuille clients avec nos assessments validés scientifiquement et notre logiciel de gestion des talents."
++   }
++  ]
++ },
++ "es": {
++  "metaT": "Empleo en hrmforce | Trabaja en hrmforce",
++  "metaD": "Consulta nuestras vacantes. ¿No encajas en ninguna pero crees que puedes aportar valor? Envía una candidatura espontánea.",
++  "crumb": "Empleo",
++  "eyebrow": "Trabaja en hrmforce",
++  "hero": "Vacantes abiertas",
++  "intro": "Estas son nuestras vacantes abiertas. ¿Interesado? Escribe a service@hrmforce.com o llama al +31 (0)88 88 321 88.",
++  "regionsLabel": "Región",
++  "viewCta": "Ver la vacante",
++  "applyCta": "Inscríbete",
++  "openT": "Candidatura espontánea",
++  "openP": "Siempre buscamos talento. ¿No encajas en las vacantes anteriores pero crees que puedes aportar valor? Envía una candidatura espontánea a service@hrmforce.com.",
++  "mailBtn": "Envía tu candidatura",
++  "jobs": [
++   {
++    "title": "Prácticas de Business Development",
++    "type": "Prácticas",
++    "loc": "Ámsterdam / híbrido",
++    "desc": "Buscamos un/a estudiante de grado o máster entusiasta para unas prácticas o prácticas de investigación. Tu tarea: realizar un estudio de satisfacción del cliente. Perfil: entusiasta, inglés fluido, con iniciativa y buena presencia."
++   },
++   {
++    "title": "Socio de RR. HH. independiente / Value Added Reseller / Distribuidor",
++    "type": "Socio / reseller",
++    "loc": "Internacional",
++    "desc": "Para nuestro crecimiento internacional buscamos socios independientes que representen y distribuyan hrmforce en su región. Construyes tu propia cartera de clientes con nuestras evaluaciones validadas científicamente y nuestro software de gestión del talento."
++   }
++  ]
++ },
++ "ro": {
++  "metaT": "Cariere la hrmforce | Lucrează la hrmforce",
++  "metaD": "Vezi posturile deschise. Nu se potrivește niciun rol dar crezi că poți aduce valoare? Trimite o candidatură spontană.",
++  "crumb": "Cariere",
++  "eyebrow": "Lucrează la hrmforce",
++  "hero": "Posturi deschise",
++  "intro": "Mai jos sunt posturile noastre deschise. Interesat? Scrie la service@hrmforce.com sau sună la +31 (0)88 88 321 88.",
++  "regionsLabel": "Regiune",
++  "viewCta": "Vezi postul",
++  "applyCta": "Aplică",
++  "openT": "Candidatură spontană",
++  "openP": "Căutăm mereu talente. Nu se potrivește niciun post de mai sus dar crezi că poți aduce valoare? Trimite o candidatură spontană la service@hrmforce.com.",
++  "mailBtn": "Trimite candidatura",
++  "jobs": [
++   {
++    "title": "Internship Business Development",
++    "type": "Internship",
++    "loc": "Amsterdam / hibrid",
++    "desc": "Căutăm un student entuziast de licență sau master pentru un internship de practică sau de cercetare. Sarcina ta: realizarea unui studiu de satisfacție a clienților. Profil: entuziast, engleză fluentă, perseverent și cu o prezență bună."
++   },
++   {
++    "title": "Partener HR independent / Value Added Reseller / Distribuitor",
++    "type": "Partener / reseller",
++    "loc": "Internațional",
++    "desc": "Pentru creșterea internațională căutăm parteneri independenți care să reprezinte și să distribuie hrmforce în regiunea lor. Îți construiești propriul portofoliu de clienți cu evaluările noastre validate științific și software-ul de management al talentelor."
++   }
++  ]
++ }
++};
+diff --git a/src/data/valid-paths.js b/src/data/valid-paths.js
+index 21e6b18..b7916b6 100644
+--- a/src/data/valid-paths.js
++++ b/src/data/valid-paths.js
+@@ -26,6 +26,6 @@ try {
+ 
+ const STATIC = ["/","/%3Fpage_id=12073/","/%3Fpage_id=12199/","/%3Fpage_id=12326/","/%3Fpage_id=12390/","/%3Fpage_id=12401/","/%3Fpage_id=12532/","/%3Fpage_id=12631/","/%3Fpage_id=13499/","/%3Fpage_id=13540/","/%3Fpage_id=14534/","/%3Fpage_id=15495/","/%3Fpage_id=19506/","/%3Fpage_id=20413/","/%3Fpage_id=21104/","/%3Fpage_id=21979/","/%3Fpage_id=22199/","/%3Fpage_id=23609/","/%3Fpage_id=23955/","/%3Fpage_id=24624/","/%3Fpage_id=6325/","/%3Fpage_id=6397/","/%3Fpage_id=7219/","/%3Fpage_id=7960/","/%3Fpage_id=7962/","/%3Fpage_id=8355/","/%3Fpage_id=8358/","/%3Fpage_id=8361/","/%3Fpage_id=8364/","/%3Fpage_id=8392/","/%3Fpage_id=8394/","/%3Fpage_id=8396/","/%3Fpage_id=8564/","/%3Fpage_id=8578/","/%3Fpage_id=8613/","/%3Fpage_id=8638/","/%3Fpage_id=8649/","/%3Fpage_id=9790/","/advies/","/advies/certificatietraining/","/advies/loopbaan-assessment/","/advies/medezeggenschap/","/advies/team-training/","/advies/training-het-goede-gesprek/","/assessments/15pf/","/assessments/360-graden-feedback/","/assessments/ability-scan/","/assessments/appraisal/","/assessments/beroepskeuze-test/","/assessments/big-five/","/assessments/canmeds/","/assessments/coaching-screener-scan/","/assessments/cognitieve-test/","/assessments/communicatiestijlen-test/","/assessments/competentie-check/","/assessments/conflictstijlen-test/","/assessments/disc-test/","/assessments/drijfverentest/","/assessments/duurzame-inzetbaarheid-scan/","/assessments/exit-assessment/","/assessments/groepsrollen/","/assessments/intake-candidate/","/assessments/interesse-scan/","/assessments/job-profiler/","/assessments/lean-scan/","/assessments/leerstijlen/","/assessments/leiderschapstest/","/assessments/lencioni-teamdynamiek/","/assessments/levensloop-scan/","/assessments/loopbaanwaarden/","/assessments/mentale-veerkracht-scan/","/assessments/ontwikkelassessment/","/assessments/pulse-survey/","/assessments/referentie-check/","/assessments/studiekeuzetest/","/assessments/teamanalyse/","/assessments/tevredenheidsonderzoek-medewerkers/","/assessments/typology/","/assessments/value-drives/","/assessments/verkoopvaardigheden/","/contact/","/de/","/de/%3Fpage_id=12073/","/de/%3Fpage_id=12199/","/de/%3Fpage_id=12326/","/de/%3Fpage_id=12390/","/de/%3Fpage_id=12401/","/de/%3Fpage_id=12532/","/de/%3Fpage_id=12631/","/de/%3Fpage_id=13499/","/de/%3Fpage_id=13540/","/de/%3Fpage_id=15495/","/de/%3Fpage_id=18517/","/de/%3Fpage_id=19506/","/de/%3Fpage_id=20413/","/de/%3Fpage_id=21104/","/de/%3Fpage_id=21979/","/de/%3Fpage_id=22199/","/de/%3Fpage_id=23609/","/de/%3Fpage_id=23955/","/de/%3Fpage_id=6325/","/de/%3Fpage_id=6397/","/de/%3Fpage_id=7219/","/de/%3Fpage_id=7960/","/de/%3Fpage_id=7962/","/de/%3Fpage_id=8355/","/de/%3Fpage_id=8358/","/de/%3Fpage_id=8361/","/de/%3Fpage_id=8364/","/de/%3Fpage_id=8392/","/de/%3Fpage_id=8394/","/de/%3Fpage_id=8396/","/de/%3Fpage_id=8564/","/de/%3Fpage_id=8578/","/de/%3Fpage_id=8613/","/de/%3Fpage_id=8638/","/de/%3Fpage_id=8649/","/de/%3Fpage_id=9790/","/de/advies/","/de/assessments/15pf/","/de/assessments/360-graden-feedback/","/de/assessments/ability-scan/","/de/assessments/appraisal/","/de/assessments/beroepskeuze-test/","/de/assessments/big-five/","/de/assessments/canmeds/","/de/assessments/coaching-screener-scan/","/de/assessments/cognitieve-test/","/de/assessments/communicatiestijlen-test/","/de/assessments/competentie-check/","/de/assessments/conflictstijlen-test/","/de/assessments/disc-test/","/de/assessments/drijfverentest/","/de/assessments/duurzame-inzetbaarheid-scan/","/de/assessments/exit-assessment/","/de/assessments/groepsrollen/","/de/assessments/intake-candidate/","/de/assessments/interesse-scan/","/de/assessments/job-profiler/","/de/assessments/lean-scan/","/de/assessments/leerstijlen/","/de/assessments/leiderschapstest/","/de/assessments/lencioni-teamdynamiek/","/de/assessments/levensloop-scan/","/de/assessments/loopbaanwaarden/","/de/assessments/mentale-veerkracht-scan/","/de/assessments/ontwikkelassessment/","/de/assessments/pulse-survey/","/de/assessments/referentie-check/","/de/assessments/studiekeuzetest/","/de/assessments/teamanalyse/","/de/assessments/tevredenheidsonderzoek-medewerkers/","/de/assessments/typology/","/de/assessments/value-drives/","/de/assessments/verkoopvaardigheden/","/de/contact/","/de/hrm-oplossingen/","/de/integraties/","/de/kenniscentrum/","/de/klantcases/","/de/over-ons/","/de/roi-rekentool/","/de/support/","/de/trust/","/de/voorbereiding/","/en/","/en/%3Fpage_id=12073/","/en/%3Fpage_id=12199/","/en/%3Fpage_id=12326/","/en/%3Fpage_id=12390/","/en/%3Fpage_id=12401/","/en/%3Fpage_id=12532/","/en/%3Fpage_id=12631/","/en/%3Fpage_id=13499/","/en/%3Fpage_id=13540/","/en/%3Fpage_id=15495/","/en/%3Fpage_id=15922/","/en/%3Fpage_id=16099/","/en/%3Fpage_id=17810/","/en/%3Fpage_id=19503/","/en/%3Fpage_id=19506/","/en/%3Fpage_id=20413/","/en/%3Fpage_id=21104/","/en/%3Fpage_id=21298/","/en/%3Fpage_id=21979/","/en/%3Fpage_id=22199/","/en/%3Fpage_id=23609/","/en/%3Fpage_id=23955/","/en/%3Fpage_id=6325/","/en/%3Fpage_id=6397/","/en/%3Fpage_id=7219/","/en/%3Fpage_id=7960/","/en/%3Fpage_id=7962/","/en/%3Fpage_id=8355/","/en/%3Fpage_id=8358/","/en/%3Fpage_id=8361/","/en/%3Fpage_id=8364/","/en/%3Fpage_id=8392/","/en/%3Fpage_id=8394/","/en/%3Fpage_id=8396/","/en/%3Fpage_id=8564/","/en/%3Fpage_id=8578/","/en/%3Fpage_id=8613/","/en/%3Fpage_id=8638/","/en/%3Fpage_id=8649/","/en/%3Fpage_id=9790/","/en/advies/","/en/assessments/15pf/","/en/assessments/360-graden-feedback/","/en/assessments/ability-scan/","/en/assessments/appraisal/","/en/assessments/beroepskeuze-test/","/en/assessments/big-five/","/en/assessments/canmeds/","/en/assessments/coaching-screener-scan/","/en/assessments/cognitieve-test/","/en/assessments/communicatiestijlen-test/","/en/assessments/competentie-check/","/en/assessments/conflictstijlen-test/","/en/assessments/disc-test/","/en/assessments/drijfverentest/","/en/assessments/duurzame-inzetbaarheid-scan/","/en/assessments/exit-assessment/","/en/assessments/groepsrollen/","/en/assessments/intake-candidate/","/en/assessments/interesse-scan/","/en/assessments/job-profiler/","/en/assessments/lean-scan/","/en/assessments/leerstijlen/","/en/assessments/leiderschapstest/","/en/assessments/lencioni-teamdynamiek/","/en/assessments/levensloop-scan/","/en/assessments/loopbaanwaarden/","/en/assessments/mentale-veerkracht-scan/","/en/assessments/ontwikkelassessment/","/en/assessments/pulse-survey/","/en/assessments/referentie-check/","/en/assessments/studiekeuzetest/","/en/assessments/teamanalyse/","/en/assessments/tevredenheidsonderzoek-medewerkers/","/en/assessments/typology/","/en/assessments/value-drives/","/en/assessments/verkoopvaardigheden/","/en/contact/","/en/hrm-oplossingen/","/en/integraties/","/en/kenniscentrum/","/en/klantcases/","/en/over-ons/","/en/roi-rekentool/","/en/support/","/en/trust/","/en/voorbereiding/","/es/","/es/%3Fpage_id=12073/","/es/%3Fpage_id=12199/","/es/%3Fpage_id=12326/","/es/%3Fpage_id=12390/","/es/%3Fpage_id=12401/","/es/%3Fpage_id=12532/","/es/%3Fpage_id=12631/","/es/%3Fpage_id=13499/","/es/%3Fpage_id=13540/","/es/%3Fpage_id=15495/","/es/%3Fpage_id=18519/","/es/%3Fpage_id=19506/","/es/%3Fpage_id=20413/","/es/%3Fpage_id=21104/","/es/%3Fpage_id=21979/","/es/%3Fpage_id=22199/","/es/%3Fpage_id=23609/","/es/%3Fpage_id=23682/","/es/%3Fpage_id=23955/","/es/%3Fpage_id=6325/","/es/%3Fpage_id=6397/","/es/%3Fpage_id=7219/","/es/%3Fpage_id=7960/","/es/%3Fpage_id=7962/","/es/%3Fpage_id=8355/","/es/%3Fpage_id=8358/","/es/%3Fpage_id=8361/","/es/%3Fpage_id=8364/","/es/%3Fpage_id=8392/","/es/%3Fpage_id=8394/","/es/%3Fpage_id=8396/","/es/%3Fpage_id=8564/","/es/%3Fpage_id=8578/","/es/%3Fpage_id=8613/","/es/%3Fpage_id=8638/","/es/%3Fpage_id=8649/","/es/%3Fpage_id=9790/","/es/advies/","/es/assessments/15pf/","/es/assessments/360-graden-feedback/","/es/assessments/ability-scan/","/es/assessments/appraisal/","/es/assessments/beroepskeuze-test/","/es/assessments/big-five/","/es/assessments/canmeds/","/es/assessments/coaching-screener-scan/","/es/assessments/cognitieve-test/","/es/assessments/communicatiestijlen-test/","/es/assessments/competentie-check/","/es/assessments/conflictstijlen-test/","/es/assessments/disc-test/","/es/assessments/drijfverentest/","/es/assessments/duurzame-inzetbaarheid-scan/","/es/assessments/exit-assessment/","/es/assessments/groepsrollen/","/es/assessments/intake-candidate/","/es/assessments/interesse-scan/","/es/assessments/job-profiler/","/es/assessments/lean-scan/","/es/assessments/leerstijlen/","/es/assessments/leiderschapstest/","/es/assessments/lencioni-teamdynamiek/","/es/assessments/levensloop-scan/","/es/assessments/loopbaanwaarden/","/es/assessments/mentale-veerkracht-scan/","/es/assessments/ontwikkelassessment/","/es/assessments/pulse-survey/","/es/assessments/referentie-check/","/es/assessments/studiekeuzetest/","/es/assessments/teamanalyse/","/es/assessments/tevredenheidsonderzoek-medewerkers/","/es/assessments/typology/","/es/assessments/value-drives/","/es/assessments/verkoopvaardigheden/","/es/contact/","/es/hrm-oplossingen/","/es/integraties/","/es/kenniscentrum/","/es/klantcases/","/es/online-assessments/","/es/over-ons/","/es/roi-rekentool/","/es/support/","/es/trust/","/es/voorbereiding/","/fr/","/fr/%3Fpage_id=12073/","/fr/%3Fpage_id=12199/","/fr/%3Fpage_id=12326/","/fr/%3Fpage_id=12390/","/fr/%3Fpage_id=12401/","/fr/%3Fpage_id=12532/","/fr/%3Fpage_id=12631/","/fr/%3Fpage_id=13499/","/fr/%3Fpage_id=13540/","/fr/%3Fpage_id=15495/","/fr/%3Fpage_id=18516/","/fr/%3Fpage_id=19506/","/fr/%3Fpage_id=20413/","/fr/%3Fpage_id=21104/","/fr/%3Fpage_id=21979/","/fr/%3Fpage_id=22199/","/fr/%3Fpage_id=23609/","/fr/%3Fpage_id=23955/","/fr/%3Fpage_id=6325/","/fr/%3Fpage_id=6397/","/fr/%3Fpage_id=7219/","/fr/%3Fpage_id=7960/","/fr/%3Fpage_id=7962/","/fr/%3Fpage_id=8355/","/fr/%3Fpage_id=8358/","/fr/%3Fpage_id=8361/","/fr/%3Fpage_id=8364/","/fr/%3Fpage_id=8392/","/fr/%3Fpage_id=8394/","/fr/%3Fpage_id=8396/","/fr/%3Fpage_id=8564/","/fr/%3Fpage_id=8578/","/fr/%3Fpage_id=8613/","/fr/%3Fpage_id=8638/","/fr/%3Fpage_id=8649/","/fr/%3Fpage_id=9790/","/fr/advies/","/fr/assessments/15pf/","/fr/assessments/360-graden-feedback/","/fr/assessments/ability-scan/","/fr/assessments/appraisal/","/fr/assessments/beroepskeuze-test/","/fr/assessments/big-five/","/fr/assessments/canmeds/","/fr/assessments/coaching-screener-scan/","/fr/assessments/cognitieve-test/","/fr/assessments/communicatiestijlen-test/","/fr/assessments/competentie-check/","/fr/assessments/conflictstijlen-test/","/fr/assessments/disc-test/","/fr/assessments/drijfverentest/","/fr/assessments/duurzame-inzetbaarheid-scan/","/fr/assessments/exit-assessment/","/fr/assessments/groepsrollen/","/fr/assessments/intake-candidate/","/fr/assessments/interesse-scan/","/fr/assessments/job-profiler/","/fr/assessments/lean-scan/","/fr/assessments/leerstijlen/","/fr/assessments/leiderschapstest/","/fr/assessments/lencioni-teamdynamiek/","/fr/assessments/levensloop-scan/","/fr/assessments/loopbaanwaarden/","/fr/assessments/mentale-veerkracht-scan/","/fr/assessments/ontwikkelassessment/","/fr/assessments/pulse-survey/","/fr/assessments/referentie-check/","/fr/assessments/studiekeuzetest/","/fr/assessments/teamanalyse/","/fr/assessments/tevredenheidsonderzoek-medewerkers/","/fr/assessments/typology/","/fr/assessments/value-drives/","/fr/assessments/verkoopvaardigheden/","/fr/contact/","/fr/hrm-oplossingen/","/fr/integraties/","/fr/kenniscentrum/","/fr/klantcases/","/fr/online-assessments/","/fr/over-ons/","/fr/roi-rekentool/","/fr/shop/","/fr/support/","/fr/trust/","/fr/voorbereiding/","/geschiktvoorzorg/","/geschiktvoorzorg/klantcases/","/geschiktvoorzorg/over-ons/","/hrm-oplossingen/","/inschrijfformulier-trainingen/","/integraties/","/kenniscentrum/","/kenniscentrum/burn-out-herkennen-bij-topperformers/","/kenniscentrum/intelligentietest-volwassenen/","/kenniscentrum/leiderschapsontwikkeling-data/","/kenniscentrum/matrigma-capaciteitentest/","/kenniscentrum/ontwikkelassessment-belangrijk/","/kenniscentrum/talent-management-system-software/","/klantcases/","/odion/","/oefen-assessment-maken/","/online-assessments/","/over-ons/","/partner/selier-van-duppen/","/ro/","/ro/%3Fpage_id=12073/","/ro/%3Fpage_id=12199/","/ro/%3Fpage_id=12326/","/ro/%3Fpage_id=12390/","/ro/%3Fpage_id=12401/","/ro/%3Fpage_id=12532/","/ro/%3Fpage_id=12631/","/ro/%3Fpage_id=13499/","/ro/%3Fpage_id=13540/","/ro/%3Fpage_id=15495/","/ro/%3Fpage_id=16875/","/ro/%3Fpage_id=18518/","/ro/%3Fpage_id=19506/","/ro/%3Fpage_id=20413/","/ro/%3Fpage_id=21104/","/ro/%3Fpage_id=21979/","/ro/%3Fpage_id=22199/","/ro/%3Fpage_id=23609/","/ro/%3Fpage_id=23955/","/ro/%3Fpage_id=6325/","/ro/%3Fpage_id=6397/","/ro/%3Fpage_id=7219/","/ro/%3Fpage_id=7960/","/ro/%3Fpage_id=7962/","/ro/%3Fpage_id=8355/","/ro/%3Fpage_id=8358/","/ro/%3Fpage_id=8361/","/ro/%3Fpage_id=8364/","/ro/%3Fpage_id=8392/","/ro/%3Fpage_id=8394/","/ro/%3Fpage_id=8396/","/ro/%3Fpage_id=8564/","/ro/%3Fpage_id=8578/","/ro/%3Fpage_id=8613/","/ro/%3Fpage_id=8638/","/ro/%3Fpage_id=8649/","/ro/%3Fpage_id=9790/","/ro/advies/","/ro/assessments/15pf/","/ro/assessments/360-graden-feedback/","/ro/assessments/ability-scan/","/ro/assessments/appraisal/","/ro/assessments/beroepskeuze-test/","/ro/assessments/big-five/","/ro/assessments/canmeds/","/ro/assessments/coaching-screener-scan/","/ro/assessments/cognitieve-test/","/ro/assessments/communicatiestijlen-test/","/ro/assessments/competentie-check/","/ro/assessments/conflictstijlen-test/","/ro/assessments/disc-test/","/ro/assessments/drijfverentest/","/ro/assessments/duurzame-inzetbaarheid-scan/","/ro/assessments/exit-assessment/","/ro/assessments/groepsrollen/","/ro/assessments/intake-candidate/","/ro/assessments/interesse-scan/","/ro/assessments/job-profiler/","/ro/assessments/lean-scan/","/ro/assessments/leerstijlen/","/ro/assessments/leiderschapstest/","/ro/assessments/lencioni-teamdynamiek/","/ro/assessments/levensloop-scan/","/ro/assessments/loopbaanwaarden/","/ro/assessments/mentale-veerkracht-scan/","/ro/assessments/ontwikkelassessment/","/ro/assessments/pulse-survey/","/ro/assessments/referentie-check/","/ro/assessments/studiekeuzetest/","/ro/assessments/teamanalyse/","/ro/assessments/tevredenheidsonderzoek-medewerkers/","/ro/assessments/typology/","/ro/assessments/value-drives/","/ro/assessments/verkoopvaardigheden/","/ro/contact/","/ro/hrm-oplossingen/","/ro/integraties/","/ro/kenniscentrum/","/ro/klantcases/","/ro/online-assessments/","/ro/over-ons/","/ro/roi-rekentool/","/ro/support/","/ro/trust/","/ro/voorbereiding/","/roi-rekentool/","/shop/","/support/","/trust/","/voorbereiding/"];
+ 
+-const EXTRA = ["/oefenen/big-five/","/oefenen/disc/","/oefenen/cognitieve-test/","/oefenen/drijfveren/","/en/oefenen/big-five/","/en/oefenen/disc/","/en/oefenen/cognitieve-test/","/en/oefenen/drijfveren/","/de/oefenen/big-five/","/de/oefenen/disc/","/de/oefenen/cognitieve-test/","/de/oefenen/drijfveren/","/fr/oefenen/big-five/","/fr/oefenen/disc/","/fr/oefenen/cognitieve-test/","/fr/oefenen/drijfveren/","/es/oefenen/big-five/","/es/oefenen/disc/","/es/oefenen/cognitieve-test/","/es/oefenen/drijfveren/","/ro/oefenen/big-five/","/ro/oefenen/disc/","/ro/oefenen/cognitieve-test/","/ro/oefenen/drijfveren/","/whitepapers/","/en/whitepapers/","/de/whitepapers/","/fr/whitepapers/","/es/whitepapers/","/ro/whitepapers/","/whitepapers/objectief-werven/","/whitepapers/beoordelen-naar-ontwikkelen/","/en/whitepapers/objectief-werven/","/en/whitepapers/beoordelen-naar-ontwikkelen/","/de/whitepapers/objectief-werven/","/de/whitepapers/beoordelen-naar-ontwikkelen/","/fr/whitepapers/objectief-werven/","/fr/whitepapers/beoordelen-naar-ontwikkelen/","/es/whitepapers/objectief-werven/","/es/whitepapers/beoordelen-naar-ontwikkelen/","/ro/whitepapers/objectief-werven/","/ro/whitepapers/beoordelen-naar-ontwikkelen/","/integraties/afas/","/integraties/nmbrs/","/integraties/visma/","/integraties/loket/","/integraties/recruitee/","/integraties/carerix/","/integraties/otys/","/en/integraties/afas/","/en/integraties/nmbrs/","/en/integraties/visma/","/en/integraties/loket/","/en/integraties/recruitee/","/en/integraties/carerix/","/en/integraties/otys/","/de/integraties/afas/","/de/integraties/nmbrs/","/de/integraties/visma/","/de/integraties/loket/","/de/integraties/recruitee/","/de/integraties/carerix/","/de/integraties/otys/","/fr/integraties/afas/","/fr/integraties/nmbrs/","/fr/integraties/visma/","/fr/integraties/loket/","/fr/integraties/recruitee/","/fr/integraties/carerix/","/fr/integraties/otys/","/es/integraties/afas/","/es/integraties/nmbrs/","/es/integraties/visma/","/es/integraties/loket/","/es/integraties/recruitee/","/es/integraties/carerix/","/es/integraties/otys/","/ro/integraties/afas/","/ro/integraties/nmbrs/","/ro/integraties/visma/","/ro/integraties/loket/","/ro/integraties/recruitee/","/ro/integraties/carerix/","/ro/integraties/otys/","/testkiezer/","/en/testkiezer/","/de/testkiezer/","/fr/testkiezer/","/es/testkiezer/","/ro/testkiezer/","/voor-kandidaten/","/en/voor-kandidaten/","/de/voor-kandidaten/","/fr/voor-kandidaten/","/es/voor-kandidaten/","/ro/voor-kandidaten/","/begrippenlijst/","/en/begrippenlijst/","/de/begrippenlijst/","/fr/begrippenlijst/","/es/begrippenlijst/","/ro/begrippenlijst/","/wetenschappelijke-verantwoording/","/en/wetenschappelijke-verantwoording/","/de/wetenschappelijke-verantwoording/","/fr/wetenschappelijke-verantwoording/","/es/wetenschappelijke-verantwoording/","/ro/wetenschappelijke-verantwoording/","/toepassingen/zorg/","/en/toepassingen/zorg/","/de/toepassingen/zorg/","/fr/toepassingen/zorg/","/es/toepassingen/zorg/","/ro/toepassingen/zorg/","/toepassingen/","/toepassingen/werving-en-selectie/","/toepassingen/ontwikkeling/","/toepassingen/leidinggevenden/","/toepassingen/jong-talent/","/toepassingen/onderwijs/","/toepassingen/industrie/","/en/toepassingen/","/en/toepassingen/werving-en-selectie/","/en/toepassingen/ontwikkeling/","/en/toepassingen/leidinggevenden/","/en/toepassingen/jong-talent/","/en/toepassingen/onderwijs/","/en/toepassingen/industrie/","/de/toepassingen/","/de/toepassingen/werving-en-selectie/","/de/toepassingen/ontwikkeling/","/de/toepassingen/leidinggevenden/","/de/toepassingen/jong-talent/","/de/toepassingen/onderwijs/","/de/toepassingen/industrie/","/fr/toepassingen/","/fr/toepassingen/werving-en-selectie/","/fr/toepassingen/ontwikkeling/","/fr/toepassingen/leidinggevenden/","/fr/toepassingen/jong-talent/","/fr/toepassingen/onderwijs/","/fr/toepassingen/industrie/","/es/toepassingen/","/es/toepassingen/werving-en-selectie/","/es/toepassingen/ontwikkeling/","/es/toepassingen/leidinggevenden/","/es/toepassingen/jong-talent/","/es/toepassingen/onderwijs/","/es/toepassingen/industrie/","/ro/toepassingen/","/ro/toepassingen/werving-en-selectie/","/ro/toepassingen/ontwikkeling/","/ro/toepassingen/leidinggevenden/","/ro/toepassingen/jong-talent/","/ro/toepassingen/onderwijs/","/ro/toepassingen/industrie/"];
++const EXTRA = ["/oefenen/big-five/","/oefenen/disc/","/oefenen/cognitieve-test/","/oefenen/drijfveren/","/en/oefenen/big-five/","/en/oefenen/disc/","/en/oefenen/cognitieve-test/","/en/oefenen/drijfveren/","/de/oefenen/big-five/","/de/oefenen/disc/","/de/oefenen/cognitieve-test/","/de/oefenen/drijfveren/","/fr/oefenen/big-five/","/fr/oefenen/disc/","/fr/oefenen/cognitieve-test/","/fr/oefenen/drijfveren/","/es/oefenen/big-five/","/es/oefenen/disc/","/es/oefenen/cognitieve-test/","/es/oefenen/drijfveren/","/ro/oefenen/big-five/","/ro/oefenen/disc/","/ro/oefenen/cognitieve-test/","/ro/oefenen/drijfveren/","/whitepapers/","/en/whitepapers/","/de/whitepapers/","/fr/whitepapers/","/es/whitepapers/","/ro/whitepapers/","/whitepapers/objectief-werven/","/whitepapers/beoordelen-naar-ontwikkelen/","/en/whitepapers/objectief-werven/","/en/whitepapers/beoordelen-naar-ontwikkelen/","/de/whitepapers/objectief-werven/","/de/whitepapers/beoordelen-naar-ontwikkelen/","/fr/whitepapers/objectief-werven/","/fr/whitepapers/beoordelen-naar-ontwikkelen/","/es/whitepapers/objectief-werven/","/es/whitepapers/beoordelen-naar-ontwikkelen/","/ro/whitepapers/objectief-werven/","/ro/whitepapers/beoordelen-naar-ontwikkelen/","/integraties/afas/","/integraties/nmbrs/","/integraties/visma/","/integraties/loket/","/integraties/recruitee/","/integraties/carerix/","/integraties/otys/","/en/integraties/afas/","/en/integraties/nmbrs/","/en/integraties/visma/","/en/integraties/loket/","/en/integraties/recruitee/","/en/integraties/carerix/","/en/integraties/otys/","/de/integraties/afas/","/de/integraties/nmbrs/","/de/integraties/visma/","/de/integraties/loket/","/de/integraties/recruitee/","/de/integraties/carerix/","/de/integraties/otys/","/fr/integraties/afas/","/fr/integraties/nmbrs/","/fr/integraties/visma/","/fr/integraties/loket/","/fr/integraties/recruitee/","/fr/integraties/carerix/","/fr/integraties/otys/","/es/integraties/afas/","/es/integraties/nmbrs/","/es/integraties/visma/","/es/integraties/loket/","/es/integraties/recruitee/","/es/integraties/carerix/","/es/integraties/otys/","/ro/integraties/afas/","/ro/integraties/nmbrs/","/ro/integraties/visma/","/ro/integraties/loket/","/ro/integraties/recruitee/","/ro/integraties/carerix/","/ro/integraties/otys/","/testkiezer/","/en/testkiezer/","/de/testkiezer/","/fr/testkiezer/","/es/testkiezer/","/ro/testkiezer/","/voor-kandidaten/","/en/voor-kandidaten/","/de/voor-kandidaten/","/fr/voor-kandidaten/","/es/voor-kandidaten/","/ro/voor-kandidaten/","/begrippenlijst/","/en/begrippenlijst/","/de/begrippenlijst/","/fr/begrippenlijst/","/es/begrippenlijst/","/ro/begrippenlijst/","/wetenschappelijke-verantwoording/","/en/wetenschappelijke-verantwoording/","/de/wetenschappelijke-verantwoording/","/fr/wetenschappelijke-verantwoording/","/es/wetenschappelijke-verantwoording/","/ro/wetenschappelijke-verantwoording/","/vacatures/","/en/vacatures/","/de/vacatures/","/fr/vacatures/","/es/vacatures/","/ro/vacatures/","/toepassingen/zorg/","/en/toepassingen/zorg/","/de/toepassingen/zorg/","/fr/toepassingen/zorg/","/es/toepassingen/zorg/","/ro/toepassingen/zorg/","/toepassingen/","/toepassingen/werving-en-selectie/","/toepassingen/ontwikkeling/","/toepassingen/leidinggevenden/","/toepassingen/jong-talent/","/toepassingen/onderwijs/","/toepassingen/industrie/","/en/toepassingen/","/en/toepassingen/werving-en-selectie/","/en/toepassingen/ontwikkeling/","/en/toepassingen/leidinggevenden/","/en/toepassingen/jong-talent/","/en/toepassingen/onderwijs/","/en/toepassingen/industrie/","/de/toepassingen/","/de/toepassingen/werving-en-selectie/","/de/toepassingen/ontwikkeling/","/de/toepassingen/leidinggevenden/","/de/toepassingen/jong-talent/","/de/toepassingen/onderwijs/","/de/toepassingen/industrie/","/fr/toepassingen/","/fr/toepassingen/werving-en-selectie/","/fr/toepassingen/ontwikkeling/","/fr/toepassingen/leidinggevenden/","/fr/toepassingen/jong-talent/","/fr/toepassingen/onderwijs/","/fr/toepassingen/industrie/","/es/toepassingen/","/es/toepassingen/werving-en-selectie/","/es/toepassingen/ontwikkeling/","/es/toepassingen/leidinggevenden/","/es/toepassingen/jong-talent/","/es/toepassingen/onderwijs/","/es/toepassingen/industrie/","/ro/toepassingen/","/ro/toepassingen/werving-en-selectie/","/ro/toepassingen/ontwikkeling/","/ro/toepassingen/leidinggevenden/","/ro/toepassingen/jong-talent/","/ro/toepassingen/onderwijs/","/ro/toepassingen/industrie/"];
+ 
+ export default Array.from(new Set([...STATIC, ...EXTRA, ...sanityPaths]));
+diff --git a/src/i18n/utils.js b/src/i18n/utils.js
+index 9e6f77f..ec12e24 100644
+--- a/src/i18n/utils.js
++++ b/src/i18n/utils.js
+@@ -30,7 +30,7 @@ export const LOCALIZED_PAGES = new Set([
+   "/", "/online-assessments/", "/hrm-oplossingen/", "/advies/", "/over-ons/",
+   "/contact/", "/shop/", "/assessment-overzicht/", "/tarieven/", "/roi-rekentool/",
+   "/klantcases/", "/kenniscentrum/", "/trust/", "/integraties/", "/voorbereiding/",
+-  "/support/", "/support/f-a-q/", "/wetenschappelijke-verantwoording/", "/begrippenlijst/", "/voor-kandidaten/", "/testkiezer/", "/whitepapers/", "/toepassingen/",
++  "/support/", "/support/f-a-q/", "/wetenschappelijke-verantwoording/", "/begrippenlijst/", "/voor-kandidaten/", "/testkiezer/", "/whitepapers/", "/toepassingen/", "/vacatures/",
+ ]);
+ 
+ // Assessment-detailpagina's (/assessments/<slug>/) zijn in alle talen gelokaliseerd.
+diff --git a/src/layouts/Base.astro b/src/layouts/Base.astro
+index d3e0f83..6dfe96b 100644
+--- a/src/layouts/Base.astro
++++ b/src/layouts/Base.astro
+@@ -104,6 +104,7 @@ const orgLd = {
+     />
+     <title>{title}</title>
+     <script type="application/ld+json" set:html={JSON.stringify(orgLd)} is:inline></script>
++    <script type="application/ld+json" is:inline set:html={JSON.stringify({"@context":"https://schema.org","@type":"WebSite",name:"hrmforce",url:"https://hrmforce.com/",potentialAction:{"@type":"SearchAction",target:{"@type":"EntryPoint",urlTemplate:"https://hrmforce.com/kenniscentrum/?q={search_term_string}"},"query-input":"required name=search_term_string"}})}></script>
+   </head>
+   <body>
+     <Header active={active} />
+diff --git a/src/pages/de/vacatures/index.astro b/src/pages/de/vacatures/index.astro
+new file mode 100644
+index 0000000..d187d33
+--- /dev/null
++++ b/src/pages/de/vacatures/index.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import Vacatures from "../../../components/Vacatures.astro";
++import { VAC } from "../../../data/vacatures-content.js";
++const t = VAC.de;
++---
++<Base title={t.metaT} description={t.metaD} active="about"><Vacatures lang="de" /></Base>
+diff --git a/src/pages/en/vacatures/index.astro b/src/pages/en/vacatures/index.astro
+new file mode 100644
+index 0000000..764d1dd
+--- /dev/null
++++ b/src/pages/en/vacatures/index.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import Vacatures from "../../../components/Vacatures.astro";
++import { VAC } from "../../../data/vacatures-content.js";
++const t = VAC.en;
++---
++<Base title={t.metaT} description={t.metaD} active="about"><Vacatures lang="en" /></Base>
+diff --git a/src/pages/es/vacatures/index.astro b/src/pages/es/vacatures/index.astro
+new file mode 100644
+index 0000000..d065016
+--- /dev/null
++++ b/src/pages/es/vacatures/index.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import Vacatures from "../../../components/Vacatures.astro";
++import { VAC } from "../../../data/vacatures-content.js";
++const t = VAC.es;
++---
++<Base title={t.metaT} description={t.metaD} active="about"><Vacatures lang="es" /></Base>
+diff --git a/src/pages/fr/vacatures/index.astro b/src/pages/fr/vacatures/index.astro
+new file mode 100644
+index 0000000..4c32800
+--- /dev/null
++++ b/src/pages/fr/vacatures/index.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import Vacatures from "../../../components/Vacatures.astro";
++import { VAC } from "../../../data/vacatures-content.js";
++const t = VAC.fr;
++---
++<Base title={t.metaT} description={t.metaD} active="about"><Vacatures lang="fr" /></Base>
+diff --git a/src/pages/ro/vacatures/index.astro b/src/pages/ro/vacatures/index.astro
+new file mode 100644
+index 0000000..f8f3851
+--- /dev/null
++++ b/src/pages/ro/vacatures/index.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import Vacatures from "../../../components/Vacatures.astro";
++import { VAC } from "../../../data/vacatures-content.js";
++const t = VAC.ro;
++---
++<Base title={t.metaT} description={t.metaD} active="about"><Vacatures lang="ro" /></Base>
+diff --git a/src/pages/vacatures/index.astro b/src/pages/vacatures/index.astro
+new file mode 100644
+index 0000000..92b651a
+--- /dev/null
++++ b/src/pages/vacatures/index.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../layouts/Base.astro";
++import Vacatures from "../../components/Vacatures.astro";
++import { VAC } from "../../data/vacatures-content.js";
++const t = VAC.nl;
++---
++<Base title={t.metaT} description={t.metaD} active="about"><Vacatures lang="nl" /></Base>
+-- 
+2.34.1
+

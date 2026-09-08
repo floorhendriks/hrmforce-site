@@ -1,0 +1,546 @@
+From 6c422973935b5ff636045b485bb0aaa461cc8263 Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Tue, 8 Sep 2026 09:19:15 +0200
+Subject: [PATCH] Marketing batch 3: interactieve productrondleiding
+ (/rondleiding/, klikbare stappen) in 6 talen, gated benchmark-gids als 3e
+ whitepaper (6 talen, feitelijk), review-badges component (config-gestuurd,
+ verborgen tot profiel-URL ingevuld), footer-links rondleiding
+
+---
+ src/components/Footer.astro          |   4 +
+ src/components/Rondleiding.astro     |  97 +++++++++++++
+ src/components/TrustBadges.astro     |  27 ++++
+ src/data/rondleiding-content.js      | 196 +++++++++++++++++++++++++++
+ src/data/site-config.js              |   9 ++
+ src/data/valid-paths.js              |   2 +-
+ src/data/whitepapers-content.js      |   8 ++
+ src/i18n/utils.js                    |   2 +-
+ src/pages/de/rondleiding/index.astro |   7 +
+ src/pages/en/rondleiding/index.astro |   7 +
+ src/pages/es/rondleiding/index.astro |   7 +
+ src/pages/fr/rondleiding/index.astro |   7 +
+ src/pages/ro/rondleiding/index.astro |   7 +
+ src/pages/rondleiding/index.astro    |   7 +
+ 14 files changed, 385 insertions(+), 2 deletions(-)
+ create mode 100644 src/components/Rondleiding.astro
+ create mode 100644 src/components/TrustBadges.astro
+ create mode 100644 src/data/rondleiding-content.js
+ create mode 100644 src/pages/de/rondleiding/index.astro
+ create mode 100644 src/pages/en/rondleiding/index.astro
+ create mode 100644 src/pages/es/rondleiding/index.astro
+ create mode 100644 src/pages/fr/rondleiding/index.astro
+ create mode 100644 src/pages/ro/rondleiding/index.astro
+ create mode 100644 src/pages/rondleiding/index.astro
+
+diff --git a/src/components/Footer.astro b/src/components/Footer.astro
+index c5684aa..fccecc5 100644
+--- a/src/components/Footer.astro
++++ b/src/components/Footer.astro
+@@ -2,11 +2,13 @@
+ import { routes } from "../i18n/ui.js";
+ import { getLangFromUrl, useTranslations, navHref } from "../i18n/utils.js";
+ import validPaths from "../data/valid-paths.js";
++import TrustBadges from "./TrustBadges.astro";
+ 
+ const lang = getLangFromUrl(Astro.url);
+ const t = useTranslations(lang);
+ const year = new Date().getFullYear();
+ const L = (p) => navHref(p, lang, validPaths);
++const _tourLabel = {nl:"Rondleiding",en:"Product tour",de:"Produkttour",fr:"Visite du produit",es:"Tour del producto",ro:"Tur al produsului"}[lang] || "Rondleiding";
+ const _compareLabel = {nl:"Vergelijken",en:"Compare",de:"Vergleichen",fr:"Comparer",es:"Comparar",ro:"Comparație"}[lang] || "Vergelijken";
+ // Sitebrede trust-balk: korte, feitelijke signalen (per taal).
+ const trustBarByLang = {
+@@ -20,6 +22,7 @@ const trustBarByLang = {
+ const trustBar = trustBarByLang[lang] ?? trustBarByLang.nl;
+ const _check = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`;
+ ---
++<TrustBadges />
+ <footer>
+   <div class="trustbar"><div class="wrap">
+     <ul class="tb-list">
+@@ -38,6 +41,7 @@ const _check = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stro
+           <li><a href={L(routes.assessments)}>{t("footer.assessments")}</a></li>
+           <li><a href={L("/testkiezer/")}>{t("footer.testchooser")}</a></li>
+           <li><a href={L("/voorbereiding/")}>{t("footer.prep")}</a></li>
++          <li><a href={L("/rondleiding/")}>{_tourLabel}</a></li>
+           <li><a href={L("/voor-kandidaten/")}>{t("footer.candidates")}</a></li>
+           <li><a href={L("/kenniscentrum/")}>{t("footer.knowledge")}</a></li>
+           <li><a href={L("/whitepapers/")}>{t("footer.whitepapers")}</a></li>
+diff --git a/src/components/Rondleiding.astro b/src/components/Rondleiding.astro
+new file mode 100644
+index 0000000..fe5731a
+--- /dev/null
++++ b/src/components/Rondleiding.astro
+@@ -0,0 +1,97 @@
++---
++import Img from "./Img.astro";
++import { TOUR_UI, TOUR_IMGS } from "../data/rondleiding-content.js";
++import { localizePath } from "../i18n/utils.js";
++const { lang = "nl" } = Astro.props;
++const t = TOUR_UI[lang] || TOUR_UI.nl;
++const steps = t.steps.map((s, i) => ({ ...s, img: TOUR_IMGS[i] }));
++---
++<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> &rsaquo; <span>{t.crumb}</span></div></div>
++
++<section class="ahero"><div class="wrap" style="display:block">
++  <div class="eyebrow" style="color:var(--gold)">{t.eyebrow}</div>
++  <h1>{t.hero}</h1>
++  <p style="color:#c4d2e6;font-size:18px;max-width:720px;margin-top:10px">{t.intro}</p>
++</div></section>
++
++<section><div class="wrap">
++  <div class="tour" id="tour" data-steplabel={t.stepLabel}>
++    <div class="tour-tabs" role="tablist">
++      {steps.map((s, i) => (
++        <button class:list={["tour-tab", { active: i === 0 }]} data-i={i} role="tab" aria-selected={i === 0 ? "true" : "false"}>
++          <span class="tour-num">{i + 1}</span><span class="tour-tab-txt">{s.title}</span>
++        </button>
++      ))}
++    </div>
++    <div class="tour-stage">
++      <div class="tour-media">
++        {steps.map((s, i) => (
++          <figure class:list={["tour-slide", { active: i === 0 }]} data-i={i}>
++            <Img src={s.img} alt={s.alt} loading={i === 0 ? "eager" : "lazy"} />
++          </figure>
++        ))}
++      </div>
++      <div class="tour-copy">
++        <span class="tour-steplabel"><span id="tourStepNum">1</span> / {steps.length}</span>
++        <h2 id="tourTitle">{steps[0].title}</h2>
++        <p id="tourText">{steps[0].text}</p>
++        <div class="tour-nav">
++          <button class="btn btn-ghost" id="tourPrev" disabled>&larr; {t.prev}</button>
++          <button class="btn btn-primary" id="tourNext">{t.next} &rarr;</button>
++        </div>
++      </div>
++    </div>
++  </div>
++</div></section>
++
++<section class="cta"><div class="wrap" style="padding:56px 0;text-align:center">
++  <h2 style="color:#fff">{t.ctaTitle}</h2>
++  <p style="color:rgba(255,255,255,.9);max-width:620px;margin:12px auto 0">{t.ctaText}</p>
++  <div class="btns" style="justify-content:center;margin-top:20px">
++    <a href={localizePath("/contact/", lang)} class="btn btn-light">{t.ctaBtn}</a>
++    <a href={localizePath("/online-assessments/", lang)} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">{t.secondary}</a>
++  </div>
++</div></section>
++
++<script is:inline>
++  (function () {
++    var root = document.getElementById("tour"); if (!root) return;
++    var tabs = [].slice.call(root.querySelectorAll(".tour-tab"));
++    var slides = [].slice.call(root.querySelectorAll(".tour-slide"));
++    var titleEl = document.getElementById("tourTitle"), textEl = document.getElementById("tourText"), numEl = document.getElementById("tourStepNum");
++    var prev = document.getElementById("tourPrev"), next = document.getElementById("tourNext");
++    var cur = 0, total = slides.length;
++    function show(i) {
++      cur = Math.max(0, Math.min(total - 1, i));
++      tabs.forEach(function (tb, k) { tb.classList.toggle("active", k === cur); tb.setAttribute("aria-selected", k === cur ? "true" : "false"); });
++      slides.forEach(function (sl, k) { sl.classList.toggle("active", k === cur); });
++      titleEl.textContent = window.__tourSteps[cur].title;
++      textEl.textContent = window.__tourSteps[cur].text;
++      numEl.textContent = cur + 1;
++      prev.disabled = cur === 0; next.disabled = cur === total - 1;
++    }
++    tabs.forEach(function (tb) { tb.addEventListener("click", function () { show(+tb.getAttribute("data-i")); }); });
++    prev.addEventListener("click", function () { show(cur - 1); });
++    next.addEventListener("click", function () { show(cur + 1); });
++  })();
++</script>
++<script is:inline set:html={`window.__tourSteps=${JSON.stringify(steps.map(s=>({title:s.title,text:s.text})))};`}></script>
++
++<style>
++  .tour{display:flex;flex-direction:column;gap:20px}
++  .tour-tabs{display:flex;gap:10px;flex-wrap:wrap}
++  .tour-tab{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;cursor:pointer;font-family:inherit;font-size:14.5px;font-weight:600;color:var(--muted);transition:border-color .2s,color .2s,box-shadow .2s}
++  .tour-tab.active{color:var(--navy);border-color:var(--gold);box-shadow:var(--shadow-xs)}
++  .tour-num{flex:none;width:26px;height:26px;border-radius:50%;background:var(--bg-soft);color:var(--navy);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
++  .tour-tab.active .tour-num{background:var(--navy);color:#fff}
++  .tour-stage{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:18px;padding:26px}
++  .tour-media{position:relative;min-height:220px}
++  .tour-slide{margin:0;opacity:0;position:absolute;inset:0;transition:opacity .3s ease;pointer-events:none}
++  .tour-slide.active{opacity:1;position:relative;pointer-events:auto}
++  .tour-slide img{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow-sm);display:block}
++  .tour-steplabel{color:var(--gold);font-weight:800;font-size:13px;letter-spacing:.5px}
++  .tour-copy h2{color:var(--navy);font-size:1.4rem;margin:8px 0 10px;letter-spacing:-.02em}
++  .tour-copy p{color:var(--text);font-size:15.5px;line-height:1.6;margin:0 0 20px}
++  .tour-nav{display:flex;gap:10px}
++  @media(max-width:820px){.tour-stage{grid-template-columns:1fr;gap:20px}}
++</style>
+diff --git a/src/components/TrustBadges.astro b/src/components/TrustBadges.astro
+new file mode 100644
+index 0000000..a5ca32a
+--- /dev/null
++++ b/src/components/TrustBadges.astro
+@@ -0,0 +1,27 @@
++---
++import { REVIEWS_EXTERNAL } from "../data/site-config.js";
++import { getLangFromUrl } from "../i18n/utils.js";
++const lang = getLangFromUrl(Astro.url);
++const LABEL = { nl:"Beoordeeld op", en:"Reviewed on", de:"Bewertet auf", fr:"Évalué sur", es:"Valorado en", ro:"Evaluat pe" }[lang] || "Beoordeeld op";
++const NAMES = { google:"Google", g2:"G2", capterra:"Capterra", trustpilot:"Trustpilot" };
++const badges = Object.entries(REVIEWS_EXTERNAL).filter(([, url]) => url).map(([k, url]) => ({ k, url, name: NAMES[k] }));
++---
++{badges.length > 0 && (
++  <div class="trust-badges"><span class="tb-label">{LABEL}</span>
++    <div class="tb-items">
++      {badges.map((b) => (
++        <a class="tb-badge" href={b.url} target="_blank" rel="noopener nofollow">
++          <span class="tb-stars">★★★★★</span><span class="tb-name">{b.name}</span>
++        </a>
++      ))}
++    </div>
++  </div>
++)}
++<style>
++  .trust-badges{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;padding:20px;border-top:1px solid var(--line)}
++  .tb-label{color:var(--muted);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
++  .tb-items{display:flex;gap:12px;flex-wrap:wrap}
++  .tb-badge{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 14px;box-shadow:var(--shadow-xs);text-decoration:none}
++  .tb-badge .tb-stars{color:var(--gold);font-size:14px}
++  .tb-badge .tb-name{color:var(--navy);font-weight:700;font-size:14px}
++</style>
+diff --git a/src/data/rondleiding-content.js b/src/data/rondleiding-content.js
+new file mode 100644
+index 0000000..eb396f5
+--- /dev/null
++++ b/src/data/rondleiding-content.js
+@@ -0,0 +1,196 @@
++// Interactieve productrondleiding, 6 talen. Beelden gedeeld (mockups).
++export const TOUR_IMGS = ["/mockups/vragenlijst-intro.svg", "/mockups/vragenlijst-vraag.svg", "/mockups/vragenlijst-afgerond.svg"];
++export const TOUR_UI = {
++ "nl": {
++  "metaT": "Productrondleiding | Zo werkt hrmforce",
++  "metaD": "Klik door een interactieve rondleiding: van uitnodiging en vragenlijst tot een helder rapport dat je direct gebruikt in het gesprek.",
++  "crumb": "Rondleiding",
++  "eyebrow": "Productrondleiding",
++  "hero": "Bekijk hrmforce in actie",
++  "intro": "Klik door de stappen en zie hoe een assessment eruitziet voor jou en je kandidaat, van uitnodiging tot bruikbaar rapport.",
++  "stepLabel": "Stap",
++  "prev": "Vorige",
++  "next": "Volgende",
++  "ctaTitle": "Liever een persoonlijke demo?",
++  "ctaText": "Plan een vrijblijvende demo op maat, afgestemd op jouw vraag.",
++  "ctaBtn": "Plan een gratis demo",
++  "secondary": "Bekijk alle assessments",
++  "steps": [
++   {
++    "title": "Uitnodigen in eigen taal",
++    "text": "Verstuur in één klik een persoonlijke uitnodiging. Kandidaten starten online, in hun eigen taal en tempo.",
++    "alt": "Startscherm van de vragenlijst"
++   },
++   {
++    "title": "Invullen met duidelijke schaal",
++    "text": "Kandidaten beantwoorden stellingen met een heldere antwoordschaal. Kort, toegankelijk en wetenschappelijk onderbouwd.",
++    "alt": "Vraagscherm met antwoordschaal"
++   },
++   {
++    "title": "Direct een bruikbaar rapport",
++    "text": "Zodra de vragenlijst af is, staat een helder rapport klaar, met gespreksvragen die je meteen inzet in het gesprek.",
++    "alt": "Afrondscherm met rapport"
++   }
++  ]
++ },
++ "en": {
++  "metaT": "Product tour | How hrmforce works",
++  "metaD": "Click through an interactive tour: from invitation and questionnaire to a clear report you use directly in the interview.",
++  "crumb": "Tour",
++  "eyebrow": "Product tour",
++  "hero": "See hrmforce in action",
++  "intro": "Click through the steps and see what an assessment looks like for you and your candidate, from invitation to usable report.",
++  "stepLabel": "Step",
++  "prev": "Previous",
++  "next": "Next",
++  "ctaTitle": "Prefer a personal demo?",
++  "ctaText": "Book a no-obligation, tailored demo that fits your question.",
++  "ctaBtn": "Book a free demo",
++  "secondary": "View all assessments",
++  "steps": [
++   {
++    "title": "Invite in your own language",
++    "text": "Send a personal invitation in one click. Candidates start online, in their own language and pace.",
++    "alt": "Questionnaire start screen"
++   },
++   {
++    "title": "Complete with a clear scale",
++    "text": "Candidates answer statements on a clear response scale. Short, accessible and scientifically grounded.",
++    "alt": "Question screen with answer scale"
++   },
++   {
++    "title": "A usable report right away",
++    "text": "As soon as the questionnaire is done, a clear report is ready, with interview questions you use straight away.",
++    "alt": "Completion screen with report"
++   }
++  ]
++ },
++ "de": {
++  "metaT": "Produkttour | So funktioniert hrmforce",
++  "metaD": "Klicken Sie sich durch eine interaktive Tour: von Einladung und Fragebogen bis zu einem klaren Bericht, den Sie direkt im Gespräch nutzen.",
++  "crumb": "Tour",
++  "eyebrow": "Produkttour",
++  "hero": "hrmforce in Aktion sehen",
++  "intro": "Klicken Sie sich durch die Schritte und sehen Sie, wie ein Assessment für Sie und Ihre Kandidaten aussieht, von der Einladung bis zum nutzbaren Bericht.",
++  "stepLabel": "Schritt",
++  "prev": "Zurück",
++  "next": "Weiter",
++  "ctaTitle": "Lieber eine persönliche Demo?",
++  "ctaText": "Buchen Sie eine unverbindliche, individuelle Demo, die zu Ihrer Frage passt.",
++  "ctaBtn": "Kostenlose Demo buchen",
++  "secondary": "Alle Assessments ansehen",
++  "steps": [
++   {
++    "title": "Einladen in eigener Sprache",
++    "text": "Versenden Sie mit einem Klick eine persönliche Einladung. Kandidaten starten online, in ihrer Sprache und ihrem Tempo.",
++    "alt": "Startbildschirm des Fragebogens"
++   },
++   {
++    "title": "Ausfüllen mit klarer Skala",
++    "text": "Kandidaten beantworten Aussagen auf einer klaren Antwortskala. Kurz, zugänglich und wissenschaftlich fundiert.",
++    "alt": "Fragebildschirm mit Antwortskala"
++   },
++   {
++    "title": "Sofort ein nutzbarer Bericht",
++    "text": "Sobald der Fragebogen fertig ist, steht ein klarer Bericht bereit, mit Gesprächsfragen, die Sie sofort einsetzen.",
++    "alt": "Abschlussbildschirm mit Bericht"
++   }
++  ]
++ },
++ "fr": {
++  "metaT": "Visite du produit | Comment fonctionne hrmforce",
++  "metaD": "Parcourez une visite interactive : de l'invitation et du questionnaire à un rapport clair que vous utilisez directement en entretien.",
++  "crumb": "Visite",
++  "eyebrow": "Visite du produit",
++  "hero": "Découvrez hrmforce en action",
++  "intro": "Parcourez les étapes et voyez à quoi ressemble un assessment pour vous et votre candidat, de l'invitation au rapport exploitable.",
++  "stepLabel": "Étape",
++  "prev": "Précédent",
++  "next": "Suivant",
++  "ctaTitle": "Vous préférez une démo personnalisée ?",
++  "ctaText": "Réservez une démo sur mesure, sans engagement, adaptée à votre question.",
++  "ctaBtn": "Réserver une démo gratuite",
++  "secondary": "Voir tous les assessments",
++  "steps": [
++   {
++    "title": "Inviter dans sa langue",
++    "text": "Envoyez une invitation personnelle en un clic. Les candidats démarrent en ligne, dans leur langue et à leur rythme.",
++    "alt": "Écran de démarrage du questionnaire"
++   },
++   {
++    "title": "Répondre sur une échelle claire",
++    "text": "Les candidats répondent à des affirmations sur une échelle claire. Court, accessible et fondé scientifiquement.",
++    "alt": "Écran de question avec échelle"
++   },
++   {
++    "title": "Un rapport exploitable aussitôt",
++    "text": "Dès le questionnaire terminé, un rapport clair est prêt, avec des questions d'entretien à utiliser immédiatement.",
++    "alt": "Écran de fin avec rapport"
++   }
++  ]
++ },
++ "es": {
++  "metaT": "Tour del producto | Cómo funciona hrmforce",
++  "metaD": "Recorre un tour interactivo: de la invitación y el cuestionario a un informe claro que usas directamente en la entrevista.",
++  "crumb": "Tour",
++  "eyebrow": "Tour del producto",
++  "hero": "Descubre hrmforce en acción",
++  "intro": "Recorre los pasos y ve cómo es una evaluación para ti y tu candidato, de la invitación al informe utilizable.",
++  "stepLabel": "Paso",
++  "prev": "Anterior",
++  "next": "Siguiente",
++  "ctaTitle": "¿Prefieres una demo personal?",
++  "ctaText": "Reserva una demo a medida, sin compromiso, adaptada a tu pregunta.",
++  "ctaBtn": "Reservar una demo gratuita",
++  "secondary": "Ver todas las evaluaciones",
++  "steps": [
++   {
++    "title": "Invitar en tu idioma",
++    "text": "Envía una invitación personal en un clic. Los candidatos empiezan online, en su idioma y a su ritmo.",
++    "alt": "Pantalla de inicio del cuestionario"
++   },
++   {
++    "title": "Responder con una escala clara",
++    "text": "Los candidatos responden afirmaciones en una escala clara. Breve, accesible y con base científica.",
++    "alt": "Pantalla de pregunta con escala"
++   },
++   {
++    "title": "Un informe utilizable al instante",
++    "text": "En cuanto termina el cuestionario, hay un informe claro listo, con preguntas de entrevista para usar de inmediato.",
++    "alt": "Pantalla final con informe"
++   }
++  ]
++ },
++ "ro": {
++  "metaT": "Tur al produsului | Cum funcționează hrmforce",
++  "metaD": "Parcurge un tur interactiv: de la invitație și chestionar la un raport clar pe care îl folosești direct în interviu.",
++  "crumb": "Tur",
++  "eyebrow": "Tur al produsului",
++  "hero": "Vezi hrmforce în acțiune",
++  "intro": "Parcurge pașii și vezi cum arată o evaluare pentru tine și candidatul tău, de la invitație la un raport util.",
++  "stepLabel": "Pasul",
++  "prev": "Înapoi",
++  "next": "Înainte",
++  "ctaTitle": "Preferi o demonstrație personală?",
++  "ctaText": "Rezervă o demonstrație personalizată, fără obligații, potrivită întrebării tale.",
++  "ctaBtn": "Rezervă o demonstrație gratuită",
++  "secondary": "Vezi toate evaluările",
++  "steps": [
++   {
++    "title": "Invită în limba proprie",
++    "text": "Trimite o invitație personală dintr-un clic. Candidații încep online, în limba și ritmul lor.",
++    "alt": "Ecranul de start al chestionarului"
++   },
++   {
++    "title": "Completează cu o scală clară",
++    "text": "Candidații răspund la afirmații pe o scală clară. Scurt, accesibil și fundamentat științific.",
++    "alt": "Ecran de întrebare cu scală"
++   },
++   {
++    "title": "Un raport util imediat",
++    "text": "Imediat ce chestionarul e gata, un raport clar este disponibil, cu întrebări de interviu pe care le folosești pe loc.",
++    "alt": "Ecran final cu raport"
++   }
++  ]
++ }
++};
+diff --git a/src/data/site-config.js b/src/data/site-config.js
+index a14aacc..536925c 100644
+--- a/src/data/site-config.js
++++ b/src/data/site-config.js
+@@ -26,3 +26,12 @@ export const MARKETING = {
+   LINKEDIN_PARTNER_ID: "8219026",
+   CLARITY_ID: "", // bv. "abcd123xyz"
+ };
++
++// Externe reviewprofielen. Vul een URL in om de badge te tonen (leeg = verborgen).
++// Zodra je een G2/Capterra/Trustpilot/Google-profiel hebt, plak je hier de link.
++export const REVIEWS_EXTERNAL = {
++  google: "",     // bv. "https://g.page/r/..../review"
++  g2: "",         // bv. "https://www.g2.com/products/hrmforce/reviews"
++  capterra: "",   // bv. "https://www.capterra.com/p/....../hrmforce/"
++  trustpilot: "", // bv. "https://www.trustpilot.com/review/hrmforce.com"
++};
+diff --git a/src/data/valid-paths.js b/src/data/valid-paths.js
+index 735573f..87db94f 100644
+--- a/src/data/valid-paths.js
++++ b/src/data/valid-paths.js
+@@ -26,6 +26,6 @@ try {
+ 
+ const STATIC = ["/","/%3Fpage_id=12073/","/%3Fpage_id=12199/","/%3Fpage_id=12326/","/%3Fpage_id=12390/","/%3Fpage_id=12401/","/%3Fpage_id=12532/","/%3Fpage_id=12631/","/%3Fpage_id=13499/","/%3Fpage_id=13540/","/%3Fpage_id=14534/","/%3Fpage_id=15495/","/%3Fpage_id=19506/","/%3Fpage_id=20413/","/%3Fpage_id=21104/","/%3Fpage_id=21979/","/%3Fpage_id=22199/","/%3Fpage_id=23609/","/%3Fpage_id=23955/","/%3Fpage_id=24624/","/%3Fpage_id=6325/","/%3Fpage_id=6397/","/%3Fpage_id=7219/","/%3Fpage_id=7960/","/%3Fpage_id=7962/","/%3Fpage_id=8355/","/%3Fpage_id=8358/","/%3Fpage_id=8361/","/%3Fpage_id=8364/","/%3Fpage_id=8392/","/%3Fpage_id=8394/","/%3Fpage_id=8396/","/%3Fpage_id=8564/","/%3Fpage_id=8578/","/%3Fpage_id=8613/","/%3Fpage_id=8638/","/%3Fpage_id=8649/","/%3Fpage_id=9790/","/advies/","/advies/certificatietraining/","/advies/loopbaan-assessment/","/advies/medezeggenschap/","/advies/team-training/","/advies/training-het-goede-gesprek/","/assessments/15pf/","/assessments/360-graden-feedback/","/assessments/ability-scan/","/assessments/appraisal/","/assessments/beroepskeuze-test/","/assessments/big-five/","/assessments/canmeds/","/assessments/coaching-screener-scan/","/assessments/cognitieve-test/","/assessments/communicatiestijlen-test/","/assessments/competentie-check/","/assessments/conflictstijlen-test/","/assessments/disc-test/","/assessments/drijfverentest/","/assessments/duurzame-inzetbaarheid-scan/","/assessments/exit-assessment/","/assessments/groepsrollen/","/assessments/intake-candidate/","/assessments/interesse-scan/","/assessments/job-profiler/","/assessments/lean-scan/","/assessments/leerstijlen/","/assessments/leiderschapstest/","/assessments/lencioni-teamdynamiek/","/assessments/levensloop-scan/","/assessments/loopbaanwaarden/","/assessments/mentale-veerkracht-scan/","/assessments/ontwikkelassessment/","/assessments/pulse-survey/","/assessments/referentie-check/","/assessments/studiekeuzetest/","/assessments/teamanalyse/","/assessments/tevredenheidsonderzoek-medewerkers/","/assessments/typology/","/assessments/value-drives/","/assessments/verkoopvaardigheden/","/contact/","/de/","/de/%3Fpage_id=12073/","/de/%3Fpage_id=12199/","/de/%3Fpage_id=12326/","/de/%3Fpage_id=12390/","/de/%3Fpage_id=12401/","/de/%3Fpage_id=12532/","/de/%3Fpage_id=12631/","/de/%3Fpage_id=13499/","/de/%3Fpage_id=13540/","/de/%3Fpage_id=15495/","/de/%3Fpage_id=18517/","/de/%3Fpage_id=19506/","/de/%3Fpage_id=20413/","/de/%3Fpage_id=21104/","/de/%3Fpage_id=21979/","/de/%3Fpage_id=22199/","/de/%3Fpage_id=23609/","/de/%3Fpage_id=23955/","/de/%3Fpage_id=6325/","/de/%3Fpage_id=6397/","/de/%3Fpage_id=7219/","/de/%3Fpage_id=7960/","/de/%3Fpage_id=7962/","/de/%3Fpage_id=8355/","/de/%3Fpage_id=8358/","/de/%3Fpage_id=8361/","/de/%3Fpage_id=8364/","/de/%3Fpage_id=8392/","/de/%3Fpage_id=8394/","/de/%3Fpage_id=8396/","/de/%3Fpage_id=8564/","/de/%3Fpage_id=8578/","/de/%3Fpage_id=8613/","/de/%3Fpage_id=8638/","/de/%3Fpage_id=8649/","/de/%3Fpage_id=9790/","/de/advies/","/de/assessments/15pf/","/de/assessments/360-graden-feedback/","/de/assessments/ability-scan/","/de/assessments/appraisal/","/de/assessments/beroepskeuze-test/","/de/assessments/big-five/","/de/assessments/canmeds/","/de/assessments/coaching-screener-scan/","/de/assessments/cognitieve-test/","/de/assessments/communicatiestijlen-test/","/de/assessments/competentie-check/","/de/assessments/conflictstijlen-test/","/de/assessments/disc-test/","/de/assessments/drijfverentest/","/de/assessments/duurzame-inzetbaarheid-scan/","/de/assessments/exit-assessment/","/de/assessments/groepsrollen/","/de/assessments/intake-candidate/","/de/assessments/interesse-scan/","/de/assessments/job-profiler/","/de/assessments/lean-scan/","/de/assessments/leerstijlen/","/de/assessments/leiderschapstest/","/de/assessments/lencioni-teamdynamiek/","/de/assessments/levensloop-scan/","/de/assessments/loopbaanwaarden/","/de/assessments/mentale-veerkracht-scan/","/de/assessments/ontwikkelassessment/","/de/assessments/pulse-survey/","/de/assessments/referentie-check/","/de/assessments/studiekeuzetest/","/de/assessments/teamanalyse/","/de/assessments/tevredenheidsonderzoek-medewerkers/","/de/assessments/typology/","/de/assessments/value-drives/","/de/assessments/verkoopvaardigheden/","/de/contact/","/de/hrm-oplossingen/","/de/integraties/","/de/kenniscentrum/","/de/klantcases/","/de/over-ons/","/de/roi-rekentool/","/de/support/","/de/trust/","/de/voorbereiding/","/en/","/en/%3Fpage_id=12073/","/en/%3Fpage_id=12199/","/en/%3Fpage_id=12326/","/en/%3Fpage_id=12390/","/en/%3Fpage_id=12401/","/en/%3Fpage_id=12532/","/en/%3Fpage_id=12631/","/en/%3Fpage_id=13499/","/en/%3Fpage_id=13540/","/en/%3Fpage_id=15495/","/en/%3Fpage_id=15922/","/en/%3Fpage_id=16099/","/en/%3Fpage_id=17810/","/en/%3Fpage_id=19503/","/en/%3Fpage_id=19506/","/en/%3Fpage_id=20413/","/en/%3Fpage_id=21104/","/en/%3Fpage_id=21298/","/en/%3Fpage_id=21979/","/en/%3Fpage_id=22199/","/en/%3Fpage_id=23609/","/en/%3Fpage_id=23955/","/en/%3Fpage_id=6325/","/en/%3Fpage_id=6397/","/en/%3Fpage_id=7219/","/en/%3Fpage_id=7960/","/en/%3Fpage_id=7962/","/en/%3Fpage_id=8355/","/en/%3Fpage_id=8358/","/en/%3Fpage_id=8361/","/en/%3Fpage_id=8364/","/en/%3Fpage_id=8392/","/en/%3Fpage_id=8394/","/en/%3Fpage_id=8396/","/en/%3Fpage_id=8564/","/en/%3Fpage_id=8578/","/en/%3Fpage_id=8613/","/en/%3Fpage_id=8638/","/en/%3Fpage_id=8649/","/en/%3Fpage_id=9790/","/en/advies/","/en/assessments/15pf/","/en/assessments/360-graden-feedback/","/en/assessments/ability-scan/","/en/assessments/appraisal/","/en/assessments/beroepskeuze-test/","/en/assessments/big-five/","/en/assessments/canmeds/","/en/assessments/coaching-screener-scan/","/en/assessments/cognitieve-test/","/en/assessments/communicatiestijlen-test/","/en/assessments/competentie-check/","/en/assessments/conflictstijlen-test/","/en/assessments/disc-test/","/en/assessments/drijfverentest/","/en/assessments/duurzame-inzetbaarheid-scan/","/en/assessments/exit-assessment/","/en/assessments/groepsrollen/","/en/assessments/intake-candidate/","/en/assessments/interesse-scan/","/en/assessments/job-profiler/","/en/assessments/lean-scan/","/en/assessments/leerstijlen/","/en/assessments/leiderschapstest/","/en/assessments/lencioni-teamdynamiek/","/en/assessments/levensloop-scan/","/en/assessments/loopbaanwaarden/","/en/assessments/mentale-veerkracht-scan/","/en/assessments/ontwikkelassessment/","/en/assessments/pulse-survey/","/en/assessments/referentie-check/","/en/assessments/studiekeuzetest/","/en/assessments/teamanalyse/","/en/assessments/tevredenheidsonderzoek-medewerkers/","/en/assessments/typology/","/en/assessments/value-drives/","/en/assessments/verkoopvaardigheden/","/en/contact/","/en/hrm-oplossingen/","/en/integraties/","/en/kenniscentrum/","/en/klantcases/","/en/over-ons/","/en/roi-rekentool/","/en/support/","/en/trust/","/en/voorbereiding/","/es/","/es/%3Fpage_id=12073/","/es/%3Fpage_id=12199/","/es/%3Fpage_id=12326/","/es/%3Fpage_id=12390/","/es/%3Fpage_id=12401/","/es/%3Fpage_id=12532/","/es/%3Fpage_id=12631/","/es/%3Fpage_id=13499/","/es/%3Fpage_id=13540/","/es/%3Fpage_id=15495/","/es/%3Fpage_id=18519/","/es/%3Fpage_id=19506/","/es/%3Fpage_id=20413/","/es/%3Fpage_id=21104/","/es/%3Fpage_id=21979/","/es/%3Fpage_id=22199/","/es/%3Fpage_id=23609/","/es/%3Fpage_id=23682/","/es/%3Fpage_id=23955/","/es/%3Fpage_id=6325/","/es/%3Fpage_id=6397/","/es/%3Fpage_id=7219/","/es/%3Fpage_id=7960/","/es/%3Fpage_id=7962/","/es/%3Fpage_id=8355/","/es/%3Fpage_id=8358/","/es/%3Fpage_id=8361/","/es/%3Fpage_id=8364/","/es/%3Fpage_id=8392/","/es/%3Fpage_id=8394/","/es/%3Fpage_id=8396/","/es/%3Fpage_id=8564/","/es/%3Fpage_id=8578/","/es/%3Fpage_id=8613/","/es/%3Fpage_id=8638/","/es/%3Fpage_id=8649/","/es/%3Fpage_id=9790/","/es/advies/","/es/assessments/15pf/","/es/assessments/360-graden-feedback/","/es/assessments/ability-scan/","/es/assessments/appraisal/","/es/assessments/beroepskeuze-test/","/es/assessments/big-five/","/es/assessments/canmeds/","/es/assessments/coaching-screener-scan/","/es/assessments/cognitieve-test/","/es/assessments/communicatiestijlen-test/","/es/assessments/competentie-check/","/es/assessments/conflictstijlen-test/","/es/assessments/disc-test/","/es/assessments/drijfverentest/","/es/assessments/duurzame-inzetbaarheid-scan/","/es/assessments/exit-assessment/","/es/assessments/groepsrollen/","/es/assessments/intake-candidate/","/es/assessments/interesse-scan/","/es/assessments/job-profiler/","/es/assessments/lean-scan/","/es/assessments/leerstijlen/","/es/assessments/leiderschapstest/","/es/assessments/lencioni-teamdynamiek/","/es/assessments/levensloop-scan/","/es/assessments/loopbaanwaarden/","/es/assessments/mentale-veerkracht-scan/","/es/assessments/ontwikkelassessment/","/es/assessments/pulse-survey/","/es/assessments/referentie-check/","/es/assessments/studiekeuzetest/","/es/assessments/teamanalyse/","/es/assessments/tevredenheidsonderzoek-medewerkers/","/es/assessments/typology/","/es/assessments/value-drives/","/es/assessments/verkoopvaardigheden/","/es/contact/","/es/hrm-oplossingen/","/es/integraties/","/es/kenniscentrum/","/es/klantcases/","/es/online-assessments/","/es/over-ons/","/es/roi-rekentool/","/es/support/","/es/trust/","/es/voorbereiding/","/fr/","/fr/%3Fpage_id=12073/","/fr/%3Fpage_id=12199/","/fr/%3Fpage_id=12326/","/fr/%3Fpage_id=12390/","/fr/%3Fpage_id=12401/","/fr/%3Fpage_id=12532/","/fr/%3Fpage_id=12631/","/fr/%3Fpage_id=13499/","/fr/%3Fpage_id=13540/","/fr/%3Fpage_id=15495/","/fr/%3Fpage_id=18516/","/fr/%3Fpage_id=19506/","/fr/%3Fpage_id=20413/","/fr/%3Fpage_id=21104/","/fr/%3Fpage_id=21979/","/fr/%3Fpage_id=22199/","/fr/%3Fpage_id=23609/","/fr/%3Fpage_id=23955/","/fr/%3Fpage_id=6325/","/fr/%3Fpage_id=6397/","/fr/%3Fpage_id=7219/","/fr/%3Fpage_id=7960/","/fr/%3Fpage_id=7962/","/fr/%3Fpage_id=8355/","/fr/%3Fpage_id=8358/","/fr/%3Fpage_id=8361/","/fr/%3Fpage_id=8364/","/fr/%3Fpage_id=8392/","/fr/%3Fpage_id=8394/","/fr/%3Fpage_id=8396/","/fr/%3Fpage_id=8564/","/fr/%3Fpage_id=8578/","/fr/%3Fpage_id=8613/","/fr/%3Fpage_id=8638/","/fr/%3Fpage_id=8649/","/fr/%3Fpage_id=9790/","/fr/advies/","/fr/assessments/15pf/","/fr/assessments/360-graden-feedback/","/fr/assessments/ability-scan/","/fr/assessments/appraisal/","/fr/assessments/beroepskeuze-test/","/fr/assessments/big-five/","/fr/assessments/canmeds/","/fr/assessments/coaching-screener-scan/","/fr/assessments/cognitieve-test/","/fr/assessments/communicatiestijlen-test/","/fr/assessments/competentie-check/","/fr/assessments/conflictstijlen-test/","/fr/assessments/disc-test/","/fr/assessments/drijfverentest/","/fr/assessments/duurzame-inzetbaarheid-scan/","/fr/assessments/exit-assessment/","/fr/assessments/groepsrollen/","/fr/assessments/intake-candidate/","/fr/assessments/interesse-scan/","/fr/assessments/job-profiler/","/fr/assessments/lean-scan/","/fr/assessments/leerstijlen/","/fr/assessments/leiderschapstest/","/fr/assessments/lencioni-teamdynamiek/","/fr/assessments/levensloop-scan/","/fr/assessments/loopbaanwaarden/","/fr/assessments/mentale-veerkracht-scan/","/fr/assessments/ontwikkelassessment/","/fr/assessments/pulse-survey/","/fr/assessments/referentie-check/","/fr/assessments/studiekeuzetest/","/fr/assessments/teamanalyse/","/fr/assessments/tevredenheidsonderzoek-medewerkers/","/fr/assessments/typology/","/fr/assessments/value-drives/","/fr/assessments/verkoopvaardigheden/","/fr/contact/","/fr/hrm-oplossingen/","/fr/integraties/","/fr/kenniscentrum/","/fr/klantcases/","/fr/online-assessments/","/fr/over-ons/","/fr/roi-rekentool/","/fr/shop/","/fr/support/","/fr/trust/","/fr/voorbereiding/","/geschiktvoorzorg/","/geschiktvoorzorg/klantcases/","/geschiktvoorzorg/over-ons/","/hrm-oplossingen/","/inschrijfformulier-trainingen/","/integraties/","/kenniscentrum/","/kenniscentrum/burn-out-herkennen-bij-topperformers/","/kenniscentrum/intelligentietest-volwassenen/","/kenniscentrum/leiderschapsontwikkeling-data/","/kenniscentrum/matrigma-capaciteitentest/","/kenniscentrum/ontwikkelassessment-belangrijk/","/kenniscentrum/talent-management-system-software/","/klantcases/","/odion/","/oefen-assessment-maken/","/online-assessments/","/over-ons/","/partner/selier-van-duppen/","/ro/","/ro/%3Fpage_id=12073/","/ro/%3Fpage_id=12199/","/ro/%3Fpage_id=12326/","/ro/%3Fpage_id=12390/","/ro/%3Fpage_id=12401/","/ro/%3Fpage_id=12532/","/ro/%3Fpage_id=12631/","/ro/%3Fpage_id=13499/","/ro/%3Fpage_id=13540/","/ro/%3Fpage_id=15495/","/ro/%3Fpage_id=16875/","/ro/%3Fpage_id=18518/","/ro/%3Fpage_id=19506/","/ro/%3Fpage_id=20413/","/ro/%3Fpage_id=21104/","/ro/%3Fpage_id=21979/","/ro/%3Fpage_id=22199/","/ro/%3Fpage_id=23609/","/ro/%3Fpage_id=23955/","/ro/%3Fpage_id=6325/","/ro/%3Fpage_id=6397/","/ro/%3Fpage_id=7219/","/ro/%3Fpage_id=7960/","/ro/%3Fpage_id=7962/","/ro/%3Fpage_id=8355/","/ro/%3Fpage_id=8358/","/ro/%3Fpage_id=8361/","/ro/%3Fpage_id=8364/","/ro/%3Fpage_id=8392/","/ro/%3Fpage_id=8394/","/ro/%3Fpage_id=8396/","/ro/%3Fpage_id=8564/","/ro/%3Fpage_id=8578/","/ro/%3Fpage_id=8613/","/ro/%3Fpage_id=8638/","/ro/%3Fpage_id=8649/","/ro/%3Fpage_id=9790/","/ro/advies/","/ro/assessments/15pf/","/ro/assessments/360-graden-feedback/","/ro/assessments/ability-scan/","/ro/assessments/appraisal/","/ro/assessments/beroepskeuze-test/","/ro/assessments/big-five/","/ro/assessments/canmeds/","/ro/assessments/coaching-screener-scan/","/ro/assessments/cognitieve-test/","/ro/assessments/communicatiestijlen-test/","/ro/assessments/competentie-check/","/ro/assessments/conflictstijlen-test/","/ro/assessments/disc-test/","/ro/assessments/drijfverentest/","/ro/assessments/duurzame-inzetbaarheid-scan/","/ro/assessments/exit-assessment/","/ro/assessments/groepsrollen/","/ro/assessments/intake-candidate/","/ro/assessments/interesse-scan/","/ro/assessments/job-profiler/","/ro/assessments/lean-scan/","/ro/assessments/leerstijlen/","/ro/assessments/leiderschapstest/","/ro/assessments/lencioni-teamdynamiek/","/ro/assessments/levensloop-scan/","/ro/assessments/loopbaanwaarden/","/ro/assessments/mentale-veerkracht-scan/","/ro/assessments/ontwikkelassessment/","/ro/assessments/pulse-survey/","/ro/assessments/referentie-check/","/ro/assessments/studiekeuzetest/","/ro/assessments/teamanalyse/","/ro/assessments/tevredenheidsonderzoek-medewerkers/","/ro/assessments/typology/","/ro/assessments/value-drives/","/ro/assessments/verkoopvaardigheden/","/ro/contact/","/ro/hrm-oplossingen/","/ro/integraties/","/ro/kenniscentrum/","/ro/klantcases/","/ro/online-assessments/","/ro/over-ons/","/ro/roi-rekentool/","/ro/support/","/ro/trust/","/ro/voorbereiding/","/roi-rekentool/","/shop/","/support/","/trust/","/voorbereiding/"];
+ 
+-const EXTRA = ["/oefenen/big-five/","/oefenen/disc/","/oefenen/cognitieve-test/","/oefenen/drijfveren/","/en/oefenen/big-five/","/en/oefenen/disc/","/en/oefenen/cognitieve-test/","/en/oefenen/drijfveren/","/de/oefenen/big-five/","/de/oefenen/disc/","/de/oefenen/cognitieve-test/","/de/oefenen/drijfveren/","/fr/oefenen/big-five/","/fr/oefenen/disc/","/fr/oefenen/cognitieve-test/","/fr/oefenen/drijfveren/","/es/oefenen/big-five/","/es/oefenen/disc/","/es/oefenen/cognitieve-test/","/es/oefenen/drijfveren/","/ro/oefenen/big-five/","/ro/oefenen/disc/","/ro/oefenen/cognitieve-test/","/ro/oefenen/drijfveren/","/whitepapers/","/en/whitepapers/","/de/whitepapers/","/fr/whitepapers/","/es/whitepapers/","/ro/whitepapers/","/whitepapers/objectief-werven/","/whitepapers/beoordelen-naar-ontwikkelen/","/en/whitepapers/objectief-werven/","/en/whitepapers/beoordelen-naar-ontwikkelen/","/de/whitepapers/objectief-werven/","/de/whitepapers/beoordelen-naar-ontwikkelen/","/fr/whitepapers/objectief-werven/","/fr/whitepapers/beoordelen-naar-ontwikkelen/","/es/whitepapers/objectief-werven/","/es/whitepapers/beoordelen-naar-ontwikkelen/","/ro/whitepapers/objectief-werven/","/ro/whitepapers/beoordelen-naar-ontwikkelen/","/integraties/afas/","/integraties/nmbrs/","/integraties/visma/","/integraties/loket/","/integraties/recruitee/","/integraties/carerix/","/integraties/otys/","/en/integraties/afas/","/en/integraties/nmbrs/","/en/integraties/visma/","/en/integraties/loket/","/en/integraties/recruitee/","/en/integraties/carerix/","/en/integraties/otys/","/de/integraties/afas/","/de/integraties/nmbrs/","/de/integraties/visma/","/de/integraties/loket/","/de/integraties/recruitee/","/de/integraties/carerix/","/de/integraties/otys/","/fr/integraties/afas/","/fr/integraties/nmbrs/","/fr/integraties/visma/","/fr/integraties/loket/","/fr/integraties/recruitee/","/fr/integraties/carerix/","/fr/integraties/otys/","/es/integraties/afas/","/es/integraties/nmbrs/","/es/integraties/visma/","/es/integraties/loket/","/es/integraties/recruitee/","/es/integraties/carerix/","/es/integraties/otys/","/ro/integraties/afas/","/ro/integraties/nmbrs/","/ro/integraties/visma/","/ro/integraties/loket/","/ro/integraties/recruitee/","/ro/integraties/carerix/","/ro/integraties/otys/","/testkiezer/","/en/testkiezer/","/de/testkiezer/","/fr/testkiezer/","/es/testkiezer/","/ro/testkiezer/","/voor-kandidaten/","/en/voor-kandidaten/","/de/voor-kandidaten/","/fr/voor-kandidaten/","/es/voor-kandidaten/","/ro/voor-kandidaten/","/begrippenlijst/","/en/begrippenlijst/","/de/begrippenlijst/","/fr/begrippenlijst/","/es/begrippenlijst/","/ro/begrippenlijst/","/wetenschappelijke-verantwoording/","/en/wetenschappelijke-verantwoording/","/de/wetenschappelijke-verantwoording/","/fr/wetenschappelijke-verantwoording/","/es/wetenschappelijke-verantwoording/","/ro/wetenschappelijke-verantwoording/","/vergelijking/","/vergelijking/shl/","/vergelijking/thomas-international/","/en/vergelijking/","/en/vergelijking/shl/","/en/vergelijking/thomas-international/","/de/vergelijking/","/de/vergelijking/shl/","/de/vergelijking/thomas-international/","/fr/vergelijking/","/fr/vergelijking/shl/","/fr/vergelijking/thomas-international/","/es/vergelijking/","/es/vergelijking/shl/","/es/vergelijking/thomas-international/","/ro/vergelijking/","/ro/vergelijking/shl/","/ro/vergelijking/thomas-international/","/vacatures/","/en/vacatures/","/de/vacatures/","/fr/vacatures/","/es/vacatures/","/ro/vacatures/","/toepassingen/zorg/","/en/toepassingen/zorg/","/de/toepassingen/zorg/","/fr/toepassingen/zorg/","/es/toepassingen/zorg/","/ro/toepassingen/zorg/","/toepassingen/","/toepassingen/werving-en-selectie/","/toepassingen/ontwikkeling/","/toepassingen/leidinggevenden/","/toepassingen/jong-talent/","/toepassingen/onderwijs/","/toepassingen/industrie/","/en/toepassingen/","/en/toepassingen/werving-en-selectie/","/en/toepassingen/ontwikkeling/","/en/toepassingen/leidinggevenden/","/en/toepassingen/jong-talent/","/en/toepassingen/onderwijs/","/en/toepassingen/industrie/","/de/toepassingen/","/de/toepassingen/werving-en-selectie/","/de/toepassingen/ontwikkeling/","/de/toepassingen/leidinggevenden/","/de/toepassingen/jong-talent/","/de/toepassingen/onderwijs/","/de/toepassingen/industrie/","/fr/toepassingen/","/fr/toepassingen/werving-en-selectie/","/fr/toepassingen/ontwikkeling/","/fr/toepassingen/leidinggevenden/","/fr/toepassingen/jong-talent/","/fr/toepassingen/onderwijs/","/fr/toepassingen/industrie/","/es/toepassingen/","/es/toepassingen/werving-en-selectie/","/es/toepassingen/ontwikkeling/","/es/toepassingen/leidinggevenden/","/es/toepassingen/jong-talent/","/es/toepassingen/onderwijs/","/es/toepassingen/industrie/","/ro/toepassingen/","/ro/toepassingen/werving-en-selectie/","/ro/toepassingen/ontwikkeling/","/ro/toepassingen/leidinggevenden/","/ro/toepassingen/jong-talent/","/ro/toepassingen/onderwijs/","/ro/toepassingen/industrie/"];
++const EXTRA = ["/oefenen/big-five/","/oefenen/disc/","/oefenen/cognitieve-test/","/oefenen/drijfveren/","/en/oefenen/big-five/","/en/oefenen/disc/","/en/oefenen/cognitieve-test/","/en/oefenen/drijfveren/","/de/oefenen/big-five/","/de/oefenen/disc/","/de/oefenen/cognitieve-test/","/de/oefenen/drijfveren/","/fr/oefenen/big-five/","/fr/oefenen/disc/","/fr/oefenen/cognitieve-test/","/fr/oefenen/drijfveren/","/es/oefenen/big-five/","/es/oefenen/disc/","/es/oefenen/cognitieve-test/","/es/oefenen/drijfveren/","/ro/oefenen/big-five/","/ro/oefenen/disc/","/ro/oefenen/cognitieve-test/","/ro/oefenen/drijfveren/","/whitepapers/","/en/whitepapers/","/de/whitepapers/","/fr/whitepapers/","/es/whitepapers/","/ro/whitepapers/","/whitepapers/objectief-werven/","/whitepapers/beoordelen-naar-ontwikkelen/","/en/whitepapers/objectief-werven/","/en/whitepapers/beoordelen-naar-ontwikkelen/","/de/whitepapers/objectief-werven/","/de/whitepapers/beoordelen-naar-ontwikkelen/","/fr/whitepapers/objectief-werven/","/fr/whitepapers/beoordelen-naar-ontwikkelen/","/es/whitepapers/objectief-werven/","/es/whitepapers/beoordelen-naar-ontwikkelen/","/ro/whitepapers/objectief-werven/","/ro/whitepapers/beoordelen-naar-ontwikkelen/","/integraties/afas/","/integraties/nmbrs/","/integraties/visma/","/integraties/loket/","/integraties/recruitee/","/integraties/carerix/","/integraties/otys/","/en/integraties/afas/","/en/integraties/nmbrs/","/en/integraties/visma/","/en/integraties/loket/","/en/integraties/recruitee/","/en/integraties/carerix/","/en/integraties/otys/","/de/integraties/afas/","/de/integraties/nmbrs/","/de/integraties/visma/","/de/integraties/loket/","/de/integraties/recruitee/","/de/integraties/carerix/","/de/integraties/otys/","/fr/integraties/afas/","/fr/integraties/nmbrs/","/fr/integraties/visma/","/fr/integraties/loket/","/fr/integraties/recruitee/","/fr/integraties/carerix/","/fr/integraties/otys/","/es/integraties/afas/","/es/integraties/nmbrs/","/es/integraties/visma/","/es/integraties/loket/","/es/integraties/recruitee/","/es/integraties/carerix/","/es/integraties/otys/","/ro/integraties/afas/","/ro/integraties/nmbrs/","/ro/integraties/visma/","/ro/integraties/loket/","/ro/integraties/recruitee/","/ro/integraties/carerix/","/ro/integraties/otys/","/testkiezer/","/en/testkiezer/","/de/testkiezer/","/fr/testkiezer/","/es/testkiezer/","/ro/testkiezer/","/voor-kandidaten/","/en/voor-kandidaten/","/de/voor-kandidaten/","/fr/voor-kandidaten/","/es/voor-kandidaten/","/ro/voor-kandidaten/","/begrippenlijst/","/en/begrippenlijst/","/de/begrippenlijst/","/fr/begrippenlijst/","/es/begrippenlijst/","/ro/begrippenlijst/","/wetenschappelijke-verantwoording/","/en/wetenschappelijke-verantwoording/","/de/wetenschappelijke-verantwoording/","/fr/wetenschappelijke-verantwoording/","/es/wetenschappelijke-verantwoording/","/ro/wetenschappelijke-verantwoording/","/rondleiding/","/en/rondleiding/","/de/rondleiding/","/fr/rondleiding/","/es/rondleiding/","/ro/rondleiding/","/whitepapers/assessments-kiezen-gids/","/en/whitepapers/assessments-kiezen-gids/","/de/whitepapers/assessments-kiezen-gids/","/fr/whitepapers/assessments-kiezen-gids/","/es/whitepapers/assessments-kiezen-gids/","/ro/whitepapers/assessments-kiezen-gids/","/vergelijking/","/vergelijking/shl/","/vergelijking/thomas-international/","/en/vergelijking/","/en/vergelijking/shl/","/en/vergelijking/thomas-international/","/de/vergelijking/","/de/vergelijking/shl/","/de/vergelijking/thomas-international/","/fr/vergelijking/","/fr/vergelijking/shl/","/fr/vergelijking/thomas-international/","/es/vergelijking/","/es/vergelijking/shl/","/es/vergelijking/thomas-international/","/ro/vergelijking/","/ro/vergelijking/shl/","/ro/vergelijking/thomas-international/","/vacatures/","/en/vacatures/","/de/vacatures/","/fr/vacatures/","/es/vacatures/","/ro/vacatures/","/toepassingen/zorg/","/en/toepassingen/zorg/","/de/toepassingen/zorg/","/fr/toepassingen/zorg/","/es/toepassingen/zorg/","/ro/toepassingen/zorg/","/toepassingen/","/toepassingen/werving-en-selectie/","/toepassingen/ontwikkeling/","/toepassingen/leidinggevenden/","/toepassingen/jong-talent/","/toepassingen/onderwijs/","/toepassingen/industrie/","/en/toepassingen/","/en/toepassingen/werving-en-selectie/","/en/toepassingen/ontwikkeling/","/en/toepassingen/leidinggevenden/","/en/toepassingen/jong-talent/","/en/toepassingen/onderwijs/","/en/toepassingen/industrie/","/de/toepassingen/","/de/toepassingen/werving-en-selectie/","/de/toepassingen/ontwikkeling/","/de/toepassingen/leidinggevenden/","/de/toepassingen/jong-talent/","/de/toepassingen/onderwijs/","/de/toepassingen/industrie/","/fr/toepassingen/","/fr/toepassingen/werving-en-selectie/","/fr/toepassingen/ontwikkeling/","/fr/toepassingen/leidinggevenden/","/fr/toepassingen/jong-talent/","/fr/toepassingen/onderwijs/","/fr/toepassingen/industrie/","/es/toepassingen/","/es/toepassingen/werving-en-selectie/","/es/toepassingen/ontwikkeling/","/es/toepassingen/leidinggevenden/","/es/toepassingen/jong-talent/","/es/toepassingen/onderwijs/","/es/toepassingen/industrie/","/ro/toepassingen/","/ro/toepassingen/werving-en-selectie/","/ro/toepassingen/ontwikkeling/","/ro/toepassingen/leidinggevenden/","/ro/toepassingen/jong-talent/","/ro/toepassingen/onderwijs/","/ro/toepassingen/industrie/"];
+ 
+ export default Array.from(new Set([...STATIC, ...EXTRA, ...sanityPaths]));
+diff --git a/src/data/whitepapers-content.js b/src/data/whitepapers-content.js
+index d8c3937..e611748 100644
+--- a/src/data/whitepapers-content.js
++++ b/src/data/whitepapers-content.js
+@@ -25,4 +25,12 @@ export const WHITEPAPERS = [
+     es:{ title:"De evaluar a desarrollar", subtitle:"Un ciclo de entrevistas moderno que hace crecer a las personas", summary:"El ciclo de evaluación clásico a menudo se siente como un trámite. Este documento muestra cómo pasar de evaluar puntualmente a desarrollar de forma continua, con base en el análisis.", inside:["Por qué se estanca la evaluación anual","Cómo los datos de evaluación y feedback impulsan el crecimiento","Cómo integrar el desarrollo en el ciclo de entrevistas"], sections:[{h:"Por qué evaluar por sí solo no funciona",p1:"Un veredicto a posteriori cambia poco el comportamiento. Las personas carecen de pautas concretas y las conversaciones quedan vagas. El desarrollo requiere análisis previo y durante, no solo una nota al final.",p2:"Con visión de fortalezas, motivaciones y feedback 360 haces el desarrollo concreto y conversable. Las personas se reconocen en él y asumen su crecimiento."},{h:"Cómo integrar el desarrollo",p1:"Sustituye la entrevista final única por un ciclo continuo con momentos fijos para objetivos, progreso y desarrollo. Repite mediciones y sigue el crecimiento.",p2:"Vincula los análisis individuales a planes de desarrollo concretos y mantén conversaciones cortas y frecuentes. Así el desarrollo pasa a formar parte del trabajo en lugar de una obligación anual."}], takeaway:"Pasar de evaluar a desarrollar aporta conversaciones más enfocadas, más apropiación y mejor empleabilidad." },
+     ro:{ title:"De la evaluare la dezvoltare", subtitle:"Un ciclu modern de discuții care ajută oamenii să crească", summary:"Ciclul clasic de evaluare pare adesea o formalitate. Acest document arată cum treci de la evaluarea punctuală la dezvoltarea continuă, fundamentată pe date.", inside:["De ce se blochează evaluarea anuală","Cum ghidează creșterea datele de evaluare și feedback","Cum ancorezi dezvoltarea în ciclul de discuții"], sections:[{h:"De ce evaluarea singură nu funcționează",p1:"Un verdict ulterior schimbă puțin comportamentul. Oamenilor le lipsesc repere concrete, iar discuțiile rămân vagi. Dezvoltarea are nevoie de perspectivă în avans și pe parcurs, nu doar o notă la final.",p2:"Cu perspectivă asupra punctelor forte, factorilor motivaționali și feedbackului 360 faci dezvoltarea concretă și ușor de discutat. Oamenii se recunosc în ea și își asumă creșterea."},{h:"Cum ancorezi dezvoltarea",p1:"Înlocuiește discuția finală unică cu un ciclu continuu, cu momente fixe pentru obiective, progres și dezvoltare. Repetă măsurătorile și urmărește creșterea.",p2:"Leagă perspectivele individuale de planuri de dezvoltare concrete și menține discuții scurte și frecvente. Astfel dezvoltarea devine parte a muncii, nu o obligație anuală."}], takeaway:"Trecerea de la evaluare la dezvoltare aduce discuții mai bine țintite, mai multă asumare și o inserabilitate mai bună." },
+   }},
++  { slug:"assessments-kiezen-gids", i18n:{
++    nl:{ title:"De complete gids: assessments kiezen en inzetten", subtitle:"Een praktisch stappenplan om het juiste instrument te kiezen en betrouwbaar in te zetten", summary:"Assessments leveren pas waarde als je het juiste instrument kiest en het zorgvuldig inzet. Deze gids geeft je een praktisch afwegingskader: van doel bepalen en validiteit beoordelen tot eerlijk afnemen en de uitkomst gebruiken in het gesprek.", inside:["Een afwegingskader om het juiste instrument te kiezen","Waar je op let bij betrouwbaarheid en validiteit","Hoe je assessments eerlijk en AVG-conform inzet"], sections:[{ h:"Begin bij het doel, niet bij het instrument", p1:"De belangrijkste vraag is niet welke test het populairst is, maar welke beslissing je wilt onderbouwen: selecteren, ontwikkelen of teams versterken. Elk doel vraagt om andere instrumenten en een andere norm.", p2:"Breng eerst in kaart welke eigenschappen er voor de rol echt toe doen. Meet gericht die eigenschappen, in plaats van zoveel mogelijk te meten. Zo houd je de afname kort en de uitkomst bruikbaar." },{ h:"Beoordeel betrouwbaarheid en validiteit", p1:"Een goed instrument meet consistent (betrouwbaarheid) en meet wat het beweert te meten (validiteit). Vraag naar onderbouwing: is het instrument ontwikkeld en gecontroleerd door gekwalificeerde psychologen, en is er bewijs dat het samenhangt met werkprestaties?", p2:"Let ook op normgroepen en talen. Een instrument dat in meerdere talen betrouwbaar is afgenomen, is eerlijker voor een internationale populatie en voorkomt dat taal een verborgen selectiecriterium wordt." },{ h:"Zet het eerlijk in en gebruik de uitkomst goed", p1:"Laat iedere kandidaat dezelfde gestructureerde meting doorlopen en verwerk gegevens AVG-conform binnen de EU. Kandidaten hebben recht op feedback; een zorgvuldig proces versterkt je werkgeversimago.", p2:"Een assessment vervangt het gesprek niet, maar verrijkt het. Gebruik de uitkomst als aanvullende informatiebron en combineer die met het interview en andere bronnen tot een compleet, uitlegbaar beeld." }], takeaway:"Kies op basis van je doel, toets op validiteit en talen, en gebruik de uitkomst als aanvulling op het gesprek. Zo haal je maximale waarde uit assessments, eerlijk en goed onderbouwd." },
++    en:{ title:"The complete guide: choosing and using assessments", subtitle:"A practical step-by-step approach to pick the right instrument and deploy it reliably", summary:"Assessments only add value when you choose the right instrument and deploy it carefully. This guide gives you a practical framework: from defining your goal and judging validity to fair delivery and using the outcome in the interview.", inside:["A framework to choose the right instrument","What to look for in reliability and validity","How to deploy assessments fairly and GDPR-compliant"], sections:[{ h:"Start with the goal, not the instrument", p1:"The key question isn't which test is most popular, but which decision you want to support: selecting, developing or strengthening teams. Each goal calls for different instruments and a different benchmark.", p2:"First map the traits that truly matter for the role. Measure those specifically rather than measuring as much as possible. That keeps the assessment short and the outcome usable." },{ h:"Assess reliability and validity", p1:"A good instrument measures consistently (reliability) and measures what it claims to (validity). Ask for evidence: was it developed and checked by qualified psychologists, and is there proof that it relates to work performance?", p2:"Also check norm groups and languages. An instrument reliably administered in several languages is fairer for an international population and prevents language from becoming a hidden selection criterion." },{ h:"Deploy it fairly and use the outcome well", p1:"Have every candidate complete the same structured measurement and process data GDPR-compliant within the EU. Candidates are entitled to feedback; a careful process strengthens your employer brand.", p2:"An assessment doesn't replace the interview, it enriches it. Use the outcome as an additional source and combine it with the interview and other sources into a complete, explainable picture." }], takeaway:"Choose based on your goal, test for validity and languages, and use the outcome to complement the interview. That's how you get maximum value from assessments, fairly and well-founded." },
++    de:{ title:"Der komplette Leitfaden: Assessments auswählen und einsetzen", subtitle:"Ein praktischer Schritt-für-Schritt-Ansatz, um das richtige Instrument zu wählen und zuverlässig einzusetzen", summary:"Assessments bringen erst dann Wert, wenn Sie das richtige Instrument wählen und es sorgfältig einsetzen. Dieser Leitfaden bietet einen praktischen Rahmen: vom Ziel über die Bewertung der Validität bis zur fairen Durchführung und Nutzung des Ergebnisses im Gespräch.", inside:["Ein Rahmen zur Auswahl des richtigen Instruments","Worauf Sie bei Reliabilität und Validität achten","Wie Sie Assessments fair und DSGVO-konform einsetzen"], sections:[{ h:"Beginnen Sie beim Ziel, nicht beim Instrument", p1:"Die entscheidende Frage ist nicht, welcher Test am beliebtesten ist, sondern welche Entscheidung Sie untermauern wollen: Auswahl, Entwicklung oder Teamstärkung. Jedes Ziel erfordert andere Instrumente und einen anderen Maßstab.", p2:"Erfassen Sie zuerst die Eigenschaften, die für die Rolle wirklich zählen. Messen Sie gezielt diese, statt möglichst viel zu messen. So bleibt die Durchführung kurz und das Ergebnis nutzbar." },{ h:"Reliabilität und Validität bewerten", p1:"Ein gutes Instrument misst konsistent (Reliabilität) und misst, was es zu messen behauptet (Validität). Fragen Sie nach Belegen: Wurde es von qualifizierten Psychologen entwickelt und geprüft, und gibt es Belege für den Zusammenhang mit Arbeitsleistung?", p2:"Achten Sie auch auf Normgruppen und Sprachen. Ein in mehreren Sprachen zuverlässig durchgeführtes Instrument ist fairer für eine internationale Population und verhindert, dass Sprache zum verborgenen Auswahlkriterium wird." },{ h:"Fair einsetzen und das Ergebnis richtig nutzen", p1:"Lassen Sie jeden Kandidaten dieselbe strukturierte Messung durchlaufen und verarbeiten Sie Daten DSGVO-konform innerhalb der EU. Kandidaten haben Anspruch auf Feedback; ein sorgfältiger Prozess stärkt Ihr Arbeitgeberimage.", p2:"Ein Assessment ersetzt das Gespräch nicht, es bereichert es. Nutzen Sie das Ergebnis als zusätzliche Quelle und kombinieren Sie es mit dem Interview und anderen Quellen zu einem vollständigen, erklärbaren Bild." }], takeaway:"Wählen Sie nach Ihrem Ziel, prüfen Sie Validität und Sprachen und nutzen Sie das Ergebnis als Ergänzung zum Gespräch. So holen Sie den maximalen Wert aus Assessments, fair und fundiert." },
++    fr:{ title:"Le guide complet : choisir et utiliser les assessments", subtitle:"Une approche pratique, étape par étape, pour choisir le bon outil et le déployer de façon fiable", summary:"Les assessments n'apportent de la valeur que si vous choisissez le bon outil et l'utilisez avec soin. Ce guide propose un cadre pratique : du but à l'évaluation de la validité, jusqu'à une passation équitable et l'usage du résultat en entretien.", inside:["Un cadre pour choisir le bon outil","Ce qu'il faut vérifier en fiabilité et validité","Comment déployer les assessments équitablement et conformément au RGPD"], sections:[{ h:"Commencez par l'objectif, pas par l'outil", p1:"La question clé n'est pas quel test est le plus populaire, mais quelle décision vous voulez étayer : sélectionner, développer ou renforcer des équipes. Chaque objectif appelle des outils et un référentiel différents.", p2:"Cartographiez d'abord les traits qui comptent vraiment pour le poste. Mesurez-les spécifiquement plutôt que de tout mesurer. La passation reste courte et le résultat utilisable." },{ h:"Évaluer la fiabilité et la validité", p1:"Un bon outil mesure de façon cohérente (fiabilité) et mesure ce qu'il prétend mesurer (validité). Demandez des preuves : a-t-il été développé et contrôlé par des psychologues qualifiés, et existe-t-il des preuves de lien avec la performance ?", p2:"Vérifiez aussi les groupes de référence et les langues. Un outil administré de façon fiable en plusieurs langues est plus équitable pour une population internationale et évite que la langue devienne un critère de sélection caché." },{ h:"Déployer équitablement et bien utiliser le résultat", p1:"Faites passer à chaque candidat la même mesure structurée et traitez les données conformément au RGPD au sein de l'UE. Les candidats ont droit à un retour ; un processus soigné renforce votre marque employeur.", p2:"Un assessment ne remplace pas l'entretien, il l'enrichit. Utilisez le résultat comme source complémentaire et combinez-le à l'entretien et à d'autres sources pour une image complète et explicable." }], takeaway:"Choisissez selon votre objectif, vérifiez la validité et les langues, et utilisez le résultat en complément de l'entretien. Vous tirez ainsi une valeur maximale des assessments, équitablement et solidement." },
++    es:{ title:"La guía completa: elegir y usar evaluaciones", subtitle:"Un enfoque práctico paso a paso para elegir el instrumento adecuado y aplicarlo de forma fiable", summary:"Las evaluaciones solo aportan valor cuando eliges el instrumento adecuado y lo aplicas con cuidado. Esta guía ofrece un marco práctico: desde definir el objetivo y valorar la validez hasta una aplicación justa y el uso del resultado en la entrevista.", inside:["Un marco para elegir el instrumento adecuado","En qué fijarte en fiabilidad y validez","Cómo aplicar evaluaciones de forma justa y conforme al RGPD"], sections:[{ h:"Empieza por el objetivo, no por el instrumento", p1:"La pregunta clave no es qué test es más popular, sino qué decisión quieres respaldar: seleccionar, desarrollar o reforzar equipos. Cada objetivo requiere instrumentos y un referente distintos.", p2:"Primero mapea los rasgos que de verdad importan para el puesto. Mide esos específicamente en lugar de medir lo máximo posible. Así la aplicación es breve y el resultado, útil." },{ h:"Evalúa la fiabilidad y la validez", p1:"Un buen instrumento mide de forma consistente (fiabilidad) y mide lo que dice medir (validez). Pide evidencia: ¿lo desarrollaron y revisaron psicólogos cualificados y hay pruebas de su relación con el desempeño?", p2:"Fíjate también en los grupos normativos y los idiomas. Un instrumento aplicado de forma fiable en varios idiomas es más justo para una población internacional y evita que el idioma sea un criterio de selección oculto." },{ h:"Aplícalo de forma justa y usa bien el resultado", p1:"Haz que cada candidato complete la misma medición estructurada y trata los datos conforme al RGPD dentro de la UE. Los candidatos tienen derecho a feedback; un proceso cuidadoso refuerza tu marca empleadora.", p2:"Una evaluación no sustituye a la entrevista, la enriquece. Usa el resultado como fuente adicional y combínalo con la entrevista y otras fuentes en una imagen completa y explicable." }], takeaway:"Elige según tu objetivo, comprueba la validez y los idiomas, y usa el resultado como complemento de la entrevista. Así obtienes el máximo valor de las evaluaciones, de forma justa y fundamentada." },
++    ro:{ title:"Ghidul complet: cum alegi și folosești evaluările", subtitle:"O abordare practică, pas cu pas, pentru a alege instrumentul potrivit și a-l folosi fiabil", summary:"Evaluările aduc valoare doar când alegi instrumentul potrivit și îl folosești cu grijă. Acest ghid oferă un cadru practic: de la stabilirea obiectivului și evaluarea validității până la administrarea corectă și folosirea rezultatului în interviu.", inside:["Un cadru pentru a alege instrumentul potrivit","La ce să te uiți la fidelitate și validitate","Cum administrezi evaluările corect și conform GDPR"], sections:[{ h:"Pornește de la obiectiv, nu de la instrument", p1:"Întrebarea cheie nu este ce test este cel mai popular, ci ce decizie vrei să susții: selecție, dezvoltare sau întărirea echipelor. Fiecare obiectiv cere instrumente și un reper diferite.", p2:"Cartografiază mai întâi trăsăturile care contează cu adevărat pentru rol. Măsoară-le specific în loc să măsori cât mai mult. Astfel administrarea rămâne scurtă, iar rezultatul util." },{ h:"Evaluează fidelitatea și validitatea", p1:"Un instrument bun măsoară constant (fidelitate) și măsoară ce pretinde că măsoară (validitate). Cere dovezi: a fost dezvoltat și verificat de psihologi calificați și există dovezi ale legăturii cu performanța?", p2:"Verifică și grupurile normative și limbile. Un instrument administrat fiabil în mai multe limbi este mai corect pentru o populație internațională și previne ca limba să devină un criteriu de selecție ascuns." },{ h:"Administrează corect și folosește bine rezultatul", p1:"Pune fiecare candidat să parcurgă aceeași măsurare structurată și prelucrează datele conform GDPR în UE. Candidații au dreptul la feedback; un proces atent îți întărește brandul de angajator.", p2:"O evaluare nu înlocuiește interviul, îl îmbogățește. Folosește rezultatul ca sursă suplimentară și combină-l cu interviul și alte surse într-o imagine completă și explicabilă." }], takeaway:"Alege în funcție de obiectiv, verifică validitatea și limbile și folosește rezultatul ca o completare a interviului. Așa obții valoare maximă din evaluări, corect și fundamentat." },
++  }},
+ ];
+diff --git a/src/i18n/utils.js b/src/i18n/utils.js
+index 57e30bc..892bc2b 100644
+--- a/src/i18n/utils.js
++++ b/src/i18n/utils.js
+@@ -30,7 +30,7 @@ export const LOCALIZED_PAGES = new Set([
+   "/", "/online-assessments/", "/hrm-oplossingen/", "/advies/", "/over-ons/",
+   "/contact/", "/shop/", "/assessment-overzicht/", "/tarieven/", "/roi-rekentool/",
+   "/klantcases/", "/kenniscentrum/", "/trust/", "/integraties/", "/voorbereiding/",
+-  "/support/", "/support/f-a-q/", "/wetenschappelijke-verantwoording/", "/begrippenlijst/", "/voor-kandidaten/", "/testkiezer/", "/whitepapers/", "/toepassingen/", "/vacatures/", "/vergelijking/",
++  "/support/", "/support/f-a-q/", "/wetenschappelijke-verantwoording/", "/begrippenlijst/", "/voor-kandidaten/", "/testkiezer/", "/whitepapers/", "/toepassingen/", "/vacatures/", "/vergelijking/", "/rondleiding/",
+ ]);
+ 
+ // Assessment-detailpagina's (/assessments/<slug>/) zijn in alle talen gelokaliseerd.
+diff --git a/src/pages/de/rondleiding/index.astro b/src/pages/de/rondleiding/index.astro
+new file mode 100644
+index 0000000..31e46fb
+--- /dev/null
++++ b/src/pages/de/rondleiding/index.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import Rondleiding from "../../../components/Rondleiding.astro";
++import { TOUR_UI } from "../../../data/rondleiding-content.js";
++const t = TOUR_UI.de;
++---
++<Base title={t.metaT} description={t.metaD} active=""><Rondleiding lang="de" /></Base>
+diff --git a/src/pages/en/rondleiding/index.astro b/src/pages/en/rondleiding/index.astro
+new file mode 100644
+index 0000000..ad22c1c
+--- /dev/null
++++ b/src/pages/en/rondleiding/index.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import Rondleiding from "../../../components/Rondleiding.astro";
++import { TOUR_UI } from "../../../data/rondleiding-content.js";
++const t = TOUR_UI.en;
++---
++<Base title={t.metaT} description={t.metaD} active=""><Rondleiding lang="en" /></Base>
+diff --git a/src/pages/es/rondleiding/index.astro b/src/pages/es/rondleiding/index.astro
+new file mode 100644
+index 0000000..99eed2b
+--- /dev/null
++++ b/src/pages/es/rondleiding/index.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import Rondleiding from "../../../components/Rondleiding.astro";
++import { TOUR_UI } from "../../../data/rondleiding-content.js";
++const t = TOUR_UI.es;
++---
++<Base title={t.metaT} description={t.metaD} active=""><Rondleiding lang="es" /></Base>
+diff --git a/src/pages/fr/rondleiding/index.astro b/src/pages/fr/rondleiding/index.astro
+new file mode 100644
+index 0000000..1cf6fba
+--- /dev/null
++++ b/src/pages/fr/rondleiding/index.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import Rondleiding from "../../../components/Rondleiding.astro";
++import { TOUR_UI } from "../../../data/rondleiding-content.js";
++const t = TOUR_UI.fr;
++---
++<Base title={t.metaT} description={t.metaD} active=""><Rondleiding lang="fr" /></Base>
+diff --git a/src/pages/ro/rondleiding/index.astro b/src/pages/ro/rondleiding/index.astro
+new file mode 100644
+index 0000000..75bf128
+--- /dev/null
++++ b/src/pages/ro/rondleiding/index.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../../layouts/Base.astro";
++import Rondleiding from "../../../components/Rondleiding.astro";
++import { TOUR_UI } from "../../../data/rondleiding-content.js";
++const t = TOUR_UI.ro;
++---
++<Base title={t.metaT} description={t.metaD} active=""><Rondleiding lang="ro" /></Base>
+diff --git a/src/pages/rondleiding/index.astro b/src/pages/rondleiding/index.astro
+new file mode 100644
+index 0000000..54223cb
+--- /dev/null
++++ b/src/pages/rondleiding/index.astro
+@@ -0,0 +1,7 @@
++---
++import Base from "../../layouts/Base.astro";
++import Rondleiding from "../../components/Rondleiding.astro";
++import { TOUR_UI } from "../../data/rondleiding-content.js";
++const t = TOUR_UI.nl;
++---
++<Base title={t.metaT} description={t.metaD} active=""><Rondleiding lang="nl" /></Base>
+-- 
+2.34.1
+

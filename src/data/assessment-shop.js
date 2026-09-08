@@ -11,6 +11,7 @@ export const shopMap = {
   "drijfverentest": { handle: "motivation", price: "74.00", segments: ["Drijfveren"], uitgever: "hrmforce" },
   "ability-scan": { handle: "ability-scan", price: "74.00", segments: ["Capaciteiten"], uitgever: "hrmforce" },
   "ontwikkelassessment": { handle: "ontwikkelmatrix", price: "208.00", segments: [], uitgever: "hrmforce" },
+  "ontwikkelmatrix": { handle: "ontwikkelmatrix-big50-360", price: "188.00", segments: ["Ontwikkeling"], uitgever: "hrmforce" },
   "studiekeuzetest": { handle: "studiekeuzetest-basis", price: "49.00", segments: [], uitgever: "hrmforce" },
   "lencioni-teamdynamiek": { handle: "lencioni-teamdynamiek", price: "39.00", segments: [], uitgever: "hrmforce" },
   "pulse-survey": { handle: "pulse-survey", price: "34.00", segments: [], uitgever: "hrmforce" },

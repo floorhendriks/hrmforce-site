@@ -1,0 +1,107 @@
+From 3702978690f37ec17e2f41e159f39fc20fa8a54a Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Tue, 8 Sep 2026 19:43:53 +0200
+Subject: [PATCH] Batch 6c (6 talen): kennisbank uitgebreid van 6 naar 13
+ fijnmazige thema's (persoonlijkheid, drijfveren, capaciteiten, assessments,
+ werving/selectie, leiderschap, teams, ontwikkeling, loopbaan, welzijn, HR,
+ product & updates, modellen); herordende trefwoord-buckets zodat artikelen
+ beter verdeeld worden en 'Overig' fors kleiner is (108 -> 29)
+
+---
+ src/components/Kenniscentrum.astro | 19 ++++++++++++++-----
+ src/data/kenniscentrum-content.js  | 12 ++++++------
+ 2 files changed, 20 insertions(+), 11 deletions(-)
+
+diff --git a/src/components/Kenniscentrum.astro b/src/components/Kenniscentrum.astro
+index 1bcfd6f..6bb814c 100644
+--- a/src/components/Kenniscentrum.astro
++++ b/src/components/Kenniscentrum.astro
+@@ -19,13 +19,22 @@ const raw = await client.fetch(
+ 
+ // Thema-buckets afgeleid uit de titel (er is geen categorie-veld in de data).
+ // Keywords zijn meertalig zodat ook en/de-titels in een thema vallen.
++// Fijnmazige thema-buckets (12), afgeleid uit de titel. Volgorde = specifiek
++// naar algemeen: het eerste thema dat matcht wint. Keywords zijn meertalig.
+ const CATS = [
+-  { key: "persoonlijkheid", kw: ["persoonlijk", "big five", "big 5", "big fifty", "big50", "disc", "drijfveer", "motivat", "karakter", "temperament", "waarden", "personality", "drive", "persönlich", "personnalit", "personalidad", "personalitate"] },
+-  { key: "leiderschap", kw: ["leider", "team", "manage", "samenwerk", "conflict", "groepsrol", "lencioni", "leader", "führ", "leadership", "équipe", "equipo", "echip"] },
+-  { key: "assessment", kw: ["assessment", "test", "vragenlijst", "meten", "capaciteit", "cognit", "intelligentie", "scan", "iq", "abstract", "ability", "fähigkeit", "évaluation", "evaluaci", "evaluar"] },
+-  { key: "ontwikkeling", kw: ["ontwikkel", "loopbaan", "coaching", "opleiding", "studiekeuze", "talent", "groei", "leren", "leerstijl", "carriere", "carrière", "development", "career", "entwicklung", "desarrollo", "dezvoltare", "learning"] },
+-  { key: "hr", kw: ["recruitment", "selectie", "werving", "cultuur", "organisatie", "verzuim", "functioneren", "beoordel", "competentie", "onboarding", "arbeids", "recruit", "selection", "organisation", "organizaci", "competenc"] },
++  { key: "welzijn", kw: ["veerkracht", "veerkrachtig", "stress", "burn-out", "burnout", "vitaliteit", "verzuim", "welzijn", "welbevinden", "balans", "mentale", "resilien", "wellbeing", "well-being", "widerstand", "bien-être", "bienestar", "rezilien"] },
++  { key: "loopbaan", kw: ["loopbaan", "carriere", "carrière", "studiekeuze", "beroepskeuze", "uitstroom", "outplacement", "career", "laufbahn", "studienwahl", "orientation", "orientación", "carieră", "carrera"] },
++  { key: "teams", kw: ["team", "samenwerk", "groepsrol", "lencioni", "belbin", "groepsdynamiek", "360", "feedback", "communicat", "conflict", "gesprek", "mbti", "collaborat", "zusammenarbeit", "équipe", "equipo", "echip"] },
++  { key: "leiderschap", kw: ["leider", "leidinggev", "management", "manager", "transformationeel", "situationeel", "leadership", "führ", "leader"] },
++  { key: "drijfveren", kw: ["drijfveer", "drijfveren", "motivat", "waarden", "engagement", "betrokkenheid", "drives", "drive", "antrieb", "motivation", "motivaci", "motivați"] },
++  { key: "persoonlijkheid", kw: ["persoonlijk", "big five", "big 5", "big fifty", "big50", "disc", "karakter", "temperament", "typolog", "jung", "personality", "persönlich", "personnalit", "personalidad", "personalitate"] },
++  { key: "cognitie", kw: ["capaciteit", "cognit", "intelligentie", "iq", "abstract", "numeriek", "verbaal", "redeneer", "ability", "aptitude", "fähigkeit", "cognici", "cogniți"] },
++  { key: "selectie", kw: ["recruitment", "recruit", "selectie", "selection", "werving", "sollicit", "preselectie", "matching", "aanname", "hire", "auswahl", "rekrutier", "sélection", "reclutami", "recrutare"] },
++  { key: "hr", kw: ["analytics", "data", "dashboard", "cultuur", "organisatie", "functioneren", "beoordel", "gesprekscyclus", "onboarding", "arbeids", "hr-", "organisation", "organizaci", "organizați"] },
++  { key: "ontwikkeling", kw: ["ontwikkel", "opleiding", "coaching", "talent", "groei", "leren", "leerstijl", "training", "competentie", "development", "learning", "entwicklung", "desarrollo", "dezvoltare"] },
++  { key: "product", kw: ["- week", "in hrmforce", "hrmforce portal", "white label", "superuser", "facturatie", "authenticatie", "matchprofiel", "9-box", "9 box", "bila module", "signalen rapportage", "kandidatenaccount", "gebruikers en facturatie", "rapportagepublicatie"] },
+   { key: "modellen", kw: ["model", "theorie", "piramide", "ijsberg", "methode", "wet van", "effect", "principe", "theory", "modell", "théorie", "teoría", "teorie"] },
++  { key: "assessment", kw: ["assessment", "test", "vragenlijst", "meten", "validit", "betrouwbaar", "normgroep", "scan", "évaluation", "evaluaci", "evaluar", "evaluări"] },
+ ];
+ function categorize(title) {
+   const s = (title || "").toLowerCase();
+diff --git a/src/data/kenniscentrum-content.js b/src/data/kenniscentrum-content.js
+index fb9e27f..2362f37 100644
+--- a/src/data/kenniscentrum-content.js
++++ b/src/data/kenniscentrum-content.js
+@@ -14,7 +14,7 @@ export const kenniscentrumContent = {
+     noResult: "Geen artikelen gevonden.",
+     resetFilters: "Wis de filters",
+     dateLocale: "nl-NL",
+-    cats: { persoonlijkheid: "Persoonlijkheid & drijfveren", leiderschap: "Leiderschap & teams", assessment: "Assessments & tests", ontwikkeling: "Ontwikkeling & loopbaan", hr: "HR & organisatie", modellen: "Modellen & theorie", overig: "Overig" },
++    cats: { persoonlijkheid: "Persoonlijkheid", drijfveren: "Drijfveren & motivatie", cognitie: "Capaciteiten & cognitie", assessment: "Assessments & tests", selectie: "Werving & selectie", leiderschap: "Leiderschap", teams: "Teams & samenwerking", ontwikkeling: "Ontwikkeling & leren", loopbaan: "Loopbaan & studiekeuze", welzijn: "Welzijn & veerkracht", product: "Product & updates", hr: "HR & organisatie", modellen: "Modellen & theorie", overig: "Overig" },
+     // path match "/kenniscentrum/*" — NL-artikelen (geen taalprefix).
+     sanityMatch: `string::startsWith(path, "/kenniscentrum/")`,
+     empty: { title: "Binnenkort meer artikelen", lead: "We vertalen ons kenniscentrum stap voor stap. Ontdek in de tussentijd onze assessments of bekijk de mogelijkheden en tarieven.", ctaAssessments: "Bekijk de assessments", ctaTarieven: "Mogelijkheden & tarieven" },
+@@ -31,7 +31,7 @@ export const kenniscentrumContent = {
+     noResult: "No articles found.",
+     resetFilters: "Clear the filters",
+     dateLocale: "en-GB",
+-    cats: { persoonlijkheid: "Personality & drives", leiderschap: "Leadership & teams", assessment: "Assessments & tests", ontwikkeling: "Development & career", hr: "HR & organisation", modellen: "Models & theory", overig: "Other" },
++    cats: { persoonlijkheid: "Personality", drijfveren: "Drives & motivation", cognitie: "Ability & cognition", assessment: "Assessments & tests", selectie: "Recruitment & selection", leiderschap: "Leadership", teams: "Teams & collaboration", ontwikkeling: "Development & learning", loopbaan: "Career & study choice", welzijn: "Wellbeing & resilience", product: "Product & updates", hr: "HR & organisation", modellen: "Models & theory", overig: "Other" },
+     sanityMatch: `string::startsWith(path, "/en/kenniscentrum/") || string::startsWith(path, "/en/knowledge-center/") || string::startsWith(path, "/en/knowledge-centre/")`,
+     empty: { title: "More articles coming soon", lead: "We are translating our knowledge centre step by step. In the meantime, explore our assessments or review the options and pricing.", ctaAssessments: "View the assessments", ctaTarieven: "Options & pricing" },
+   },
+@@ -47,7 +47,7 @@ export const kenniscentrumContent = {
+     noResult: "Keine Artikel gefunden.",
+     resetFilters: "Filter zurücksetzen",
+     dateLocale: "de-DE",
+-    cats: { persoonlijkheid: "Persönlichkeit & Antriebe", leiderschap: "Führung & Teams", assessment: "Assessments & Tests", ontwikkeling: "Entwicklung & Laufbahn", hr: "HR & Organisation", modellen: "Modelle & Theorie", overig: "Sonstiges" },
++    cats: { persoonlijkheid: "Persönlichkeit", drijfveren: "Antriebe & Motivation", cognitie: "Fähigkeiten & Kognition", assessment: "Assessments & Tests", selectie: "Rekrutierung & Auswahl", leiderschap: "Führung", teams: "Teams & Zusammenarbeit", ontwikkeling: "Entwicklung & Lernen", loopbaan: "Laufbahn & Studienwahl", welzijn: "Wohlbefinden & Resilienz", product: "Produkt & Updates", hr: "HR & Organisation", modellen: "Modelle & Theorie", overig: "Sonstiges" },
+     sanityMatch: `string::startsWith(path, "/de/kenniscentrum/") || string::startsWith(path, "/de/wissenszentrum/") || string::startsWith(path, "/de/wissenscenter/")`,
+     empty: { title: "Bald weitere Artikel", lead: "Wir übersetzen unser Wissenszentrum Schritt für Schritt. Entdecken Sie in der Zwischenzeit unsere Assessments oder sehen Sie sich die Möglichkeiten und Preise an.", ctaAssessments: "Assessments ansehen", ctaTarieven: "Möglichkeiten & Preise" },
+   },
+@@ -63,7 +63,7 @@ export const kenniscentrumContent = {
+     noResult: "Aucun article trouvé.",
+     resetFilters: "Effacer les filtres",
+     dateLocale: "fr-FR",
+-    cats: { persoonlijkheid: "Personnalité & motivations", leiderschap: "Leadership & équipes", assessment: "Évaluations & tests", ontwikkeling: "Développement & carrière", hr: "RH & organisation", modellen: "Modèles & théorie", overig: "Autre" },
++    cats: { persoonlijkheid: "Personnalité", drijfveren: "Motivations", cognitie: "Aptitudes & cognition", assessment: "Évaluations & tests", selectie: "Recrutement & sélection", leiderschap: "Leadership", teams: "Équipes & collaboration", ontwikkeling: "Développement & apprentissage", loopbaan: "Carrière & orientation", welzijn: "Bien-être & résilience", product: "Produit & mises à jour", hr: "RH & organisation", modellen: "Modèles & théorie", overig: "Autre" },
+     sanityMatch: `string::startsWith(path, "/fr/kenniscentrum/") || string::startsWith(path, "/fr/centre-de-connaissances/")`,
+     empty: { title: "Bientôt plus d'articles", lead: "Nous traduisons notre centre de connaissances étape par étape. En attendant, découvrez nos évaluations ou consultez les possibilités et les tarifs.", ctaAssessments: "Voir les évaluations", ctaTarieven: "Possibilités & tarifs" },
+   },
+@@ -79,7 +79,7 @@ export const kenniscentrumContent = {
+     noResult: "No se han encontrado artículos.",
+     resetFilters: "Borrar los filtros",
+     dateLocale: "es-ES",
+-    cats: { persoonlijkheid: "Personalidad y motivaciones", leiderschap: "Liderazgo y equipos", assessment: "Evaluaciones y tests", ontwikkeling: "Desarrollo y carrera", hr: "RR. HH. y organización", modellen: "Modelos y teoría", overig: "Otros" },
++    cats: { persoonlijkheid: "Personalidad", drijfveren: "Motivaciones", cognitie: "Aptitudes y cognición", assessment: "Evaluaciones y tests", selectie: "Reclutamiento y selección", leiderschap: "Liderazgo", teams: "Equipos y colaboración", ontwikkeling: "Desarrollo y aprendizaje", loopbaan: "Carrera y orientación", welzijn: "Bienestar y resiliencia", product: "Producto y novedades", hr: "RR. HH. y organización", modellen: "Modelos y teoría", overig: "Otros" },
+     sanityMatch: `string::startsWith(path, "/es/kenniscentrum/") || string::startsWith(path, "/es/centro-de-conocimiento/")`,
+     empty: { title: "Pronto más artículos", lead: "Estamos traduciendo nuestro centro de conocimiento paso a paso. Mientras tanto, descubra nuestras evaluaciones o consulte las opciones y los precios.", ctaAssessments: "Ver las evaluaciones", ctaTarieven: "Opciones y precios" },
+   },
+@@ -95,7 +95,7 @@ export const kenniscentrumContent = {
+     noResult: "Nu s-au găsit articole.",
+     resetFilters: "Șterge filtrele",
+     dateLocale: "ro-RO",
+-    cats: { persoonlijkheid: "Personalitate & motivații", leiderschap: "Leadership & echipe", assessment: "Evaluări & teste", ontwikkeling: "Dezvoltare & carieră", hr: "HR & organizație", modellen: "Modele & teorie", overig: "Altele" },
++    cats: { persoonlijkheid: "Personalitate", drijfveren: "Motivații", cognitie: "Aptitudini & cogniție", assessment: "Evaluări & teste", selectie: "Recrutare & selecție", leiderschap: "Leadership", teams: "Echipe & colaborare", ontwikkeling: "Dezvoltare & învățare", loopbaan: "Carieră & orientare", welzijn: "Bunăstare & reziliență", product: "Produs & noutăți", hr: "HR & organizație", modellen: "Modele & teorie", overig: "Altele" },
+     sanityMatch: `string::startsWith(path, "/ro/kenniscentrum/") || string::startsWith(path, "/ro/centru-de-cuno")`,
+     empty: { title: "În curând mai multe articole", lead: "Traducem centrul nostru de cunoștințe pas cu pas. Între timp, descoperiți evaluările noastre sau consultați opțiunile și prețurile.", ctaAssessments: "Vezi evaluările", ctaTarieven: "Opțiuni & prețuri" },
+   },
+-- 
+2.34.1
+

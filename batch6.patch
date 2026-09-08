@@ -1,0 +1,272 @@
+From f0d450db66908458e329fb47d7d2c57f99c50085 Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Mon, 7 Sep 2026 17:14:10 +0200
+Subject: [PATCH] Integraties: detailpagina's per ECHT systeem (AFAS, Nmbrs,
+ Visma, Loket.nl, Recruitee, Carerix, OTYS) in 6 talen; SAP SuccessFactors
+ verwijderd
+
+---
+ src/components/IntegratieDetail.astro | 45 +++++++++++++++++++++++++++
+ src/components/Integraties.astro      | 18 +++++++++++
+ src/data/integraties-content.js       |  2 +-
+ src/data/integraties-detail.js        | 19 +++++++++++
+ src/data/valid-paths.js               |  2 +-
+ src/pages/de/integraties/[slug].astro | 10 ++++++
+ src/pages/en/integraties/[slug].astro | 10 ++++++
+ src/pages/es/integraties/[slug].astro | 10 ++++++
+ src/pages/fr/integraties/[slug].astro | 10 ++++++
+ src/pages/integraties/[slug].astro    | 10 ++++++
+ src/pages/ro/integraties/[slug].astro | 10 ++++++
+ 11 files changed, 144 insertions(+), 2 deletions(-)
+ create mode 100644 src/components/IntegratieDetail.astro
+ create mode 100644 src/data/integraties-detail.js
+ create mode 100644 src/pages/de/integraties/[slug].astro
+ create mode 100644 src/pages/en/integraties/[slug].astro
+ create mode 100644 src/pages/es/integraties/[slug].astro
+ create mode 100644 src/pages/fr/integraties/[slug].astro
+ create mode 100644 src/pages/integraties/[slug].astro
+ create mode 100644 src/pages/ro/integraties/[slug].astro
+
+diff --git a/src/components/IntegratieDetail.astro b/src/components/IntegratieDetail.astro
+new file mode 100644
+index 0000000..a08c62d
+--- /dev/null
++++ b/src/components/IntegratieDetail.astro
+@@ -0,0 +1,45 @@
++---
++import { localizePath } from "../i18n/utils.js";
++const { sys, ui, lang } = Astro.props;
++const name = sys.name;
++const S = (str) => str.replaceAll("{s}", name);
++const blurb = sys.blurb[lang] ?? sys.blurb.nl;
++const contactHref = localizePath("/contact/", lang);
++const intHref = localizePath("/integraties/", lang);
++const _canon = new URL(Astro.url.pathname, "https://hrmforce.com").href;
++const _crumbLd = { "@context":"https://schema.org","@type":"BreadcrumbList", itemListElement:[
++  {"@type":"ListItem",position:1,name:"Home",item:"https://hrmforce.com/"},
++  {"@type":"ListItem",position:2,name:ui.crumb,item:new URL(intHref,"https://hrmforce.com").href},
++  {"@type":"ListItem",position:3,name:name,item:_canon},
++]};
++---
++<script type="application/ld+json" is:inline set:html={JSON.stringify(_crumbLd)}></script>
++
++<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={intHref}>{ui.crumb}</a> › <span>{name}</span></div></div>
++
++<section class="ahero"><div class="wrap" style="display:block">
++  <div class="eyebrow" style="color:var(--gold)">{ui.eyebrow} · {sys.category}</div>
++  <h1>{ui.heroA}{name}</h1>
++  <p style="color:#c4d2e6;font-size:18px;max-width:760px;margin-top:10px">{ui.introA}{name}{ui.introB}</p>
++  <div class="btns" style="margin-top:18px"><a href={contactHref} class="btn btn-primary">{ui.p} &rarr;</a></div>
++</div></section>
++
++<section><div class="wrap" style="max-width:820px">
++  <div class="eyebrow">{S(ui.whatTitle)}</div>
++  <p class="lead" style="margin:8px 0 26px">{blurb}</p>
++  <h2 class="section-title">{S(ui.connTitle)}</h2>
++  <p style="font-size:17px;color:var(--text);line-height:1.65">{ui.conn}</p>
++  <h2 class="section-title" style="margin-top:34px">{ui.enTitle}</h2>
++  <ul class="traits">{ui.en.map((x) => <li>{S(x)}</li>)}</ul>
++  <p style="margin-top:26px;padding:16px 20px;background:var(--bg-soft);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:12px;color:var(--muted);font-size:14px;line-height:1.6">{S(ui.disc)}</p>
++  <div style="margin-top:24px"><a href={intHref} class="btn btn-ghost">← {ui.back}</a></div>
++</div></section>
++
++<section class="cta"><div class="wrap" style="padding:56px 0;text-align:center">
++  <h2 style="color:#fff">{S(ui.ctaT)}</h2>
++  <p style="color:rgba(255,255,255,.9);max-width:620px;margin:12px auto 0">{ui.ctaX}</p>
++  <div class="btns" style="justify-content:center;margin-top:20px">
++    <a href={contactHref} class="btn btn-light">{ui.p}</a>
++    <a href={localizePath("/tarieven/", lang)} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">{ui.sec}</a>
++  </div>
++</div></section>
+diff --git a/src/components/Integraties.astro b/src/components/Integraties.astro
+index 405bf86..aece826 100644
+--- a/src/components/Integraties.astro
++++ b/src/components/Integraties.astro
+@@ -5,6 +5,8 @@ const { t, lang } = Astro.props;
+ const contactHref = localizePath("/contact/", lang);
+ const tarievenHref = localizePath("/tarieven/", lang);
+ import { PARTNERS, PARTNER_CAT_ORDER, PARTNER_CATS, PARTNER_UI } from "../data/partners.js";
++import { INT_SYSTEMS } from "../data/integraties-detail.js";
++const intSysHeading = {nl:"Populaire koppelingen",en:"Popular integrations",de:"Beliebte Anbindungen",fr:"Intégrations populaires",es:"Integraciones populares",ro:"Integrări populare"}[lang] || "Populaire koppelingen";
+ const pui = PARTNER_UI[lang] || PARTNER_UI.nl;
+ const pcats = PARTNER_CATS[lang] || PARTNER_CATS.nl;
+ ---
+@@ -54,6 +56,17 @@ const pcats = PARTNER_CATS[lang] || PARTNER_CATS.nl;
+   <p class="pt-empty" id="ptEmpty" hidden></p>
+ </div></section>
+ 
++<section><div class="wrap">
++  <div class="eyebrow" style="color:var(--gold)">{intSysHeading}</div>
++  <div class="int-sys">
++    {INT_SYSTEMS.map((sy) => (
++      <a class="int-sys-link" href={localizePath(`/integraties/${sy.slug}/`, lang)}>
++        <b>{sy.name}</b><span>{sy.category}</span>
++      </a>
++    ))}
++  </div>
++</div></section>
++
+ <section class="bg-soft"><div class="wrap">
+   <div class="eyebrow">{t.how.eyebrow}</div>
+   <h2 class="section-title">{t.how.title}</h2>
+@@ -105,6 +118,11 @@ const pcats = PARTNER_CATS[lang] || PARTNER_CATS.nl;
+   .pt-cat { font-size: 11px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--gold); }
+   .pt-card[hidden] { display: none !important; }
+   .pt-empty { margin-top: 20px; color: var(--muted, #6b7280); }
++  .int-sys{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:22px}
++  .int-sys-link{display:flex;flex-direction:column;gap:2px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;text-decoration:none;transition:border-color .2s,box-shadow .2s}
++  .int-sys-link:hover{border-color:var(--gold);box-shadow:var(--shadow-sm)}
++  .int-sys-link b{color:var(--navy)}
++  .int-sys-link span{color:var(--muted);font-size:13px}
+ </style>
+ 
+ 
+diff --git a/src/data/integraties-content.js b/src/data/integraties-content.js
+index 400fe66..530d874 100644
+--- a/src/data/integraties-content.js
++++ b/src/data/integraties-content.js
+@@ -25,7 +25,7 @@ export const integratiesContent = {
+       eyebrow: "Voorbeelden",
+       title: "Koppelbaar met o.a.",
+       intro: "Afhankelijk van je situatie is hrmforce koppelbaar met veelgebruikte HR-systemen, onder andere:",
+-      items: ["AFAS", "Visma", "Nmbrs", "SAP SuccessFactors"],
++      items: ["AFAS", "Nmbrs", "Visma", "Loket.nl", "Recruitee", "Carerix", "OTYS"],
+       note: "Genoemde systemen zijn voorbeelden van koppelingen die mogelijk zijn; ze impliceren geen officieel partnerschap. Welke koppeling voor jou beschikbaar of zinvol is, bepalen we samen tijdens de intake.",
+     },
+     how: {
+diff --git a/src/data/integraties-detail.js b/src/data/integraties-detail.js
+new file mode 100644
+index 0000000..91c96cc
+--- /dev/null
++++ b/src/data/integraties-detail.js
+@@ -0,0 +1,19 @@
++// Integratie-detailpagina's: ALLEEN echte integraties (uit partners.js van huidige site). Per taal.
++export const INT_SYSTEMS = [
++  { slug:"afas", name:"AFAS", category:"HRIS / payroll", blurb:{nl:"AFAS is een Nederlands softwarepakket voor onder meer HR, payroll en financiële administratie.",en:"AFAS is a Dutch software suite for HR, payroll and financial administration, among other things.",de:"AFAS ist eine niederländische Softwaresuite unter anderem für HR, Payroll und Finanzverwaltung.",fr:"AFAS est une suite logicielle néerlandaise pour, entre autres, les RH, la paie et la gestion financière.",es:"AFAS es un paquete de software neerlandés para RR. HH., nóminas y administración financiera, entre otros.",ro:"AFAS este o suită software neerlandeză pentru HR, salarizare și administrație financiară, printre altele."} },
++  { slug:"nmbrs", name:"Nmbrs", category:"HRIS / payroll", blurb:{nl:"Nmbrs (Visma) is een cloudplatform voor salarisverwerking en HR, veel gebruikt door accountants en mkb.",en:"Nmbrs (Visma) is a cloud platform for payroll and HR, widely used by accountants and SMEs.",de:"Nmbrs (Visma) ist eine Cloud-Plattform für Lohnabrechnung und HR, verbreitet bei Steuerberatern und KMU.",fr:"Nmbrs (Visma) est une plateforme cloud de paie et de RH, très utilisée par les comptables et les PME.",es:"Nmbrs (Visma) es una plataforma en la nube para nóminas y RR. HH., muy usada por asesorías y pymes.",ro:"Nmbrs (Visma) este o platformă cloud pentru salarizare și HR, folosită frecvent de contabili și IMM-uri."} },
++  { slug:"visma", name:"Visma", category:"HRIS / payroll", blurb:{nl:"Visma levert bedrijfssoftware voor onder meer HR, salaris en administratie, breed gebruikt in Europa.",en:"Visma provides business software for HR, payroll and administration, among others, widely used across Europe.",de:"Visma bietet Unternehmenssoftware unter anderem für HR, Lohn und Verwaltung, in Europa weit verbreitet.",fr:"Visma propose des logiciels d'entreprise pour les RH, la paie et l'administration, largement utilisés en Europe.",es:"Visma ofrece software empresarial para RR. HH., nóminas y administración, muy usado en Europa.",ro:"Visma oferă software de business pentru HR, salarizare și administrație, folosit pe scară largă în Europa."} },
++  { slug:"loket", name:"Loket.nl", category:"HRIS / payroll", blurb:{nl:"Loket.nl is een Nederlands online platform voor salarisadministratie en HR, veel gebruikt in het mkb.",en:"Loket.nl is a Dutch online platform for payroll and HR, widely used by SMEs.",de:"Loket.nl ist eine niederländische Online-Plattform für Lohnabrechnung und HR, verbreitet im Mittelstand.",fr:"Loket.nl est une plateforme en ligne néerlandaise de paie et de RH, très utilisée par les PME.",es:"Loket.nl es una plataforma en línea neerlandesa de nóminas y RR. HH., muy usada por pymes.",ro:"Loket.nl este o platformă online neerlandeză de salarizare și HR, folosită frecvent de IMM-uri."} },
++  { slug:"recruitee", name:"Recruitee", category:"ATS / recruitment", blurb:{nl:"Recruitee is een gebruiksvriendelijk ATS (recruitmentsysteem) voor het beheren van vacatures en sollicitanten.",en:"Recruitee is a user-friendly ATS (applicant tracking system) for managing vacancies and candidates.",de:"Recruitee ist ein benutzerfreundliches ATS (Bewerbermanagementsystem) zur Verwaltung von Stellen und Bewerbern.",fr:"Recruitee est un ATS (système de suivi des candidatures) convivial pour gérer offres et candidats.",es:"Recruitee es un ATS (sistema de seguimiento de candidatos) fácil de usar para gestionar vacantes y candidatos.",ro:"Recruitee este un ATS (sistem de urmărire a candidaților) ușor de utilizat pentru gestionarea posturilor și candidaților."} },
++  { slug:"carerix", name:"Carerix", category:"ATS / recruitment", blurb:{nl:"Carerix is een Nederlands recruitmentplatform (ATS/CRM) voor werving- en selectiebureaus.",en:"Carerix is a Dutch recruitment platform (ATS/CRM) for staffing and recruitment agencies.",de:"Carerix ist eine niederländische Recruiting-Plattform (ATS/CRM) für Personaldienstleister.",fr:"Carerix est une plateforme de recrutement néerlandaise (ATS/CRM) pour les agences de recrutement.",es:"Carerix es una plataforma de reclutamiento neerlandesa (ATS/CRM) para agencias de selección.",ro:"Carerix este o platformă neerlandeză de recrutare (ATS/CRM) pentru agenții de recrutare."} },
++  { slug:"otys", name:"OTYS", category:"ATS / recruitment", blurb:{nl:"OTYS is een Nederlands recruitmentplatform (ATS) voor werving, selectie en kandidaatbeheer.",en:"OTYS is a Dutch recruitment platform (ATS) for sourcing, selection and candidate management.",de:"OTYS ist eine niederländische Recruiting-Plattform (ATS) für Sourcing, Auswahl und Bewerbermanagement.",fr:"OTYS est une plateforme de recrutement néerlandaise (ATS) pour le sourcing, la sélection et la gestion des candidats.",es:"OTYS es una plataforma de reclutamiento neerlandesa (ATS) para captación, selección y gestión de candidatos.",ro:"OTYS este o platformă neerlandeză de recrutare (ATS) pentru sourcing, selecție și gestionarea candidaților."} },
++];
++
++export const INT_UI = {
++  nl: { mtA:"hrmforce koppelen aan ", mtB:" | Integratie", crumb:"Integraties", eyebrow:"Integratie", heroA:"hrmforce koppelen aan ", introA:"Gebruik je ", introB:"? hrmforce sluit via API of SSO aan op je bestaande HR-stack, zodat assessment- en talentdata in lijn blijft en je gegevens niet dubbel invoert.", whatTitle:"Wat is {s}?", connTitle:"Hoe koppelt hrmforce met {s}?", conn:"Afhankelijk van je situatie koppelen we via een API-koppeling (voor datastromen zoals kandidaat- en resultaatgegevens) of via SSO (voor toegang en identity met rolgebaseerd beheer). De precieze inrichting bepalen we samen tijdens de intake.", enTitle:"Wat levert de koppeling op", en:["Geen dubbele invoer: gegevens blijven in lijn tussen {s} en hrmforce.","Assessments starten en rapportages terugkoppelen binnen je vertrouwde werkwijze.","Veilige toegang en rolgebaseerd beheer via SSO."], disc:"{s} is een van de systemen waarmee hrmforce koppelt. Hoe de koppeling er in jouw situatie precies uitziet, bepalen we samen tijdens de intake.", ctaT:"Benieuwd naar een koppeling met {s}?", ctaX:"Plan een demo of neem contact op, dan bekijken we samen wat er in jouw situatie mogelijk is.", p:"Neem contact op", sec:"Bekijk alle integraties", back:"Alle integraties" },
++  en: { mtA:"Connect hrmforce to ", mtB:" | Integration", crumb:"Integrations", eyebrow:"Integration", heroA:"Connect hrmforce to ", introA:"Using ", introB:"? hrmforce connects to your existing HR stack via API or SSO, so assessment and talent data stays in sync and you don't enter data twice.", whatTitle:"What is {s}?", connTitle:"How does hrmforce connect with {s}?", conn:"Depending on your situation we connect via an API integration (for data flows such as candidate and result data) or via SSO (for access and identity with role-based control). The exact setup is determined together during the intake.", enTitle:"What the integration delivers", en:["No double entry: data stays aligned between {s} and hrmforce.","Launch assessments and return reports within your familiar workflow.","Secure access and role-based control via SSO."], disc:"{s} is one of the systems hrmforce connects with. How the integration looks exactly in your situation is determined together during the intake.", ctaT:"Curious about an integration with {s}?", ctaX:"Book a demo or get in touch, and we'll look together at what's possible in your situation.", p:"Get in touch", sec:"View all integrations", back:"All integrations" },
++  de: { mtA:"hrmforce mit ", mtB:" verbinden | Integration", crumb:"Integrationen", eyebrow:"Integration", heroA:"hrmforce mit ", introA:"Nutzen Sie ", introB:"? hrmforce verbindet sich über API oder SSO mit Ihrem bestehenden HR-Stack, sodass Assessment- und Talentdaten synchron bleiben und Daten nicht doppelt erfasst werden.", whatTitle:"Was ist {s}?", connTitle:"Wie verbindet sich hrmforce mit {s}?", conn:"Je nach Situation verbinden wir über eine API-Anbindung (für Datenströme wie Bewerber- und Ergebnisdaten) oder über SSO (für Zugang und Identity mit rollenbasierter Steuerung). Die genaue Einrichtung legen wir gemeinsam im Intake fest.", enTitle:"Was die Anbindung bringt", en:["Keine Doppelerfassung: Daten bleiben zwischen {s} und hrmforce im Einklang.","Assessments starten und Berichte zurückspielen innerhalb Ihrer gewohnten Arbeitsweise.","Sicherer Zugang und rollenbasierte Steuerung über SSO."], disc:"{s} ist eines der Systeme, mit denen hrmforce sich verbindet. Wie die Anbindung in Ihrer Situation genau aussieht, legen wir gemeinsam im Intake fest.", ctaT:"Neugierig auf eine Anbindung an {s}?", ctaX:"Buchen Sie eine Demo oder nehmen Sie Kontakt auf, dann sehen wir gemeinsam, was in Ihrer Situation möglich ist.", p:"Kontakt aufnehmen", sec:"Alle Integrationen ansehen", back:"Alle Integrationen" },
++  fr: { mtA:"Connecter hrmforce à ", mtB:" | Intégration", crumb:"Intégrations", eyebrow:"Intégration", heroA:"Connecter hrmforce à ", introA:"Vous utilisez ", introB:" ? hrmforce se connecte à votre stack RH existante via API ou SSO, afin que les données d'assessment et de talents restent synchronisées et ne soient pas saisies deux fois.", whatTitle:"Qu'est-ce que {s} ?", connTitle:"Comment hrmforce se connecte-t-il à {s} ?", conn:"Selon votre situation, nous nous connectons via une intégration API (pour les flux de données comme les candidats et les résultats) ou via SSO (pour l'accès et l'identité avec contrôle basé sur les rôles). La configuration exacte est déterminée ensemble lors de l'intake.", enTitle:"Ce que l'intégration apporte", en:["Pas de double saisie : les données restent alignées entre {s} et hrmforce.","Lancez des assessments et récupérez les rapports dans votre flux habituel.","Accès sécurisé et contrôle basé sur les rôles via SSO."], disc:"{s} fait partie des systèmes avec lesquels hrmforce se connecte. La forme exacte de l'intégration dans votre situation est déterminée ensemble lors de l'intake.", ctaT:"Curieux d'une intégration avec {s} ?", ctaX:"Réservez une démo ou contactez-nous, nous verrons ensemble ce qui est possible dans votre situation.", p:"Nous contacter", sec:"Voir toutes les intégrations", back:"Toutes les intégrations" },
++  es: { mtA:"Conectar hrmforce con ", mtB:" | Integración", crumb:"Integraciones", eyebrow:"Integración", heroA:"Conectar hrmforce con ", introA:"¿Usas ", introB:"? hrmforce se conecta con tu stack de RR. HH. existente vía API o SSO, para que los datos de evaluación y talento se mantengan sincronizados y no los introduzcas dos veces.", whatTitle:"¿Qué es {s}?", connTitle:"¿Cómo se conecta hrmforce con {s}?", conn:"Según tu situación, nos conectamos mediante una integración API (para flujos de datos como candidatos y resultados) o vía SSO (para acceso e identidad con control por roles). La configuración exacta se determina juntos durante la intake.", enTitle:"Qué aporta la integración", en:["Sin doble introducción: los datos se mantienen alineados entre {s} y hrmforce.","Lanza evaluaciones y recibe informes dentro de tu flujo habitual.","Acceso seguro y control por roles vía SSO."], disc:"{s} es uno de los sistemas con los que hrmforce se conecta. Cómo es exactamente la integración en tu situación lo determinamos juntos durante la intake.", ctaT:"¿Interesado en una integración con {s}?", ctaX:"Reserva una demo o contacta con nosotros y veremos juntos qué es posible en tu situación.", p:"Contactar", sec:"Ver todas las integraciones", back:"Todas las integraciones" },
++  ro: { mtA:"Conectează hrmforce cu ", mtB:" | Integrare", crumb:"Integrări", eyebrow:"Integrare", heroA:"Conectează hrmforce cu ", introA:"Folosești ", introB:"? hrmforce se conectează la stack-ul tău HR existent prin API sau SSO, astfel încât datele de evaluare și talent rămân sincronizate și nu le introduci de două ori.", whatTitle:"Ce este {s}?", connTitle:"Cum se conectează hrmforce cu {s}?", conn:"În funcție de situație, ne conectăm printr-o integrare API (pentru fluxuri de date precum candidați și rezultate) sau prin SSO (pentru acces și identitate cu control pe roluri). Configurarea exactă o stabilim împreună în cadrul intake-ului.", enTitle:"Ce aduce integrarea", en:["Fără dublă introducere: datele rămân aliniate între {s} și hrmforce.","Pornești evaluări și primești rapoarte în fluxul tău obișnuit.","Acces securizat și control pe roluri prin SSO."], disc:"{s} este unul dintre sistemele cu care hrmforce se conectează. Cum arată exact integrarea în situația ta stabilim împreună în cadrul intake-ului.", ctaT:"Curios despre o integrare cu {s}?", ctaX:"Programează o demonstrație sau contactează-ne și vedem împreună ce este posibil în situația ta.", p:"Contactează-ne", sec:"Vezi toate integrările", back:"Toate integrările" },
++};
+diff --git a/src/data/valid-paths.js b/src/data/valid-paths.js
+index 35863ca..2a763cd 100644
+--- a/src/data/valid-paths.js
++++ b/src/data/valid-paths.js
+@@ -26,6 +26,6 @@ try {
+ 
+ const STATIC = ["/","/%3Fpage_id=12073/","/%3Fpage_id=12199/","/%3Fpage_id=12326/","/%3Fpage_id=12390/","/%3Fpage_id=12401/","/%3Fpage_id=12532/","/%3Fpage_id=12631/","/%3Fpage_id=13499/","/%3Fpage_id=13540/","/%3Fpage_id=14534/","/%3Fpage_id=15495/","/%3Fpage_id=19506/","/%3Fpage_id=20413/","/%3Fpage_id=21104/","/%3Fpage_id=21979/","/%3Fpage_id=22199/","/%3Fpage_id=23609/","/%3Fpage_id=23955/","/%3Fpage_id=24624/","/%3Fpage_id=6325/","/%3Fpage_id=6397/","/%3Fpage_id=7219/","/%3Fpage_id=7960/","/%3Fpage_id=7962/","/%3Fpage_id=8355/","/%3Fpage_id=8358/","/%3Fpage_id=8361/","/%3Fpage_id=8364/","/%3Fpage_id=8392/","/%3Fpage_id=8394/","/%3Fpage_id=8396/","/%3Fpage_id=8564/","/%3Fpage_id=8578/","/%3Fpage_id=8613/","/%3Fpage_id=8638/","/%3Fpage_id=8649/","/%3Fpage_id=9790/","/advies/","/advies/certificatietraining/","/advies/loopbaan-assessment/","/advies/medezeggenschap/","/advies/team-training/","/advies/training-het-goede-gesprek/","/assessments/15pf/","/assessments/360-graden-feedback/","/assessments/ability-scan/","/assessments/appraisal/","/assessments/beroepskeuze-test/","/assessments/big-five/","/assessments/canmeds/","/assessments/coaching-screener-scan/","/assessments/cognitieve-test/","/assessments/communicatiestijlen-test/","/assessments/competentie-check/","/assessments/conflictstijlen-test/","/assessments/disc-test/","/assessments/drijfverentest/","/assessments/duurzame-inzetbaarheid-scan/","/assessments/exit-assessment/","/assessments/groepsrollen/","/assessments/intake-candidate/","/assessments/interesse-scan/","/assessments/job-profiler/","/assessments/lean-scan/","/assessments/leerstijlen/","/assessments/leiderschapstest/","/assessments/lencioni-teamdynamiek/","/assessments/levensloop-scan/","/assessments/loopbaanwaarden/","/assessments/mentale-veerkracht-scan/","/assessments/ontwikkelassessment/","/assessments/pulse-survey/","/assessments/referentie-check/","/assessments/studiekeuzetest/","/assessments/teamanalyse/","/assessments/tevredenheidsonderzoek-medewerkers/","/assessments/typology/","/assessments/value-drives/","/assessments/verkoopvaardigheden/","/contact/","/de/","/de/%3Fpage_id=12073/","/de/%3Fpage_id=12199/","/de/%3Fpage_id=12326/","/de/%3Fpage_id=12390/","/de/%3Fpage_id=12401/","/de/%3Fpage_id=12532/","/de/%3Fpage_id=12631/","/de/%3Fpage_id=13499/","/de/%3Fpage_id=13540/","/de/%3Fpage_id=15495/","/de/%3Fpage_id=18517/","/de/%3Fpage_id=19506/","/de/%3Fpage_id=20413/","/de/%3Fpage_id=21104/","/de/%3Fpage_id=21979/","/de/%3Fpage_id=22199/","/de/%3Fpage_id=23609/","/de/%3Fpage_id=23955/","/de/%3Fpage_id=6325/","/de/%3Fpage_id=6397/","/de/%3Fpage_id=7219/","/de/%3Fpage_id=7960/","/de/%3Fpage_id=7962/","/de/%3Fpage_id=8355/","/de/%3Fpage_id=8358/","/de/%3Fpage_id=8361/","/de/%3Fpage_id=8364/","/de/%3Fpage_id=8392/","/de/%3Fpage_id=8394/","/de/%3Fpage_id=8396/","/de/%3Fpage_id=8564/","/de/%3Fpage_id=8578/","/de/%3Fpage_id=8613/","/de/%3Fpage_id=8638/","/de/%3Fpage_id=8649/","/de/%3Fpage_id=9790/","/de/advies/","/de/assessments/15pf/","/de/assessments/360-graden-feedback/","/de/assessments/ability-scan/","/de/assessments/appraisal/","/de/assessments/beroepskeuze-test/","/de/assessments/big-five/","/de/assessments/canmeds/","/de/assessments/coaching-screener-scan/","/de/assessments/cognitieve-test/","/de/assessments/communicatiestijlen-test/","/de/assessments/competentie-check/","/de/assessments/conflictstijlen-test/","/de/assessments/disc-test/","/de/assessments/drijfverentest/","/de/assessments/duurzame-inzetbaarheid-scan/","/de/assessments/exit-assessment/","/de/assessments/groepsrollen/","/de/assessments/intake-candidate/","/de/assessments/interesse-scan/","/de/assessments/job-profiler/","/de/assessments/lean-scan/","/de/assessments/leerstijlen/","/de/assessments/leiderschapstest/","/de/assessments/lencioni-teamdynamiek/","/de/assessments/levensloop-scan/","/de/assessments/loopbaanwaarden/","/de/assessments/mentale-veerkracht-scan/","/de/assessments/ontwikkelassessment/","/de/assessments/pulse-survey/","/de/assessments/referentie-check/","/de/assessments/studiekeuzetest/","/de/assessments/teamanalyse/","/de/assessments/tevredenheidsonderzoek-medewerkers/","/de/assessments/typology/","/de/assessments/value-drives/","/de/assessments/verkoopvaardigheden/","/de/contact/","/de/hrm-oplossingen/","/de/integraties/","/de/kenniscentrum/","/de/klantcases/","/de/over-ons/","/de/roi-rekentool/","/de/support/","/de/trust/","/de/voorbereiding/","/en/","/en/%3Fpage_id=12073/","/en/%3Fpage_id=12199/","/en/%3Fpage_id=12326/","/en/%3Fpage_id=12390/","/en/%3Fpage_id=12401/","/en/%3Fpage_id=12532/","/en/%3Fpage_id=12631/","/en/%3Fpage_id=13499/","/en/%3Fpage_id=13540/","/en/%3Fpage_id=15495/","/en/%3Fpage_id=15922/","/en/%3Fpage_id=16099/","/en/%3Fpage_id=17810/","/en/%3Fpage_id=19503/","/en/%3Fpage_id=19506/","/en/%3Fpage_id=20413/","/en/%3Fpage_id=21104/","/en/%3Fpage_id=21298/","/en/%3Fpage_id=21979/","/en/%3Fpage_id=22199/","/en/%3Fpage_id=23609/","/en/%3Fpage_id=23955/","/en/%3Fpage_id=6325/","/en/%3Fpage_id=6397/","/en/%3Fpage_id=7219/","/en/%3Fpage_id=7960/","/en/%3Fpage_id=7962/","/en/%3Fpage_id=8355/","/en/%3Fpage_id=8358/","/en/%3Fpage_id=8361/","/en/%3Fpage_id=8364/","/en/%3Fpage_id=8392/","/en/%3Fpage_id=8394/","/en/%3Fpage_id=8396/","/en/%3Fpage_id=8564/","/en/%3Fpage_id=8578/","/en/%3Fpage_id=8613/","/en/%3Fpage_id=8638/","/en/%3Fpage_id=8649/","/en/%3Fpage_id=9790/","/en/advies/","/en/assessments/15pf/","/en/assessments/360-graden-feedback/","/en/assessments/ability-scan/","/en/assessments/appraisal/","/en/assessments/beroepskeuze-test/","/en/assessments/big-five/","/en/assessments/canmeds/","/en/assessments/coaching-screener-scan/","/en/assessments/cognitieve-test/","/en/assessments/communicatiestijlen-test/","/en/assessments/competentie-check/","/en/assessments/conflictstijlen-test/","/en/assessments/disc-test/","/en/assessments/drijfverentest/","/en/assessments/duurzame-inzetbaarheid-scan/","/en/assessments/exit-assessment/","/en/assessments/groepsrollen/","/en/assessments/intake-candidate/","/en/assessments/interesse-scan/","/en/assessments/job-profiler/","/en/assessments/lean-scan/","/en/assessments/leerstijlen/","/en/assessments/leiderschapstest/","/en/assessments/lencioni-teamdynamiek/","/en/assessments/levensloop-scan/","/en/assessments/loopbaanwaarden/","/en/assessments/mentale-veerkracht-scan/","/en/assessments/ontwikkelassessment/","/en/assessments/pulse-survey/","/en/assessments/referentie-check/","/en/assessments/studiekeuzetest/","/en/assessments/teamanalyse/","/en/assessments/tevredenheidsonderzoek-medewerkers/","/en/assessments/typology/","/en/assessments/value-drives/","/en/assessments/verkoopvaardigheden/","/en/contact/","/en/hrm-oplossingen/","/en/integraties/","/en/kenniscentrum/","/en/klantcases/","/en/over-ons/","/en/roi-rekentool/","/en/support/","/en/trust/","/en/voorbereiding/","/es/","/es/%3Fpage_id=12073/","/es/%3Fpage_id=12199/","/es/%3Fpage_id=12326/","/es/%3Fpage_id=12390/","/es/%3Fpage_id=12401/","/es/%3Fpage_id=12532/","/es/%3Fpage_id=12631/","/es/%3Fpage_id=13499/","/es/%3Fpage_id=13540/","/es/%3Fpage_id=15495/","/es/%3Fpage_id=18519/","/es/%3Fpage_id=19506/","/es/%3Fpage_id=20413/","/es/%3Fpage_id=21104/","/es/%3Fpage_id=21979/","/es/%3Fpage_id=22199/","/es/%3Fpage_id=23609/","/es/%3Fpage_id=23682/","/es/%3Fpage_id=23955/","/es/%3Fpage_id=6325/","/es/%3Fpage_id=6397/","/es/%3Fpage_id=7219/","/es/%3Fpage_id=7960/","/es/%3Fpage_id=7962/","/es/%3Fpage_id=8355/","/es/%3Fpage_id=8358/","/es/%3Fpage_id=8361/","/es/%3Fpage_id=8364/","/es/%3Fpage_id=8392/","/es/%3Fpage_id=8394/","/es/%3Fpage_id=8396/","/es/%3Fpage_id=8564/","/es/%3Fpage_id=8578/","/es/%3Fpage_id=8613/","/es/%3Fpage_id=8638/","/es/%3Fpage_id=8649/","/es/%3Fpage_id=9790/","/es/advies/","/es/assessments/15pf/","/es/assessments/360-graden-feedback/","/es/assessments/ability-scan/","/es/assessments/appraisal/","/es/assessments/beroepskeuze-test/","/es/assessments/big-five/","/es/assessments/canmeds/","/es/assessments/coaching-screener-scan/","/es/assessments/cognitieve-test/","/es/assessments/communicatiestijlen-test/","/es/assessments/competentie-check/","/es/assessments/conflictstijlen-test/","/es/assessments/disc-test/","/es/assessments/drijfverentest/","/es/assessments/duurzame-inzetbaarheid-scan/","/es/assessments/exit-assessment/","/es/assessments/groepsrollen/","/es/assessments/intake-candidate/","/es/assessments/interesse-scan/","/es/assessments/job-profiler/","/es/assessments/lean-scan/","/es/assessments/leerstijlen/","/es/assessments/leiderschapstest/","/es/assessments/lencioni-teamdynamiek/","/es/assessments/levensloop-scan/","/es/assessments/loopbaanwaarden/","/es/assessments/mentale-veerkracht-scan/","/es/assessments/ontwikkelassessment/","/es/assessments/pulse-survey/","/es/assessments/referentie-check/","/es/assessments/studiekeuzetest/","/es/assessments/teamanalyse/","/es/assessments/tevredenheidsonderzoek-medewerkers/","/es/assessments/typology/","/es/assessments/value-drives/","/es/assessments/verkoopvaardigheden/","/es/contact/","/es/hrm-oplossingen/","/es/integraties/","/es/kenniscentrum/","/es/klantcases/","/es/online-assessments/","/es/over-ons/","/es/roi-rekentool/","/es/support/","/es/trust/","/es/voorbereiding/","/fr/","/fr/%3Fpage_id=12073/","/fr/%3Fpage_id=12199/","/fr/%3Fpage_id=12326/","/fr/%3Fpage_id=12390/","/fr/%3Fpage_id=12401/","/fr/%3Fpage_id=12532/","/fr/%3Fpage_id=12631/","/fr/%3Fpage_id=13499/","/fr/%3Fpage_id=13540/","/fr/%3Fpage_id=15495/","/fr/%3Fpage_id=18516/","/fr/%3Fpage_id=19506/","/fr/%3Fpage_id=20413/","/fr/%3Fpage_id=21104/","/fr/%3Fpage_id=21979/","/fr/%3Fpage_id=22199/","/fr/%3Fpage_id=23609/","/fr/%3Fpage_id=23955/","/fr/%3Fpage_id=6325/","/fr/%3Fpage_id=6397/","/fr/%3Fpage_id=7219/","/fr/%3Fpage_id=7960/","/fr/%3Fpage_id=7962/","/fr/%3Fpage_id=8355/","/fr/%3Fpage_id=8358/","/fr/%3Fpage_id=8361/","/fr/%3Fpage_id=8364/","/fr/%3Fpage_id=8392/","/fr/%3Fpage_id=8394/","/fr/%3Fpage_id=8396/","/fr/%3Fpage_id=8564/","/fr/%3Fpage_id=8578/","/fr/%3Fpage_id=8613/","/fr/%3Fpage_id=8638/","/fr/%3Fpage_id=8649/","/fr/%3Fpage_id=9790/","/fr/advies/","/fr/assessments/15pf/","/fr/assessments/360-graden-feedback/","/fr/assessments/ability-scan/","/fr/assessments/appraisal/","/fr/assessments/beroepskeuze-test/","/fr/assessments/big-five/","/fr/assessments/canmeds/","/fr/assessments/coaching-screener-scan/","/fr/assessments/cognitieve-test/","/fr/assessments/communicatiestijlen-test/","/fr/assessments/competentie-check/","/fr/assessments/conflictstijlen-test/","/fr/assessments/disc-test/","/fr/assessments/drijfverentest/","/fr/assessments/duurzame-inzetbaarheid-scan/","/fr/assessments/exit-assessment/","/fr/assessments/groepsrollen/","/fr/assessments/intake-candidate/","/fr/assessments/interesse-scan/","/fr/assessments/job-profiler/","/fr/assessments/lean-scan/","/fr/assessments/leerstijlen/","/fr/assessments/leiderschapstest/","/fr/assessments/lencioni-teamdynamiek/","/fr/assessments/levensloop-scan/","/fr/assessments/loopbaanwaarden/","/fr/assessments/mentale-veerkracht-scan/","/fr/assessments/ontwikkelassessment/","/fr/assessments/pulse-survey/","/fr/assessments/referentie-check/","/fr/assessments/studiekeuzetest/","/fr/assessments/teamanalyse/","/fr/assessments/tevredenheidsonderzoek-medewerkers/","/fr/assessments/typology/","/fr/assessments/value-drives/","/fr/assessments/verkoopvaardigheden/","/fr/contact/","/fr/hrm-oplossingen/","/fr/integraties/","/fr/kenniscentrum/","/fr/klantcases/","/fr/online-assessments/","/fr/over-ons/","/fr/roi-rekentool/","/fr/shop/","/fr/support/","/fr/trust/","/fr/voorbereiding/","/geschiktvoorzorg/","/geschiktvoorzorg/klantcases/","/geschiktvoorzorg/over-ons/","/hrm-oplossingen/","/inschrijfformulier-trainingen/","/integraties/","/kenniscentrum/","/kenniscentrum/burn-out-herkennen-bij-topperformers/","/kenniscentrum/intelligentietest-volwassenen/","/kenniscentrum/leiderschapsontwikkeling-data/","/kenniscentrum/matrigma-capaciteitentest/","/kenniscentrum/ontwikkelassessment-belangrijk/","/kenniscentrum/talent-management-system-software/","/klantcases/","/odion/","/oefen-assessment-maken/","/online-assessments/","/over-ons/","/partner/selier-van-duppen/","/ro/","/ro/%3Fpage_id=12073/","/ro/%3Fpage_id=12199/","/ro/%3Fpage_id=12326/","/ro/%3Fpage_id=12390/","/ro/%3Fpage_id=12401/","/ro/%3Fpage_id=12532/","/ro/%3Fpage_id=12631/","/ro/%3Fpage_id=13499/","/ro/%3Fpage_id=13540/","/ro/%3Fpage_id=15495/","/ro/%3Fpage_id=16875/","/ro/%3Fpage_id=18518/","/ro/%3Fpage_id=19506/","/ro/%3Fpage_id=20413/","/ro/%3Fpage_id=21104/","/ro/%3Fpage_id=21979/","/ro/%3Fpage_id=22199/","/ro/%3Fpage_id=23609/","/ro/%3Fpage_id=23955/","/ro/%3Fpage_id=6325/","/ro/%3Fpage_id=6397/","/ro/%3Fpage_id=7219/","/ro/%3Fpage_id=7960/","/ro/%3Fpage_id=7962/","/ro/%3Fpage_id=8355/","/ro/%3Fpage_id=8358/","/ro/%3Fpage_id=8361/","/ro/%3Fpage_id=8364/","/ro/%3Fpage_id=8392/","/ro/%3Fpage_id=8394/","/ro/%3Fpage_id=8396/","/ro/%3Fpage_id=8564/","/ro/%3Fpage_id=8578/","/ro/%3Fpage_id=8613/","/ro/%3Fpage_id=8638/","/ro/%3Fpage_id=8649/","/ro/%3Fpage_id=9790/","/ro/advies/","/ro/assessments/15pf/","/ro/assessments/360-graden-feedback/","/ro/assessments/ability-scan/","/ro/assessments/appraisal/","/ro/assessments/beroepskeuze-test/","/ro/assessments/big-five/","/ro/assessments/canmeds/","/ro/assessments/coaching-screener-scan/","/ro/assessments/cognitieve-test/","/ro/assessments/communicatiestijlen-test/","/ro/assessments/competentie-check/","/ro/assessments/conflictstijlen-test/","/ro/assessments/disc-test/","/ro/assessments/drijfverentest/","/ro/assessments/duurzame-inzetbaarheid-scan/","/ro/assessments/exit-assessment/","/ro/assessments/groepsrollen/","/ro/assessments/intake-candidate/","/ro/assessments/interesse-scan/","/ro/assessments/job-profiler/","/ro/assessments/lean-scan/","/ro/assessments/leerstijlen/","/ro/assessments/leiderschapstest/","/ro/assessments/lencioni-teamdynamiek/","/ro/assessments/levensloop-scan/","/ro/assessments/loopbaanwaarden/","/ro/assessments/mentale-veerkracht-scan/","/ro/assessments/ontwikkelassessment/","/ro/assessments/pulse-survey/","/ro/assessments/referentie-check/","/ro/assessments/studiekeuzetest/","/ro/assessments/teamanalyse/","/ro/assessments/tevredenheidsonderzoek-medewerkers/","/ro/assessments/typology/","/ro/assessments/value-drives/","/ro/assessments/verkoopvaardigheden/","/ro/contact/","/ro/hrm-oplossingen/","/ro/integraties/","/ro/kenniscentrum/","/ro/klantcases/","/ro/online-assessments/","/ro/over-ons/","/ro/roi-rekentool/","/ro/support/","/ro/trust/","/ro/voorbereiding/","/roi-rekentool/","/shop/","/support/","/trust/","/voorbereiding/"];
+ 
+-const EXTRA = ["/testkiezer/","/en/testkiezer/","/de/testkiezer/","/fr/testkiezer/","/es/testkiezer/","/ro/testkiezer/","/voor-kandidaten/","/en/voor-kandidaten/","/de/voor-kandidaten/","/fr/voor-kandidaten/","/es/voor-kandidaten/","/ro/voor-kandidaten/","/begrippenlijst/","/en/begrippenlijst/","/de/begrippenlijst/","/fr/begrippenlijst/","/es/begrippenlijst/","/ro/begrippenlijst/","/wetenschappelijke-verantwoording/","/en/wetenschappelijke-verantwoording/","/de/wetenschappelijke-verantwoording/","/fr/wetenschappelijke-verantwoording/","/es/wetenschappelijke-verantwoording/","/ro/wetenschappelijke-verantwoording/"];
++const EXTRA = ["/integraties/afas/","/integraties/nmbrs/","/integraties/visma/","/integraties/loket/","/integraties/recruitee/","/integraties/carerix/","/integraties/otys/","/en/integraties/afas/","/en/integraties/nmbrs/","/en/integraties/visma/","/en/integraties/loket/","/en/integraties/recruitee/","/en/integraties/carerix/","/en/integraties/otys/","/de/integraties/afas/","/de/integraties/nmbrs/","/de/integraties/visma/","/de/integraties/loket/","/de/integraties/recruitee/","/de/integraties/carerix/","/de/integraties/otys/","/fr/integraties/afas/","/fr/integraties/nmbrs/","/fr/integraties/visma/","/fr/integraties/loket/","/fr/integraties/recruitee/","/fr/integraties/carerix/","/fr/integraties/otys/","/es/integraties/afas/","/es/integraties/nmbrs/","/es/integraties/visma/","/es/integraties/loket/","/es/integraties/recruitee/","/es/integraties/carerix/","/es/integraties/otys/","/ro/integraties/afas/","/ro/integraties/nmbrs/","/ro/integraties/visma/","/ro/integraties/loket/","/ro/integraties/recruitee/","/ro/integraties/carerix/","/ro/integraties/otys/","/testkiezer/","/en/testkiezer/","/de/testkiezer/","/fr/testkiezer/","/es/testkiezer/","/ro/testkiezer/","/voor-kandidaten/","/en/voor-kandidaten/","/de/voor-kandidaten/","/fr/voor-kandidaten/","/es/voor-kandidaten/","/ro/voor-kandidaten/","/begrippenlijst/","/en/begrippenlijst/","/de/begrippenlijst/","/fr/begrippenlijst/","/es/begrippenlijst/","/ro/begrippenlijst/","/wetenschappelijke-verantwoording/","/en/wetenschappelijke-verantwoording/","/de/wetenschappelijke-verantwoording/","/fr/wetenschappelijke-verantwoording/","/es/wetenschappelijke-verantwoording/","/ro/wetenschappelijke-verantwoording/"];
+ 
+ export default Array.from(new Set([...STATIC, ...EXTRA, ...sanityPaths]));
+diff --git a/src/pages/de/integraties/[slug].astro b/src/pages/de/integraties/[slug].astro
+new file mode 100644
+index 0000000..5c72dd2
+--- /dev/null
++++ b/src/pages/de/integraties/[slug].astro
+@@ -0,0 +1,10 @@
++---
++import Base from "../../../layouts/Base.astro";
++import IntegratieDetail from "../../../components/IntegratieDetail.astro";
++import { INT_SYSTEMS, INT_UI } from "../../../data/integraties-detail.js";
++export function getStaticPaths(){ return INT_SYSTEMS.map((sys)=>({ params:{ slug: sys.slug }, props:{ sys } })); }
++const { sys } = Astro.props; const ui = INT_UI.de;
++---
++<Base title={`${ui.mtA}${sys.name}${ui.mtB}`} description={sys.blurb.de} active="solutions">
++  <IntegratieDetail sys={sys} ui={ui} lang="de" />
++</Base>
+diff --git a/src/pages/en/integraties/[slug].astro b/src/pages/en/integraties/[slug].astro
+new file mode 100644
+index 0000000..3af9222
+--- /dev/null
++++ b/src/pages/en/integraties/[slug].astro
+@@ -0,0 +1,10 @@
++---
++import Base from "../../../layouts/Base.astro";
++import IntegratieDetail from "../../../components/IntegratieDetail.astro";
++import { INT_SYSTEMS, INT_UI } from "../../../data/integraties-detail.js";
++export function getStaticPaths(){ return INT_SYSTEMS.map((sys)=>({ params:{ slug: sys.slug }, props:{ sys } })); }
++const { sys } = Astro.props; const ui = INT_UI.en;
++---
++<Base title={`${ui.mtA}${sys.name}${ui.mtB}`} description={sys.blurb.en} active="solutions">
++  <IntegratieDetail sys={sys} ui={ui} lang="en" />
++</Base>
+diff --git a/src/pages/es/integraties/[slug].astro b/src/pages/es/integraties/[slug].astro
+new file mode 100644
+index 0000000..4cc6a00
+--- /dev/null
++++ b/src/pages/es/integraties/[slug].astro
+@@ -0,0 +1,10 @@
++---
++import Base from "../../../layouts/Base.astro";
++import IntegratieDetail from "../../../components/IntegratieDetail.astro";
++import { INT_SYSTEMS, INT_UI } from "../../../data/integraties-detail.js";
++export function getStaticPaths(){ return INT_SYSTEMS.map((sys)=>({ params:{ slug: sys.slug }, props:{ sys } })); }
++const { sys } = Astro.props; const ui = INT_UI.es;
++---
++<Base title={`${ui.mtA}${sys.name}${ui.mtB}`} description={sys.blurb.es} active="solutions">
++  <IntegratieDetail sys={sys} ui={ui} lang="es" />
++</Base>
+diff --git a/src/pages/fr/integraties/[slug].astro b/src/pages/fr/integraties/[slug].astro
+new file mode 100644
+index 0000000..62c3b7b
+--- /dev/null
++++ b/src/pages/fr/integraties/[slug].astro
+@@ -0,0 +1,10 @@
++---
++import Base from "../../../layouts/Base.astro";
++import IntegratieDetail from "../../../components/IntegratieDetail.astro";
++import { INT_SYSTEMS, INT_UI } from "../../../data/integraties-detail.js";
++export function getStaticPaths(){ return INT_SYSTEMS.map((sys)=>({ params:{ slug: sys.slug }, props:{ sys } })); }
++const { sys } = Astro.props; const ui = INT_UI.fr;
++---
++<Base title={`${ui.mtA}${sys.name}${ui.mtB}`} description={sys.blurb.fr} active="solutions">
++  <IntegratieDetail sys={sys} ui={ui} lang="fr" />
++</Base>
+diff --git a/src/pages/integraties/[slug].astro b/src/pages/integraties/[slug].astro
+new file mode 100644
+index 0000000..c3a0edc
+--- /dev/null
++++ b/src/pages/integraties/[slug].astro
+@@ -0,0 +1,10 @@
++---
++import Base from "../../layouts/Base.astro";
++import IntegratieDetail from "../../components/IntegratieDetail.astro";
++import { INT_SYSTEMS, INT_UI } from "../../data/integraties-detail.js";
++export function getStaticPaths(){ return INT_SYSTEMS.map((sys)=>({ params:{ slug: sys.slug }, props:{ sys } })); }
++const { sys } = Astro.props; const ui = INT_UI.nl;
++---
++<Base title={`${ui.mtA}${sys.name}${ui.mtB}`} description={sys.blurb.nl} active="solutions">
++  <IntegratieDetail sys={sys} ui={ui} lang="nl" />
++</Base>
+diff --git a/src/pages/ro/integraties/[slug].astro b/src/pages/ro/integraties/[slug].astro
+new file mode 100644
+index 0000000..4734d9d
+--- /dev/null
++++ b/src/pages/ro/integraties/[slug].astro
+@@ -0,0 +1,10 @@
++---
++import Base from "../../../layouts/Base.astro";
++import IntegratieDetail from "../../../components/IntegratieDetail.astro";
++import { INT_SYSTEMS, INT_UI } from "../../../data/integraties-detail.js";
++export function getStaticPaths(){ return INT_SYSTEMS.map((sys)=>({ params:{ slug: sys.slug }, props:{ sys } })); }
++const { sys } = Astro.props; const ui = INT_UI.ro;
++---
++<Base title={`${ui.mtA}${sys.name}${ui.mtB}`} description={sys.blurb.ro} active="solutions">
++  <IntegratieDetail sys={sys} ui={ui} lang="ro" />
++</Base>
+-- 
+2.34.1
+
