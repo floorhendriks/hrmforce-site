@@ -2,11 +2,13 @@
 import { routes } from "../i18n/ui.js";
 import { getLangFromUrl, useTranslations, navHref } from "../i18n/utils.js";
 import validPaths from "../data/valid-paths.js";
+import TrustBadges from "./TrustBadges.astro";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const year = new Date().getFullYear();
 const L = (p) => navHref(p, lang, validPaths);
+const _tourLabel = {nl:"Rondleiding",en:"Product tour",de:"Produkttour",fr:"Visite du produit",es:"Tour del producto",ro:"Tur al produsului"}[lang] || "Rondleiding";
 const _compareLabel = {nl:"Vergelijken",en:"Compare",de:"Vergleichen",fr:"Comparer",es:"Comparar",ro:"Comparație"}[lang] || "Vergelijken";
 // Sitebrede trust-balk: korte, feitelijke signalen (per taal).
 const trustBarByLang = {
@@ -20,6 +22,7 @@ const trustBarByLang = {
 const trustBar = trustBarByLang[lang] ?? trustBarByLang.nl;
 const _check = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`;
 ---
+<TrustBadges />
 <footer>
   <div class="trustbar"><div class="wrap">
     <ul class="tb-list">
@@ -38,6 +41,7 @@ const _check = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stro
           <li><a href={L(routes.assessments)}>{t("footer.assessments")}</a></li>
           <li><a href={L("/testkiezer/")}>{t("footer.testchooser")}</a></li>
           <li><a href={L("/voorbereiding/")}>{t("footer.prep")}</a></li>
+          <li><a href={L("/rondleiding/")}>{_tourLabel}</a></li>
           <li><a href={L("/voor-kandidaten/")}>{t("footer.candidates")}</a></li>
           <li><a href={L("/kenniscentrum/")}>{t("footer.knowledge")}</a></li>
           <li><a href={L("/whitepapers/")}>{t("footer.whitepapers")}</a></li>

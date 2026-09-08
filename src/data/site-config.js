@@ -26,3 +26,12 @@ export const MARKETING = {
   LINKEDIN_PARTNER_ID: "8219026",
   CLARITY_ID: "", // bv. "abcd123xyz"
 };
+
+// Externe reviewprofielen. Vul een URL in om de badge te tonen (leeg = verborgen).
+// Zodra je een G2/Capterra/Trustpilot/Google-profiel hebt, plak je hier de link.
+export const REVIEWS_EXTERNAL = {
+  google: "",     // bv. "https://g.page/r/..../review"
+  g2: "",         // bv. "https://www.g2.com/products/hrmforce/reviews"
+  capterra: "",   // bv. "https://www.capterra.com/p/....../hrmforce/"
+  trustpilot: "", // bv. "https://www.trustpilot.com/review/hrmforce.com"
+};

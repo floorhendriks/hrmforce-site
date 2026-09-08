@@ -1,0 +1,7 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Rondleiding from "../../../components/Rondleiding.astro";
+import { TOUR_UI } from "../../../data/rondleiding-content.js";
+const t = TOUR_UI.ro;
+---
+<Base title={t.metaT} description={t.metaD} active=""><Rondleiding lang="ro" /></Base>

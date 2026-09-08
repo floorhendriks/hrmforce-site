@@ -1,0 +1,27 @@
+---
+import { REVIEWS_EXTERNAL } from "../data/site-config.js";
+import { getLangFromUrl } from "../i18n/utils.js";
+const lang = getLangFromUrl(Astro.url);
+const LABEL = { nl:"Beoordeeld op", en:"Reviewed on", de:"Bewertet auf", fr:"Évalué sur", es:"Valorado en", ro:"Evaluat pe" }[lang] || "Beoordeeld op";
+const NAMES = { google:"Google", g2:"G2", capterra:"Capterra", trustpilot:"Trustpilot" };
+const badges = Object.entries(REVIEWS_EXTERNAL).filter(([, url]) => url).map(([k, url]) => ({ k, url, name: NAMES[k] }));
+---
+{badges.length > 0 && (
+  <div class="trust-badges"><span class="tb-label">{LABEL}</span>
+    <div class="tb-items">
+      {badges.map((b) => (
+        <a class="tb-badge" href={b.url} target="_blank" rel="noopener nofollow">
+          <span class="tb-stars">★★★★★</span><span class="tb-name">{b.name}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+)}
+<style>
+  .trust-badges{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;padding:20px;border-top:1px solid var(--line)}
+  .tb-label{color:var(--muted);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+  .tb-items{display:flex;gap:12px;flex-wrap:wrap}
+  .tb-badge{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 14px;box-shadow:var(--shadow-xs);text-decoration:none}
+  .tb-badge .tb-stars{color:var(--gold);font-size:14px}
+  .tb-badge .tb-name{color:var(--navy);font-weight:700;font-size:14px}
+</style>
