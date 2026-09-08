@@ -11,6 +11,7 @@ import { posts as kcPosts } from "../../data/blog.js";
 import validPaths from "../../data/valid-paths.js";
 import { navHref } from "../../i18n/utils.js";
 import { oefentests } from "../../data/oefentests.js";
+import QMock from "../../components/QMock.astro";
 
 const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
 
@@ -133,8 +134,8 @@ const _offerLd = (shop && shop.price)
   <h2 class="qshots-h">Een kijkje in de vragenlijst</h2>
   <p class="qshots-lead">Zo ziet de vragenlijst er voor je kandidaten uit, van uitnodiging tot afronding.</p>
   <div class="qshots-track">
-    <figure class="qshot"><Img src="/mockups/vragenlijst-intro.svg" alt="Startscherm van de vragenlijst" loading="eager" /><figcaption>Starten in eigen taal en tempo</figcaption></figure>
-    <figure class="qshot"><Img src="/mockups/vragenlijst-vraag.svg" alt="Vraagscherm met antwoordschaal" loading="eager" /><figcaption>Stellingen met een duidelijke antwoordschaal</figcaption></figure>
+    <figure class="qshot"><QMock screen="intro" lang="nl" testName={a.title} /><figcaption>Starten in eigen taal en tempo</figcaption></figure>
+    <figure class="qshot"><QMock screen="vraag" lang="nl" testName={a.title} question={(ex.items && ex.items[0]) || ""} scaleNote={ex.scale} /><figcaption>Een voorbeeldvraag uit deze vragenlijst</figcaption></figure>
     <figure class="qshot"><Img src="/mockups/vragenlijst-afgerond.svg" alt="Afrondscherm van de vragenlijst" loading="eager" /><figcaption>Uitkomsten bespreek je persoonlijk</figcaption></figure>
   </div>
 </div></section>
@@ -342,7 +343,7 @@ const _offerLd = (shop && shop.price)
   .qshots-lead{color:var(--muted);max-width:620px;margin:0 0 22px}
   .qshots-track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;-webkit-overflow-scrolling:touch}
   .qshot{flex:0 0 88%;max-width:680px;scroll-snap-align:center;margin:0}
-  .qshot img{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow-sm);display:block}
+  .qshot img,.qshot svg{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow-sm);display:block}
   .qshot figcaption{margin-top:10px;color:var(--muted);font-size:14px;text-align:center}
   @media(min-width:900px){ .qshot{flex-basis:46%} }
   .assess-usage{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line); color:var(--text); }
