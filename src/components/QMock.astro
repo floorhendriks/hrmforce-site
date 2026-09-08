@@ -3,7 +3,9 @@
 // testnaam (intro) en een echte voorbeeldvraag van dit assessment (vraag),
 // per taal. Logo via externe referentie (mag binnen inline SVG in de DOM).
 const { screen = "intro", lang = "nl", testName = "", question = "", scaleNote = "" } = Astro.props;
-const LOGO = "/media/wp-content/uploads/2022/03/HRM-LOGO.svg";
+import { LOGO_INNER } from "../data/hrmforce-logo-inner.js";
+const _uid = Math.random().toString(36).slice(2, 8) + (screen === "vraag" ? "v" : "i");
+const logoSvg = `<g transform="translate(48,19) scale(0.55)">${LOGO_INNER.replaceAll("{UID}", _uid + "_")}</g>`;
 
 const L = {
   nl: { qn:"VRAGENLIJST", welcome:"Welkom bij", intro:"Je krijgt een reeks vragen. Geef per vraag aan wat het best bij je past.", b1:"Duurt enkele minuten", b2:"Er zijn geen goede of foute antwoorden", b3:"Antwoord spontaan, dat geeft het beste beeld", start:"Start de vragenlijst", own:"In je eigen taal en tempo", right:"Vragenlijst", sample:"VOORBEELDVRAAG", note:"Kies wat het best bij je past.", prev:"Vorige", next:"Volgende", chip:"Voorbeeld" },
@@ -35,7 +37,7 @@ const qFont = qLines.length >= 3 ? 22 : 26;
     <rect width="1200" height="760" fill="#EEF3F9"/>
     <rect x="0" y="0" width="1200" height="72" fill="#FFFFFF"/>
     <rect x="0" y="71" width="1200" height="1" fill="#E2E8F0"/>
-    <image href={LOGO} x="48" y="20" width="122" height="27.7"/>
+    <g set:html={logoSvg} />
     <text x="1152" y="44" text-anchor="end" font-size="15" fill="#6B7A90">{L.right}</text>
     <rect x="240" y="150" width="720" height="470" rx="18" fill="#FFFFFF" stroke="#E2E8F0"/>
     <text x="290" y="228" font-size="14" font-weight="700" letter-spacing="1" fill="#0E468C">{L.qn}</text>
@@ -60,7 +62,7 @@ const qFont = qLines.length >= 3 ? 22 : 26;
     <rect width="1200" height="760" fill="#EEF3F9"/>
     <rect x="0" y="0" width="1200" height="72" fill="#FFFFFF"/>
     <rect x="0" y="71" width="1200" height="1" fill="#E2E8F0"/>
-    <image href={LOGO} x="48" y="20" width="122" height="27.7"/>
+    <g set:html={logoSvg} />
     <text x="1152" y="44" text-anchor="end" font-size="15" fill="#6B7A90">{testName}</text>
     <rect x="240" y="130" width="720" height="500" rx="18" fill="#FFFFFF" stroke="#E2E8F0"/>
     <text x="290" y="200" font-size="14" font-weight="700" letter-spacing="1" fill="#0E468C">{L.sample}</text>
