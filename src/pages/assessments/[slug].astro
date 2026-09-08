@@ -6,6 +6,7 @@ import { shopInfo } from "../../data/assessment-shop.js";
 import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../data/site-config.js";
 import { getLangFromUrl, localizePath } from "../../i18n/utils.js";
 import { examplesFor } from "../../data/assessment-examples.js";
+import { extraFor } from "../../data/assessment-detail-extra.js";
 import { generalFaq } from "../../data/general-faq.js";
 import { posts as kcPosts } from "../../data/blog.js";
 import validPaths from "../../data/valid-paths.js";
@@ -41,6 +42,7 @@ if (!a) {
 }
 const assessHref = localizePath("/online-assessments/", lang);
 const ex = examplesFor(Astro.params.slug, lang);
+const extra = extraFor(Astro.params.slug, lang);
 const _specQ = new Set((a.faq || []).map((f) => (f.q || "").trim().toLowerCase()));
 const allFaq = [...(a.faq || []), ...generalFaq(lang).filter((g) => !_specQ.has((g.q || "").trim().toLowerCase()))];
 
@@ -158,6 +160,7 @@ const _offerLd = (shop && shop.price)
       <div class="explain">
         <div>
           {a.intro.map((p) => <p>{p}</p>)}
+          {extra && extra.aliasNote && (<p class="alias-note" set:html={extra.aliasNote}></p>)}
           {a.traits.length > 0 && <ul class="traits">{a.traits.map((t) => <li>{t}</li>)}</ul>}
           {a.body.map((p) => <p>{p}</p>)}
           <p class="assess-usage">{[a.traits && a.traits.length ? "De test meet " + a.traits.join(", ") + ". " : "", a.phase ? "Je zet deze test in binnen de HR-cyclus: " + a.phase + ". " : "", a.feedback ? a.feedback + " " : "", a.time ? "Invullen duurt " + a.time + (a.form ? " (" + a.form + ")" : "") + " en je ontvangt de uitkomsten in je inbox, zonder pdf om te downloaden." : ""].join("")}</p>
@@ -170,6 +173,21 @@ const _offerLd = (shop && shop.price)
       </div>
     </div>
   </section>
+
+  {extra && extra.blocks && extra.blocks.length > 0 && (
+    <section class="bg-soft"><div class="wrap" style="max-width:880px">
+      {extra.blocks.map((b) => (
+        <div class="xblock">
+          <h3 class="xblock-h">{b.title}</h3>
+          {b.lead && <p class="xblock-lead">{b.lead}</p>}
+          {b.type === "list" && b.items.length > 0 && (
+            <ul class="xblock-list">{b.items.map((it) => <li>{it}</li>)}</ul>
+          )}
+          {b.type === "text" && b.text && <p class="xblock-text">{b.text}</p>}
+        </div>
+      ))}
+    </div></section>
+  )}
 
   {a.quote.text && (
     <section class="quote">

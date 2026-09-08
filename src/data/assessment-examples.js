@@ -26,7 +26,7 @@ export const slugType = {
   "mentale-veerkracht-scan": "wellbeing", "duurzame-inzetbaarheid-scan": "wellbeing",
   "levensloop-scan": "wellbeing", "coaching-screener-scan": "wellbeing",
   "pulse-survey": "wellbeing", "tevredenheidsonderzoek-medewerkers": "wellbeing", "exit-assessment": "wellbeing",
-  "verkoopvaardigheden": "skills", "lean-scan": "skills", "job-profiler": "skills",
+  "verkoopvaardigheden": "skills", "lean-scan": "skills", "job-profiler": "jobprofile",
 };
 
 const LIKERT = { nl: "Helemaal oneens — Oneens — Neutraal — Eens — Helemaal eens", en: "Strongly disagree — Disagree — Neutral — Agree — Strongly agree", de: "Stimme gar nicht zu — Neutral — Stimme voll zu", fr: "Pas du tout d'accord — Neutre — Tout à fait d'accord", es: "Muy en desacuerdo — Neutral — Muy de acuerdo", ro: "Total dezacord — Neutru — Total de acord" };
@@ -147,6 +147,18 @@ export const EXAMPLES = {
       fr: ["Un client hésite sur le prix. Que faites-vous en premier ?", "Un processus est inefficace. Quelle est votre première étape ?", "Vous recevez des consignes contradictoires. Comment gérez-vous cela ?"],
       es: ["Un cliente duda por el precio. ¿Qué haces primero?", "Un proceso es ineficiente. ¿Cuál es tu primer paso?", "Recibes instrucciones contradictorias. ¿Cómo lo gestionas?"],
       ro: ["Un client ezită din cauza prețului. Ce faci mai întâi?", "Un proces este ineficient. Care este primul tău pas?", "Primești instrucțiuni contradictorii. Cum procedezi?"],
+    },
+  },
+  jobprofile: {
+    scale: { nl: "Niet nodig — Essentieel voor de functie", en: "Not needed — Essential for the role", de: "Nicht nötig — Unverzichtbar für die Stelle", fr: "Pas nécessaire — Essentiel pour le poste", es: "No necesario — Esencial para el puesto", ro: "Nu este necesar — Esențial pentru post" },
+    answer: "scale",
+    items: {
+      nl: ["Hoe belangrijk is 'analytisch vermogen' voor deze functie?", "Hoe belangrijk is 'klantgerichtheid' voor deze functie?", "Hoe belangrijk is 'plannen en organiseren' voor deze functie?"],
+      en: ["How important is 'analytical ability' for this role?", "How important is 'customer focus' for this role?", "How important is 'planning and organising' for this role?"],
+      de: ["Wie wichtig ist 'analytisches Denken' für diese Stelle?", "Wie wichtig ist 'Kundenorientierung' für diese Stelle?", "Wie wichtig ist 'Planen und Organisieren' für diese Stelle?"],
+      fr: ["Quelle importance a 'la capacité d'analyse' pour ce poste ?", "Quelle importance a 'l'orientation client' pour ce poste ?", "Quelle importance a 'la planification et l'organisation' pour ce poste ?"],
+      es: ["¿Qué importancia tiene 'la capacidad analítica' para este puesto?", "¿Qué importancia tiene 'la orientación al cliente' para este puesto?", "¿Qué importancia tiene 'planificar y organizar' para este puesto?"],
+      ro: ["Cât de importantă este 'capacitatea analitică' pentru acest post?", "Cât de importantă este 'orientarea către client' pentru acest post?", "Cât de importantă este 'planificarea și organizarea' pentru acest post?"],
     },
   },
 };

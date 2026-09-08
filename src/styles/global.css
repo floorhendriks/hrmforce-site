@@ -453,3 +453,14 @@ html{overflow-x:hidden;}
 .mv-bar{height:10px;border-radius:6px;background:rgba(255,255,255,.14);position:relative;overflow:hidden}
 .mv-bar::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--w);background:linear-gradient(90deg,var(--blue),var(--gold));border-radius:6px}
 @media(max-width:820px){.match-sec{grid-template-columns:1fr;gap:26px}}
+/* Assessment-detail: alias-callout + rapportage/niveau-blokken (Batch 3) */
+.alias-note{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:12px 16px;margin:4px 0 16px;color:var(--navy);font-size:15px;box-shadow:var(--shadow-xs)}
+.xblock{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 28px;box-shadow:var(--shadow-xs)}
+.xblock + .xblock{margin-top:20px}
+.xblock-h{color:var(--navy);font-size:22px;margin:0 0 8px}
+.xblock-lead{color:var(--text);font-size:16px;margin:0 0 16px}
+.xblock-text{color:var(--text);font-size:16px;margin:0}
+.xblock-list{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:10px 24px}
+.xblock-list li{position:relative;padding-left:26px;color:var(--navy);font-size:15px;font-weight:600;line-height:1.45}
+.xblock-list li::before{content:"";position:absolute;left:0;top:7px;width:14px;height:14px;border-radius:50%;background:var(--gold)}
+@media(max-width:640px){.xblock-list{grid-template-columns:1fr}}

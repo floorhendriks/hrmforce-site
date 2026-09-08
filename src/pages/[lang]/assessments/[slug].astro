@@ -8,6 +8,7 @@ import { shopInfo } from "../../../data/assessment-shop.js";
 import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../../data/site-config.js";
 import { localizePath } from "../../../i18n/utils.js";
 import { examplesFor } from "../../../data/assessment-examples.js";
+import { extraFor } from "../../../data/assessment-detail-extra.js";
 import { generalFaq } from "../../../data/general-faq.js";
 import QMock from "../../../components/QMock.astro";
 import { oefentests } from "../../../data/oefentests.js";
@@ -80,6 +81,7 @@ const related = (a.related || [])
   });
 
 const ex = examplesFor(a.slug, lang);
+const extra = extraFor(a.slug, lang);
 const _specQ = new Set((a.faq || []).map((f) => (f.q || "").trim().toLowerCase()));
 const allFaq = [...(a.faq || []), ...generalFaq(lang).filter((g) => !_specQ.has((g.q || "").trim().toLowerCase()))];
 const faqTitle = t.faqTitle.replace("{t}", a.title);
@@ -187,6 +189,7 @@ const _offerLd = (shop && shop.price)
       <div class="explain">
         <div>
           {a.intro.map((p) => <p>{p}</p>)}
+          {extra && extra.aliasNote && (<p class="alias-note" set:html={extra.aliasNote}></p>)}
           {a.traits.length > 0 && <ul class="traits">{a.traits.map((tr) => <li>{tr}</li>)}</ul>}
           {a.body.map((p) => <p>{p}</p>)}
           {(() => {
@@ -215,6 +218,21 @@ const _offerLd = (shop && shop.price)
       </div>
     </div>
   </section>
+
+  {extra && extra.blocks && extra.blocks.length > 0 && (
+    <section class="bg-soft"><div class="wrap" style="max-width:880px">
+      {extra.blocks.map((b) => (
+        <div class="xblock">
+          <h3 class="xblock-h">{b.title}</h3>
+          {b.lead && <p class="xblock-lead">{b.lead}</p>}
+          {b.type === "list" && b.items.length > 0 && (
+            <ul class="xblock-list">{b.items.map((it) => <li>{it}</li>)}</ul>
+          )}
+          {b.type === "text" && b.text && <p class="xblock-text">{b.text}</p>}
+        </div>
+      ))}
+    </div></section>
+  )}
 
   {a.quote.text && (
     <section class="quote">
