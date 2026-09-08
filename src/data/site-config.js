@@ -24,7 +24,7 @@ export const ANALYTICS = { GA4_ID: "G-L4WHLCQ1WY" };
 // (clarity.microsoft.com → project → Install manually → het 10-teken ID).
 export const MARKETING = {
   LINKEDIN_PARTNER_ID: "8219026",
-  CLARITY_ID: "", // bv. "abcd123xyz"
+  CLARITY_ID: "yezxhal0q8", // Clarity-project "hrmforce"
 };
 
 // Externe reviewprofielen. Vul een URL in om de badge te tonen (leeg = verborgen).
