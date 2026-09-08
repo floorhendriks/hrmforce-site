@@ -138,6 +138,19 @@ const _articleLd = {
 
 // Body splitsen: contextuele kaart na de eerste </h2> (anders vóór de eindband).
 const body = sanitizeBodyLinks(article.body || "", lang, validPaths);
+// Partners-pagina: extra doorlink naar de integraties (alleen echte koppelingen).
+const _pathClean = (article.path || "").replace(/^\/+|\/+$/g, "");
+const isPartners = _pathClean === "partners" || _pathClean.endsWith("/partners");
+const integHref = localizePath("/integraties/", lang);
+const INTEG = {
+  nl: { title: "Koppel hrmforce aan je systemen", text: "hrmforce integreert met je ATS, HR- en salarissystemen zoals AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix en OTYS.", btn: "Bekijk de integraties" },
+  en: { title: "Connect hrmforce to your systems", text: "hrmforce integrates with your ATS, HR and payroll systems such as AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix and OTYS.", btn: "View the integrations" },
+  de: { title: "Verbinden Sie hrmforce mit Ihren Systemen", text: "hrmforce integriert sich mit Ihren ATS-, HR- und Lohnsystemen wie AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix und OTYS.", btn: "Integrationen ansehen" },
+  fr: { title: "Connectez hrmforce à vos systèmes", text: "hrmforce s'intègre à vos systèmes ATS, RH et paie comme AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix et OTYS.", btn: "Voir les intégrations" },
+  es: { title: "Conecta hrmforce con tus sistemas", text: "hrmforce se integra con tus sistemas ATS, RR. HH. y nómina como AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix y OTYS.", btn: "Ver las integraciones" },
+  ro: { title: "Conectează hrmforce la sistemele tale", text: "hrmforce se integrează cu sistemele tale ATS, HR și payroll precum AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix și OTYS.", btn: "Vezi integrările" },
+};
+const INT = INTEG[lang] || INTEG.nl;
 const cut = body.indexOf("</h2>");
 const bodyTop = cut !== -1 ? body.slice(0, cut + 5) : body;
 const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
@@ -148,6 +161,17 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
     <div class="wrap">
       <h1>{article.title}</h1>
       <div class="kc-body" set:html={bodyTop}></div>
+
+      {isPartners && (
+        <div class="kc-integ">
+          <div>
+            <div class="ctx-tag">Integraties</div>
+            <h3>{INT.title}</h3>
+            <p>{INT.text}</p>
+          </div>
+          <a class="btn btn-primary" href={integHref}>{INT.btn} &rarr;</a>
+        </div>
+      )}
 
       {rec && (
         <div class="kc-ctx">
@@ -206,6 +230,10 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
   .kc-ctx .ctx-btn:hover { background: var(--accent-hover); }
   @media (max-width: 620px) { .kc-ctx { flex-direction: column; align-items: flex-start; } .kc-ctx .ctx-btn { width: 100%; text-align: center; } }
 
+  .kc-integ { display:flex; gap:20px; align-items:center; justify-content:space-between; flex-wrap:wrap; background:#fff; border:1px solid var(--line); border-left:3px solid var(--gold); border-radius:16px; padding:22px 26px; margin:24px 0; box-shadow:var(--shadow-xs); }
+  .kc-integ h3 { color:var(--navy); font-size:1.15rem; margin:6px 0 6px; }
+  .kc-integ p { color:var(--muted); font-size:14.5px; margin:0; max-width:640px; }
+  .kc-integ .ctx-tag { color:var(--blue); font-weight:800; font-size:12px; text-transform:uppercase; letter-spacing:.5px; }
   .kc-endcta { background: var(--bg); border: 1px solid var(--line); border-top: 3px solid var(--gold); border-radius: 16px; padding: 30px; margin-top: 40px; text-align: center; }
   .kc-endcta h3 { color: var(--navy); font-size: 1.3rem; margin-bottom: 8px; }
   .kc-endcta p { color: var(--muted); font-size: 15px; max-width: 540px; margin: 0 auto 18px; }

@@ -74,29 +74,15 @@ const offices = [
   <section class="formsec">
     <div class="wrap contact-grid">
       <div class="contact-info">
-        <div class="eyebrow">hrmforce head office</div>
-        <h2 class="section-title" style="font-size:26px">Amsterdam</h2>
-        <p class="addr">
-          Solitudolaan 396<br />
-          1096 DS Amsterdam<br />
-          The Netherlands
-        </p>
-
-        <ul class="contact-list">
-          <li><span class="lbl">Telefoon</span> <a href="tel:+31888832188">+31 (0)88 88 321 88</a></li>
-          <li><span class="lbl">E-mail</span> <a href="mailto:service@hrmforce.com">service@hrmforce.com</a></li>
-        </ul>
-
-        <p class="hours">
-          <strong>Bereikbaarheid</strong><br />
-          Onze adviseurs zijn bereikbaar op maandag t/m vrijdag van 08:00 – 18:00 uur.
-        </p>
-
-        <ul class="legal">
-          <li><span class="lbl">KvK Amsterdam</span> 34369982</li>
-          <li><span class="lbl">BTW / VAT</span> NL821671480B01</li>
-          <li><span class="lbl">Bank</span> NL31 RABO 0155 7584 11</li>
-        </ul>
+        <div class="office-box">
+          <div class="eyebrow">hrmforce head office</div>
+          <h2 class="section-title" style="font-size:26px;margin-top:4px">Amsterdam</h2>
+          <p class="addr">Solitudolaan 396<br />1096 DS Amsterdam<br />The Netherlands</p>
+          <div class="ci-row"><span class="ci-lbl">Telefoon</span><a href="tel:+31888832188">+31 (0)88 88 321 88</a></div>
+          <div class="ci-row"><span class="ci-lbl">E-mail</span><a href="mailto:service@hrmforce.com">service@hrmforce.com</a></div>
+          <p class="hours"><strong>Bereikbaarheid</strong><br />Onze adviseurs zijn bereikbaar op maandag t/m vrijdag van 08:00 tot 18:00 uur.</p>
+          <p class="ci-legal">KvK Amsterdam 34369982 &middot; BTW NL821671480B01 &middot; IBAN NL31 RABO 0155 7584 11</p>
+        </div>
 
         <div class="map">
           <iframe
@@ -231,6 +217,12 @@ const offices = [
       margin-bottom: 18px;
     }
     .hours strong { color: var(--navy); }
+    .office-box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 28px;box-shadow:var(--shadow-xs);margin-bottom:18px}
+    .office-box .addr{margin-bottom:16px}
+    .ci-row{display:flex;gap:12px;align-items:baseline;padding:7px 0;font-size:15px;border-bottom:1px solid var(--line)}
+    .ci-lbl{min-width:90px;color:var(--navy);font-weight:700;font-size:12.5px;text-transform:uppercase;letter-spacing:.4px}
+    .ci-row a{color:var(--blue);font-weight:600}
+    .ci-legal{color:var(--muted);font-size:12.5px;margin:14px 0 0;padding-top:14px;border-top:1px solid var(--line);line-height:1.7}
     .map {
       margin-top: 8px;
       border-radius: var(--radius);

@@ -3,6 +3,23 @@ import { localizePath, sanitizeBodyLinks } from "../i18n/utils.js";
 import validPaths from "../data/valid-paths.js";
 const { t, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
+
+const UI = {
+  nl: { search: "Zoek een vraag...", all: "Alle", count: "vragen", none: "Geen vragen gevonden. Probeer een andere zoekterm of tag.", themes: "Thema's" },
+  en: { search: "Search a question...", all: "All", count: "questions", none: "No questions found. Try another term or tag.", themes: "Themes" },
+  de: { search: "Frage suchen...", all: "Alle", count: "Fragen", none: "Keine Fragen gefunden. Versuchen Sie einen anderen Begriff oder Tag.", themes: "Themen" },
+  fr: { search: "Rechercher une question...", all: "Toutes", count: "questions", none: "Aucune question trouvée. Essayez un autre terme ou tag.", themes: "Thèmes" },
+  es: { search: "Busca una pregunta...", all: "Todas", count: "preguntas", none: "No se encontraron preguntas. Prueba otro término o etiqueta.", themes: "Temas" },
+  ro: { search: "Caută o întrebare...", all: "Toate", count: "întrebări", none: "Nicio întrebare găsită. Încearcă alt termen sau etichetă.", themes: "Teme" },
+};
+const ui = UI[lang] || UI.nl;
+
+// Alle items platslaan met hun categorie als tag.
+const tags = t.categories.map((c, i) => ({ key: "c" + i, label: c.title }));
+const items = [];
+t.categories.forEach((c, i) => {
+  c.items.forEach((f) => items.push({ tag: "c" + i, tagLabel: c.title, q: f.q, a: f.a }));
+});
 ---
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={localizePath("/support/", lang)}>{t.crumb.support}</a> › <span>{t.crumb.faq}</span></div></div>
 
@@ -12,25 +29,30 @@ const contactHref = localizePath("/contact/", lang);
   <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px" set:html={sanitizeBodyLinks(t.hero.intro, lang, validPaths)}></p>
 </div></section>
 
-{t.categories.map((cat) => (
-  <section class="faq-cat"><div class="wrap">
-    <div class="cat-head">
-      <span class="cat-num">{cat.num}</span>
-      <div>
-        <h2 class="section-title" style="margin-bottom:6px">{cat.title}</h2>
-        <p class="muted">{cat.intro}</p>
+<section><div class="wrap" style="display:block">
+  <div class="faq-controls">
+    <input type="search" id="faqSearch" class="faq-search" placeholder={ui.search} aria-label={ui.search} />
+    <div class="faq-tags" id="faqTags">
+      <button type="button" class="faq-tag is-active" data-tag="">{ui.all}</button>
+      {tags.map((tg) => <button type="button" class="faq-tag" data-tag={tg.key}>{tg.label}</button>)}
+    </div>
+    <p class="faq-count"><span id="faqCount">{items.length}</span> {ui.count}</p>
+  </div>
+
+  <div class="faq-list" id="faqList">
+    {items.map((f) => (
+      <div class="faq-item" data-tag={f.tag} data-q={f.q.toLowerCase()}>
+        <button type="button" class="faq-q" aria-expanded="false">
+          <span>{f.q}</span>
+          <span class="tagpill">{f.tagLabel}</span>
+          <span class="pl">+</span>
+        </button>
+        <div class="faq-a" set:html={sanitizeBodyLinks(f.a, lang, validPaths)}></div>
       </div>
-    </div>
-    <div class="faq-list">
-      {cat.items.map((f) => (
-        <div class="faq-item">
-          <div class="faq-q">{f.q}<span class="pl">+</span></div>
-          <div class="faq-a" set:html={sanitizeBodyLinks(f.a, lang, validPaths)}></div>
-        </div>
-      ))}
-    </div>
-  </div></section>
-))}
+    ))}
+  </div>
+  <p class="faq-none" id="faqNone" hidden>{ui.none}</p>
+</div></section>
 
 <section class="cta"><div class="wrap" style="padding:56px 0;text-align:center">
   <h2 style="color:#fff">{t.cta.title}</h2>
@@ -40,14 +62,65 @@ const contactHref = localizePath("/contact/", lang);
     <a href={contactHref} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">{t.cta.btnContact}</a>
   </div>
 </div></section>
+
 <style>
-  .faq-cat{padding-top:34px}
-  .faq-cat:nth-child(odd){background:var(--bg-soft,#f6f9fc)}
-  .cat-head{display:flex;gap:18px;align-items:flex-start;margin-bottom:8px}
-  .cat-num{font-size:2rem;font-weight:800;color:var(--gold);line-height:1;flex:0 0 auto}
-  .faq-list{max-width:860px;margin-top:20px}
+  .faq-controls{margin-bottom:22px}
+  .faq-search{width:100%;max-width:480px;padding:12px 15px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:15px;margin-bottom:14px}
+  .faq-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .faq-tag{border:1px solid var(--line);background:#fff;color:var(--navy);font:inherit;font-size:13px;font-weight:700;padding:7px 14px;border-radius:999px;cursor:pointer;transition:.15s}
+  .faq-tag:hover{border-color:var(--navy)}
+  .faq-tag.is-active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .faq-count{color:var(--muted);font-size:14px;font-weight:700;margin:0}
+  .faq-list{max-width:900px}
+  .faq-item{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:#fff;overflow:hidden}
+  .faq-q{width:100%;display:flex;align-items:center;gap:12px;text-align:left;background:none;border:0;padding:16px 18px;font:inherit;font-size:16px;font-weight:700;color:var(--navy);cursor:pointer}
+  .faq-q > span:first-child{flex:1}
+  .tagpill{flex:none;font-size:11px;font-weight:700;color:var(--blue);background:#eaf1fb;padding:3px 9px;border-radius:999px;text-transform:uppercase;letter-spacing:.4px}
+  .faq-q .pl{flex:none;font-size:22px;color:var(--gold);line-height:1;transition:transform .2s}
+  .faq-item.open .faq-q .pl{transform:rotate(45deg)}
+  .faq-a{max-height:0;overflow:hidden;padding:0 18px;transition:max-height .25s ease,padding .25s ease;color:var(--text)}
+  .faq-item.open .faq-a{max-height:1200px;padding:0 18px 18px}
   .faq-a :global(p){margin:0 0 12px}
   .faq-a :global(ul),.faq-a :global(ol){margin:0 0 12px 20px}
   .faq-a :global(li){margin:5px 0}
   .faq-a :global(a){color:var(--blue)}
+  .faq-none{color:var(--muted);font-size:16px;text-align:center;padding:40px 0}
+  @media(max-width:640px){.tagpill{display:none}}
 </style>
+
+<script>
+  (function () {
+    const list = document.getElementById("faqList");
+    if (!list) return;
+    const items = Array.from(list.querySelectorAll(".faq-item"));
+    const search = document.getElementById("faqSearch");
+    const tags = Array.from(document.querySelectorAll(".faq-tag"));
+    const count = document.getElementById("faqCount");
+    const none = document.getElementById("faqNone");
+    let active = "";
+    function apply() {
+      const q = (search.value || "").trim().toLowerCase();
+      let n = 0;
+      items.forEach((it) => {
+        const ok = (!active || it.dataset.tag === active) && (!q || (it.dataset.q || "").includes(q));
+        it.style.display = ok ? "" : "none";
+        if (ok) n++;
+      });
+      count.textContent = n;
+      none.hidden = n > 0;
+    }
+    items.forEach((it) => {
+      const btn = it.querySelector(".faq-q");
+      btn.addEventListener("click", () => {
+        const open = it.classList.toggle("open");
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+    });
+    tags.forEach((tg) => tg.addEventListener("click", () => {
+      active = tg.dataset.tag;
+      tags.forEach((x) => x.classList.toggle("is-active", x === tg));
+      apply();
+    }));
+    search.addEventListener("input", apply);
+  })();
+</script>

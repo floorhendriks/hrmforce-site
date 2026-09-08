@@ -1,8 +1,20 @@
 ---
 import { localizePath, sanitizeBodyLinks } from "../i18n/utils.js";
 import validPaths from "../data/valid-paths.js";
+import { oefentests } from "../data/oefentests.js";
 const { t, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
+const PREP_UI = {
+  nl: { title: "Bereid je voor per test", intro: "Zoek je test en oefen met echte voorbeeldvragen. Zo weet je precies wat je kunt verwachten.", search: "Zoek je test...", none: "Geen test gevonden.", practice: "Oefen deze test" },
+  en: { title: "Prepare per test", intro: "Find your test and practise with real example questions, so you know exactly what to expect.", search: "Search your test...", none: "No test found.", practice: "Practise this test" },
+  de: { title: "Vorbereitung je Test", intro: "Finden Sie Ihren Test und üben Sie mit echten Beispielfragen, damit Sie genau wissen, was Sie erwartet.", search: "Test suchen...", none: "Kein Test gefunden.", practice: "Diesen Test üben" },
+  fr: { title: "Préparez-vous par test", intro: "Trouvez votre test et entraînez-vous avec de vrais exemples de questions, pour savoir exactement à quoi vous attendre.", search: "Recherchez votre test...", none: "Aucun test trouvé.", practice: "S'entraîner à ce test" },
+  es: { title: "Prepárate por test", intro: "Encuentra tu test y practica con preguntas de ejemplo reales, para saber exactamente qué esperar.", search: "Busca tu test...", none: "No se encontró el test.", practice: "Practica este test" },
+  ro: { title: "Pregătește-te pe test", intro: "Găsește-ți testul și exersează cu întrebări exemplu reale, ca să știi exact la ce să te aștepți.", search: "Caută-ți testul...", none: "Niciun test găsit.", practice: "Exersează acest test" },
+};
+const prep = PREP_UI[lang] || PREP_UI.nl;
+const prepTests = oefentests.map((o) => ({ slug: o.slug, name: (o.i18n[lang] || o.i18n.nl).name })).sort((a, b) => a.name.localeCompare(b.name));
+const oefenBase = lang === "nl" ? "/oefenen/" : localizePath("/oefenen/", lang);
 ---
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
 <section class="ahero"><div class="wrap" style="display:block">
@@ -11,6 +23,22 @@ const contactHref = localizePath("/contact/", lang);
 </div></section>
 
 <section><div class="wrap"><div class="kc-body" set:html={sanitizeBodyLinks(t.body, lang, validPaths)}></div></div></section>
+
+<section class="bg-soft"><div class="wrap" style="display:block">
+  <div class="eyebrow" style="color:var(--gold)">{prep.title}</div>
+  <h2 class="section-title">{prep.title}</h2>
+  <p style="max-width:820px;color:var(--muted);margin-bottom:18px">{prep.intro}</p>
+  <input type="search" id="prepSearch" class="prep-search" placeholder={prep.search} aria-label={prep.search} />
+  <div class="prep-grid" id="prepGrid">
+    {prepTests.map((pt) => (
+      <a class="prep-card" href={`${oefenBase}${pt.slug}/`} data-name={pt.name.toLowerCase()}>
+        <span class="prep-name">{pt.name}</span>
+        <span class="prep-link">{prep.practice} &rarr;</span>
+      </a>
+    ))}
+  </div>
+  <p class="prep-none" id="prepNone" hidden>{prep.none}</p>
+</div></section>
 
 <section class="bg-soft"><div class="wrap">
   <div class="eyebrow">{t.contact.eyebrow}</div>
@@ -36,4 +64,29 @@ const contactHref = localizePath("/contact/", lang);
   .kc-body :global(.btn){color:#fff}
   .contact-list{list-style:none;margin:0;padding:0;font-size:17px;line-height:2}
   .contact-list a{color:var(--blue,#4691CE)}
+  .prep-search{width:100%;max-width:420px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:15px;margin-bottom:16px}
+  .prep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .prep-card{display:flex;flex-direction:column;gap:8px;background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:16px 18px;text-decoration:none}
+  .prep-card:hover{box-shadow:var(--shadow-sm)}
+  .prep-name{color:var(--navy);font-weight:800;font-size:15px}
+  .prep-link{color:var(--blue);font-weight:700;font-size:13.5px}
+  .prep-none{color:var(--muted);text-align:center;padding:30px 0}
+  @media(max-width:880px){.prep-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.prep-grid{grid-template-columns:1fr}}
 </style>
+
+<script>
+  (function () {
+    const grid = document.getElementById("prepGrid");
+    if (!grid) return;
+    const cards = Array.from(grid.querySelectorAll(".prep-card"));
+    const search = document.getElementById("prepSearch");
+    const none = document.getElementById("prepNone");
+    search.addEventListener("input", () => {
+      const q = (search.value || "").trim().toLowerCase();
+      let n = 0;
+      cards.forEach((c) => { const ok = !q || (c.dataset.name || "").includes(q); c.style.display = ok ? "" : "none"; if (ok) n++; });
+      none.hidden = n > 0;
+    });
+  })();
+</script>

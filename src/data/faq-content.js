@@ -125,6 +125,19 @@ export const faqContent = {
           }
         ]
       }
+          ,
+      {
+        num: "05",
+        title: "Bestellen, prijzen en portal",
+        intro: "Over de shop, prijzen, je eigen portal en koppelingen.",
+        items: [
+          { q: "Kan ik losse assessments bestellen zonder abonnement?", a: `<p>Ja. Via de <a href="/shop/">shop</a> neem je losse assessments af tegen de maximale prijs; je betaalt achteraf. Zet je ze structureel in, dan is een eigen portal op licentiebasis altijd voordeliger.</p>` },
+          { q: "Wat kost een eigen portal?", a: `<p>Een portal werkt op licentiebasis met een vaste jaarprijs voor onbeperkt gebruik. Bekijk de mogelijkheden op de <a href="/tarieven/">tarievenpagina</a> of vraag een demo aan.</p>` },
+          { q: "Met welke systemen integreert hrmforce?", a: `<p>hrmforce koppelt met veelgebruikte ATS-, HR- en salarissystemen zoals AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix en OTYS. Zie <a href="/integraties/">integraties</a>.</p>` },
+          { q: "Kan ik het portal in mijn eigen huisstijl krijgen?", a: `<p>Ja. Rapportages en het portal zijn met white-labelopties in je eigen huisstijl in te richten.</p>` },
+          { q: "Bieden jullie training bij het gebruik?", a: `<p>Ja. Met de <a href="/advies/trainingen/">certificatietraining</a> word je gecertificeerd gebruiker. Bekijk de trainingskalender en schrijf je direct in.</p>` }
+        ]
+      }
     ],
     cta: {
       title: "Staat jouw vraag er niet tussen?",
@@ -256,6 +269,19 @@ export const faqContent = {
             q: "I am stuck. How do I reach the service desk?",
             a: `<p>The team is happy to help you further. Email <a href="mailto:service@hrmforce.com">service@hrmforce.com</a> or call <a href="tel:+31888832188">+31 (0)88 88 321 88</a>. For extensive help and manuals, take a look at the <a href="/support/">support page</a> and the <a href="/kenniscentrum/">knowledge centre</a>.</p>`
           }
+        ]
+      }
+          ,
+      {
+        num: "05",
+        title: "Ordering, pricing and portal",
+        intro: "About the shop, pricing, your own portal and integrations.",
+        items: [
+          { q: "Can I order individual assessments without a subscription?", a: `<p>Yes. Via the <a href="/en/shop/">shop</a> you take individual assessments at the maximum price; you pay afterwards. If you use them structurally, your own licensed portal is always cheaper.</p>` },
+          { q: "What does an own portal cost?", a: `<p>A portal works on a licence basis with a fixed annual price for unlimited use. See the options on the <a href="/en/tarieven/">pricing page</a> or request a demo.</p>` },
+          { q: "Which systems does hrmforce integrate with?", a: `<p>hrmforce connects with common ATS, HR and payroll systems such as AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix and OTYS. See <a href="/en/integraties/">integrations</a>.</p>` },
+          { q: "Can I get the portal in my own branding?", a: `<p>Yes. Reports and the portal can be set up in your own branding with white-label options.</p>` },
+          { q: "Do you offer training for using it?", a: `<p>Yes. With the <a href="/en/advies/trainingen/">certification training</a> you become a certified user. Check the training calendar and register directly.</p>` }
         ]
       }
     ],
@@ -391,6 +417,19 @@ export const faqContent = {
           }
         ]
       }
+          ,
+      {
+        num: "05",
+        title: "Bestellung, Preise und Portal",
+        intro: "Über den Shop, Preise, Ihr eigenes Portal und Integrationen.",
+        items: [
+          { q: "Kann ich einzelne Assessments ohne Abonnement bestellen?", a: `<p>Ja. Über den <a href="/de/shop/">Shop</a> nehmen Sie einzelne Assessments zum Höchstpreis ab; Sie zahlen im Nachhinein. Bei struktureller Nutzung ist ein eigenes Lizenzportal immer günstiger.</p>` },
+          { q: "Was kostet ein eigenes Portal?", a: `<p>Ein Portal läuft auf Lizenzbasis mit einem festen Jahrespreis für unbegrenzte Nutzung. Sehen Sie die Optionen auf der <a href="/de/tarieven/">Preisseite</a> oder fordern Sie eine Demo an.</p>` },
+          { q: "Mit welchen Systemen integriert sich hrmforce?", a: `<p>hrmforce verbindet sich mit gängigen ATS-, HR- und Lohnsystemen wie AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix und OTYS. Siehe <a href="/de/integraties/">Integrationen</a>.</p>` },
+          { q: "Kann ich das Portal im eigenen Branding erhalten?", a: `<p>Ja. Berichte und Portal lassen sich mit White-Label-Optionen im eigenen Branding einrichten.</p>` },
+          { q: "Bieten Sie Schulungen für die Nutzung an?", a: `<p>Ja. Mit der <a href="/de/advies/trainingen/">Zertifizierungsschulung</a> werden Sie zertifizierter Nutzer. Sehen Sie den Kalender und melden Sie sich direkt an.</p>` }
+        ]
+      }
     ],
     cta: {
       title: "Ihre Frage ist nicht dabei?",
@@ -522,6 +561,19 @@ export const faqContent = {
             q: "Je n'y arrive pas. Comment joindre le service d'assistance ?",
             a: `<p>L'equipe se fera un plaisir de vous aider. Envoyez un e-mail a <a href="mailto:service@hrmforce.com">service@hrmforce.com</a> ou appelez le <a href="tel:+31888832188">+31 (0)88 88 321 88</a>. Pour une aide detaillee et des manuels, consultez la <a href="/support/">page de support</a> et le <a href="/kenniscentrum/">centre de connaissances</a>.</p>`
           }
+        ]
+      }
+          ,
+      {
+        num: "05",
+        title: "Commande, tarifs et portail",
+        intro: "À propos de la boutique, des tarifs, de votre portail et des intégrations.",
+        items: [
+          { q: "Puis-je commander des évaluations à l'unité sans abonnement ?", a: `<p>Oui. Via la <a href="/fr/shop/">boutique</a>, vous prenez des évaluations à l'unité au prix maximum ; vous payez ensuite. En usage structurel, un portail sous licence est toujours moins cher.</p>` },
+          { q: "Combien coûte un portail dédié ?", a: `<p>Un portail fonctionne sous licence avec un prix annuel fixe pour un usage illimité. Voir les options sur la <a href="/fr/tarieven/">page tarifs</a> ou demandez une démo.</p>` },
+          { q: "Avec quels systèmes hrmforce s'intègre-t-il ?", a: `<p>hrmforce se connecte aux systèmes ATS, RH et paie courants comme AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix et OTYS. Voir <a href="/fr/integraties/">intégrations</a>.</p>` },
+          { q: "Puis-je obtenir le portail à ma charte graphique ?", a: `<p>Oui. Les rapports et le portail peuvent être configurés à votre charte avec des options en marque blanche.</p>` },
+          { q: "Proposez-vous une formation à l'utilisation ?", a: `<p>Oui. Avec la <a href="/fr/advies/trainingen/">formation de certification</a>, vous devenez utilisateur certifié. Consultez le calendrier et inscrivez-vous.</p>` }
         ]
       }
     ],
@@ -657,6 +709,19 @@ export const faqContent = {
           }
         ]
       }
+          ,
+      {
+        num: "05",
+        title: "Pedidos, precios y portal",
+        intro: "Sobre la tienda, los precios, tu propio portal y las integraciones.",
+        items: [
+          { q: "¿Puedo pedir evaluaciones sueltas sin suscripción?", a: `<p>Sí. A través de la <a href="/es/shop/">tienda</a> tomas evaluaciones sueltas al precio máximo; pagas después. En uso estructural, un portal propio con licencia siempre es más barato.</p>` },
+          { q: "¿Cuánto cuesta un portal propio?", a: `<p>Un portal funciona por licencia con un precio anual fijo para uso ilimitado. Consulta las opciones en la <a href="/es/tarieven/">página de precios</a> o solicita una demo.</p>` },
+          { q: "¿Con qué sistemas se integra hrmforce?", a: `<p>hrmforce se conecta con sistemas ATS, RR. HH. y nómina habituales como AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix y OTYS. Ver <a href="/es/integraties/">integraciones</a>.</p>` },
+          { q: "¿Puedo tener el portal con mi propia imagen de marca?", a: `<p>Sí. Los informes y el portal se pueden configurar con tu imagen de marca mediante opciones de marca blanca.</p>` },
+          { q: "¿Ofrecéis formación para su uso?", a: `<p>Sí. Con la <a href="/es/advies/trainingen/">formación de certificación</a> te conviertes en usuario certificado. Consulta el calendario e inscríbete.</p>` }
+        ]
+      }
     ],
     cta: {
       title: "No encuentras tu pregunta?",
@@ -788,6 +853,19 @@ export const faqContent = {
             q: "Nu ma descurc. Cum contactez serviciul de asistenta?",
             a: `<p>Echipa te ajuta cu placere. Trimite un e-mail la <a href="mailto:service@hrmforce.com">service@hrmforce.com</a> sau suna la <a href="tel:+31888832188">+31 (0)88 88 321 88</a>. Pentru ajutor detaliat si manuale, consulta <a href="/support/">pagina de suport</a> si <a href="/kenniscentrum/">centrul de cunostinte</a>.</p>`
           }
+        ]
+      }
+          ,
+      {
+        num: "05",
+        title: "Comenzi, prețuri și portal",
+        intro: "Despre magazin, prețuri, propriul portal și integrări.",
+        items: [
+          { q: "Pot comanda evaluări individuale fără abonament?", a: `<p>Da. Prin <a href="/ro/shop/">magazin</a> iei evaluări individuale la prețul maxim; plătești ulterior. La utilizare structurală, un portal propriu cu licență este întotdeauna mai ieftin.</p>` },
+          { q: "Cât costă un portal propriu?", a: `<p>Un portal funcționează pe bază de licență, cu un preț anual fix pentru utilizare nelimitată. Vezi opțiunile pe <a href="/ro/tarieven/">pagina de prețuri</a> sau cere un demo.</p>` },
+          { q: "Cu ce sisteme se integrează hrmforce?", a: `<p>hrmforce se conectează cu sisteme ATS, HR și payroll uzuale precum AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix și OTYS. Vezi <a href="/ro/integraties/">integrări</a>.</p>` },
+          { q: "Pot obține portalul în propriul brand?", a: `<p>Da. Rapoartele și portalul pot fi configurate în propriul brand, cu opțiuni white-label.</p>` },
+          { q: "Oferiți training pentru utilizare?", a: `<p>Da. Cu <a href="/ro/advies/trainingen/">cursul de certificare</a> devii utilizator certificat. Vezi calendarul și înscrie-te direct.</p>` }
         ]
       }
     ],
