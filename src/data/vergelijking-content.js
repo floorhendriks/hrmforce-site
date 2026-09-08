@@ -2,6 +2,13 @@
 // claims over concurrenten. hrmforce's onderscheidende punten centraal.
 export const VERG_UI = {
  "nl": {
+  "faqTitle": "Veelgestelde vragen bij het vergelijken",
+  "guideTitle": "Hulp bij kiezen",
+  "guideText": "Niet zeker welke test of aanbieder past? Gebruik de testkiezer of lees de complete gids.",
+  "guideBtn": "Naar de testkiezer",
+  "guideBtn2": "Lees de keuzegids",
+  "faqs": [{ q:"Waarom hrmforce kiezen boven een andere aanbieder?", a:"hrmforce is een compleet platform (werving, ontwikkeling én teams) met transparante prijzen, afname in 14 talen, AVG-conforme EU-data en zonder verplichte certificering. Voor veel organisaties is dat completer en voordeliger dan losse tools of enterprise-only aanbieders." },{ q:"Is hrmforce voordeliger dan grote internationale aanbieders?", a:"Vaak wel: je neemt los af via de shop of tegen een vaste jaarprijs via een eigen portal, zonder verplicht enterprise-contract. Zo betaal je voor wat je gebruikt." },{ q:"In welke talen kan ik de assessments afnemen?", a:"In maximaal 14 talen, handig bij internationale of meertalige teams." },{ q:"Zijn de tests wetenschappelijk gevalideerd?", a:"Ja. De instrumenten zijn ontwikkeld en gecontroleerd door NIP-geregistreerde psychologen en gebaseerd op erkende modellen." },{ q:"Hoe kies ik de juiste test of aanbieder?", a:"Bepaal eerst je doel (selecteren, ontwikkelen of teams versterken). De testkiezer helpt je in een paar klikken; de keuzegids geeft een compleet afwegingskader." }],
+
   "edgeTitle": "Waarom organisaties voor hrmforce kiezen",
   "verdict": "Zoek je compleetheid, meertaligheid en transparante prijzen, dan is hrmforce vaak beter passend en voordeliger dan losse tools of enterprise-only aanbieders.",
   "edges": ["Compleet platform, geen losse tool: werving, ontwikkeling én teams in één omgeving.","Transparante prijzen: los afnemen via de shop of een vaste jaarprijs, zonder verplicht enterprise-contract.","In 14 talen af te nemen, breder dan de meeste aanbieders.","AVG-proof met dataverwerking binnen de EU.","Geen verplichte certificering; persoonlijke begeleiding is inbegrepen.","Koppelingen met Nederlandse HR-systemen (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
@@ -48,6 +55,13 @@ export const VERG_UI = {
   "neutralNote": "Informatie over andere aanbieders is algemeen van aard; raadpleeg hun website voor de actuele details."
  },
  "en": {
+  "faqTitle": "Frequently asked questions about comparing",
+  "guideTitle": "Help choosing",
+  "guideText": "Not sure which test or provider fits? Use the test chooser or read the complete guide.",
+  "guideBtn": "Go to the test chooser",
+  "guideBtn2": "Read the choosing guide",
+  "faqs": [{ q:"Why choose hrmforce over another provider?", a:"hrmforce is a complete platform (recruitment, development and teams) with transparent pricing, delivery in 14 languages, GDPR-compliant EU data and no mandatory certification. For many organisations that is more complete and better value than single-point tools or enterprise-only providers." },{ q:"Is hrmforce better value than large international providers?", a:"Often yes: you order per unit via the shop or at a fixed annual price via your own portal, without a mandatory enterprise contract. So you pay for what you use." },{ q:"In which languages can I administer the assessments?", a:"In up to 14 languages, handy for international or multilingual teams." },{ q:"Are the tests scientifically validated?", a:"Yes. The instruments are developed and checked by registered (NIP) psychologists and based on recognised models." },{ q:"How do I choose the right test or provider?", a:"First define your goal (selecting, developing or strengthening teams). The test chooser helps in a few clicks; the choosing guide gives a complete framework." }],
+
   "edgeTitle": "Why organisations choose hrmforce",
   "verdict": "If you want completeness, multilingual delivery and transparent pricing, hrmforce is often a better fit and better value than single-point tools or enterprise-only providers.",
   "edges": ["A complete platform, not a single tool: recruitment, development and teams in one place.","Transparent pricing: order per unit via the shop or a fixed annual price, without a mandatory enterprise contract.","Delivered in 14 languages, broader than most providers.","GDPR-proof with data processing within the EU.","No mandatory certification; personal guidance is included.","Connectors with Dutch HR systems (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
@@ -94,6 +108,13 @@ export const VERG_UI = {
   "neutralNote": "Information about other providers is general in nature; check their website for current details."
  },
  "de": {
+  "faqTitle": "Häufige Fragen zum Vergleich",
+  "guideTitle": "Hilfe bei der Wahl",
+  "guideText": "Unsicher, welcher Test oder Anbieter passt? Nutzen Sie den Testfinder oder lesen Sie den kompletten Leitfaden.",
+  "guideBtn": "Zum Testfinder",
+  "guideBtn2": "Auswahl-Leitfaden lesen",
+  "faqs": [{ q:"Warum hrmforce statt eines anderen Anbieters wählen?", a:"hrmforce ist eine komplette Plattform (Recruiting, Entwicklung und Teams) mit transparenten Preisen, Durchführung in 14 Sprachen, DSGVO-konformen EU-Daten und ohne verpflichtende Zertifizierung. Für viele Organisationen ist das vollständiger und günstiger als Einzeltools oder reine Enterprise-Anbieter." },{ q:"Ist hrmforce günstiger als große internationale Anbieter?", a:"Oft ja: Sie kaufen einzeln über den Shop oder zum festen Jahrespreis über ein eigenes Portal, ohne verpflichtenden Enterprise-Vertrag. So zahlen Sie für das, was Sie nutzen." },{ q:"In welchen Sprachen kann ich die Assessments durchführen?", a:"In bis zu 14 Sprachen, praktisch bei internationalen oder mehrsprachigen Teams." },{ q:"Sind die Tests wissenschaftlich validiert?", a:"Ja. Die Instrumente werden von registrierten (NIP) Psychologen entwickelt und geprüft und basieren auf anerkannten Modellen." },{ q:"Wie wähle ich den richtigen Test oder Anbieter?", a:"Definieren Sie zuerst Ihr Ziel (Auswahl, Entwicklung oder Teamstärkung). Der Testfinder hilft in wenigen Klicks; der Auswahl-Leitfaden bietet einen kompletten Rahmen." }],
+
   "edgeTitle": "Warum Organisationen sich für hrmforce entscheiden",
   "verdict": "Wenn Sie Vollständigkeit, mehrsprachige Durchführung und transparente Preise suchen, passt hrmforce oft besser und ist günstiger als Einzeltools oder reine Enterprise-Anbieter.",
   "edges": ["Eine komplette Plattform, kein Einzeltool: Recruiting, Entwicklung und Teams an einem Ort.","Transparente Preise: einzeln über den Shop oder zum festen Jahrespreis, ohne verpflichtenden Enterprise-Vertrag.","In 14 Sprachen durchführbar, breiter als die meisten Anbieter.","DSGVO-konform mit Datenverarbeitung innerhalb der EU.","Keine verpflichtende Zertifizierung; persönliche Begleitung inklusive.","Anbindungen an niederländische HR-Systeme (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
@@ -140,6 +161,13 @@ export const VERG_UI = {
   "neutralNote": "Informationen zu anderen Anbietern sind allgemeiner Art; aktuelle Details finden Sie auf deren Website."
  },
  "fr": {
+  "faqTitle": "Questions fréquentes sur la comparaison",
+  "guideTitle": "Aide au choix",
+  "guideText": "Vous ne savez pas quel test ou fournisseur convient ? Utilisez le sélecteur de test ou lisez le guide complet.",
+  "guideBtn": "Vers le sélecteur de test",
+  "guideBtn2": "Lire le guide de choix",
+  "faqs": [{ q:"Pourquoi choisir hrmforce plutôt qu'un autre fournisseur ?", a:"hrmforce est une plateforme complète (recrutement, développement et équipes) avec des prix transparents, une passation en 14 langues, des données UE conformes au RGPD et sans certification obligatoire. Pour beaucoup d'organisations, c'est plus complet et plus avantageux que des outils ponctuels ou des fournisseurs réservés aux grands comptes." },{ q:"hrmforce est-il plus avantageux que les grands fournisseurs internationaux ?", a:"Souvent oui : vous commandez à l'unité via la boutique ou à prix annuel fixe via votre propre portail, sans contrat entreprise obligatoire. Vous payez ce que vous utilisez." },{ q:"Dans quelles langues puis-je administrer les assessments ?", a:"Jusqu'à 14 langues, pratique pour des équipes internationales ou multilingues." },{ q:"Les tests sont-ils validés scientifiquement ?", a:"Oui. Les instruments sont développés et contrôlés par des psychologues enregistrés (NIP) et basés sur des modèles reconnus." },{ q:"Comment choisir le bon test ou fournisseur ?", a:"Définissez d'abord votre objectif (sélectionner, développer ou renforcer les équipes). Le sélecteur de test aide en quelques clics ; le guide de choix fournit un cadre complet." }],
+
   "edgeTitle": "Pourquoi les organisations choisissent hrmforce",
   "verdict": "Si vous recherchez la complétude, la passation multilingue et des prix transparents, hrmforce est souvent plus adapté et plus avantageux que les outils ponctuels ou les fournisseurs réservés aux grands comptes.",
   "edges": ["Une plateforme complète, pas un simple outil : recrutement, développement et équipes au même endroit.","Prix transparents : à l'unité via la boutique ou à prix annuel fixe, sans contrat entreprise obligatoire.","Disponible en 14 langues, plus large que la plupart des fournisseurs.","Conforme au RGPD, traitement des données au sein de l'UE.","Pas de certification obligatoire ; accompagnement personnel inclus.","Connexions aux systèmes RH néerlandais (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
@@ -186,6 +214,13 @@ export const VERG_UI = {
   "neutralNote": "Les informations sur les autres fournisseurs sont de nature générale ; consultez leur site pour les détails actuels."
  },
  "es": {
+  "faqTitle": "Preguntas frecuentes sobre la comparación",
+  "guideTitle": "Ayuda para elegir",
+  "guideText": "¿No sabes qué test o proveedor encaja? Usa el selector de test o lee la guía completa.",
+  "guideBtn": "Ir al selector de test",
+  "guideBtn2": "Leer la guía de elección",
+  "faqs": [{ q:"¿Por qué elegir hrmforce frente a otro proveedor?", a:"hrmforce es una plataforma completa (selección, desarrollo y equipos) con precios transparentes, aplicación en 14 idiomas, datos en la UE conformes al RGPD y sin certificación obligatoria. Para muchas organizaciones es más completo y económico que herramientas puntuales o proveedores solo para grandes empresas." },{ q:"¿Es hrmforce más económico que los grandes proveedores internacionales?", a:"A menudo sí: pides por unidad en la tienda o a precio anual fijo con tu propio portal, sin contrato enterprise obligatorio. Pagas por lo que usas." },{ q:"¿En qué idiomas puedo aplicar las evaluaciones?", a:"Hasta en 14 idiomas, útil para equipos internacionales o multilingües." },{ q:"¿Los tests están validados científicamente?", a:"Sí. Los instrumentos los desarrollan y revisan psicólogos registrados (NIP) y se basan en modelos reconocidos." },{ q:"¿Cómo elijo el test o proveedor adecuado?", a:"Primero define tu objetivo (seleccionar, desarrollar o reforzar equipos). El selector de test ayuda en pocos clics; la guía de elección ofrece un marco completo." }],
+
   "edgeTitle": "Por qué las organizaciones eligen hrmforce",
   "verdict": "Si buscas integridad, aplicación multilingüe y precios transparentes, hrmforce suele encajar mejor y ser más económico que las herramientas puntuales o los proveedores solo para grandes empresas.",
   "edges": ["Una plataforma completa, no una herramienta suelta: selección, desarrollo y equipos en un solo lugar.","Precios transparentes: por unidad en la tienda o precio anual fijo, sin contrato enterprise obligatorio.","Disponible en 14 idiomas, más amplia que la mayoría de proveedores.","Conforme al RGPD, con tratamiento de datos dentro de la UE.","Sin certificación obligatoria; acompañamiento personal incluido.","Conexiones con sistemas de RR. HH. neerlandeses (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
@@ -232,6 +267,13 @@ export const VERG_UI = {
   "neutralNote": "La información sobre otros proveedores es de carácter general; consulta su web para los detalles actuales."
  },
  "ro": {
+  "faqTitle": "Întrebări frecvente despre comparație",
+  "guideTitle": "Ajutor la alegere",
+  "guideText": "Nu ești sigur ce test sau furnizor se potrivește? Folosește selectorul de teste sau citește ghidul complet.",
+  "guideBtn": "Spre selectorul de teste",
+  "guideBtn2": "Citește ghidul de alegere",
+  "faqs": [{ q:"De ce să alegi hrmforce în locul altui furnizor?", a:"hrmforce este o platformă completă (recrutare, dezvoltare și echipe) cu prețuri transparente, administrare în 14 limbi, date în UE conforme GDPR și fără certificare obligatorie. Pentru multe organizații e mai completă și mai avantajoasă decât instrumentele punctuale sau furnizorii doar pentru enterprise." },{ q:"Este hrmforce mai avantajos decât marii furnizori internaționali?", a:"Adesea da: comanzi per unitate prin magazin sau la preț anual fix prin propriul portal, fără contract enterprise obligatoriu. Plătești pentru ce folosești." },{ q:"În ce limbi pot administra evaluările?", a:"În până la 14 limbi, util pentru echipe internaționale sau multilingve." },{ q:"Testele sunt validate științific?", a:"Da. Instrumentele sunt dezvoltate și verificate de psihologi înregistrați (NIP) și bazate pe modele recunoscute." },{ q:"Cum aleg testul sau furnizorul potrivit?", a:"Întâi definește-ți obiectivul (selecție, dezvoltare sau întărirea echipelor). Selectorul de teste ajută în câteva clicuri; ghidul de alegere oferă un cadru complet." }],
+
   "edgeTitle": "De ce aleg organizațiile hrmforce",
   "verdict": "Dacă vrei completitudine, administrare multilingvă și prețuri transparente, hrmforce se potrivește adesea mai bine și este mai avantajos decât instrumentele punctuale sau furnizorii doar pentru enterprise.",
   "edges": ["O platformă completă, nu un simplu instrument: recrutare, dezvoltare și echipe într-un singur loc.","Prețuri transparente: per unitate prin magazin sau preț anual fix, fără contract enterprise obligatoriu.","Disponibilă în 14 limbi, mai largă decât majoritatea furnizorilor.","Conformă GDPR, cu prelucrarea datelor în UE.","Fără certificare obligatorie; îndrumare personală inclusă.","Conexiuni cu sisteme HR neerlandeze (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],

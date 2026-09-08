@@ -5,6 +5,9 @@ const { lang = "nl" } = Astro.props;
 const t = VERG_UI[lang] || VERG_UI.nl;
 const comps = Object.entries(COMPETITORS).map(([slug, c]) => ({ slug, name: c.name, intro: (c.intro[lang] || c.intro.nl) }));
 const vp = (slug) => localizePath(`/vergelijking/${slug}/`, lang);
+const _faqLd = { "@context":"https://schema.org","@type":"FAQPage", mainEntity:(t.faqs||[]).map((f)=>({ "@type":"Question", name:f.q, acceptedAnswer:{ "@type":"Answer", text:f.a } })) };
+const testkiezerHref = localizePath("/testkiezer/", lang);
+const gidsHref = localizePath("/whitepapers/assessments-kiezen-gids/", lang);
 ---
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> &rsaquo; <span>{t.crumb}</span></div></div>
 
@@ -34,6 +37,19 @@ const vp = (slug) => localizePath(`/vergelijking/${slug}/`, lang);
       </a>
     ))}
   </div>
+</div></section>
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(_faqLd)}></script>
+<section><div class="wrap">
+  <div class="eyebrow" style="color:var(--gold)">{t.guideTitle}</div>
+  <h2 class="section-title" style="margin-bottom:8px">{t.guideTitle}</h2>
+  <p class="lead" style="max-width:640px;margin:0 0 16px">{t.guideText}</p>
+  <div class="btns"><a class="btn btn-primary" href={testkiezerHref}>{t.guideBtn} &rarr;</a><a class="btn btn-ghost" href={gidsHref} style="margin-left:8px">{t.guideBtn2}</a></div>
+</div></section>
+
+<section class="bg-soft"><div class="wrap" style="max-width:860px">
+  <div class="center"><h2 class="section-title" style="margin-bottom:36px">{t.faqTitle}</h2></div>
+  {t.faqs.map((f) => (<div class="faq-item"><div class="faq-q">{f.q}<span class="pl">+</span></div><div class="faq-a"><p>{f.a}</p></div></div>))}
 </div></section>
 
 <section class="cta"><div class="wrap" style="padding:56px 0;text-align:center">
