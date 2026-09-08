@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 460" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="HR-gesprekscyclus van hrmforce: bila, bila+, ontwikkelgesprek en jaargesprek">
+  <rect width="640" height="460" rx="18" fill="#EEF3F9"/>
+  <text x="320" y="46" text-anchor="middle" font-size="20" font-weight="800" fill="#1F2D45">De HR-gesprekscyclus</text>
+  <text x="320" y="72" text-anchor="middle" font-size="14" fill="#6B7A90">Eén doorlopende jaarcyclus in vier gesprekken</text>
+  <!-- circular arrows -->
+  <circle cx="320" cy="258" r="128" fill="none" stroke="#CBD8E8" stroke-width="2" stroke-dasharray="4 7"/>
+  <g fill="#0e468c">
+    <polygon points="448,258 438,251 438,265"/>
+    <polygon points="192,258 202,251 202,265"/>
+  </g>
+  <!-- center hub -->
+  <circle cx="320" cy="258" r="52" fill="#0e468c"/>
+  <text x="320" y="252" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">continu</text>
+  <text x="320" y="270" text-anchor="middle" font-size="14" font-weight="700" fill="#fcc11b">bijsturen</text>
+  <!-- 4 nodes -->
+  <g>
+    <circle cx="320" cy="130" r="46" fill="#fff" stroke="#0e468c" stroke-width="2"/>
+    <text x="320" y="126" text-anchor="middle" font-size="14" font-weight="800" fill="#0e468c">Bila</text>
+    <text x="320" y="146" text-anchor="middle" font-size="11" fill="#6B7A90">werkafspraken</text>
+  </g>
+  <g>
+    <circle cx="448" cy="258" r="46" fill="#fff" stroke="#0e468c" stroke-width="2"/>
+    <text x="448" y="254" text-anchor="middle" font-size="14" font-weight="800" fill="#0e468c">Bila+</text>
+    <text x="448" y="274" text-anchor="middle" font-size="11" fill="#6B7A90">verdieping</text>
+  </g>
+  <g>
+    <circle cx="320" cy="386" r="46" fill="#fff" stroke="#0e468c" stroke-width="2"/>
+    <text x="320" y="380" text-anchor="middle" font-size="13" font-weight="800" fill="#0e468c">Ontwikkel-</text>
+    <text x="320" y="396" text-anchor="middle" font-size="13" font-weight="800" fill="#0e468c">gesprek</text>
+  </g>
+  <g>
+    <circle cx="192" cy="258" r="46" fill="#fff" stroke="#0e468c" stroke-width="2"/>
+    <text x="192" y="254" text-anchor="middle" font-size="13" font-weight="800" fill="#0e468c">Jaar-</text>
+    <text x="192" y="272" text-anchor="middle" font-size="13" font-weight="800" fill="#0e468c">gesprek</text>
+  </g>
+</svg>

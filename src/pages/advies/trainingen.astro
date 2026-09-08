@@ -1,0 +1,131 @@
+---
+import Base from "../../layouts/Base.astro";
+import LogoSlider from "../../components/LogoSlider.astro";
+import Img from "../../components/Img.astro";
+
+// Trainingskalender: alleen komende data tonen (peildatum bij build).
+const kalender = [
+  { datum: "24 sep 2026", tijd: "09:30 - 16:30", soort: "Certificatietraining", max: "Max. 12", locatie: "Hoeve Rijlaarsdam, Nieuwveenseweg 59, 2421 LB Nieuwkoop", prijs: "€ 595,-" },
+  { datum: "19 nov 2026", tijd: "09:30 - 16:30", soort: "Certificatietraining", max: "Max. 12", locatie: "Hoeve Rijlaarsdam, Nieuwveenseweg 59, 2421 LB Nieuwkoop", prijs: "€ 595,-" },
+];
+
+const leerdoelen = [
+  "Zelfstandig nieuwe kandidaten invoeren, instellingen wijzigen en vragenlijsten versturen",
+  "Resultaten van vragenlijsten interpreteren voor loopbaan- en ontwikkelvragen",
+  "De basis leggen voor een coachingtraject en feedbackgesprekken voeren",
+  "Inzicht krijgen in je eigen profiel op de verschillende vragenlijsten",
+  "Concrete feedbackgesprekken voeren en evalueren onder begeleiding van een professional",
+  "De theorie rond persoonlijkheid en competenties leren",
+];
+
+const trainingen = [
+  { h: "Certificatietraining", p: "Word gecertificeerd hrmforce-gebruiker: implementatie, gebruik en interpretatie van de vragenlijsten in de praktijk.", href: "/advies/certificatietraining/" },
+  { h: "'Het goede gesprek'", p: "Voor medewerkers en leidinggevenden. Extra waardevol als er diversiteit in de groep is.", href: "/advies/training-het-goede-gesprek/" },
+  { h: "Medezeggenschapstraining", p: "Voor leden van de medezeggenschapsraad van scholen.", href: "/advies/medezeggenschap/" },
+];
+---
+<Base title="Trainingen & certificatietraining | hrmforce" description="Word met de certificatietraining van hrmforce een gecertificeerd gebruiker. Bekijk de trainingskalender en schrijf je direct in." active="advice">
+  <div class="crumb">
+    <div class="wrap"><a href="/">Home</a> &rsaquo; <a href="/advies/">Advies</a> &rsaquo; <span>Trainingen</span></div>
+  </div>
+
+  <section class="ahero">
+    <div class="wrap" style="display:block">
+      <div class="eyebrow" style="color:var(--gold)">Advies</div>
+      <h1>Trainingen &amp; cursussen</h1>
+      <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">Met een <strong>certificatietraining</strong> van hrmforce leer je werken met onze vragenlijsten en oplossingen: je leert resultaten correct te interpreteren en zorgvuldig terug te koppelen. Op verzoek bieden we, vaak samen met onze partners, aanvullende trainingen op maat.</p>
+      <div class="btns" style="margin-top:16px">
+        <a href="/inschrijfformulier-trainingen/" class="btn btn-primary">Direct inschrijven</a>
+        <a href="#kalender" class="btn btn-light">Bekijk de kalender</a>
+      </div>
+    </div>
+  </section>
+
+  <LogoSlider heading="Organisaties die u voorgingen" />
+
+  <section>
+    <div class="wrap">
+      <div class="explain">
+        <div>
+          <div class="eyebrow">Certificatietraining</div>
+          <h2 class="section-title">Word gecertificeerd hrmforce-gebruiker</h2>
+          <p>We organiseren live trainingen waarin je leert werken met hrmforce en de mogelijkheid krijgt om een gecertificeerd gebruiker te worden. Onze aanpak is nuchter en no-nonsense, concreet en indringend, maar met gevoel voor humor en flair.</p>
+          <p style="font-weight:700;color:var(--navy);margin-top:14px">Voor wie?</p>
+          <p>Medewerkers die hun interne deskundigheid in het werken met vragenlijsten willen verhogen, en managers die coachend leidinggeven, (loopbaan)begeleiders, coaches, HR-verantwoordelijken, opleiders/trainers en P&amp;O-deskundigen die met hrmforce willen werken.</p>
+          <p style="font-weight:700;color:var(--navy);margin-top:14px">Wat leer je?</p>
+          <ul class="traits">{leerdoelen.map((d) => <li>{d}</li>)}</ul>
+        </div>
+        <div class="explain-fig">
+          <Img src="/media/wp-content/uploads/2020/12/ass-afb1.png" alt="Trainingssituatie hrmforce" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kalender" class="bg-soft">
+    <div class="wrap">
+      <div class="eyebrow" style="color:var(--gold)">Trainingskalender</div>
+      <h2 class="section-title">Komende trainingsdata</h2>
+      <p class="lead" style="margin-bottom:20px">Een overzicht van de eerstvolgende trainingen, met locatie en prijs. Inschrijven kan direct online; gedurende het jaar komen er nieuwe data bij.</p>
+      <div class="kal-wrap">
+        <table class="kal">
+          <thead><tr><th>Datum + tijd</th><th>Training</th><th>Deelnemers</th><th>Locatie</th><th>Prijs p.p.</th></tr></thead>
+          <tbody>
+            {kalender.map((r) => (
+              <tr>
+                <td><strong>{r.datum}</strong><br /><span class="kal-sub">{r.tijd}</span></td>
+                <td>{r.soort}</td>
+                <td>{r.max}</td>
+                <td class="kal-sub">{r.locatie}</td>
+                <td><strong>{r.prijs}</strong></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div class="btns" style="margin-top:22px"><a href="/inschrijfformulier-trainingen/" class="btn btn-primary">Inschrijven voor een training</a></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">Aanbod</div>
+      <h2 class="section-title">Onze trainingen</h2>
+      <div class="adv">
+        {trainingen.map((t) => (
+          <div class="adv-block">
+            <h3>{t.h}</h3>
+            <p>{t.p}</p>
+            <a class="btn btn-primary" href={t.href}>Lees meer</a>
+          </div>
+        ))}
+      </div>
+      <p style="color:var(--muted);font-size:15px;margin-top:20px">Trainingen zijn voor groepen vanaf 6 personen op maat af te nemen. Doe altijd eerst een nulmeting, zodat je na afloop kunt vaststellen of de investering rendeert. <a href="/contact/" style="color:var(--blue);font-weight:600">Neem contact op</a> voor de mogelijkheden.</p>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <h2>Klaar om je in te schrijven?</h2>
+      <p>Bekijk de kalender en reserveer je plek, of stem samen met een adviseur de best passende aanpak af.</p>
+      <div class="btns">
+        <a href="/inschrijfformulier-trainingen/" class="btn btn-primary">Inschrijven</a>
+        <a href="/contact/" class="btn btn-light">Vraag advies</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .adv { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 28px; }
+  .adv-block { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; box-shadow: var(--shadow-xs); display: flex; flex-direction: column; }
+  .adv-block h3 { color: var(--navy); font-size: 19px; font-weight: 800; margin-bottom: 10px; }
+  .adv-block p { color: var(--muted); font-size: 15px; margin-bottom: 18px; flex: 1; }
+  .adv-block .btn { align-self: flex-start; }
+  .kal-wrap { overflow-x: auto; }
+  .kal { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .kal th { text-align: left; background: var(--navy); color: #fff; font-size: 13px; text-transform: uppercase; letter-spacing: .5px; padding: 12px 14px; }
+  .kal td { padding: 14px; border-top: 1px solid var(--line); font-size: 15px; color: var(--navy); vertical-align: top; }
+  .kal-sub { color: var(--muted); font-size: 13.5px; }
+  @media (max-width: 880px) { .adv { grid-template-columns: 1fr; } }
+</style>

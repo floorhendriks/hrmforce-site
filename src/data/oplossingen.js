@@ -48,7 +48,7 @@ export const oplossingen = [
       "Jaargesprek en volledige jaarcyclus",
       "Automatische voortgangsbewaking en concrete actielijsten",
     ],
-    image: "/media/wp-content/uploads/2017/02/appraisal-hrmforce.jpg",
+    image: "/mockups/gesprekscyclus.svg",
     photo: "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=900",
     cta: "Bespreek met een HR-specialist welke ontwikkelaanpak bij jullie team past",
   },

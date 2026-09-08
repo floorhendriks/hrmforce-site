@@ -1,15 +1,16 @@
 ---
 import Base from "../layouts/Base.astro";
+import LogoSlider from "../components/LogoSlider.astro";
 
 const items = [
-  { h: "Assessments", p: "In elke organisatie beslissen mensen over mensen. Een sollicitant aannemen of afwijzen, een zittende medewerker wel of niet laten doorgroeien of interveniëren in een (stagnerende) loopbaan. Deze besluiten raken individu én organisatie. Uiteindelijk bepalen personele beslissingen hoe succesvol je organisatie is.", href: "/advies/assessments/" },
-  { h: "Talent Management", p: "Als men de 80-20-regel toepast op recruitment, blijkt dat 20% van de aangeworven kandidaten voor 80% van de resultaten zorgt. Meer dan ooit ligt de focus van bedrijven op het werven van deze talenten. Door de huidige economische omstandigheden is het echter ook noodzakelijk om talent in de organisatie te herkennen en te benutten.", href: "/advies/talent-management/" },
-  { h: "Competentie Management", p: "Bij het invoeren van competentiemanagement worden de visie & strategie van uw organisatie vertaald in doelstellingen. Goed geïmplementeerd competentiemanagement verdient zich dubbel en dwars terug. Het zorgt voor helderheid en structuur in alle functies van de organisatie.", href: "/advies/competentie-management/" },
-  { h: "Consultancy", p: "Uw organisatie verandert. Zij groeit, vernieuwt of past zich aan. Niet meegaan en veranderen betekent stilstaan. In tijden waarin de technologische innovatie zo snel gaat, betekent het zelfs achteruitgaan. U kiest voor een ambitieuze strategie en zoals altijd is de realisatie van de strategie de grootste uitdaging.", href: null },
-  { h: "Training", p: "Samen formuleren we de juiste probleemstelling en de best passende aanpak. We kunnen hiervoor een breed scala aan interventies inzetten. De werkvormen die we toepassen zijn vernieuwend en gebaseerd op wetenschappelijk onderzoek, maar bovenal verrassend en inspirerend. Voor een optimaal leerrendement laten we onze interventies aansluiten op jouw werksituatie.", href: "/advies/trainingen/" },
-  { h: "Loopbaan", p: "Een loopbaantraject van hrmforce is gericht op de toekomst en het verlangen: ‘Wat wil ik?’. De deelnemer wil iets met zijn of haar loopbaan maar heeft moeite met het richting geven, weet niet precies wat hij of zij wil of kan interesses niet goed vertalen naar mogelijke functies. Daarnaast spelen op de achtergrond de vragen ‘Wie ben ik?’ en ‘Wat kan ik?’ vaak mee.", href: "/advies/" },
-  { h: "Coaching", p: "kunt u benutten om de kandidaten te laten zoeken naar mogelijke beroepen en actueel beschikbare vacatures op basis van hun persoonlijkheid, motivatie en gedrag.", href: null },
-  { h: "Selectie Begeleiding", p: "Een nieuw persoon binnen de organisatie inlijven voor impactvolle functies is voor een organisatie geen dagelijkse bezigheid. Als assessoren bieden wij met onze expertise in gedragsonderzoeken de mogelijkheid om objectief geschiktheid te beoordelen tijdens alles fases van het werving en selectieproces.", href: null },
+  { h: "Training", p: "Word met de certificatietraining van hrmforce een gecertificeerd gebruiker: je leert onze vragenlijsten inzetten, resultaten correct interpreteren en zorgvuldig terugkoppelen. Daarnaast bieden we trainingen op maat, zoals 'Het goede gesprek'. Bekijk de trainingskalender en schrijf je direct in.", href: "/advies/trainingen/", cta: "Bekijk trainingen & kalender" },
+  { h: "Live Assessments", p: "Naast de zelfservice online tests begeleiden onze assessoren live assessments: van selectie- en ontwikkelassessments tot loopbaan- en teamtrajecten. Je bekijkt alle beschikbare assessments en zet ze gericht in voor jouw vraagstuk.", href: "/advies/assessments/", cta: "Bekijk alle assessments" },
+  { h: "Talent Management", p: "Als men de 80-20-regel toepast op recruitment, blijkt dat 20% van de aangeworven kandidaten voor 80% van de resultaten zorgt. Meer dan ooit ligt de focus op het werven van deze talenten. Door de huidige economische omstandigheden is het ook noodzakelijk om talent in de organisatie te herkennen en te benutten.", href: "/advies/talent-management/", cta: "Meer informatie" },
+  { h: "Competentie Management", p: "Bij het invoeren van competentiemanagement worden de visie & strategie van je organisatie vertaald in doelstellingen. Goed geimplementeerd competentiemanagement verdient zich dubbel en dwars terug. Het zorgt voor helderheid en structuur in alle functies van de organisatie.", href: "/advies/competentie-management/", cta: "Meer informatie" },
+  { h: "Loopbaan", p: "Een loopbaantraject van hrmforce is gericht op de toekomst en het verlangen: 'Wat wil ik?'. De deelnemer wil iets met zijn of haar loopbaan maar heeft moeite met het richting geven. Op de achtergrond spelen de vragen 'Wie ben ik?' en 'Wat kan ik?' vaak mee.", href: "/advies/loopbaan-assessment/", cta: "Meer informatie" },
+  { h: "Consultancy", p: "Je organisatie verandert. Zij groeit, vernieuwt of past zich aan. In tijden waarin de technologische innovatie zo snel gaat, betekent stilstaan zelfs achteruitgaan. Je kiest voor een ambitieuze strategie en zoals altijd is de realisatie daarvan de grootste uitdaging.", href: "/contact/", cta: "Neem contact op" },
+  { h: "Coaching", p: "Zet coaching in om medewerkers te laten groeien op basis van hun persoonlijkheid, motivatie en gedrag, en om mogelijke beroepen en loopbaanstappen te verkennen die bij hen passen.", href: "/contact/", cta: "Neem contact op" },
+  { h: "Selectie Begeleiding", p: "Een nieuw persoon binnen de organisatie halen voor impactvolle functies is geen dagelijkse bezigheid. Als assessoren beoordelen wij met onze expertise in gedragsonderzoek objectief de geschiktheid tijdens alle fases van het werving- en selectieproces.", href: "/contact/", cta: "Neem contact op" },
 ];
 ---
 <Base
@@ -38,12 +39,14 @@ const items = [
           <div class="adv-block">
             <h2>{it.h}</h2>
             <p>{it.p}</p>
-            {it.href && <a class="btn btn-primary" href={it.href}>Meer informatie</a>}
+            {it.href && <a class="btn btn-primary" href={it.href}>{it.cta || "Meer informatie"}</a>}
           </div>
         ))}
       </div>
     </div>
   </section>
+
+<LogoSlider heading="Organisaties die u voorgingen" />
 
   <section class="cta">
     <div class="wrap">
