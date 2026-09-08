@@ -147,6 +147,7 @@ const offices = [
             <label for="mesaj">Mesajul d-voastră *</label>
             <textarea id="mesaj" name="mesaj" rows="5" required></textarea>
           </div>
+          <div class="next-steps"><strong>Ce urmează?</strong><ol><li>Răspundem în maximum 1 zi lucrătoare.</li><li>O scurtă discuție, adaptată întrebării tale.</li><li>O demonstrație personalizată, fără obligații.</li></ol><div class="ns-proof"><span class="ns-stars">★★★★★</span> 10.000+ participanți · 1.200+ organizații · 4,9/5</div></div>
           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -195,7 +196,14 @@ const offices = [
     .office-contact a { color: var(--blue); font-weight: 600; font-size: 15px; }
     .office-contact a:hover { text-decoration: underline; }
     @media (max-width: 880px) { .contact-grid { grid-template-columns: 1fr; } .office-grid { grid-template-columns: 1fr; } }
-  </style>
+  
+  .next-steps{background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:4px 0 18px}
+  .next-steps strong{color:var(--navy);font-size:14.5px;display:block;margin-bottom:8px}
+  .next-steps ol{margin:0 0 10px 18px;padding:0;color:var(--text);font-size:14px;line-height:1.5}
+  .next-steps li{margin:3px 0}
+  .ns-proof{color:var(--muted);font-size:13px;padding-top:8px;border-top:1px solid var(--line)}
+  .ns-stars{color:var(--gold);letter-spacing:1px}
+</style>
 
   <script is:inline>
     (function () {

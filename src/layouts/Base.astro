@@ -1,10 +1,11 @@
 ---
+import "@fontsource-variable/inter/wght.css";
 import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { getLangFromUrl, localizePath } from "../i18n/utils.js";
 import CookieConsent from "../components/CookieConsent.astro";
-import { ANALYTICS } from "../data/site-config.js";
+import { ANALYTICS, MARKETING } from "../data/site-config.js";
 import { consentContent } from "../data/consent-content.js";
 
 const {
@@ -96,12 +97,6 @@ const orgLd = {
     <meta name="twitter:image" content={image} />
     <link rel="canonical" href={canonical} />
     {hreflangs.map((h) => <link rel="alternate" hreflang={h.lang} href={h.href} />)}
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    />
     <title>{title}</title>
     <script type="application/ld+json" set:html={JSON.stringify(orgLd)} is:inline></script>
     <script type="application/ld+json" is:inline set:html={JSON.stringify({"@context":"https://schema.org","@type":"WebSite",name:"hrmforce",url:"https://hrmforce.com/",potentialAction:{"@type":"SearchAction",target:{"@type":"EntryPoint",urlTemplate:"https://hrmforce.com/kenniscentrum/?q={search_term_string}"},"query-input":"required name=search_term_string"}})}></script>
@@ -126,12 +121,82 @@ const orgLd = {
         q.addEventListener("click", () => q.parentElement.classList.toggle("open"));
       });
     </script>
-    <CookieConsent lang={lang} ga4Id={ANALYTICS.GA4_ID} t={consentT} />
+    <CookieConsent lang={lang} ga4Id={ANALYTICS.GA4_ID} linkedinId={MARKETING.LINKEDIN_PARTNER_ID} clarityId={MARKETING.CLARITY_ID} t={consentT} />
     <!-- Henry chatbot -->
     <script src="/henry-widget.js" is:inline defer></script>
+    <!-- Conversie-tracking (GA4-events) + exit-intent lead magnet. Events sturen
+         alleen als GA4 is geladen (na statistieken-toestemming). -->
+    <script is:inline define:vars={{ lang }}>
+      (function () {
+        function ev(name, params) { if (window.gtag) window.gtag("event", name, params || {}); if (window.lintrk) try { window.lintrk("track", {}); } catch(e){} }
+        document.addEventListener("submit", function (e) {
+          var f = e.target; if (!f || f.tagName !== "FORM") return;
+          var subj = (f.querySelector('[name=onderwerp]') || {}).value || "";
+          var isLead = /voorbeeldvragen/i.test(subj) ? "sample_questions" : (f.id === "request" || f.className.indexOf("formcard") > -1 || f.className.indexOf("vv-form") > -1) ? "lead" : "form";
+          ev("generate_lead", { form: f.id || f.className || "form", subject: subj, type: isLead });
+        }, true);
+        document.addEventListener("click", function (e) {
+          var a = e.target.closest && e.target.closest("a"); if (!a) return;
+          var href = a.getAttribute("href") || "";
+          if (/\/contact\//.test(href)) ev("cta_demo_click", { href: href });
+          else if (a.classList.contains("btn-light") && /shop|myshopify|winkel/i.test(href)) ev("shop_click", { href: href });
+          else if (/mailto:service@hrmforce/.test(href)) ev("apply_or_mail_click", { href: href });
+          else if (/\/whitepapers\//.test(href)) ev("whitepaper_click", { href: href });
+        }, true);
+
+        // Exit-intent lead magnet: eenmaal per sessie, alleen desktop, dismissbaar.
+        var LM = {
+          nl:{t:"Voordat je gaat:",b:"Probeer gratis onze kleurentest en ontdek in 3 minuten je persoonlijkheidskleuren.",c:"Doe de gratis kleurentest",x:"Nee, bedankt",u:"/gratis-kleurentest/"},
+          en:{t:"Before you go:",b:"Try our free colour test and discover your personality colours in 3 minutes.",c:"Take the free colour test",x:"No thanks",u:"/en/gratis-kleurentest/"},
+          de:{t:"Bevor Sie gehen:",b:"Testen Sie kostenlos unseren Farbtest und entdecken Sie in 3 Minuten Ihre Persönlichkeitsfarben.",c:"Kostenlosen Farbtest machen",x:"Nein, danke",u:"/de/gratis-kleurentest/"},
+          fr:{t:"Avant de partir :",b:"Essayez gratuitement notre test des couleurs et découvrez vos couleurs de personnalité en 3 minutes.",c:"Faire le test gratuit",x:"Non merci",u:"/fr/gratis-kleurentest/"},
+          es:{t:"Antes de irte:",b:"Prueba gratis nuestro test de colores y descubre tus colores de personalidad en 3 minutos.",c:"Hacer el test gratis",x:"No, gracias",u:"/es/gratis-kleurentest/"},
+          ro:{t:"Înainte să pleci:",b:"Încearcă gratuit testul nostru de culori și descoperă-ți culorile personalității în 3 minute.",c:"Fă testul gratuit",x:"Nu, mulțumesc",u:"/ro/gratis-kleurentest/"}
+        };
+        var t = LM[lang] || LM.nl;
+        var KEY = "hf_exitintent_shown";
+        function shown(){ try { return sessionStorage.getItem(KEY) === "1"; } catch(e){ return false; } }
+        function mark(){ try { sessionStorage.setItem(KEY, "1"); } catch(e){} }
+        function build(){
+          if (shown() || window.innerWidth < 1024) return;
+          var o = document.createElement("div"); o.id = "hf-lm"; o.setAttribute("role","dialog"); o.setAttribute("aria-label", t.t);
+          o.innerHTML = '<div class="hf-lm-card"><button class="hf-lm-x" aria-label="Sluiten">&times;</button>'+
+            '<div class="hf-lm-eyebrow">hrmforce</div><h3>'+t.t+'</h3><p>'+t.b+'</p>'+
+            '<a class="hf-lm-cta" href="'+t.u+'">'+t.c+' &rarr;</a>'+
+            '<button class="hf-lm-dismiss">'+t.x+'</button></div>';
+          document.body.appendChild(o);
+          requestAnimationFrame(function(){ o.classList.add("show"); });
+          function close(){ o.classList.remove("show"); setTimeout(function(){ o.remove(); }, 250); mark(); }
+          o.querySelector(".hf-lm-x").addEventListener("click", close);
+          o.querySelector(".hf-lm-dismiss").addEventListener("click", close);
+          o.addEventListener("click", function(e){ if (e.target === o) close(); });
+          o.querySelector(".hf-lm-cta").addEventListener("click", function(){ ev("lead_magnet_click", { source: "exit_intent" }); mark(); });
+          ev("lead_magnet_view", { source: "exit_intent" });
+        }
+        var armed = false;
+        setTimeout(function(){ armed = true; }, 6000);
+        document.addEventListener("mouseout", function (e) {
+          if (!armed || shown()) return;
+          if (!e.relatedTarget && e.clientY <= 0) build();
+        });
+      })();
+    </script>
     <style is:global>
       /* Henry-bubbel boven de sticky demo-knop plaatsen */
       #hrmforce-chatbot { bottom: 88px !important; right: 20px !important; }
+      /* Exit-intent lead magnet */
+      #hf-lm{position:fixed;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;background:rgba(9,26,54,.55);opacity:0;transition:opacity .25s ease;padding:20px}
+      #hf-lm.show{opacity:1}
+      #hf-lm .hf-lm-card{position:relative;background:#fff;border-radius:18px;max-width:440px;width:100%;padding:34px 32px;box-shadow:0 24px 60px rgba(16,49,91,.3);transform:translateY(12px);transition:transform .25s ease;text-align:center}
+      #hf-lm.show .hf-lm-card{transform:none}
+      #hf-lm .hf-lm-eyebrow{color:var(--gold,#fcc11b);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+      #hf-lm h3{color:var(--navy,#0e468c);font-size:1.5rem;margin:0 0 8px;letter-spacing:-.02em}
+      #hf-lm p{color:#4a5b70;font-size:15.5px;line-height:1.55;margin:0 0 20px}
+      #hf-lm .hf-lm-cta{display:inline-block;background:var(--accent,#d95d15);color:#fff;font-weight:700;font-size:15px;padding:13px 24px;border-radius:999px;text-decoration:none;box-shadow:0 8px 20px rgba(217,93,21,.3);transition:transform .15s ease}
+      #hf-lm .hf-lm-cta:hover{transform:translateY(-2px);color:#fff}
+      #hf-lm .hf-lm-dismiss{display:block;margin:14px auto 0;background:none;border:none;color:#8b9bb0;font-size:13.5px;cursor:pointer;text-decoration:underline}
+      #hf-lm .hf-lm-x{position:absolute;top:12px;right:14px;background:none;border:none;font-size:26px;line-height:1;color:#9aa9b8;cursor:pointer}
+      @media(max-width:1023px){#hf-lm{display:none}}
       @media (max-width: 720px) { #hrmforce-chatbot { bottom: 20px !important; right: 14px !important; } }
     </style>
   </body>

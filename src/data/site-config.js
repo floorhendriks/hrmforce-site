@@ -17,3 +17,12 @@ export const SHOPIFY = {
 
 // Vul je GA4 Measurement-ID in (G-XXXXXXXXXX). Leeg = geen tracking.
 export const ANALYTICS = { GA4_ID: "G-L4WHLCQ1WY" };
+
+// Marketing- en analytics-tags. Laden uitsluitend na cookie-toestemming
+// (LinkedIn = categorie 'marketing', Clarity = categorie 'statistieken').
+// LinkedIn Insight partner-ID komt van de oude site. Clarity-ID nog invullen
+// (clarity.microsoft.com → project → Install manually → het 10-teken ID).
+export const MARKETING = {
+  LINKEDIN_PARTNER_ID: "8219026",
+  CLARITY_ID: "", // bv. "abcd123xyz"
+};

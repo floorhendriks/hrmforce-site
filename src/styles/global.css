@@ -45,7 +45,7 @@
   --max:1180px;
 
   /* Typografie — merkfont Inter met systeem-fallback */
-  --font-sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji",sans-serif;
+  --font-sans:"Inter Variable","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji",sans-serif;
 
   /* Focus */
   --focus:0 0 0 3px rgba(70,145,206,.45);

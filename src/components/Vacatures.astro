@@ -5,7 +5,24 @@ import { localizePath } from "../i18n/utils.js";
 const { lang = "nl" } = Astro.props;
 const t = VAC[lang] || VAC.nl;
 const mailto = "mailto:service@hrmforce.com";
+const _canon = new URL(Astro.url.pathname, "https://hrmforce.com").href;
+const _posted = "2026-01-06";
+const _jobsLd = (t.jobs || []).map((j, i) => ({
+  "@context": "https://schema.org",
+  "@type": "JobPosting",
+  title: j.title,
+  description: j.desc,
+  datePosted: _posted,
+  employmentType: i === 0 ? "INTERN" : "CONTRACTOR",
+  hiringOrganization: { "@type": "Organization", name: "hrmforce", sameAs: "https://hrmforce.com/" },
+  directApply: false,
+  applicantLocationRequirements: { "@type": "Country", name: i === 0 ? "Netherlands" : "Worldwide" },
+  jobLocationType: i === 0 ? undefined : "TELECOMMUTE",
+  jobLocation: i === 0 ? { "@type": "Place", address: { "@type": "PostalAddress", addressLocality: "Amsterdam", addressCountry: "NL" } } : undefined,
+  url: _canon,
+}));
 ---
+{_jobsLd.map((ld) => (<script type="application/ld+json" is:inline set:html={JSON.stringify(ld)}></script>))}
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> &rsaquo; <span>{t.crumb}</span></div></div>
 
 <section class="ahero"><div class="wrap" style="display:block">
