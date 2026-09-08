@@ -75,6 +75,7 @@ const SECTION_ROOTS = {
   "assessments": "/online-assessments/", "online-assessments": "/online-assessments/",
   "kenniscentrum": "/kenniscentrum/", "shop": "/shop/", "support": "/support/",
   "over-ons": "/over-ons/", "tarieven": "/tarieven/",
+  "winkel": "/shop/", "product": "/shop/", "roduct": "/shop/", "winkelmand": "/shop/",
 };
 
 // Herschrijft oude/gebroken interne links in gemigreerde HTML naar een geldige
