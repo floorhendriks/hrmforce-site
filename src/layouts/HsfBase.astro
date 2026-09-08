@@ -1,0 +1,93 @@
+---
+/**
+ * Layout voor de Functie- en skillsdatabase (hrmforce Skills Framework).
+ * Bladerpagina's krijgen de echte site-header, -footer en een module-subnav.
+ * Print-/pdf-pagina's (bodyClass bevat "hsf-print") renderen als schone,
+ * zelfstandige pagina zonder site-chrome, zodat de pdf-download er netjes uitziet.
+ */
+import '../styles/hsf.css';
+import SiteBase from './Base.astro';
+import { useT, path, LOCALES, ROUTE_PREFIX } from '../lib/i18n';
+import { meta } from '../lib/hsf';
+
+interface Props {
+  lang: string;
+  title: string;
+  description: string;
+  active?: 'home' | 'functions' | 'skills' | 'families' | 'match' | 'method';
+  canonical?: string;
+  alternates?: Record<string, string>;
+  jsonld?: object | object[];
+  noindex?: boolean;
+  bodyClass?: string;
+}
+const { lang, title, description, active, alternates = {}, jsonld, noindex = false, bodyClass = '' } = Astro.props;
+const t = useT(lang);
+const SITE = 'https://hrmforce.com';
+const ld = jsonld ? (Array.isArray(jsonld) ? jsonld : [jsonld]) : [];
+const isPrint = bodyClass.includes('hsf-print');
+
+const nav = [
+  ['home', t('nav.home'), path(lang)],
+  ['functions', t('nav.functions'), path(lang, 'functions')],
+  ['skills', t('nav.skills'), path(lang, 'skills')],
+  ['families', t('nav.families'), path(lang, 'families')],
+  ['match', t('nav.match'), path(lang, 'match')],
+  ['method', t('nav.method'), path(lang, 'method')],
+] as const;
+---
+{isPrint ? (
+  <html lang={lang}>
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <meta name="robots" content="noindex, follow" />
+      {ld.map((o) => <script type="application/ld+json" set:html={JSON.stringify(o)} />)}
+    </head>
+    <body class={`hsf ${bodyClass}`}>
+      <main class="hsf-main" id="hsf-content">
+        <div class="hsf-wrap"><slot /></div>
+      </main>
+    </body>
+  </html>
+) : (
+  <SiteBase title={title} description={description} active="kennisbank">
+    <Fragment slot="head">
+      {noindex && <meta name="robots" content="noindex, follow" />}
+      {Object.entries(alternates).map(([l, href]) => (
+        <link rel="alternate" hreflang={l} href={SITE + href} />
+      ))}
+      {alternates.nl && <link rel="alternate" hreflang="x-default" href={SITE + alternates.nl} />}
+      {ld.map((o) => <script type="application/ld+json" set:html={JSON.stringify(o)} />)}
+    </Fragment>
+
+    <div class="hsf">
+      <nav class="hsf-subnav hsf-noprint" aria-label={t('framework')}>
+        <div class="hsf-wrap hsf-subnav-in">
+          <a class="hsf-subnav-brand" href={path(lang)}>{t('framework')}</a>
+          <div class="hsf-subnav-links">
+            {nav.map(([key, label, href]) => (
+              <a href={href} aria-current={active === key ? 'page' : undefined}>{label}</a>
+            ))}
+          </div>
+        </div>
+      </nav>
+      <slot name="hero" />
+      <main class="hsf-main" id="hsf-content">
+        <div class="hsf-wrap"><slot /></div>
+      </main>
+    </div>
+  </SiteBase>
+)}
+
+<style is:global>
+  .hsf-subnav { background: #0b3468; border-bottom: 3px solid #fcc11b; }
+  .hsf-subnav-in { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; padding: .55rem 0; }
+  .hsf-subnav-brand { color: #fff; font-weight: 700; text-decoration: none; font-size: .95rem; letter-spacing: .01em; }
+  .hsf-subnav-links { display: flex; gap: .2rem; flex-wrap: wrap; }
+  .hsf-subnav-links a { color: rgba(255,255,255,.82); text-decoration: none; font-size: .9rem; padding: .3rem .7rem; border-radius: 6px; }
+  .hsf-subnav-links a:hover { color: #fff; background: rgba(255,255,255,.1); }
+  .hsf-subnav-links a[aria-current="page"] { color: #0b3468; background: #fcc11b; font-weight: 600; }
+</style>

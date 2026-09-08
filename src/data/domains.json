@@ -1,0 +1,1406 @@
+[
+  {
+    "id": "D1",
+    "name": {
+      "nl": "Cognitief vermogen en probleemoplossing",
+      "en": "Cognitive ability and problem solving"
+    },
+    "slug": {
+      "nl": "cognitief-vermogen-en-probleemoplossing",
+      "en": "cognitive-ability-and-problem-solving"
+    },
+    "definition": {
+      "nl": "Bundelt de denkkant van werk, namelijk de capaciteiten om informatie te verwerken, de vaardigheden om te analyseren, te beslissen en te vernieuwen, en het gedrag dat zorgvuldig denken zichtbaar maakt.",
+      "en": "Brings together the thinking side of work, namely the abilities to process information, the skills to analyse, decide and innovate, and the behaviour that makes careful thinking visible."
+    },
+    "clusters": [
+      {
+        "id": "D1.1",
+        "name": {
+          "nl": "Cognitieve capaciteit",
+          "en": "Cognitive capacity"
+        },
+        "definition": {
+          "nl": "Omvat relatief stabiele denkcapaciteiten die met tests worden gemeten, zoals redeneren met taal, getallen en figuren, verwerkingssnelheid, werkgeheugen en ruimtelijk voorstellingsvermogen.",
+          "en": "Covers relatively stable thinking capacities measured with tests, such as reasoning with language, numbers and figures, processing speed, working memory and spatial imagination."
+        },
+        "construct_ids": [
+          "HF-D1.1-001",
+          "HF-D1.1-002",
+          "HF-D1.1-003",
+          "HF-D1.1-004",
+          "HF-D1.1-005",
+          "HF-D1.1-006"
+        ]
+      },
+      {
+        "id": "D1.2",
+        "name": {
+          "nl": "Analyse en oordeelsvorming",
+          "en": "Analysis and judgement"
+        },
+        "definition": {
+          "nl": "Bevat de vaardigheden en het gedrag waarmee iemand vraagstukken ontleedt, informatie en bronnen beoordeelt en tot een onderbouwd oordeel komt bij onvolledige gegevens.",
+          "en": "Contains the skills and behaviour with which someone dissects problems, evaluates information and sources and reaches a substantiated judgement when data are incomplete."
+        },
+        "construct_ids": [
+          "HF-D1.2-001",
+          "HF-D1.2-002",
+          "HF-D1.2-003",
+          "HF-D1.2-004",
+          "HF-D1.2-005"
+        ]
+      },
+      {
+        "id": "D1.3",
+        "name": {
+          "nl": "Conceptueel en systeemdenken",
+          "en": "Conceptual and systems thinking"
+        },
+        "definition": {
+          "nl": "Bevat het denken op hoofdlijnen, waaronder samenhang zien, systemen en modellen beschrijven en meerdere toekomsten verkennen voordat een oplossingsrichting wordt gekozen.",
+          "en": "Contains thinking at a general level, including seeing coherence, describing systems and models and exploring several futures before a solution direction is chosen."
+        },
+        "construct_ids": [
+          "HF-D1.3-001",
+          "HF-D1.3-002",
+          "HF-D1.3-003",
+          "HF-D1.3-004"
+        ]
+      },
+      {
+        "id": "D1.4",
+        "name": {
+          "nl": "Besluitvorming",
+          "en": "Decision making"
+        },
+        "definition": {
+          "nl": "Bevat het proces van kiezen, waaronder opties afwegen, risico's inschatten, bewijs gebruiken en binnen de beschikbare tijd een besluit nemen en verantwoorden.",
+          "en": "Contains the process of choosing, including weighing options, estimating risks, using evidence and taking and justifying a decision within the time available."
+        },
+        "construct_ids": [
+          "HF-D1.4-001",
+          "HF-D1.4-002",
+          "HF-D1.4-003",
+          "HF-D1.4-004"
+        ]
+      },
+      {
+        "id": "D1.5",
+        "name": {
+          "nl": "Creativiteit en innovatie",
+          "en": "Creativity and innovation"
+        },
+        "definition": {
+          "nl": "Bevat het voortbrengen en bruikbaar maken van nieuwe ideeen, van het opnieuw kaderen van het probleem tot het invoeren van een werkende vernieuwing.",
+          "en": "Contains generating ideas and making them usable, from reframing the problem to introducing an innovation that actually works."
+        },
+        "construct_ids": [
+          "HF-D1.5-001",
+          "HF-D1.5-002",
+          "HF-D1.5-003",
+          "HF-D1.5-004",
+          "HF-D1.5-005"
+        ]
+      },
+      {
+        "id": "D1.6",
+        "name": {
+          "nl": "Nauwkeurigheid en kwaliteit van denken",
+          "en": "Accuracy and quality of thinking"
+        },
+        "definition": {
+          "nl": "Bevat de zorgvuldigheid van het denkwerk, waaronder nauwkeurig werken, kwaliteit toetsen, methodisch te werk gaan en de eigen denkfouten onderzoeken.",
+          "en": "Contains the care taken in thinking work, including working accurately, testing quality, proceeding methodically and examining one's own thinking errors."
+        },
+        "construct_ids": [
+          "HF-D1.6-001",
+          "HF-D1.6-002",
+          "HF-D1.6-003",
+          "HF-D1.6-004"
+        ]
+      }
+    ],
+    "construct_count": 28,
+    "granular_count": 220
+  },
+  {
+    "id": "D2",
+    "name": {
+      "nl": "Communicatie en beïnvloeding",
+      "en": "Communication and influence"
+    },
+    "slug": {
+      "nl": "communicatie-en-beinvloeding",
+      "en": "communication-and-influence"
+    },
+    "definition": {
+      "nl": "Bundelt de skills waarmee iemand informatie mondeling, schriftelijk en visueel overbrengt, betekenis afstemt met anderen en langs inhoudelijke en relationele weg besluiten en gedrag beïnvloedt.",
+      "en": "Groups the skills for conveying information orally, in writing and visually, aligning meaning with others, and influencing decisions and behaviour through both content and relationship."
+    },
+    "clusters": [
+      {
+        "id": "D2.1",
+        "name": {
+          "nl": "Mondelinge communicatie",
+          "en": "Oral communication"
+        },
+        "definition": {
+          "nl": "Omvat het overbrengen en ophalen van informatie in gesproken vorm, van tweegesprek tot presentatie, inclusief luisteren, doorvragen en het afstemmen van non-verbaal gedrag.",
+          "en": "Covers conveying and gathering information in spoken form, from one to one dialogue to presentation, including listening, probing questions and aligning nonverbal behaviour."
+        },
+        "construct_ids": [
+          "HF-D2.1-001",
+          "HF-D2.1-002",
+          "HF-D2.1-003",
+          "HF-D2.1-004",
+          "HF-D2.1-005"
+        ]
+      },
+      {
+        "id": "D2.2",
+        "name": {
+          "nl": "Schriftelijke communicatie",
+          "en": "Written communication"
+        },
+        "definition": {
+          "nl": "Omvat het opbouwen, formuleren en bewerken van teksten, rapporten en visuele weergaven zodat een bepaalde doelgroep de boodschap zonder toelichting correct begrijpt.",
+          "en": "Covers structuring, phrasing and editing texts, reports and visual displays so that a defined audience understands the message correctly without further explanation."
+        },
+        "construct_ids": [
+          "HF-D2.2-001",
+          "HF-D2.2-002",
+          "HF-D2.2-003",
+          "HF-D2.2-004",
+          "HF-D2.2-005"
+        ]
+      },
+      {
+        "id": "D2.3",
+        "name": {
+          "nl": "Beïnvloeden en overtuigen",
+          "en": "Influencing and persuasion"
+        },
+        "definition": {
+          "nl": "Omvat het verkrijgen van instemming en beweging bij anderen door argumentatie, onderhandeling, advies en het gericht hanteren van belangen en verhoudingen in de omgeving.",
+          "en": "Covers gaining agreement and movement from others through argument, negotiation and advice, and through deliberate handling of interests and relationships in the wider environment."
+        },
+        "construct_ids": [
+          "HF-D2.3-001",
+          "HF-D2.3-002",
+          "HF-D2.3-003",
+          "HF-D2.3-004",
+          "HF-D2.3-005"
+        ]
+      },
+      {
+        "id": "D2.4",
+        "name": {
+          "nl": "Interculturele en talige communicatie",
+          "en": "Intercultural and language communication"
+        },
+        "definition": {
+          "nl": "Omvat het functioneren in meer dan één taal op beroepsniveau en het afstemmen van communicatie op culturele verschillen in normen, omgangsvormen en betekenisgeving.",
+          "en": "Covers operating in more than one language at professional level and adjusting communication to cultural differences in norms, social conventions and the way meaning is given."
+        },
+        "construct_ids": [
+          "HF-D2.4-001",
+          "HF-D2.4-002",
+          "HF-D2.4-003",
+          "HF-D2.4-004"
+        ]
+      },
+      {
+        "id": "D2.5",
+        "name": {
+          "nl": "Klant- en dienstverleningscommunicatie",
+          "en": "Client and service communication"
+        },
+        "definition": {
+          "nl": "Omvat het contact met klanten en gebruikers gericht op het achterhalen van hun vraag, het nakomen van afspraken en het herstellen van vertrouwen na onvrede.",
+          "en": "Covers contact with clients and users aimed at uncovering their request, keeping agreements made and restoring trust after dissatisfaction."
+        },
+        "construct_ids": [
+          "HF-D2.5-001",
+          "HF-D2.5-002",
+          "HF-D2.5-003",
+          "HF-D2.5-004",
+          "HF-D2.5-005",
+          "HF-D2.5-006"
+        ]
+      },
+      {
+        "id": "D2.6",
+        "name": {
+          "nl": "Communicatie in de publieke ruimte",
+          "en": "Communication in the public domain"
+        },
+        "definition": {
+          "nl": "Omvat communicatie naar grotere groepen binnen en buiten de organisatie, via media, interne kanalen, content en verhaalvorm, met aandacht voor beeldvorming en reputatie.",
+          "en": "Covers communication to larger groups inside and outside the organisation through media, internal channels, content and narrative, with attention to public perception and reputation."
+        },
+        "construct_ids": [
+          "HF-D2.6-001",
+          "HF-D2.6-002",
+          "HF-D2.6-003",
+          "HF-D2.6-004",
+          "HF-D2.6-005"
+        ]
+      }
+    ],
+    "construct_count": 30,
+    "granular_count": 252
+  },
+  {
+    "id": "D3",
+    "name": {
+      "nl": "Samenwerking en interpersoonlijke effectiviteit",
+      "en": "Collaboration and interpersonal effectiveness"
+    },
+    "slug": {
+      "nl": "samenwerking-en-interpersoonlijke-effectiviteit",
+      "en": "collaboration-and-interpersonal-effectiveness"
+    },
+    "definition": {
+      "nl": "Gedrag en vaardigheden waarmee iemand met anderen resultaat bereikt, relaties opbouwt, spanning hanteert, positie inneemt en zorgt dat iedereen gelijkwaardig kan bijdragen.",
+      "en": "Behaviour and skills used to achieve results with others, build relationships, handle tension, take a position and ensure that everyone can contribute on equal terms."
+    },
+    "clusters": [
+      {
+        "id": "D3.1",
+        "name": {
+          "nl": "Samenwerken",
+          "en": "Working together"
+        },
+        "definition": {
+          "nl": "Bijdragen aan gezamenlijk resultaat door werk af te stemmen, informatie te delen, elkaar te helpen en afspraken na te komen, ook op afstand en over vakgebieden heen.",
+          "en": "Contributing to shared results by aligning work, sharing information, helping colleagues and keeping agreements, including at a distance and across professional disciplines."
+        },
+        "construct_ids": [
+          "HF-D3.1-001",
+          "HF-D3.1-002",
+          "HF-D3.1-003",
+          "HF-D3.1-004",
+          "HF-D3.1-005"
+        ]
+      },
+      {
+        "id": "D3.2",
+        "name": {
+          "nl": "Sociale sensitiviteit",
+          "en": "Social sensitivity"
+        },
+        "definition": {
+          "nl": "Signalen van andere mensen en van de organisatie opmerken, betekenis geven aan die signalen en ze meewegen in eigen gedrag en keuzes.",
+          "en": "Noticing signals from other people and from the organisation, interpreting their meaning and taking them into account in one's own behaviour and choices."
+        },
+        "construct_ids": [
+          "HF-D3.2-001",
+          "HF-D3.2-002",
+          "HF-D3.2-003",
+          "HF-D3.2-004",
+          "HF-D3.2-005"
+        ]
+      },
+      {
+        "id": "D3.3",
+        "name": {
+          "nl": "Conflict en spanning",
+          "en": "Conflict and tension"
+        },
+        "definition": {
+          "nl": "Verschillen van mening en oplopende spanning bespreekbaar maken, feedback uitwisselen en grenzen aangeven zonder de werkrelatie te beschadigen.",
+          "en": "Making differences of opinion and rising tension discussable, exchanging feedback and setting limits without damaging the working relationship."
+        },
+        "construct_ids": [
+          "HF-D3.3-001",
+          "HF-D3.3-002",
+          "HF-D3.3-003",
+          "HF-D3.3-004"
+        ]
+      },
+      {
+        "id": "D3.4",
+        "name": {
+          "nl": "Positie innemen",
+          "en": "Taking a position"
+        },
+        "definition": {
+          "nl": "Een eigen standpunt innemen en verantwoorden, afspraken en normen handhaven en zorgvuldig omgaan met belangen en morele afwegingen in het werk.",
+          "en": "Taking and justifying a personal position, upholding agreements and standards, and handling interests and moral considerations at work with care."
+        },
+        "construct_ids": [
+          "HF-D3.4-001",
+          "HF-D3.4-002",
+          "HF-D3.4-003",
+          "HF-D3.4-004",
+          "HF-D3.4-005"
+        ]
+      },
+      {
+        "id": "D3.5",
+        "name": {
+          "nl": "Netwerken en relatiebeheer",
+          "en": "Networking and relationship management"
+        },
+        "definition": {
+          "nl": "Contacten binnen en buiten de organisatie opbouwen en onderhouden en die inzetten om informatie te krijgen, samenwerking te regelen en belangen te behartigen.",
+          "en": "Building and maintaining contacts inside and outside the organisation and using them to obtain information, arrange cooperation and represent interests."
+        },
+        "construct_ids": [
+          "HF-D3.5-001",
+          "HF-D3.5-002",
+          "HF-D3.5-003",
+          "HF-D3.5-004"
+        ]
+      },
+      {
+        "id": "D3.6",
+        "name": {
+          "nl": "Inclusief samenwerken",
+          "en": "Inclusive collaboration"
+        },
+        "definition": {
+          "nl": "Zo samenwerken en communiceren dat alle betrokkenen gelijke inbreng en gelijke kansen hebben, verschillen in perspectief benut worden en het team op eigen werkwijze reflecteert.",
+          "en": "Working and communicating so that all participants have equal input and equal opportunity, differences in perspective are used, and the team reflects on its methods."
+        },
+        "construct_ids": [
+          "HF-D3.6-001",
+          "HF-D3.6-002",
+          "HF-D3.6-003",
+          "HF-D3.6-004",
+          "HF-D3.6-005"
+        ]
+      }
+    ],
+    "construct_count": 28,
+    "granular_count": 215
+  },
+  {
+    "id": "D4",
+    "name": {
+      "nl": "Leiderschap en organiseren",
+      "en": "Leadership and organising"
+    },
+    "slug": {
+      "nl": "leiderschap-en-organiseren",
+      "en": "leadership-and-organising"
+    },
+    "definition": {
+      "nl": "Richting geven aan mensen en middelen, werk organiseren, verandering leiden en verantwoording afleggen over resultaten, beleid en personeelsbeslissingen binnen een team, afdeling of organisatie.",
+      "en": "Setting direction for people and resources, organising work, leading change and accounting for results, policy and personnel decisions within a team, department or organisation."
+    },
+    "clusters": [
+      {
+        "id": "D4.1",
+        "name": {
+          "nl": "Richting geven",
+          "en": "Setting direction"
+        },
+        "definition": {
+          "nl": "Een beeld van de toekomst vormen, dat omzetten in strategie en doelen, en de gekozen koers uitleggen en volhouden als de omstandigheden tegenwerken.",
+          "en": "Forming a picture of the future, translating it into strategy and goals, and explaining and sustaining the chosen course when circumstances work against it."
+        },
+        "construct_ids": [
+          "HF-D4.1-001",
+          "HF-D4.1-002",
+          "HF-D4.1-003",
+          "HF-D4.1-004",
+          "HF-D4.1-005"
+        ]
+      },
+      {
+        "id": "D4.2",
+        "name": {
+          "nl": "Mensen aansturen",
+          "en": "Managing people"
+        },
+        "definition": {
+          "nl": "Werk verdelen en opdragen, ruimte en kaders geven, voortgang en prestaties volgen, gesprekken voeren over functioneren en verzuim, en besluiten nemen over inzet van mensen.",
+          "en": "Distributing and assigning work, giving room and boundaries, tracking progress and performance, holding conversations about performance and absence, and deciding on the deployment of people."
+        },
+        "construct_ids": [
+          "HF-D4.2-001",
+          "HF-D4.2-002",
+          "HF-D4.2-003",
+          "HF-D4.2-004",
+          "HF-D4.2-005",
+          "HF-D4.2-006"
+        ]
+      },
+      {
+        "id": "D4.3",
+        "name": {
+          "nl": "Mensen ontwikkelen",
+          "en": "Developing people"
+        },
+        "definition": {
+          "nl": "Medewerkers en teams laten groeien door coaching, opvolging en onboarding te organiseren en een cultuur van leren en feedback in het werk te verankeren.",
+          "en": "Growing employees and teams by organising coaching, succession and onboarding, and by embedding a culture of learning and feedback in daily work."
+        },
+        "construct_ids": [
+          "HF-D4.3-001",
+          "HF-D4.3-002",
+          "HF-D4.3-003",
+          "HF-D4.3-004",
+          "HF-D4.3-005"
+        ]
+      },
+      {
+        "id": "D4.4",
+        "name": {
+          "nl": "Organiseren en plannen",
+          "en": "Organising and planning"
+        },
+        "definition": {
+          "nl": "Werk, mensen en middelen zo inrichten dat afgesproken resultaten haalbaar zijn, via planning, projecten, processen, samenwerking in de keten en beheer van prioriteiten.",
+          "en": "Arranging work, people and resources so agreed results are achievable, through planning, projects, processes, collaboration across the value chain and management of priorities."
+        },
+        "construct_ids": [
+          "HF-D4.4-001",
+          "HF-D4.4-002",
+          "HF-D4.4-003",
+          "HF-D4.4-004",
+          "HF-D4.4-005",
+          "HF-D4.4-006"
+        ]
+      },
+      {
+        "id": "D4.5",
+        "name": {
+          "nl": "Veranderen en verbeteren",
+          "en": "Changing and improving"
+        },
+        "definition": {
+          "nl": "Verandering in gang zetten en begeleiden, weerstand bespreekbaar maken, processen stap voor stap verbeteren, de organisatie opnieuw inrichten en nieuwe technologie laten landen.",
+          "en": "Initiating and guiding change, making resistance discussable, improving processes step by step, redesigning the organisation and helping new technology take hold in practice."
+        },
+        "construct_ids": [
+          "HF-D4.5-001",
+          "HF-D4.5-002",
+          "HF-D4.5-003",
+          "HF-D4.5-004",
+          "HF-D4.5-005"
+        ]
+      },
+      {
+        "id": "D4.6",
+        "name": {
+          "nl": "Besturen en verantwoorden",
+          "en": "Governing and accounting"
+        },
+        "definition": {
+          "nl": "Besluiten voorbereiden en nemen in overleggremia, regels en risico's beheersen, budgetten beheren en uitleggen welke keuzes zijn gemaakt aan toezichthouders en belanghebbenden.",
+          "en": "Preparing and taking decisions in governing bodies, controlling rules and risks, managing budgets and explaining which choices were made to supervisory bodies and stakeholders."
+        },
+        "construct_ids": [
+          "HF-D4.6-001",
+          "HF-D4.6-002",
+          "HF-D4.6-003",
+          "HF-D4.6-004",
+          "HF-D4.6-005"
+        ]
+      },
+      {
+        "id": "D4.7",
+        "name": {
+          "nl": "Personeelsbeleid en werkgeverschap",
+          "en": "Personnel policy and employership"
+        },
+        "definition": {
+          "nl": "Instroom, doorstroom en uitstroom van personeel plannen en uitvoeren binnen arbeidsrechtelijke kaders, en beloning, functiewaardering en selectie zorgvuldig en navolgbaar toepassen.",
+          "en": "Planning and carrying out staff inflow, internal movement and outflow within employment law frameworks, and applying reward, job evaluation and selection carefully and traceably."
+        },
+        "construct_ids": [
+          "HF-D4.7-001",
+          "HF-D4.7-002",
+          "HF-D4.7-003",
+          "HF-D4.7-004"
+        ]
+      }
+    ],
+    "construct_count": 36,
+    "granular_count": 316
+  },
+  {
+    "id": "D5",
+    "name": {
+      "nl": "Zelfmanagement, drive en veerkracht",
+      "en": "Self-management, drive and resilience"
+    },
+    "slug": {
+      "nl": "zelfmanagement-drive-en-veerkracht",
+      "en": "self-management-drive-and-resilience"
+    },
+    "definition": {
+      "nl": "Bundelt het werkgedrag waarmee iemand eigen werk organiseert, resultaten nastreeft, spanning en verandering hanteert, zichzelf kent en de eigen motivatie en loopbaan richting geeft.",
+      "en": "Covers the work behaviour through which someone organises own work, pursues results, handles pressure and change, knows own patterns and steers personal motivation and career."
+    },
+    "clusters": [
+      {
+        "id": "D5.1",
+        "name": {
+          "nl": "Zelfsturing en werkorganisatie",
+          "en": "Self-direction and work organisation"
+        },
+        "definition": {
+          "nl": "Omvat gedrag waarmee iemand zonder externe sturing werk indeelt, prioriteert, afspraken nakomt en de aandacht bij de afgesproken taak houdt.",
+          "en": "Covers behaviour through which someone schedules and prioritises work without external steering, keeps commitments and holds attention on the agreed task."
+        },
+        "construct_ids": [
+          "HF-D5.1-001",
+          "HF-D5.1-002",
+          "HF-D5.1-003",
+          "HF-D5.1-004",
+          "HF-D5.1-005"
+        ]
+      },
+      {
+        "id": "D5.2",
+        "name": {
+          "nl": "Resultaatgerichtheid en drive",
+          "en": "Result orientation and drive"
+        },
+        "definition": {
+          "nl": "Omvat gedrag waarmee iemand doelen scherp houdt, uit eigen beweging start, bij weerstand volhoudt en zich verantwoordelijk opstelt voor de uitkomst.",
+          "en": "Covers behaviour through which someone keeps goals sharp, starts on own accord, persists against resistance and takes responsibility for the outcome."
+        },
+        "construct_ids": [
+          "HF-D5.2-001",
+          "HF-D5.2-002",
+          "HF-D5.2-003",
+          "HF-D5.2-004",
+          "HF-D5.2-005"
+        ]
+      },
+      {
+        "id": "D5.3",
+        "name": {
+          "nl": "Veerkracht en spanningsregulatie",
+          "en": "Resilience and pressure regulation"
+        },
+        "definition": {
+          "nl": "Omvat werkgedrag waarmee iemand onder druk blijft presteren, na tegenslag de draad oppakt, emoties in werksituaties reguleert en werkdruk hanteerbaar houdt.",
+          "en": "Covers work behaviour through which someone keeps performing under pressure, resumes after setbacks, regulates emotions at work and keeps workload manageable."
+        },
+        "construct_ids": [
+          "HF-D5.3-001",
+          "HF-D5.3-002",
+          "HF-D5.3-003",
+          "HF-D5.3-004",
+          "HF-D5.3-005",
+          "HF-D5.3-006"
+        ]
+      },
+      {
+        "id": "D5.4",
+        "name": {
+          "nl": "Flexibiliteit en omgaan met onzekerheid",
+          "en": "Flexibility and dealing with uncertainty"
+        },
+        "definition": {
+          "nl": "Omvat gedrag waarmee iemand aanpak en rol aanpast als omstandigheden wijzigen, doorwerkt bij onvolledige informatie en binnen kaders oplossingen improviseert.",
+          "en": "Covers behaviour through which someone adjusts approach and role when circumstances shift, works on with incomplete information and improvises solutions within boundaries."
+        },
+        "construct_ids": [
+          "HF-D5.4-001",
+          "HF-D5.4-002",
+          "HF-D5.4-003",
+          "HF-D5.4-004",
+          "HF-D5.4-005"
+        ]
+      },
+      {
+        "id": "D5.5",
+        "name": {
+          "nl": "Zelfinzicht en professionele identiteit",
+          "en": "Self-awareness and professional identity"
+        },
+        "definition": {
+          "nl": "Omvat gedrag waarmee iemand eigen sterke en zwakke kanten benoemt, feedback verwerkt, grenzen aangeeft en zich professioneel presenteert richting anderen.",
+          "en": "Covers behaviour through which someone names own strengths and limits, processes feedback, sets boundaries and presents professionally towards others."
+        },
+        "construct_ids": [
+          "HF-D5.5-001",
+          "HF-D5.5-002",
+          "HF-D5.5-003",
+          "HF-D5.5-004",
+          "HF-D5.5-005"
+        ]
+      },
+      {
+        "id": "D5.6",
+        "name": {
+          "nl": "Motivatie en loopbaansturing",
+          "en": "Motivation and career self-direction"
+        },
+        "definition": {
+          "nl": "Omvat gedrag waarmee iemand eigen drijfveren en werkwaarden benoemt en benut, loopbaanstappen zelf initieert en betrokkenheid bij werk en organisatie laat zien.",
+          "en": "Covers behaviour through which someone names and uses own drivers and work values, initiates career steps and shows engagement with work and organisation."
+        },
+        "construct_ids": [
+          "HF-D5.6-001",
+          "HF-D5.6-002",
+          "HF-D5.6-003",
+          "HF-D5.6-004"
+        ]
+      }
+    ],
+    "construct_count": 30,
+    "granular_count": 226
+  },
+  {
+    "id": "D6",
+    "name": {
+      "nl": "Lerend vermogen en ontwikkeling",
+      "en": "Learning capability and development"
+    },
+    "slug": {
+      "nl": "lerend-vermogen-en-ontwikkeling",
+      "en": "learning-capability-and-development"
+    },
+    "definition": {
+      "nl": "Bundelt het vermogen en het gedrag waarmee iemand nieuwe kennis en vaardigheden opneemt, zich blijft ontwikkelen, anderen laat leren en leermiddelen inclusief AI daarvoor benut.",
+      "en": "Covers the capacity and behaviour through which someone absorbs new knowledge and skills, keeps developing, helps others learn and uses learning resources including AI."
+    },
+    "clusters": [
+      {
+        "id": "D6.1",
+        "name": {
+          "nl": "Leervermogen en leerstrategie",
+          "en": "Learning capacity and learning strategy"
+        },
+        "definition": {
+          "nl": "Omvat de capaciteit om nieuwe stof op te nemen en het gedrag waarmee iemand doelgericht leert, reflecteert, kennis vasthoudt en fouten omzet in verbetering.",
+          "en": "Covers the capacity to absorb new material and the behaviour through which someone learns purposefully, reflects, retains knowledge and turns errors into improvement."
+        },
+        "construct_ids": [
+          "HF-D6.1-001",
+          "HF-D6.1-002",
+          "HF-D6.1-003",
+          "HF-D6.1-004",
+          "HF-D6.1-005",
+          "HF-D6.1-006"
+        ]
+      },
+      {
+        "id": "D6.2",
+        "name": {
+          "nl": "Zelfontwikkeling en loopbaanleren",
+          "en": "Self-development and career learning"
+        },
+        "definition": {
+          "nl": "Omvat gedrag waarmee iemand de eigen leerbehoefte vaststelt, ontwikkeldoelen stelt en volgt, nieuwsgierig blijft en het eigen vak actief bijhoudt.",
+          "en": "Covers behaviour through which someone identifies own learning needs, sets and tracks development goals, stays curious and actively keeps the own profession up to date."
+        },
+        "construct_ids": [
+          "HF-D6.2-001",
+          "HF-D6.2-002",
+          "HF-D6.2-003",
+          "HF-D6.2-004",
+          "HF-D6.2-005"
+        ]
+      },
+      {
+        "id": "D6.3",
+        "name": {
+          "nl": "Kennis delen en anderen laten leren",
+          "en": "Sharing knowledge and developing others"
+        },
+        "definition": {
+          "nl": "Omvat gedrag waarmee iemand kennis beschikbaar maakt, uitleg geeft, collega's op de werkvloer begeleidt, opleidingen ontwerpt en langdurig als mentor optreedt.",
+          "en": "Covers behaviour through which someone makes knowledge available, explains, guides colleagues at work, designs training and acts as a mentor over a longer period."
+        },
+        "construct_ids": [
+          "HF-D6.3-001",
+          "HF-D6.3-002",
+          "HF-D6.3-003",
+          "HF-D6.3-004",
+          "HF-D6.3-005"
+        ]
+      },
+      {
+        "id": "D6.4",
+        "name": {
+          "nl": "Leren in en met technologie",
+          "en": "Learning in and with technology"
+        },
+        "definition": {
+          "nl": "Omvat gedrag waarmee iemand digitale leermiddelen en AI benut om te leren, de leeropbrengst evalueert en bijdraagt aan leren binnen de organisatie.",
+          "en": "Covers behaviour through which someone uses digital learning resources and AI to learn, evaluates the learning results and contributes to learning within the organisation."
+        },
+        "construct_ids": [
+          "HF-D6.4-001",
+          "HF-D6.4-002",
+          "HF-D6.4-003",
+          "HF-D6.4-004"
+        ]
+      }
+    ],
+    "construct_count": 20,
+    "granular_count": 151
+  },
+  {
+    "id": "D7",
+    "name": {
+      "nl": "Digitaal, data en AI",
+      "en": "Digital, data and AI"
+    },
+    "slug": {
+      "nl": "digitaal-data-en-ai",
+      "en": "digital-data-and-ai"
+    },
+    "definition": {
+      "nl": "Bundelt de kennis en vaardigheden waarmee iemand digitale middelen gebruikt, gegevens omzet in bruikbare informatie, software en infrastructuur bouwt en beheert en AI verantwoord inzet.",
+      "en": "Covers the knowledge and skills with which someone uses digital means, turns data into usable information, builds and manages software and infrastructure and applies AI responsibly."
+    },
+    "clusters": [
+      {
+        "id": "D7.1",
+        "name": {
+          "nl": "Digitale basisvaardigheden",
+          "en": "Basic digital skills"
+        },
+        "definition": {
+          "nl": "Omvat het dagelijks gebruik van digitale apparaten, kantoorapplicaties, samenwerkingsplatformen en online informatie, met veilig beheer van eigen accounts.",
+          "en": "Covers daily use of digital devices, office applications, collaboration platforms and online information, including secure management of own accounts."
+        },
+        "construct_ids": [
+          "HF-D7.1-001",
+          "HF-D7.1-002",
+          "HF-D7.1-003",
+          "HF-D7.1-004",
+          "HF-D7.1-005",
+          "HF-D7.1-006"
+        ]
+      },
+      {
+        "id": "D7.2",
+        "name": {
+          "nl": "Data-analyse en interpretatie",
+          "en": "Data analysis and interpretation"
+        },
+        "definition": {
+          "nl": "Omvat het bewerken, analyseren, visualiseren en interpreteren van gegevens en het rapporteren van uitkomsten met de bijbehorende onzekerheid.",
+          "en": "Covers preparing, analysing, visualising and interpreting data and reporting outcomes together with their uncertainty."
+        },
+        "construct_ids": [
+          "HF-D7.2-001",
+          "HF-D7.2-002",
+          "HF-D7.2-003",
+          "HF-D7.2-004",
+          "HF-D7.2-005",
+          "HF-D7.2-006",
+          "HF-D7.2-007"
+        ]
+      },
+      {
+        "id": "D7.3",
+        "name": {
+          "nl": "Datamanagement en datagovernance",
+          "en": "Data management and data governance"
+        },
+        "definition": {
+          "nl": "Omvat het modelleren, opslaan, beschermen en beheersen van gegevens, inclusief eigenaarschap, privacy, classificatie en bewaartermijnen.",
+          "en": "Covers modelling, storing, protecting and controlling data, including ownership, privacy, classification and retention periods."
+        },
+        "construct_ids": [
+          "HF-D7.3-001",
+          "HF-D7.3-002",
+          "HF-D7.3-003",
+          "HF-D7.3-004",
+          "HF-D7.3-005",
+          "HF-D7.3-006"
+        ]
+      },
+      {
+        "id": "D7.4",
+        "name": {
+          "nl": "Software en ontwikkeling",
+          "en": "Software and development"
+        },
+        "definition": {
+          "nl": "Omvat het ontwerpen, bouwen, koppelen, testen en documenteren van software, met of zonder eigen programmacode.",
+          "en": "Covers designing, building, integrating, testing and documenting software, with or without writing own program code."
+        },
+        "construct_ids": [
+          "HF-D7.4-001",
+          "HF-D7.4-002",
+          "HF-D7.4-003",
+          "HF-D7.4-004",
+          "HF-D7.4-005",
+          "HF-D7.4-006",
+          "HF-D7.4-007"
+        ]
+      },
+      {
+        "id": "D7.5",
+        "name": {
+          "nl": "Infrastructuur en operatie",
+          "en": "Infrastructure and operations"
+        },
+        "definition": {
+          "nl": "Omvat het inrichten en werkend houden van cloudomgevingen, netwerken en systemen, inclusief bewaking, storingsoplossing en uitrol van versies.",
+          "en": "Covers setting up and keeping running cloud environments, networks and systems, including monitoring, troubleshooting and rolling out versions."
+        },
+        "construct_ids": [
+          "HF-D7.5-001",
+          "HF-D7.5-002",
+          "HF-D7.5-003",
+          "HF-D7.5-004",
+          "HF-D7.5-005"
+        ]
+      },
+      {
+        "id": "D7.6",
+        "name": {
+          "nl": "Cybersecurity",
+          "en": "Cybersecurity"
+        },
+        "definition": {
+          "nl": "Omvat het herkennen van dreigingen, analyseren van risico's, veilig ontwikkelen, beheersen van toegang en handelen bij beveiligingsincidenten.",
+          "en": "Covers recognising threats, analysing risks, developing securely, controlling access and acting on security incidents."
+        },
+        "construct_ids": [
+          "HF-D7.6-001",
+          "HF-D7.6-002",
+          "HF-D7.6-003",
+          "HF-D7.6-004",
+          "HF-D7.6-005"
+        ]
+      },
+      {
+        "id": "D7.7",
+        "name": {
+          "nl": "Kunstmatige intelligentie en automatisering",
+          "en": "Artificial intelligence and automation"
+        },
+        "definition": {
+          "nl": "Omvat het begrijpen van AI-systemen, werk delegeren aan AI, uitkomsten verifiëren, toepassingen invoeren en risico, bias en governance beheersen.",
+          "en": "Covers understanding AI systems, delegating work to AI, verifying output, adopting applications and managing risk, bias and governance."
+        },
+        "construct_ids": [
+          "HF-D7.7-001",
+          "HF-D7.7-002",
+          "HF-D7.7-003",
+          "HF-D7.7-004",
+          "HF-D7.7-005",
+          "HF-D7.7-006",
+          "HF-D7.7-007",
+          "HF-D7.7-008"
+        ]
+      },
+      {
+        "id": "D7.8",
+        "name": {
+          "nl": "Digitale transformatie en informatiemanagement",
+          "en": "Digital transformation and information management"
+        },
+        "definition": {
+          "nl": "Omvat het richten van digitalisering op organisatiedoelen en het beheersen van applicaties, eisen en IT-leveranciers over de levensduur heen.",
+          "en": "Covers directing digitalisation towards organisational goals and controlling applications, requirements and IT suppliers across their lifespan."
+        },
+        "construct_ids": [
+          "HF-D7.8-001",
+          "HF-D7.8-002",
+          "HF-D7.8-003",
+          "HF-D7.8-004"
+        ]
+      }
+    ],
+    "construct_count": 48,
+    "granular_count": 455
+  },
+  {
+    "id": "D8",
+    "name": {
+      "nl": "Bedrijfsvoering, commercie en ondernemen",
+      "en": "Business operations, commerce and entrepreneurship"
+    },
+    "slug": {
+      "nl": "bedrijfsvoering-commercie-en-ondernemen",
+      "en": "business-operations-commerce-and-entrepreneurship"
+    },
+    "definition": {
+      "nl": "Bundelt het werk waarmee organisaties waarde maken en verkopen, namelijk klanten en markten bewerken, geld en middelen beheren, kansen benutten en binnen wet en regels blijven.",
+      "en": "Brings together the work with which organisations create and sell value, namely serving customers and markets, managing money and resources, seizing opportunities and staying within law and regulation."
+    },
+    "clusters": [
+      {
+        "id": "D8.1",
+        "name": {
+          "nl": "Commercieel vermogen",
+          "en": "Commercial capability"
+        },
+        "definition": {
+          "nl": "Omvat het vinden, overtuigen en binden van klanten, van eerste benadering en adviserend gesprek tot onderhandeling, contract en het beheersen van de eigen verkooptrechter.",
+          "en": "Covers finding, convincing and binding customers, from first approach and advisory conversation to negotiation, contract and control of the own sales pipeline."
+        },
+        "construct_ids": [
+          "HF-D8.1-001",
+          "HF-D8.1-002",
+          "HF-D8.1-003",
+          "HF-D8.1-004",
+          "HF-D8.1-005",
+          "HF-D8.1-006",
+          "HF-D8.1-007"
+        ]
+      },
+      {
+        "id": "D8.2",
+        "name": {
+          "nl": "Markt en klant",
+          "en": "Market and customer"
+        },
+        "definition": {
+          "nl": "Omvat het lezen van markt, klant en concurrent, het kiezen van doelgroepen en proposities en het verbeteren van klantreis, klantwaarde en klantbehoud.",
+          "en": "Covers reading the market, customer and competitor, choosing target groups and propositions and improving the customer journey, customer value and retention."
+        },
+        "construct_ids": [
+          "HF-D8.2-001",
+          "HF-D8.2-002",
+          "HF-D8.2-003",
+          "HF-D8.2-004",
+          "HF-D8.2-005",
+          "HF-D8.2-006"
+        ]
+      },
+      {
+        "id": "D8.3",
+        "name": {
+          "nl": "Marketing en merk",
+          "en": "Marketing and brand"
+        },
+        "definition": {
+          "nl": "Omvat het plannen en uitvoeren van marketing via content, advertenties, merk en automatisering, en het meten van het effect van die inzet op leads en omzet.",
+          "en": "Covers planning and running marketing through content, advertising, brand and automation, and measuring the effect of that effort on leads and revenue."
+        },
+        "construct_ids": [
+          "HF-D8.3-001",
+          "HF-D8.3-002",
+          "HF-D8.3-003",
+          "HF-D8.3-004",
+          "HF-D8.3-005",
+          "HF-D8.3-006"
+        ]
+      },
+      {
+        "id": "D8.4",
+        "name": {
+          "nl": "Financiële bedrijfsvoering",
+          "en": "Financial management of the business"
+        },
+        "definition": {
+          "nl": "Omvat het begrijpen en beheersen van geldstromen, van begroting, administratie en facturatie tot het lezen van rapportages, investeringsanalyse en fiscale hoofdregels.",
+          "en": "Covers understanding and controlling money flows, from budget, bookkeeping and invoicing to reading reports, investment analysis and main tax rules."
+        },
+        "construct_ids": [
+          "HF-D8.4-001",
+          "HF-D8.4-002",
+          "HF-D8.4-003",
+          "HF-D8.4-004",
+          "HF-D8.4-005",
+          "HF-D8.4-006",
+          "HF-D8.4-007"
+        ]
+      },
+      {
+        "id": "D8.5",
+        "name": {
+          "nl": "Ondernemerschap en waardecreatie",
+          "en": "Entrepreneurship and value creation"
+        },
+        "definition": {
+          "nl": "Omvat het zien en verzilveren van kansen, het valideren van ideeën, het aanvaarden van ondernemend risico, het mobiliseren van middelen en het bouwen van businessmodellen.",
+          "en": "Covers spotting and seizing opportunities, validating ideas, accepting entrepreneurial risk, mobilising resources and building business models."
+        },
+        "construct_ids": [
+          "HF-D8.5-001",
+          "HF-D8.5-002",
+          "HF-D8.5-003",
+          "HF-D8.5-004",
+          "HF-D8.5-005",
+          "HF-D8.5-006"
+        ]
+      },
+      {
+        "id": "D8.6",
+        "name": {
+          "nl": "Inkoop, keten en operatie",
+          "en": "Procurement, supply chain and operations"
+        },
+        "definition": {
+          "nl": "Omvat het inkopen bij leveranciers, het beheren van contracten, voorraad en logistiek, het plannen van operationele processen en het bewaken van kwaliteit en serviceniveaus.",
+          "en": "Covers purchasing from suppliers, managing contracts, inventory and logistics, planning operational processes and safeguarding quality and service levels."
+        },
+        "construct_ids": [
+          "HF-D8.6-001",
+          "HF-D8.6-002",
+          "HF-D8.6-003",
+          "HF-D8.6-004",
+          "HF-D8.6-005",
+          "HF-D8.6-006"
+        ]
+      },
+      {
+        "id": "D8.7",
+        "name": {
+          "nl": "Juridisch en compliance in de bedrijfsvoering",
+          "en": "Legal and compliance in business operations"
+        },
+        "definition": {
+          "nl": "Omvat de juridische en ethische kaders van het zakendoen, namelijk contracten, aanbesteden, privacy, sectorregels, gedragscode en aansprakelijkheid met verzekering.",
+          "en": "Covers the legal and ethical frames of doing business, namely contracts, procurement, privacy, sector rules, code of conduct and liability with insurance."
+        },
+        "construct_ids": [
+          "HF-D8.7-001",
+          "HF-D8.7-002",
+          "HF-D8.7-003",
+          "HF-D8.7-004",
+          "HF-D8.7-005",
+          "HF-D8.7-006"
+        ]
+      }
+    ],
+    "construct_count": 44,
+    "granular_count": 415
+  },
+  {
+    "id": "D9",
+    "name": {
+      "nl": "Vakinhoudelijke kennisdomeinen",
+      "en": "Professional knowledge domains"
+    },
+    "slug": {
+      "nl": "vakinhoudelijke-kennisdomeinen",
+      "en": "professional-knowledge-domains"
+    },
+    "definition": {
+      "nl": "Bundelt de sectorspecifieke kennis en vakvaardigheden waarmee iemand het werk in een bepaalde branche uitvoert, van zorg en onderwijs tot techniek, financiën, recht en publieke dienstverlening.",
+      "en": "Covers the sector specific knowledge and occupational skills with which someone performs the work in a given branch, from care and education to engineering, finance, law and public service."
+    },
+    "clusters": [
+      {
+        "id": "D9.1",
+        "name": {
+          "nl": "Zorg en welzijn",
+          "en": "Care and welfare"
+        },
+        "definition": {
+          "nl": "Omvat de kennis en vaardigheden voor het verlenen van zorg en ondersteuning aan cliënten, van verpleegtechnisch handelen en medicatie tot dossiervorming en overleg met andere disciplines.",
+          "en": "Covers the knowledge and skills for delivering care and support to clients, from nursing procedures and medication to record keeping and consultation with other disciplines."
+        },
+        "construct_ids": [
+          "HF-D9.1-001",
+          "HF-D9.1-002",
+          "HF-D9.1-003",
+          "HF-D9.1-004",
+          "HF-D9.1-005",
+          "HF-D9.1-006"
+        ]
+      },
+      {
+        "id": "D9.2",
+        "name": {
+          "nl": "Onderwijs en pedagogiek",
+          "en": "Education and pedagogy"
+        },
+        "definition": {
+          "nl": "Omvat het lesgeven, begeleiden en beoordelen van lerenden en het ontwerpen van onderwijs, inclusief het contact met ouders en verzorgers over ontwikkeling en gedrag.",
+          "en": "Covers teaching, guiding and assessing learners and designing education, including contact with parents and carers about development and behaviour."
+        },
+        "construct_ids": [
+          "HF-D9.2-001",
+          "HF-D9.2-002",
+          "HF-D9.2-003",
+          "HF-D9.2-004",
+          "HF-D9.2-005",
+          "HF-D9.2-006"
+        ]
+      },
+      {
+        "id": "D9.3",
+        "name": {
+          "nl": "Techniek en engineering",
+          "en": "Engineering and technology"
+        },
+        "definition": {
+          "nl": "Omvat het doorzien, onderhouden, ontwerpen en meten van machines, elektrische systemen en installaties volgens technische principes, normen en veiligheidsvoorschriften.",
+          "en": "Covers understanding, maintaining, designing and measuring machines, electrical systems and installations according to technical principles, standards and safety rules."
+        },
+        "construct_ids": [
+          "HF-D9.3-001",
+          "HF-D9.3-002",
+          "HF-D9.3-003",
+          "HF-D9.3-004",
+          "HF-D9.3-005",
+          "HF-D9.3-006"
+        ]
+      },
+      {
+        "id": "D9.4",
+        "name": {
+          "nl": "Bouw en installatie",
+          "en": "Construction and installation"
+        },
+        "definition": {
+          "nl": "Omvat het voorbereiden, uitvoeren en beoordelen van bouwwerk op basis van tekeningen, bestek en regelgeving, met aandacht voor duurzaamheid en veiligheid op de bouwplaats.",
+          "en": "Covers preparing, executing and reviewing construction work on the basis of drawings, specifications and regulations, with attention to sustainability and site safety."
+        },
+        "construct_ids": [
+          "HF-D9.4-001",
+          "HF-D9.4-002",
+          "HF-D9.4-003",
+          "HF-D9.4-004",
+          "HF-D9.4-005",
+          "HF-D9.4-006"
+        ]
+      },
+      {
+        "id": "D9.5",
+        "name": {
+          "nl": "Financieel en administratief",
+          "en": "Finance and administration"
+        },
+        "definition": {
+          "nl": "Omvat het vastleggen, verantwoorden en analyseren van financiële gegevens, van dagelijkse boekingen en salarissen tot jaarrekening, controlling, audit en liquiditeitsbeheer.",
+          "en": "Covers recording, reporting and analysing financial data, from daily entries and payroll to annual accounts, controlling, audit and liquidity management."
+        },
+        "construct_ids": [
+          "HF-D9.5-001",
+          "HF-D9.5-002",
+          "HF-D9.5-003",
+          "HF-D9.5-004",
+          "HF-D9.5-005",
+          "HF-D9.5-006"
+        ]
+      },
+      {
+        "id": "D9.6",
+        "name": {
+          "nl": "Juridisch en publiek bestuur",
+          "en": "Law and public governance"
+        },
+        "definition": {
+          "nl": "Omvat het analyseren en toepassen van recht en regelgeving in individuele besluiten, bezwaarprocedures en subsidies en het voorbereiden van bestuurlijk beleid en besluitvorming.",
+          "en": "Covers analysing and applying law and regulation in individual decisions, objection procedures and grants, and preparing public policy and decision making."
+        },
+        "construct_ids": [
+          "HF-D9.6-001",
+          "HF-D9.6-002",
+          "HF-D9.6-003",
+          "HF-D9.6-004",
+          "HF-D9.6-005",
+          "HF-D9.6-006"
+        ]
+      },
+      {
+        "id": "D9.7",
+        "name": {
+          "nl": "HR en arbeidsmarkt",
+          "en": "HR and labour market"
+        },
+        "definition": {
+          "nl": "Omvat het inrichten en toepassen van personeelsbeleid, arbeidsverhoudingen, verzuim, werving, selectie en het organiseren van leren en ontwikkelen in de organisatie.",
+          "en": "Covers designing and applying personnel policy, labour relations, absence, recruitment, selection and organising learning and development in the organisation."
+        },
+        "construct_ids": [
+          "HF-D9.7-001",
+          "HF-D9.7-002",
+          "HF-D9.7-003",
+          "HF-D9.7-004",
+          "HF-D9.7-005",
+          "HF-D9.7-006"
+        ]
+      },
+      {
+        "id": "D9.8",
+        "name": {
+          "nl": "Logistiek en transport",
+          "en": "Logistics and transport"
+        },
+        "definition": {
+          "nl": "Omvat het plannen, beheren, vervoeren en documenteren van goederenstromen, inclusief voorraad, douaneformaliteiten, systemen en veiligheid bij laden en vervoeren.",
+          "en": "Covers planning, managing, transporting and documenting goods flows, including stock, customs formalities, systems and safety when loading and carrying."
+        },
+        "construct_ids": [
+          "HF-D9.8-001",
+          "HF-D9.8-002",
+          "HF-D9.8-003",
+          "HF-D9.8-004",
+          "HF-D9.8-005",
+          "HF-D9.8-006"
+        ]
+      },
+      {
+        "id": "D9.9",
+        "name": {
+          "nl": "Horeca, retail en gastvrijheid",
+          "en": "Hospitality, retail and guest service"
+        },
+        "definition": {
+          "nl": "Omvat het bedienen en adviseren van gasten en klanten, het afrekenen, de hygiëne bij voedsel, de presentatie op de vloer en de uitvoering van bijeenkomsten.",
+          "en": "Covers serving and advising guests and customers, handling payment, food hygiene, floor presentation and the delivery of events."
+        },
+        "construct_ids": [
+          "HF-D9.9-001",
+          "HF-D9.9-002",
+          "HF-D9.9-003",
+          "HF-D9.9-004",
+          "HF-D9.9-005",
+          "HF-D9.9-006"
+        ]
+      },
+      {
+        "id": "D9.10",
+        "name": {
+          "nl": "Overheid, veiligheid en dienstverlening",
+          "en": "Government, safety and public service"
+        },
+        "definition": {
+          "nl": "Omvat de uitvoering van publieke taken richting burgers, van dienstverlening en handhaving tot openbare orde, crisisorganisatie en het beheer van informatie en archief.",
+          "en": "Covers the delivery of public tasks towards citizens, from service and enforcement to public order, crisis organisation and the management of information and archives."
+        },
+        "construct_ids": [
+          "HF-D9.10-001",
+          "HF-D9.10-002",
+          "HF-D9.10-003",
+          "HF-D9.10-004",
+          "HF-D9.10-005",
+          "HF-D9.10-006"
+        ]
+      }
+    ],
+    "construct_count": 60,
+    "granular_count": 568
+  },
+  {
+    "id": "D10",
+    "name": {
+      "nl": "Uitvoering, ambacht, veiligheid en duurzaamheid",
+      "en": "Execution, craft, safety and sustainability"
+    },
+    "slug": {
+      "nl": "uitvoering-ambacht-veiligheid-en-duurzaamheid",
+      "en": "execution-craft-safety-and-sustainability"
+    },
+    "definition": {
+      "nl": "Bundelt de capaciteiten, vaardigheden en kennis waarmee iemand fysiek en uitvoerend werk verricht, machines en gereedschap gebruikt, veilig werkt en duurzaam met materiaal en omgeving omgaat.",
+      "en": "Covers the capacities, skills and knowledge with which someone performs physical and executing work, uses machines and tools, works safely and treats material and environment sustainably."
+    },
+    "clusters": [
+      {
+        "id": "D10.1",
+        "name": {
+          "nl": "Fysieke en psychomotorische capaciteit",
+          "en": "Physical and psychomotor capacity"
+        },
+        "definition": {
+          "nl": "Omvat de werkgerelateerde capaciteiten voor beweging, kracht, evenwicht, reactie en waarneming die iemand inzet bij het uitvoeren van handmatige en machinegebonden taken.",
+          "en": "Covers the work related capacities for movement, strength, balance, reaction and perception that someone applies when carrying out manual and machine bound tasks."
+        },
+        "construct_ids": [
+          "HF-D10.1-001",
+          "HF-D10.1-002",
+          "HF-D10.1-003",
+          "HF-D10.1-004",
+          "HF-D10.1-005",
+          "HF-D10.1-006"
+        ]
+      },
+      {
+        "id": "D10.2",
+        "name": {
+          "nl": "Machines en gereedschap",
+          "en": "Machines and tools"
+        },
+        "definition": {
+          "nl": "Omvat het bedienen, instellen, bewaken en onderhouden van machines en het kiezen en gebruiken van gereedschap in productie, techniek, zorg en logistiek.",
+          "en": "Covers operating, setting, monitoring and maintaining machines and selecting and using tools in production, engineering, care and logistics."
+        },
+        "construct_ids": [
+          "HF-D10.2-001",
+          "HF-D10.2-002",
+          "HF-D10.2-003",
+          "HF-D10.2-004",
+          "HF-D10.2-005",
+          "HF-D10.2-006"
+        ]
+      },
+      {
+        "id": "D10.3",
+        "name": {
+          "nl": "Handelingsvaardigheid en ambacht",
+          "en": "Manual skill and craft"
+        },
+        "definition": {
+          "nl": "Omvat het vakmatig maken en afwerken van producten met de hand, het toepassen van materiaalkennis en het ordelijk en op tempo uitvoeren van werk.",
+          "en": "Covers making and finishing products by hand to trade standard, applying materials knowledge and carrying out work in an orderly way and at pace."
+        },
+        "construct_ids": [
+          "HF-D10.3-001",
+          "HF-D10.3-002",
+          "HF-D10.3-003",
+          "HF-D10.3-004",
+          "HF-D10.3-005"
+        ]
+      },
+      {
+        "id": "D10.4",
+        "name": {
+          "nl": "Arbeidsveiligheid",
+          "en": "Occupational safety"
+        },
+        "definition": {
+          "nl": "Omvat het herkennen en beheersen van risico's op de werkplek, het gebruik van beschermingsmiddelen, het melden en onderzoeken van incidenten en het optreden bij nood.",
+          "en": "Covers recognising and controlling workplace risks, using protective equipment, reporting and investigating incidents and acting in emergency situations."
+        },
+        "construct_ids": [
+          "HF-D10.4-001",
+          "HF-D10.4-002",
+          "HF-D10.4-003",
+          "HF-D10.4-004",
+          "HF-D10.4-005",
+          "HF-D10.4-006"
+        ]
+      },
+      {
+        "id": "D10.5",
+        "name": {
+          "nl": "Duurzaamheid en milieu",
+          "en": "Sustainability and environment"
+        },
+        "definition": {
+          "nl": "Omvat duurzaam handelen in het werk, het verlagen van energieverbruik en materiaalverbruik, afvalscheiding en circulair werken, naleving van milieuregels en ondersteuning van rapportage.",
+          "en": "Covers acting sustainably at work, lowering energy and material consumption, waste separation and circular working, complying with environmental rules and supporting reporting."
+        },
+        "construct_ids": [
+          "HF-D10.5-001",
+          "HF-D10.5-002",
+          "HF-D10.5-003",
+          "HF-D10.5-004",
+          "HF-D10.5-005"
+        ]
+      },
+      {
+        "id": "D10.6",
+        "name": {
+          "nl": "Fysieke werkomstandigheden en ergonomie",
+          "en": "Physical working conditions and ergonomics"
+        },
+        "definition": {
+          "nl": "Omvat de werkwijze en werkorganisatie waarmee iemand werk inricht bij fysieke belasting, wisselende diensten en bijzondere omstandigheden zoals hitte, koude en lawaai.",
+          "en": "Covers the working methods and work organisation with which someone arranges work under physical load, changing shifts and special conditions such as heat, cold and noise."
+        },
+        "construct_ids": [
+          "HF-D10.6-001",
+          "HF-D10.6-002",
+          "HF-D10.6-003",
+          "HF-D10.6-004"
+        ]
+      }
+    ],
+    "construct_count": 32,
+    "granular_count": 250
+  }
+]

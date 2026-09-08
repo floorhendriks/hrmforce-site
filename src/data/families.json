@@ -1,0 +1,5542 @@
+[
+  {
+    "id": "FF01",
+    "name": {
+      "nl": "Algemeen management en directie",
+      "en": "General management and executive"
+    },
+    "slug": {
+      "nl": "algemeen-management-en-directie",
+      "en": "general-management-and-executive"
+    },
+    "isco": "11/12",
+    "description": {
+      "nl": "Bepaalt koers, verdeelt middelen en legt verantwoording af over de hele organisatie, en onderscheidt zich doordat besluiten worden genomen bij hoge onzekerheid en met tegenstrijdige belangen van stakeholders.",
+      "en": "Sets direction, allocates resources and accounts for the whole organisation, distinguished by taking decisions under high uncertainty and amid conflicting stakeholder interests."
+    },
+    "typical_roles": {
+      "nl": "algemeen directeur, statutair bestuurder, vestigingsdirecteur, divisiedirecteur, chief operating officer, ondernemer met personeel",
+      "en": "managing director, statutory board member, site director, division director, chief operating officer, owner manager"
+    },
+    "seniority_delta": {
+      "junior": -2,
+      "medior": -1,
+      "senior": 0,
+      "lead": 1
+    },
+    "base_profile": [
+      {
+        "skill_id": "HF-D4.1-001",
+        "target_level": 5,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Visie ontwikkelen",
+          "en": "Developing vision"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D4.1-002",
+        "target_level": 5,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Strategisch denken",
+          "en": "Strategic thinking"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D1.4-001",
+        "target_level": 5,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Besluitvaardigheid",
+          "en": "Decisiveness"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D3.4-003",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "integriteit en betrouwbaarheid",
+          "en": "integrity and dependability"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D8.4-003",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Financiële rapportage lezen en interpreteren",
+          "en": "Reading and interpreting financial reports"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D2.3-005",
+        "target_level": 5,
+        "weight": 5,
+        "critical": false,
+        "name": {
+          "nl": "Stakeholdermanagement",
+          "en": "Stakeholder management"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D1.4-003",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Risicobeoordeling",
+          "en": "Risk assessment"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.3-001",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Overtuigingskracht",
+          "en": "Persuasiveness"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D3.2-003",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "organisatiesensitiviteit",
+          "en": "organisational awareness"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D4.5-001",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Verandermanagement",
+          "en": "Change management"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.5-001",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Ondernemerschap",
+          "en": "Entrepreneurship"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D1.3-004",
+        "target_level": 4,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Scenariodenken en toekomstverkenning",
+          "en": "Scenario thinking and futures literacy"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D4.2-006",
+        "target_level": 4,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Moeilijke personele besluiten nemen",
+          "en": "Taking difficult personnel decisions"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D4.6-001",
+        "target_level": 4,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Besluitvorming in gremia",
+          "en": "Decision making in governing bodies"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.3-001",
+        "target_level": 4,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Stressbestendigheid",
+          "en": "Stress tolerance"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D4.3-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Talentontwikkeling en opvolging",
+          "en": "Talent development and succession"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.4-002",
+        "target_level": 4,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Budgetteren en kostenbeheersing",
+          "en": "Budgeting and cost control"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.2-001",
+        "target_level": 4,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Marktgerichtheid",
+          "en": "Market orientation"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D8.5-006",
+        "target_level": 4,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Businessmodellen ontwikkelen",
+          "en": "Developing business models"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.8-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Digitale strategie en transformatie",
+          "en": "Digital strategy and transformation"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.4-002",
+        "target_level": 4,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Omgaan met ambiguïteit",
+          "en": "Dealing with ambiguity"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D7.7-001",
+        "target_level": 3,
+        "weight": 1,
+        "critical": false,
+        "name": {
+          "nl": "AI-geletterdheid",
+          "en": "AI literacy"
+        },
+        "type": "K"
+      }
+    ],
+    "function_ids": [
+      "FN0101",
+      "FN0102",
+      "FN0103",
+      "FN0104",
+      "FN0105",
+      "FN0106",
+      "FN0107",
+      "FN0108",
+      "FN0109",
+      "FN0110",
+      "FN0111",
+      "FN0112",
+      "FN0113",
+      "FN0114",
+      "FN0115",
+      "FN0116",
+      "FN0117",
+      "FN0118",
+      "FN0119",
+      "FN0120"
+    ],
+    "function_count": 20
+  },
+  {
+    "id": "FF02",
+    "name": {
+      "nl": "Operationeel leidinggeven en teamleiding",
+      "en": "Operational and team management"
+    },
+    "slug": {
+      "nl": "operationeel-leidinggeven-en-teamleiding",
+      "en": "operational-and-team-management"
+    },
+    "isco": "13/14",
+    "description": {
+      "nl": "Vertaalt vastgestelde doelen naar dagelijkse planning en prestaties van een team, en onderscheidt zich doordat sturen, aanspreken en ontwikkelen van mensen gebeurt binnen kaders die anderen hebben bepaald.",
+      "en": "Translates agreed goals into daily planning and team performance, distinguished by steering, holding people accountable and developing them within a framework set by others."
+    },
+    "typical_roles": {
+      "nl": "teamleider, operationeel manager, afdelingshoofd, supervisor, coordinator, werkvoorbereider met leidinggevende taken",
+      "en": "team leader, operations manager, department head, supervisor, coordinator, shift manager"
+    },
+    "seniority_delta": {
+      "junior": -1,
+      "medior": 0,
+      "senior": 1,
+      "lead": 1
+    },
+    "base_profile": [
+      {
+        "skill_id": "HF-D4.2-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Aansturen en sturing geven",
+          "en": "Directing and steering people"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D4.4-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Plannen en organiseren",
+          "en": "Planning and organising"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D3.3-001",
+        "target_level": 3,
+        "weight": 4,
+        "critical": true,
+        "name": {
+          "nl": "conflicthantering",
+          "en": "conflict handling"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D3.4-005",
+        "target_level": 3,
+        "weight": 4,
+        "critical": true,
+        "name": {
+          "nl": "aanspreken op afspraken",
+          "en": "holding others to agreements"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D4.2-002",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Delegeren",
+          "en": "Delegating"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D4.2-003",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Voortgangscontrole",
+          "en": "Monitoring progress"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D4.2-004",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Prestatiegesprekken voeren",
+          "en": "Conducting performance conversations"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D4.4-002",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Capaciteits- en resourceplanning",
+          "en": "Capacity and resource planning"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D4.3-001",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Coachen",
+          "en": "Coaching"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D3.3-002",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "feedback geven",
+          "en": "giving feedback"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D4.1-003",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Richting vertalen naar doelen",
+          "en": "Translating direction into goals"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D4.5-003",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Continu verbeteren",
+          "en": "Continuous improvement"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.6-004",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Planning van operationele processen",
+          "en": "Planning of operational processes"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D4.3-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Teamontwikkeling",
+          "en": "Team development"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D3.6-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "psychologische veiligheid bevorderen",
+          "en": "promoting psychological safety"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.3-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Omgaan met werkdruk",
+          "en": "Managing workload pressure"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D4.2-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Verzuim en werkvermogen begeleiden",
+          "en": "Guiding absence and work ability"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.6-006",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Serviceniveaus en prestatie-indicatoren beheren",
+          "en": "Managing service levels and performance indicators"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.6-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Kwaliteitsmanagementsysteem toepassen",
+          "en": "Applying a quality management system"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.4-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Budgetteren en kostenbeheersing",
+          "en": "Budgeting and cost control"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D10.4-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Veiligheidsbewustzijn",
+          "en": "Safety awareness"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D4.1-002",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Strategisch denken",
+          "en": "Strategic thinking"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.2-005",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Rapporteren en dashboards bouwen",
+          "en": "Reporting and dashboard building"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.1-004",
+        "target_level": 3,
+        "weight": 1,
+        "critical": false,
+        "name": {
+          "nl": "Samenwerkingsplatformen benutten",
+          "en": "Using collaboration platforms"
+        },
+        "type": "T"
+      }
+    ],
+    "function_ids": [
+      "FN0201",
+      "FN0202",
+      "FN0203",
+      "FN0204",
+      "FN0205",
+      "FN0206",
+      "FN0207",
+      "FN0208",
+      "FN0209",
+      "FN0210",
+      "FN0211",
+      "FN0212",
+      "FN0213",
+      "FN0214",
+      "FN0215",
+      "FN0216",
+      "FN0217",
+      "FN0218",
+      "FN0219",
+      "FN0220",
+      "FN0221",
+      "FN0222"
+    ],
+    "function_count": 22
+  },
+  {
+    "id": "FF03",
+    "name": {
+      "nl": "Commercie, sales en accountmanagement",
+      "en": "Sales and account management"
+    },
+    "slug": {
+      "nl": "commercie-sales-en-accountmanagement",
+      "en": "sales-and-account-management"
+    },
+    "isco": "24/33/52",
+    "description": {
+      "nl": "Realiseert omzet en klantwaarde door het opbouwen van relaties, het adviseren over oplossingen en het sluiten van afspraken, en onderscheidt zich door herhaald werken met afwijzing en harde resultaatafspraken.",
+      "en": "Delivers revenue and customer value by building relationships, advising on solutions and closing agreements, distinguished by repeated exposure to rejection and hard result targets."
+    },
+    "typical_roles": {
+      "nl": "accountmanager, salesmanager, business developer, binnendienstverkoper, key accountmanager, commercieel adviseur",
+      "en": "account manager, sales manager, business developer, inside sales representative, key account manager, commercial adviser"
+    },
+    "seniority_delta": {
+      "junior": -1,
+      "medior": 0,
+      "senior": 1,
+      "lead": 1
+    },
+    "base_profile": [
+      {
+        "skill_id": "HF-D8.1-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Commercieel vermogen",
+          "en": "Commercial capability"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D8.1-003",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Adviserend verkopen",
+          "en": "Consultative selling"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.1-004",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Accountmanagement",
+          "en": "Account management"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.3-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Overtuigingskracht",
+          "en": "Persuasiveness"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D2.5-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Klantgerichtheid",
+          "en": "Client focus"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D5.2-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": false,
+        "name": {
+          "nl": "Resultaatgerichtheid",
+          "en": "Result orientation"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D8.1-002",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Acquisitie en leadgeneratie",
+          "en": "Acquisition and lead generation"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.1-005",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Prijsonderhandeling",
+          "en": "Price negotiation"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.1-007",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Verkoopprognose en pipelinebeheer",
+          "en": "Sales forecasting and pipeline management"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.2-001",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Marktgerichtheid",
+          "en": "Market orientation"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D2.3-002",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Onderhandelen",
+          "en": "Negotiating"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.1-002",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Gespreksvoering",
+          "en": "Conversation management"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.1-004",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Luisteren en doorvragen",
+          "en": "Listening and probing"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D3.5-001",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "netwerken",
+          "en": "networking"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D3.5-002",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "relatiebeheer",
+          "en": "relationship management"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.2-002",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Doorzettingsvermogen",
+          "en": "Perseverance"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D8.1-006",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Contracteren en afsluiten",
+          "en": "Contracting and closing"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.2-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Propositieontwikkeling",
+          "en": "Value proposition development"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.2-006",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Klantwaarde en retentie beheren",
+          "en": "Managing customer value and retention"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.3-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Herstelvermogen na tegenslag",
+          "en": "Recovery after setbacks"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D8.7-001",
+        "target_level": 2,
+        "weight": 1,
+        "critical": false,
+        "name": {
+          "nl": "Juridische basiskennis contracten",
+          "en": "Basic contract law knowledge"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D7.2-005",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Rapporteren en dashboards bouwen",
+          "en": "Reporting and dashboard building"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.1-002",
+        "target_level": 3,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Tijdmanagement en prioriteren",
+          "en": "Time management and prioritising"
+        },
+        "type": "V"
+      }
+    ],
+    "function_ids": [
+      "FN0301",
+      "FN0302",
+      "FN0303",
+      "FN0304",
+      "FN0305",
+      "FN0306",
+      "FN0307",
+      "FN0308",
+      "FN0309",
+      "FN0310",
+      "FN0311",
+      "FN0312",
+      "FN0313",
+      "FN0314",
+      "FN0315",
+      "FN0316",
+      "FN0317",
+      "FN0318",
+      "FN0319",
+      "FN0320",
+      "FN0321",
+      "FN0322",
+      "FN0323",
+      "FN0324",
+      "FN0325",
+      "FN0326"
+    ],
+    "function_count": 26
+  },
+  {
+    "id": "FF04",
+    "name": {
+      "nl": "Marketing, communicatie en content",
+      "en": "Marketing, communication and content"
+    },
+    "slug": {
+      "nl": "marketing-communicatie-en-content",
+      "en": "marketing-communication-and-content"
+    },
+    "isco": "24/26",
+    "description": {
+      "nl": "Positioneert merk, propositie en boodschap bij gekozen doelgroepen en meet het effect daarvan, en onderscheidt zich door de combinatie van creatieve productie en het rekenen aan campagnerendement.",
+      "en": "Positions brand, proposition and message with chosen audiences and measures the effect, distinguished by combining creative production with quantitative accountability for campaign return."
+    },
+    "typical_roles": {
+      "nl": "marketeer, online marketeer, communicatieadviseur, contentspecialist, marketingmanager, campagnemanager",
+      "en": "marketeer, online marketeer, communications adviser, content specialist, marketing manager, campaign manager"
+    },
+    "seniority_delta": {
+      "junior": -1,
+      "medior": 0,
+      "senior": 1,
+      "lead": 1
+    },
+    "base_profile": [
+      {
+        "skill_id": "HF-D8.3-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Marketingstrategie",
+          "en": "Marketing strategy"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.3-002",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Contentmarketing",
+          "en": "Content marketing"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.6-003",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Contentcreatie voor doelgroepen",
+          "en": "Content creation for target audiences"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.2-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Schriftelijke uitdrukkingsvaardigheid",
+          "en": "Written expression"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.3-005",
+        "target_level": 3,
+        "weight": 4,
+        "critical": true,
+        "name": {
+          "nl": "Marketinganalytics en attributie",
+          "en": "Marketing analytics and attribution"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.3-003",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Digitale advertentiecampagnes beheren",
+          "en": "Managing digital advertising campaigns"
+        },
+        "type": "T"
+      },
+      {
+        "skill_id": "HF-D8.3-004",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Merkpositionering en huisstijl toepassen",
+          "en": "Applying brand positioning and visual identity"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.2-003",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Klantsegmentatie en doelgroepbepaling",
+          "en": "Customer segmentation and targeting"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.6-005",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Storytelling",
+          "en": "Storytelling"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.2-003",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Redigeren en vereenvoudigen",
+          "en": "Editing and plain language"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D1.5-001",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Creatief denken",
+          "en": "Creative thinking"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D8.3-006",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "E-mail en marketingautomatisering",
+          "en": "Email and marketing automation"
+        },
+        "type": "T"
+      },
+      {
+        "skill_id": "HF-D8.2-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Klantreis en klantbeleving verbeteren",
+          "en": "Improving customer journey and experience"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.2-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Visueel communiceren en dataverhaal",
+          "en": "Visual communication and data storytelling"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.6-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Social media communicatie",
+          "en": "Social media communication"
+        },
+        "type": "T"
+      },
+      {
+        "skill_id": "HF-D1.5-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Ideegeneratie",
+          "en": "Idea generation"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.3-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Stakeholdermanagement",
+          "en": "Stakeholder management"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D3.2-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "omgevingsbewustzijn",
+          "en": "external awareness"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D7.7-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Prompting en taakdelegatie aan AI",
+          "en": "Prompting and task delegation to AI"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.6-001",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Media- en woordvoering",
+          "en": "Media relations and spokesmanship"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.6-002",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Interne communicatie en verandercommunicatie",
+          "en": "Internal and change communication"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.3-004",
+        "target_level": 2,
+        "weight": 1,
+        "critical": false,
+        "name": {
+          "nl": "AVG en privacy in de praktijk",
+          "en": "GDPR and privacy in practice"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D5.4-001",
+        "target_level": 3,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Flexibiliteit",
+          "en": "Flexibility"
+        },
+        "type": "G"
+      }
+    ],
+    "function_ids": [
+      "FN0401",
+      "FN0402",
+      "FN0403",
+      "FN0404",
+      "FN0405",
+      "FN0406",
+      "FN0407",
+      "FN0408",
+      "FN0409",
+      "FN0410",
+      "FN0411",
+      "FN0412",
+      "FN0413",
+      "FN0414",
+      "FN0415",
+      "FN0416",
+      "FN0417",
+      "FN0418",
+      "FN0419",
+      "FN0420",
+      "FN0421",
+      "FN0422",
+      "FN0423",
+      "FN0424"
+    ],
+    "function_count": 24
+  },
+  {
+    "id": "FF05",
+    "name": {
+      "nl": "Finance, control en administratie",
+      "en": "Finance, control and administration"
+    },
+    "slug": {
+      "nl": "finance-control-en-administratie",
+      "en": "finance-control-and-administration"
+    },
+    "isco": "24/33/43",
+    "description": {
+      "nl": "Legt geldstromen vast, controleert ze en zet cijfers om in stuurinformatie en advies, en onderscheidt zich doordat aantoonbare juistheid en naleving van regels zwaarder wegen dan snelheid.",
+      "en": "Records and controls financial flows and turns figures into management information and advice, distinguished by demonstrable accuracy and rule compliance weighing heavier than speed."
+    },
+    "typical_roles": {
+      "nl": "financial controller, business controller, assistent accountant, boekhouder, administratief medewerker financien, finance manager",
+      "en": "financial controller, business controller, assistant accountant, bookkeeper, finance administrator, finance manager"
+    },
+    "seniority_delta": {
+      "junior": -1,
+      "medior": 0,
+      "senior": 1,
+      "lead": 1
+    },
+    "base_profile": [
+      {
+        "skill_id": "HF-D9.5-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Financiële administratie",
+          "en": "Financial administration"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.5-004",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Controlling en managementinformatie",
+          "en": "Controlling and management information"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.4-002",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Budgetteren en kostenbeheersing",
+          "en": "Budgeting and cost control"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.1-003",
+        "target_level": 4,
+        "weight": 4,
+        "critical": true,
+        "name": {
+          "nl": "Spreadsheets en rekenbladen",
+          "en": "Spreadsheets and worksheets"
+        },
+        "type": "T"
+      },
+      {
+        "skill_id": "HF-D1.2-005",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Cijfermatig interpreteren",
+          "en": "Quantitative interpretation"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D1.6-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": false,
+        "name": {
+          "nl": "Nauwkeurigheid en aandacht voor detail",
+          "en": "Accuracy and attention to detail"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D9.5-002",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Jaarrekening opstellen",
+          "en": "Preparing annual accounts"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.4-003",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Financiële rapportage lezen en interpreteren",
+          "en": "Reading and interpreting financial reports"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D1.1-002",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Numeriek redeneren",
+          "en": "Numerical reasoning"
+        },
+        "type": "A"
+      },
+      {
+        "skill_id": "HF-D2.2-002",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Zakelijk rapporteren",
+          "en": "Business reporting"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D3.4-003",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "integriteit en betrouwbaarheid",
+          "en": "integrity and dependability"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D9.5-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Audit en interne controle",
+          "en": "Audit and internal control"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.4-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Business case en investeringsanalyse",
+          "en": "Business case and investment analysis"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.4-006",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Facturatie en debiteurenbeheer",
+          "en": "Invoicing and accounts receivable"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.4-007",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Fiscale basiskennis toepassen",
+          "en": "Applying basic tax knowledge"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D7.2-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Rapporteren en dashboards bouwen",
+          "en": "Reporting and dashboard building"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D1.6-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Methodisch werken",
+          "en": "Methodical working"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D1.2-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Probleemanalyse",
+          "en": "Problem analysis"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.3-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Adviesvaardigheid",
+          "en": "Advisory skill"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D4.6-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Risicomanagement",
+          "en": "Risk management"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.1-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Discipline en afspraken nakomen",
+          "en": "Discipline and keeping commitments"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D9.5-006",
+        "target_level": 2,
+        "weight": 1,
+        "critical": false,
+        "name": {
+          "nl": "Treasury en werkkapitaalbeheer",
+          "en": "Treasury and working capital management"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D7.7-006",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Procesautomatisering",
+          "en": "Process automation"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.3-004",
+        "target_level": 3,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Omgaan met werkdruk",
+          "en": "Managing workload pressure"
+        },
+        "type": "G"
+      }
+    ],
+    "function_ids": [
+      "FN0501",
+      "FN0502",
+      "FN0503",
+      "FN0504",
+      "FN0505",
+      "FN0506",
+      "FN0507",
+      "FN0508",
+      "FN0509",
+      "FN0510",
+      "FN0511",
+      "FN0512",
+      "FN0513",
+      "FN0514",
+      "FN0515",
+      "FN0516",
+      "FN0517",
+      "FN0518",
+      "FN0519",
+      "FN0520",
+      "FN0521",
+      "FN0522",
+      "FN0523",
+      "FN0524",
+      "FN0525",
+      "FN0526"
+    ],
+    "function_count": 26
+  },
+  {
+    "id": "FF06",
+    "name": {
+      "nl": "HR, recruitment en leren en ontwikkelen",
+      "en": "HR, recruitment and L and D"
+    },
+    "slug": {
+      "nl": "hr-recruitment-en-leren-en-ontwikkelen",
+      "en": "hr-recruitment-and-l-and-d"
+    },
+    "isco": "12/24/33",
+    "description": {
+      "nl": "Richt instroom, beloning, ontwikkeling en arbeidsverhoudingen in en adviseert het management daarover, en onderscheidt zich doordat zonder formele macht positie moet worden ingenomen tegenover leidinggevenden.",
+      "en": "Shapes hiring, reward, development and labour relations and advises management on them, distinguished by having to take a position towards managers without formal authority."
+    },
+    "typical_roles": {
+      "nl": "hr adviseur, hr businesspartner, recruiter, corporate recruiter, opleidingsadviseur, hr manager",
+      "en": "hr adviser, hr business partner, recruiter, corporate recruiter, learning adviser, hr manager"
+    },
+    "seniority_delta": {
+      "junior": -1,
+      "medior": 0,
+      "senior": 1,
+      "lead": 1
+    },
+    "base_profile": [
+      {
+        "skill_id": "HF-D9.7-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "HR-beleid en instrumentarium",
+          "en": "HR policy and instruments"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D4.7-004",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Werven en selecteren",
+          "en": "Recruiting and selecting"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.3-003",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Adviesvaardigheid",
+          "en": "Advisory skill"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.7-005",
+        "target_level": 3,
+        "weight": 4,
+        "critical": true,
+        "name": {
+          "nl": "Assessment en selectiemethodiek",
+          "en": "Assessment and selection methodology"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D4.7-002",
+        "target_level": 3,
+        "weight": 4,
+        "critical": true,
+        "name": {
+          "nl": "Arbeidsrechtelijke basiskennis toepassen",
+          "en": "Applying basic employment law"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D9.7-004",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Arbeidsmarktcommunicatie en recruitment",
+          "en": "Employer branding and recruitment"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.7-006",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Leren en ontwikkelen organiseren",
+          "en": "Organising learning and development"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.1-004",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Luisteren en doorvragen",
+          "en": "Listening and probing"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D3.2-001",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "sensitiviteit",
+          "en": "interpersonal sensitivity"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D3.2-003",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "organisatiesensitiviteit",
+          "en": "organisational awareness"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D3.4-003",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "integriteit en betrouwbaarheid",
+          "en": "integrity and dependability"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D9.7-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Arbeidsverhoudingen en medezeggenschap",
+          "en": "Labour relations and works councils"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D9.7-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Arbeidsomstandigheden en verzuimbeleid",
+          "en": "Working conditions and absence policy"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D4.7-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Personeelsplanning en strategische personeelsplanning",
+          "en": "Workforce planning and strategic workforce planning"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D4.7-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Beloning en functiewaardering toepassen",
+          "en": "Applying reward and job evaluation"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.3-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "AVG en privacy in de praktijk",
+          "en": "GDPR and privacy in practice"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D3.4-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "onafhankelijkheid",
+          "en": "independence"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D4.3-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Coachen",
+          "en": "Coaching"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D6.3-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Opleiden en trainen ontwerpen",
+          "en": "Designing training and instruction"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D4.5-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Verandermanagement",
+          "en": "Change management"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.5-003",
+        "target_level": 2,
+        "weight": 1,
+        "critical": false,
+        "name": {
+          "nl": "Salarisadministratie",
+          "en": "Payroll administration"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.2-001",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Data-analyse",
+          "en": "Data analysis"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.7-002",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Prompting en taakdelegatie aan AI",
+          "en": "Prompting and task delegation to AI"
+        },
+        "type": "V"
+      }
+    ],
+    "function_ids": [
+      "FN0601",
+      "FN0602",
+      "FN0603",
+      "FN0604",
+      "FN0605",
+      "FN0606",
+      "FN0607",
+      "FN0608",
+      "FN0609",
+      "FN0610",
+      "FN0611",
+      "FN0612",
+      "FN0613",
+      "FN0614",
+      "FN0615",
+      "FN0616",
+      "FN0617",
+      "FN0618",
+      "FN0619",
+      "FN0620",
+      "FN0621",
+      "FN0622",
+      "FN0623",
+      "FN0624"
+    ],
+    "function_count": 24
+  },
+  {
+    "id": "FF07",
+    "name": {
+      "nl": "ICT-ontwikkeling en engineering",
+      "en": "Software development and engineering"
+    },
+    "slug": {
+      "nl": "ict-ontwikkeling-en-engineering",
+      "en": "software-development-and-engineering"
+    },
+    "isco": "25",
+    "description": {
+      "nl": "Ontwerpt, bouwt en test software en koppelingen op basis van eisen van gebruikers, en onderscheidt zich doordat de eigen oplossing objectief faalt of werkt en zichzelf laat controleren.",
+      "en": "Designs, builds and tests software and integrations based on user requirements, distinguished by solutions that objectively fail or work and can be verified independently."
+    },
+    "typical_roles": {
+      "nl": "softwareontwikkelaar, backend developer, frontend developer, softwarearchitect, testengineer, technisch lead",
+      "en": "software developer, backend developer, frontend developer, software architect, test engineer, technical lead"
+    },
+    "seniority_delta": {
+      "junior": -1,
+      "medior": 0,
+      "senior": 1,
+      "lead": 1
+    },
+    "base_profile": [
+      {
+        "skill_id": "HF-D7.4-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Programmeren",
+          "en": "Programming"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.4-002",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Softwareontwerp en architectuur",
+          "en": "Software design and architecture"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D1.2-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Probleemanalyse",
+          "en": "Problem analysis"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.4-003",
+        "target_level": 4,
+        "weight": 4,
+        "critical": true,
+        "name": {
+          "nl": "Versiebeheer en samenwerkingsworkflow",
+          "en": "Version control and collaboration workflow"
+        },
+        "type": "T"
+      },
+      {
+        "skill_id": "HF-D7.6-003",
+        "target_level": 3,
+        "weight": 4,
+        "critical": true,
+        "name": {
+          "nl": "Veilig ontwikkelen",
+          "en": "Secure development"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.4-004",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Testen en kwaliteitsborging van software",
+          "en": "Software testing and quality assurance"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.4-005",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "API-integratie",
+          "en": "API integration"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.8-003",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Requirements opstellen en beheren",
+          "en": "Defining and managing requirements"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D1.1-003",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Abstract redeneren",
+          "en": "Abstract and figural reasoning"
+        },
+        "type": "A"
+      },
+      {
+        "skill_id": "HF-D1.3-003",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Modelleren en abstraheren",
+          "en": "Modelling and abstraction"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D1.6-001",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Nauwkeurigheid en aandacht voor detail",
+          "en": "Accuracy and attention to detail"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D7.4-007",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Technische documentatie schrijven",
+          "en": "Writing technical documentation"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.5-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Releasebeheer en deployment",
+          "en": "Release management and deployment"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.5-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Cloudplatformen benutten",
+          "en": "Using cloud platforms"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.3-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Datamodellering",
+          "en": "Data modelling"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.7-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Prompting en taakdelegatie aan AI",
+          "en": "Prompting and task delegation to AI"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D3.1-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "multidisciplinair samenwerken",
+          "en": "multidisciplinary collaboration"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D4.4-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Projectmatig werken",
+          "en": "Working in projects"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.1-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Zelfstandig werken",
+          "en": "Working independently"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D6.2-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Professioneel bijblijven en vakliteratuur",
+          "en": "Professional currency and specialist literature"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.7-003",
+        "target_level": 3,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "AI-uitkomsten beoordelen en verifiëren",
+          "en": "Evaluating and verifying AI output"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.2-001",
+        "target_level": 3,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Schriftelijke uitdrukkingsvaardigheid",
+          "en": "Written expression"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D3.3-002",
+        "target_level": 3,
+        "weight": 1,
+        "critical": false,
+        "name": {
+          "nl": "feedback geven",
+          "en": "giving feedback"
+        },
+        "type": "V"
+      }
+    ],
+    "function_ids": [
+      "FN0701",
+      "FN0702",
+      "FN0703",
+      "FN0704",
+      "FN0705",
+      "FN0706",
+      "FN0707",
+      "FN0708",
+      "FN0709",
+      "FN0710",
+      "FN0711",
+      "FN0712",
+      "FN0713",
+      "FN0714",
+      "FN0715",
+      "FN0716",
+      "FN0717",
+      "FN0718",
+      "FN0719",
+      "FN0720",
+      "FN0721",
+      "FN0722",
+      "FN0723",
+      "FN0724"
+    ],
+    "function_count": 24
+  },
+  {
+    "id": "FF08",
+    "name": {
+      "nl": "Data, analytics en AI",
+      "en": "Data, analytics and AI"
+    },
+    "slug": {
+      "nl": "data-analytics-en-ai",
+      "en": "data-analytics-and-ai"
+    },
+    "isco": "21/25",
+    "description": {
+      "nl": "Maakt data bruikbaar, toetst aannames en bouwt modellen en rapportages waarop besluiten worden genomen, en onderscheidt zich doordat de conclusie statistisch verantwoord en voor leken uitlegbaar moet zijn.",
+      "en": "Makes data usable, tests assumptions and builds models and reports that decisions rely on, distinguished by conclusions that must be statistically sound and explainable to non specialists."
+    },
+    "typical_roles": {
+      "nl": "data analist, business intelligence specialist, data scientist, data engineer, ai specialist, rapportagespecialist",
+      "en": "data analyst, business intelligence specialist, data scientist, data engineer, ai specialist, reporting specialist"
+    },
+    "seniority_delta": {
+      "junior": -1,
+      "medior": 0,
+      "senior": 1,
+      "lead": 1
+    },
+    "base_profile": [
+      {
+        "skill_id": "HF-D7.2-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Data-analyse",
+          "en": "Data analysis"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.2-002",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Statistische basisinterpretatie",
+          "en": "Basic statistical interpretation"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D1.1-002",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Numeriek redeneren",
+          "en": "Numerical reasoning"
+        },
+        "type": "A"
+      },
+      {
+        "skill_id": "HF-D7.2-004",
+        "target_level": 4,
+        "weight": 4,
+        "critical": true,
+        "name": {
+          "nl": "Datakwaliteit beoordelen",
+          "en": "Assessing data quality"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.4-001",
+        "target_level": 3,
+        "weight": 4,
+        "critical": true,
+        "name": {
+          "nl": "Programmeren",
+          "en": "Programming"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.2-003",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Datavisualisatie",
+          "en": "Data visualisation"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.2-005",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Rapporteren en dashboards bouwen",
+          "en": "Reporting and dashboard building"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.3-001",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Datamodellering",
+          "en": "Data modelling"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.7-004",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Machine learning basiskennis",
+          "en": "Machine learning fundamentals"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D1.2-004",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Kritisch denken en bronbeoordeling",
+          "en": "Critical thinking and source evaluation"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.2-004",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Visueel communiceren en dataverhaal",
+          "en": "Visual communication and data storytelling"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.2-006",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Hypothesen toetsen",
+          "en": "Testing hypotheses"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.3-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Databeheer en dataopslag",
+          "en": "Data management and storage"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.3-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Datagovernance en eigenaarschap",
+          "en": "Data governance and ownership"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.3-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "AVG en privacy in de praktijk",
+          "en": "GDPR and privacy in practice"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D7.7-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "AI-toepassingen selecteren en implementeren",
+          "en": "Selecting and implementing AI applications"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.7-007",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "AI-governance en verantwoord gebruik",
+          "en": "AI governance and responsible use"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.7-008",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "AI-risico en bias herkennen",
+          "en": "Recognising AI risk and bias"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D1.3-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Systeemdenken",
+          "en": "Systems thinking"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D1.6-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Methodisch werken",
+          "en": "Methodical working"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.3-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Adviesvaardigheid",
+          "en": "Advisory skill"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D6.2-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Nieuwsgierigheid en verkennen",
+          "en": "Curiosity and exploring"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D3.1-005",
+        "target_level": 3,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "multidisciplinair samenwerken",
+          "en": "multidisciplinary collaboration"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.4-002",
+        "target_level": 3,
+        "weight": 1,
+        "critical": false,
+        "name": {
+          "nl": "Omgaan met ambiguïteit",
+          "en": "Dealing with ambiguity"
+        },
+        "type": "G"
+      }
+    ],
+    "function_ids": [
+      "FN0801",
+      "FN0802",
+      "FN0803",
+      "FN0804",
+      "FN0805",
+      "FN0806",
+      "FN0807",
+      "FN0808",
+      "FN0809",
+      "FN0810",
+      "FN0811",
+      "FN0812",
+      "FN0813",
+      "FN0814",
+      "FN0815",
+      "FN0816",
+      "FN0817",
+      "FN0818",
+      "FN0819",
+      "FN0820"
+    ],
+    "function_count": 20
+  },
+  {
+    "id": "FF09",
+    "name": {
+      "nl": "ICT-infrastructuur, beheer en security",
+      "en": "IT infrastructure, operations and security"
+    },
+    "slug": {
+      "nl": "ict-infrastructuur-beheer-en-security",
+      "en": "it-infrastructure-operations-and-security"
+    },
+    "isco": "25/35",
+    "description": {
+      "nl": "Houdt systemen, netwerken en toegang beschikbaar en veilig en herstelt verstoringen, en onderscheidt zich doordat het werk wordt afgerekend op continuiteit en op handelen tijdens incidenten onder tijdsdruk.",
+      "en": "Keeps systems, networks and access available and secure and restores disruptions, distinguished by accountability for continuity and for acting during incidents under time pressure."
+    },
+    "typical_roles": {
+      "nl": "systeembeheerder, netwerkbeheerder, cloud engineer, security officer, security analist, servicedesk engineer",
+      "en": "system administrator, network administrator, cloud engineer, security officer, security analyst, service desk engineer"
+    },
+    "seniority_delta": {
+      "junior": -1,
+      "medior": 0,
+      "senior": 1,
+      "lead": 1
+    },
+    "base_profile": [
+      {
+        "skill_id": "HF-D7.5-003",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Systeembeheer en monitoring",
+          "en": "System administration and monitoring"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.5-002",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Netwerkbasiskennis",
+          "en": "Basic networking knowledge"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D7.5-004",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Incidentbeheer en storingsoplossing",
+          "en": "Incident management and troubleshooting"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.6-004",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Toegangsbeheer en identiteitsbeheer",
+          "en": "Access and identity management"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D1.2-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Probleemanalyse",
+          "en": "Problem analysis"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.5-001",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Cloudplatformen benutten",
+          "en": "Using cloud platforms"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.6-001",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Informatiebeveiligingsbewustzijn",
+          "en": "Information security awareness"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D7.6-002",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Dreigings- en risicoanalyse",
+          "en": "Threat and risk analysis"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.6-005",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Respons op beveiligingsincidenten",
+          "en": "Security incident response"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.3-005",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Informatiebeveiliging in het werkproces",
+          "en": "Information security in the work process"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D1.6-001",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Nauwkeurigheid en aandacht voor detail",
+          "en": "Accuracy and attention to detail"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D5.3-001",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Stressbestendigheid",
+          "en": "Stress tolerance"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D5.1-003",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Discipline en afspraken nakomen",
+          "en": "Discipline and keeping commitments"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D3.4-003",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "integriteit en betrouwbaarheid",
+          "en": "integrity and dependability"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D7.5-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Releasebeheer en deployment",
+          "en": "Release management and deployment"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.8-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Functioneel beheer en applicatiebeheer",
+          "en": "Functional and application management"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.4-007",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Technische documentatie schrijven",
+          "en": "Writing technical documentation"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.7-006",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Procesautomatisering",
+          "en": "Process automation"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D6.1-006",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Leren van fouten en incidenten",
+          "en": "Learning from mistakes and incidents"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D6.2-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Professioneel bijblijven en vakliteratuur",
+          "en": "Professional currency and specialist literature"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.3-006",
+        "target_level": 3,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Dataclassificatie en bewaartermijnen",
+          "en": "Data classification and retention"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.8-004",
+        "target_level": 2,
+        "weight": 1,
+        "critical": false,
+        "name": {
+          "nl": "Leverancier- en contractmanagement voor IT",
+          "en": "IT supplier and contract management"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.5-004",
+        "target_level": 3,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Servicegesprekken en telefonie",
+          "en": "Service calls and telephone contact"
+        },
+        "type": "V"
+      }
+    ],
+    "function_ids": [
+      "FN0901",
+      "FN0902",
+      "FN0903",
+      "FN0904",
+      "FN0905",
+      "FN0906",
+      "FN0907",
+      "FN0908",
+      "FN0909",
+      "FN0910",
+      "FN0911",
+      "FN0912",
+      "FN0913",
+      "FN0914",
+      "FN0915",
+      "FN0916",
+      "FN0917",
+      "FN0918",
+      "FN0919",
+      "FN0920",
+      "FN0921",
+      "FN0922"
+    ],
+    "function_count": 22
+  },
+  {
+    "id": "FF10",
+    "name": {
+      "nl": "Zorg en verpleging",
+      "en": "Care and nursing"
+    },
+    "slug": {
+      "nl": "zorg-en-verpleging",
+      "en": "care-and-nursing"
+    },
+    "isco": "22/32/53",
+    "description": {
+      "nl": "Functies die persoonsgerichte zorg en verpleging uitvoeren volgens een methodisch zorgproces, dossier bijhouden, samenwerken in multidisciplinair overleg en werken binnen strikte veiligheids- en kwaliteitskaders.",
+      "en": "Roles that deliver person centred care and nursing through a methodical care process, keep records, collaborate in multidisciplinary consultation and work within strict safety and quality frameworks."
+    },
+    "typical_roles": {
+      "nl": "verzorgende IG, verpleegkundige, wijkverpleegkundige, praktijkverpleegkundige, teamleider zorg, zorgcoordinator",
+      "en": "care assistant, registered nurse, community nurse, practice nurse, care team leader, care coordinator"
+    },
+    "seniority_delta": {
+      "junior": -1,
+      "medior": 0,
+      "senior": 1,
+      "lead": 1
+    },
+    "base_profile": [
+      {
+        "skill_id": "HF-D1.6-001",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Nauwkeurigheid en aandacht voor detail",
+          "en": "Accuracy and attention to detail"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D1.2-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Probleemanalyse",
+          "en": "Problem analysis"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.1-002",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Gespreksvoering",
+          "en": "Conversation management"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.4-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Nederlands taalvaardigheid beroepsniveau",
+          "en": "Dutch language proficiency at professional level"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D3.2-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "sensitiviteit",
+          "en": "interpersonal sensitivity"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D3.1-005",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "multidisciplinair samenwerken",
+          "en": "multidisciplinary collaboration"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D3.3-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "de-escaleren en grenzen stellen",
+          "en": "de-escalating and setting limits"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.3-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Stressbestendigheid",
+          "en": "Stress tolerance"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D5.1-003",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Discipline en afspraken nakomen",
+          "en": "Discipline and keeping commitments"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D5.4-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Schakelen tussen taken en rollen",
+          "en": "Switching between tasks and roles"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D6.1-006",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Leren van fouten en incidenten",
+          "en": "Learning from mistakes and incidents"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.1-001",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Werken met digitale apparaten en applicaties",
+          "en": "Working with digital devices and applications"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.3-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "AVG en privacy in de praktijk",
+          "en": "GDPR and privacy in practice"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D9.1-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Verpleegkundig en verzorgend handelen",
+          "en": "Nursing and personal care practice"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.1-002",
+        "target_level": 3,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Medicatieveiligheid",
+          "en": "Medication safety"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.1-003",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Methodisch zorgproces en dossiervorming",
+          "en": "Methodical care process and record keeping"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.1-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Veilig tillen en bewegen in de zorg",
+          "en": "Safe lifting and moving in care"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.1-006",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Multidisciplinair zorgoverleg",
+          "en": "Multidisciplinary care consultation"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D10.4-001",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Veiligheidsbewustzijn",
+          "en": "Safety awareness"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D10.4-006",
+        "target_level": 2,
+        "weight": 1,
+        "critical": false,
+        "name": {
+          "nl": "Bedrijfshulpverlening en eerste hulp",
+          "en": "Emergency response and first aid"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D10.6-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Omgaan met wisseldiensten en onregelmatige werktijden",
+          "en": "Working with shift work and irregular hours"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D10.1-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Fysieke kracht en belastbaarheid",
+          "en": "Physical strength and endurance"
+        },
+        "type": "A"
+      }
+    ],
+    "function_ids": [
+      "FN1001",
+      "FN1002",
+      "FN1003",
+      "FN1004",
+      "FN1005",
+      "FN1006",
+      "FN1007",
+      "FN1008",
+      "FN1009",
+      "FN1010",
+      "FN1011",
+      "FN1012",
+      "FN1013",
+      "FN1014",
+      "FN1015",
+      "FN1016",
+      "FN1017",
+      "FN1018",
+      "FN1019",
+      "FN1020",
+      "FN1021",
+      "FN1022",
+      "FN1023",
+      "FN1024",
+      "FN1025",
+      "FN1026",
+      "FN1027",
+      "FN1028",
+      "FN1029",
+      "FN1030",
+      "FN1031",
+      "FN1032"
+    ],
+    "function_count": 32
+  },
+  {
+    "id": "FF11",
+    "name": {
+      "nl": "Sociaal werk, begeleiding en gehandicaptenzorg",
+      "en": "Social work and support services"
+    },
+    "slug": {
+      "nl": "sociaal-werk-begeleiding-en-gehandicaptenzorg",
+      "en": "social-work-and-support-services"
+    },
+    "isco": "26/34/53",
+    "description": {
+      "nl": "Functies die mensen begeleiden bij dagelijks functioneren, participatie en zelfregie, met gesprekken, ondersteuningsplannen, samenwerking in ketens en handelen binnen wettelijke en ethische kaders.",
+      "en": "Roles that support people with daily functioning, participation and self direction through conversations, support plans, collaboration across service chains and working within legal and ethical frameworks."
+    },
+    "typical_roles": {
+      "nl": "sociaal werker, persoonlijk begeleider gehandicaptenzorg, woonbegeleider, jeugdhulpverlener, clientondersteuner, teamcoach begeleiding",
+      "en": "social worker, personal support worker in disability services, residential support worker, youth care worker, client advocate, support team coach"
+    },
+    "seniority_delta": {
+      "junior": -1,
+      "medior": 0,
+      "senior": 1,
+      "lead": 1
+    },
+    "base_profile": [
+      {
+        "skill_id": "HF-D1.2-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Probleemanalyse",
+          "en": "Problem analysis"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.1-002",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Gespreksvoering",
+          "en": "Conversation management"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.1-004",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Luisteren en doorvragen",
+          "en": "Listening and probing"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D2.2-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Correspondentie en dossiervorming",
+          "en": "Correspondence and record keeping"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.3-003",
+        "target_level": 3,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Adviesvaardigheid",
+          "en": "Advisory skill"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D3.2-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "sensitiviteit",
+          "en": "interpersonal sensitivity"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D3.3-004",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "de-escaleren en grenzen stellen",
+          "en": "de-escalating and setting limits"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D3.4-003",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "integriteit en betrouwbaarheid",
+          "en": "integrity and dependability"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D3.6-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "omgaan met verschil en diversiteit van perspectief",
+          "en": "working with difference and diversity of perspective"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D3.5-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "samenwerken in ketens en allianties",
+          "en": "collaborating in chains and alliances"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.3-001",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Stressbestendigheid",
+          "en": "Stress tolerance"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D5.5-004",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Grenzen en energie beheren",
+          "en": "Managing boundaries and energy"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D5.4-005",
+        "target_level": 3,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Improviseren binnen kaders",
+          "en": "Improvising within boundaries"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D6.1-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Reflecteren op eigen praktijk",
+          "en": "Reflecting on own practice"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.1-001",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Werken met digitale apparaten en applicaties",
+          "en": "Working with digital devices and applications"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.3-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "AVG en privacy in de praktijk",
+          "en": "GDPR and privacy in practice"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D9.1-004",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Ondersteuning in de gehandicaptenzorg",
+          "en": "Support in disability care"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.1-003",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Methodisch zorgproces en dossiervorming",
+          "en": "Methodical care process and record keeping"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.1-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Veilig tillen en bewegen in de zorg",
+          "en": "Safe lifting and moving in care"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.6-005",
+        "target_level": 2,
+        "weight": 1,
+        "critical": false,
+        "name": {
+          "nl": "Subsidie- en regelingenkennis",
+          "en": "Knowledge of grants and schemes"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D9.10-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Publieke dienstverlening aan burgers",
+          "en": "Public service delivery to citizens"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D10.4-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Veiligheidsbewustzijn",
+          "en": "Safety awareness"
+        },
+        "type": "G"
+      }
+    ],
+    "function_ids": [
+      "FN1101",
+      "FN1102",
+      "FN1103",
+      "FN1104",
+      "FN1105",
+      "FN1106",
+      "FN1107",
+      "FN1108",
+      "FN1109",
+      "FN1110",
+      "FN1111",
+      "FN1112",
+      "FN1113",
+      "FN1114",
+      "FN1115",
+      "FN1116",
+      "FN1117",
+      "FN1118",
+      "FN1119",
+      "FN1120",
+      "FN1121",
+      "FN1122",
+      "FN1123",
+      "FN1124",
+      "FN1125",
+      "FN1126"
+    ],
+    "function_count": 26
+  },
+  {
+    "id": "FF12",
+    "name": {
+      "nl": "Onderwijs en opleiden",
+      "en": "Education and training"
+    },
+    "slug": {
+      "nl": "onderwijs-en-opleiden",
+      "en": "education-and-training"
+    },
+    "isco": "23",
+    "description": {
+      "nl": "Functies die leren ontwerpen, uitvoeren en beoordelen voor groepen en individuen, met didactisch en pedagogisch handelen, begeleiding van deelnemers en contact met ouders of opdrachtgevers.",
+      "en": "Roles that design, deliver and assess learning for groups and individuals through instructional and pedagogical practice, guidance of participants and contact with parents or commissioning parties."
+    },
+    "typical_roles": {
+      "nl": "leraar basisonderwijs, docent voortgezet onderwijs, docent mbo, trainer, opleidingsadviseur, onderwijsontwikkelaar",
+      "en": "primary school teacher, secondary school teacher, vocational teacher, corporate trainer, learning advisor, curriculum developer"
+    },
+    "seniority_delta": {
+      "junior": -1,
+      "medior": 0,
+      "senior": 1,
+      "lead": 1
+    },
+    "base_profile": [
+      {
+        "skill_id": "HF-D1.1-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Verbaal redeneren",
+          "en": "Verbal reasoning"
+        },
+        "type": "A"
+      },
+      {
+        "skill_id": "HF-D1.2-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Kritisch denken en bronbeoordeling",
+          "en": "Critical thinking and source evaluation"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.1-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Helder mondeling uitdrukken",
+          "en": "Clear oral expression"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.1-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Presenteren",
+          "en": "Presenting"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.2-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Schriftelijke uitdrukkingsvaardigheid",
+          "en": "Written expression"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D3.2-001",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "sensitiviteit",
+          "en": "interpersonal sensitivity"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D3.3-004",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "de-escaleren en grenzen stellen",
+          "en": "de-escalating and setting limits"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D3.1-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "samenwerken in teams",
+          "en": "working in teams"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D4.4-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Plannen en organiseren",
+          "en": "Planning and organising"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.3-001",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Stressbestendigheid",
+          "en": "Stress tolerance"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D5.5-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Professionele houding en representativiteit",
+          "en": "Professional demeanour and representation"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D6.2-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Professioneel bijblijven en vakliteratuur",
+          "en": "Professional currency and specialist literature"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D6.1-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Reflecteren op eigen praktijk",
+          "en": "Reflecting on own practice"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.1-001",
+        "target_level": 3,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Werken met digitale apparaten en applicaties",
+          "en": "Working with digital devices and applications"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.1-004",
+        "target_level": 2,
+        "weight": 1,
+        "critical": false,
+        "name": {
+          "nl": "Samenwerkingsplatformen benutten",
+          "en": "Using collaboration platforms"
+        },
+        "type": "T"
+      },
+      {
+        "skill_id": "HF-D7.7-001",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "AI-geletterdheid",
+          "en": "AI literacy"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D9.2-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Didactisch handelen",
+          "en": "Instructional practice"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.2-002",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Pedagogisch handelen",
+          "en": "Pedagogical practice"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.2-003",
+        "target_level": 3,
+        "weight": 4,
+        "critical": true,
+        "name": {
+          "nl": "Toetsen en beoordelen",
+          "en": "Assessment and grading"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.2-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Onderwijsontwerp en curriculum",
+          "en": "Instructional design and curriculum"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.2-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Leerlingbegeleiding",
+          "en": "Pupil guidance"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.2-006",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Ouder- en verzorgercommunicatie",
+          "en": "Communication with parents and carers"
+        },
+        "type": "V"
+      }
+    ],
+    "function_ids": [
+      "FN1201",
+      "FN1202",
+      "FN1203",
+      "FN1204",
+      "FN1205",
+      "FN1206",
+      "FN1207",
+      "FN1208",
+      "FN1209",
+      "FN1210",
+      "FN1211",
+      "FN1212",
+      "FN1213",
+      "FN1214",
+      "FN1215",
+      "FN1216",
+      "FN1217",
+      "FN1218",
+      "FN1219",
+      "FN1220",
+      "FN1221",
+      "FN1222",
+      "FN1223",
+      "FN1224",
+      "FN1225",
+      "FN1226"
+    ],
+    "function_count": 26
+  },
+  {
+    "id": "FF13",
+    "name": {
+      "nl": "Techniek, onderhoud en productie",
+      "en": "Engineering, maintenance and production"
+    },
+    "slug": {
+      "nl": "techniek-onderhoud-en-productie",
+      "en": "engineering-maintenance-and-production"
+    },
+    "isco": "21/31/72/81",
+    "description": {
+      "nl": "Functies die machines en installaties bedienen, onderhouden en storingsvrij houden, technische documentatie gebruiken, metingen uitvoeren en produceren binnen vaste kwaliteits- en veiligheidsnormen.",
+      "en": "Roles that operate, maintain and troubleshoot machines and installations, use technical documentation, carry out measurements and produce within fixed quality and safety standards."
+    },
+    "typical_roles": {
+      "nl": "onderhoudsmonteur, servicetechnicus, machinebediener, productiemedewerker, meet en regeltechnicus, technisch teamleider",
+      "en": "maintenance technician, service technician, machine operator, production operative, instrumentation technician, technical team leader"
+    },
+    "seniority_delta": {
+      "junior": -1,
+      "medior": 0,
+      "senior": 1,
+      "lead": 1
+    },
+    "base_profile": [
+      {
+        "skill_id": "HF-D1.1-006",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Ruimtelijk inzicht",
+          "en": "Spatial ability"
+        },
+        "type": "A"
+      },
+      {
+        "skill_id": "HF-D1.2-001",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Probleemanalyse",
+          "en": "Problem analysis"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D1.6-002",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Kwaliteitscontrole",
+          "en": "Quality control"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.2-002",
+        "target_level": 2,
+        "weight": 1,
+        "critical": false,
+        "name": {
+          "nl": "Zakelijk rapporteren",
+          "en": "Business reporting"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D3.1-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "samenwerken in teams",
+          "en": "working in teams"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.1-003",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Discipline en afspraken nakomen",
+          "en": "Discipline and keeping commitments"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D5.2-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Eigenaarschap tonen",
+          "en": "Demonstrating ownership"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D5.3-004",
+        "target_level": 3,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Omgaan met werkdruk",
+          "en": "Managing workload pressure"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D6.2-005",
+        "target_level": 3,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Professioneel bijblijven en vakliteratuur",
+          "en": "Professional currency and specialist literature"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D6.3-003",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Begeleiden op de werkvloer",
+          "en": "Guiding on the job"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.1-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Werken met digitale apparaten en applicaties",
+          "en": "Working with digital devices and applications"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.3-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Technisch inzicht",
+          "en": "Technical understanding"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D9.3-002",
+        "target_level": 3,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Mechanisch onderhoud",
+          "en": "Mechanical maintenance"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.3-003",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Elektrotechnisch werken",
+          "en": "Electrical engineering work"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.3-006",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Meten en kalibreren",
+          "en": "Measurement and calibration"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.4-003",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Technische tekeningen lezen en toepassen",
+          "en": "Reading and applying technical drawings"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D10.2-001",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Machines bedienen",
+          "en": "Operating machines"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D10.2-003",
+        "target_level": 3,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Storingen aan machines herkennen en verhelpen",
+          "en": "Recognising and resolving machine faults"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D10.2-004",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Preventief onderhoud uitvoeren",
+          "en": "Performing preventive maintenance"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D10.4-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Veiligheidsbewustzijn",
+          "en": "Safety awareness"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D10.4-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Persoonlijke beschermingsmiddelen correct gebruiken",
+          "en": "Using personal protective equipment correctly"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D10.3-005",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Werkplekorganisatie en 5S toepassen",
+          "en": "Applying workplace organisation and 5S"
+        },
+        "type": "V"
+      }
+    ],
+    "function_ids": [
+      "FN1301",
+      "FN1302",
+      "FN1303",
+      "FN1304",
+      "FN1305",
+      "FN1306",
+      "FN1307",
+      "FN1308",
+      "FN1309",
+      "FN1310",
+      "FN1311",
+      "FN1312",
+      "FN1313",
+      "FN1314",
+      "FN1315",
+      "FN1316",
+      "FN1317",
+      "FN1318",
+      "FN1319",
+      "FN1320",
+      "FN1321",
+      "FN1322",
+      "FN1323",
+      "FN1324",
+      "FN1325",
+      "FN1326",
+      "FN1327",
+      "FN1328",
+      "FN1329",
+      "FN1330",
+      "FN1331",
+      "FN1332"
+    ],
+    "function_count": 32
+  },
+  {
+    "id": "FF14",
+    "name": {
+      "nl": "Bouw, installatie en infra",
+      "en": "Construction, installation and infrastructure"
+    },
+    "slug": {
+      "nl": "bouw-installatie-en-infra",
+      "en": "construction-installation-and-infrastructure"
+    },
+    "isco": "21/31/71",
+    "description": {
+      "nl": "Functies die bouwkundige en installatietechnische werken voorbereiden en uitvoeren op locatie, tekeningen en normen toepassen, materialen kiezen en veilig werken onder wisselende buitenomstandigheden.",
+      "en": "Roles that prepare and carry out construction and building services work on site, apply drawings and standards, select materials and work safely under varying outdoor conditions."
+    },
+    "typical_roles": {
+      "nl": "uitvoerder bouw, werkvoorbereider, installateur, monteur werktuigbouw, calculator, projectleider infra",
+      "en": "site manager, work planner, installation engineer, mechanical fitter, estimator, infrastructure project leader"
+    },
+    "seniority_delta": {
+      "junior": -1,
+      "medior": 0,
+      "senior": 1,
+      "lead": 1
+    },
+    "base_profile": [
+      {
+        "skill_id": "HF-D1.1-006",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Ruimtelijk inzicht",
+          "en": "Spatial ability"
+        },
+        "type": "A"
+      },
+      {
+        "skill_id": "HF-D1.4-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Risicobeoordeling",
+          "en": "Risk assessment"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.5-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Klantgerichtheid",
+          "en": "Client focus"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D3.1-002",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "afstemmen en coördineren",
+          "en": "aligning and coordinating"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D4.4-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Plannen en organiseren",
+          "en": "Planning and organising"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.1-003",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Discipline en afspraken nakomen",
+          "en": "Discipline and keeping commitments"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D5.2-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Doorzettingsvermogen",
+          "en": "Perseverance"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D6.3-003",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Begeleiden op de werkvloer",
+          "en": "Guiding on the job"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.1-001",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Werken met digitale apparaten en applicaties",
+          "en": "Working with digital devices and applications"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.4-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Bouwtechnisch werken",
+          "en": "Construction craft work"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.4-003",
+        "target_level": 3,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Technische tekeningen lezen en toepassen",
+          "en": "Reading and applying technical drawings"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.4-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Werkvoorbereiding bouw",
+          "en": "Construction work preparation"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.4-004",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Bouwregelgeving en normen toepassen",
+          "en": "Applying building regulations and standards"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D9.4-005",
+        "target_level": 2,
+        "weight": 1,
+        "critical": false,
+        "name": {
+          "nl": "Duurzaam en energetisch bouwen",
+          "en": "Sustainable and energy efficient construction"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D9.4-006",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Uitvoeringstoezicht op de bouwplaats",
+          "en": "Site supervision on construction projects"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.3-005",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Installatietechniek",
+          "en": "Building services engineering"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D10.4-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Veiligheidsbewustzijn",
+          "en": "Safety awareness"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D10.4-003",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Persoonlijke beschermingsmiddelen correct gebruiken",
+          "en": "Using personal protective equipment correctly"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D10.4-004",
+        "target_level": 3,
+        "weight": 4,
+        "critical": true,
+        "name": {
+          "nl": "Veilig werken op hoogte en in besloten ruimten",
+          "en": "Working safely at height and in confined spaces"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D10.2-002",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Gereedschap kiezen en gebruiken",
+          "en": "Selecting and using tools"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D10.3-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Materiaalkennis toepassen",
+          "en": "Applying materials knowledge"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D10.1-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Fysieke kracht en belastbaarheid",
+          "en": "Physical strength and endurance"
+        },
+        "type": "A"
+      },
+      {
+        "skill_id": "HF-D10.6-003",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Werken in extreme omstandigheden",
+          "en": "Working in extreme conditions"
+        },
+        "type": "V"
+      }
+    ],
+    "function_ids": [
+      "FN1401",
+      "FN1402",
+      "FN1403",
+      "FN1404",
+      "FN1405",
+      "FN1406",
+      "FN1407",
+      "FN1408",
+      "FN1409",
+      "FN1410",
+      "FN1411",
+      "FN1412",
+      "FN1413",
+      "FN1414",
+      "FN1415",
+      "FN1416",
+      "FN1417",
+      "FN1418",
+      "FN1419",
+      "FN1420",
+      "FN1421",
+      "FN1422",
+      "FN1423",
+      "FN1424",
+      "FN1425",
+      "FN1426",
+      "FN1427",
+      "FN1428"
+    ],
+    "function_count": 28
+  },
+  {
+    "id": "FF15",
+    "name": {
+      "nl": "Logistiek, transport en supply chain",
+      "en": "Logistics, transport and supply chain"
+    },
+    "slug": {
+      "nl": "logistiek-transport-en-supply-chain",
+      "en": "logistics-transport-and-supply-chain"
+    },
+    "isco": "43/83/93",
+    "description": {
+      "nl": "Functies die goederenstromen plannen, uitvoeren en administreren, voorraden bijhouden, transport en distributie regelen en werken met logistieke systemen onder tijdsdruk en vaste veiligheidsregels.",
+      "en": "Roles that plan, execute and administer goods flows, maintain stock, arrange transport and distribution and work with logistics systems under time pressure and fixed safety rules."
+    },
+    "typical_roles": {
+      "nl": "logistiek planner, transportplanner, warehousemedewerker, teamleider warehouse, expeditiemedewerker, supply chain analist",
+      "en": "logistics planner, transport planner, warehouse operative, warehouse team leader, shipping clerk, supply chain analyst"
+    },
+    "seniority_delta": {
+      "junior": -1,
+      "medior": 0,
+      "senior": 1,
+      "lead": 1
+    },
+    "base_profile": [
+      {
+        "skill_id": "HF-D1.6-001",
+        "target_level": 3,
+        "weight": 4,
+        "critical": true,
+        "name": {
+          "nl": "Nauwkeurigheid en aandacht voor detail",
+          "en": "Accuracy and attention to detail"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D1.4-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Prioriteren en afwegen",
+          "en": "Prioritising and weighing options"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.1-001",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Helder mondeling uitdrukken",
+          "en": "Clear oral expression"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D3.1-002",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "afstemmen en coördineren",
+          "en": "aligning and coordinating"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D4.4-001",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Plannen en organiseren",
+          "en": "Planning and organising"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.1-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Tijdmanagement en prioriteren",
+          "en": "Time management and prioritising"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.1-003",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Discipline en afspraken nakomen",
+          "en": "Discipline and keeping commitments"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D5.3-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Omgaan met werkdruk",
+          "en": "Managing workload pressure"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D6.1-005",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Kennis vasthouden en toepassen",
+          "en": "Retaining and applying knowledge"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.1-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Werken met digitale apparaten en applicaties",
+          "en": "Working with digital devices and applications"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.1-003",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Spreadsheets en rekenbladen",
+          "en": "Spreadsheets and worksheets"
+        },
+        "type": "T"
+      },
+      {
+        "skill_id": "HF-D8.6-006",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Serviceniveaus en prestatie-indicatoren beheren",
+          "en": "Managing service levels and performance indicators"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.8-001",
+        "target_level": 3,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Logistieke planning",
+          "en": "Logistics planning"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.8-002",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Voorraadbeheer operationeel",
+          "en": "Operational inventory management"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.8-003",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Transport en distributie uitvoeren",
+          "en": "Executing transport and distribution"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.8-004",
+        "target_level": 2,
+        "weight": 1,
+        "critical": false,
+        "name": {
+          "nl": "Douane en internationale handelsdocumentatie",
+          "en": "Customs and international trade documentation"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D9.8-005",
+        "target_level": 3,
+        "weight": 4,
+        "critical": true,
+        "name": {
+          "nl": "Warehousemanagementsystemen gebruiken",
+          "en": "Using warehouse management systems"
+        },
+        "type": "T"
+      },
+      {
+        "skill_id": "HF-D9.8-006",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Ladingzekering en veiligheid in transport",
+          "en": "Load securing and transport safety"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D10.4-001",
+        "target_level": 3,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Veiligheidsbewustzijn",
+          "en": "Safety awareness"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D10.2-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Machines bedienen",
+          "en": "Operating machines"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D10.3-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Tempo vasthouden in repetitief werk",
+          "en": "Sustaining pace in repetitive work"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D10.6-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Omgaan met wisseldiensten en onregelmatige werktijden",
+          "en": "Working with shift work and irregular hours"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D10.1-003",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Fysieke kracht en belastbaarheid",
+          "en": "Physical strength and endurance"
+        },
+        "type": "A"
+      }
+    ],
+    "function_ids": [
+      "FN1501",
+      "FN1502",
+      "FN1503",
+      "FN1504",
+      "FN1505",
+      "FN1506",
+      "FN1507",
+      "FN1508",
+      "FN1509",
+      "FN1510",
+      "FN1511",
+      "FN1512",
+      "FN1513",
+      "FN1514",
+      "FN1515",
+      "FN1516",
+      "FN1517",
+      "FN1518",
+      "FN1519",
+      "FN1520",
+      "FN1521",
+      "FN1522",
+      "FN1523",
+      "FN1524",
+      "FN1525",
+      "FN1526"
+    ],
+    "function_count": 26
+  },
+  {
+    "id": "FF16",
+    "name": {
+      "nl": "Klantcontact, service en administratie",
+      "en": "Customer service and administration"
+    },
+    "slug": {
+      "nl": "klantcontact-service-en-administratie",
+      "en": "customer-service-and-administration"
+    },
+    "isco": "41/42/44",
+    "description": {
+      "nl": "Functies die klantvragen aannemen en afhandelen via telefoon, mail en chat, klachten oplossen, gegevens correct vastleggen en administratieve processen uitvoeren in klant en kantoorsystemen.",
+      "en": "Roles that receive and handle client questions by phone, email and chat, resolve complaints, record data accurately and carry out administrative processes in client and office systems."
+    },
+    "typical_roles": {
+      "nl": "klantenservicemedewerker, servicedeskmedewerker, administratief medewerker, backofficemedewerker, receptionist, teamleider klantcontact",
+      "en": "customer service representative, service desk agent, administrative assistant, back office officer, receptionist, customer contact team leader"
+    },
+    "seniority_delta": {
+      "junior": -1,
+      "medior": 0,
+      "senior": 1,
+      "lead": 1
+    },
+    "base_profile": [
+      {
+        "skill_id": "HF-D1.6-001",
+        "target_level": 3,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Nauwkeurigheid en aandacht voor detail",
+          "en": "Accuracy and attention to detail"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D1.2-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Informatie verzamelen en filteren",
+          "en": "Information gathering and filtering"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.5-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Klantgerichtheid",
+          "en": "Client focus"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D2.5-002",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Klachtbehandeling",
+          "en": "Complaint handling"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.5-004",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Servicegesprekken en telefonie",
+          "en": "Service calls and telephone contact"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.5-005",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Schriftelijke klantcommunicatie",
+          "en": "Written client communication"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.5-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Verwachtingsmanagement",
+          "en": "Expectation management"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.4-001",
+        "target_level": 3,
+        "weight": 4,
+        "critical": true,
+        "name": {
+          "nl": "Nederlands taalvaardigheid beroepsniveau",
+          "en": "Dutch language proficiency at professional level"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D3.3-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "de-escaleren en grenzen stellen",
+          "en": "de-escalating and setting limits"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.3-001",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Stressbestendigheid",
+          "en": "Stress tolerance"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D5.1-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Tijdmanagement en prioriteren",
+          "en": "Time management and prioritising"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.4-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Schakelen tussen taken en rollen",
+          "en": "Switching between tasks and roles"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D6.1-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Kennis vasthouden en toepassen",
+          "en": "Retaining and applying knowledge"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.1-001",
+        "target_level": 3,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Werken met digitale apparaten en applicaties",
+          "en": "Working with digital devices and applications"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.1-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Tekstverwerking en documentbeheer",
+          "en": "Word processing and document management"
+        },
+        "type": "T"
+      },
+      {
+        "skill_id": "HF-D7.1-003",
+        "target_level": 2,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Spreadsheets en rekenbladen",
+          "en": "Spreadsheets and worksheets"
+        },
+        "type": "T"
+      },
+      {
+        "skill_id": "HF-D7.3-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "AVG en privacy in de praktijk",
+          "en": "GDPR and privacy in practice"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D7.7-002",
+        "target_level": 2,
+        "weight": 1,
+        "critical": false,
+        "name": {
+          "nl": "Prompting en taakdelegatie aan AI",
+          "en": "Prompting and task delegation to AI"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.4-006",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Facturatie en debiteurenbeheer",
+          "en": "Invoicing and accounts receivable"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.6-006",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Serviceniveaus en prestatie-indicatoren beheren",
+          "en": "Managing service levels and performance indicators"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.5-001",
+        "target_level": 2,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Financiële administratie",
+          "en": "Financial administration"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.10-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Informatiehuishouding en archiefbeheer",
+          "en": "Information management and archiving"
+        },
+        "type": "V"
+      }
+    ],
+    "function_ids": [
+      "FN1601",
+      "FN1602",
+      "FN1603",
+      "FN1604",
+      "FN1605",
+      "FN1606",
+      "FN1607",
+      "FN1608",
+      "FN1609",
+      "FN1610",
+      "FN1611",
+      "FN1612",
+      "FN1613",
+      "FN1614",
+      "FN1615",
+      "FN1616",
+      "FN1617",
+      "FN1618",
+      "FN1619",
+      "FN1620",
+      "FN1621",
+      "FN1622",
+      "FN1623",
+      "FN1624"
+    ],
+    "function_count": 24
+  },
+  {
+    "id": "FF17",
+    "name": {
+      "nl": "Juridisch, beleid en publiek bestuur",
+      "en": "Legal, policy and public administration"
+    },
+    "slug": {
+      "nl": "juridisch-beleid-en-publiek-bestuur",
+      "en": "legal-policy-and-public-administration"
+    },
+    "isco": "26/33/34",
+    "description": {
+      "nl": "Functies die regelgeving uitleggen en toepassen, juridische en beleidsmatige vraagstukken analyseren, adviezen en besluiten onderbouwen en belangen van bestuur, burgers en toezichthouders afwegen.",
+      "en": "Roles that interpret and apply regulation, analyse legal and policy questions, substantiate advice and decisions and weigh the interests of governing bodies, citizens and supervisory authorities."
+    },
+    "typical_roles": {
+      "nl": "juridisch medewerker, bedrijfsjurist, beleidsadviseur, bestuursadviseur, medewerker bezwaar en beroep, compliance officer",
+      "en": "legal officer, in house counsel, policy advisor, governance advisor, objections and appeals officer, compliance officer"
+    },
+    "seniority_delta": {
+      "junior": -1,
+      "medior": 0,
+      "senior": 1,
+      "lead": 1
+    },
+    "base_profile": [
+      {
+        "skill_id": "HF-D1.1-001",
+        "target_level": 4,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Verbaal redeneren",
+          "en": "Verbal reasoning"
+        },
+        "type": "A"
+      },
+      {
+        "skill_id": "HF-D1.2-004",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Kritisch denken en bronbeoordeling",
+          "en": "Critical thinking and source evaluation"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D1.2-003",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Oordeelsvorming onder onzekerheid",
+          "en": "Judgement under uncertainty"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D1.3-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Systeemdenken",
+          "en": "Systems thinking"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.2-002",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Zakelijk rapporteren",
+          "en": "Business reporting"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.3-003",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Adviesvaardigheid",
+          "en": "Advisory skill"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.3-005",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Stakeholdermanagement",
+          "en": "Stakeholder management"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.2-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Redigeren en vereenvoudigen",
+          "en": "Editing and plain language"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D3.2-003",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "organisatiesensitiviteit",
+          "en": "organisational awareness"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D3.4-003",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "integriteit en betrouwbaarheid",
+          "en": "integrity and dependability"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D3.4-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "onafhankelijkheid",
+          "en": "independence"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D5.1-004",
+        "target_level": 3,
+        "weight": 1,
+        "critical": false,
+        "name": {
+          "nl": "Plannen van eigen werk",
+          "en": "Planning own work"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.3-001",
+        "target_level": 3,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Stressbestendigheid",
+          "en": "Stress tolerance"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D6.2-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Professioneel bijblijven en vakliteratuur",
+          "en": "Professional currency and specialist literature"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.1-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Digitale informatie zoeken en beoordelen",
+          "en": "Searching and evaluating digital information"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.3-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "AVG en privacy in de praktijk",
+          "en": "GDPR and privacy in practice"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D8.7-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Juridische basiskennis contracten",
+          "en": "Basic contract law knowledge"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D8.7-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Sectorregelgeving naleven",
+          "en": "Complying with sector regulation"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D9.6-001",
+        "target_level": 4,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Juridische analyse",
+          "en": "Legal analysis"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.6-002",
+        "target_level": 3,
+        "weight": 5,
+        "critical": false,
+        "name": {
+          "nl": "Wetgevingstoepassing",
+          "en": "Applying legislation"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D9.6-006",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Beleidsontwikkeling",
+          "en": "Policy development"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.6-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Bestuurlijke besluitvorming",
+          "en": "Public governance decision making"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.6-004",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Bezwaar en beroep behandelen",
+          "en": "Handling objections and appeals"
+        },
+        "type": "V"
+      }
+    ],
+    "function_ids": [
+      "FN1701",
+      "FN1702",
+      "FN1703",
+      "FN1704",
+      "FN1705",
+      "FN1706",
+      "FN1707",
+      "FN1708",
+      "FN1709",
+      "FN1710",
+      "FN1711",
+      "FN1712",
+      "FN1713",
+      "FN1714",
+      "FN1715",
+      "FN1716",
+      "FN1717",
+      "FN1718",
+      "FN1719",
+      "FN1720",
+      "FN1721",
+      "FN1722",
+      "FN1723",
+      "FN1724"
+    ],
+    "function_count": 24
+  },
+  {
+    "id": "FF18",
+    "name": {
+      "nl": "Horeca, retail en gastvrijheid",
+      "en": "Hospitality, retail and guest services"
+    },
+    "slug": {
+      "nl": "horeca-retail-en-gastvrijheid",
+      "en": "hospitality-retail-and-guest-services"
+    },
+    "isco": "51/52/94",
+    "description": {
+      "nl": "Functies die gasten en klanten direct bedienen op de vloer, verkoop en betaling afhandelen, presentatie en voorraad op orde houden en hygiene en veiligheid volgens vaste codes naleven.",
+      "en": "Roles that serve guests and customers directly on the floor, handle sales and payment, keep presentation and stock in order and follow fixed hygiene and safety codes."
+    },
+    "typical_roles": {
+      "nl": "medewerker bediening, kok, barista, verkoopmedewerker, filiaalmanager, shiftleader horeca",
+      "en": "waiting staff, cook, barista, sales assistant, store manager, hospitality shift leader"
+    },
+    "seniority_delta": {
+      "junior": -1,
+      "medior": 0,
+      "senior": 1,
+      "lead": 1
+    },
+    "base_profile": [
+      {
+        "skill_id": "HF-D1.6-001",
+        "target_level": 2,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Nauwkeurigheid en aandacht voor detail",
+          "en": "Accuracy and attention to detail"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D2.5-001",
+        "target_level": 3,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Klantgerichtheid",
+          "en": "Client focus"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D2.5-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Klachtbehandeling",
+          "en": "Complaint handling"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.1-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Helder mondeling uitdrukken",
+          "en": "Clear oral expression"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D2.4-002",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Engels taalvaardigheid beroepsniveau",
+          "en": "English language proficiency at professional level"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D3.1-001",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "samenwerken in teams",
+          "en": "working in teams"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D3.3-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "de-escaleren en grenzen stellen",
+          "en": "de-escalating and setting limits"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D5.3-004",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Omgaan met werkdruk",
+          "en": "Managing workload pressure"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D5.4-005",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Improviseren binnen kaders",
+          "en": "Improvising within boundaries"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D5.5-005",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Professionele houding en representativiteit",
+          "en": "Professional demeanour and representation"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D5.1-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Discipline en afspraken nakomen",
+          "en": "Discipline and keeping commitments"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D6.3-003",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Begeleiden op de werkvloer",
+          "en": "Guiding on the job"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D7.1-001",
+        "target_level": 2,
+        "weight": 2,
+        "critical": false,
+        "name": {
+          "nl": "Werken met digitale apparaten en applicaties",
+          "en": "Working with digital devices and applications"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D8.1-001",
+        "target_level": 2,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Commercieel vermogen",
+          "en": "Commercial capability"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D9.9-001",
+        "target_level": 3,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Gastvrijheidsverlening",
+          "en": "Hospitality service"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.9-002",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Kassa en betaalverwerking",
+          "en": "Point of sale and payment handling"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.9-003",
+        "target_level": 3,
+        "weight": 5,
+        "critical": true,
+        "name": {
+          "nl": "Voedselveiligheid en hygiënecode toepassen",
+          "en": "Applying food safety and hygiene codes"
+        },
+        "type": "K"
+      },
+      {
+        "skill_id": "HF-D9.9-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Winkelvloer en presentatie beheren",
+          "en": "Managing shop floor and presentation"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.9-005",
+        "target_level": 2,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Voorraad en derving beheersen",
+          "en": "Controlling stock and shrinkage"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D9.9-006",
+        "target_level": 2,
+        "weight": 1,
+        "critical": false,
+        "name": {
+          "nl": "Evenement en banqueting uitvoeren",
+          "en": "Delivering events and banqueting"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D10.3-004",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Tempo vasthouden in repetitief werk",
+          "en": "Sustaining pace in repetitive work"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D10.6-002",
+        "target_level": 3,
+        "weight": 4,
+        "critical": false,
+        "name": {
+          "nl": "Omgaan met wisseldiensten en onregelmatige werktijden",
+          "en": "Working with shift work and irregular hours"
+        },
+        "type": "V"
+      },
+      {
+        "skill_id": "HF-D10.4-001",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Veiligheidsbewustzijn",
+          "en": "Safety awareness"
+        },
+        "type": "G"
+      },
+      {
+        "skill_id": "HF-D10.1-003",
+        "target_level": 3,
+        "weight": 3,
+        "critical": false,
+        "name": {
+          "nl": "Fysieke kracht en belastbaarheid",
+          "en": "Physical strength and endurance"
+        },
+        "type": "A"
+      }
+    ],
+    "function_ids": [
+      "FN1801",
+      "FN1802",
+      "FN1803",
+      "FN1804",
+      "FN1805",
+      "FN1806",
+      "FN1807",
+      "FN1808",
+      "FN1809",
+      "FN1810",
+      "FN1811",
+      "FN1812",
+      "FN1813",
+      "FN1814",
+      "FN1815",
+      "FN1816",
+      "FN1817",
+      "FN1818",
+      "FN1819",
+      "FN1820",
+      "FN1821",
+      "FN1822",
+      "FN1823",
+      "FN1824"
+    ],
+    "function_count": 24
+  }
+]

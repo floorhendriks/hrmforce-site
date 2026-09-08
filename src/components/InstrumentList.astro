@@ -1,0 +1,16 @@
+---
+import { useT } from '../lib/i18n';
+interface Props { items: any[]; lang: string }
+const { items, lang } = Astro.props;
+const t = useT(lang);
+const dl = lang === 'nl' ? 'nl' : 'en';
+---
+<div class="hsf-cards">
+  {items.map((i) => (
+    <a class="hsf-card hsf-card-link" href={i.url}>
+      <div class="hsf-badges"><span class="hsf-badge accent">{i.skills ?? i.count} {t('count.constructs')}</span></div>
+      <h3 style="margin:.5rem 0 .25rem;font-size:1rem">{i.instrument}</h3>
+      <p class="hsf-small hsf-muted" style="margin:0">{i.description || i[dl] || ''}</p>
+    </a>
+  ))}
+</div>

@@ -1,0 +1,1049 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hrmforce.com/schemas/hsf/2.0/dataset.schema.json",
+  "title": "hrmforce Skills Framework 2.0, datasetschema",
+  "description": "Schema voor de vijf datasets in src/data. Elk bestand valideert tegen het bijbehorende $defs-onderdeel: meta.json tegen Meta, domains.json tegen DomainList, skills.json tegen ConstructList, families.json tegen FamilyList, functions-index.json tegen FunctionIndexList en functions/FNxxxx.json tegen FunctionFull.",
+  "$defs": {
+    "i18n": {
+      "type": "object",
+      "required": [
+        "nl",
+        "en"
+      ],
+      "properties": {
+        "nl": {
+          "type": "string"
+        },
+        "en": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "i18nList": {
+      "type": "object",
+      "required": [
+        "nl",
+        "en"
+      ],
+      "properties": {
+        "nl": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "en": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "level": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "type": {
+      "enum": [
+        "K",
+        "V",
+        "G",
+        "T",
+        "A"
+      ]
+    },
+    "reuse": {
+      "enum": [
+        "transversaal",
+        "cross-sectoraal",
+        "sectorspecifiek",
+        "functiespecifiek"
+      ]
+    },
+    "trainability": {
+      "enum": [
+        "hoog",
+        "middel",
+        "laag"
+      ]
+    },
+    "aiDemand": {
+      "enum": [
+        "stijgend",
+        "stabiel",
+        "dalend"
+      ]
+    },
+    "assessment": {
+      "enum": [
+        "Cognitieve capaciteitentest",
+        "Persoonlijkheidsvragenlijst",
+        "Kennistoets",
+        "Werkproef",
+        "Structureerd interview",
+        "Situational Judgement Test",
+        "Assessment center",
+        "360 feedback",
+        "Portfolio/bewijsstuk",
+        "Certificaat/diploma",
+        "Simulatie",
+        "Zelfrapportage met verificatie",
+        "Praktijkobservatie"
+      ]
+    },
+    "constructId": {
+      "type": "string",
+      "pattern": "^HF-D(10|[1-9])\\.[0-9]{1,2}-[0-9]{3}$"
+    },
+    "granularId": {
+      "type": "string",
+      "pattern": "^HF-D(10|[1-9])\\.[0-9]{1,2}-[0-9]{3}-[0-9]{2}$"
+    },
+    "functionId": {
+      "type": "string",
+      "pattern": "^FN[0-9]{4}$"
+    },
+    "familyId": {
+      "type": "string",
+      "pattern": "^FF[0-9]{2}$"
+    },
+    "slug": {
+      "type": "object",
+      "required": [
+        "nl",
+        "en"
+      ],
+      "properties": {
+        "nl": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "en": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "crosswalk": {
+      "type": "object",
+      "properties": {
+        "esco": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "onet": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "lightcast": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sfia": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "eu_framework": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "wef": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "anchor": {
+      "type": "object",
+      "required": [
+        "level",
+        "nl",
+        "en"
+      ],
+      "properties": {
+        "level": {
+          "enum": [
+            1,
+            3,
+            5
+          ]
+        },
+        "nl": {
+          "type": "string"
+        },
+        "en": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Granular": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "definition",
+        "type",
+        "reusability",
+        "ai_demand",
+        "aliases",
+        "crosswalk"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/granularId"
+        },
+        "name": {
+          "$ref": "#/$defs/i18n"
+        },
+        "definition": {
+          "$ref": "#/$defs/i18n"
+        },
+        "type": {
+          "$ref": "#/$defs/type"
+        },
+        "reusability": {
+          "$ref": "#/$defs/reuse"
+        },
+        "ai_demand": {
+          "$ref": "#/$defs/aiDemand"
+        },
+        "aliases": {
+          "$ref": "#/$defs/i18nList"
+        },
+        "crosswalk": {
+          "type": "object",
+          "properties": {
+            "esco": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "onet": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "lightcast": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sfia": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "Construct": {
+      "type": "object",
+      "required": [
+        "id",
+        "level",
+        "domain_id",
+        "cluster_id",
+        "name",
+        "slug",
+        "definition",
+        "type",
+        "reusability",
+        "trainability",
+        "ai_demand",
+        "anchors",
+        "assessment",
+        "instruments",
+        "crosswalk",
+        "children",
+        "child_count",
+        "used_in_functions",
+        "function_count"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/constructId"
+        },
+        "level": {
+          "const": "construct"
+        },
+        "domain_id": {
+          "type": "string",
+          "pattern": "^D(10|[1-9])$"
+        },
+        "cluster_id": {
+          "type": "string",
+          "pattern": "^D(10|[1-9])\\.[0-9]{1,2}$"
+        },
+        "name": {
+          "$ref": "#/$defs/i18n"
+        },
+        "slug": {
+          "$ref": "#/$defs/slug"
+        },
+        "definition": {
+          "$ref": "#/$defs/i18n"
+        },
+        "type": {
+          "$ref": "#/$defs/type"
+        },
+        "reusability": {
+          "$ref": "#/$defs/reuse"
+        },
+        "trainability": {
+          "$ref": "#/$defs/trainability"
+        },
+        "ai_demand": {
+          "$ref": "#/$defs/aiDemand"
+        },
+        "anchors": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "$ref": "#/$defs/anchor"
+          }
+        },
+        "assessment": {
+          "$ref": "#/$defs/assessment"
+        },
+        "instruments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "competency_2014": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "crosswalk": {
+          "$ref": "#/$defs/crosswalk"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Granular"
+          }
+        },
+        "child_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "used_in_functions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/functionId"
+          }
+        },
+        "function_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "ProfileRow": {
+      "type": "object",
+      "required": [
+        "skill_id",
+        "target_level",
+        "weight",
+        "critical",
+        "origin",
+        "name",
+        "definition",
+        "type",
+        "domain_id",
+        "cluster_id",
+        "trainability",
+        "ai_demand",
+        "assessment",
+        "instruments",
+        "anchor",
+        "anchors"
+      ],
+      "properties": {
+        "skill_id": {
+          "$ref": "#/$defs/constructId"
+        },
+        "target_level": {
+          "$ref": "#/$defs/level"
+        },
+        "weight": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "critical": {
+          "type": "boolean"
+        },
+        "origin": {
+          "enum": [
+            "familie",
+            "aangepast",
+            "functiespecifiek"
+          ]
+        },
+        "name": {
+          "$ref": "#/$defs/i18n"
+        },
+        "definition": {
+          "$ref": "#/$defs/i18n"
+        },
+        "type": {
+          "$ref": "#/$defs/type"
+        },
+        "domain_id": {
+          "type": "string"
+        },
+        "cluster_id": {
+          "type": "string"
+        },
+        "trainability": {
+          "$ref": "#/$defs/trainability"
+        },
+        "ai_demand": {
+          "$ref": "#/$defs/aiDemand"
+        },
+        "assessment": {
+          "$ref": "#/$defs/assessment"
+        },
+        "instruments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "competency_2014": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "anchor": {
+          "$ref": "#/$defs/i18n"
+        },
+        "anchors": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "$ref": "#/$defs/anchor"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "FunctionCounts": {
+      "type": "object",
+      "required": [
+        "skills",
+        "critical",
+        "competencies",
+        "weight_total"
+      ],
+      "properties": {
+        "skills": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "critical": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "competencies": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "weight_total": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "FunctionIndex": {
+      "type": "object",
+      "required": [
+        "id",
+        "family_id",
+        "title",
+        "slug",
+        "aliases",
+        "isco",
+        "brc",
+        "brc_naam",
+        "seniority_default",
+        "seniority_available",
+        "sector_tags",
+        "summary",
+        "counts"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/functionId"
+        },
+        "family_id": {
+          "$ref": "#/$defs/familyId"
+        },
+        "title": {
+          "$ref": "#/$defs/i18n"
+        },
+        "slug": {
+          "$ref": "#/$defs/slug"
+        },
+        "aliases": {
+          "$ref": "#/$defs/i18nList"
+        },
+        "isco": {
+          "type": "string",
+          "pattern": "^[0-9]{3,4}$",
+          "description": "ISCO-08 code, altijd als tekst bewaren vanwege de leidende nul in major group 0"
+        },
+        "brc": {
+          "type": "string",
+          "pattern": "^[0-9]{4}$",
+          "description": "CBS-beroepsgroep, Beroepenindeling ROA-CBS 2014 editie 2025"
+        },
+        "brc_naam": {
+          "type": "string"
+        },
+        "seniority_default": {
+          "enum": [
+            "junior",
+            "medior",
+            "senior",
+            "lead"
+          ]
+        },
+        "seniority_available": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "junior",
+              "medior",
+              "senior",
+              "lead"
+            ]
+          }
+        },
+        "sector_tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "summary": {
+          "$ref": "#/$defs/i18n"
+        },
+        "counts": {
+          "$ref": "#/$defs/FunctionCounts"
+        }
+      }
+    },
+    "FunctionFull": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/FunctionIndex"
+        },
+        {
+          "type": "object",
+          "required": [
+            "context",
+            "profile",
+            "profile_by_seniority",
+            "competencies",
+            "instrument_summary"
+          ],
+          "properties": {
+            "context": {
+              "$ref": "#/$defs/i18n"
+            },
+            "profile": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/ProfileRow"
+              }
+            },
+            "profile_by_seniority": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "skill_id",
+                    "target_level"
+                  ],
+                  "properties": {
+                    "skill_id": {
+                      "$ref": "#/$defs/constructId"
+                    },
+                    "target_level": {
+                      "$ref": "#/$defs/level"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "competencies": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/CompetencyRow"
+              }
+            },
+            "instrument_summary": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "instrument",
+                  "skills"
+                ],
+                "properties": {
+                  "instrument": {
+                    "type": "string"
+                  },
+                  "skills": {
+                    "type": "integer"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "Family": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "slug",
+        "isco",
+        "description",
+        "typical_roles",
+        "seniority_delta",
+        "base_profile",
+        "function_ids",
+        "function_count"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/familyId"
+        },
+        "name": {
+          "$ref": "#/$defs/i18n"
+        },
+        "slug": {
+          "$ref": "#/$defs/slug"
+        },
+        "isco": {
+          "type": "string"
+        },
+        "description": {
+          "$ref": "#/$defs/i18n"
+        },
+        "typical_roles": {
+          "$ref": "#/$defs/i18n"
+        },
+        "seniority_delta": {
+          "type": "object",
+          "required": [
+            "junior",
+            "medior",
+            "senior",
+            "lead"
+          ],
+          "properties": {
+            "junior": {
+              "type": "integer",
+              "minimum": -2,
+              "maximum": 2
+            },
+            "medior": {
+              "type": "integer",
+              "minimum": -2,
+              "maximum": 2
+            },
+            "senior": {
+              "type": "integer",
+              "minimum": -2,
+              "maximum": 2
+            },
+            "lead": {
+              "type": "integer",
+              "minimum": -2,
+              "maximum": 2
+            }
+          },
+          "additionalProperties": false
+        },
+        "base_profile": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "skill_id",
+              "target_level",
+              "weight",
+              "critical",
+              "name",
+              "type"
+            ],
+            "properties": {
+              "skill_id": {
+                "$ref": "#/$defs/constructId"
+              },
+              "target_level": {
+                "$ref": "#/$defs/level"
+              },
+              "weight": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 5
+              },
+              "critical": {
+                "type": "boolean"
+              },
+              "name": {
+                "$ref": "#/$defs/i18n"
+              },
+              "type": {
+                "$ref": "#/$defs/type"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "function_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/functionId"
+          }
+        },
+        "function_count": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Domain": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "slug",
+        "definition",
+        "clusters",
+        "construct_count",
+        "granular_count"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^D(10|[1-9])$"
+        },
+        "name": {
+          "$ref": "#/$defs/i18n"
+        },
+        "slug": {
+          "$ref": "#/$defs/slug"
+        },
+        "definition": {
+          "$ref": "#/$defs/i18n"
+        },
+        "clusters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "name",
+              "definition",
+              "construct_ids"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "$ref": "#/$defs/i18n"
+              },
+              "definition": {
+                "$ref": "#/$defs/i18n"
+              },
+              "construct_ids": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/constructId"
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "construct_count": {
+          "type": "integer"
+        },
+        "granular_count": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Meta": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "version",
+        "built",
+        "languages",
+        "layers",
+        "counts",
+        "skill_types",
+        "proficiency_scale",
+        "reusability_levels",
+        "assessment_methods",
+        "instruments",
+        "match_model",
+        "standards"
+      ],
+      "properties": {
+        "id": {
+          "const": "HSF"
+        },
+        "name": {
+          "$ref": "#/$defs/i18n"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "built": {
+          "type": "string",
+          "format": "date"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "languages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "planned_languages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "layers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "counts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          }
+        },
+        "skill_types": {
+          "type": "object"
+        },
+        "proficiency_scale": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5
+        },
+        "reusability_levels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "assessment_methods": {
+          "type": "object"
+        },
+        "instruments": {
+          "type": "object"
+        },
+        "match_model": {
+          "type": "object",
+          "required": [
+            "fit_per_skill",
+            "total_fit",
+            "knockout",
+            "seniority",
+            "bands"
+          ]
+        },
+        "standards": {
+          "type": "object"
+        },
+        "brc_groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "code",
+              "name"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "DomainList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Domain"
+      }
+    },
+    "ConstructList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Construct"
+      }
+    },
+    "FamilyList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Family"
+      }
+    },
+    "FunctionIndexList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/FunctionIndex"
+      }
+    },
+    "FunctionIndexStrict": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/FunctionIndex"
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "CompetencyRow": {
+      "type": "object",
+      "required": [
+        "skill_id",
+        "name",
+        "type",
+        "target_level",
+        "weight",
+        "critical",
+        "assessment",
+        "instruments",
+        "anchor"
+      ],
+      "properties": {
+        "skill_id": {
+          "$ref": "#/$defs/constructId"
+        },
+        "name": {
+          "$ref": "#/$defs/i18n"
+        },
+        "type": {
+          "$ref": "#/$defs/type"
+        },
+        "target_level": {
+          "$ref": "#/$defs/level"
+        },
+        "weight": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "critical": {
+          "type": "boolean"
+        },
+        "assessment": {
+          "$ref": "#/$defs/assessment"
+        },
+        "instruments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "competency_2014": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "anchor": {
+          "$ref": "#/$defs/i18n"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/Meta"
+    },
+    {
+      "$ref": "#/$defs/DomainList"
+    },
+    {
+      "$ref": "#/$defs/ConstructList"
+    },
+    {
+      "$ref": "#/$defs/FamilyList"
+    },
+    {
+      "$ref": "#/$defs/FunctionIndexList"
+    },
+    {
+      "$ref": "#/$defs/FunctionFull"
+    }
+  ]
+}

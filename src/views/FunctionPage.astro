@@ -1,0 +1,135 @@
+---
+import Base from '../layouts/HsfBase.astro';
+import Crumbs from '../components/Crumbs.astro';
+import ProfileTable from '../components/ProfileTable.astro';
+import CompetencyTable from '../components/CompetencyTable.astro';
+import InstrumentList from '../components/InstrumentList.astro';
+import DomainMix from '../components/DomainMix.astro';
+import LeadForm from '../components/LeadForm.astro';
+import { useT, path, SEG } from '../lib/i18n';
+import { existsSync } from 'node:fs';
+import { familyById, functionsOfFamily, domainMix, meta } from '../lib/hsf';
+interface Props { lang: string; fn: any; alternates: Record<string, string> }
+const { lang, fn, alternates } = Astro.props;
+const t = useT(lang);
+const dl = lang === 'nl' ? 'nl' : 'en';
+const fam = familyById(fn.family_id);
+const mix = domainMix(fn.profile);
+const related = functionsOfFamily(fn.family_id).filter((x) => x.id !== fn.id).slice(0, 8);
+const top = fn.profile.slice(0, 10);
+const seg = SEG[lang] ?? SEG.en;
+/**
+ * De download wijst naar de gegenereerde pdf. Bestaat die nog niet, bijvoorbeeld omdat
+ * `npm run pdf` nog niet is gelopen, dan valt de link terug op de printpagina. Zo staat er
+ * nooit een dode link op de site en schakelt de link automatisch om zodra de pijplijn de
+ * pdf's heeft gemaakt. Zie docs/06-pdf-generatie.md.
+ */
+const pdfPath = `/downloads/${lang}/${fn.slug[dl]}.pdf`;
+const hasPdf = existsSync(new URL(`../../public${pdfPath}`, import.meta.url));
+const pdf = hasPdf ? pdfPath : path(lang, 'functions', fn.slug[dl], 'full');
+const title = `${fn.title[dl]} | ${lang === 'nl' ? 'functieprofiel, skills en competenties' : 'job profile, skills and competencies'} | hrmforce`;
+const desc = `${fn.summary[dl]} ${lang === 'nl' ? 'Bekijk het profiel met' : 'See the profile with'} ${fn.counts.skills} ${lang === 'nl' ? 'skills en' : 'skills and'} ${fn.counts.competencies} ${lang === 'nl' ? 'te meten competenties.' : 'competencies to measure.'}`;
+const jsonld = [{
+  '@context': 'https://schema.org', '@type': 'Occupation',
+  name: fn.title[dl], description: fn.summary[dl], inLanguage: lang,
+  alternateName: fn.aliases[dl],
+  occupationalCategory: [
+    { '@type': 'CategoryCode', codeValue: fn.isco, inCodeSet: { '@type': 'CategoryCodeSet', name: 'ISCO-08' } },
+    { '@type': 'CategoryCode', codeValue: fn.brc, name: fn.brc_naam, inCodeSet: { '@type': 'CategoryCodeSet', name: 'Beroepenindeling ROA-CBS 2014' } },
+  ],
+  skills: fn.profile.map((r: any) => r.name[dl]).join(', '),
+  url: new URL(path(lang, 'functions', fn.slug[dl]), Astro.site).toString(),
+}, {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: t('framework'), item: new URL(path(lang), Astro.site).toString() },
+    { '@type': 'ListItem', position: 2, name: t('nav.functions'), item: new URL(path(lang, 'functions'), Astro.site).toString() },
+    { '@type': 'ListItem', position: 3, name: fn.title[dl] },
+  ],
+}];
+---
+<Base lang={lang} title={title} description={desc} active="functions" alternates={alternates} jsonld={jsonld}>
+  <Crumbs items={[
+    { label: t('nav.home'), href: path(lang) },
+    { label: t('nav.functions'), href: path(lang, 'functions') },
+    { label: fam.name[dl], href: path(lang, 'families', fam.slug[dl]) },
+    { label: fn.title[dl] },
+  ]} />
+
+  <div class="hsf-grid hsf-cols">
+    <div>
+      <div class="hsf-badges" style="margin-bottom:.6rem">
+        <span class="hsf-badge accent">{fam.id} {fam.name[dl]}</span>
+        <span class="hsf-badge">{fn.seniority_default}</span>
+        {fn.sector_tags.map((s: string) => <span class="hsf-badge">{s}</span>)}
+      </div>
+      <h1 style="margin-bottom:.3rem">{fn.title[dl]}</h1>
+      {fn.aliases[dl].length > 0 && (
+        <p class="hsf-small hsf-muted">{t('fn.aliases')}: {fn.aliases[dl].join(' · ')}</p>
+      )}
+      <p class="hsf-lead">{fn.summary[dl]}</p>
+      <p>{fn.context[dl]}</p>
+
+      <h2>{t('fn.competencies')}</h2>
+      <p class="hsf-small hsf-muted">{t('fn.competencies.note')}</p>
+      <CompetencyTable rows={fn.competencies} lang={lang} />
+
+      <h2>{t('fn.profile')}</h2>
+      <p class="hsf-small hsf-muted">{t('fn.profile.note')}</p>
+      <ProfileTable rows={top} lang={lang} mode="short" />
+      <p class="hsf-small" style="margin-top:.8rem">
+        <a href={pdf}>{lang === 'nl'
+          ? `Bekijk alle ${fn.counts.skills} skills in het volledige profiel`
+          : `See all ${fn.counts.skills} skills in the full profile`}</a>
+      </p>
+
+      <h2>{t('fn.instruments')}</h2>
+      <InstrumentList items={fn.instrument_summary} lang={lang} />
+
+      {related.length > 0 && (
+        <>
+          <h2>{t('fn.related')}</h2>
+          <div class="hsf-cards">
+            {related.map((r: any) => (
+              <a class="hsf-card hsf-card-link" href={path(lang, 'functions', r.slug[dl])}>
+                <strong style="color:var(--hsf-navy)">{r.title[dl]}</strong>
+                <p class="hsf-xs hsf-muted" style="margin:.3rem 0 0">{r.counts.skills} {t('fn.skills.count')} · {r.seniority_default}</p>
+              </a>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+
+    <aside class="hsf-sticky">
+      <LeadForm lang={lang} fileUrl={pdf} fileName={`hrmforce-${fn.slug[dl]}.pdf`}
+                subject={fn.title[dl]} subjectId={fn.id} isPdf={hasPdf} />
+
+      <div class="hsf-card" style="margin-top:1rem">
+        <h3 style="margin-top:0;font-size:1rem">{t('fn.match')}</h3>
+        <p class="hsf-small hsf-muted">{lang === 'nl'
+          ? 'Vul kandidaatniveaus in en zie de fit, de gaps en de knockouts.'
+          : 'Enter candidate levels and see the fit, the gaps and the knockouts.'}</p>
+        <a class="hsf-btn ghost block" href={path(lang, 'match', fn.slug[dl])}>{t('fn.match')}</a>
+      </div>
+
+      <div class="hsf-card" style="margin-top:1rem">
+        <h3 style="margin-top:0;font-size:1rem">{t('fn.domainmix')}</h3>
+        <DomainMix mix={mix} lang={lang} />
+      </div>
+
+      <div class="hsf-card" style="margin-top:1rem">
+        <h3 style="margin-top:0;font-size:1rem">{t('fn.classification')}</h3>
+        <dl class="hsf-dl">
+          <dt>ISCO-08</dt><dd>{fn.isco}</dd>
+          <dt>CBS</dt><dd>{fn.brc} {fn.brc_naam}</dd>
+          <dt>{t('filter.family')}</dt><dd><a href={path(lang, 'families', fam.slug[dl])}>{fam.id}</a></dd>
+          <dt>{t('fn.skills.count')}</dt><dd>{fn.counts.skills}</dd>
+          <dt>{t('fn.critical.count')}</dt><dd>{fn.counts.critical}</dd>
+          <dt>{t('fn.seniority')}</dt><dd>{fn.seniority_available.join(', ')}</dd>
+          <dt>hrmforce id</dt><dd>{fn.id}</dd>
+        </dl>
+      </div>
+    </aside>
+  </div>
+</Base>

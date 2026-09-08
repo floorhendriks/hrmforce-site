@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/HsfBase.astro';
+import Crumbs from '../components/Crumbs.astro';
+import Search from '../components/Search.astro';
+import { useT, path } from '../lib/i18n';
+import { domains, skills, meta, typeLabel } from '../lib/hsf';
+interface Props { lang: string; alternates: Record<string, string> }
+const { lang, alternates } = Astro.props;
+const t = useT(lang);
+const dl = lang === 'nl' ? 'nl' : 'en';
+const byId = new Map(skills.map((s: any) => [s.id, s]));
+const title = `${meta.counts.granular_skills} ${lang === 'nl' ? 'skills en' : 'skills and'} ${meta.counts.constructs} ${lang === 'nl' ? 'meetbare constructen' : 'measurable constructs'} | hrmforce`;
+const desc = lang === 'nl'
+  ? `De volledige skillbibliotheek van het hrmforce Skills Framework: ${meta.counts.constructs} meetbare constructen met gedragsankers, en ${meta.counts.granular_skills} granulaire skills daaronder.`
+  : `The full skill library of the hrmforce Skills Framework: ${meta.counts.constructs} measurable constructs with behavioural anchors, and ${meta.counts.granular_skills} granular skills beneath them.`;
+---
+<Base lang={lang} title={title} description={desc} active="skills" alternates={alternates}>
+  <Crumbs items={[{ label: t('nav.home'), href: path(lang) }, { label: t('nav.skills') }]} />
+  <h1>{t('nav.skills')}</h1>
+  <p class="hsf-lead" style="max-width:64ch">
+    {lang === 'nl'
+      ? `Het framework kent twee skilllagen. De ${meta.counts.constructs} constructen zijn de meeteenheid: daar hangen gedragsankers, een meetmethode en een hrmforce-instrument aan. De ${meta.counts.granular_skills} granulaire skills daaronder zijn de zoeklaag en erven die meetroute.`
+      : `The framework has two skill layers. The ${meta.counts.constructs} constructs are the unit of measurement: behavioural anchors, an assessment method and an hrmforce instrument attach there. The ${meta.counts.granular_skills} granular skills beneath them are the search layer and inherit that assessment route.`}
+  </p>
+  <Search lang={lang} scope="c" />
+
+  {domains.map((d: any) => (
+    <section id={d.id}>
+      <h2>{d.id} {d.name[dl]}
+        <span class="hsf-badge">{d.construct_count} {t('count.constructs')}</span>
+        <span class="hsf-badge">{d.granular_count} {t('count.skills')}</span>
+      </h2>
+      <p class="hsf-small hsf-muted" style="max-width:72ch">{d.definition[dl]}</p>
+      {d.clusters.map((c: any) => (
+        <div style="margin-bottom:1.1rem">
+          <h3 style="font-size:.98rem;margin-bottom:.3rem">{c.id} {c.name[dl]}</h3>
+          <p class="hsf-xs hsf-muted" style="margin:0 0 .5rem;max-width:72ch">{c.definition[dl]}</p>
+          <ul class="hsf-pills">
+            {c.construct_ids.map((id: string) => {
+              const s: any = byId.get(id);
+              return (
+                <li>
+                  <a class="hsf-badge" href={path(lang, 'skills', s.slug[dl])} title={s.definition[dl]}>
+                    <span class="hsf-type" data-t={s.type} style="background:transparent;color:inherit;width:auto;height:auto">{s.type}</span>
+                    {' '}{s.name[dl]} <span class="hsf-muted">{s.child_count}</span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))}
+    </section>
+  ))}
+</Base>

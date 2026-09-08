@@ -1,0 +1,48 @@
+---
+/** De te meten competenties van een functie, met het instrument dat ze meet. */
+import { useT, path } from '../lib/i18n';
+import { constructById, instrumentInfo } from '../lib/hsf';
+import Level from './Level.astro';
+interface Props { rows: any[]; lang: string; anchors?: boolean }
+const { rows, lang, anchors = true } = Astro.props;
+const t = useT(lang);
+const dl = lang === 'nl' ? 'nl' : 'en';
+---
+<div class="hsf-tablewrap">
+  <table class="hsf-table">
+    <thead>
+      <tr>
+        <th>{t('fn.competencies')}</th>
+        <th class="num">{t('tbl.target')}</th>
+        <th>{t('tbl.instrument')}</th>
+        <th>{t('tbl.assessment')}</th>
+        {anchors && <th>{t('tbl.anchor')}</th>}
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((r) => {
+        const c = constructById(r.skill_id);
+        return (
+          <tr>
+            <td>
+              <a href={path(lang, 'skills', c.slug[dl])}><strong>{r.name[dl]}</strong></a>
+              {r.competency_2014 && <div class="hsf-xs hsf-muted">{t('tbl.competency')}: {r.competency_2014}</div>}
+              {r.critical && <div><span class="hsf-badge stop">{t('tbl.critical')}</span></div>}
+            </td>
+            <td class="num"><Level value={r.target_level} lang={lang} label={false} /> <span class="hsf-xs">N{r.target_level}</span></td>
+            <td class="hsf-xs">
+              {r.instruments.length
+                ? r.instruments.map((i: string, k: number) => {
+                    const info = instrumentInfo(i);
+                    return <>{k > 0 && ', '}<span class="hsf-nowrap">{info?.url ? <a href={info.url}>{i}</a> : i}</span></>;
+                  })
+                : '-'}
+            </td>
+            <td class="hsf-xs">{r.assessment}</td>
+            {anchors && <td class="anchor">{r.anchor[dl]}</td>}
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+</div>

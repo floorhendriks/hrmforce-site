@@ -1,0 +1,927 @@
+{
+ "id": "HSF",
+ "name": {
+  "nl": "hrmforce Skills Framework",
+  "en": "hrmforce Skills Framework"
+ },
+ "version": "2.0.0",
+ "built": "2026-09-08",
+ "owner": "hrmforce",
+ "languages": [
+  "nl",
+  "en"
+ ],
+ "planned_languages": [
+  "de",
+  "fr",
+  "es",
+  "ro"
+ ],
+ "layers": [
+  "domein",
+  "cluster",
+  "skill-construct",
+  "skill",
+  "gedragsanker"
+ ],
+ "counts": {
+  "domains": 10,
+  "clusters": 66,
+  "constructs": 356,
+  "granular_skills": 3068,
+  "anchors": 1068,
+  "families": 18,
+  "functions": 450,
+  "profile_rows": 11056,
+  "aliases": 15521
+ },
+ "skill_types": {
+  "K": {
+   "label": {
+    "nl": "Kennis",
+    "en": "Knowledge"
+   },
+   "note": {
+    "nl": "Declaratieve vakkennis. Meet met een kennistoets, niet met een vragenlijst.",
+    "en": "Declarative knowledge. Measure with a knowledge test, not a questionnaire."
+   }
+  },
+  "V": {
+   "label": {
+    "nl": "Vaardigheid",
+    "en": "Skill"
+   },
+   "note": {
+    "nl": "Toegepast en aanleerbaar. Meet met een werkproef of gestructureerde beoordeling.",
+    "en": "Applied and learnable. Measure with a work sample or structured assessment."
+   }
+  },
+  "G": {
+   "label": {
+    "nl": "Gedragscompetentie",
+    "en": "Behavioural competence"
+   },
+   "note": {
+    "nl": "Dispositioneel gedrag. Koppelt aan de Big Fifty en 360 feedback. Niet in drie maanden ontwikkelbaar.",
+    "en": "Dispositional behaviour. Links to Big Fifty and 360 feedback. Not developed in three months."
+   }
+  },
+  "T": {
+   "label": {
+    "nl": "Tool of technologie",
+    "en": "Tool or technology"
+   },
+   "note": {
+    "nl": "Concreet gereedschap of pakket. Verwacht hoge veroudering, herzie jaarlijks.",
+    "en": "A concrete tool or package. Expect rapid obsolescence, review annually."
+   }
+  },
+  "A": {
+   "label": {
+    "nl": "Aanleg of vermogen",
+    "en": "Ability"
+   },
+   "note": {
+    "nl": "Relatief stabiele capaciteit. Meet met de Ability Scan of een simulatie. Niet trainbaar naar een hoger niveau.",
+    "en": "Relatively stable capacity. Measure with the Ability Scan or a simulation. Not trainable to a higher level."
+   }
+  }
+ },
+ "proficiency_scale": [
+  {
+   "level": 1,
+   "code": "N1",
+   "label": {
+    "nl": "Begeleid",
+    "en": "Guided"
+   },
+   "autonomy": {
+    "nl": "werkt onder toezicht en volgt instructie",
+    "en": "works under supervision and follows instruction"
+   },
+   "complexity": {
+    "nl": "routinematig, een variabele tegelijk",
+    "en": "routine, one variable at a time"
+   },
+   "scope": {
+    "nl": "eigen taak",
+    "en": "own task"
+   },
+   "depth": {
+    "nl": "basisbegrip, kent de termen",
+    "en": "basic understanding of terminology"
+   },
+   "anchored": true
+  },
+  {
+   "level": 2,
+   "code": "N2",
+   "label": {
+    "nl": "Toepassend",
+    "en": "Applying"
+   },
+   "autonomy": {
+    "nl": "werkt zelfstandig binnen vastgestelde kaders",
+    "en": "works independently within set frameworks"
+   },
+   "complexity": {
+    "nl": "bekende situaties met beperkte variatie",
+    "en": "familiar situations with limited variation"
+   },
+   "scope": {
+    "nl": "eigen rol",
+    "en": "own role"
+   },
+   "depth": {
+    "nl": "werkkennis, past standaardaanpak toe",
+    "en": "working knowledge, applies standard approach"
+   },
+   "anchored": false
+  },
+  {
+   "level": 3,
+   "code": "N3",
+   "label": {
+    "nl": "Zelfstandig",
+    "en": "Proficient"
+   },
+   "autonomy": {
+    "nl": "stelt de eigen aanpak vast en vraagt zelf om input",
+    "en": "sets own approach and seeks input proactively"
+   },
+   "complexity": {
+    "nl": "meerdere variabelen, enige ambiguiteit",
+    "en": "several variables, some ambiguity"
+   },
+   "scope": {
+    "nl": "eigen team of proces",
+    "en": "own team or process"
+   },
+   "depth": {
+    "nl": "grondige kennis, weegt alternatieven",
+    "en": "thorough knowledge, weighs alternatives"
+   },
+   "anchored": true
+  },
+  {
+   "level": 4,
+   "code": "N4",
+   "label": {
+    "nl": "Sturend",
+    "en": "Advanced"
+   },
+   "autonomy": {
+    "nl": "geeft anderen richting en beslist over de aanpak",
+    "en": "directs others and decides on the approach"
+   },
+   "complexity": {
+    "nl": "complex, met tegenstrijdige belangen",
+    "en": "complex, with conflicting interests"
+   },
+   "scope": {
+    "nl": "meerdere teams of een afdeling",
+    "en": "several teams or a department"
+   },
+   "depth": {
+    "nl": "diepgaande kennis, adviseert anderen",
+    "en": "in-depth knowledge, advises others"
+   },
+   "anchored": false
+  },
+  {
+   "level": 5,
+   "code": "N5",
+   "label": {
+    "nl": "Toonaangevend",
+    "en": "Leading"
+   },
+   "autonomy": {
+    "nl": "zet de standaard en het beleid",
+    "en": "sets the standard and the policy"
+   },
+   "complexity": {
+    "nl": "strategisch, met hoge onzekerheid",
+    "en": "strategic, under high uncertainty"
+   },
+   "scope": {
+    "nl": "organisatie, keten of vakgebied",
+    "en": "organisation, value chain or profession"
+   },
+   "depth": {
+    "nl": "autoriteit, ontwikkelt het vakgebied",
+    "en": "authority, advances the profession"
+   },
+   "anchored": true
+  }
+ ],
+ "reusability_levels": [
+  "transversaal",
+  "cross-sectoraal",
+  "sectorspecifiek",
+  "functiespecifiek"
+ ],
+ "assessment_methods": {
+  "Structureerd interview": {
+   "rho": 0.42,
+   "sd": 0.19,
+   "nl": "Gedragsgericht interview met vaste vragen en een beoordelingsschaal per vraag.",
+   "en": "Behaviour-based interview with fixed questions and a rating scale per question."
+  },
+  "Kennistoets": {
+   "rho": 0.4,
+   "sd": 0.13,
+   "nl": "Toets van declaratieve vakkennis, meestal klantspecifiek samengesteld.",
+   "en": "Test of declarative job knowledge, usually assembled per client."
+  },
+  "Zelfrapportage met verificatie": {
+   "rho": 0.38,
+   "sd": 0.09,
+   "nl": "Biodata en gestructureerde ervaringsvragen, empirisch gesleuteld tegen prestatiecriteria.",
+   "en": "Biodata and structured experience questions, empirically keyed against performance criteria."
+  },
+  "Werkproef": {
+   "rho": 0.33,
+   "sd": 0.09,
+   "nl": "De kandidaat voert een representatief werkfragment uit onder gestandaardiseerde condities.",
+   "en": "The candidate performs a representative work sample under standardised conditions."
+  },
+  "Cognitieve capaciteitentest": {
+   "rho": 0.31,
+   "sd": 0.14,
+   "nl": "Gestandaardiseerde test van verbaal, numeriek of abstract redeneervermogen.",
+   "en": "Standardised test of verbal, numerical or abstract reasoning."
+  },
+  "Assessment center": {
+   "rho": 0.29,
+   "sd": 0.09,
+   "nl": "Meerdere oefeningen, meerdere beoordelaars, dimensiegewijze scoring.",
+   "en": "Multiple exercises, multiple assessors, dimension-wise scoring."
+  },
+  "Situational Judgement Test": {
+   "rho": 0.12,
+   "sd": 0.11,
+   "nl": "Scenario met responsopties, gescoord op kennis of op gedragstendens.",
+   "en": "Scenario with response options, scored on knowledge or behavioural tendency."
+  },
+  "Persoonlijkheidsvragenlijst": {
+   "rho": 0.21,
+   "sd": 0.15,
+   "nl": "Zelfrapportage van gedragsvoorkeuren. Bij hrmforce de Big Fifty en de 15PF.",
+   "en": "Self-report of behavioural preferences. At hrmforce the Big Fifty and the 15PF."
+  },
+  "Praktijkobservatie": {
+   "rho": null,
+   "sd": null,
+   "nl": "Gestructureerde observatie op de werkplek met een formulier op basis van gedragsankers.",
+   "en": "Structured workplace observation with a form based on behavioural anchors."
+  },
+  "360 feedback": {
+   "rho": null,
+   "sd": null,
+   "nl": "Meerdere beoordelaars rondom de betrokkene beoordelen gedrag op gedragsankers.",
+   "en": "Multiple raters around the person rate behaviour against behavioural anchors."
+  },
+  "Portfolio/bewijsstuk": {
+   "rho": null,
+   "sd": null,
+   "nl": "Verzameling van eerder werk of resultaten, beoordeeld tegen vaste criteria.",
+   "en": "A collection of prior work or results, assessed against fixed criteria."
+  },
+  "Certificaat/diploma": {
+   "rho": null,
+   "sd": null,
+   "nl": "Formeel bewijs van afgeronde opleiding of examinering.",
+   "en": "Formal proof of completed education or examination."
+  },
+  "Simulatie": {
+   "rho": null,
+   "sd": null,
+   "nl": "Nagebootste werksituatie, meestal digitaal, met gestandaardiseerde scoring.",
+   "en": "Simulated work situation, usually digital, with standardised scoring."
+  }
+ },
+ "instruments": {
+  "Big Fifty": {
+   "nl": "Persoonlijkheidsvragenlijst, 150 items, 25 factoren",
+   "en": "Personality questionnaire, 150 items, 25 factors",
+   "url": "/assessments/big-five/"
+  },
+  "Ability Scan": {
+   "nl": "Capaciteitentest: verbaal, numeriek en abstract redeneervermogen",
+   "en": "Ability test: verbal, numerical and abstract reasoning",
+   "url": "/assessments/ability-scan/"
+  },
+  "Competency Check": {
+   "nl": "Competentiebeoordeling op gedragsniveau",
+   "en": "Competency assessment at behavioural level",
+   "url": "/assessments/competentie-check/"
+  },
+  "15PF": {
+   "nl": "Persoonlijkheidsprofiel, korter alternatief voor de Big Fifty",
+   "en": "Personality profile, shorter alternative to the Big Fifty",
+   "url": "/assessments/15pf/"
+  },
+  "Communicatiestijlen": {
+   "nl": "Voorkeursstijl in communicatie",
+   "en": "Preferred communication style",
+   "url": "/assessments/communicatiestijlen-test/"
+  },
+  "Conflictstijlen": {
+   "nl": "Voorkeursstijl in conflictsituaties",
+   "en": "Preferred style in conflict situations",
+   "url": "/assessments/conflictstijlen-test/"
+  },
+  "Leerstijlen": {
+   "nl": "Voorkeur in leren en informatieverwerking",
+   "en": "Preference in learning and information processing",
+   "url": "/assessments/leerstijlen/"
+  },
+  "Motivatie": {
+   "nl": "Drijfveren en motivatiebronnen",
+   "en": "Drivers and sources of motivation",
+   "url": "/assessments/drijfverentest/"
+  },
+  "Loopbaanorientaties": {
+   "nl": "Loopbaanankers en werkwaarden",
+   "en": "Career anchors and work values",
+   "url": "/assessments/loopbaanwaarden/"
+  },
+  "Loopbaanoriëntaties": {
+   "nl": "Loopbaanankers en werkwaarden",
+   "en": "Career anchors and work values",
+   "url": "/assessments/loopbaanwaarden/"
+  },
+  "Loopbaaninteresse": {
+   "nl": "Beroepsinteresses, aansluitend op de RIASEC-structuur",
+   "en": "Vocational interests, aligned with the RIASEC structure",
+   "url": "/assessments/loopbaanwaarden/"
+  },
+  "Mentale Weerbaarheid (4C)": {
+   "nl": "Mentale weerbaarheid volgens het 4C-model",
+   "en": "Mental toughness according to the 4C model",
+   "url": "/assessments/mentale-veerkracht-scan/"
+  },
+  "Kleurenprofiel (Jung)": {
+   "nl": "Vier kleurentypen, gekoppeld aan Big Fifty-factoren",
+   "en": "Four colour types, linked to Big Fifty factors",
+   "url": "/assessments/disc-test/"
+  },
+  "360 Feedback": {
+   "nl": "Meervoudige beoordeling op gedragsankers",
+   "en": "Multi-rater assessment against behavioural anchors",
+   "url": "/assessments/360-graden-feedback/"
+  },
+  "Ontwikkelgesprek": {
+   "nl": "Gestructureerd ontwikkelgesprek",
+   "en": "Structured development conversation",
+   "url": "/hrm-oplossingen/"
+  },
+  "Pulse Survey": {
+   "nl": "Periodieke meting op team- en organisatieniveau",
+   "en": "Periodic measurement at team and organisation level",
+   "url": "/assessments/pulse-survey/"
+  },
+  "Kennistoets (klantspecifiek)": {
+   "nl": "Toets van vakkennis, per klant samengesteld",
+   "en": "Knowledge test, assembled per client",
+   "url": "/advies/assessments/"
+  },
+  "Werkproef": {
+   "nl": "Representatief werkfragment onder gestandaardiseerde condities",
+   "en": "Representative work sample under standardised conditions",
+   "url": "/advies/assessments/"
+  },
+  "Portfolio": {
+   "nl": "Beoordeling van eerder werk tegen vaste criteria",
+   "en": "Assessment of prior work against fixed criteria",
+   "url": "/advies/assessments/"
+  },
+  "Structureerd interview": {
+   "nl": "Gedragsgericht interview met vaste opzet",
+   "en": "Behaviour-based interview with a fixed structure",
+   "url": "/advies/assessments/"
+  }
+ },
+ "match_model": {
+  "fit_per_skill": "min(1, candidate_level / target_level)",
+  "total_fit": "sum(weight_i * fit_i) / sum(weight_i)",
+  "knockout": "critical skill below target level means not suitable regardless of total",
+  "seniority": "target_level_effective = clamp(target_level + seniority_delta[seniority], 1, 5)",
+  "bands": {
+   "strong": 0.9,
+   "fit_with_development": 0.75
+  }
+ },
+ "standards": {
+  "esco": {
+   "name": "ESCO",
+   "version": "v1.2.1",
+   "released": "2025-12-10",
+   "url": "https://esco.ec.europa.eu/en/classification/skill_main"
+  },
+  "onet": {
+   "name": "O*NET",
+   "version": "31.0",
+   "released": "2026-08",
+   "url": "https://www.onetcenter.org/content.html"
+  },
+  "lightcast": {
+   "name": "Lightcast Open Skills",
+   "version": "rolling 2026",
+   "released": "2026",
+   "url": "https://lightcast.io/open-skills"
+  },
+  "sfia": {
+   "name": "SFIA",
+   "version": "9",
+   "released": "2024-10-30",
+   "url": "https://sfia-online.org/en/sfia-9"
+  },
+  "eu_framework": {
+   "name": "EU JRC frameworks",
+   "version": "DigComp 3.0, EntreComp, LifeComp, GreenComp, AILit",
+   "released": "2026",
+   "url": "https://joint-research-centre.ec.europa.eu/"
+  },
+  "wef": {
+   "name": "WEF Future of Jobs",
+   "version": "2025",
+   "released": "2025-01",
+   "url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/"
+  },
+  "isco": {
+   "name": "ISCO-08",
+   "version": "2008",
+   "released": "2008",
+   "url": "https://www.ilo.org/publications/international-standard-classification-occupations-2008-isco-08-structure"
+  },
+  "brc": {
+   "name": "Beroepenindeling ROA-CBS 2014",
+   "version": "editie 2025",
+   "released": "2026-04-17",
+   "url": "https://www.cbs.nl/nl-nl/onze-diensten/methoden/classificaties/onderwijs-en-beroepen/beroepenindeling-roa-cbs-2014--brc-2014--"
+  }
+ },
+ "brc_groups": [
+  {
+   "code": "0111",
+   "name": "Docenten hoger onderwijs en hoogleraren"
+  },
+  {
+   "code": "0112",
+   "name": "Docenten beroepsgerichte vakken secundair onderwijs"
+  },
+  {
+   "code": "0113",
+   "name": "Docenten algemene vakken secundair onderwijs"
+  },
+  {
+   "code": "0114",
+   "name": "Leerkrachten basisonderwijs"
+  },
+  {
+   "code": "0115",
+   "name": "Onderwijsbegeleiders, onderwijskundigen en overige docenten"
+  },
+  {
+   "code": "0121",
+   "name": "Sportinstructeurs"
+  },
+  {
+   "code": "0132",
+   "name": "(Pedagogisch) medewerkers kinderopvang"
+  },
+  {
+   "code": "0133",
+   "name": "Onderwijsassistenten"
+  },
+  {
+   "code": "0211",
+   "name": "Bibliothecarissen en conservatoren"
+  },
+  {
+   "code": "0212",
+   "name": "Auteurs en taalkundigen"
+  },
+  {
+   "code": "0213",
+   "name": "Journalisten"
+  },
+  {
+   "code": "0214",
+   "name": "Beeldend kunstenaars"
+  },
+  {
+   "code": "0215",
+   "name": "Uitvoerend kunstenaars"
+  },
+  {
+   "code": "0221",
+   "name": "Grafisch vormgevers en productontwerpers"
+  },
+  {
+   "code": "0222",
+   "name": "Fotografen en interieurontwerpers"
+  },
+  {
+   "code": "0311",
+   "name": "Adviseurs marketing, public relations en sales"
+  },
+  {
+   "code": "0321",
+   "name": "Accountmanagers retail en inkopers"
+  },
+  {
+   "code": "0331",
+   "name": "Winkeliers en teamleiders detailhandel"
+  },
+  {
+   "code": "0332",
+   "name": "Verkoopmedewerkers detailhandel"
+  },
+  {
+   "code": "0333",
+   "name": "Kassamedewerkers"
+  },
+  {
+   "code": "0334",
+   "name": "Callcentermedewerkers outbound en overige verkopers"
+  },
+  {
+   "code": "0411",
+   "name": "Accountants"
+  },
+  {
+   "code": "0412",
+   "name": "Financieel specialisten en economen"
+  },
+  {
+   "code": "0413",
+   "name": "Bedrijfskundigen en organisatieadviseurs"
+  },
+  {
+   "code": "0414",
+   "name": "Beleidsadviseurs"
+  },
+  {
+   "code": "0415",
+   "name": "Specialisten personeels- en loopbaanontwikkeling"
+  },
+  {
+   "code": "0421",
+   "name": "Boekhouders"
+  },
+  {
+   "code": "0422",
+   "name": "Zakelijke dienstverleners"
+  },
+  {
+   "code": "0423",
+   "name": "Office managers en managementassistenten"
+  },
+  {
+   "code": "0431",
+   "name": "Administratief medewerkers"
+  },
+  {
+   "code": "0432",
+   "name": "Secretarieel medewerkers"
+  },
+  {
+   "code": "0433",
+   "name": "Klantenservice medewerkers en receptionisten"
+  },
+  {
+   "code": "0434",
+   "name": "Financieel administratief medewerkers"
+  },
+  {
+   "code": "0435",
+   "name": "Werkvoorbereiders en logistiek medewerkers"
+  },
+  {
+   "code": "0511",
+   "name": "Algemeen directeuren"
+  },
+  {
+   "code": "0521",
+   "name": "Managers zakelijke en administratieve dienstverlening"
+  },
+  {
+   "code": "0522",
+   "name": "Managers verkoop en marketing"
+  },
+  {
+   "code": "0531",
+   "name": "Managers productie"
+  },
+  {
+   "code": "0532",
+   "name": "Managers logistiek"
+  },
+  {
+   "code": "0533",
+   "name": "Managers ICT"
+  },
+  {
+   "code": "0534",
+   "name": "Managers zorginstellingen"
+  },
+  {
+   "code": "0535",
+   "name": "Managers onderwijs"
+  },
+  {
+   "code": "0536",
+   "name": "Managers gespecialiseerde dienstverlening"
+  },
+  {
+   "code": "0541",
+   "name": "Managers horeca"
+  },
+  {
+   "code": "0542",
+   "name": "Managers detail- en groothandel"
+  },
+  {
+   "code": "0543",
+   "name": "Managers commerciÃ«le en persoonlijke dienstverlening"
+  },
+  {
+   "code": "0551",
+   "name": "Managers z.n.d."
+  },
+  {
+   "code": "0611",
+   "name": "Overheidsbestuurders"
+  },
+  {
+   "code": "0612",
+   "name": "Overheidsambtenaren"
+  },
+  {
+   "code": "0621",
+   "name": "Juristen"
+  },
+  {
+   "code": "0631",
+   "name": "Politie-inspecteurs"
+  },
+  {
+   "code": "0632",
+   "name": "Politie en brandweer"
+  },
+  {
+   "code": "0633",
+   "name": "Beveiligingspersoneel"
+  },
+  {
+   "code": "0634",
+   "name": "Militaire beroepen"
+  },
+  {
+   "code": "0711",
+   "name": "Biologen, wiskundigen en natuurwetenschappers"
+  },
+  {
+   "code": "0712",
+   "name": "Ingenieurs (geen elektrotechniek)"
+  },
+  {
+   "code": "0713",
+   "name": "Elektrotechnisch ingenieurs"
+  },
+  {
+   "code": "0714",
+   "name": "Architecten en planologen"
+  },
+  {
+   "code": "0721",
+   "name": "Technici bouwkunde en natuur"
+  },
+  {
+   "code": "0722",
+   "name": "Productieleiders industrie en bouw"
+  },
+  {
+   "code": "0723",
+   "name": "Procesoperators"
+  },
+  {
+   "code": "0731",
+   "name": "Bouwarbeiders ruwbouw"
+  },
+  {
+   "code": "0732",
+   "name": "Timmerlieden"
+  },
+  {
+   "code": "0733",
+   "name": "Bouwarbeiders afbouw"
+  },
+  {
+   "code": "0734",
+   "name": "Loodgieters en pijpfitters"
+  },
+  {
+   "code": "0735",
+   "name": "Schilders, verf- en lakspuiters"
+  },
+  {
+   "code": "0741",
+   "name": "Metaalbewerkers en constructiewerkers"
+  },
+  {
+   "code": "0742",
+   "name": "Lassers en plaatwerkers"
+  },
+  {
+   "code": "0743",
+   "name": "Automonteurs"
+  },
+  {
+   "code": "0744",
+   "name": "Machinemonteurs"
+  },
+  {
+   "code": "0753",
+   "name": "Productcontroleurs"
+  },
+  {
+   "code": "0754",
+   "name": "Meubelmakers, kleermakers en stoffeerders"
+  },
+  {
+   "code": "0755",
+   "name": "Medewerkers drukkerij en kunstnijverheid"
+  },
+  {
+   "code": "0756",
+   "name": "Slagers en bakkers"
+  },
+  {
+   "code": "0761",
+   "name": "Elektriciens en elektromonteurs"
+  },
+  {
+   "code": "0771",
+   "name": "Machine operators"
+  },
+  {
+   "code": "0772",
+   "name": "Assemblagemedewerkers"
+  },
+  {
+   "code": "0781",
+   "name": "Hulpkrachten industrie en bouw"
+  },
+  {
+   "code": "0812",
+   "name": "Systeembeheerders en netwerkspecialisten"
+  },
+  {
+   "code": "0813",
+   "name": "Systeemanalisten en ICT-adviseurs"
+  },
+  {
+   "code": "0814",
+   "name": "Software- en applicatieontwikkelaars"
+  },
+  {
+   "code": "0821",
+   "name": "Gebruikersondersteuning ICT"
+  },
+  {
+   "code": "0822",
+   "name": "Beeld- en geluidstechnici"
+  },
+  {
+   "code": "0911",
+   "name": "Land- en bosbouwers"
+  },
+  {
+   "code": "0912",
+   "name": "Hoveniers, tuinders en kwekers"
+  },
+  {
+   "code": "0913",
+   "name": "Veetelers"
+  },
+  {
+   "code": "0921",
+   "name": "Hulpkrachten land- en tuinbouw"
+  },
+  {
+   "code": "1011",
+   "name": "Artsen"
+  },
+  {
+   "code": "1012",
+   "name": "Gespecialiseerd verpleegkundigen"
+  },
+  {
+   "code": "1013",
+   "name": "Fysiotherapeuten"
+  },
+  {
+   "code": "1021",
+   "name": "Maatschappelijk werkers"
+  },
+  {
+   "code": "1022",
+   "name": "Psychologen en sociologen"
+  },
+  {
+   "code": "1031",
+   "name": "Laboranten"
+  },
+  {
+   "code": "1032",
+   "name": "Apothekersassistenten"
+  },
+  {
+   "code": "1033",
+   "name": "Verpleegkundigen (mbo)"
+  },
+  {
+   "code": "1034",
+   "name": "Dokters- en tandartsassistenten"
+  },
+  {
+   "code": "1035",
+   "name": "Inspecteurs veiligheid, gezondheid en medische vakspecialisten"
+  },
+  {
+   "code": "1041",
+   "name": "Sociaal werkers, groeps- en woonbegeleiders"
+  },
+  {
+   "code": "1051",
+   "name": "Verzorgenden"
+  },
+  {
+   "code": "1111",
+   "name": "Reisbegeleiders"
+  },
+  {
+   "code": "1112",
+   "name": "Koks"
+  },
+  {
+   "code": "1113",
+   "name": "Medewerkers bediening horeca en barpersoneel"
+  },
+  {
+   "code": "1114",
+   "name": "Kappers en schoonheidsspecialisten"
+  },
+  {
+   "code": "1115",
+   "name": "Conci rges en teamleiders schoonmaak"
+  },
+  {
+   "code": "1116",
+   "name": "Verleners van overige persoonlijke diensten"
+  },
+  {
+   "code": "1121",
+   "name": "Schoonmakers"
+  },
+  {
+   "code": "1122",
+   "name": "Keukenhulpen"
+  },
+  {
+   "code": "1211",
+   "name": "Dekofficieren en piloten"
+  },
+  {
+   "code": "1212",
+   "name": "Chauffeurs auto's, taxi's en bestelwagens"
+  },
+  {
+   "code": "1213",
+   "name": "Buschauffeurs en trambestuurders"
+  },
+  {
+   "code": "1214",
+   "name": "Vrachtwagenchauffeurs"
+  },
+  {
+   "code": "1215",
+   "name": "Bedieners mobiele machines"
+  },
+  {
+   "code": "1223",
+   "name": "Laders, lossers en vakkenvullers"
+  },
+  {
+   "code": "1224",
+   "name": "Fietskoeriers en dagbladenbezorgers"
+  },
+  {
+   "code": "1311",
+   "name": "Overig"
+  }
+ ]
+}

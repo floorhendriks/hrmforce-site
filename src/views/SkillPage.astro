@@ -1,0 +1,167 @@
+---
+import Base from '../layouts/HsfBase.astro';
+import Crumbs from '../components/Crumbs.astro';
+import Level from '../components/Level.astro';
+import { useT, path } from '../lib/i18n';
+import { meta, domainById, typeLabel, instrumentInfo, methodInfo, functionById, domains } from '../lib/hsf';
+interface Props { lang: string; sk: any; alternates: Record<string, string> }
+const { lang, sk, alternates } = Astro.props;
+const t = useT(lang);
+const dl = lang === 'nl' ? 'nl' : 'en';
+const dom = domainById(sk.domain_id);
+const cluster = dom.clusters.find((c: any) => c.id === sk.cluster_id);
+const fns = sk.used_in_functions.map((id: string) => functionById(id)).filter(Boolean);
+const method = methodInfo(sk.assessment);
+const scale = (meta as any).proficiency_scale;
+const stdNames: Record<string, string> = {
+  esco: 'ESCO v1.2.1', onet: 'O*NET 31.0', lightcast: 'Lightcast Open Skills',
+  sfia: 'SFIA 9', eu_framework: 'EU-competentieframework', wef: 'WEF Future of Jobs 2025',
+};
+const title = `${sk.name[dl]} | ${lang === 'nl' ? 'skill, niveaus en meting' : 'skill, levels and measurement'} | hrmforce`;
+const desc = `${sk.definition[dl]} ${lang === 'nl' ? 'Met' : 'With'} ${sk.child_count} ${lang === 'nl' ? 'onderliggende skills en gedragsankers op drie niveaus.' : 'underlying skills and behavioural anchors at three levels.'}`;
+const jsonld = [{
+  '@context': 'https://schema.org', '@type': 'DefinedTerm',
+  name: sk.name[dl], description: sk.definition[dl], termCode: sk.id, inLanguage: lang,
+  inDefinedTermSet: { '@type': 'DefinedTermSet', name: t('framework'), url: new URL(path(lang), Astro.site).toString() },
+  url: new URL(path(lang, 'skills', sk.slug[dl]), Astro.site).toString(),
+}, {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: t('framework'), item: new URL(path(lang), Astro.site).toString() },
+    { '@type': 'ListItem', position: 2, name: t('nav.skills'), item: new URL(path(lang, 'skills'), Astro.site).toString() },
+    { '@type': 'ListItem', position: 3, name: sk.name[dl] },
+  ],
+}];
+---
+<Base lang={lang} title={title} description={desc} active="skills" alternates={alternates} jsonld={jsonld}>
+  <Crumbs items={[
+    { label: t('nav.home'), href: path(lang) },
+    { label: t('nav.skills'), href: path(lang, 'skills') },
+    { label: `${dom.id} ${dom.name[dl]}`, href: path(lang, 'skills') + `#${dom.id}` },
+    { label: sk.name[dl] },
+  ]} />
+
+  <div class="hsf-grid hsf-cols">
+    <div>
+      <div class="hsf-badges" style="margin-bottom:.6rem">
+        <span class="hsf-badge accent"><span class="hsf-type" data-t={sk.type} style="background:transparent;width:auto">{sk.type}</span> {typeLabel(sk.type, dl)}</span>
+        <span class="hsf-badge">{sk.id}</span>
+        <span class="hsf-badge">{sk.reusability}</span>
+        <span class="hsf-badge">{sk.child_count} {t('count.skills')}</span>
+      </div>
+      <h1 style="margin-bottom:.3rem">{sk.name[dl]}</h1>
+      <p class="hsf-lead">{sk.definition[dl]}</p>
+
+      <h2>{t('sk.measure')}</h2>
+      <div class="hsf-card">
+        <dl class="hsf-dl">
+          <dt>{t('tbl.assessment')}</dt>
+          <dd><strong>{sk.assessment}</strong>{method?.rho != null && <span class="hsf-muted"> · rho {method.rho.toFixed(2)} (SD {method.sd?.toFixed(2)})</span>}</dd>
+          <dt>{t('tbl.instrument')}</dt>
+          <dd>{sk.instruments.length
+            ? sk.instruments.map((i: string, k: number) => {
+                const info = instrumentInfo(i);
+                return <>{k > 0 && ', '}<span class="hsf-nowrap">{info?.url ? <a href={info.url}>{i}</a> : i}</span></>;
+              })
+            : (lang === 'nl' ? 'geen standaardinstrument, klantspecifiek' : 'no standard instrument, client specific')}</dd>
+          {sk.competency_2014 && <><dt>{t('tbl.competency')}</dt><dd>{sk.competency_2014}</dd></>}
+          <dt>{t('sk.trainability')}</dt><dd>{sk.trainability}</dd>
+          <dt>{t('sk.ai')}</dt><dd>{sk.ai_demand}</dd>
+        </dl>
+        {method && <p class="hsf-small hsf-muted" style="margin:.7rem 0 0">{method[dl]}</p>}
+        {(sk.type === 'A' || sk.type === 'G') && (
+          <p class="hsf-small" style="margin:.6rem 0 0;color:var(--hsf-warn)">
+            {lang === 'nl'
+              ? 'Dit is een selectiecriterium, geen ontwikkeldoel op korte termijn. Zet hier geen ontwikkelplan van drie maanden op.'
+              : 'This is a selection criterion, not a short-term development goal. Do not put a three-month development plan on it.'}
+          </p>
+        )}
+      </div>
+
+      <h2>{t('sk.anchors')}</h2>
+      <div class="hsf-tablewrap">
+        <table class="hsf-table">
+          <thead><tr><th class="num">{lang === 'nl' ? 'Niveau' : 'Level'}</th><th>{lang === 'nl' ? 'Gedrag op dit niveau' : 'Behaviour at this level'}</th></tr></thead>
+          <tbody>
+            {sk.anchors.map((a: any) => {
+              const l = scale.find((x: any) => x.level === a.level);
+              return (
+                <tr>
+                  <td class="num"><Level value={a.level} lang={lang} /></td>
+                  <td>{a[dl]}<div class="hsf-xs hsf-muted" style="margin-top:.2rem">{l.autonomy[dl]} · {l.complexity[dl]} · {l.scope[dl]}</div></td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <p class="hsf-note" style="margin-top:.6rem">
+        {lang === 'nl'
+          ? 'N2 en N4 zijn bewust niet geankerd. Beoordelaars plaatsen die tussen de ankers, conform de conventie van O*NET.'
+          : 'N2 and N4 are deliberately not anchored. Raters place them between the anchors, following the O*NET convention.'}
+      </p>
+
+      {sk.children.length > 0 && (
+        <>
+          <h2>{t('sk.children')}</h2>
+          <p class="hsf-small hsf-muted">{t('sk.children.note')}</p>
+          <div class="hsf-tablewrap">
+            <table class="hsf-table">
+              <thead>
+                <tr><th class="num">T</th><th>{t('tbl.skill')}</th><th>{t('sk.definition')}</th><th class="num">{t('sk.ai')}</th></tr>
+              </thead>
+              <tbody>
+                {sk.children.map((k: any) => (
+                  <tr id={k.id}>
+                    <td class="num"><span class="hsf-type" data-t={k.type} title={typeLabel(k.type, dl)}>{k.type}</span></td>
+                    <td>
+                      <strong>{k.name[dl]}</strong>
+                      {k.aliases[dl].length > 0 && <div class="hsf-xs hsf-muted">{k.aliases[dl].join(' · ')}</div>}
+                    </td>
+                    <td class="hsf-xs">{k.definition[dl]}</td>
+                    <td class="num hsf-xs">{k.ai_demand}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+    </div>
+
+    <aside class="hsf-sticky">
+      <div class="hsf-card">
+        <h3 style="margin-top:0;font-size:1rem">{lang === 'nl' ? 'Plaats in het framework' : 'Position in the framework'}</h3>
+        <dl class="hsf-dl">
+          <dt>{lang === 'nl' ? 'Domein' : 'Domain'}</dt><dd><a href={path(lang, 'skills') + `#${dom.id}`}>{dom.id} {dom.name[dl]}</a></dd>
+          <dt>Cluster</dt><dd>{cluster ? `${cluster.id} ${cluster.name[dl]}` : sk.cluster_id}</dd>
+          <dt>{t('sk.reuse')}</dt><dd>{sk.reusability}</dd>
+          <dt>{t('sk.functions')}</dt><dd>{sk.function_count}</dd>
+        </dl>
+      </div>
+
+      {Object.entries(sk.crosswalk).some(([, v]: any) => v.length) && (
+        <div class="hsf-card" style="margin-top:1rem">
+          <h3 style="margin-top:0;font-size:1rem">{t('sk.crosswalk')}</h3>
+          <dl class="hsf-dl">
+            {Object.entries(sk.crosswalk).map(([k, v]: any) => v.length > 0 && (
+              <><dt>{stdNames[k] ?? k}</dt><dd class="hsf-xs">{v.join('; ')}</dd></>
+            ))}
+          </dl>
+        </div>
+      )}
+
+      {fns.length > 0 && (
+        <div class="hsf-card" style="margin-top:1rem">
+          <h3 style="margin-top:0;font-size:1rem">{t('sk.functions')}</h3>
+          <ul class="hsf-pills">
+            {fns.slice(0, 14).map((f: any) => (
+              <li><a class="hsf-badge" href={path(lang, 'functions', f.slug[dl])}>{f.title[dl]}</a></li>
+            ))}
+          </ul>
+          {fns.length > 14 && <p class="hsf-xs hsf-muted" style="margin:.6rem 0 0">{lang === 'nl' ? 'en nog' : 'and'} {fns.length - 14} {lang === 'nl' ? 'andere functies' : 'more jobs'}</p>}
+        </div>
+      )}
+    </aside>
+  </div>
+</Base>

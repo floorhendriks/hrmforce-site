@@ -1,0 +1,9 @@
+---
+import FunctionFull from '../../../../../views/FunctionFull.astro';
+import { functions, getFunction } from '../../../../../lib/hsf';
+export async function getStaticPaths() {
+  return functions.map((f) => ({ params: { slug: f.slug.en }, props: { id: f.id } }));
+}
+const fn = await getFunction(Astro.props.id);
+---
+<FunctionFull lang="en" fn={fn} />

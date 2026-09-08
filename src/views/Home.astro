@@ -1,0 +1,87 @@
+---
+import Base from '../layouts/HsfBase.astro';
+import Search from '../components/Search.astro';
+import { useT, path } from '../lib/i18n';
+import { meta, domains, families, facets } from '../lib/hsf';
+interface Props { lang: string; alternates: Record<string, string> }
+const { lang, alternates } = Astro.props;
+const t = useT(lang);
+const dl = lang === 'nl' ? 'nl' : 'en';
+const c = meta.counts;
+const title = `${t('framework')} | ${t('tagline')}`;
+const desc = lang === 'nl'
+  ? `Zoek in ${c.functions} functieprofielen en ${c.granular_skills} skills. Per functie zie je de te meten competenties en met welke hrmforce-vragenlijst je die meet.`
+  : `Search ${c.functions} job profiles and ${c.granular_skills} skills. Each job shows the competencies to measure and the hrmforce questionnaire that measures them.`;
+const jsonld = [{
+  '@context': 'https://schema.org', '@type': 'WebSite', name: t('framework'),
+  url: new URL(path(lang), Astro.site).toString(), inLanguage: lang,
+  publisher: { '@type': 'Organization', name: 'hrmforce', url: 'https://hrmforce.com' },
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: { '@type': 'EntryPoint', urlTemplate: new URL(path(lang), Astro.site).toString() + '?q={search_term_string}' },
+    'query-input': 'required name=search_term_string',
+  },
+}, {
+  '@context': 'https://schema.org', '@type': 'Dataset', name: t('framework'), description: desc,
+  version: meta.version, inLanguage: ['nl', 'en'], license: 'https://hrmforce.com/voorwaarden/',
+  creator: { '@type': 'Organization', name: 'hrmforce', url: 'https://hrmforce.com' },
+  variableMeasured: ['functieprofiel', 'skill', 'competentie', 'streefniveau', 'meetmethode'],
+}];
+const stats = [
+  [c.functions, t('count.functions')], [c.granular_skills, t('count.skills')],
+  [c.constructs, t('count.constructs')], [c.anchors, t('count.anchors')],
+  [c.families, t('count.families')],
+];
+---
+<Base lang={lang} title={title} description={desc} active="home" alternates={alternates} jsonld={jsonld}>
+  <section slot="hero" class="hsf-hero">
+    <div class="hsf-wrap">
+      <h1>{lang === 'nl' ? 'Elke functie, elke skill, en waarmee je die meet' : 'Every job, every skill, and how to measure it'}</h1>
+      <p class="hsf-lead" style="max-width:62ch">
+        {lang === 'nl'
+          ? 'Zoek een functie of een skill. Je ziet direct het profiel, de competenties die je moet meten, en met welke hrmforce-vragenlijst dat gebeurt. Het volledige onderbouwde profiel kun je downloaden.'
+          : 'Search for a job or a skill. You immediately see the profile, the competencies to measure, and which hrmforce questionnaire does that. The fully evidenced profile is available as a download.'}
+      </p>
+      <div class="hsf-stats">
+        {stats.map(([n, l]) => <div class="hsf-stat"><b>{Number(n).toLocaleString(lang === 'nl' ? 'nl-NL' : 'en-GB')}</b><span>{l}</span></div>)}
+      </div>
+    </div>
+  </section>
+
+  <Search lang={lang} autofocus={true} />
+
+  <h2>{t('nav.families')}</h2>
+  <div class="hsf-cards">
+    {families.map((f: any) => (
+      <a class="hsf-card hsf-card-link" href={path(lang, 'families', f.slug[dl])}>
+        <div class="hsf-badges">
+          <span class="hsf-badge accent">{f.function_count} {t('count.functions')}</span>
+          <span class="hsf-badge">ISCO {f.isco}</span>
+        </div>
+        <h3 style="margin:.55rem 0 .3rem;font-size:1.02rem">{f.name[dl]}</h3>
+        <p class="hsf-small hsf-muted" style="margin:0">{f.description[dl]}</p>
+      </a>
+    ))}
+  </div>
+
+  <h2>{lang === 'nl' ? 'De tien skilldomeinen' : 'The ten skill domains'}</h2>
+  <div class="hsf-cards">
+    {domains.map((d: any) => (
+      <a class="hsf-card hsf-card-link" href={path(lang, 'skills') + `#${d.id}`}>
+        <div class="hsf-badges">
+          <span class="hsf-badge accent">{d.id}</span>
+          <span class="hsf-badge">{d.construct_count} {t('count.constructs')}</span>
+          <span class="hsf-badge">{d.granular_count} {t('count.skills')}</span>
+        </div>
+        <h3 style="margin:.55rem 0 .3rem;font-size:1.02rem">{d.name[dl]}</h3>
+        <p class="hsf-small hsf-muted" style="margin:0">{d.definition[dl]}</p>
+      </a>
+    ))}
+  </div>
+
+  <div class="hsf-card tint" style="margin-top:2.5rem">
+    <h3 style="margin-top:0">{t('cta.contact')}</h3>
+    <p class="hsf-small">{t('cta.contact.sub')}</p>
+    <a class="hsf-btn" href="/contact/">{t('cta.contact')}</a>
+  </div>
+</Base>

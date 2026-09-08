@@ -1,0 +1,141 @@
+---
+import Base from '../layouts/HsfBase.astro';
+import Crumbs from '../components/Crumbs.astro';
+import { useT, path } from '../lib/i18n';
+import { meta } from '../lib/hsf';
+interface Props { lang: string; alternates: Record<string, string> }
+const { lang, alternates } = Astro.props;
+const t = useT(lang);
+const dl = lang === 'nl' ? 'nl' : 'en';
+const scale = (meta as any).proficiency_scale;
+const types = Object.entries((meta as any).skill_types);
+const methods = Object.entries((meta as any).assessment_methods);
+const stds = Object.entries((meta as any).standards);
+const nl = lang === 'nl';
+const title = `${t('meth.title')} | ${t('framework')}`;
+const desc = nl
+  ? 'Hoe het hrmforce Skills Framework is opgebouwd: vijf lagen, vijf skilltypen, een niveauschaal met gedragsankers, en per skill een meetmethode met validiteitsonderbouwing.'
+  : 'How the hrmforce Skills Framework is built: five layers, five skill types, a proficiency scale with behavioural anchors, and an assessment method with validity evidence per skill.';
+---
+<Base lang={lang} title={title} description={desc} active="method" alternates={alternates}>
+  <Crumbs items={[{ label: t('nav.home'), href: path(lang) }, { label: t('meth.title') }]} />
+  <h1>{t('meth.title')}</h1>
+  <p class="hsf-lead" style="max-width:66ch">{desc}</p>
+
+  <h2>{nl ? 'Vijf lagen' : 'Five layers'}</h2>
+  <div class="hsf-tablewrap">
+    <table class="hsf-table">
+      <thead><tr><th class="num">{nl ? 'Laag' : 'Layer'}</th><th>{nl ? 'Eenheid' : 'Unit'}</th><th class="num">{nl ? 'Aantal' : 'Count'}</th><th>{nl ? 'Waarvoor je die laag gebruikt' : 'What the layer is for'}</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td>{nl ? 'Domein' : 'Domain'}</td><td class="num">{meta.counts.domains}</td><td>{nl ? 'Rapportage op hoofdlijnen en de indeling van een skillpaspoort.' : 'High-level reporting and the layout of a skill passport.'}</td></tr>
+        <tr><td class="num">2</td><td>Cluster</td><td class="num">{meta.counts.clusters}</td><td>{nl ? 'Het gespreksniveau met de klant: welke clusters zijn relevant voor deze functie.' : 'The conversation level with the client: which clusters matter for this job.'}</td></tr>
+        <tr><td class="num">3</td><td>{nl ? 'Skill-construct' : 'Skill construct'}</td><td class="num">{meta.counts.constructs}</td><td>{nl ? 'De meeteenheid. Hier hangt de meetmethode, het instrument, het gewicht en het gedragsanker aan.' : 'The unit of measurement. Assessment method, instrument, weight and behavioural anchor attach here.'}</td></tr>
+        <tr><td class="num">4</td><td>Skill</td><td class="num">{meta.counts.granular_skills}</td><td>{nl ? 'De zoeklaag: granulaire termen zoals ze in vacatures en cv’s staan. Erven de meetroute van hun construct.' : 'The search layer: granular terms as they appear in vacancies and CVs. They inherit the assessment route of their construct.'}</td></tr>
+        <tr><td class="num">5</td><td>{nl ? 'Gedragsanker' : 'Behavioural anchor'}</td><td class="num">{meta.counts.anchors}</td><td>{nl ? 'De beoordeling en het ontwikkelgesprek. Ankers op N1, N3 en N5.' : 'Assessment and the development conversation. Anchors at N1, N3 and N5.'}</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="hsf-note">
+    {nl
+      ? 'Waarom twee skilllagen: voor duizenden termen kun je geen gedragsankers en geen validiteitsonderbouwing leveren. De constructen blijven daarom de meeteenheid, de granulaire laag maakt het geheel vindbaar en sluit aan op vacatureteksten.'
+      : 'Why two skill layers: you cannot provide behavioural anchors and validity evidence for thousands of terms. The constructs therefore remain the unit of measurement, while the granular layer makes the whole thing searchable and matches vacancy text.'}
+  </p>
+
+  <h2>{nl ? 'Vijf skilltypen' : 'Five skill types'}</h2>
+  <div class="hsf-tablewrap">
+    <table class="hsf-table">
+      <thead><tr><th class="num">T</th><th>{nl ? 'Naam' : 'Name'}</th><th>{nl ? 'Wat dat betekent voor de meting' : 'What that means for measurement'}</th></tr></thead>
+      <tbody>
+        {types.map(([code, v]: any) => (
+          <tr>
+            <td class="num"><span class="hsf-type" data-t={code}>{code}</span></td>
+            <td><strong>{v.label[dl]}</strong></td>
+            <td class="hsf-xs">{v.note[dl]}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <h2>{t('level.scale')}</h2>
+  <div class="hsf-tablewrap">
+    <table class="hsf-table">
+      <thead><tr><th class="num">{nl ? 'Niveau' : 'Level'}</th><th>Label</th><th>{nl ? 'Autonomie' : 'Autonomy'}</th><th>{nl ? 'Complexiteit' : 'Complexity'}</th><th>{nl ? 'Bereik' : 'Scope'}</th><th>{nl ? 'Kennisdiepte' : 'Depth'}</th></tr></thead>
+      <tbody>
+        {scale.map((l: any) => (
+          <tr>
+            <td class="num">{l.code}</td><td><strong>{l.label[dl]}</strong></td>
+            <td class="hsf-xs">{l.autonomy[dl]}</td><td class="hsf-xs">{l.complexity[dl]}</td>
+            <td class="hsf-xs">{l.scope[dl]}</td><td class="hsf-xs">{l.depth[dl]}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class="hsf-note">
+    {nl
+      ? 'Vijf niveaus in plaats van zeven of acht, omdat de beoordelaarsbetrouwbaarheid daarboven nauwelijks toeneemt en de bruikbaarheid in een gesprek juist afneemt. De vier dimensies komen uit SFIA 9, de keuze om niveaus op cognitieve belasting, taakcomplexiteit en autonomie te definieren volgt DigComp 3.0.'
+      : 'Five levels instead of seven or eight, because rater reliability barely improves above that while usability in a conversation declines. The four dimensions come from SFIA 9, and defining levels by cognitive demand, task complexity and autonomy follows DigComp 3.0.'}
+  </p>
+
+  <h2>{nl ? 'Meetmethoden en validiteit' : 'Assessment methods and validity'}</h2>
+  <p class="hsf-small" style="max-width:70ch">
+    {nl
+      ? 'Elke skill heeft een primaire meetmethode. De validiteiten zijn de gecorrigeerde meta-analytische schattingen van Sackett, Zhang, Berry en Lievens (2022) in het Journal of Applied Psychology. Die vervangen de cijfers van Schmidt en Hunter (1998), die door een te grote correctie voor range restriction systematisch te hoog uitkwamen.'
+      : 'Every skill has a primary assessment method. The validities are the corrected meta-analytic estimates from Sackett, Zhang, Berry and Lievens (2022) in the Journal of Applied Psychology. They replace the Schmidt and Hunter (1998) figures, which came out systematically too high because of an excessive range restriction correction.'}
+  </p>
+  <div class="hsf-tablewrap">
+    <table class="hsf-table">
+      <thead><tr><th>{t('tbl.assessment')}</th><th class="num">rho</th><th class="num">SD</th><th>{nl ? 'Wat het is' : 'What it is'}</th></tr></thead>
+      <tbody>
+        {methods.sort((a: any, b: any) => (b[1].rho ?? -1) - (a[1].rho ?? -1)).map(([name, m]: any) => (
+          <tr>
+            <td><strong>{name}</strong></td>
+            <td class="num">{m.rho != null ? m.rho.toFixed(2) : '-'}</td>
+            <td class="num">{m.sd != null ? m.sd.toFixed(2) : '-'}</td>
+            <td class="hsf-xs">{m[dl]}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class="hsf-note">
+    {nl
+      ? 'De spreiding is even belangrijk als het gemiddelde. Bij een SD boven .18 varieert de validiteit sterk per context en is lokale validering nodig. Denk daarom in incrementele validiteit en in methodecombinatie, niet in ranglijsten.'
+      : 'The spread matters as much as the mean. Above an SD of .18 validity varies strongly by context and local validation is needed. Think in incremental validity and method combination, not in rankings.'}
+  </p>
+
+  <h2>{nl ? 'Internationale standaarden' : 'International standards'}</h2>
+  <div class="hsf-tablewrap">
+    <table class="hsf-table">
+      <thead><tr><th>{nl ? 'Standaard' : 'Standard'}</th><th>{nl ? 'Versie' : 'Version'}</th><th>{nl ? 'Datum' : 'Date'}</th><th>{nl ? 'Bron' : 'Source'}</th></tr></thead>
+      <tbody>
+        {stds.map(([, s]: any) => (
+          <tr>
+            <td><strong>{s.name}</strong></td><td>{s.version}</td><td>{s.released}</td>
+            <td class="hsf-xs"><a href={s.url} rel="nofollow noopener" target="_blank">{s.url.replace(/^https?:\/\//, '').split('/')[0]}</a></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class="hsf-note">
+    {nl
+      ? 'De mapping is conceptueel en niet formeel gevalideerd. Waar een verwijzing niet te verantwoorden was, is het veld leeg gelaten in plaats van een plausibele code te verzinnen.'
+      : 'The mapping is conceptual and not formally validated. Where a reference could not be justified the field was left empty rather than inventing a plausible code.'}
+  </p>
+
+  <h2>{nl ? 'Wat dit framework niet is' : 'What this framework is not'}</h2>
+  <ul class="hsf-small">
+    <li>{nl ? 'Geen norm. Elk profiel is een startpunt dat je met de organisatie bijsnijdt voordat je ermee selecteert.' : 'Not a standard. Every profile is a starting point to be tailored with the organisation before selecting on it.'}</li>
+    <li>{nl ? 'Geen beslisregel. Een fitscore ondersteunt een gesprek. Combineer altijd met een structureel interview, de sterkste enkelvoudige voorspeller.' : 'Not a decision rule. A fit score supports a conversation. Always combine it with a structured interview, the strongest single predictor.'}</li>
+    <li>{nl ? 'Geen genormeerde meting. Er zijn nog geen normgroepen per skill: een niveau is een definitie, niet een percentiel.' : 'Not a normed measurement. There are no norm groups per skill yet: a level is a definition, not a percentile.'}</li>
+    <li>{nl ? 'Geen vervanging voor beoordelaarstraining. Gedragsankers werken pas goed samen met een kalibratiesessie voor de beoordelaars.' : 'Not a replacement for rater training. Behavioural anchors only work well alongside a calibration session for the assessors.'}</li>
+  </ul>
+
+  <div class="hsf-card tint" style="margin-top:2rem">
+    <h3 style="margin-top:0">{t('cta.contact')}</h3>
+    <p class="hsf-small">{t('cta.contact.sub')}</p>
+    <a class="hsf-btn" href="/contact/">{t('cta.contact')}</a>
+  </div>
+</Base>

@@ -1,0 +1,206 @@
+---
+/**
+ * Zoekmodule. Volledig client-side, geen backend nodig.
+ * De index staat in /hsf-data/search-<taal>-core.json (functies, constructen,
+ * families) en wordt aangevuld met search-<taal>-skills.json zodra de bezoeker
+ * begint te typen. Zo is de eerste weergave licht en is de granulaire laag
+ * daarna direct zoekbaar.
+ */
+import { useT, path, SEG, ROUTE_PREFIX } from '../lib/i18n';
+import { facets } from '../lib/hsf';
+interface Props { lang: string; autofocus?: boolean; scope?: 'all' | 'f' | 'c' | 's' }
+const { lang, autofocus = false, scope = 'all' } = Astro.props;
+const t = useT(lang);
+const dl = lang === 'nl' ? 'nl' : 'en';
+const seg = SEG[lang] ?? SEG.en;
+const prefix = ROUTE_PREFIX[lang] ?? '';
+const kinds = [
+  ['all', t('search.all')], ['f', t('search.functions')],
+  ['c', t('search.constructs')], ['s', t('search.skills')], ['j', t('search.families')],
+] as const;
+---
+<section
+  class="hsf-searchapp"
+  data-lang={lang}
+  data-dl={dl}
+  data-scope={scope}
+  data-base={`${prefix}/${seg.root}`}
+  data-seg-f={seg.functions}
+  data-seg-s={seg.skills}
+  data-seg-j={seg.families}
+>
+  <div class="hsf-searchbox">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path>
+    </svg>
+    <input class="hsf-input" type="search" autocomplete="off" spellcheck="false"
+           placeholder={t('search.placeholder')} aria-label={t('search.placeholder')} autofocus={autofocus} />
+  </div>
+  <p class="hsf-xs hsf-muted" style="margin:.5rem 0 0">{t('search.hint')}</p>
+
+  <div class="hsf-tabs" role="tablist" aria-label={t('search.all')}>
+    {kinds.map(([k, label]) => (
+      <button class="hsf-tab" role="tab" type="button" data-kind={k}
+              aria-selected={k === (scope === 'all' ? 'all' : scope) ? 'true' : 'false'}>{label}</button>
+    ))}
+  </div>
+
+  <div class="hsf-chips" style="margin-bottom:1rem">
+    {facets.sector_tags.map((s: string) => (
+      <button class="hsf-chip" type="button" data-tag={s} aria-pressed="false">{s}</button>
+    ))}
+    <button class="hsf-chip" type="button" data-reset aria-pressed="false">{t('filter.reset')}</button>
+  </div>
+
+  <p class="hsf-small hsf-muted" data-count aria-live="polite"></p>
+  <div class="hsf-hits" data-hits></div>
+  <div class="hsf-pager" data-more></div>
+</section>
+
+<script>
+  const KIND_LABEL = { f: 'FUNC', c: 'CONS', s: 'SKILL', j: 'FAM' };
+  const PAGE = 25;
+
+  function norm(s) {
+    return (s || '').toLowerCase()
+      .normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+  function highlight(text, terms) {
+    let out = escapeHtml(text);
+    for (const term of terms) {
+      if (term.length < 2) continue;
+      const re = new RegExp('(' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+      out = out.replace(re, '<mark>$1</mark>');
+    }
+    return out;
+  }
+  /** Score: exacte titelmatch > titel begint met > titel bevat > trefwoorden. */
+  function score(row, terms, nName) {
+    let s = 0;
+    for (const term of terms) {
+      if (nName === term) s += 120;
+      else if (nName.startsWith(term)) s += 60;
+      else if (nName.includes(term)) s += 34;
+      else if (row.k && row.k.includes(term)) s += 14;
+      else return -1;
+    }
+    if (row.t === 'f') s += 12;
+    if (row.t === 'j') s += 6;
+    if (row.c) s += Math.min(6, row.c / 10);
+    return s;
+  }
+
+  document.querySelectorAll('.hsf-searchapp').forEach((app) => {
+    const input = app.querySelector('input');
+    const hits = app.querySelector('[data-hits]');
+    const countEl = app.querySelector('[data-count]');
+    const moreEl = app.querySelector('[data-more]');
+    const tabs = [...app.querySelectorAll('[data-kind]')];
+    const chips = [...app.querySelectorAll('[data-tag]')];
+    const resetBtn = app.querySelector('[data-reset]');
+    const lang = app.dataset.lang;
+    const base = app.dataset.base;
+    const seg = { f: app.dataset.segF, s: app.dataset.segS, j: app.dataset.segJ };
+    let kind = app.dataset.scope === 'all' ? 'all' : app.dataset.scope;
+    let tags = new Set();
+    let core = [];
+    let gran = [];
+    let granLoaded = false;
+    let shown = PAGE;
+
+    const url = (row) => {
+      if (row.t === 'f') return `${base}/${seg.f}/${row.s}/`;
+      if (row.t === 'c') return `${base}/${seg.s}/${row.s}/`;
+      if (row.t === 's') return `${base}/${seg.s}/${row.s}/#${row.i}`;
+      return `${base}/${seg.j}/${row.s}/`;
+    };
+
+    function dataset() {
+      const base = kind === 's' ? gran : kind === 'all' ? core.concat(gran) : core.filter((r) => r.t === kind);
+      return base;
+    }
+
+    function render() {
+      const q = norm(input.value);
+      const terms = q ? q.split(' ').filter(Boolean) : [];
+      let rows = dataset();
+      if (tags.size) rows = rows.filter((r) => r.g && r.g.some((g) => tags.has(g)));
+      let list;
+      if (!terms.length) {
+        list = rows.slice(0, shown);
+        countEl.textContent = `${rows.length} ${lang === 'nl' ? 'items' : 'items'}`;
+      } else {
+        const scored = [];
+        for (const r of rows) {
+          const s = score(r, terms, norm(r.n));
+          if (s >= 0) scored.push([s, r]);
+        }
+        scored.sort((a, b) => b[0] - a[0] || a[1].n.length - b[1].n.length);
+        countEl.textContent = `${scored.length} ${app.dataset.resultsLabel || (lang === 'nl' ? 'resultaten' : 'results')}`;
+        list = scored.slice(0, shown).map((x) => x[1]);
+        if (!scored.length) {
+          hits.innerHTML = `<p class="hsf-muted">${lang === 'nl' ? 'Geen resultaten. Probeer een kortere zoekterm of een synoniem.' : 'No results. Try a shorter term or a synonym.'}</p>`;
+          moreEl.innerHTML = '';
+          return;
+        }
+      }
+      hits.innerHTML = list.map((r) => `
+        <a class="hsf-hit" href="${url(r)}">
+          <span class="hsf-kind">${KIND_LABEL[r.t]}</span>
+          <span><strong>${highlight(r.n, terms)}</strong><small>${escapeHtml(r.u || '')}</small></span>
+          <span class="hsf-xs hsf-muted">${r.t === 'f' ? (r.c + (lang === 'nl' ? ' skills' : ' skills')) : r.t === 'c' ? (r.c + (lang === 'nl' ? ' skills' : ' skills')) : r.y ? r.y : ''}</span>
+        </a>`).join('');
+      const total = terms.length ? countEl.textContent : rows.length;
+      moreEl.innerHTML = list.length < (terms.length ? Number.parseInt(total) : rows.length)
+        ? `<button class="hsf-btn ghost" type="button" data-loadmore>${lang === 'nl' ? 'Meer resultaten' : 'More results'}</button>` : '';
+      const lm = moreEl.querySelector('[data-loadmore]');
+      if (lm) lm.addEventListener('click', () => { shown += PAGE; render(); });
+    }
+
+    async function loadGran() {
+      if (granLoaded) return;
+      granLoaded = true;
+      try {
+        const r = await fetch(`/hsf-data/search-${lang}-skills.json`);
+        gran = await r.json();
+        render();
+      } catch (e) { /* zoeken blijft werken op de kernindex */ }
+    }
+
+    fetch(`/hsf-data/search-${lang}-core.json`)
+      .then((r) => r.json())
+      .then((d) => { core = d; render(); if (kind === 's' || kind === 'all') loadGran(); })
+      .catch(() => { countEl.textContent = lang === 'nl' ? 'Zoekindex kon niet worden geladen.' : 'Could not load the search index.'; });
+
+    let timer;
+    input.addEventListener('input', () => {
+      shown = PAGE;
+      loadGran();
+      clearTimeout(timer);
+      timer = setTimeout(render, 90);
+    });
+    tabs.forEach((b) => b.addEventListener('click', () => {
+      kind = b.dataset.kind; shown = PAGE;
+      tabs.forEach((x) => x.setAttribute('aria-selected', String(x === b)));
+      if (kind === 's' || kind === 'all') loadGran();
+      render();
+    }));
+    chips.forEach((b) => b.addEventListener('click', () => {
+      const tag = b.dataset.tag;
+      if (tags.has(tag)) { tags.delete(tag); b.setAttribute('aria-pressed', 'false'); }
+      else { tags.add(tag); b.setAttribute('aria-pressed', 'true'); }
+      shown = PAGE; render();
+    }));
+    if (resetBtn) resetBtn.addEventListener('click', () => {
+      tags.clear(); chips.forEach((c) => c.setAttribute('aria-pressed', 'false'));
+      input.value = ''; shown = PAGE; render();
+    });
+    // diepe link: ?q=accountmanager
+    const qp = new URLSearchParams(location.search).get('q');
+    if (qp) { input.value = qp; loadGran(); }
+  });
+</script>

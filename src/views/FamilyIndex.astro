@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/HsfBase.astro';
+import Crumbs from '../components/Crumbs.astro';
+import { useT, path } from '../lib/i18n';
+import { families, meta } from '../lib/hsf';
+interface Props { lang: string; alternates: Record<string, string> }
+const { lang, alternates } = Astro.props;
+const t = useT(lang);
+const dl = lang === 'nl' ? 'nl' : 'en';
+const title = `${meta.counts.families} ${lang === 'nl' ? 'functiefamilies' : 'job families'} | hrmforce`;
+const desc = lang === 'nl'
+  ? 'De achttien functiefamilies van het hrmforce Skills Framework, elk met een basisprofiel dat de functies in die familie erven.'
+  : 'The eighteen job families of the hrmforce Skills Framework, each with a base profile inherited by the jobs in that family.';
+---
+<Base lang={lang} title={title} description={desc} active="families" alternates={alternates}>
+  <Crumbs items={[{ label: t('nav.home'), href: path(lang) }, { label: t('nav.families') }]} />
+  <h1>{t('nav.families')}</h1>
+  <p class="hsf-lead" style="max-width:64ch">{desc}</p>
+  <div class="hsf-cards">
+    {families.map((f: any) => (
+      <a class="hsf-card hsf-card-link" href={path(lang, 'families', f.slug[dl])}>
+        <div class="hsf-badges">
+          <span class="hsf-badge accent">{f.id}</span>
+          <span class="hsf-badge">{f.function_count} {t('count.functions')}</span>
+          <span class="hsf-badge">ISCO {f.isco}</span>
+        </div>
+        <h3 style="margin:.55rem 0 .3rem;font-size:1.02rem">{f.name[dl]}</h3>
+        <p class="hsf-small hsf-muted" style="margin:0 0 .4rem">{f.description[dl]}</p>
+        <p class="hsf-xs hsf-muted" style="margin:0">{f.typical_roles[dl]}</p>
+      </a>
+    ))}
+  </div>
+</Base>

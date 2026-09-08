@@ -20,7 +20,7 @@ const A = {
   software: ["/hrm-oplossingen/matching/", "/hrm-oplossingen/development/", "/hrm-oplossingen/employability/", "/hrm-oplossingen/hr-analytics/"],
   advies: ["/advies/trainingen/", "/advies/assessments/", "/advies/competentie-management/", "/advies/talent-management/"],
   meer: ["/integraties/", "/sectoren/"],
-  kennisbank: ["/kenniscentrum/", "/klantcases/", "/roi-rekentool/", "/voorbereiding/", "/support/f-a-q/"],
+  kennisbank: ["/kenniscentrum/", "/skills-framework/", "/klantcases/", "/roi-rekentool/", "/voorbereiding/", "/support/f-a-q/"],
   about: ["/over-ons/", "/trust/", "/partners/", "/vacatures/", "/contact/"],
 };
 
@@ -33,7 +33,7 @@ const LABELS = {
     software: ["Matching & selectie", "HR-gesprekscyclus", "Employability", "HR-analytics"],
     advies: ["Training", "Live Assessments", "Competentiemanagement", "Talentmanagement"],
     meer: ["Integraties", "Sectoren"],
-    kennisbank: ["Kenniscentrum", "Klantcases", "ROI-rekentool", "Voorbereiding", "FAQ"],
+    kennisbank: ["Kenniscentrum", "Functie- en skillsdatabase", "Klantcases", "ROI-rekentool", "Voorbereiding", "FAQ"],
     about: ["Over hrmforce", "Trust & security", "Partners", "Vacatures", "Contact"],
   },
   en: {
@@ -44,7 +44,7 @@ const LABELS = {
     software: ["Matching & selection", "HR review cycle", "Employability", "HR analytics"],
     advies: ["Training", "Live Assessments", "Competency management", "Talent management"],
     meer: ["Integrations", "Sectors"],
-    kennisbank: ["Knowledge centre", "Client cases", "ROI calculator", "Preparation", "FAQ"],
+    kennisbank: ["Knowledge centre", "Job & skills database", "Client cases", "ROI calculator", "Preparation", "FAQ"],
     about: ["About hrmforce", "Trust & security", "Partners", "Careers", "Contact"],
   },
   de: {
@@ -55,7 +55,7 @@ const LABELS = {
     software: ["Matching & Auswahl", "HR-Gesprächszyklus", "Beschäftigungsfähigkeit", "HR-Analytik"],
     advies: ["Schulungen", "Live Assessments", "Kompetenzmanagement", "Talentmanagement"],
     meer: ["Integrationen", "Branchen"],
-    kennisbank: ["Wissenszentrum", "Kundenreferenzen", "ROI-Rechner", "Vorbereitung", "FAQ"],
+    kennisbank: ["Wissenszentrum", "Berufs- und Skills-Datenbank", "Kundenreferenzen", "ROI-Rechner", "Vorbereitung", "FAQ"],
     about: ["Über hrmforce", "Trust & Security", "Partner", "Stellenangebote", "Kontakt"],
   },
   fr: {
@@ -66,7 +66,7 @@ const LABELS = {
     software: ["Matching & sélection", "Cycle d'entretiens RH", "Employabilité", "Analytique RH"],
     advies: ["Formations", "Live Assessments", "Gestion des compétences", "Gestion des talents"],
     meer: ["Intégrations", "Secteurs"],
-    kennisbank: ["Centre de connaissances", "Cas clients", "Calculateur de ROI", "Préparation", "FAQ"],
+    kennisbank: ["Centre de connaissances", "Base de fonctions et compétences", "Cas clients", "Calculateur de ROI", "Préparation", "FAQ"],
     about: ["À propos de hrmforce", "Confiance & sécurité", "Partenaires", "Carrières", "Contact"],
   },
   es: {
@@ -77,7 +77,7 @@ const LABELS = {
     software: ["Matching y selección", "Ciclo de entrevistas de RR. HH.", "Empleabilidad", "Analítica de RR. HH."],
     advies: ["Formación", "Live Assessments", "Gestión de competencias", "Gestión del talento"],
     meer: ["Integraciones", "Sectores"],
-    kennisbank: ["Centro de conocimiento", "Casos de clientes", "Calculadora de ROI", "Preparación", "FAQ"],
+    kennisbank: ["Centro de conocimiento", "Base de funciones y competencias", "Casos de clientes", "Calculadora de ROI", "Preparación", "FAQ"],
     about: ["Sobre hrmforce", "Confianza y seguridad", "Socios", "Vacantes", "Contacto"],
   },
   ro: {
@@ -88,7 +88,7 @@ const LABELS = {
     software: ["Matching și selecție", "Ciclul de evaluări HR", "Angajabilitate", "Analiză HR"],
     advies: ["Cursuri", "Live Assessments", "Managementul competențelor", "Managementul talentelor"],
     meer: ["Integrări", "Sectoare"],
-    kennisbank: ["Centru de cunoștințe", "Studii de caz", "Calculator ROI", "Pregătire", "FAQ"],
+    kennisbank: ["Centru de cunoștințe", "Bază de funcții și competențe", "Studii de caz", "Calculator ROI", "Pregătire", "FAQ"],
     about: ["Despre hrmforce", "Încredere și securitate", "Parteneri", "Cariere", "Contact"],
   },
 };

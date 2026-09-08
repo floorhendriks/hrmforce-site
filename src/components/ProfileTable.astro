@@ -1,0 +1,45 @@
+---
+/** Skilltabel van een functieprofiel. `mode` bepaalt hoeveel kolommen zichtbaar zijn. */
+import { useT, path } from '../lib/i18n';
+import { typeLabel, constructById } from '../lib/hsf';
+import Level from './Level.astro';
+interface Props { rows: any[]; lang: string; mode?: 'short' | 'full'; limit?: number }
+const { rows, lang, mode = 'full', limit } = Astro.props;
+const t = useT(lang);
+const list = limit ? rows.slice(0, limit) : rows;
+const dl = lang === 'nl' ? 'nl' : 'en';
+---
+<div class="hsf-tablewrap">
+  <table class="hsf-table">
+    <thead>
+      <tr>
+        <th class="num" title={t('tbl.type')}>T</th>
+        <th>{t('tbl.skill')}</th>
+        <th class="num">{t('tbl.target')}</th>
+        <th class="num">{t('tbl.weight')}</th>
+        <th class="num">{t('tbl.critical')}</th>
+        <th>{t('tbl.assessment')}</th>
+        {mode === 'full' && <th>{t('tbl.instrument')}</th>}
+      </tr>
+    </thead>
+    <tbody>
+      {list.map((r) => {
+        const c = constructById(r.skill_id);
+        return (
+          <tr>
+            <td class="num"><span class="hsf-type" data-t={r.type} title={typeLabel(r.type, dl)}>{r.type}</span></td>
+            <td>
+              <a href={path(lang, 'skills', c.slug[dl])}>{r.name[dl]}</a>
+              {mode === 'full' && <div class="anchor">{r.anchor[dl]}</div>}
+            </td>
+            <td class="num"><Level value={r.target_level} lang={lang} label={false} /> <span class="hsf-xs">N{r.target_level}</span></td>
+            <td class="num">{r.weight}</td>
+            <td class="num">{r.critical ? <span class="hsf-badge stop">{t('yes')}</span> : <span class="hsf-xs hsf-muted">{t('no')}</span>}</td>
+            <td class="hsf-xs">{r.assessment}</td>
+            {mode === 'full' && <td class="hsf-xs">{r.instruments.join(', ') || '-'}</td>}
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+</div>

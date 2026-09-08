@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/HsfBase.astro';
+import Crumbs from '../components/Crumbs.astro';
+import Search from '../components/Search.astro';
+import { useT, path } from '../lib/i18n';
+import { families, functionsOfFamily, meta } from '../lib/hsf';
+interface Props { lang: string; alternates: Record<string, string> }
+const { lang, alternates } = Astro.props;
+const t = useT(lang);
+const dl = lang === 'nl' ? 'nl' : 'en';
+const mm = (meta as any).match_model;
+const title = `${t('match.title')} | hrmforce`;
+const desc = lang === 'nl'
+  ? 'Kies een functie en bereken online de fit van een kandidaat of medewerker op het profiel. Gewogen fit, gaps per skill en knockouts, zonder dat er iets wordt opgeslagen.'
+  : 'Pick a job and calculate the fit of a candidate or employee against the profile online. Weighted fit, gaps per skill and knockouts, with nothing stored.';
+---
+<Base lang={lang} title={title} description={desc} active="match" alternates={alternates}>
+  <Crumbs items={[{ label: t('nav.home'), href: path(lang) }, { label: t('nav.match') }]} />
+  <h1>{t('match.title')}</h1>
+  <p class="hsf-lead" style="max-width:64ch">{desc}</p>
+  <h2>{t('match.pick')}</h2>
+  <Search lang={lang} scope="f" />
+  <p class="hsf-note">
+    {lang === 'nl'
+      ? 'Open een functie en klik daar op Bereken de match, of ga direct naar de calculator van een van deze veelgebruikte functies.'
+      : 'Open a job and click Calculate the match there, or go straight to the calculator for one of these common jobs.'}
+  </p>
+  <div class="hsf-cards">
+    {families.map((f: any) => {
+      const first = functionsOfFamily(f.id)[0];
+      return first ? (
+        <a class="hsf-card hsf-card-link" href={path(lang, 'match', first.slug[dl])}>
+          <span class="hsf-badge accent">{f.id}</span>
+          <h3 style="margin:.5rem 0 .2rem;font-size:1rem">{first.title[dl]}</h3>
+          <p class="hsf-xs hsf-muted" style="margin:0">{f.name[dl]} · {first.counts.skills} {t('count.skills')}</p>
+        </a>
+      ) : null;
+    })}
+  </div>
+  <p class="hsf-note" style="margin-top:1.2rem">{t('match.disclaimer')}</p>
+</Base>

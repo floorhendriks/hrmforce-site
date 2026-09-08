@@ -1,0 +1,670 @@
+{
+  "sector_tags": [
+    "b2b",
+    "b2c",
+    "bouw",
+    "commercie",
+    "data",
+    "dienstverlening",
+    "enterprise",
+    "finance",
+    "horeca",
+    "hr",
+    "ict",
+    "industrie",
+    "juridisch",
+    "logistiek",
+    "management",
+    "marketing",
+    "mkb",
+    "onderwijs",
+    "overheid",
+    "retail",
+    "staf",
+    "techniek",
+    "uitvoerend",
+    "welzijn",
+    "zorg"
+  ],
+  "families": [
+    {
+      "id": "FF01",
+      "name": {
+        "nl": "Algemeen management en directie",
+        "en": "General management and executive"
+      },
+      "count": 20
+    },
+    {
+      "id": "FF02",
+      "name": {
+        "nl": "Operationeel leidinggeven en teamleiding",
+        "en": "Operational and team management"
+      },
+      "count": 22
+    },
+    {
+      "id": "FF03",
+      "name": {
+        "nl": "Commercie, sales en accountmanagement",
+        "en": "Sales and account management"
+      },
+      "count": 26
+    },
+    {
+      "id": "FF04",
+      "name": {
+        "nl": "Marketing, communicatie en content",
+        "en": "Marketing, communication and content"
+      },
+      "count": 24
+    },
+    {
+      "id": "FF05",
+      "name": {
+        "nl": "Finance, control en administratie",
+        "en": "Finance, control and administration"
+      },
+      "count": 26
+    },
+    {
+      "id": "FF06",
+      "name": {
+        "nl": "HR, recruitment en leren en ontwikkelen",
+        "en": "HR, recruitment and L and D"
+      },
+      "count": 24
+    },
+    {
+      "id": "FF07",
+      "name": {
+        "nl": "ICT-ontwikkeling en engineering",
+        "en": "Software development and engineering"
+      },
+      "count": 24
+    },
+    {
+      "id": "FF08",
+      "name": {
+        "nl": "Data, analytics en AI",
+        "en": "Data, analytics and AI"
+      },
+      "count": 20
+    },
+    {
+      "id": "FF09",
+      "name": {
+        "nl": "ICT-infrastructuur, beheer en security",
+        "en": "IT infrastructure, operations and security"
+      },
+      "count": 22
+    },
+    {
+      "id": "FF10",
+      "name": {
+        "nl": "Zorg en verpleging",
+        "en": "Care and nursing"
+      },
+      "count": 32
+    },
+    {
+      "id": "FF11",
+      "name": {
+        "nl": "Sociaal werk, begeleiding en gehandicaptenzorg",
+        "en": "Social work and support services"
+      },
+      "count": 26
+    },
+    {
+      "id": "FF12",
+      "name": {
+        "nl": "Onderwijs en opleiden",
+        "en": "Education and training"
+      },
+      "count": 26
+    },
+    {
+      "id": "FF13",
+      "name": {
+        "nl": "Techniek, onderhoud en productie",
+        "en": "Engineering, maintenance and production"
+      },
+      "count": 32
+    },
+    {
+      "id": "FF14",
+      "name": {
+        "nl": "Bouw, installatie en infra",
+        "en": "Construction, installation and infrastructure"
+      },
+      "count": 28
+    },
+    {
+      "id": "FF15",
+      "name": {
+        "nl": "Logistiek, transport en supply chain",
+        "en": "Logistics, transport and supply chain"
+      },
+      "count": 26
+    },
+    {
+      "id": "FF16",
+      "name": {
+        "nl": "Klantcontact, service en administratie",
+        "en": "Customer service and administration"
+      },
+      "count": 24
+    },
+    {
+      "id": "FF17",
+      "name": {
+        "nl": "Juridisch, beleid en publiek bestuur",
+        "en": "Legal, policy and public administration"
+      },
+      "count": 24
+    },
+    {
+      "id": "FF18",
+      "name": {
+        "nl": "Horeca, retail en gastvrijheid",
+        "en": "Hospitality, retail and guest services"
+      },
+      "count": 24
+    }
+  ],
+  "domains": [
+    {
+      "id": "D1",
+      "name": {
+        "nl": "Cognitief vermogen en probleemoplossing",
+        "en": "Cognitive ability and problem solving"
+      },
+      "constructs": 28,
+      "skills": 220
+    },
+    {
+      "id": "D2",
+      "name": {
+        "nl": "Communicatie en beïnvloeding",
+        "en": "Communication and influence"
+      },
+      "constructs": 30,
+      "skills": 252
+    },
+    {
+      "id": "D3",
+      "name": {
+        "nl": "Samenwerking en interpersoonlijke effectiviteit",
+        "en": "Collaboration and interpersonal effectiveness"
+      },
+      "constructs": 28,
+      "skills": 215
+    },
+    {
+      "id": "D4",
+      "name": {
+        "nl": "Leiderschap en organiseren",
+        "en": "Leadership and organising"
+      },
+      "constructs": 36,
+      "skills": 316
+    },
+    {
+      "id": "D5",
+      "name": {
+        "nl": "Zelfmanagement, drive en veerkracht",
+        "en": "Self-management, drive and resilience"
+      },
+      "constructs": 30,
+      "skills": 226
+    },
+    {
+      "id": "D6",
+      "name": {
+        "nl": "Lerend vermogen en ontwikkeling",
+        "en": "Learning capability and development"
+      },
+      "constructs": 20,
+      "skills": 151
+    },
+    {
+      "id": "D7",
+      "name": {
+        "nl": "Digitaal, data en AI",
+        "en": "Digital, data and AI"
+      },
+      "constructs": 48,
+      "skills": 455
+    },
+    {
+      "id": "D8",
+      "name": {
+        "nl": "Bedrijfsvoering, commercie en ondernemen",
+        "en": "Business operations, commerce and entrepreneurship"
+      },
+      "constructs": 44,
+      "skills": 415
+    },
+    {
+      "id": "D9",
+      "name": {
+        "nl": "Vakinhoudelijke kennisdomeinen",
+        "en": "Professional knowledge domains"
+      },
+      "constructs": 60,
+      "skills": 568
+    },
+    {
+      "id": "D10",
+      "name": {
+        "nl": "Uitvoering, ambacht, veiligheid en duurzaamheid",
+        "en": "Execution, craft, safety and sustainability"
+      },
+      "constructs": 32,
+      "skills": 250
+    }
+  ],
+  "types": [
+    {
+      "code": "K",
+      "label": {
+        "nl": "Kennis",
+        "en": "Knowledge"
+      }
+    },
+    {
+      "code": "V",
+      "label": {
+        "nl": "Vaardigheid",
+        "en": "Skill"
+      }
+    },
+    {
+      "code": "G",
+      "label": {
+        "nl": "Gedragscompetentie",
+        "en": "Behavioural competence"
+      }
+    },
+    {
+      "code": "T",
+      "label": {
+        "nl": "Tool of technologie",
+        "en": "Tool or technology"
+      }
+    },
+    {
+      "code": "A",
+      "label": {
+        "nl": "Aanleg of vermogen",
+        "en": "Ability"
+      }
+    }
+  ],
+  "instruments": [
+    "15PF",
+    "360 Feedback",
+    "Ability Scan",
+    "Big Fifty",
+    "Big Fifty (schaal Integriteit)",
+    "Communicatiestijlen",
+    "Competency Check",
+    "Conflictstijlen",
+    "Kennistoets (klantspecifiek)",
+    "Kleurenprofiel (Jung)",
+    "Leerstijlen",
+    "Loopbaaninteresse",
+    "Loopbaanoriëntaties",
+    "Mentale Weerbaarheid (4C)",
+    "Motivatie",
+    "Ontwikkelgesprek",
+    "Portfolio",
+    "Pulse Survey",
+    "Structureerd interview",
+    "Werkproef"
+  ],
+  "seniority": [
+    "junior",
+    "medior",
+    "senior",
+    "lead"
+  ],
+  "brc": [
+    {
+      "code": "0111",
+      "name": "Docenten hoger onderwijs en hoogleraren"
+    },
+    {
+      "code": "0112",
+      "name": "Docenten beroepsgerichte vakken secundair onderwijs"
+    },
+    {
+      "code": "0113",
+      "name": "Docenten algemene vakken secundair onderwijs"
+    },
+    {
+      "code": "0114",
+      "name": "Leerkrachten basisonderwijs"
+    },
+    {
+      "code": "0115",
+      "name": "Onderwijsbegeleiders, onderwijskundigen en overige docenten"
+    },
+    {
+      "code": "0133",
+      "name": "Onderwijsassistenten"
+    },
+    {
+      "code": "0212",
+      "name": "Auteurs en taalkundigen"
+    },
+    {
+      "code": "0311",
+      "name": "Adviseurs marketing, public relations en sales"
+    },
+    {
+      "code": "0321",
+      "name": "Accountmanagers retail en inkopers"
+    },
+    {
+      "code": "0331",
+      "name": "Winkeliers en teamleiders detailhandel"
+    },
+    {
+      "code": "0332",
+      "name": "Verkoopmedewerkers detailhandel"
+    },
+    {
+      "code": "0333",
+      "name": "Kassamedewerkers"
+    },
+    {
+      "code": "0334",
+      "name": "Callcentermedewerkers outbound en overige verkopers"
+    },
+    {
+      "code": "0411",
+      "name": "Accountants"
+    },
+    {
+      "code": "0412",
+      "name": "Financieel specialisten en economen"
+    },
+    {
+      "code": "0413",
+      "name": "Bedrijfskundigen en organisatieadviseurs"
+    },
+    {
+      "code": "0414",
+      "name": "Beleidsadviseurs"
+    },
+    {
+      "code": "0415",
+      "name": "Specialisten personeels- en loopbaanontwikkeling"
+    },
+    {
+      "code": "0421",
+      "name": "Boekhouders"
+    },
+    {
+      "code": "0422",
+      "name": "Zakelijke dienstverleners"
+    },
+    {
+      "code": "0423",
+      "name": "Office managers en managementassistenten"
+    },
+    {
+      "code": "0431",
+      "name": "Administratief medewerkers"
+    },
+    {
+      "code": "0432",
+      "name": "Secretarieel medewerkers"
+    },
+    {
+      "code": "0433",
+      "name": "Klantenservice medewerkers en receptionisten"
+    },
+    {
+      "code": "0434",
+      "name": "Financieel administratief medewerkers"
+    },
+    {
+      "code": "0435",
+      "name": "Werkvoorbereiders en logistiek medewerkers"
+    },
+    {
+      "code": "0511",
+      "name": "Algemeen directeuren"
+    },
+    {
+      "code": "0521",
+      "name": "Managers zakelijke en administratieve dienstverlening"
+    },
+    {
+      "code": "0522",
+      "name": "Managers verkoop en marketing"
+    },
+    {
+      "code": "0531",
+      "name": "Managers productie"
+    },
+    {
+      "code": "0532",
+      "name": "Managers logistiek"
+    },
+    {
+      "code": "0533",
+      "name": "Managers ICT"
+    },
+    {
+      "code": "0534",
+      "name": "Managers zorginstellingen"
+    },
+    {
+      "code": "0535",
+      "name": "Managers onderwijs"
+    },
+    {
+      "code": "0536",
+      "name": "Managers gespecialiseerde dienstverlening"
+    },
+    {
+      "code": "0541",
+      "name": "Managers horeca"
+    },
+    {
+      "code": "0542",
+      "name": "Managers detail- en groothandel"
+    },
+    {
+      "code": "0551",
+      "name": "Managers z.n.d."
+    },
+    {
+      "code": "0611",
+      "name": "Overheidsbestuurders"
+    },
+    {
+      "code": "0612",
+      "name": "Overheidsambtenaren"
+    },
+    {
+      "code": "0621",
+      "name": "Juristen"
+    },
+    {
+      "code": "0632",
+      "name": "Politie en brandweer"
+    },
+    {
+      "code": "0711",
+      "name": "Biologen, wiskundigen en natuurwetenschappers"
+    },
+    {
+      "code": "0712",
+      "name": "Ingenieurs (geen elektrotechniek)"
+    },
+    {
+      "code": "0713",
+      "name": "Elektrotechnisch ingenieurs"
+    },
+    {
+      "code": "0714",
+      "name": "Architecten en planologen"
+    },
+    {
+      "code": "0721",
+      "name": "Technici bouwkunde en natuur"
+    },
+    {
+      "code": "0722",
+      "name": "Productieleiders industrie en bouw"
+    },
+    {
+      "code": "0723",
+      "name": "Procesoperators"
+    },
+    {
+      "code": "0731",
+      "name": "Bouwarbeiders ruwbouw"
+    },
+    {
+      "code": "0732",
+      "name": "Timmerlieden"
+    },
+    {
+      "code": "0733",
+      "name": "Bouwarbeiders afbouw"
+    },
+    {
+      "code": "0734",
+      "name": "Loodgieters en pijpfitters"
+    },
+    {
+      "code": "0735",
+      "name": "Schilders, verf- en lakspuiters"
+    },
+    {
+      "code": "0741",
+      "name": "Metaalbewerkers en constructiewerkers"
+    },
+    {
+      "code": "0742",
+      "name": "Lassers en plaatwerkers"
+    },
+    {
+      "code": "0744",
+      "name": "Machinemonteurs"
+    },
+    {
+      "code": "0753",
+      "name": "Productcontroleurs"
+    },
+    {
+      "code": "0761",
+      "name": "Elektriciens en elektromonteurs"
+    },
+    {
+      "code": "0771",
+      "name": "Machine operators"
+    },
+    {
+      "code": "0772",
+      "name": "Assemblagemedewerkers"
+    },
+    {
+      "code": "0812",
+      "name": "Systeembeheerders en netwerkspecialisten"
+    },
+    {
+      "code": "0813",
+      "name": "Systeemanalisten en ICT-adviseurs"
+    },
+    {
+      "code": "0814",
+      "name": "Software- en applicatieontwikkelaars"
+    },
+    {
+      "code": "0821",
+      "name": "Gebruikersondersteuning ICT"
+    },
+    {
+      "code": "1012",
+      "name": "Gespecialiseerd verpleegkundigen"
+    },
+    {
+      "code": "1013",
+      "name": "Fysiotherapeuten"
+    },
+    {
+      "code": "1021",
+      "name": "Maatschappelijk werkers"
+    },
+    {
+      "code": "1022",
+      "name": "Psychologen en sociologen"
+    },
+    {
+      "code": "1032",
+      "name": "Apothekersassistenten"
+    },
+    {
+      "code": "1033",
+      "name": "Verpleegkundigen (mbo)"
+    },
+    {
+      "code": "1034",
+      "name": "Dokters- en tandartsassistenten"
+    },
+    {
+      "code": "1035",
+      "name": "Inspecteurs veiligheid, gezondheid en medische vakspecialisten"
+    },
+    {
+      "code": "1041",
+      "name": "Sociaal werkers, groeps- en woonbegeleiders"
+    },
+    {
+      "code": "1051",
+      "name": "Verzorgenden"
+    },
+    {
+      "code": "1112",
+      "name": "Koks"
+    },
+    {
+      "code": "1113",
+      "name": "Medewerkers bediening horeca en barpersoneel"
+    },
+    {
+      "code": "1121",
+      "name": "Schoonmakers"
+    },
+    {
+      "code": "1122",
+      "name": "Keukenhulpen"
+    },
+    {
+      "code": "1212",
+      "name": "Chauffeurs auto's, taxi's en bestelwagens"
+    },
+    {
+      "code": "1214",
+      "name": "Vrachtwagenchauffeurs"
+    },
+    {
+      "code": "1215",
+      "name": "Bedieners mobiele machines"
+    },
+    {
+      "code": "1223",
+      "name": "Laders, lossers en vakkenvullers"
+    },
+    {
+      "code": "1224",
+      "name": "Fietskoeriers en dagbladenbezorgers"
+    }
+  ]
+}

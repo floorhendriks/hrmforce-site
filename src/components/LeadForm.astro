@@ -1,0 +1,133 @@
+---
+/**
+ * Leadgated download van het volledige profiel.
+ *
+ * AANSLUITEN OP JE EIGEN VERWERKING:
+ * Het formulier post JSON naar het endpoint in `data-endpoint`. Standaard is dat
+ * /api/lead/. In src/pages/api/lead.ts staat een implementatie met adapters voor
+ * Resend, een webhook en Netlify Forms. Kies er een en zet de env-variabelen.
+ * Wil je een bestaande formulierdienst gebruiken (bijvoorbeeld HubSpot of
+ * Formspree), zet dan alleen `endpoint` op die url. Het antwoord hoeft niets
+ * terug te geven: bij status 200 start de download.
+ *
+ * AVG: er wordt niets in de browser opgeslagen behalve een vlag dat dit profiel
+ * al is gedownload, zodat een terugkerende bezoeker niet opnieuw het formulier
+ * hoeft te vullen. Die vlag staat in localStorage en bevat geen persoonsgegevens.
+ */
+import { useT } from '../lib/i18n';
+interface Props {
+  lang: string;
+  fileUrl: string;
+  fileName: string;
+  subject: string;
+  subjectId: string;
+  endpoint?: string;
+  privacyUrl?: string;
+  /** Waar bij een echte pdf, onwaar als de link naar de printpagina wijst. */
+  isPdf?: boolean;
+}
+const { lang, fileUrl, fileName, subject, subjectId, endpoint = 'https://formspree.io/f/mqpznaqn',
+        privacyUrl = '/privacy-statement/', isPdf = true } = Astro.props;
+const t = useT(lang);
+---
+<div class="hsf-card tint hsf-noprint hsf-leadform" data-endpoint={endpoint} data-file={fileUrl}
+     data-filename={fileName} data-subject={subject} data-subject-id={subjectId}
+     data-ispdf={isPdf ? '1' : '0'}>
+  <h3 style="margin-top:0">{t('lead.title')}</h3>
+  <p class="hsf-small">{t('lead.intro')}</p>
+
+  <div class="hsf-alert ok" data-ok hidden>
+    {t('lead.success')}{' '}
+    <a href={fileUrl} download={isPdf ? fileName : undefined}
+       target={isPdf ? undefined : '_blank'} rel="noopener" data-fallback>{t('lead.fallback')}</a>
+  </div>
+  <div class="hsf-alert err" data-err hidden>{t('lead.error')}</div>
+
+  <form data-form novalidate>
+    <div class="hsf-field">
+      <label for={`lead-name-${subjectId}`}>{t('lead.name')}</label>
+      <input id={`lead-name-${subjectId}`} name="name" type="text" required autocomplete="name" />
+    </div>
+    <div class="hsf-field">
+      <label for={`lead-email-${subjectId}`}>{t('lead.email')}</label>
+      <input id={`lead-email-${subjectId}`} name="email" type="email" required autocomplete="email" />
+    </div>
+    <div class="hsf-field">
+      <label for={`lead-org-${subjectId}`}>{t('lead.org')}</label>
+      <input id={`lead-org-${subjectId}`} name="organisation" type="text" required autocomplete="organization" />
+    </div>
+    <div class="hsf-field">
+      <label for={`lead-role-${subjectId}`}>{t('lead.role')}</label>
+      <input id={`lead-role-${subjectId}`} name="role" type="text" autocomplete="organization-title" />
+    </div>
+    <label class="hsf-check">
+      <input type="checkbox" name="consent" required />
+      <span>{t('lead.consent')}</span>
+    </label>
+    <label class="hsf-check">
+      <input type="checkbox" name="newsletter" />
+      <span>{t('lead.consent.newsletter')}</span>
+    </label>
+    <!-- eenvoudige spamval, geen cookie en geen extern script nodig -->
+    <input type="text" name="company_website" tabindex="-1" autocomplete="off"
+           style="position:absolute;left:-9999px" aria-hidden="true" />
+    <button class="hsf-btn block" type="submit" data-submit>{t('lead.submit')}</button>
+    <p class="hsf-note" style="margin:.7rem 0 0">
+      {t('lead.privacy')} <a href={privacyUrl}>{lang === 'nl' ? 'Privacybeleid' : 'Privacy policy'}</a>
+    </p>
+  </form>
+</div>
+
+<script>
+  document.querySelectorAll('.hsf-leadform').forEach((box) => {
+    const form = box.querySelector('[data-form]');
+    if (!form) return;
+    const ok = box.querySelector('[data-ok]');
+    const err = box.querySelector('[data-err]');
+    const btn = box.querySelector('[data-submit]');
+    const endpoint = box.dataset.endpoint;
+    const file = box.dataset.file;
+    const filename = box.dataset.filename;
+    const key = 'hsf-lead-' + (box.dataset.subjectId || 'x');
+    const labelIdle = btn.textContent;
+    const isPdf = box.dataset.ispdf === '1';
+
+    const start = () => {
+      if (!isPdf) { window.open(file, '_blank', 'noopener'); return; }
+      const a = document.createElement('a');
+      a.href = file; a.download = filename; a.rel = 'noopener';
+      document.body.appendChild(a); a.click(); a.remove();
+    };
+    const done = () => { form.hidden = true; ok.hidden = false; };
+
+    try { if (localStorage.getItem(key) === '1') done(); } catch (e) {}
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      err.hidden = true;
+      if (!form.reportValidity()) return;
+      if (form.company_website.value) return; // spamval
+      btn.disabled = true;
+      btn.textContent = btn.dataset.sending || labelIdle;
+      // Formspree: verstuur als FormData met Accept: application/json.
+      const fd = new FormData(form);
+      fd.append('_subject', 'Skills Framework download: ' + (box.dataset.subject || ''));
+      fd.append('functie', box.dataset.subject || '');
+      fd.append('functie_id', box.dataset.subjectId || '');
+      fd.append('bestand', filename || '');
+      fd.append('pagina', location.pathname);
+      fd.append('taal', document.documentElement.lang || '');
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST', body: fd, headers: { Accept: 'application/json' },
+        });
+        if (!res.ok) throw new Error('endpoint ' + res.status);
+        try { localStorage.setItem(key, '1'); } catch (e) {}
+        done(); start();
+      } catch (e) {
+        err.hidden = false;
+        btn.disabled = false; btn.textContent = labelIdle;
+      }
+    });
+  });
+</script>

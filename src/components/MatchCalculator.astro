@@ -1,0 +1,173 @@
+---
+/**
+ * Online matchcalculator. Rekent volledig in de browser, stuurt niets weg.
+ * De formules zijn identiek aan die in src/lib/match.ts, in de Excel-database
+ * en in de documentatie, zodat elke uitkomst navertelbaar is.
+ */
+import { useT, path } from '../lib/i18n';
+import { meta } from '../lib/hsf';
+interface Props { lang: string; fn: any; family: any }
+const { lang, fn, family } = Astro.props;
+const t = useT(lang);
+const dl = lang === 'nl' ? 'nl' : 'en';
+const rows = fn.profile.map((r: any) => ({
+  id: r.skill_id, n: r.name[dl], y: r.type, w: r.weight, c: r.critical,
+  base: r.target_level, a: r.assessment, m: r.instruments.join(', '),
+}));
+const bands = (meta as any).match_model.bands;
+---
+<section class="hsf-matchapp" data-rows={JSON.stringify(rows)}
+         data-delta={JSON.stringify(family.seniority_delta)}
+         data-default={fn.seniority_default}
+         data-available={JSON.stringify(fn.seniority_available)}
+         data-bands={JSON.stringify(bands)}
+         data-labels={JSON.stringify({
+           strong: t('match.band.strong'), development: t('match.band.development'),
+           insufficient: t('match.band.insufficient'), blocked: t('match.band.blocked'),
+         })}>
+  <p class="hsf-small">{t('match.intro')}</p>
+
+  <div class="hsf-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin-bottom:1rem">
+    <div class="hsf-field" style="margin:0">
+      <label for="hsf-sen">{t('fn.seniority')}</label>
+      <select id="hsf-sen" data-sen>
+        {fn.seniority_available.map((s: string) => (
+          <option value={s} selected={s === fn.seniority_default}>{s}</option>
+        ))}
+      </select>
+    </div>
+    <div class="hsf-card" style="padding:.7rem .9rem">
+      <span class="hsf-xs hsf-muted">{t('match.total')}</span>
+      <div style="font-size:1.9rem;font-weight:700;color:var(--hsf-navy);line-height:1.1" data-fit>0%</div>
+      <div class="hsf-meter"><i data-bar style="width:0%"></i></div>
+    </div>
+    <div class="hsf-card" style="padding:.7rem .9rem">
+      <span class="hsf-xs hsf-muted">{t('match.below')}</span>
+      <div style="font-size:1.9rem;font-weight:700;color:var(--hsf-navy);line-height:1.1" data-below>0</div>
+      <span class="hsf-xs hsf-muted" data-knock></span>
+    </div>
+    <div class="hsf-card" style="padding:.7rem .9rem">
+      <span class="hsf-xs hsf-muted">{t('match.advice')}</span>
+      <div style="font-weight:700;margin-top:.2rem" data-band></div>
+    </div>
+  </div>
+
+  <div class="hsf-badges" style="margin-bottom:.8rem">
+    <button class="hsf-btn ghost" type="button" data-fill>{t('match.reset')}</button>
+    <button class="hsf-btn ghost" type="button" data-zero>{t('match.zero')}</button>
+  </div>
+
+  <div class="hsf-tablewrap">
+    <table class="hsf-table">
+      <thead>
+        <tr>
+          <th class="num">T</th>
+          <th>{t('tbl.skill')}</th>
+          <th class="num">{t('tbl.target')}</th>
+          <th class="num">{t('tbl.weight')}</th>
+          <th class="num">{t('tbl.critical')}</th>
+          <th class="num">{t('tbl.candidate')}</th>
+          <th class="num">{t('tbl.gap')}</th>
+          <th class="num">{t('tbl.fit')}</th>
+        </tr>
+      </thead>
+      <tbody data-body></tbody>
+    </table>
+  </div>
+  <p class="hsf-note" style="margin-top:.8rem">{t('match.disclaimer')}</p>
+</section>
+
+<script>
+  const clamp = (n, lo = 1, hi = 5) => Math.max(lo, Math.min(hi, n));
+
+  document.querySelectorAll('.hsf-matchapp').forEach((app) => {
+    const rows = JSON.parse(app.dataset.rows);
+    const delta = JSON.parse(app.dataset.delta);
+    const bands = JSON.parse(app.dataset.bands);
+    const L = JSON.parse(app.dataset.labels);
+    const body = app.querySelector('[data-body]');
+    const senSel = app.querySelector('[data-sen]');
+    const fitEl = app.querySelector('[data-fit]');
+    const barEl = app.querySelector('[data-bar]');
+    const belowEl = app.querySelector('[data-below]');
+    const knockEl = app.querySelector('[data-knock]');
+    const bandEl = app.querySelector('[data-band]');
+    const cand = {};
+    let baseDelta = delta[app.dataset.default] ?? 0;
+
+    const target = (r) => clamp(r.base - baseDelta + (delta[senSel.value] ?? 0));
+
+    function draw() {
+      body.innerHTML = rows.map((r) => {
+        const tg = target(r);
+        const c = cand[r.id] ?? tg;
+        return `<tr data-row="${r.id}">
+          <td class="num"><span class="hsf-type" data-t="${r.y}">${r.y}</span></td>
+          <td>${r.n}<div class="hsf-xs hsf-muted">${r.a}${r.m ? ' · ' + r.m : ''}</div></td>
+          <td class="num" data-target>N${tg}</td>
+          <td class="num">${r.w}</td>
+          <td class="num">${r.c ? '<span class="hsf-badge stop">!</span>' : ''}</td>
+          <td class="num">
+            <select data-input aria-label="${r.n}">
+              ${[0, 1, 2, 3, 4, 5].map((v) => `<option value="${v}"${v === c ? ' selected' : ''}>${v === 0 ? '0' : 'N' + v}</option>`).join('')}
+            </select>
+          </td>
+          <td class="num" data-gap></td>
+          <td class="num" data-sfit></td>
+        </tr>`;
+      }).join('');
+      body.querySelectorAll('[data-input]').forEach((sel) => {
+        sel.addEventListener('change', () => {
+          const id = sel.closest('tr').dataset.row;
+          cand[id] = Number(sel.value);
+          compute();
+        });
+      });
+      compute();
+    }
+
+    function compute() {
+      let wsum = 0, wfit = 0, below = 0;
+      const knock = [];
+      for (const r of rows) {
+        const tg = target(r);
+        const c = cand[r.id] ?? tg;
+        const gap = c - tg;
+        const sf = tg > 0 ? Math.min(1, c / tg) : 1;
+        wsum += r.w; wfit += r.w * sf;
+        if (gap < 0) { below++; if (r.c) knock.push(r.n); }
+        const tr = body.querySelector(`tr[data-row="${r.id}"]`);
+        if (tr) {
+          tr.querySelector('[data-target]').textContent = 'N' + tg;
+          const g = tr.querySelector('[data-gap]');
+          g.textContent = gap > 0 ? '+' + gap : String(gap);
+          g.style.color = gap < 0 ? 'var(--hsf-stop)' : gap > 0 ? 'var(--hsf-ok)' : 'var(--hsf-muted)';
+          tr.querySelector('[data-sfit]').textContent = Math.round(sf * 100) + '%';
+        }
+      }
+      const fit = wsum ? wfit / wsum : 0;
+      fitEl.textContent = (fit * 100).toFixed(1) + '%';
+      barEl.style.width = Math.round(fit * 100) + '%';
+      belowEl.textContent = String(below);
+      knockEl.textContent = knock.length ? knock.length + ' knockout' + (knock.length > 1 ? 's' : '') : '';
+      const band = knock.length ? 'blocked' : fit >= bands.strong ? 'strong'
+        : fit >= bands.fit_with_development ? 'development' : 'insufficient';
+      bandEl.textContent = L[band];
+      bandEl.style.color = band === 'blocked' || band === 'insufficient' ? 'var(--hsf-stop)'
+        : band === 'development' ? 'var(--hsf-warn)' : 'var(--hsf-ok)';
+      barEl.style.background = band === 'blocked' || band === 'insufficient' ? 'var(--hsf-stop)'
+        : band === 'development' ? 'var(--hsf-warn)' : 'var(--hsf-ok)';
+    }
+
+    senSel.addEventListener('change', () => { draw(); });
+    app.querySelector('[data-fill]').addEventListener('click', () => {
+      for (const r of rows) cand[r.id] = target(r);
+      draw();
+    });
+    app.querySelector('[data-zero]').addEventListener('click', () => {
+      for (const r of rows) cand[r.id] = 0;
+      draw();
+    });
+    draw();
+  });
+</script>

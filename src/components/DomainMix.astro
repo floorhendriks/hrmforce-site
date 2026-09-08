@@ -1,0 +1,18 @@
+---
+import { useT } from '../lib/i18n';
+interface Props { mix: any[]; lang: string }
+const { mix, lang } = Astro.props;
+const t = useT(lang);
+const dl = lang === 'nl' ? 'nl' : 'en';
+---
+<div>
+  {mix.map((m) => (
+    <div>
+      <div class="hsf-mixrow">
+        <span>{m.id} {m.name[dl]}</span>
+        <span class="hsf-xs hsf-muted" style="text-align:right">{Math.round(m.share * 100)}%</span>
+      </div>
+      <div class="hsf-meter" style="margin-bottom:.7rem"><i style={`width:${Math.max(2, m.share * 100)}%`}></i></div>
+    </div>
+  ))}
+</div>

@@ -1,0 +1,82 @@
+---
+import Base from '../layouts/HsfBase.astro';
+import Crumbs from '../components/Crumbs.astro';
+import Level from '../components/Level.astro';
+import { useT, path } from '../lib/i18n';
+import { functionsOfFamily, constructById, typeLabel, meta } from '../lib/hsf';
+interface Props { lang: string; fam: any; alternates: Record<string, string> }
+const { lang, fam, alternates } = Astro.props;
+const t = useT(lang);
+const dl = lang === 'nl' ? 'nl' : 'en';
+const list = functionsOfFamily(fam.id).sort((a, b) => a.title[dl].localeCompare(b.title[dl], dl));
+const title = `${fam.name[dl]} | ${lang === 'nl' ? 'functiefamilie, basisprofiel en functies' : 'job family, base profile and jobs'} | hrmforce`;
+const desc = `${fam.description[dl]} ${list.length} ${lang === 'nl' ? 'functies in deze familie.' : 'jobs in this family.'}`;
+---
+<Base lang={lang} title={title} description={desc} active="families" alternates={alternates}>
+  <Crumbs items={[
+    { label: t('nav.home'), href: path(lang) },
+    { label: t('nav.families'), href: path(lang, 'families') },
+    { label: fam.name[dl] },
+  ]} />
+  <div class="hsf-badges" style="margin-bottom:.5rem">
+    <span class="hsf-badge accent">{fam.id}</span>
+    <span class="hsf-badge">ISCO {fam.isco}</span>
+    <span class="hsf-badge">{list.length} {t('count.functions')}</span>
+  </div>
+  <h1>{fam.name[dl]}</h1>
+  <p class="hsf-lead" style="max-width:64ch">{fam.description[dl]}</p>
+  <p class="hsf-small hsf-muted">{lang === 'nl' ? 'Voorbeeldfuncties' : 'Example roles'}: {fam.typical_roles[dl]}</p>
+
+  <h2>{lang === 'nl' ? 'Basisprofiel van de familie' : 'Base profile of the family'}</h2>
+  <p class="hsf-small hsf-muted" style="max-width:70ch">
+    {lang === 'nl'
+      ? 'Elke functie in deze familie erft dit profiel en wijkt daarvan af met een beperkt aantal toevoegingen, aanpassingen en verwijderingen. De streefniveaus hieronder gelden voor het medior niveau.'
+      : 'Every job in this family inherits this profile and deviates from it with a limited number of additions, adjustments and removals. The target levels below apply to the medior level.'}
+  </p>
+  <div class="hsf-tablewrap">
+    <table class="hsf-table">
+      <thead><tr><th class="num">T</th><th>{t('tbl.skill')}</th><th class="num">{t('tbl.target')}</th><th class="num">{t('tbl.weight')}</th><th class="num">{t('tbl.critical')}</th></tr></thead>
+      <tbody>
+        {fam.base_profile.map((r: any) => {
+          const c: any = constructById(r.skill_id);
+          return (
+            <tr>
+              <td class="num"><span class="hsf-type" data-t={r.type} title={typeLabel(r.type, dl)}>{r.type}</span></td>
+              <td><a href={path(lang, 'skills', c.slug[dl])}>{r.name[dl]}</a></td>
+              <td class="num"><Level value={r.target_level} lang={lang} label={false} /> <span class="hsf-xs">N{r.target_level}</span></td>
+              <td class="num">{r.weight}</td>
+              <td class="num">{r.critical ? <span class="hsf-badge stop">{t('yes')}</span> : <span class="hsf-xs hsf-muted">{t('no')}</span>}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+
+  <h3>{lang === 'nl' ? 'Senioriteitsbijstelling' : 'Seniority adjustment'}</h3>
+  <p class="hsf-small hsf-muted" style="max-width:70ch">
+    {lang === 'nl'
+      ? 'Deze waarden worden bij elk streefniveau van de familie opgeteld en daarna begrensd op 1 tot 5.'
+      : 'These values are added to every target level of the family and then clamped to 1 to 5.'}
+  </p>
+  <div class="hsf-badges">
+    {Object.entries(fam.seniority_delta).map(([k, v]: any) => (
+      <span class="hsf-badge">{k} {v > 0 ? `+${v}` : v}</span>
+    ))}
+  </div>
+
+  <h2>{t('nav.functions')} <span class="hsf-badge">{list.length}</span></h2>
+  <div class="hsf-cards">
+    {list.map((f: any) => (
+      <a class="hsf-card hsf-card-link" href={path(lang, 'functions', f.slug[dl])}>
+        <strong style="color:var(--hsf-navy)">{f.title[dl]}</strong>
+        <p class="hsf-xs hsf-muted" style="margin:.35rem 0 .5rem">{f.summary[dl]}</p>
+        <div class="hsf-badges">
+          <span class="hsf-badge">{f.counts.skills} {t('count.skills')}</span>
+          <span class="hsf-badge">{f.seniority_default}</span>
+          <span class="hsf-badge">ISCO {f.isco}</span>
+        </div>
+      </a>
+    ))}
+  </div>
+</Base>

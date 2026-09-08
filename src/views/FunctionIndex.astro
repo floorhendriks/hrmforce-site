@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/HsfBase.astro';
+import Crumbs from '../components/Crumbs.astro';
+import Search from '../components/Search.astro';
+import { useT, path } from '../lib/i18n';
+import { functions, families, meta, facets } from '../lib/hsf';
+interface Props { lang: string; alternates: Record<string, string> }
+const { lang, alternates } = Astro.props;
+const t = useT(lang);
+const dl = lang === 'nl' ? 'nl' : 'en';
+const byFam = families.map((f: any) => ({
+  fam: f, list: functions.filter((x) => x.family_id === f.id)
+    .sort((a, b) => a.title[dl].localeCompare(b.title[dl], dl)),
+}));
+const title = `${meta.counts.functions} ${lang === 'nl' ? 'functieprofielen met skills en competenties' : 'job profiles with skills and competencies'} | hrmforce`;
+const desc = lang === 'nl'
+  ? `Alle ${meta.counts.functions} functieprofielen van het hrmforce Skills Framework, geordend naar functiefamilie en gekoppeld aan ISCO-08 en de CBS-beroepenindeling.`
+  : `All ${meta.counts.functions} job profiles in the hrmforce Skills Framework, ordered by job family and linked to ISCO-08 and the Dutch CBS occupational classification.`;
+const jsonld = {
+  '@context': 'https://schema.org', '@type': 'CollectionPage', name: title, description: desc,
+  inLanguage: lang, url: new URL(path(lang, 'functions'), Astro.site).toString(),
+};
+---
+<Base lang={lang} title={title} description={desc} active="functions" alternates={alternates} jsonld={jsonld}>
+  <Crumbs items={[{ label: t('nav.home'), href: path(lang) }, { label: t('nav.functions') }]} />
+  <h1>{t('nav.functions')}</h1>
+  <p class="hsf-lead" style="max-width:62ch">
+    {lang === 'nl'
+      ? `${meta.counts.functions} functieprofielen, verankerd op ISCO-08 en op de CBS-beroepenindeling ROA-CBS 2014 editie 2025. Elk profiel noemt de te meten competenties en de vragenlijst waarmee je die meet.`
+      : `${meta.counts.functions} job profiles, anchored on ISCO-08 and on the Dutch CBS occupational classification BRC 2014 edition 2025. Each profile names the competencies to measure and the questionnaire that measures them.`}
+  </p>
+  <Search lang={lang} scope="f" />
+
+  {byFam.map(({ fam, list }) => (
+    <section id={fam.id}>
+      <h2>{fam.id} {fam.name[dl]} <span class="hsf-badge">{list.length}</span></h2>
+      <p class="hsf-small hsf-muted" style="max-width:70ch">{fam.description[dl]}
+        {' '}<a href={path(lang, 'families', fam.slug[dl])}>{lang === 'nl' ? 'Bekijk de familie' : 'View the family'}</a>
+      </p>
+      <div class="hsf-cards">
+        {list.map((f: any) => (
+          <a class="hsf-card hsf-card-link" href={path(lang, 'functions', f.slug[dl])}>
+            <strong style="color:var(--hsf-navy)">{f.title[dl]}</strong>
+            <p class="hsf-xs hsf-muted" style="margin:.35rem 0 .5rem">{f.summary[dl]}</p>
+            <div class="hsf-badges">
+              <span class="hsf-badge">{f.counts.skills} {t('count.skills')}</span>
+              <span class="hsf-badge">{f.counts.competencies} {lang === 'nl' ? 'competenties' : 'competencies'}</span>
+              <span class="hsf-badge">{f.seniority_default}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  ))}
+</Base>

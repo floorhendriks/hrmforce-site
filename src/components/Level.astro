@@ -1,0 +1,8 @@
+---
+import { levelShort } from '../lib/hsf';
+interface Props { value: number; lang: string; label?: boolean }
+const { value, lang, label = true } = Astro.props;
+---
+<span class="hsf-lv" role="img" aria-label={`Niveau ${value} van 5`}>
+  {[1, 2, 3, 4, 5].map((i) => <i class={i <= value ? 'on' : ''}></i>)}
+</span>{label && <span class="hsf-lvtext">N{value} {levelShort(value, lang as any)}</span>}
