@@ -30,7 +30,7 @@ export const MARKETING = {
 // Externe reviewprofielen. Vul een URL in om de badge te tonen (leeg = verborgen).
 // Zodra je een G2/Capterra/Trustpilot/Google-profiel hebt, plak je hier de link.
 export const REVIEWS_EXTERNAL = {
-  google: "",     // bv. "https://g.page/r/..../review"
+  google: "https://www.google.com/maps?cid=5974766714085643202", // hrmforce Google Bedrijfsprofiel (4,8 sterren)
   g2: "",         // bv. "https://www.g2.com/products/hrmforce/reviews"
   capterra: "",   // bv. "https://www.capterra.com/p/....../hrmforce/"
   trustpilot: "", // bv. "https://www.trustpilot.com/review/hrmforce.com"
