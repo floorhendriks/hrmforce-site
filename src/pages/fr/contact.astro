@@ -34,7 +34,8 @@ const offices = [
         <p style="margin-top:14px;color:var(--muted)"><strong>T :</strong> <a href="tel:+31888832188">+31 (0)88 88 321 88</a><br /><strong>E :</strong> <a href="mailto:service@hrmforce.com">service@hrmforce.com</a></p>
         <p style="color:var(--muted)">Nos conseillers sont disponibles du lundi au vendredi de 08h00 à 18h00.</p>
       </div>
-      <form class="formcard" action="https://formspree.io/f/JOUW_FORM_ID" method="POST">
+      <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>Vous préférez un contact personnel ?</strong><span>Nous vous aidons volontiers. Appelez ou écrivez-nous, nous répondons vite.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
+        <form class="formcard" action="https://formspree.io/f/JOUW_FORM_ID" method="POST">
         <h2 class="section-title" style="font-size:22px;margin-top:0">Formulaire de contact</h2>
         <div class="frow">
           <div class="fg"><label>Prénom *</label><input type="text" name="prenom" required /></div>
@@ -84,4 +85,10 @@ const offices = [
   .next-steps li{margin:3px 0}
   .ns-proof{color:var(--muted);font-size:13px;padding-top:8px;border-top:1px solid var(--line)}
   .ns-stars{color:var(--gold);letter-spacing:1px}
+
+  .person-card{display:flex;gap:16px;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 20px}
+  .person-card img{width:72px;height:72px;border-radius:50%;object-fit:cover;flex:none;border:2px solid #fff;box-shadow:var(--shadow-xs)}
+  .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
+  .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
+  .person-card .person-name{color:var(--navy);font-weight:700;font-size:13px;margin-top:6px}
 </style>
