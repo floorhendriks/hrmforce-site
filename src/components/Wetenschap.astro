@@ -33,7 +33,16 @@ const _faqLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntit
   </div>
 </div></section>
 
-<section><div class="wrap" style="max-width:820px">
+<section><div class="wrap">
+  <div class="eyebrow" style="color:var(--gold)">{t.fairness.eyebrow}</div>
+  <h2 class="section-title">{t.fairness.title}</h2>
+  <p class="lead" style="max-width:820px;margin:0 0 22px">{t.fairness.lead}</p>
+  <div class="ws-grid">
+    {t.fairness.items.map((it) => (<div class="ws-card ws-check"><h3>{it.title}</h3><p>{it.text}</p></div>))}
+  </div>
+</div></section>
+
+<section class="bg-soft"><div class="wrap" style="max-width:820px">
   <div class="eyebrow">{t.candidate.title}</div>
   <p class="lead" style="margin-top:8px">{t.candidate.text}</p>
 </div></section>

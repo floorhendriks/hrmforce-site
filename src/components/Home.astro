@@ -14,6 +14,7 @@ const assessHref = lp("/online-assessments/");
 const contactHref = lp("/contact/");
 const overHref = lp("/over-ons/");
 const casesHref = lp("/klantcases/");
+const oplossingHref = lp("/hrm-oplossingen/matching/");
 const chooseSelect = lang === "nl" ? "/assessment-overzicht/?fase=selectie" : assessHref;
 const chooseDevelop = lang === "nl" ? "/assessment-overzicht/?fase=ontwikkeling" : assessHref;
 
@@ -25,6 +26,14 @@ const vpIcons = {
 };
 
 const reviews = c.reviews;
+const MATCH = {
+  nl:{ eyebrow:"Objectief matchen", title:"Match op een ideaalprofiel uit je eigen top performers", lead:"Bouw een ideaalprofiel op basis van de mensen die het al goed doen. hrmforce vergelijkt kandidaten objectief met dat profiel en geeft een heldere match-score, zodat je selecteert op wat echt voorspelt.", b:["Ideaalprofiel uit je eigen succesvolle medewerkers","Objectieve match-score per kandidaat","Onderbouwd met wetenschappelijk gevalideerde tests"], cta:"Ontdek matchprofielen", meet:"Plan een kennismaking met een HR-specialist" },
+  en:{ eyebrow:"Objective matching", title:"Match against a success profile built from your own top performers", lead:"Build a success profile based on the people who already excel. hrmforce compares candidates objectively against that profile and gives a clear match score, so you select on what truly predicts performance.", b:["Success profile from your own high performers","Objective match score per candidate","Backed by scientifically validated tests"], cta:"Discover match profiles", meet:"Book an intro call with an HR specialist" },
+  de:{ eyebrow:"Objektives Matching", title:"Abgleich mit einem Erfolgsprofil aus Ihren eigenen Top-Performern", lead:"Erstellen Sie ein Erfolgsprofil auf Basis der Menschen, die bereits herausragen. hrmforce vergleicht Kandidaten objektiv mit diesem Profil und liefert einen klaren Match-Score, damit Sie nach dem auswählen, was Leistung wirklich vorhersagt.", b:["Erfolgsprofil aus Ihren eigenen Leistungsträgern","Objektiver Match-Score je Kandidat","Fundiert mit wissenschaftlich validierten Tests"], cta:"Match-Profile entdecken", meet:"Kennenlerngespräch mit einem HR-Spezialisten buchen" },
+  fr:{ eyebrow:"Matching objectif", title:"Comparez à un profil de réussite bâti sur vos propres meilleurs éléments", lead:"Construisez un profil de réussite à partir des personnes qui excellent déjà. hrmforce compare objectivement les candidats à ce profil et fournit un score de correspondance clair, pour sélectionner sur ce qui prédit vraiment la performance.", b:["Profil de réussite issu de vos meilleurs collaborateurs","Score de correspondance objectif par candidat","Appuyé par des tests validés scientifiquement"], cta:"Découvrir les profils de correspondance", meet:"Planifier un échange avec un spécialiste RH" },
+  es:{ eyebrow:"Matching objetivo", title:"Compara con un perfil de éxito creado a partir de tus propios top performers", lead:"Crea un perfil de éxito basado en las personas que ya destacan. hrmforce compara a los candidatos de forma objetiva con ese perfil y ofrece una puntuación de coincidencia clara, para seleccionar por lo que de verdad predice el rendimiento.", b:["Perfil de éxito a partir de tus mejores empleados","Puntuación de coincidencia objetiva por candidato","Respaldado por tests validados científicamente"], cta:"Descubrir perfiles de coincidencia", meet:"Reserva una toma de contacto con un especialista de RR. HH." },
+  ro:{ eyebrow:"Potrivire obiectivă", title:"Compară cu un profil de succes construit din propriii tăi top performeri", lead:"Construiește un profil de succes pe baza oamenilor care deja excelează. hrmforce compară candidații obiectiv cu acel profil și oferă un scor de potrivire clar, ca să selectezi după ceea ce prezice cu adevărat performanța.", b:["Profil de succes din proprii angajați performanți","Scor de potrivire obiectiv per candidat","Susținut de teste validate științific"], cta:"Descoperă profilurile de potrivire", meet:"Programează o discuție cu un specialist HR" },
+}[lang] || {};
 const TESTI = {
   nl: { eyebrow: "Wat klanten zeggen", title: "Vertrouwd door HR-teams en adviseurs", items: [
     { q: "De rapporten zijn meteen bruikbaar in ons selectiegesprek, geen vertaalslag meer nodig.", who: "HR-manager", org: "Zorgorganisatie, 300+ medewerkers" },
@@ -158,9 +167,23 @@ const faqLd = {
         </div>
       ))}
     </div>
-      <div class="center" style="margin-top:26px"><a class="btn btn-primary" href={contactHref}>Plan een kennismaking met een HR-specialist</a></div>
+      <div class="center" style="margin-top:26px"><a class="btn btn-primary" href={contactHref}>{MATCH.meet}</a></div>
   </div>
 </section>
+
+<section class="bg-soft"><div class="wrap match-sec">
+  <div class="match-copy">
+    <span class="eyebrow" style="color:var(--gold)">{MATCH.eyebrow}</span>
+    <h2 class="section-title">{MATCH.title}</h2>
+    <p class="lead">{MATCH.lead}</p>
+    <ul class="match-list">{MATCH.b.map((x) => <li><span class="match-ic" aria-hidden="true">&check;</span>{x}</li>)}</ul>
+    <a class="btn btn-primary" href={oplossingHref} style="margin-top:6px">{MATCH.cta} &rarr;</a>
+  </div>
+  <div class="match-visual" aria-hidden="true">
+    <div class="mv-card"><span class="mv-score">88%</span><span class="mv-label">match</span></div>
+    <div class="mv-bars"><div class="mv-bar" style="--w:86%"></div><div class="mv-bar" style="--w:74%"></div><div class="mv-bar" style="--w:92%"></div><div class="mv-bar" style="--w:68%"></div></div>
+  </div>
+</div></section>
 
 <ReviewSlider />
 
