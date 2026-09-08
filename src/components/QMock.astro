@@ -2,7 +2,7 @@
 // Dynamische "kijkje in de vragenlijst"-mockup als inline SVG. Toont de echte
 // testnaam (intro) en een echte voorbeeldvraag van dit assessment (vraag),
 // per taal. Logo via externe referentie (mag binnen inline SVG in de DOM).
-const { screen = "intro", lang = "nl", testName = "", question = "", scaleNote = "" } = Astro.props;
+const { screen = "intro", lang = "nl", testName = "", question = "", scaleNote = "", answer = "scale", options = [] } = Astro.props;
 import { LOGO_INNER } from "../data/hrmforce-logo-inner.js";
 const _uid = Math.random().toString(36).slice(2, 8) + (screen === "vraag" ? "v" : "i");
 const logoSvg = `<g transform="translate(48,19) scale(0.55)">${LOGO_INNER.replaceAll("{UID}", _uid + "_")}</g>`;
@@ -31,6 +31,11 @@ const wLines = wrap(`${L.welcome} ${testName}`, 30);
 const wFont = wLines.length > 1 ? 26 : 30;
 const qLines = wrap(question, 40);
 const qFont = qLines.length >= 3 ? 22 : 26;
+const isChoice = answer === "choice" && Array.isArray(options) && options.length > 0;
+const noteY = 252 + qLines.length * (qFont + 8) + 22;
+const optStartY = noteY + 26;
+const optH = 52, optGap = 14;
+const optRows = (options || []).slice(0, 4).map((label, i) => ({ label, y: optStartY + i * (optH + optGap) }));
 ---
 {screen === "intro" && (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label={aria}>
@@ -67,13 +72,26 @@ const qFont = qLines.length >= 3 ? 22 : 26;
     <rect x="240" y="130" width="720" height="500" rx="18" fill="#FFFFFF" stroke="#E2E8F0"/>
     <text x="290" y="200" font-size="14" font-weight="700" letter-spacing="1" fill="#0E468C">{L.sample}</text>
     {qLines.map((ln, i) => (<text x="290" y={252 + i * (qFont + 8)} font-size={qFont} font-weight="700" fill="#1F2D45">{ln}</text>))}
-    <text x="290" y={252 + qLines.length * (qFont + 8) + 20} font-size="15" fill="#6B7A90">{scaleNote || L.note}</text>
-    <g>
-      {[350, 488, 626, 764, 902].map((cx, i) => (
-        <circle cx={cx} cy="470" r={i === 2 ? 18 : 15} fill={i === 2 ? "#0E468C" : "#F0F4FA"} stroke="#D9E2EE"/>
-      ))}
-      <line x1="365" y1="470" x2="887" y2="470" stroke="#E2E8F0" stroke-width="2" opacity="0.6"/>
-    </g>
+    <text x="290" y={noteY} font-size="15" fill="#6B7A90">{scaleNote || L.note}</text>
+    {isChoice ? (
+      <g>
+        {optRows.map((o, i) => (
+          <g>
+            <rect x="290" y={o.y} width="620" height={optH} rx="12" fill={i === 0 ? "#EAF1FB" : "#F6F8FB"} stroke={i === 0 ? "#0E468C" : "#E2E8F0"}/>
+            <circle cx="322" cy={o.y + optH / 2} r="11" fill="#FFFFFF" stroke={i === 0 ? "#0E468C" : "#C7D2E0"} stroke-width="2"/>
+            {i === 0 && (<circle cx="322" cy={o.y + optH / 2} r="5" fill="#0E468C"/>)}
+            <text x="352" y={o.y + optH / 2 + 6} font-size="17" font-weight="600" fill="#1F2D45">{o.label}</text>
+          </g>
+        ))}
+      </g>
+    ) : (
+      <g>
+        {[350, 488, 626, 764, 902].map((cx, i) => (
+          <circle cx={cx} cy="470" r={i === 2 ? 18 : 15} fill={i === 2 ? "#0E468C" : "#F0F4FA"} stroke="#D9E2EE"/>
+        ))}
+        <line x1="365" y1="470" x2="887" y2="470" stroke="#E2E8F0" stroke-width="2" opacity="0.6"/>
+      </g>
+    )}
     <rect x="240" y="650" width="140" height="52" rx="12" fill="#F6F8FB" stroke="#E2E8F0"/>
     <text x="310" y="682" text-anchor="middle" font-size="16" font-weight="600" fill="#475569">{L.prev}</text>
     <rect x="820" y="650" width="140" height="52" rx="12" fill="#0E468C"/>

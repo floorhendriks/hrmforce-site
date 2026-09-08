@@ -33,7 +33,7 @@ const LIKERT = { nl: "Helemaal oneens — Oneens — Neutraal — Eens — Helem
 
 export const EXAMPLES = {
   personality: {
-    scale: LIKERT,
+    scale: LIKERT, answer: "scale",
     items: {
       nl: ["Ik voel me op mijn gemak in een groep onbekende mensen.", "Ik plan mijn werk graag ruim van tevoren.", "Ik blijf rustig als er onverwacht iets misgaat."],
       en: ["I feel at ease in a group of people I don't know.", "I like to plan my work well in advance.", "I stay calm when something unexpectedly goes wrong."],
@@ -45,6 +45,11 @@ export const EXAMPLES = {
   },
   cognitive: {
     scale: { nl: "Meerkeuze — kies het juiste antwoord", en: "Multiple choice — pick the correct answer", de: "Multiple Choice — wählen Sie die richtige Antwort", fr: "Choix multiple — choisissez la bonne réponse", es: "Opción múltiple — elige la respuesta correcta", ro: "Alegere multiplă — alege răspunsul corect" },
+    answer: "choice",
+    mock: {
+      q: { nl: "Welk getal komt logisch na: 2, 4, 8, 16, …?", en: "Which number logically follows: 2, 4, 8, 16, …?", de: "Welche Zahl folgt logisch: 2, 4, 8, 16, …?", fr: "Quel nombre suit logiquement : 2, 4, 8, 16, … ?", es: "¿Qué número sigue lógicamente: 2, 4, 8, 16, …?", ro: "Ce număr urmează logic: 2, 4, 8, 16, …?" },
+      options: { nl: ["24", "30", "32", "64"], en: ["24", "30", "32", "64"], de: ["24", "30", "32", "64"], fr: ["24", "30", "32", "64"], es: ["24", "30", "32", "64"], ro: ["24", "30", "32", "64"] },
+    },
     items: {
       nl: ["Welk getal komt logisch na: 2, 4, 8, 16, …?", "‘Boek’ verhoudt zich tot ‘lezen’ zoals ‘vork’ tot …?", "Als alle A’s B zijn en alle B’s C, dan zijn alle A’s …?"],
       en: ["Which number logically follows: 2, 4, 8, 16, …?", "‘Book’ is to ‘reading’ as ‘fork’ is to …?", "If all A’s are B and all B’s are C, then all A’s are …?"],
@@ -56,6 +61,11 @@ export const EXAMPLES = {
   },
   disc: {
     scale: { nl: "Kies wat het best (en minst) bij je past", en: "Choose what fits you best (and least)", de: "Wählen Sie, was am besten (und am wenigsten) passt", fr: "Choisissez ce qui vous correspond le mieux (et le moins)", es: "Elige lo que mejor (y menos) te describe", ro: "Alege ce ți se potrivește cel mai bine (și cel mai puțin)" },
+    answer: "choice",
+    mock: {
+      q: { nl: "Kies het woord dat het best bij je past.", en: "Pick the word that fits you best.", de: "Wählen Sie das Wort, das am besten zu Ihnen passt.", fr: "Choisissez le mot qui vous correspond le mieux.", es: "Elige la palabra que mejor te describe.", ro: "Alege cuvântul care ți se potrivește cel mai bine." },
+      options: { nl: ["Daadkrachtig", "Enthousiast", "Geduldig", "Nauwkeurig"], en: ["Decisive", "Enthusiastic", "Patient", "Precise"], de: ["Entschlossen", "Enthusiastisch", "Geduldig", "Genau"], fr: ["Déterminé", "Enthousiaste", "Patient", "Précis"], es: ["Decidido", "Entusiasta", "Paciente", "Preciso"], ro: ["Hotărât", "Entuziast", "Răbdător", "Precis"] },
+    },
     items: {
       nl: ["Kies het woord dat het best bij je past: Daadkrachtig / Enthousiast / Geduldig / Nauwkeurig.", "Wat past het minst bij je: Direct / Sociaal / Kalm / Kritisch.", "In een team ben ik vooral: Sturend / Inspirerend / Ondersteunend / Analyserend."],
       en: ["Pick the word that fits you best: Decisive / Enthusiastic / Patient / Precise.", "Which fits you least: Direct / Sociable / Calm / Critical.", "In a team I am mainly: Directing / Inspiring / Supporting / Analysing."],
@@ -67,6 +77,7 @@ export const EXAMPLES = {
   },
   drives: {
     scale: { nl: "Onbelangrijk — Heel belangrijk", en: "Not important — Very important", de: "Unwichtig — Sehr wichtig", fr: "Pas important — Très important", es: "Nada importante — Muy importante", ro: "Neimportant — Foarte important" },
+    answer: "scale",
     items: {
       nl: ["Hoe belangrijk is het voor jou om je werk zelfstandig in te richten?", "Hoe belangrijk is het om te blijven leren en jezelf te ontwikkelen?", "Hoe belangrijk zijn waardering en erkenning van collega’s?"],
       en: ["How important is it for you to organise your work independently?", "How important is it to keep learning and developing yourself?", "How important are appreciation and recognition from colleagues?"],
@@ -78,6 +89,7 @@ export const EXAMPLES = {
   },
   feedback360: {
     scale: { nl: "Nooit — Zelden — Soms — Vaak — Altijd", en: "Never — Rarely — Sometimes — Often — Always", de: "Nie — Selten — Manchmal — Oft — Immer", fr: "Jamais — Rarement — Parfois — Souvent — Toujours", es: "Nunca — Rara vez — A veces — A menudo — Siempre", ro: "Niciodată — Rar — Uneori — Des — Întotdeauna" },
+    answer: "scale",
     items: {
       nl: ["Deze collega communiceert helder en op tijd.", "Deze collega neemt verantwoordelijkheid voor resultaten.", "Deze collega staat open voor feedback van anderen."],
       en: ["This colleague communicates clearly and on time.", "This colleague takes responsibility for results.", "This colleague is open to feedback from others."],
@@ -89,6 +101,7 @@ export const EXAMPLES = {
   },
   interest: {
     scale: { nl: "Spreekt me niet aan — Spreekt me erg aan", en: "Not appealing — Very appealing", de: "Spricht mich nicht an — Spricht mich sehr an", fr: "Ne m'attire pas — M'attire beaucoup", es: "No me atrae — Me atrae mucho", ro: "Nu mă atrage — Mă atrage foarte mult" },
+    answer: "scale",
     items: {
       nl: ["Ik werk graag met mijn handen aan concrete resultaten.", "Ik los graag ingewikkelde problemen op met cijfers of data.", "Ik help en begeleid graag andere mensen."],
       en: ["I enjoy working with my hands on concrete results.", "I enjoy solving complex problems with numbers or data.", "I enjoy helping and guiding other people."],
@@ -99,7 +112,7 @@ export const EXAMPLES = {
     },
   },
   team: {
-    scale: LIKERT,
+    scale: LIKERT, answer: "scale",
     items: {
       nl: ["In ons team weten we wat we van elkaar kunnen verwachten.", "We spreken elkaar aan als afspraken niet worden nagekomen.", "Besluiten worden in ons team door iedereen gedragen."],
       en: ["In our team we know what to expect from one another.", "We address each other when agreements aren't kept.", "Decisions in our team are supported by everyone."],
@@ -110,7 +123,7 @@ export const EXAMPLES = {
     },
   },
   wellbeing: {
-    scale: LIKERT,
+    scale: LIKERT, answer: "scale",
     items: {
       nl: ["Ik heb voldoende energie voor mijn werk.", "Ik kan werk en privé goed in balans houden.", "Ik herstel snel na een drukke of stressvolle periode."],
       en: ["I have enough energy for my work.", "I can keep a good balance between work and private life.", "I recover quickly after a busy or stressful period."],
@@ -122,6 +135,11 @@ export const EXAMPLES = {
   },
   skills: {
     scale: { nl: "Kies de meest passende aanpak", en: "Choose the most appropriate approach", de: "Wählen Sie den passendsten Ansatz", fr: "Choisissez l'approche la plus adaptée", es: "Elige el enfoque más adecuado", ro: "Alege abordarea cea mai potrivită" },
+    answer: "choice",
+    mock: {
+      q: { nl: "Een proces verloopt inefficiënt. Welke stap zet je als eerste?", en: "A process runs inefficiently. What is your first step?", de: "Ein Prozess läuft ineffizient. Welchen Schritt gehen Sie zuerst?", fr: "Un processus est inefficace. Quelle est votre première étape ?", es: "Un proceso es ineficiente. ¿Cuál es tu primer paso?", ro: "Un proces este ineficient. Care este primul tău pas?" },
+      options: { nl: ["Breng eerst de knelpunten in kaart", "Los meteen het grootste symptoom op", "Vraag om een extra budget", "Wacht op instructies van boven"], en: ["Map the bottlenecks first", "Fix the biggest symptom right away", "Ask for extra budget", "Wait for instructions from above"], de: ["Zuerst die Engpässe erfassen", "Sofort das größte Symptom beheben", "Zusätzliches Budget anfragen", "Auf Anweisungen von oben warten"], fr: ["Cartographier d'abord les points de blocage", "Corriger tout de suite le principal symptôme", "Demander un budget supplémentaire", "Attendre les instructions de la hiérarchie"], es: ["Mapear primero los cuellos de botella", "Resolver de inmediato el mayor síntoma", "Pedir presupuesto adicional", "Esperar instrucciones de arriba"], ro: ["Cartografiază mai întâi blocajele", "Rezolvă imediat cel mai mare simptom", "Cere buget suplimentar", "Așteaptă instrucțiuni de sus"] },
+    },
     items: {
       nl: ["Een klant twijfelt over de prijs. Wat doe je als eerste?", "Een proces verloopt inefficiënt. Welke stap zet je als eerste?", "Je krijgt tegenstrijdige opdrachten. Hoe pak je dit aan?"],
       en: ["A client hesitates about the price. What do you do first?", "A process runs inefficiently. What is your first step?", "You receive conflicting instructions. How do you handle this?"],
@@ -139,5 +157,8 @@ export function examplesFor(slug, lang) {
   const type = slugType[slug] || "personality";
   const set = EXAMPLES[type];
   const L = (o) => o[lang] || o.nl;
-  return { title: ui.title, intro: ui.intro, scaleLabel: ui.scaleLabel, tag: ui.tag, scale: L(set.scale), items: L(set.items) };
+  const answer = set.answer || "scale";
+  const mockQuestion = set.mock ? L(set.mock.q) : (L(set.items)[0] || "");
+  const mockOptions = set.mock ? L(set.mock.options) : null;
+  return { title: ui.title, intro: ui.intro, scaleLabel: ui.scaleLabel, tag: ui.tag, scale: L(set.scale), items: L(set.items), answer, mockQuestion, mockOptions };
 }

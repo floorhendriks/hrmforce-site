@@ -162,7 +162,7 @@ const _offerLd = (shop && shop.price)
       <p class="qshots-lead">{q.l}</p>
       <div class="qshots-track">
         <figure class="qshot"><QMock screen="intro" lang={lang} testName={a.title} /><figcaption>{q.c1}</figcaption></figure>
-        <figure class="qshot"><QMock screen="vraag" lang={lang} testName={a.title} question={(ex.items && ex.items[0]) || ""} scaleNote={ex.scale} /><figcaption>{q.c2}</figcaption></figure>
+        <figure class="qshot"><QMock screen="vraag" lang={lang} testName={a.title} question={ex.mockQuestion} scaleNote={ex.scale} answer={ex.answer} options={ex.mockOptions || []} /><figcaption>{q.c2}</figcaption></figure>
         <figure class="qshot"><Img src={`/mockups/vragenlijst-afgerond.${lang}.svg`} alt={q.c3} loading="eager" /><figcaption>{q.c3}</figcaption></figure>
       </div>
     </div></section>
