@@ -1,0 +1,8 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Vergelijking from "../../../components/Vergelijking.astro";
+import { VERG_UI, COMPETITORS } from "../../../data/vergelijking-content.js";
+export function getStaticPaths(){ return Object.keys(COMPETITORS).map((slug)=>({ params:{slug}, props:{slug} })); }
+const { slug } = Astro.props; const t = VERG_UI.es; const c = COMPETITORS[slug];
+---
+<Base title={`${t.altPrefix} ${c.name} | hrmforce`} description={t.metaD} active=""><Vergelijking slug={slug} lang="es" /></Base>

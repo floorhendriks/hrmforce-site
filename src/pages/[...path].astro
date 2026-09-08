@@ -116,6 +116,21 @@ const T = {
 };
 const L = T[lang] || T.en;
 
+// Article + auteur/uitgever-schema (E-E-A-T). Auteur = redactie hrmforce,
+// met Floor Hendriks als verantwoordelijke; uitgever = hrmforce met logo.
+const _artCanon = new URL(Astro.url.pathname, "https://hrmforce.com").href;
+const _articleLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: article.title,
+  inLanguage: lang,
+  ...(article.date ? { datePublished: article.date, dateModified: article.date } : {}),
+  author: { "@type": "Organization", name: "hrmforce", url: "https://hrmforce.com/" },
+  publisher: { "@type": "Organization", name: "hrmforce", logo: { "@type": "ImageObject", url: "https://hrmforce.com/logo.svg" } },
+  mainEntityOfPage: { "@type": "WebPage", "@id": _artCanon },
+  url: _artCanon,
+};
+
 // Body splitsen: contextuele kaart na de eerste </h2> (anders vóór de eindband).
 const body = sanitizeBodyLinks(article.body || "", lang, validPaths);
 const cut = body.indexOf("</h2>");
@@ -123,6 +138,7 @@ const bodyTop = cut !== -1 ? body.slice(0, cut + 5) : body;
 const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
 ---
 <Base title={`${article.title} | Hrmforce`} description={article.title}>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(_articleLd)}></script>
   <article class="kc-article">
     <div class="wrap">
       <h1>{article.title}</h1>

@@ -7,6 +7,7 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const year = new Date().getFullYear();
 const L = (p) => navHref(p, lang, validPaths);
+const _compareLabel = {nl:"Vergelijken",en:"Compare",de:"Vergleichen",fr:"Comparer",es:"Comparar",ro:"Comparație"}[lang] || "Vergelijken";
 // Sitebrede trust-balk: korte, feitelijke signalen (per taal).
 const trustBarByLang = {
   nl: ["Wetenschappelijk gevalideerd", "AVG-proof gegevensverwerking", "36+ online assessments", "Beschikbaar in 14 talen"],
@@ -51,6 +52,7 @@ const _check = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stro
           <li><a href={L("/partners/")}>{t("footer.partners")}</a></li>
           <li><a href={L("/tarieven/")}>{t("footer.pricing")}</a></li>
           <li><a href={L("/toepassingen/")}>Toepassingen</a></li>
+          <li><a href={L("/vergelijking/")}>{_compareLabel}</a></li>
           <li><a href={L("/klantcases/")}>{t("footer.cases")}</a></li>
           <li><a href={L("/integraties/")}>{t("footer.integrations")}</a></li>
           <li><a href={L("/trust/")}>{t("footer.trust")}</a></li>
