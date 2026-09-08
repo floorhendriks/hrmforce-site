@@ -27,6 +27,10 @@ const offices = [
     </div>
   </section>
 
+  <section class="bg-soft person-band-sec"><div class="wrap">
+    <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="eager" /><div><strong>Vous préférez un contact personnel ?</strong><span>Nous vous aidons volontiers. Appelez ou écrivez-nous, nous répondons vite.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
+  </div></section>
+
   <section class="formsec">
     <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start">
       <div>
@@ -34,7 +38,7 @@ const offices = [
         <p style="margin-top:14px;color:var(--muted)"><strong>T :</strong> <a href="tel:+31888832188">+31 (0)88 88 321 88</a><br /><strong>E :</strong> <a href="mailto:service@hrmforce.com">service@hrmforce.com</a></p>
         <p style="color:var(--muted)">Nos conseillers sont disponibles du lundi au vendredi de 08h00 à 18h00.</p>
       </div>
-      <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>Vous préférez un contact personnel ?</strong><span>Nous vous aidons volontiers. Appelez ou écrivez-nous, nous répondons vite.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
+      
         <form class="formcard" action="https://formspree.io/f/JOUW_FORM_ID" method="POST">
         <h2 class="section-title" style="font-size:22px;margin-top:0">Formulaire de contact</h2>
         <div class="frow">
@@ -91,4 +95,9 @@ const offices = [
   .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
   .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
   .person-card .person-name{color:var(--navy);font-weight:700;font-size:13px;margin-top:6px}
+
+  .person-band-sec{padding:22px 0}
+  .person-band-sec .person-card{max-width:640px;margin:0;padding:18px 22px;gap:20px}
+  .person-band-sec .person-card img{width:96px;height:96px}
+  .person-band-sec .person-card strong{font-size:17px}
 </style>
