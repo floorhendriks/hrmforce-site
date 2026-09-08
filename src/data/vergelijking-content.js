@@ -2,6 +2,10 @@
 // claims over concurrenten. hrmforce's onderscheidende punten centraal.
 export const VERG_UI = {
  "nl": {
+  "edgeTitle": "Waarom organisaties voor hrmforce kiezen",
+  "verdict": "Zoek je compleetheid, meertaligheid en transparante prijzen, dan is hrmforce vaak beter passend en voordeliger dan losse tools of enterprise-only aanbieders.",
+  "edges": ["Compleet platform, geen losse tool: werving, ontwikkeling én teams in één omgeving.","Transparante prijzen: los afnemen via de shop of een vaste jaarprijs, zonder verplicht enterprise-contract.","In 14 talen af te nemen, breder dan de meeste aanbieders.","AVG-proof met dataverwerking binnen de EU.","Geen verplichte certificering; persoonlijke begeleiding is inbegrepen.","Koppelingen met Nederlandse HR-systemen (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
+
   "metaT": "hrmforce vergelijken | Alternatief voor assessment-aanbieders",
   "metaD": "Op zoek naar een assessment-aanbieder? Zie hoe hrmforce zich onderscheidt: meertalig, AVG-proof, wetenschappelijk gevalideerd en flexibel af te nemen.",
   "crumb": "Vergelijken",
@@ -44,6 +48,10 @@ export const VERG_UI = {
   "neutralNote": "Informatie over andere aanbieders is algemeen van aard; raadpleeg hun website voor de actuele details."
  },
  "en": {
+  "edgeTitle": "Why organisations choose hrmforce",
+  "verdict": "If you want completeness, multilingual delivery and transparent pricing, hrmforce is often a better fit and better value than single-point tools or enterprise-only providers.",
+  "edges": ["A complete platform, not a single tool: recruitment, development and teams in one place.","Transparent pricing: order per unit via the shop or a fixed annual price, without a mandatory enterprise contract.","Delivered in 14 languages, broader than most providers.","GDPR-proof with data processing within the EU.","No mandatory certification; personal guidance is included.","Connectors with Dutch HR systems (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
+
   "metaT": "Compare hrmforce | Alternative to assessment providers",
   "metaD": "Looking for an assessment provider? See how hrmforce stands out: multilingual, GDPR-proof, scientifically validated and flexible to deploy.",
   "crumb": "Compare",
@@ -86,6 +94,10 @@ export const VERG_UI = {
   "neutralNote": "Information about other providers is general in nature; check their website for current details."
  },
  "de": {
+  "edgeTitle": "Warum Organisationen sich für hrmforce entscheiden",
+  "verdict": "Wenn Sie Vollständigkeit, mehrsprachige Durchführung und transparente Preise suchen, passt hrmforce oft besser und ist günstiger als Einzeltools oder reine Enterprise-Anbieter.",
+  "edges": ["Eine komplette Plattform, kein Einzeltool: Recruiting, Entwicklung und Teams an einem Ort.","Transparente Preise: einzeln über den Shop oder zum festen Jahrespreis, ohne verpflichtenden Enterprise-Vertrag.","In 14 Sprachen durchführbar, breiter als die meisten Anbieter.","DSGVO-konform mit Datenverarbeitung innerhalb der EU.","Keine verpflichtende Zertifizierung; persönliche Begleitung inklusive.","Anbindungen an niederländische HR-Systeme (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
+
   "metaT": "hrmforce vergleichen | Alternative zu Assessment-Anbietern",
   "metaD": "Auf der Suche nach einem Assessment-Anbieter? Sehen Sie, wie sich hrmforce abhebt: mehrsprachig, DSGVO-konform, wissenschaftlich validiert und flexibel einsetzbar.",
   "crumb": "Vergleichen",
@@ -128,6 +140,10 @@ export const VERG_UI = {
   "neutralNote": "Informationen zu anderen Anbietern sind allgemeiner Art; aktuelle Details finden Sie auf deren Website."
  },
  "fr": {
+  "edgeTitle": "Pourquoi les organisations choisissent hrmforce",
+  "verdict": "Si vous recherchez la complétude, la passation multilingue et des prix transparents, hrmforce est souvent plus adapté et plus avantageux que les outils ponctuels ou les fournisseurs réservés aux grands comptes.",
+  "edges": ["Une plateforme complète, pas un simple outil : recrutement, développement et équipes au même endroit.","Prix transparents : à l'unité via la boutique ou à prix annuel fixe, sans contrat entreprise obligatoire.","Disponible en 14 langues, plus large que la plupart des fournisseurs.","Conforme au RGPD, traitement des données au sein de l'UE.","Pas de certification obligatoire ; accompagnement personnel inclus.","Connexions aux systèmes RH néerlandais (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
+
   "metaT": "Comparer hrmforce | Alternative aux fournisseurs d'assessments",
   "metaD": "À la recherche d'un fournisseur d'assessments ? Découvrez ce qui distingue hrmforce : multilingue, conforme au RGPD, validé scientifiquement et flexible.",
   "crumb": "Comparer",
@@ -170,6 +186,10 @@ export const VERG_UI = {
   "neutralNote": "Les informations sur les autres fournisseurs sont de nature générale ; consultez leur site pour les détails actuels."
  },
  "es": {
+  "edgeTitle": "Por qué las organizaciones eligen hrmforce",
+  "verdict": "Si buscas integridad, aplicación multilingüe y precios transparentes, hrmforce suele encajar mejor y ser más económico que las herramientas puntuales o los proveedores solo para grandes empresas.",
+  "edges": ["Una plataforma completa, no una herramienta suelta: selección, desarrollo y equipos en un solo lugar.","Precios transparentes: por unidad en la tienda o precio anual fijo, sin contrato enterprise obligatorio.","Disponible en 14 idiomas, más amplia que la mayoría de proveedores.","Conforme al RGPD, con tratamiento de datos dentro de la UE.","Sin certificación obligatoria; acompañamiento personal incluido.","Conexiones con sistemas de RR. HH. neerlandeses (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
+
   "metaT": "Comparar hrmforce | Alternativa a proveedores de evaluaciones",
   "metaD": "¿Buscas un proveedor de evaluaciones? Descubre qué distingue a hrmforce: multilingüe, conforme al RGPD, validado científicamente y flexible.",
   "crumb": "Comparar",
@@ -212,6 +232,10 @@ export const VERG_UI = {
   "neutralNote": "La información sobre otros proveedores es de carácter general; consulta su web para los detalles actuales."
  },
  "ro": {
+  "edgeTitle": "De ce aleg organizațiile hrmforce",
+  "verdict": "Dacă vrei completitudine, administrare multilingvă și prețuri transparente, hrmforce se potrivește adesea mai bine și este mai avantajos decât instrumentele punctuale sau furnizorii doar pentru enterprise.",
+  "edges": ["O platformă completă, nu un simplu instrument: recrutare, dezvoltare și echipe într-un singur loc.","Prețuri transparente: per unitate prin magazin sau preț anual fix, fără contract enterprise obligatoriu.","Disponibilă în 14 limbi, mai largă decât majoritatea furnizorilor.","Conformă GDPR, cu prelucrarea datelor în UE.","Fără certificare obligatorie; îndrumare personală inclusă.","Conexiuni cu sisteme HR neerlandeze (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
+
   "metaT": "Compară hrmforce | Alternativă la furnizorii de evaluări",
   "metaD": "Cauți un furnizor de evaluări? Vezi ce diferențiază hrmforce: multilingv, conform GDPR, validat științific și flexibil.",
   "crumb": "Comparație",
@@ -330,6 +354,50 @@ export const COMPETITORS = {
    "fr": "La méthode TMA (Analyse des Talents et Motivations) est un instrument néerlandais d'analyse des talents et des motivations. hrmforce propose une palette large et validée scientifiquement avec des instruments d'aptitude, de personnalité, de motivations et de feedback à 360 degrés, multilingue et conforme au RGPD.",
    "es": "El método TMA (Análisis de Talentos y Motivaciones) es un instrumento neerlandés de análisis de talentos y motivaciones. hrmforce ofrece un conjunto amplio y validado científicamente con instrumentos de aptitud, personalidad, motivaciones y feedback de 360 grados, multilingüe y conforme al RGPD.",
    "ro": "Metoda TMA (Analiza Talentelor și Motivației) este un instrument neerlandez de analiză a talentelor și motivației. hrmforce oferă un set larg, validat științific, cu instrumente de aptitudini, personalitate, motivații și feedback 360 de grade, multilingv și conform GDPR."
+  }
+ },
+ "hogan": {
+  "name": "Hogan",
+  "intro": {
+   "nl": "Hogan is een internationaal bekende aanbieder van persoonlijkheidsassessments, vaak certificering-gedreven en enterprise-gericht. hrmforce biedt wetenschappelijk gevalideerde instrumenten zonder verplichte certificering, meertalig, AVG-conform en direct af te nemen tegen transparante prijzen.",
+   "en": "Hogan is an internationally known provider of personality assessments, often certification-driven and enterprise-focused. hrmforce offers scientifically validated instruments without mandatory certification, multilingual, GDPR-compliant and ready to deploy at transparent prices.",
+   "de": "Hogan ist ein international bekannter Anbieter von Persönlichkeitsassessments, oft zertifizierungsgetrieben und enterprise-orientiert. hrmforce bietet wissenschaftlich validierte Instrumente ohne verpflichtende Zertifizierung, mehrsprachig, DSGVO-konform und sofort zu transparenten Preisen einsetzbar.",
+   "fr": "Hogan est un fournisseur mondialement connu d'assessments de personnalité, souvent basé sur la certification et orienté grands comptes. hrmforce propose des instruments validés scientifiquement sans certification obligatoire, multilingues, conformes au RGPD et immédiatement disponibles à des prix transparents.",
+   "es": "Hogan es un proveedor internacionalmente conocido de evaluaciones de personalidad, a menudo basado en certificación y orientado a grandes empresas. hrmforce ofrece instrumentos validados científicamente sin certificación obligatoria, multilingües, conformes al RGPD y listos para usar a precios transparentes.",
+   "ro": "Hogan este un furnizor cunoscut internațional de evaluări de personalitate, adesea bazat pe certificare și orientat spre enterprise. hrmforce oferă instrumente validate științific fără certificare obligatorie, multilingve, conforme GDPR și gata de utilizat la prețuri transparente."
+  }
+ },
+ "criteria": {
+  "name": "Criteria",
+  "intro": {
+   "nl": "Criteria is een internationaal assessmentplatform met capaciteiten- en persoonlijkheidstests. hrmforce biedt een completer talentmanagement-platform met shop en eigen portal, 14 talen, AVG-conforme EU-data en koppelingen met Nederlandse HR-systemen.",
+   "en": "Criteria is an international assessment platform with cognitive-ability and personality tests. hrmforce offers a more complete talent-management platform with shop and own portal, 14 languages, GDPR-compliant EU data and connectors to Dutch HR systems.",
+   "de": "Criteria ist eine internationale Assessment-Plattform mit Fähigkeits- und Persönlichkeitstests. hrmforce bietet eine vollständigere Talentmanagement-Plattform mit Shop und eigenem Portal, 14 Sprachen, DSGVO-konformen EU-Daten und Anbindungen an niederländische HR-Systeme.",
+   "fr": "Criteria est une plateforme d'assessment internationale proposant des tests d'aptitude et de personnalité. hrmforce propose une plateforme de gestion des talents plus complète avec boutique et portail propre, 14 langues, données UE conformes au RGPD et connexions aux systèmes RH néerlandais.",
+   "es": "Criteria es una plataforma de evaluación internacional con tests de aptitud y personalidad. hrmforce ofrece una plataforma de gestión del talento más completa con tienda y portal propio, 14 idiomas, datos en la UE conformes al RGPD y conexiones con sistemas de RR. HH. neerlandeses.",
+   "ro": "Criteria este o platformă internațională de evaluare cu teste de aptitudini și personalitate. hrmforce oferă o platformă de management al talentelor mai completă, cu magazin și portal propriu, 14 limbi, date în UE conforme GDPR și conexiuni cu sisteme HR neerlandeze."
+  }
+ },
+ "bryq": {
+  "name": "Bryq",
+  "intro": {
+   "nl": "Bryq is een internationaal, sterk op AI en skills gericht assessmentplatform. hrmforce biedt wetenschappelijk gevalideerde psychometrie met NIP-psychologen, transparante rapportage, 14 talen en EU-datahosting, plus een compleet HR-cyclus-platform.",
+   "en": "Bryq is an international, strongly AI- and skills-focused assessment platform. hrmforce offers scientifically validated psychometrics with registered (NIP) psychologists, transparent reporting, 14 languages and EU data hosting, plus a complete HR-cycle platform.",
+   "de": "Bryq ist eine internationale, stark auf KI und Skills ausgerichtete Assessment-Plattform. hrmforce bietet wissenschaftlich validierte Psychometrie mit registrierten (NIP) Psychologen, transparente Berichte, 14 Sprachen und EU-Datenhosting sowie eine komplette HR-Zyklus-Plattform.",
+   "fr": "Bryq est une plateforme d'assessment internationale fortement axée sur l'IA et les compétences. hrmforce propose une psychométrie validée scientifiquement avec des psychologues enregistrés (NIP), un reporting transparent, 14 langues et un hébergement des données dans l'UE, ainsi qu'une plateforme complète de cycle RH.",
+   "es": "Bryq es una plataforma de evaluación internacional muy centrada en la IA y las habilidades. hrmforce ofrece psicometría validada científicamente con psicólogos registrados (NIP), informes transparentes, 14 idiomas y alojamiento de datos en la UE, además de una plataforma completa del ciclo de RR. HH.",
+   "ro": "Bryq este o platformă internațională de evaluare puternic axată pe AI și competențe. hrmforce oferă psihometrie validată științific cu psihologi înregistrați (NIP), raportare transparentă, 14 limbi și găzduirea datelor în UE, plus o platformă completă a ciclului HR."
+  }
+ },
+ "equalture": {
+  "name": "Equalture",
+  "intro": {
+   "nl": "Equalture is een internationaal platform met gamified, op neuroscience gebaseerde assessments voor werving. hrmforce biedt een breder, wetenschappelijk gevalideerd instrumentarium voor zowel werving als ontwikkeling en teams, meertalig en AVG-conform.",
+   "en": "Equalture is an international platform with gamified, neuroscience-based assessments for hiring. hrmforce offers a broader, scientifically validated toolkit for recruitment as well as development and teams, multilingual and GDPR-compliant.",
+   "de": "Equalture ist eine internationale Plattform mit gamifizierten, neurowissenschaftlich basierten Assessments für die Personalgewinnung. hrmforce bietet ein breiteres, wissenschaftlich validiertes Instrumentarium für Recruiting sowie Entwicklung und Teams, mehrsprachig und DSGVO-konform.",
+   "fr": "Equalture est une plateforme internationale proposant des assessments ludiques basés sur les neurosciences pour le recrutement. hrmforce propose une palette plus large et validée scientifiquement pour le recrutement mais aussi le développement et les équipes, multilingue et conforme au RGPD.",
+   "es": "Equalture es una plataforma internacional con evaluaciones gamificadas basadas en la neurociencia para la selección. hrmforce ofrece un conjunto más amplio y validado científicamente tanto para selección como para desarrollo y equipos, multilingüe y conforme al RGPD.",
+   "ro": "Equalture este o platformă internațională cu evaluări gamificate, bazate pe neuroștiință, pentru recrutare. hrmforce oferă un set mai larg, validat științific, atât pentru recrutare, cât și pentru dezvoltare și echipe, multilingv și conform GDPR."
   }
  }
 };
