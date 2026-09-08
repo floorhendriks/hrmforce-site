@@ -1,9 +1,9 @@
 ---
 import Base from "../layouts/Base.astro";
 import Cases from "../components/Cases.astro";
-import { casesContent } from "../data/cases-content.js";
-const t = casesContent.nl;
+import { CASE_UI } from "../data/cases-content.js";
+const m = (CASE_UI["nl"] || CASE_UI.nl).meta;
 ---
-<Base title={t.meta.title} description={t.meta.description} active="about">
-  <Cases t={t} lang="nl" />
+<Base title={m.title} description={m.description} active="about">
+  <Cases />
 </Base>

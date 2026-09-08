@@ -1,58 +1,82 @@
 ---
-import { localizePath } from "../i18n/utils.js";
-const { t, lang } = Astro.props;
+import { getLangFromUrl, localizePath } from "../i18n/utils.js";
+import { casesFor } from "../data/cases-content.js";
+
+const lang = getLangFromUrl(Astro.url);
+const { ui, themeList, sectorList, sizeList, cases } = casesFor(lang);
 const contactHref = localizePath("/contact/", lang);
 const tarievenHref = localizePath("/tarieven/", lang);
 ---
-<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.hero.eyebrow}</span></div></div>
+<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{ui.eyebrow}</span></div></div>
 
 <section class="ahero"><div class="wrap" style="display:block">
-  <div class="eyebrow" style="color:var(--gold)">{t.hero.eyebrow}</div>
-  <h1>{t.hero.title}</h1>
-  <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px">{t.hero.intro}</p>
+  <div class="eyebrow" style="color:var(--gold)">{ui.eyebrow}</div>
+  <h1>{ui.title}</h1>
+  <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px">{ui.intro}</p>
 </div></section>
 
 <section><div class="wrap" style="display:block">
-  <div class="case-grid">
-    {t.cases.map((c) => (
-      <article class="case-card">
+  <div class="case-filters" id="caseFilters">
+    <input type="search" id="caseSearch" class="case-search" placeholder={ui.filters.search} aria-label={ui.filters.search} />
+    <select id="fTheme" class="case-select" aria-label={ui.filters.theme}>
+      <option value="">{ui.filters.theme}: {ui.filters.all}</option>
+      {themeList.map((x) => <option value={x.key}>{x.label}</option>)}
+    </select>
+    <select id="fSector" class="case-select" aria-label={ui.filters.sector}>
+      <option value="">{ui.filters.sector}: {ui.filters.all}</option>
+      {sectorList.map((x) => <option value={x.key}>{x.label}</option>)}
+    </select>
+    <select id="fSize" class="case-select" aria-label={ui.filters.size}>
+      <option value="">{ui.filters.size}: {ui.filters.all}</option>
+      {sizeList.map((x) => <option value={x.key}>{x.label}</option>)}
+    </select>
+    <span class="case-count"><span id="caseCount">{cases.length}</span> {ui.filters.count}</span>
+  </div>
+
+  <div class="case-grid" id="caseGrid">
+    {cases.map((c) => (
+      <article class="case-card" data-theme={c.themeKey} data-sector={c.sectorKey} data-size={c.sizeKey} data-search={c.search}>
         <div class="case-top">
-          <span class="case-tag">{c.tag}</span>
+          <span class="case-tag">{c.theme}</span>
           <span class="case-size">{c.size}</span>
         </div>
         <h2 class="case-sector">{c.sector}</h2>
         <div class="case-block">
-          <h3 class="case-label">{t.labels.challenge}</h3>
+          <h3 class="case-label">{ui.labels.challenge}</h3>
           <p>{c.challenge}</p>
         </div>
         <div class="case-block">
-          <h3 class="case-label">{t.labels.approach}</h3>
+          <h3 class="case-label">{ui.labels.approach}</h3>
           <p>{c.approach}</p>
         </div>
         <div class="case-block">
-          <h3 class="case-label">{t.labels.results}</h3>
-          <ul class="case-results">
-            {c.results.map((r) => <li>{r}</li>)}
-          </ul>
+          <h3 class="case-label">{ui.labels.results}</h3>
+          <ul class="case-results">{c.results.map((r) => <li>{r}</li>)}</ul>
         </div>
       </article>
     ))}
   </div>
+  <p class="case-none" id="caseNone" hidden>{ui.filters.none}</p>
 </div></section>
 
 <section class="cta"><div class="wrap" style="padding:56px 0">
-  <h2 style="color:#fff">{t.ctaBand.title}</h2>
-  <p style="color:rgba(255,255,255,.9);max-width:620px;margin:12px auto 0">{t.ctaBand.text}</p>
+  <h2 style="color:#fff">{ui.cta.title}</h2>
+  <p style="color:rgba(255,255,255,.9);max-width:620px;margin:12px auto 0">{ui.cta.text}</p>
   <div class="btns" style="justify-content:center;margin-top:20px">
-    <a href={contactHref} class="btn btn-light">{t.ctaBand.primary}</a>
-    <a href={tarievenHref} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">{t.ctaBand.secondary}</a>
+    <a href={contactHref} class="btn btn-light">{ui.cta.primary}</a>
+    <a href={tarievenHref} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">{ui.cta.secondary}</a>
   </div>
 </div></section>
 
 <style>
+  .case-filters{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:26px}
+  .case-search{flex:1;min-width:220px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:15px}
+  .case-select{padding:11px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:14px;background:#fff;color:var(--navy);font-weight:600;cursor:pointer}
+  .case-count{color:var(--muted);font-size:14px;font-weight:700;margin-left:auto}
+  .case-none{color:var(--muted);font-size:16px;text-align:center;padding:40px 0}
   .case-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
   @media(max-width:980px){.case-grid{grid-template-columns:1fr 1fr}}
-  @media(max-width:680px){.case-grid{grid-template-columns:1fr}}
+  @media(max-width:680px){.case-grid{grid-template-columns:1fr}.case-count{margin-left:0}}
   .case-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
   .case-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
   .case-tag{background:var(--navy);color:#fff;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:4px 11px;border-radius:999px}
@@ -66,3 +90,33 @@ const tarievenHref = localizePath("/tarieven/", lang);
   .case-results li:before{content:"✓";position:absolute;left:0;top:6px;color:var(--gold);font-weight:800}
   .cta .wrap{text-align:center}
 </style>
+
+<script>
+  (function () {
+    const grid = document.getElementById("caseGrid");
+    if (!grid) return;
+    const cards = Array.from(grid.querySelectorAll(".case-card"));
+    const search = document.getElementById("caseSearch");
+    const fTheme = document.getElementById("fTheme");
+    const fSector = document.getElementById("fSector");
+    const fSize = document.getElementById("fSize");
+    const count = document.getElementById("caseCount");
+    const none = document.getElementById("caseNone");
+    function apply() {
+      const q = (search.value || "").trim().toLowerCase();
+      const th = fTheme.value, se = fSector.value, si = fSize.value;
+      let n = 0;
+      cards.forEach((c) => {
+        const ok = (!th || c.dataset.theme === th) && (!se || c.dataset.sector === se) && (!si || c.dataset.size === si) && (!q || (c.dataset.search || "").includes(q));
+        c.style.display = ok ? "" : "none";
+        if (ok) n++;
+      });
+      count.textContent = n;
+      none.hidden = n > 0;
+    }
+    [search, fTheme, fSector, fSize].forEach((el) => {
+      el.addEventListener("input", apply);
+      el.addEventListener("change", apply);
+    });
+  })();
+</script>
