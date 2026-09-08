@@ -283,7 +283,7 @@ footer a:hover{color:#fff;opacity:1}
 .flogo{font-weight:800;font-size:20px;color:#fff;margin-bottom:14px;letter-spacing:2px;text-transform:uppercase}
 .fbottom{border-top:1px solid rgba(255,255,255,.1);margin-top:36px;padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:#8294ad;font-size:13px}
 @media(max-width:880px){.fgrid{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.fgrid{grid-template-columns:1fr}}
+@media(max-width:560px){.fgrid{grid-template-columns:1fr}.fgrid ul{columns:2;column-gap:24px}.fgrid li{break-inside:avoid}}
 
 /* ============================================================
    Assessment / detailpagina
