@@ -138,7 +138,12 @@ const _articleLd = {
 };
 
 // Body splitsen: contextuele kaart na de eerste </h2> (anders vóór de eindband).
-const body = sanitizeBodyLinks(article.body || "", lang, validPaths);
+let body = sanitizeBodyLinks(article.body || "", lang, validPaths);
+// Verwijder de lege, doelloze kop "Organisaties die u voorgingen" die uit de oude
+// WordPress-logoslider-plugin in de gemigreerde artikelinhoud is achtergebleven.
+body = body
+  .replace(/<p>\s*<\/p>\s*<h2>\s*Organisaties die u voorgingen\s*<\/h2>/gi, "")
+  .replace(/<h2>\s*Organisaties die u voorgingen\s*<\/h2>\s*(<p>\s*<\/p>)?/gi, "");
 // Partners-pagina: extra doorlink naar de integraties (alleen echte koppelingen).
 const _pathClean = (article.path || "").replace(/^\/+|\/+$/g, "");
 const isPartners = _pathClean === "partners" || _pathClean.endsWith("/partners");

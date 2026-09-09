@@ -15,6 +15,25 @@ const PREP_UI = {
 const prep = PREP_UI[lang] || PREP_UI.nl;
 const prepTests = oefentests.map((o) => ({ slug: o.slug, name: (o.i18n[lang] || o.i18n.nl).name })).sort((a, b) => a.name.localeCompare(b.name));
 const oefenBase = lang === "nl" ? "/oefenen/" : localizePath("/oefenen/", lang);
+const BOOKS_NL = [
+  { a: "Wim Bloemers", t: "De nieuwe assessmentgids (het psychologisch onderzoek)" },
+  { a: "Wim Bloemers", t: "Het psychologisch onderzoek" },
+  { a: "Wim Bloemers", t: "De assessmentgids compact" },
+];
+const BOOKS_EN = [
+  { a: "Mike Bryon", t: "How to Pass Psychometric Tests" },
+  { a: "Mark Parkinson", t: "How to Master Psychometric Tests" },
+  { a: "Jim Barrett", t: "The Aptitude Test Workbook" },
+];
+const BOOK_UI = {
+  nl: { eyebrow: "Boeken", title: "Boeken ter voorbereiding", intro: "Wil je je nog grondiger voorbereiden? Deze boeken helpen je vertrouwd raken met assessments, capaciteitentests en persoonlijkheidsvragenlijsten.", nlLabel: "Nederlandstalig", enLabel: "Engelstalig" },
+  en: { eyebrow: "Books", title: "Books to prepare", intro: "Want to prepare even more thoroughly? These books help you get familiar with assessments, aptitude tests and personality questionnaires.", nlLabel: "In Dutch", enLabel: "In English" },
+  de: { eyebrow: "Bücher", title: "Bücher zur Vorbereitung", intro: "Möchten Sie sich noch gründlicher vorbereiten? Diese Bücher helfen Ihnen, sich mit Assessments, Fähigkeitstests und Persönlichkeitsfragebögen vertraut zu machen.", nlLabel: "Niederländisch", enLabel: "Englisch" },
+  fr: { eyebrow: "Livres", title: "Livres pour se préparer", intro: "Vous souhaitez vous préparer encore plus en profondeur ? Ces livres vous aident à vous familiariser avec les assessments, les tests d'aptitude et les questionnaires de personnalité.", nlLabel: "En néerlandais", enLabel: "En anglais" },
+  es: { eyebrow: "Libros", title: "Libros para prepararte", intro: "¿Quieres prepararte aún más a fondo? Estos libros te ayudan a familiarizarte con los assessments, los tests de capacidad y los cuestionarios de personalidad.", nlLabel: "En neerlandés", enLabel: "En inglés" },
+  ro: { eyebrow: "Cărți", title: "Cărți pentru pregătire", intro: "Vrei să te pregătești și mai temeinic? Aceste cărți te ajută să te familiarizezi cu assessment-urile, testele de aptitudini și chestionarele de personalitate.", nlLabel: "În neerlandeză", enLabel: "În engleză" },
+};
+const books = BOOK_UI[lang] || BOOK_UI.nl;
 const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voor deze zoekterm."}, en:{ph:"Search the preparation...", none:"Nothing found for this term."}, de:{ph:"In der Vorbereitung suchen...", none:"Nichts zu diesem Begriff gefunden."}, fr:{ph:"Rechercher dans la préparation...", none:"Rien trouvé pour ce terme."}, es:{ph:"Buscar en la preparación...", none:"No se encontró nada para este término."}, ro:{ph:"Caută în pregătire...", none:"Nimic găsit pentru acest termen."} }[lang] || {ph:"Zoek...", none:"Niets gevonden."};
 ---
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
@@ -45,6 +64,22 @@ const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voo
   <p class="prep-none" id="prepNone" hidden>{prep.none}</p>
 </div></section>
 
+<section><div class="wrap" style="display:block">
+  <div class="eyebrow" style="color:var(--gold)">{books.eyebrow}</div>
+  <h2 class="section-title">{books.title}</h2>
+  <p style="max-width:820px;color:var(--muted);margin-bottom:18px">{books.intro}</p>
+  <div class="prep-books">
+    <div class="pb-col">
+      <h3 class="pb-h">{books.nlLabel}</h3>
+      <ul class="pb-list">{BOOKS_NL.map((b) => (<li><span class="pb-title">{b.t}</span><span class="pb-author">{b.a}</span></li>))}</ul>
+    </div>
+    <div class="pb-col">
+      <h3 class="pb-h">{books.enLabel}</h3>
+      <ul class="pb-list">{BOOKS_EN.map((b) => (<li><span class="pb-title">{b.t}</span><span class="pb-author">{b.a}</span></li>))}</ul>
+    </div>
+  </div>
+</div></section>
+
 <section class="bg-soft"><div class="wrap">
   <div class="eyebrow">{t.contact.eyebrow}</div>
   <h2 class="section-title">{t.contact.title}</h2>
@@ -70,6 +105,15 @@ const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voo
   .kc-body :global(.btn){color:#fff}
   .contact-list{list-style:none;margin:0;padding:0;font-size:17px;line-height:2}
   .contact-list a{color:var(--blue,#4691CE)}
+    .prep-books{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:920px}
+  .pb-col{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px;box-shadow:var(--shadow-xs)}
+  .pb-h{color:var(--navy);font-size:16px;font-weight:800;margin:0 0 12px}
+  .pb-list{list-style:none;margin:0;padding:0}
+  .pb-list li{padding:10px 0;border-top:1px solid var(--line)}
+  .pb-list li:first-child{border-top:0}
+  .pb-title{display:block;color:var(--text);font-weight:600;font-size:15px}
+  .pb-author{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
+  @media(max-width:760px){ .prep-books{grid-template-columns:1fr} }
   .prep-search{width:100%;max-width:420px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:15px;margin-bottom:16px}
   .prep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
   .prep-card{display:flex;flex-direction:column;gap:8px;background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:16px 18px;text-decoration:none}
