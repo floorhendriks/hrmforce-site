@@ -10,8 +10,12 @@
  */
 import nl from '../i18n/nl.json';
 import en from '../i18n/en.json';
+import de from '../i18n/de.json';
+import fr from '../i18n/fr.json';
+import es from '../i18n/es.json';
+import ro from '../i18n/ro.json';
 
-export const LOCALES = ['nl', 'en'] as const;
+export const LOCALES = ['nl', 'en', 'de', 'fr', 'es', 'ro'] as const;
 export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = 'nl';
 
@@ -19,15 +23,19 @@ export const DEFAULT_LOCALE: Locale = 'nl';
 export type DataLang = 'nl' | 'en';
 export const dataLang = (l: string): DataLang => (l === 'nl' ? 'nl' : 'en');
 
-const DICT: Record<string, Record<string, string>> = { nl, en };
+const DICT: Record<string, Record<string, string>> = { nl, en, de, fr, es, ro };
 
 /** Url-prefix per taal. De standaardtaal heeft geen prefix. */
-export const ROUTE_PREFIX: Record<string, string> = { nl: '', en: '/en' };
+export const ROUTE_PREFIX: Record<string, string> = { nl: '', en: '/en', de: '/de', fr: '/fr', es: '/es', ro: '/ro' };
 
 /** Padsegmenten per taal, zodat de url's in elke taal natuurlijk lezen. */
 export const SEG: Record<string, Record<string, string>> = {
   nl: { root: 'skills-framework', functions: 'functies', skills: 'skills', families: 'functiefamilies', match: 'matchcalculator', method: 'verantwoording', full: 'volledig' },
   en: { root: 'skills-framework', functions: 'jobs', skills: 'skills', families: 'job-families', match: 'match-calculator', method: 'methodology', full: 'full' },
+  de: { root: 'skills-framework', functions: 'jobs', skills: 'skills', families: 'job-families', match: 'match-calculator', method: 'methodology', full: 'full' },
+  fr: { root: 'skills-framework', functions: 'jobs', skills: 'skills', families: 'job-families', match: 'match-calculator', method: 'methodology', full: 'full' },
+  es: { root: 'skills-framework', functions: 'jobs', skills: 'skills', families: 'job-families', match: 'match-calculator', method: 'methodology', full: 'full' },
+  ro: { root: 'skills-framework', functions: 'jobs', skills: 'skills', families: 'job-families', match: 'match-calculator', method: 'methodology', full: 'full' },
 };
 
 export function useT(locale: string) {

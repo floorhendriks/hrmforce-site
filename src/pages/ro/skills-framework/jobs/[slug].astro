@@ -1,0 +1,11 @@
+---
+import FunctionPage from '../../../../views/FunctionPage.astro';
+import { functions, getFunction } from '../../../../lib/hsf';
+import { altItem } from '../../../../lib/alt';
+export async function getStaticPaths() {
+  return functions.map((f) => ({ params: { slug: f.slug.en }, props: { id: f.id, slugs: f.slug } }));
+}
+const { id, slugs } = Astro.props;
+const fn = await getFunction(id);
+---
+<FunctionPage lang="ro" fn={fn} alternates={altItem('functions', slugs)} />

@@ -1,0 +1,10 @@
+---
+import SkillPage from '../../../../views/SkillPage.astro';
+import { skills } from '../../../../lib/hsf';
+import { altItem } from '../../../../lib/alt';
+export async function getStaticPaths() {
+  return skills.map((s: any) => ({ params: { slug: s.slug.en }, props: { sk: s } }));
+}
+const { sk } = Astro.props;
+---
+<SkillPage lang="ro" sk={sk} alternates={altItem('skills', sk.slug)} />

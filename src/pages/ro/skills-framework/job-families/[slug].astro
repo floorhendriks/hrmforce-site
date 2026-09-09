@@ -1,0 +1,10 @@
+---
+import FamilyPage from '../../../../views/FamilyPage.astro';
+import { families } from '../../../../lib/hsf';
+import { altItem } from '../../../../lib/alt';
+export async function getStaticPaths() {
+  return families.map((f: any) => ({ params: { slug: f.slug.en }, props: { fam: f } }));
+}
+const { fam } = Astro.props;
+---
+<FamilyPage lang="ro" fam={fam} alternates={altItem('families', fam.slug)} />

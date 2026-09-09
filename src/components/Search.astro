@@ -103,6 +103,7 @@ const kinds = [
     const chips = [...app.querySelectorAll('[data-tag]')];
     const resetBtn = app.querySelector('[data-reset]');
     const lang = app.dataset.lang;
+    const dl = app.dataset.dl || (lang === 'nl' ? 'nl' : 'en');
     const base = app.dataset.base;
     const seg = { f: app.dataset.segF, s: app.dataset.segS, j: app.dataset.segJ };
     let kind = app.dataset.scope === 'all' ? 'all' : app.dataset.scope;
@@ -165,13 +166,13 @@ const kinds = [
       if (granLoaded) return;
       granLoaded = true;
       try {
-        const r = await fetch(`/hsf-data/search-${lang}-skills.json`);
+        const r = await fetch(`/hsf-data/search-${dl}-skills.json`);
         gran = await r.json();
         render();
       } catch (e) { /* zoeken blijft werken op de kernindex */ }
     }
 
-    fetch(`/hsf-data/search-${lang}-core.json`)
+    fetch(`/hsf-data/search-${dl}-core.json`)
       .then((r) => r.json())
       .then((d) => { core = d; render(); if (kind === 's' || kind === 'all') loadGran(); })
       .catch(() => { countEl.textContent = lang === 'nl' ? 'Zoekindex kon niet worden geladen.' : 'Could not load the search index.'; });
