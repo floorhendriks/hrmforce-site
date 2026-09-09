@@ -7,9 +7,10 @@ import InstrumentList from '../components/InstrumentList.astro';
 import DomainMix from '../components/DomainMix.astro';
 import LeadForm from '../components/LeadForm.astro';
 import { useT, path, SEG, useTf } from '../lib/i18n';
-import { existsSync } from 'node:fs';
 import { familyById, functionsOfFamily, domainMix, meta } from '../lib/hsf';
 import { dlang } from '../lib/hsf-i18n';
+import { hasDownload, downloadUrl } from '../lib/downloads';
+import { vt } from '../lib/vocab';
 interface Props { lang: string; fn: any; alternates: Record<string, string> }
 const { lang, fn, alternates } = Astro.props;
 const t = useT(lang);
@@ -21,14 +22,13 @@ const related = functionsOfFamily(fn.family_id).filter((x) => x.id !== fn.id).sl
 const top = fn.profile.slice(0, 10);
 const seg = SEG[lang] ?? SEG.en;
 /**
- * De download wijst naar de gegenereerde pdf. Bestaat die nog niet, bijvoorbeeld omdat
- * `npm run pdf` nog niet is gelopen, dan valt de link terug op de printpagina. Zo staat er
- * nooit een dode link op de site en schakelt de link automatisch om zodra de pijplijn de
- * pdf's heeft gemaakt. Zie docs/06-pdf-generatie.md.
+ * De download wijst naar de gegenereerde pdf, die uit de R2-bucket komt via
+ * functions/downloads/[[path]].js. Welke pdf's bestaan staat in het manifest
+ * src/data/downloads-manifest.json; ontbreekt er een, dan valt de link terug op de
+ * printpagina, zodat er nooit een dode link op de site staat.
  */
-const pdfPath = `/downloads/${lang}/${fn.slug[dl]}.pdf`;
-const hasPdf = existsSync(new URL(`../../public${pdfPath}`, import.meta.url));
-const pdf = hasPdf ? pdfPath : path(lang, 'functions', fn.slug[dl], 'full');
+const hasPdf = hasDownload(lang, fn.slug[dl]);
+const pdf = hasPdf ? downloadUrl(lang, fn.slug[dl]) : path(lang, 'functions', fn.slug[dl], 'full');
 const title = `${fn.title[dl]} | ${t('seo.job-profile-skills-and-competencies')} | hrmforce`;
 const desc = `${fn.summary[dl]} ${tf('seo.job-desc-tail', { skills: fn.counts.skills, competencies: fn.counts.competencies })}`;
 const jsonld = [{
@@ -37,7 +37,7 @@ const jsonld = [{
   alternateName: fn.aliases[dl],
   occupationalCategory: [
     { '@type': 'CategoryCode', codeValue: fn.isco, inCodeSet: { '@type': 'CategoryCodeSet', name: 'ISCO-08' } },
-    { '@type': 'CategoryCode', codeValue: fn.brc, name: fn.brc_naam, inCodeSet: { '@type': 'CategoryCodeSet', name: 'Beroepenindeling ROA-CBS 2014' } },
+    { '@type': 'CategoryCode', codeValue: fn.brc, name: vt(fn.brc_naam, dl), inCodeSet: { '@type': 'CategoryCodeSet', name: 'Beroepenindeling ROA-CBS 2014' } },
   ],
   skills: fn.profile.map((r: any) => r.name[dl]).join(', '),
   url: new URL(path(lang, 'functions', fn.slug[dl]), Astro.site).toString(),
@@ -63,7 +63,7 @@ const jsonld = [{
       <div class="hsf-badges" style="margin-bottom:.6rem">
         <span class="hsf-badge accent">{fam.id} {fam.name[dl]}</span>
         <span class="hsf-badge">{fn.seniority_default}</span>
-        {fn.sector_tags.map((s: string) => <span class="hsf-badge">{s}</span>)}
+        {fn.sector_tags.map((s: string) => <span class="hsf-badge">{vt(s, dl)}</span>)}
       </div>
       <h1 style="margin-bottom:.3rem">{fn.title[dl]}</h1>
       {fn.aliases[dl].length > 0 && (
@@ -120,7 +120,7 @@ const jsonld = [{
         <h3 style="margin-top:0;font-size:1rem">{t('fn.classification')}</h3>
         <dl class="hsf-dl">
           <dt>ISCO-08</dt><dd>{fn.isco}</dd>
-          <dt>CBS</dt><dd>{fn.brc} {fn.brc_naam}</dd>
+          <dt>CBS</dt><dd>{fn.brc} {vt(fn.brc_naam, dl)}</dd>
           <dt>{t('filter.family')}</dt><dd><a href={path(lang, 'families', fam.slug[dl])}>{fam.id}</a></dd>
           <dt>{t('fn.skills.count')}</dt><dd>{fn.counts.skills}</dd>
           <dt>{t('fn.critical.count')}</dt><dd>{fn.counts.critical}</dd>

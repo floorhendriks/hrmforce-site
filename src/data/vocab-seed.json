@@ -1,0 +1,322 @@
+{
+  "_comment": "Handmatige termen voor de vocabulairvelden van de dataset (meetmethode, trainbaarheid, ai-vraag, herbruikbaarheid, instrumenten, sectortags). Elke taalsleutel die hier staat wordt overgenomen en niet door DeepL overschreven. product=true betekent: een hrmforce-productnaam, die blijft in alle talen gelijk. Waarden die hier niet in staan worden volledig door DeepL vertaald. Bijwerken en daarna scripts/hsf-translate-vocab.mjs draaien.",
+  "Cognitieve capaciteitentest": {
+    "en": "Cognitive ability test"
+  },
+  "Assessment center": {
+    "en": "Assessment centre"
+  },
+  "Werkproef": {
+    "en": "Work sample test"
+  },
+  "Situational Judgement Test": {
+    "en": "Situational Judgement Test",
+    "product": true
+  },
+  "Persoonlijkheidsvragenlijst": {
+    "en": "Personality questionnaire"
+  },
+  "360 feedback": {
+    "en": "360-degree feedback"
+  },
+  "Praktijkobservatie": {
+    "en": "On-the-job observation"
+  },
+  "Structureerd interview": {
+    "en": "Structured interview"
+  },
+  "Kennistoets": {
+    "en": "Knowledge test"
+  },
+  "Certificaat/diploma": {
+    "en": "Certificate or diploma"
+  },
+  "Simulatie": {
+    "en": "Simulation"
+  },
+  "Portfolio/bewijsstuk": {
+    "en": "Portfolio or evidence"
+  },
+  "Zelfrapportage met verificatie": {
+    "en": "Self-report with verification"
+  },
+  "laag": {
+    "en": "low"
+  },
+  "middel": {
+    "en": "medium"
+  },
+  "hoog": {
+    "en": "high"
+  },
+  "stabiel": {
+    "en": "stable"
+  },
+  "stijgend": {
+    "en": "rising"
+  },
+  "dalend": {
+    "en": "declining"
+  },
+  "transversaal": {
+    "en": "transversal"
+  },
+  "cross-sectoraal": {
+    "en": "cross-sector"
+  },
+  "sectorspecifiek": {
+    "en": "sector-specific"
+  },
+  "functiespecifiek": {
+    "en": "job-specific"
+  },
+  "Big Fifty": {
+    "en": "Big Fifty",
+    "product": true
+  },
+  "Ability Scan": {
+    "en": "Ability Scan",
+    "product": true
+  },
+  "Competency Check": {
+    "en": "Competency Check",
+    "product": true
+  },
+  "15PF": {
+    "en": "15PF",
+    "product": true
+  },
+  "Communicatiestijlen": {
+    "en": "Communication Styles",
+    "product": true
+  },
+  "Conflictstijlen": {
+    "en": "Conflict Styles",
+    "product": true
+  },
+  "Leerstijlen": {
+    "en": "Learning Styles",
+    "product": true
+  },
+  "Motivatie": {
+    "en": "Motivation",
+    "product": true
+  },
+  "Loopbaanorientaties": {
+    "en": "Career Orientations",
+    "product": true
+  },
+  "Loopbaanoriëntaties": {
+    "en": "Career Orientations",
+    "product": true
+  },
+  "Loopbaaninteresse": {
+    "en": "Career Interest",
+    "product": true
+  },
+  "Mentale Weerbaarheid (4C)": {
+    "en": "Mental Resilience (4C)",
+    "product": true
+  },
+  "Kleurenprofiel (Jung)": {
+    "en": "Colour Profile (Jung)",
+    "product": true
+  },
+  "360 Feedback": {
+    "en": "360 Feedback",
+    "product": true
+  },
+  "Ontwikkelgesprek": {
+    "en": "Development Review",
+    "product": true
+  },
+  "Pulse Survey": {
+    "en": "Pulse Survey",
+    "product": true
+  },
+  "TeamFlow": {
+    "en": "TeamFlow",
+    "product": true
+  },
+  "Kennistoets (klantspecifiek)": {
+    "en": "Knowledge test (client-specific)"
+  },
+  "Portfolio": {
+    "en": "Portfolio"
+  },
+  "management": {
+    "en": "management",
+    "de": "Management",
+    "fr": "management",
+    "es": "gestión",
+    "ro": "management"
+  },
+  "mkb": {
+    "en": "SME",
+    "de": "KMU",
+    "fr": "PME",
+    "es": "pymes",
+    "ro": "IMM"
+  },
+  "dienstverlening": {
+    "en": "services",
+    "de": "Dienstleistungen",
+    "fr": "services",
+    "es": "servicios",
+    "ro": "servicii"
+  },
+  "juridisch": {
+    "en": "legal",
+    "de": "Recht",
+    "fr": "juridique",
+    "es": "jurídico",
+    "ro": "juridic"
+  },
+  "enterprise": {
+    "en": "enterprise",
+    "de": "Großunternehmen",
+    "fr": "grands comptes",
+    "es": "gran empresa",
+    "ro": "corporații"
+  },
+  "industrie": {
+    "en": "industry",
+    "de": "Industrie",
+    "fr": "industrie",
+    "es": "industria",
+    "ro": "industrie"
+  },
+  "commercie": {
+    "en": "sales",
+    "de": "Vertrieb",
+    "fr": "commercial",
+    "es": "comercial",
+    "ro": "vânzări"
+  },
+  "b2b": {
+    "en": "B2B",
+    "de": "B2B",
+    "fr": "B2B",
+    "es": "B2B",
+    "ro": "B2B"
+  },
+  "overheid": {
+    "en": "government",
+    "de": "öffentlicher Sektor",
+    "fr": "secteur public",
+    "es": "sector público",
+    "ro": "sector public"
+  },
+  "staf": {
+    "en": "staff functions",
+    "de": "Stabsstellen",
+    "fr": "fonctions support",
+    "es": "funciones de staff",
+    "ro": "funcții de suport"
+  },
+  "finance": {
+    "en": "finance",
+    "de": "Finanzen",
+    "fr": "finance",
+    "es": "finanzas",
+    "ro": "finanțe"
+  },
+  "zorg": {
+    "en": "healthcare",
+    "de": "Gesundheitswesen",
+    "fr": "santé",
+    "es": "sanidad",
+    "ro": "sănătate"
+  },
+  "uitvoerend": {
+    "en": "operational",
+    "de": "ausführend",
+    "fr": "opérationnel",
+    "es": "operativo",
+    "ro": "operațional"
+  },
+  "logistiek": {
+    "en": "logistics",
+    "de": "Logistik",
+    "fr": "logistique",
+    "es": "logística",
+    "ro": "logistică"
+  },
+  "b2c": {
+    "en": "B2C",
+    "de": "B2C",
+    "fr": "B2C",
+    "es": "B2C",
+    "ro": "B2C"
+  },
+  "techniek": {
+    "en": "engineering",
+    "de": "Technik",
+    "fr": "technique",
+    "es": "técnica",
+    "ro": "tehnică"
+  },
+  "bouw": {
+    "en": "construction",
+    "de": "Baugewerbe",
+    "fr": "construction",
+    "es": "construcción",
+    "ro": "construcții"
+  },
+  "retail": {
+    "en": "retail",
+    "de": "Einzelhandel",
+    "fr": "commerce de détail",
+    "es": "comercio minorista",
+    "ro": "retail"
+  },
+  "horeca": {
+    "en": "hospitality",
+    "de": "Gastgewerbe",
+    "fr": "hôtellerie-restauration",
+    "es": "hostelería",
+    "ro": "HoReCa"
+  },
+  "welzijn": {
+    "en": "social care",
+    "de": "Sozialwesen",
+    "fr": "action sociale",
+    "es": "bienestar social",
+    "ro": "asistență socială"
+  },
+  "ict": {
+    "en": "IT",
+    "de": "IT",
+    "fr": "informatique",
+    "es": "TI",
+    "ro": "IT"
+  },
+  "marketing": {
+    "en": "marketing",
+    "de": "Marketing",
+    "fr": "marketing",
+    "es": "marketing",
+    "ro": "marketing"
+  },
+  "data": {
+    "en": "data",
+    "de": "Daten",
+    "fr": "données",
+    "es": "datos",
+    "ro": "date"
+  },
+  "hr": {
+    "en": "HR",
+    "de": "HR",
+    "fr": "RH",
+    "es": "RRHH",
+    "ro": "HR"
+  },
+  "onderwijs": {
+    "en": "education",
+    "de": "Bildung",
+    "fr": "enseignement",
+    "es": "educación",
+    "ro": "educație"
+  }
+}

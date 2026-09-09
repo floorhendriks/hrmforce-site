@@ -7,13 +7,14 @@
 import { useT, path } from '../lib/i18n';
 import { meta } from '../lib/hsf';
 import { dlang } from '../lib/hsf-i18n';
+import { vt } from '../lib/vocab';
 interface Props { lang: string; fn: any; family: any }
 const { lang, fn, family } = Astro.props;
 const t = useT(lang);
 const dl = dlang(lang);
 const rows = fn.profile.map((r: any) => ({
   id: r.skill_id, n: r.name[dl], y: r.type, w: r.weight, c: r.critical,
-  base: r.target_level, a: r.assessment, m: r.instruments.join(', '),
+  base: r.target_level, a: vt(r.assessment, dl), m: r.instruments.map((i: string) => vt(i, dl)).join(', '),
 }));
 const bands = (meta as any).match_model.bands;
 ---

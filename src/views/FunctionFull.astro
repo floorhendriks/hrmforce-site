@@ -11,6 +11,7 @@ import CompetencyTable from '../components/CompetencyTable.astro';
 import { useT, path, useTf } from '../lib/i18n';
 import { familyById, meta, domainMix, constructById } from '../lib/hsf';
 import { dlang } from '../lib/hsf-i18n';
+import { vt } from '../lib/vocab';
 interface Props { lang: string; fn: any }
 const { lang, fn } = Astro.props;
 const t = useT(lang);
@@ -39,7 +40,7 @@ const byDomain = (meta as any) && domainMix(fn.profile);
 
   <h1 style="margin-bottom:.2rem">{fn.title[dl]}</h1>
   <p class="hsf-small hsf-muted" style="margin-bottom:1rem">
-    {fam.id} {fam.name[dl]} · ISCO-08 {fn.isco} · CBS {fn.brc} {fn.brc_naam} ·
+    {fam.id} {fam.name[dl]} · ISCO-08 {fn.isco} · CBS {fn.brc} {vt(fn.brc_naam, dl)} ·
     {' '}{t('ui.seniority')} {fn.seniority_default}
     {fn.aliases[dl].length > 0 && <> · {t('fn.aliases')}: {fn.aliases[dl].join(', ')}</>}
   </p>
@@ -141,7 +142,7 @@ const byDomain = (meta as any) && domainMix(fn.profile);
       <tbody>
         {methods.map((m: any) => (
           <tr>
-            <td><strong>{m.name}</strong></td>
+            <td><strong>{vt(m.name, dl)}</strong></td>
             <td class="num">{m.rho != null ? m.rho.toFixed(2) : '-'}</td>
             <td class="num">{m.sd != null ? m.sd.toFixed(2) : '-'}</td>
             <td class="hsf-xs">{m[dl] ?? ''}</td>
@@ -157,7 +158,7 @@ const byDomain = (meta as any) && domainMix(fn.profile);
       <thead><tr><th>{t('tbl.instrument')}</th><th class="num">{t('ui.skills-2')}</th><th>{t('ui.what-it-measures')}</th></tr></thead>
       <tbody>
         {fn.instrument_summary.map((i: any) => (
-          <tr><td><strong>{i.instrument}</strong></td><td class="num">{i.skills}</td><td class="hsf-xs">{i.description}</td></tr>
+          <tr><td><strong>{vt(i.instrument, dl)}</strong></td><td class="num">{i.skills}</td><td class="hsf-xs">{vt(i.description, dl)}</td></tr>
         ))}
       </tbody>
     </table>

@@ -5,6 +5,7 @@ import Level from '../components/Level.astro';
 import { useT, path , useTf} from '../lib/i18n';
 import { meta, domainById, typeLabel, instrumentInfo, methodInfo, functionById, domains } from '../lib/hsf';
 import { dlang } from '../lib/hsf-i18n';
+import { vt } from '../lib/vocab';
 interface Props { lang: string; sk: any; alternates: Record<string, string> }
 const { lang, sk, alternates } = Astro.props;
 const t = useT(lang);
@@ -17,7 +18,7 @@ const method = methodInfo(sk.assessment);
 const scale = (meta as any).proficiency_scale;
 const stdNames: Record<string, string> = {
   esco: 'ESCO v1.2.1', onet: 'O*NET 31.0', lightcast: 'Lightcast Open Skills',
-  sfia: 'SFIA 9', eu_framework: 'EU-competentieframework', wef: 'WEF Future of Jobs 2025',
+  sfia: 'SFIA 9', eu_framework: vt('EU-competentieframework', dl), wef: 'WEF Future of Jobs 2025',
 };
 const title = `${sk.name[dl]} | ${t('seo.skill-levels-and-measurement')} | hrmforce`;
 const desc = `${sk.definition[dl]} ${tf('seo.skill-desc-tail', { n: sk.child_count })}`;
@@ -48,7 +49,7 @@ const jsonld = [{
       <div class="hsf-badges" style="margin-bottom:.6rem">
         <span class="hsf-badge accent"><span class="hsf-type" data-t={sk.type} style="background:transparent;width:auto">{sk.type}</span> {typeLabel(sk.type, dl)}</span>
         <span class="hsf-badge">{sk.id}</span>
-        <span class="hsf-badge">{sk.reusability}</span>
+        <span class="hsf-badge">{vt(sk.reusability, dl)}</span>
         <span class="hsf-badge">{sk.child_count} {t('count.skills')}</span>
       </div>
       <h1 style="margin-bottom:.3rem">{sk.name[dl]}</h1>
@@ -58,17 +59,18 @@ const jsonld = [{
       <div class="hsf-card">
         <dl class="hsf-dl">
           <dt>{t('tbl.assessment')}</dt>
-          <dd><strong>{sk.assessment}</strong>{method?.rho != null && <span class="hsf-muted"> · rho {method.rho.toFixed(2)} (SD {method.sd?.toFixed(2)})</span>}</dd>
+          <dd><strong>{vt(sk.assessment, dl)}</strong>{method?.rho != null && <span class="hsf-muted"> · rho {method.rho.toFixed(2)} (SD {method.sd?.toFixed(2)})</span>}</dd>
           <dt>{t('tbl.instrument')}</dt>
           <dd>{sk.instruments.length
             ? sk.instruments.map((i: string, k: number) => {
                 const info = instrumentInfo(i);
-                return <>{k > 0 && ', '}<span class="hsf-nowrap">{info?.url ? <a href={info.url}>{i}</a> : i}</span></>;
+                const label = vt(i, dl);
+                return <>{k > 0 && ', '}<span class="hsf-nowrap">{info?.url ? <a href={info.url}>{label}</a> : label}</span></>;
               })
             : (t('ui.no-standard-instrument-client-specific'))}</dd>
-          {sk.competency_2014 && <><dt>{t('tbl.competency')}</dt><dd>{sk.competency_2014}</dd></>}
-          <dt>{t('sk.trainability')}</dt><dd>{sk.trainability}</dd>
-          <dt>{t('sk.ai')}</dt><dd>{sk.ai_demand}</dd>
+          {sk.competency_2014 && <><dt>{t('tbl.competency')}</dt><dd>{vt(sk.competency_2014, dl)}</dd></>}
+          <dt>{t('sk.trainability')}</dt><dd>{vt(sk.trainability, dl)}</dd>
+          <dt>{t('sk.ai')}</dt><dd>{vt(sk.ai_demand, dl)}</dd>
         </dl>
         {method && <p class="hsf-small hsf-muted" style="margin:.7rem 0 0">{method[dl]}</p>}
         {(sk.type === 'A' || sk.type === 'G') && (
@@ -117,7 +119,7 @@ const jsonld = [{
                       {k.aliases[dl].length > 0 && <div class="hsf-xs hsf-muted">{k.aliases[dl].join(' · ')}</div>}
                     </td>
                     <td class="hsf-xs">{k.definition[dl]}</td>
-                    <td class="num hsf-xs">{k.ai_demand}</td>
+                    <td class="num hsf-xs">{vt(k.ai_demand, dl)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -133,7 +135,7 @@ const jsonld = [{
         <dl class="hsf-dl">
           <dt>{t('ui.domain')}</dt><dd><a href={path(lang, 'skills') + `#${dom.id}`}>{dom.id} {dom.name[dl]}</a></dd>
           <dt>Cluster</dt><dd>{cluster ? `${cluster.id} ${cluster.name[dl]}` : sk.cluster_id}</dd>
-          <dt>{t('sk.reuse')}</dt><dd>{sk.reusability}</dd>
+          <dt>{t('sk.reuse')}</dt><dd>{vt(sk.reusability, dl)}</dd>
           <dt>{t('sk.functions')}</dt><dd>{sk.function_count}</dd>
         </dl>
       </div>

@@ -4,6 +4,7 @@ import { useT, path } from '../lib/i18n';
 import { typeLabel, constructById } from '../lib/hsf';
 import Level from './Level.astro';
 import { dlang } from '../lib/hsf-i18n';
+import { vt } from '../lib/vocab';
 interface Props { rows: any[]; lang: string; mode?: 'short' | 'full'; limit?: number }
 const { rows, lang, mode = 'full', limit } = Astro.props;
 const t = useT(lang);
@@ -36,8 +37,8 @@ const dl = dlang(lang);
             <td class="num"><Level value={r.target_level} lang={lang} label={false} /> <span class="hsf-xs">N{r.target_level}</span></td>
             <td class="num">{r.weight}</td>
             <td class="num">{r.critical ? <span class="hsf-badge stop">{t('yes')}</span> : <span class="hsf-xs hsf-muted">{t('no')}</span>}</td>
-            <td class="hsf-xs">{r.assessment}</td>
-            {mode === 'full' && <td class="hsf-xs">{r.instruments.join(', ') || '-'}</td>}
+            <td class="hsf-xs">{vt(r.assessment, dl)}</td>
+            {mode === 'full' && <td class="hsf-xs">{r.instruments.map((i: string) => vt(i, dl)).join(', ') || '-'}</td>}
           </tr>
         );
       })}

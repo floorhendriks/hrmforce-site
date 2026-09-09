@@ -7,6 +7,12 @@ binding = "DB"
 database_name = "hrmforce-orders"
 database_id = "e8d09d24-18f4-41f2-98e6-ab73f9244490"
 
+# De functieprofiel-pdf's (450 profielen x 6 talen, ongeveer 1,2 GB) staan hier en niet
+# in de repo. functions/downloads/[[path]].js levert ze uit op het eigen domein.
+[[r2_buckets]]
+binding = "DOWNLOADS"
+bucket_name = "hrmforce-downloads"
+
 [vars]
 ORDER_EMAIL_TO = "service@hrmforce.com,marketing@hrmforce.com"
 ORDER_EMAIL_FROM = "shop@hrmforce.com"

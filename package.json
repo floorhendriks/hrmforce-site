@@ -11,7 +11,9 @@
     "hsf:pdf": "node scripts/hsf-build-pdfs.mjs",
     "hsf:translate": "node scripts/hsf-translate-data.mjs",
     "hsf:translate-ui": "node scripts/hsf-translate-ui.mjs",
-    "hsf:search": "node scripts/hsf-build-search.mjs"
+    "hsf:search": "node scripts/hsf-build-search.mjs",
+    "hsf:manifest": "node scripts/hsf-build-downloads-manifest.mjs",
+    "hsf:upload": "bash scripts/hsf-upload-downloads.sh"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.0",

@@ -9,6 +9,7 @@
 import { useT, path, SEG, ROUTE_PREFIX } from '../lib/i18n';
 import { facets } from '../lib/hsf';
 import { dlang } from '../lib/hsf-i18n';
+import { vt } from '../lib/vocab';
 interface Props { lang: string; autofocus?: boolean; scope?: 'all' | 'f' | 'c' | 's' }
 const { lang, autofocus = false, scope = 'all' } = Astro.props;
 const t = useT(lang);
@@ -54,7 +55,7 @@ const kinds = [
 
   <div class="hsf-chips" style="margin-bottom:1rem">
     {facets.sector_tags.map((s: string) => (
-      <button class="hsf-chip" type="button" data-tag={s} aria-pressed="false">{s}</button>
+      <button class="hsf-chip" type="button" data-tag={s} aria-pressed="false">{vt(s, dl)}</button>
     ))}
     <button class="hsf-chip" type="button" data-reset aria-pressed="false">{t('filter.reset')}</button>
   </div>

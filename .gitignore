@@ -2,3 +2,5 @@ node_modules/
 dist/
 .astro/
 scripts/.deepl-cache*.json
+# de functieprofiel-pdf's staan in de R2-bucket, niet in git (zie functions/downloads)
+public/downloads/
