@@ -246,7 +246,7 @@
    "en": "The candidate performs a representative work sample under standardised conditions."
   },
   "Cognitieve capaciteitentest": {
-   "rho": 0.31,
+   "rho": 0.41,
    "sd": 0.14,
    "nl": "Gestandaardiseerde test van verbaal, numeriek of abstract redeneervermogen.",
    "en": "Standardised test of verbal, numerical or abstract reasoning."
@@ -264,7 +264,7 @@
    "en": "Scenario with response options, scored on knowledge or behavioural tendency."
   },
   "Persoonlijkheidsvragenlijst": {
-   "rho": 0.21,
+   "rho": 0.4,
    "sd": 0.15,
    "nl": "Zelfrapportage van gedragsvoorkeuren. Bij hrmforce de Big Fifty en de 15PF.",
    "en": "Self-report of behavioural preferences. At hrmforce the Big Fifty and the 15PF."
