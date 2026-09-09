@@ -5,6 +5,7 @@
 export const adviesDetail = [
   {
     slug: "certificatietraining",
+    image: "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=900",
     title: "Certificatietraining",
     metaTitle: "Certificatietraining | Gecertificeerd hrmforce-gebruiker worden | Hrmforce",
     metaDescription:
@@ -30,6 +31,7 @@ export const adviesDetail = [
   },
   {
     slug: "loopbaan-assessment",
+    image: "https://images.pexels.com/photos/1181533/pexels-photo-1181533.jpeg?auto=compress&cs=tinysrgb&w=900",
     title: "Loopbaan-assessment",
     metaTitle: "Loopbaan-assessment | Beroepskeuze en carrièreadvies | Hrmforce",
     metaDescription:
@@ -53,6 +55,7 @@ export const adviesDetail = [
   },
   {
     slug: "medezeggenschap",
+    image: "https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=900",
     title: "Medezeggenschapstraining",
     metaTitle: "Medezeggenschapstraining | Training voor de MR | Hrmforce",
     metaDescription:
@@ -77,6 +80,7 @@ export const adviesDetail = [
   },
   {
     slug: "team-training",
+    image: "https://images.pexels.com/photos/3182746/pexels-photo-3182746.jpeg?auto=compress&cs=tinysrgb&w=900",
     title: "Teamtraining",
     metaTitle: "Teamtraining | Je team gericht ontwikkelen | Hrmforce",
     metaDescription:
@@ -101,6 +105,7 @@ export const adviesDetail = [
   },
   {
     slug: "training-het-goede-gesprek",
+    image: "https://images.pexels.com/photos/3153207/pexels-photo-3153207.jpeg?auto=compress&cs=tinysrgb&w=900",
     title: "Training 'Het goede gesprek'",
     metaTitle: "Training 'Het goede gesprek' | Beter evaluatiegesprekken voeren | Hrmforce",
     metaDescription:
@@ -125,6 +130,7 @@ export const adviesDetail = [
   },
   {
     slug: "selectie-assessment",
+    image: "https://images.pexels.com/photos/3760067/pexels-photo-3760067.jpeg?auto=compress&cs=tinysrgb&w=900",
     title: "Selectie-assessment",
     metaTitle: "Selectie-assessment | Onderbouwde selectiebeslissingen | Hrmforce",
     metaDescription: "Een selectie-assessment onderbouwt je aannamebeslissing objectief en verhoogt de kans op een productieve, passende medewerker.",
@@ -135,6 +141,7 @@ export const adviesDetail = [
     body: [
       "Je bepaalt vooraf samen met ons het functieprofiel en de competenties die er echt toe doen. Op basis daarvan stellen we het assessment samen, zodat je alleen meet wat relevant is.",
       "Je ontvangt een helder advies over de match met de functie, met concrete aandachtspunten voor het vervolggesprek en de inwerkperiode.",
+      "In de praktijk nodigen we de kandidaat online uit voor de vragenlijsten en plannen we daarna een verdiepend gesprek met een assessor. Binnen enkele werkdagen ontvang je de rapportage en het advies, zodat je zonder onnodige vertraging een onderbouwde beslissing neemt. Je houdt zelf altijd de regie over de eindbeslissing; het assessment is een objectieve extra bron naast je eigen indruk.",
     ],
     bullets: [
       "Hogere kans op een productieve, passende medewerker",
@@ -146,6 +153,7 @@ export const adviesDetail = [
   },
   {
     slug: "ontwikkel-assessment",
+    image: "https://images.pexels.com/photos/2422293/pexels-photo-2422293.jpeg?auto=compress&cs=tinysrgb&w=900",
     title: "Ontwikkel-assessment / potentieelbeoordeling",
     metaTitle: "Ontwikkel-assessment | Potentieel en ontwikkelrichting | Hrmforce",
     metaDescription: "Een ontwikkel-assessment brengt potentieel en ontwikkelrichting in kaart, als basis voor gerichte groei en loopbaanstappen.",
@@ -156,6 +164,7 @@ export const adviesDetail = [
     body: [
       "Een assessor meet persoonlijkheid, drijfveren en cognitief vermogen en bekijkt die door de bril van de competenties die er in de rol toe doen. In een persoonlijk terugkoppelgesprek bespreken we de uitkomsten en de ontwikkelrichting.",
       "Zo investeer je gericht in ontwikkeling die past bij de persoon en de organisatie, met een helder vertrekpunt voor een ontwikkelplan.",
+      "Het assessment is geschikt voor medewerkers, aankomend leidinggevenden en professionals die een volgende stap overwegen. Naast de rapportage krijg je concrete ontwikkeltips en, desgewenst, een vervolgtraject met coaching, zodat de groei ook echt in gang wordt gezet en niet bij een rapport blijft.",
     ],
     bullets: [
       "Gerichte ontwikkeling in plaats van losse trainingen",
@@ -167,6 +176,7 @@ export const adviesDetail = [
   },
   {
     slug: "executive-assessment",
+    image: "https://images.pexels.com/photos/3862130/pexels-photo-3862130.jpeg?auto=compress&cs=tinysrgb&w=900",
     title: "Executive assessment",
     metaTitle: "Executive assessment | Voor management- en directiefuncties | Hrmforce",
     metaDescription: "Een diepgaand executive assessment op maat voor management- en directiefuncties, met vertrouwelijke persoonlijke terugkoppeling.",
@@ -177,6 +187,7 @@ export const adviesDetail = [
     body: [
       "Het traject is bedoeld voor hoger management, bestuurs- en directiefuncties. Desgewenst starten we met een face-to-face intake voor een maatwerkprogramma, begeleid door een senior consultant.",
       "Mogelijke onderdelen zijn een interview, tests voor intelligentie en persoonlijkheid, assessment-simulaties en 360 graden feedback. Je ontvangt een terugkoppeling aan de kandidaat en een schriftelijke rapportage met concrete ontwikkeltips, plus een terugkoppeling bij de opdrachtgever, desgewenst in een driegesprek.",
+      "Doorlooptijd en diepgang stemmen we af op de zwaarte van de functie. Alles gebeurt strikt vertrouwelijk: de kandidaat ontvangt altijd eerst zelf de terugkoppeling, en pas daarna delen we, in overleg, de bevindingen met de opdrachtgever. Zo combineer je een zorgvuldige, respectvolle kandidaatbeleving met een onderbouwde basis voor een zware benoeming.",
     ],
     bullets: [
       "Onderbouwde, onafhankelijke basis voor een zware benoeming",
@@ -188,6 +199,7 @@ export const adviesDetail = [
   },
   {
     slug: "teamanalyse",
+    image: "https://images.pexels.com/photos/1516440/pexels-photo-1516440.jpeg?auto=compress&cs=tinysrgb&w=900",
     title: "Teamanalyse / groepsassessment",
     metaTitle: "Teamanalyse | Talenten en samenwerking in je team | Hrmforce",
     metaDescription: "Een teamanalyse maakt talenten, teamrollen en ontwikkelpunten van een team zichtbaar en versterkt de samenwerking.",
@@ -198,6 +210,7 @@ export const adviesDetail = [
     body: [
       "We combineren individuele profielen met een teamanalyse en 360 feedback, zodat je zicht krijgt op rolverdeling, drijfveren en onderlinge dynamiek.",
       "Zo werk je gericht aan vertrouwen, duidelijke rollen en resultaat.",
+      "Een teamanalyse werkt zowel voor nieuwe teams die goed willen starten als voor bestaande teams die vastlopen of een volgende stap zetten. De begeleide teamsessie sluit af met heldere afspraken en een teamontwikkelplan waar het team zelf mee verder kan, met indien gewenst een vervolgsessie om de voortgang te bespreken.",
     ],
     bullets: [
       "Duidelijke rolverdeling en meer wederzijds begrip",

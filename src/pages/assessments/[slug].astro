@@ -45,6 +45,18 @@ const assessHref = localizePath("/online-assessments/", lang);
 const ex = examplesFor(Astro.params.slug, lang);
 const extra = extraFor(Astro.params.slug, lang);
 const theory = theoryFor(Astro.params.slug, lang);
+// Datagedreven "kerndimensies"-ring: segmenten uit de traits van de test, naam in het midden.
+// Zo krijgt elke test een uniek, passend beeld en toont "Big Five" alleen bij Big Five.
+const RING_COLORS = ["var(--navy)", "var(--blue)", "var(--gold)", "var(--accent)", "#7aa7d6", "#2f6db0"];
+const _ringTraits = (a.traits && a.traits.length ? a.traits : ["Dimensie 1", "Dimensie 2", "Dimensie 3", "Dimensie 4"]).slice(0, 6);
+const _rn = _ringTraits.length;
+const ringBg = "conic-gradient(" + _ringTraits.map((_t, i) => {
+  const c = RING_COLORS[i % RING_COLORS.length];
+  return c + " " + Math.round((i * 100) / _rn) + "% " + Math.round(((i + 1) * 100) / _rn) + "%";
+}).join(", ") + ")";
+let _ringBase = (a.title || "").split("|")[0].trim();
+if (_ringBase.indexOf(":") > -1) _ringBase = _ringBase.split(":").pop().trim();
+const ringLabel = _ringBase;
 const _specQ = new Set((a.faq || []).map((f) => (f.q || "").trim().toLowerCase()));
 const allFaq = [...(a.faq || []), ...generalFaq(lang).filter((g) => !_specQ.has((g.q || "").trim().toLowerCase()))];
 
@@ -169,7 +181,7 @@ const _offerLd = (shop && shop.price)
           <a href="#request" class="btn btn-primary" style="margin-top:8px">Direct starten</a>
         </div>
         <div class="pentagon">
-          <div class="ring"></div>
+          <div class="ring" style={`background:${ringBg}`}><span class="ring-label">{ringLabel}</span></div>
           <p style="color:var(--muted);font-size:14px">De kerndimensies van dit assessment, vertaald naar werkgerelateerde inzichten.</p>
         </div>
       </div>

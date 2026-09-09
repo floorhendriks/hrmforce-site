@@ -177,3 +177,9 @@
   --hsf-navy: #0b3468;
   --hsf-font: "Inter Variable", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
+
+/* Fix: .hsf a{color:accent} overrulede de witte knoptekst -> blauw-op-blauw. */
+.hsf a.hsf-btn { color: #fff; }
+.hsf a.hsf-btn:hover { color: #fff; }
+.hsf a.hsf-btn.ghost { color: var(--hsf-accent); }
+.hsf a.hsf-btn.ghost:hover { color: var(--hsf-accent-dark); }

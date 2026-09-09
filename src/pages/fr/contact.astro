@@ -33,6 +33,9 @@ const offices = [
         <p style="color:var(--text);font-size:17px">Nous serons heureux de vous aider et de réfléchir avec vous pour trouver une solution adaptée. Aussi, n'hésitez pas à poser votre question à nos conseillers ou à partager votre idée avec eux. Il suffit de remplir le formulaire de contact ou de nous appeler pour parler directement à nos conseillers.</p>
         <p style="margin-top:14px;color:var(--muted)"><strong>T :</strong> <a href="tel:+31888832188">+31 (0)88 88 321 88</a><br /><strong>E :</strong> <a href="mailto:service@hrmforce.com">service@hrmforce.com</a></p>
         <p style="color:var(--muted)">Nos conseillers sont disponibles du lundi au vendredi de 08h00 à 18h00.</p>
+        <div class="cmap">
+          <iframe title="Emplacement hrmforce Amsterdam" src="https://maps.google.com/maps?q=Solitudolaan%20396%2C%201096%20DS%20Amsterdam&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
       </div>
       <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>Vous préférez un contact personnel ?</strong><span>Nous vous aidons volontiers. Appelez ou écrivez-nous, nous répondons vite.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
         <form class="formcard" action="https://formspree.io/f/JOUW_FORM_ID" method="POST">
@@ -65,9 +68,6 @@ const offices = [
             {o.extra && <p class="extra">{o.extra.map((e) => (<>{e}<br /></>))}</p>}
           </div>
         ))}
-      </div>
-      <div class="cmap">
-        <iframe title="Emplacement hrmforce Amsterdam" src="https://maps.google.com/maps?q=Solitudolaan%20396%2C%201096%20DS%20Amsterdam&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
   </section>

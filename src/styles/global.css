@@ -326,8 +326,8 @@ footer a:hover{color:#fff;opacity:1}
 .traits li{padding:12px 0 12px 34px;position:relative;border-bottom:1px dashed var(--line);font-weight:600;color:var(--navy)}
 .traits li:before{content:"➡️";position:absolute;left:0}
 .pentagon{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:34px;text-align:center}
-.pentagon .ring{width:200px;height:200px;margin:0 auto 18px;border-radius:50%;background:conic-gradient(var(--navy) 0 20%,var(--blue) 20% 40%,var(--gold) 40% 60%,var(--accent) 60% 80%,#7aa7d6 80% 100%);position:relative}
-.pentagon .ring:after{content:"Big Five";position:absolute;inset:50px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--navy);text-align:center}
+.pentagon .ring{width:200px;height:200px;margin:0 auto 18px;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center}
+.pentagon .ring .ring-label{position:absolute;inset:50px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--navy);text-align:center;padding:8px;font-size:13.5px;line-height:1.2}
 @media(max-width:880px){.explain{grid-template-columns:1fr}}
 
 /* Quote / social proof */
