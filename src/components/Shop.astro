@@ -667,6 +667,11 @@ const FAQ_DEFAULT = generalFaq(lang);
       fillSelect(fSegment, Object.keys(segSet));
       fillSelect(fUitgever, Object.keys(uitSet));
       render();
+      // Deeplink: /shop/?p=<handle> opent meteen het juiste product.
+      try {
+        var _pq = new URLSearchParams(location.search).get("p");
+        if (_pq) { var _pp = prodFor(_pq); if (_pp) openProduct(_pp); }
+      } catch (e) {}
     })();
 
     // Bestaande winkelmand herstellen uit localStorage (en herijken op de catalogus).

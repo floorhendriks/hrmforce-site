@@ -120,7 +120,7 @@ const _offerLd = (shop && shop.price)
         )}
         <div class="btns">
           <a href={localizePath("/contact/", lang)} class="btn btn-primary">Plan een gratis demo &rarr;</a>
-          <a href={shop.url} class="btn btn-light" rel="noopener">
+          <a href={localizePath(shop.url, lang)} class="btn btn-light">
             {shop.price ? "Los bestellen" : "Bekijk in de shop"}
           </a>
         </div>

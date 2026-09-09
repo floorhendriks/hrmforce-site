@@ -48,6 +48,7 @@ export function shopInfo(slug) {
   const m = shopMap[slug] || { handle: null, price: null, segments: [], uitgever: null };
   return {
     ...m,
-    url: m.handle ? `${SHOP_BASE}/products/${m.handle}` : SHOP_BASE,
+    // Native shop-deeplink (opent de juiste test); geen Shopify meer.
+    url: m.handle ? `/shop/?p=${m.handle}` : `/shop/`,
   };
 }
