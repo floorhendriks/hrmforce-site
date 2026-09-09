@@ -4,10 +4,11 @@ import Crumbs from '../components/Crumbs.astro';
 import Search from '../components/Search.astro';
 import { useT, path } from '../lib/i18n';
 import { domains, skills, meta, typeLabel } from '../lib/hsf';
+import { dlang } from '../lib/hsf-i18n';
 interface Props { lang: string; alternates: Record<string, string> }
 const { lang, alternates } = Astro.props;
 const t = useT(lang);
-const dl = lang === 'nl' ? 'nl' : 'en';
+const dl = dlang(lang);
 const byId = new Map(skills.map((s: any) => [s.id, s]));
 const title = `${meta.counts.granular_skills} ${lang === 'nl' ? 'skills en' : 'skills and'} ${meta.counts.constructs} ${lang === 'nl' ? 'meetbare constructen' : 'measurable constructs'} | hrmforce`;
 const desc = lang === 'nl'

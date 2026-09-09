@@ -3,10 +3,11 @@
 import { useT, path } from '../lib/i18n';
 import { constructById, instrumentInfo } from '../lib/hsf';
 import Level from './Level.astro';
+import { dlang } from '../lib/hsf-i18n';
 interface Props { rows: any[]; lang: string; anchors?: boolean }
 const { rows, lang, anchors = true } = Astro.props;
 const t = useT(lang);
-const dl = lang === 'nl' ? 'nl' : 'en';
+const dl = dlang(lang);
 ---
 <div class="hsf-tablewrap">
   <table class="hsf-table">

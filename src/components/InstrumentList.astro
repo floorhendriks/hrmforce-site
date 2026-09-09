@@ -1,9 +1,10 @@
 ---
 import { useT } from '../lib/i18n';
+import { dlang } from '../lib/hsf-i18n';
 interface Props { items: any[]; lang: string }
 const { items, lang } = Astro.props;
 const t = useT(lang);
-const dl = lang === 'nl' ? 'nl' : 'en';
+const dl = dlang(lang);
 ---
 <div class="hsf-cards">
   {items.map((i) => (

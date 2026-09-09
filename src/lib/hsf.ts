@@ -8,9 +8,17 @@ import families from '../data/families.json';
 import skills from '../data/skills.json';
 import functionsIndex from '../data/functions-index.json';
 import facets from '../data/facets.json';
+import { hydrate, dlang, DATA_LANGS } from './hsf-i18n';
 
-export type Lang = 'nl' | 'en';
-export type I18n = { nl: string; en: string };
+// De extra talen (de/fr/es/ro) worden hier eenmalig in de data gehydrateerd, zodat
+// alle views `veld[taal]` kunnen blijven gebruiken. Zie src/lib/hsf-i18n.ts.
+for (const d of [meta, domains, families, skills, functionsIndex]) hydrate(d as unknown);
+
+export type Lang = string;
+/** Datavelden staan in nl en en, plus elke taal die vertaald is. */
+export type I18n = Record<string, string>;
+
+export { dlang, DATA_LANGS };
 
 export { meta, domains, families, skills, facets };
 export const functions = functionsIndex as FunctionLight[];
@@ -45,7 +53,7 @@ const fullCache = new Map<string, FunctionFull>();
 export async function getFunction(id: string): Promise<FunctionFull> {
   if (fullCache.has(id)) return fullCache.get(id)!;
   const mod = await import(`../data/functions/${id}.json`);
-  const data = (mod.default ?? mod) as FunctionFull;
+  const data = hydrate((mod.default ?? mod)) as FunctionFull;
   fullCache.set(id, data);
   return data;
 }

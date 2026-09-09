@@ -1,9 +1,10 @@
 ---
 import { useT } from '../lib/i18n';
+import { dlang } from '../lib/hsf-i18n';
 interface Props { mix: any[]; lang: string }
 const { mix, lang } = Astro.props;
 const t = useT(lang);
-const dl = lang === 'nl' ? 'nl' : 'en';
+const dl = dlang(lang);
 ---
 <div>
   {mix.map((m) => (

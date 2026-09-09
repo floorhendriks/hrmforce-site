@@ -9,10 +9,11 @@ import LeadForm from '../components/LeadForm.astro';
 import { useT, path, SEG } from '../lib/i18n';
 import { existsSync } from 'node:fs';
 import { familyById, functionsOfFamily, domainMix, meta } from '../lib/hsf';
+import { dlang } from '../lib/hsf-i18n';
 interface Props { lang: string; fn: any; alternates: Record<string, string> }
 const { lang, fn, alternates } = Astro.props;
 const t = useT(lang);
-const dl = lang === 'nl' ? 'nl' : 'en';
+const dl = dlang(lang);
 const fam = familyById(fn.family_id);
 const mix = domainMix(fn.profile);
 const related = functionsOfFamily(fn.family_id).filter((x) => x.id !== fn.id).slice(0, 8);

@@ -3,10 +3,11 @@ import Base from '../layouts/HsfBase.astro';
 import Crumbs from '../components/Crumbs.astro';
 import { useT, path } from '../lib/i18n';
 import { families, meta } from '../lib/hsf';
+import { dlang } from '../lib/hsf-i18n';
 interface Props { lang: string; alternates: Record<string, string> }
 const { lang, alternates } = Astro.props;
 const t = useT(lang);
-const dl = lang === 'nl' ? 'nl' : 'en';
+const dl = dlang(lang);
 const title = `${meta.counts.families} ${lang === 'nl' ? 'functiefamilies' : 'job families'} | hrmforce`;
 const desc = lang === 'nl'
   ? 'De achttien functiefamilies van het hrmforce Skills Framework, elk met een basisprofiel dat de functies in die familie erven.'

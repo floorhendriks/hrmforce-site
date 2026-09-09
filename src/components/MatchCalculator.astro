@@ -6,10 +6,11 @@
  */
 import { useT, path } from '../lib/i18n';
 import { meta } from '../lib/hsf';
+import { dlang } from '../lib/hsf-i18n';
 interface Props { lang: string; fn: any; family: any }
 const { lang, fn, family } = Astro.props;
 const t = useT(lang);
-const dl = lang === 'nl' ? 'nl' : 'en';
+const dl = dlang(lang);
 const rows = fn.profile.map((r: any) => ({
   id: r.skill_id, n: r.name[dl], y: r.type, w: r.weight, c: r.critical,
   base: r.target_level, a: r.assessment, m: r.instruments.join(', '),

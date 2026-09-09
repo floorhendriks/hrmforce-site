@@ -10,10 +10,11 @@ import ProfileTable from '../components/ProfileTable.astro';
 import CompetencyTable from '../components/CompetencyTable.astro';
 import { useT, path } from '../lib/i18n';
 import { familyById, meta, domainMix, constructById } from '../lib/hsf';
+import { dlang } from '../lib/hsf-i18n';
 interface Props { lang: string; fn: any }
 const { lang, fn } = Astro.props;
 const t = useT(lang);
-const dl = lang === 'nl' ? 'nl' : 'en';
+const dl = dlang(lang);
 const fam = familyById(fn.family_id);
 const mix = domainMix(fn.profile);
 const scale = (meta as any).proficiency_scale;

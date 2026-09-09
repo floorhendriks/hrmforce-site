@@ -3,10 +3,11 @@ import Base from '../layouts/HsfBase.astro';
 import Search from '../components/Search.astro';
 import { useT, path } from '../lib/i18n';
 import { meta, domains, families, facets } from '../lib/hsf';
+import { dlang } from '../lib/hsf-i18n';
 interface Props { lang: string; alternates: Record<string, string> }
 const { lang, alternates } = Astro.props;
 const t = useT(lang);
-const dl = lang === 'nl' ? 'nl' : 'en';
+const dl = dlang(lang);
 const c = meta.counts;
 const title = `${t('framework')} | ${t('tagline')}`;
 const desc = lang === 'nl'

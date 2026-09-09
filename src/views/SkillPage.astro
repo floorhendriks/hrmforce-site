@@ -4,10 +4,11 @@ import Crumbs from '../components/Crumbs.astro';
 import Level from '../components/Level.astro';
 import { useT, path } from '../lib/i18n';
 import { meta, domainById, typeLabel, instrumentInfo, methodInfo, functionById, domains } from '../lib/hsf';
+import { dlang } from '../lib/hsf-i18n';
 interface Props { lang: string; sk: any; alternates: Record<string, string> }
 const { lang, sk, alternates } = Astro.props;
 const t = useT(lang);
-const dl = lang === 'nl' ? 'nl' : 'en';
+const dl = dlang(lang);
 const dom = domainById(sk.domain_id);
 const cluster = dom.clusters.find((c: any) => c.id === sk.cluster_id);
 const fns = sk.used_in_functions.map((id: string) => functionById(id)).filter(Boolean);

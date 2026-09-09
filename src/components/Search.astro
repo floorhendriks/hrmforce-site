@@ -8,10 +8,11 @@
  */
 import { useT, path, SEG, ROUTE_PREFIX } from '../lib/i18n';
 import { facets } from '../lib/hsf';
+import { dlang } from '../lib/hsf-i18n';
 interface Props { lang: string; autofocus?: boolean; scope?: 'all' | 'f' | 'c' | 's' }
 const { lang, autofocus = false, scope = 'all' } = Astro.props;
 const t = useT(lang);
-const dl = lang === 'nl' ? 'nl' : 'en';
+const dl = dlang(lang);
 const seg = SEG[lang] ?? SEG.en;
 const prefix = ROUTE_PREFIX[lang] ?? '';
 const kinds = [

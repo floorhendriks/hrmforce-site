@@ -4,10 +4,11 @@ import Crumbs from '../components/Crumbs.astro';
 import MatchCalculator from '../components/MatchCalculator.astro';
 import { useT, path } from '../lib/i18n';
 import { familyById, meta } from '../lib/hsf';
+import { dlang } from '../lib/hsf-i18n';
 interface Props { lang: string; fn: any; alternates: Record<string, string> }
 const { lang, fn, alternates } = Astro.props;
 const t = useT(lang);
-const dl = lang === 'nl' ? 'nl' : 'en';
+const dl = dlang(lang);
 const fam = familyById(fn.family_id);
 const mm = (meta as any).match_model;
 const title = `${t('match.title')} ${fn.title[dl]} | hrmforce`;

@@ -3,10 +3,11 @@ import Base from '../layouts/HsfBase.astro';
 import Crumbs from '../components/Crumbs.astro';
 import { useT, path } from '../lib/i18n';
 import { meta } from '../lib/hsf';
+import { dlang } from '../lib/hsf-i18n';
 interface Props { lang: string; alternates: Record<string, string> }
 const { lang, alternates } = Astro.props;
 const t = useT(lang);
-const dl = lang === 'nl' ? 'nl' : 'en';
+const dl = dlang(lang);
 const scale = (meta as any).proficiency_scale;
 const types = Object.entries((meta as any).skill_types);
 const methods = Object.entries((meta as any).assessment_methods);
