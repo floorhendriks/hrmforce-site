@@ -16,7 +16,7 @@ bucket_name = "hrmforce-downloads"
 [vars]
 ORDER_EMAIL_TO = "service@hrmforce.com,marketing@hrmforce.com"
 ORDER_EMAIL_FROM = "shop@hrmforce.com"
-MAIL_PROVIDER = "formspree"
+MAIL_PROVIDER = "resend"
 FORMSPREE_ENDPOINT = "https://formspree.io/f/mqpznaqn"
 SELLER_NAME = "hrmforce B.V."
 SELLER_ADDR = "Solitudolaan 396, 1096 DS Amsterdam, Nederland"
