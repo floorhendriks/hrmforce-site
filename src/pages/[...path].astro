@@ -103,7 +103,7 @@ function pickAssessment(title) {
 const recSlug = pickAssessment(article.title);
 const rec = recSlug ? REC[recSlug] : null;
 const recShop = recSlug ? shopInfo(recSlug) : null;
-const recHref = recSlug ? (lang === "nl" ? `/assessments/${recSlug}/` : localizePath("/online-assessments/", lang)) : localizePath("/online-assessments/", lang);
+const recHref = recSlug ? localizePath(`/assessments/${recSlug}/`, lang) : localizePath("/online-assessments/", lang);
 const contactHref = localizePath("/contact/", lang);
 const allHref = localizePath("/online-assessments/", lang);
 
@@ -204,7 +204,7 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
           <a class="btn btn-primary" href={recHref}>{recSlug ? `${L.card} ${rec.label}` : L.primary} →</a>
           <a class="btn btn-ghost" href={contactHref}>{L.demo}</a>
         </div>
-        <p class="kc-rel">{L.also} {related.map((r, i) => (<>{i > 0 && " · "}<a href={lang === "nl" ? `/assessments/${r.slug}/` : allHref}>{r.label}</a></>))}</p>
+        <p class="kc-rel">{L.also} {related.map((r, i) => (<>{i > 0 && " · "}<a href={localizePath(`/assessments/${r.slug}/`, lang)}>{r.label}</a></>))}</p>
       </div>
     </div>
   </article>

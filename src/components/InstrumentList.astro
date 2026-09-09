@@ -2,14 +2,17 @@
 import { useT } from '../lib/i18n';
 import { dlang } from '../lib/hsf-i18n';
 import { vt } from '../lib/vocab';
+import { instrumentInfo } from '../lib/hsf';
+import { navHref } from '../i18n/utils.js';
 interface Props { items: any[]; lang: string }
 const { items, lang } = Astro.props;
 const t = useT(lang);
 const dl = dlang(lang);
+const hrefFor = (it) => { const info = instrumentInfo(it.instrument); const base = (info && info.url) || it.url || '/online-assessments/'; return navHref(base, lang); };
 ---
 <div class="hsf-cards">
   {items.map((i) => (
-    <a class="hsf-card hsf-card-link" href={i.url}>
+    <a class="hsf-card hsf-card-link" href={hrefFor(i)}>
       <div class="hsf-badges"><span class="hsf-badge accent">{i.skills ?? i.count} {t('count.constructs')}</span></div>
       <h3 style="margin:.5rem 0 .25rem;font-size:1rem">{vt(i.instrument, dl)}</h3>
       <p class="hsf-small hsf-muted" style="margin:0">{i.description ? vt(i.description, dl) : (i[dl] || '')}</p>

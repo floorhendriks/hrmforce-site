@@ -65,7 +65,7 @@ const jsonld = [{
             ? sk.instruments.map((i: string, k: number) => {
                 const info = instrumentInfo(i);
                 const label = vt(i, dl);
-                return <>{k > 0 && ', '}<span class="hsf-nowrap">{info?.url ? <a href={info.url}>{label}</a> : label}</span></>;
+                return <>{k > 0 && ', '}<span class="hsf-nowrap">{info?.url ? <a href={navHref(info.url, lang)}>{label}</a> : label}</span></>;
               })
             : (t('ui.no-standard-instrument-client-specific'))}</dd>
           {sk.competency_2014 && <><dt>{t('tbl.competency')}</dt><dd>{vt(sk.competency_2014, dl)}</dd></>}
