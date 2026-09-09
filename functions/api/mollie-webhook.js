@@ -3,6 +3,7 @@
 // eenmalig de teammelding + klantbevestiging met factuur-PDF. Idempotent.
 import { invoiceModel, orderTextSummary } from "../_lib/invoice.js";
 import { invoicePdf } from "../_lib/pdf.js";
+import { orderEmailHtml } from "../_lib/email-template.js";
 import { sendMail } from "../_lib/mail.js";
 import { eur } from "../_lib/vat.js";
 
@@ -81,6 +82,7 @@ export async function onRequestPost(context) {
       to,
       subject: "Nieuwe bestelling " + order.id.slice(0, 8) + " — " + order.billing.company,
       text: teamText + "\n\nFactuur (" + inv.number + ") zit als bijlage.",
+      html: orderEmailHtml(inv, { mode: "team", contact: order.billing.contact, orderId: order.id }),
       attachments: [{ filename: "factuur-" + inv.number + ".pdf", content: pdf }],
       orderId: order.id,
     });
@@ -91,6 +93,7 @@ export async function onRequestPost(context) {
         to: [order.billing.email],
         subject: "Bevestiging van je bestelling bij hrmforce (" + inv.number + ")",
         text: "Bedankt voor je bestelling.\n\n" + teamText + "\n\nJe factuur zit als bijlage. Wij zetten de assessments handmatig klaar; de kandidaatlink(s) volgen kort na deze bevestiging.\n\nMet vriendelijke groet,\nhrmforce",
+        html: orderEmailHtml(inv, { mode: "customer", contact: order.billing.contact, orderId: order.id }),
         attachments: [{ filename: "factuur-" + inv.number + ".pdf", content: pdf }],
         orderId: order.id,
       });
