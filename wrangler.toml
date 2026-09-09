@@ -1,0 +1,23 @@
+# Cloudflare Pages-configuratie voor website.hrmforce.com (statische Astro-build
+# + Pages Functions in /functions). De shop-backend (Mollie) draait als Function.
+name = "hrmforce-site"
+compatibility_date = "2024-11-01"
+pages_build_output_dir = "dist"
+
+# D1-database voor orderopslag. Maak eenmalig aan met:
+#   npx wrangler d1 create hrmforce-orders
+# Plak het teruggegeven database_id hieronder (of stel het in via het Pages-dashboard
+# onder Settings -> Functions -> D1 database bindings, binding-naam "DB").
+[[d1_databases]]
+binding = "DB"
+database_name = "hrmforce-orders"
+database_id = "PLAK_HIER_JE_D1_DATABASE_ID"
+
+# Niet-geheime variabelen. Geheimen (MOLLIE_API_KEY, RESEND_API_KEY) NIET hier
+# zetten, maar als Secret in het Pages-dashboard of via:
+#   npx wrangler pages secret put MOLLIE_API_KEY
+[vars]
+ORDER_EMAIL_TO = "service@hrmforce.com,marketing@hrmforce.com"
+ORDER_EMAIL_FROM = "shop@hrmforce.com"
+MAIL_PROVIDER = "resend"   # "resend" (met RESEND_API_KEY) of "formspree" (fallback)
+FORMSPREE_ENDPOINT = "https://formspree.io/f/mqpznaqn"

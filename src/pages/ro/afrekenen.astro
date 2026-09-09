@@ -1,0 +1,9 @@
+---
+import Base from "../../layouts/Base.astro";
+import Checkout from "../../components/Checkout.astro";
+import { CHECKOUT_I18N } from "../../data/checkout-i18n.js";
+const t = CHECKOUT_I18N.ro;
+---
+<Base title={t.meta.title} description={t.meta.description} active="shop">
+  <Checkout lang="ro" />
+</Base>

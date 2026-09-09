@@ -1,0 +1,9 @@
+---
+import Base from "../../layouts/Base.astro";
+import Bedankt from "../../components/Bedankt.astro";
+import { SUCCESS_I18N } from "../../data/checkout-i18n.js";
+const t = SUCCESS_I18N.ro;
+---
+<Base title={t.title} description={t.h1} active="shop">
+  <Bedankt lang="ro" />
+</Base>

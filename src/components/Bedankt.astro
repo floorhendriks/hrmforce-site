@@ -1,0 +1,47 @@
+---
+import { SUCCESS_I18N } from "../data/checkout-i18n.js";
+import { localizePath } from "../i18n/utils.js";
+const { lang } = Astro.props;
+const s = SUCCESS_I18N[lang] || SUCCESS_I18N.nl;
+const shopHref = localizePath("/shop/", lang);
+---
+<section class="wrap bd-wrap">
+  <div class="bd-card">
+    <div class="bd-check" aria-hidden="true">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    </div>
+    <h1 class="bd-h1">{s.h1}</h1>
+    <p class="bd-lead">{s.lead}</p>
+    <p class="bd-order" id="bdOrder" hidden><strong>{s.order}:</strong> <span id="bdOrderId"></span></p>
+    <div class="bd-actions">
+      <a class="btn btn-light" id="bdInvoice" href="#" hidden>{s.invoice}</a>
+      <a class="btn btn-primary" href={shopHref}>{s.toShop} →</a>
+    </div>
+    <p class="bd-note">{s.note}</p>
+  </div>
+</section>
+
+<style is:global>
+  .bd-wrap { padding: 60px 0 80px; }
+  .bd-card { max-width: 620px; margin: 0 auto; text-align: center; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 40px 34px; box-shadow: var(--shadow-sm); }
+  .bd-check { width: 64px; height: 64px; border-radius: 50%; background: #1a8a55; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; }
+  .bd-h1 { color: var(--navy); font-size: 1.7rem; margin: 0 0 12px; }
+  .bd-lead { color: var(--text); font-size: 15px; line-height: 1.6; margin: 0 0 16px; }
+  .bd-order { color: var(--navy); font-size: 14px; margin: 0 0 20px; }
+  .bd-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+  .bd-note { color: var(--muted); font-size: 12.5px; margin: 0; }
+  @media (max-width: 520px) { .bd-actions { flex-direction: column; } .bd-actions .btn { width: 100%; } }
+</style>
+
+<script is:inline>
+  (function () {
+    try { localStorage.removeItem("hrmforce_cart_v2"); } catch (e) {}
+    var id = new URLSearchParams(location.search).get("order");
+    if (id) {
+      var o = document.getElementById("bdOrder"); var oi = document.getElementById("bdOrderId");
+      if (o && oi) { oi.textContent = id.slice(0, 8).toUpperCase(); o.hidden = false; }
+      var inv = document.getElementById("bdInvoice");
+      if (inv) { inv.href = "/api/invoice?order=" + encodeURIComponent(id); inv.hidden = false; }
+    }
+  })();
+</script>

@@ -3,6 +3,7 @@ import { SHOPIFY, FORMSPREE_ENDPOINT } from "../data/site-config.js";
 import { localizePath } from "../i18n/utils.js";
 import { shopImages } from "../data/shop-images.js";
 import { SHOP_CONTENT } from "../data/shop-products.js";
+import catalog from "../data/shop-catalog.json";
 import { faqFor, BY_SEGMENT, generalFaq } from "../data/shop-faq.js";
 
 const { t, lang } = Astro.props;
@@ -15,15 +16,16 @@ const cfg = {
   publicUrl: SHOPIFY.PUBLIC_SHOP_URL,
 };
 const tarievenHref = localizePath("/tarieven/", lang);
+const afrekenenHref = localizePath("/afrekenen/", lang);
 
 // Winkelwagen-/detail-teksten per taal (in de component; geen extra databron nodig).
 const CART_I18N = {
-  nl: { add: "In winkelmand", added: "Toegevoegd ✓", inCart: "In mand", cartTitle: "Winkelmand", empty: "Je winkelmand is nog leeg.", checkout: "Afrekenen", remove: "Verwijderen", subtotal: "Subtotaal", close: "Sluiten", secure: "Veilig afrekenen via Shopify", details: "Details bekijken", each: "per stuk", continue: "Verder winkelen" },
-  en: { add: "Add to cart", added: "Added ✓", inCart: "In cart", cartTitle: "Cart", empty: "Your cart is empty.", checkout: "Checkout", remove: "Remove", subtotal: "Subtotal", close: "Close", secure: "Secure checkout via Shopify", details: "View details", each: "each", continue: "Continue shopping" },
-  de: { add: "In den Warenkorb", added: "Hinzugefügt ✓", inCart: "Im Korb", cartTitle: "Warenkorb", empty: "Ihr Warenkorb ist leer.", checkout: "Zur Kasse", remove: "Entfernen", subtotal: "Zwischensumme", close: "Schließen", secure: "Sichere Kasse über Shopify", details: "Details ansehen", each: "pro Stück", continue: "Weiter einkaufen" },
-  fr: { add: "Ajouter au panier", added: "Ajouté ✓", inCart: "Au panier", cartTitle: "Panier", empty: "Votre panier est vide.", checkout: "Commander", remove: "Retirer", subtotal: "Sous-total", close: "Fermer", secure: "Paiement sécurisé via Shopify", details: "Voir les détails", each: "l'unité", continue: "Continuer les achats" },
-  es: { add: "Añadir al carrito", added: "Añadido ✓", inCart: "En carrito", cartTitle: "Carrito", empty: "Tu carrito está vacío.", checkout: "Pagar", remove: "Eliminar", subtotal: "Subtotal", close: "Cerrar", secure: "Pago seguro con Shopify", details: "Ver detalles", each: "por unidad", continue: "Seguir comprando" },
-  ro: { add: "Adaugă în coș", added: "Adăugat ✓", inCart: "În coș", cartTitle: "Coș", empty: "Coșul tău este gol.", checkout: "Finalizează comanda", remove: "Elimină", subtotal: "Subtotal", close: "Închide", secure: "Plată securizată prin Shopify", details: "Vezi detaliile", each: "bucata", continue: "Continuă cumpărăturile" },
+  nl: { add: "In winkelmand", added: "Toegevoegd ✓", inCart: "In mand", cartTitle: "Winkelmand", empty: "Je winkelmand is nog leeg.", checkout: "Afrekenen", remove: "Verwijderen", subtotal: "Subtotaal", close: "Sluiten", secure: "Veilig betalen via iDEAL, Bancontact en creditcard", details: "Details bekijken", each: "per stuk", continue: "Verder winkelen" },
+  en: { add: "Add to cart", added: "Added ✓", inCart: "In cart", cartTitle: "Cart", empty: "Your cart is empty.", checkout: "Checkout", remove: "Remove", subtotal: "Subtotal", close: "Close", secure: "Secure payment via iDEAL, cards and more", details: "View details", each: "each", continue: "Continue shopping" },
+  de: { add: "In den Warenkorb", added: "Hinzugefügt ✓", inCart: "Im Korb", cartTitle: "Warenkorb", empty: "Ihr Warenkorb ist leer.", checkout: "Zur Kasse", remove: "Entfernen", subtotal: "Zwischensumme", close: "Schließen", secure: "Sichere Zahlung per iDEAL, Kreditkarte u. a.", details: "Details ansehen", each: "pro Stück", continue: "Weiter einkaufen" },
+  fr: { add: "Ajouter au panier", added: "Ajouté ✓", inCart: "Au panier", cartTitle: "Panier", empty: "Votre panier est vide.", checkout: "Commander", remove: "Retirer", subtotal: "Sous-total", close: "Fermer", secure: "Paiement sécurisé via iDEAL, carte et plus", details: "Voir les détails", each: "l'unité", continue: "Continuer les achats" },
+  es: { add: "Añadir al carrito", added: "Añadido ✓", inCart: "En carrito", cartTitle: "Carrito", empty: "Tu carrito está vacío.", checkout: "Pagar", remove: "Eliminar", subtotal: "Subtotal", close: "Cerrar", secure: "Pago seguro con iDEAL, tarjeta y más", details: "Ver detalles", each: "por unidad", continue: "Seguir comprando" },
+  ro: { add: "Adaugă în coș", added: "Adăugat ✓", inCart: "În coș", cartTitle: "Coș", empty: "Coșul tău este gol.", checkout: "Finalizează comanda", remove: "Elimină", subtotal: "Subtotal", close: "Închide", secure: "Plată securizată prin iDEAL, card și altele", details: "Vezi detaliile", each: "bucata", continue: "Continuă cumpărăturile" },
 };
 const ct = CART_I18N[lang] || CART_I18N.nl;
 
@@ -369,7 +371,7 @@ const FAQ_DEFAULT = generalFaq(lang);
   .cart-warn { color: #b3261e; background: #fdeceb; border: 1px solid #f6c9c5; border-radius: 8px; padding: 8px 12px; font-size: 13px; font-weight: 600; margin: 0 0 10px; }
 </style>
 
-<script is:inline define:vars={{ L, ENRICH, LANG, IMGMAP: shopImages, SC: SHOP_CONTENT, FORM: FORMSPREE_ENDPOINT, VENDOR_LOGO, RQ: rq, FAQ_SEG, FAQ_DEFAULT }}>
+<script is:inline define:vars={{ L, ENRICH, LANG, IMGMAP: shopImages, SC: SHOP_CONTENT, FORM: FORMSPREE_ENDPOINT, VENDOR_LOGO, RQ: rq, FAQ_SEG, FAQ_DEFAULT, CATALOG: catalog, CHECKOUT_URL: afrekenenHref }}>
   (function () {
     var app = document.getElementById("shopApp");
     if (!app) return;
@@ -380,18 +382,7 @@ const FAQ_DEFAULT = generalFaq(lang);
     var q = document.getElementById("shopq");
     var fCyclus = document.getElementById("fCyclus"), fSegment = document.getElementById("fSegment"), fUitgever = document.getElementById("fUitgever");
     var products = [];
-    var CART_KEY = "hrmforce_cart_id";
-    var cart = null; // { id, checkoutUrl, subtotal, lines:[{lineId,variantId,title,image,qty,price}] }
-
-    function gql(query, variables) {
-      return fetch("https://" + DOMAIN + "/api/" + VER + "/graphql.json", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "X-Shopify-Storefront-Access-Token": TOKEN },
-        body: JSON.stringify({ query: query, variables: variables || {} }),
-      }).then(function (r) { return r.json(); });
-    }
-
-    var CART_FIELDS = "{ id checkoutUrl totalQuantity cost { subtotalAmount { amount currencyCode } } lines(first:100){ edges { node { id quantity attributes { key value } merchandise { ... on ProductVariant { id price { amount currencyCode } product { title featuredImage { url } } } } } } } }";
+    var cart = { lines: [] }; // native cart: { qty, subtotal, lines:[{lineId,variantId,title,image,qty,price,priceNum,attributes}] }
 
     var CYCLUS_TAGS = ["Voorselectie", "Selectie", "Ontwikkeling", "Doorstroom", "Mobiliteit", "Employability", "Functioneren", "Beoordelen"];
     function parseTaxo(node) {
@@ -431,56 +422,36 @@ const FAQ_DEFAULT = generalFaq(lang);
       return vn ? '<span class="sp-brand is-txt"><em>' + esc(vn) + "</em></span>" : "";
     }
 
-    var PRODUCTS_Q =
-      "{ products(first: 250, sortKey: TITLE) { edges { node { title handle description descriptionHtml tags vendor productType availableForSale " +
-      "featuredImage { url altText } priceRange { minVariantPrice { amount currencyCode } } " +
-      "variants(first: 1) { edges { node { id availableForSale } } } } } } }";
+    /* ---------- Winkelmand (native, localStorage) ---------- */
+    var CART_LS = "hrmforce_cart_v2";
+    function money2(n) { return "\u20ac" + (Math.round(n * 100) / 100).toFixed(2).replace(".", ","); }
+    function catFor(handle) { for (var i = 0; i < CATALOG.length; i++) { if (CATALOG[i].handle === handle) return CATALOG[i]; } return null; }
+    function prodFor(handle) { for (var i = 0; i < products.length; i++) { if (products[i].handle === handle) return products[i]; } return null; }
+    function findLine(handle) { for (var i = 0; i < cart.lines.length; i++) { if (cart.lines[i].lineId === handle) return cart.lines[i]; } return null; }
+    function recompute() { var qty = 0, sub = 0; cart.lines.forEach(function (l) { qty += l.qty; sub += l.qty * l.priceNum; }); cart.qty = qty; cart.subtotalNum = sub; cart.subtotal = money2(sub); }
+    function persistCart() { try { localStorage.setItem(CART_LS, JSON.stringify({ lines: cart.lines })); } catch (e) {} }
+    function loadCart() { try { var raw = localStorage.getItem(CART_LS); if (raw) { var o = JSON.parse(raw); if (o && o.lines) return o; } } catch (e) {} return { lines: [] }; }
+    function lineImage(handle) { var pr = prodFor(handle); if (pr) return enrichImg(pr); var c = catFor(handle); return c ? c.image : null; }
 
-    /* ---------- Winkelmand ---------- */
-    function mapCart(c) {
-      if (!c) return null;
-      return {
-        id: c.id, checkoutUrl: c.checkoutUrl, qty: c.totalQuantity,
-        subtotal: c.cost ? money(c.cost.subtotalAmount.amount, c.cost.subtotalAmount.currencyCode) : "",
-        lines: (c.lines.edges || []).map(function (e) {
-          var n = e.node, m = n.merchandise || {};
-          return { lineId: n.id, variantId: m.id, qty: n.quantity, attributes: n.attributes || [],
-            title: m.product ? m.product.title : "", image: m.product && m.product.featuredImage ? m.product.featuredImage.url : null,
-            price: m.price ? money(m.price.amount, m.price.currencyCode) : "" };
-        }),
-      };
-    }
-    function saveCartId(id) { try { id ? localStorage.setItem(CART_KEY, id) : localStorage.removeItem(CART_KEY); } catch (e) {} }
-
-    function ensureCart() {
-      if (cart && cart.id) return Promise.resolve(cart.id);
-      var M = "mutation { cartCreate { cart " + CART_FIELDS + " } }";
-      return gql(M).then(function (r) {
-        var c = r.data.cartCreate.cart; cart = mapCart(c); saveCartId(cart.id); return cart.id;
-      });
-    }
-    function addToCart(variantId, btn) {
+    function addToCart(handle, btn) {
       var old = btn ? btn.textContent : "";
-      if (btn) { btn.disabled = true; btn.textContent = L.busy; }
-      ensureCart().then(function (id) {
-        var M = "mutation($id:ID!,$lines:[CartLineInput!]!){ cartLinesAdd(cartId:$id, lines:$lines){ cart " + CART_FIELDS + " } }";
-        return gql(M, { id: id, lines: [{ merchandiseId: variantId, quantity: 1 }] });
-      }).then(function (r) {
-        cart = mapCart(r.data.cartLinesAdd.cart); renderCart(); updateFab();
-        if (btn) { btn.textContent = L.added; btn.classList.add("is-added"); setTimeout(function () { btn.disabled = false; btn.textContent = old || L.add; btn.classList.remove("is-added"); }, 1400); }
-        openCart();
-      }).catch(function () { if (btn) { btn.disabled = false; btn.textContent = old || L.add; } });
+      var c = catFor(handle); if (!c) return;
+      var l = findLine(handle);
+      if (l) { l.qty += 1; }
+      else { cart.lines.push({ lineId: handle, variantId: handle, title: c.title, image: lineImage(handle), qty: 1, priceNum: c.price, price: money2(c.price), attributes: [] }); }
+      recompute(); persistCart(); renderCart(); updateFab();
+      if (btn) { btn.textContent = L.added; btn.classList.add("is-added"); setTimeout(function () { btn.disabled = false; btn.textContent = old || L.add; btn.classList.remove("is-added"); }, 1400); }
+      openCart();
     }
-    function changeQty(lineId, qty) {
-      if (qty < 1) return removeLine(lineId);
-      var M = "mutation($id:ID!,$lines:[CartLineUpdateInput!]!){ cartLinesUpdate(cartId:$id, lines:$lines){ cart " + CART_FIELDS + " } }";
-      gql(M, { id: cart.id, lines: [{ id: lineId, quantity: qty }] }).then(function (r) { cart = mapCart(r.data.cartLinesUpdate.cart); renderCart(); updateFab(); });
+    function changeQty(handle, qty) {
+      if (qty < 1) return removeLine(handle);
+      var l = findLine(handle); if (!l) return;
+      l.qty = qty; recompute(); persistCart(); renderCart(); updateFab();
     }
-    function removeLine(lineId) {
-      var M = "mutation($id:ID!,$ids:[ID!]!){ cartLinesRemove(cartId:$id, lineIds:$ids){ cart " + CART_FIELDS + " } }";
-      gql(M, { id: cart.id, ids: [lineId] }).then(function (r) { cart = mapCart(r.data.cartLinesRemove.cart); renderCart(); updateFab(); });
+    function removeLine(handle) {
+      cart.lines = cart.lines.filter(function (x) { return x.lineId !== handle; });
+      recompute(); persistCart(); renderCart(); updateFab();
     }
-
     var fab = document.getElementById("cartFab");
     var cartCount = document.getElementById("cartCount");
     var drawer = document.getElementById("cartDrawer");
@@ -502,19 +473,8 @@ const FAQ_DEFAULT = generalFaq(lang);
     }
     function scheduleSave(lineId) { clearTimeout(saveTimers[lineId]); saveTimers[lineId] = setTimeout(function () { saveLineCandidates(lineId); }, 700); }
     function saveLineCandidates(lineId) {
-      var line = cart && cart.lines.filter(function (x) { return x.lineId === lineId; })[0]; if (!line) return;
-      var groups = [].slice.call(linesEl.querySelectorAll(".cand")).filter(function (g) { return g.getAttribute("data-line") === lineId; });
-      var attrs = [];
-      groups.forEach(function (g) {
-        var n = (+g.getAttribute("data-idx")) + 1;
-        var nm = g.querySelector(".cand-name").value.trim(), ml = g.querySelector(".cand-mail").value.trim(), lg = g.querySelector(".cand-lang").value, lv = g.querySelector(".cand-level").value;
-        if (nm) attrs.push({ key: "Kandidaat " + n + " - Naam", value: nm });
-        if (ml) attrs.push({ key: "Kandidaat " + n + " - E-mail", value: ml });
-        if (lg) attrs.push({ key: "Kandidaat " + n + " - Taal", value: lg });
-        if (lv) attrs.push({ key: "Kandidaat " + n + " - Niveau", value: lv });
-      });
-      var M = "mutation($id:ID!,$lines:[CartLineUpdateInput!]!){ cartLinesUpdate(cartId:$id, lines:$lines){ cart " + CART_FIELDS + " } }";
-      gql(M, { id: cart.id, lines: [{ id: lineId, quantity: line.qty, attributes: attrs }] }).then(function (r) { if (r.data && r.data.cartLinesUpdate) cart = mapCart(r.data.cartLinesUpdate.cart); });
+      var line = findLine(lineId); if (!line) return;
+      line.attributes = collectAttrs(lineId); persistCart();
     }
     function renderCart() {
       if (!cart || !cart.lines.length) { linesEl.innerHTML = '<p class="cart-empty">' + esc(L.empty) + "</p>"; footEl.hidden = true; return; }
@@ -536,7 +496,7 @@ const FAQ_DEFAULT = generalFaq(lang);
       });
       footEl.hidden = false;
       document.getElementById("cartSubtotal").textContent = cart.subtotal;
-      document.getElementById("cartCheckout").href = cart.checkoutUrl || "#";
+      document.getElementById("cartCheckout").href = CHECKOUT_URL;
     }
     function openCart() { renderCart(); overlay.hidden = false; drawer.hidden = false; }
     function closeCart() { overlay.hidden = true; drawer.hidden = true; }
@@ -562,12 +522,8 @@ const FAQ_DEFAULT = generalFaq(lang);
       return attrs;
     }
     function saveAllLines() {
-      var proms = [];
-      cart.lines.forEach(function (l) {
-        var M = "mutation($id:ID!,$lines:[CartLineUpdateInput!]!){ cartLinesUpdate(cartId:$id, lines:$lines){ cart " + CART_FIELDS + " } }";
-        proms.push(gql(M, { id: cart.id, lines: [{ id: l.lineId, quantity: l.qty, attributes: collectAttrs(l.lineId) }] }));
-      });
-      return Promise.all(proms);
+      cart.lines.forEach(function (l) { l.attributes = collectAttrs(l.lineId); });
+      persistCart(); return Promise.resolve();
     }
     function buildSummary() {
       var NL = String.fromCharCode(10);
@@ -598,14 +554,9 @@ const FAQ_DEFAULT = generalFaq(lang);
       });
       if (bad) { if (warnEl) { warnEl.textContent = REQMSG[LANG] || REQMSG.nl; warnEl.hidden = false; } var fb = linesEl.querySelector(".cand-invalid"); if (fb) fb.focus(); return; }
       if (warnEl) warnEl.hidden = true;
-      var href = checkoutBtn.getAttribute("href") || (cart && cart.checkoutUrl) || "#";
       checkoutBtn.style.pointerEvents = "none"; checkoutBtn.style.opacity = "0.7";
-      saveAllLines().catch(function () {}).then(function () {
-        var fd = new FormData();
-        fd.append("_subject", "Nieuwe shop-bestelling met kandidaatgegevens");
-        fd.append("Bestelling", buildSummary());
-        return fetch(FORM, { method: "POST", headers: { Accept: "application/json" }, body: fd }).catch(function () {});
-      }).then(function () { window.location.href = href; });
+      saveAllLines();
+      window.location.href = CHECKOUT_URL;
     });
     linesEl.addEventListener("click", function (e) {
       var t = e.target;
@@ -695,26 +646,19 @@ const FAQ_DEFAULT = generalFaq(lang);
       grid.querySelectorAll("[data-open]").forEach(function (b) { b.addEventListener("click", function () { openProduct(products[+b.dataset.open]); }); });
     }
 
-    countEl.textContent = L.loading;
-    gql(PRODUCTS_Q).then(function (res) {
-      var edges = res && res.data && res.data.products && res.data.products.edges;
-      if (!edges) throw new Error("no products");
+    (function initCatalog() {
       var cycSet = {}, segSet = {}, uitSet = {};
-      products = edges.filter(function (e) { return (e.node.vendor || "") !== "Pera"; }).map(function (e) {
-        var n = e.node, taxo = parseTaxo(n);
+      products = CATALOG.map(function (n) {
+        var taxo = parseTaxo(n);
         taxo.cyclus.forEach(function (x) { cycSet[x] = 1; });
         taxo.segment.forEach(function (x) { segSet[x] = 1; });
         if (taxo.uitgever) uitSet[taxo.uitgever] = 1;
-        var v = n.variants && n.variants.edges && n.variants.edges[0] && n.variants.edges[0].node;
         return {
-          title: n.title, handle: n.handle, taxo: taxo, desc: n.description || "", descHtml: n.descriptionHtml || "",
-          image: n.featuredImage ? n.featuredImage.url : null,
-          price: n.priceRange ? money(n.priceRange.minVariantPrice.amount, n.priceRange.minVariantPrice.currencyCode) : "",
-          variantId: v ? v.id : null, available: v ? v.availableForSale : false,
+          title: n.title, handle: n.handle, taxo: taxo,
+          image: n.image, priceNum: n.price, price: money(n.price, n.currency || "EUR"),
+          variantId: n.handle, available: n.available !== false,
         };
       });
-      // Vaste bovenste rij: Big Fifty, Ability Scan, Motivation, 360 feedback (rest houdt titelvolgorde).
-      // Vaste bovenste rij: exact de 4 hrmforce-vlaggenschepen (Reflector/Talogy/MQ-varianten blijven op titelvolgorde).
       var PIN_EXACT = ["big 5 test | big fifty personality", "ability scan", "motivation", "360 graden feedback"];
       function pinRank(title) { var t = (title || "").toLowerCase().trim(); var i = PIN_EXACT.indexOf(t); return i > -1 ? i : 99; }
       products.forEach(function (p, i) { p._pin = pinRank(p.title); p._ord = i; });
@@ -723,19 +667,18 @@ const FAQ_DEFAULT = generalFaq(lang);
       fillSelect(fSegment, Object.keys(segSet));
       fillSelect(fUitgever, Object.keys(uitSet));
       render();
-    }).catch(function () {
-      countEl.textContent = "";
-      statusEl.hidden = false;
-      statusEl.innerHTML = L.loadErrorPre + '<a href="' + PUBLIC + '">' + L.toShop + "</a>";
-    });
+    })();
 
-    // Bestaande winkelmand herstellen (indien nog geldig).
-    var savedId = null; try { savedId = localStorage.getItem(CART_KEY); } catch (e) {}
-    if (savedId) {
-      gql("query($id:ID!){ cart(id:$id) " + CART_FIELDS + " }", { id: savedId }).then(function (r) {
-        if (r.data && r.data.cart) { cart = mapCart(r.data.cart); updateFab(); } else saveCartId(null);
-      }).catch(function () {});
-    }
+    // Bestaande winkelmand herstellen uit localStorage (en herijken op de catalogus).
+    cart = loadCart();
+    cart.lines = cart.lines.filter(function (l) { return catFor(l.lineId); });
+    cart.lines.forEach(function (l) {
+      var c = catFor(l.lineId);
+      l.priceNum = c.price; l.price = money2(c.price); l.title = c.title;
+      l.variantId = l.lineId; if (!l.image) l.image = lineImage(l.lineId);
+      if (!l.attributes) l.attributes = [];
+    });
+    recompute(); updateFab();
 
     [q, fCyclus, fSegment, fUitgever].forEach(function (el) { el.addEventListener(el === q ? "input" : "change", render); });
     document.getElementById("shopReset").addEventListener("click", function () { q.value = ""; fCyclus.value = ""; fSegment.value = ""; fUitgever.value = ""; render(); });
