@@ -10,12 +10,20 @@
 // Statische bestanden gaan bij Pages voor op functies. Staat een pdf dus nog wel in
 // public/downloads, dan wordt die geleverd en komt deze functie niet aan bod.
 //
+// GET en HEAD worden beide bediend. Alleen onRequestGet exporteren betekent dat een
+// HEAD-verzoek geen handler vindt en doorvalt naar de statische assets, wat een 404
+// oplevert voor een pdf die wel bestaat: linkcheckers en monitors zien de download dan
+// als kapot.
+//
 // Uploaden: zie scripts/hsf-upload-downloads.sh
 
 const LANGS = new Set(['nl', 'en', 'de', 'fr', 'es', 'ro']);
 
-export async function onRequestGet(context) {
+export async function onRequest(context) {
   const { params, env, request } = context;
+  if (request.method !== 'GET' && request.method !== 'HEAD') {
+    return new Response('method not allowed', { status: 405, headers: { Allow: 'GET, HEAD' } });
+  }
   const parts = Array.isArray(params.path) ? params.path : [params.path].filter(Boolean);
 
   // exact <taal>/<slug>.pdf, geen padtrucs
@@ -27,7 +35,9 @@ export async function onRequestGet(context) {
   if (!env.DOWNLOADS) return new Response('downloads unavailable', { status: 503 });
 
   const key = `${lang}/${file}`;
-  const object = await env.DOWNLOADS.get(key);
+  const head = request.method === 'HEAD';
+  // bij HEAD alleen de metadata ophalen, dan gaat de body niet over de lijn
+  const object = head ? await env.DOWNLOADS.head(key) : await env.DOWNLOADS.get(key);
   if (!object) return new Response('not found', { status: 404 });
 
   const headers = new Headers();
@@ -38,9 +48,13 @@ export async function onRequestGet(context) {
   headers.set('ETag', object.httpEtag);
   headers.set('X-Content-Type-Options', 'nosniff');
 
+  // Content-Length alleen bij HEAD: bij GET is de body een stream en vult de runtime
+  // dat zelf, een handmatige waarde kan daar botsen.
+  if (head) headers.set('Content-Length', String(object.size));
+
   // conditionele request: scheelt bandbreedte bij herhaald ophalen
   if (request.headers.get('if-none-match') === object.httpEtag) {
     return new Response(null, { status: 304, headers });
   }
-  return new Response(object.body, { headers });
+  return new Response(head ? null : object.body, { headers });
 }
