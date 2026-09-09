@@ -8,12 +8,13 @@
 import Base from '../layouts/HsfBase.astro';
 import ProfileTable from '../components/ProfileTable.astro';
 import CompetencyTable from '../components/CompetencyTable.astro';
-import { useT, path } from '../lib/i18n';
+import { useT, path, useTf } from '../lib/i18n';
 import { familyById, meta, domainMix, constructById } from '../lib/hsf';
 import { dlang } from '../lib/hsf-i18n';
 interface Props { lang: string; fn: any }
 const { lang, fn } = Astro.props;
 const t = useT(lang);
+const tf = useTf(lang);
 const dl = dlang(lang);
 const fam = familyById(fn.family_id);
 const mix = domainMix(fn.profile);
@@ -30,8 +31,8 @@ const byDomain = (meta as any) && domainMix(fn.profile);
         <div class="hsf-xs" style="color:var(--hsf-accent);margin-top:.3rem">{t('framework')}</div>
       </div>
       <div class="hsf-xs hsf-muted" style="text-align:right">
-        {lang === 'nl' ? 'Volledig functieprofiel' : 'Full job profile'}<br />
-        {fn.id} · {lang === 'nl' ? 'versie' : 'version'} {meta.version} · {meta.built}
+        {t('ui.full-job-profile')}<br />
+        {fn.id} · {t('ui.version')} {meta.version} · {meta.built}
       </div>
     </div>
   </header>
@@ -39,19 +40,19 @@ const byDomain = (meta as any) && domainMix(fn.profile);
   <h1 style="margin-bottom:.2rem">{fn.title[dl]}</h1>
   <p class="hsf-small hsf-muted" style="margin-bottom:1rem">
     {fam.id} {fam.name[dl]} · ISCO-08 {fn.isco} · CBS {fn.brc} {fn.brc_naam} ·
-    {' '}{lang === 'nl' ? 'senioriteit' : 'seniority'} {fn.seniority_default}
+    {' '}{t('ui.seniority')} {fn.seniority_default}
     {fn.aliases[dl].length > 0 && <> · {t('fn.aliases')}: {fn.aliases[dl].join(', ')}</>}
   </p>
   <p class="hsf-lead">{fn.summary[dl]}</p>
   <p>{fn.context[dl]}</p>
 
   <div class="hsf-card tint" style="margin:1.2rem 0">
-    <strong style="color:var(--hsf-navy)">{lang === 'nl' ? 'Kerncijfers van dit profiel' : 'Key figures for this profile'}</strong>
+    <strong style="color:var(--hsf-navy)">{t('ui.key-figures-for-this-profile')}</strong>
     <p class="hsf-small" style="margin:.4rem 0 0">
-      {fn.counts.skills} {lang === 'nl' ? 'skills' : 'skills'} ·
-      {' '}{fn.counts.competencies} {lang === 'nl' ? 'te meten competenties' : 'competencies to measure'} ·
-      {' '}{fn.counts.critical} {lang === 'nl' ? 'knockout-skills' : 'knockout skills'} ·
-      {' '}{lang === 'nl' ? 'zwaartepunt' : 'centre of gravity'}: {mix.slice(0, 3).map((m: any) => `${m.name[dl]} ${Math.round(m.share * 100)}%`).join(', ')}
+      {fn.counts.skills} {t('ui.skills')} ·
+      {' '}{fn.counts.competencies} {t('ui.competencies-to-measure')} ·
+      {' '}{fn.counts.critical} {t('ui.knockout-skills')} ·
+      {' '}{t('ui.centre-of-gravity')}: {mix.slice(0, 3).map((m: any) => `${m.name[dl]} ${Math.round(m.share * 100)}%`).join(', ')}
     </p>
   </div>
 
@@ -59,19 +60,15 @@ const byDomain = (meta as any) && domainMix(fn.profile);
   <p class="hsf-small hsf-muted">{t('fn.competencies.note')}</p>
   <CompetencyTable rows={fn.competencies} lang={lang} />
 
-  <h2 class="hsf-pagebreak">2  {lang === 'nl' ? 'Volledig skillprofiel' : 'Full skill profile'}</h2>
+  <h2 class="hsf-pagebreak">2  {t('ui.full-skill-profile')}</h2>
   <p class="hsf-small hsf-muted">
-    {lang === 'nl'
-      ? 'Alle skills van dit profiel, op gewicht gesorteerd. Het gedragsanker onder elke skill hoort bij het streefniveau.'
-      : 'Every skill in this profile, sorted by weight. The behavioural anchor under each skill belongs to the target level.'}
+    {t('ui.every-skill-in-this-profile-sorted')}
   </p>
   <ProfileTable rows={fn.profile} lang={lang} mode="full" />
 
-  <h2 class="hsf-pagebreak">3  {lang === 'nl' ? 'Niveaus per senioriteit' : 'Levels per seniority'}</h2>
+  <h2 class="hsf-pagebreak">3  {t('ui.levels-per-seniority')}</h2>
   <p class="hsf-small hsf-muted">
-    {lang === 'nl'
-      ? 'Hetzelfde profiel, met de senioriteitsbijstelling van de functiefamilie toegepast. De streefniveaus zijn begrensd op 1 tot 5.'
-      : 'The same profile with the job family seniority adjustment applied. Target levels are clamped to 1 to 5.'}
+    {t('ui.the-same-profile-with-the-job')}
   </p>
   <div class="hsf-tablewrap">
     <table class="hsf-table">
@@ -100,9 +97,9 @@ const byDomain = (meta as any) && domainMix(fn.profile);
     <table class="hsf-table">
       <thead>
         <tr>
-          <th class="num">{lang === 'nl' ? 'Niveau' : 'Level'}</th><th>{lang === 'nl' ? 'Label' : 'Label'}</th>
-          <th>{lang === 'nl' ? 'Autonomie' : 'Autonomy'}</th><th>{lang === 'nl' ? 'Complexiteit' : 'Complexity'}</th>
-          <th>{lang === 'nl' ? 'Bereik' : 'Scope'}</th><th>{lang === 'nl' ? 'Kennisdiepte' : 'Depth of knowledge'}</th>
+          <th class="num">{t('ui.level')}</th><th>{t('ui.label')}</th>
+          <th>{t('ui.autonomy')}</th><th>{t('ui.complexity')}</th>
+          <th>{t('ui.scope')}</th><th>{t('ui.depth-of-knowledge')}</th>
         </tr>
       </thead>
       <tbody>
@@ -116,11 +113,9 @@ const byDomain = (meta as any) && domainMix(fn.profile);
     </table>
   </div>
 
-  <h2>5  {lang === 'nl' ? 'Gedragsankers per skill' : 'Behavioural anchors per skill'}</h2>
+  <h2>5  {t('ui.behavioural-anchors-per-skill')}</h2>
   <p class="hsf-small hsf-muted">
-    {lang === 'nl'
-      ? 'Ankers staan op N1, N3 en N5. N2 en N4 zijn bewust niet geankerd: beoordelaars plaatsen die daartussen, conform de O*NET-conventie.'
-      : 'Anchors sit at N1, N3 and N5. N2 and N4 are deliberately not anchored: raters interpolate between them, following the O*NET convention.'}
+    {t('ui.anchors-sit-at-n1-n3-and')}
   </p>
   <div class="hsf-tablewrap">
     <table class="hsf-table">
@@ -136,15 +131,13 @@ const byDomain = (meta as any) && domainMix(fn.profile);
     </table>
   </div>
 
-  <h2 class="hsf-pagebreak">6  {lang === 'nl' ? 'Meetmethoden en validiteit' : 'Assessment methods and validity'}</h2>
+  <h2 class="hsf-pagebreak">6  {t('ui.assessment-methods-and-validity')}</h2>
   <p class="hsf-small hsf-muted">
-    {lang === 'nl'
-      ? 'De validiteiten zijn de gecorrigeerde meta-analytische schattingen van Sackett, Zhang, Berry en Lievens (2022) in het Journal of Applied Psychology. Die vervangen de oudere cijfers van Schmidt en Hunter (1998). De spreiding is even belangrijk als het gemiddelde: bij een hoge SD varieert de validiteit sterk per context.'
-      : 'The validities are the corrected meta-analytic estimates from Sackett, Zhang, Berry and Lievens (2022) in the Journal of Applied Psychology, which replace the older Schmidt and Hunter (1998) figures. The spread matters as much as the mean: with a high SD, validity varies strongly by context.'}
+    {t('ui.the-validities-are-the-corrected-meta')}
   </p>
   <div class="hsf-tablewrap">
     <table class="hsf-table">
-      <thead><tr><th>{t('tbl.assessment')}</th><th class="num">rho</th><th class="num">SD</th><th>{lang === 'nl' ? 'Wat het is' : 'What it is'}</th></tr></thead>
+      <thead><tr><th>{t('tbl.assessment')}</th><th class="num">rho</th><th class="num">SD</th><th>{t('ui.what-it-is')}</th></tr></thead>
       <tbody>
         {methods.map((m: any) => (
           <tr>
@@ -161,7 +154,7 @@ const byDomain = (meta as any) && domainMix(fn.profile);
   <h2>7  {t('fn.instruments')}</h2>
   <div class="hsf-tablewrap">
     <table class="hsf-table">
-      <thead><tr><th>{t('tbl.instrument')}</th><th class="num">{lang === 'nl' ? 'Skills' : 'Skills'}</th><th>{lang === 'nl' ? 'Wat het meet' : 'What it measures'}</th></tr></thead>
+      <thead><tr><th>{t('tbl.instrument')}</th><th class="num">{t('ui.skills-2')}</th><th>{t('ui.what-it-measures')}</th></tr></thead>
       <tbody>
         {fn.instrument_summary.map((i: any) => (
           <tr><td><strong>{i.instrument}</strong></td><td class="num">{i.skills}</td><td class="hsf-xs">{i.description}</td></tr>
@@ -170,27 +163,17 @@ const byDomain = (meta as any) && domainMix(fn.profile);
     </table>
   </div>
 
-  <h2>8  {lang === 'nl' ? 'Hoe je dit profiel gebruikt' : 'How to use this profile'}</h2>
+  <h2>8  {t('ui.how-to-use-this-profile')}</h2>
   <ol class="hsf-small">
-    <li>{lang === 'nl'
-      ? 'Stel het profiel vast met de leidinggevende voordat de eerste kandidaat wordt gemeten. Gewichten die je achteraf verschuift, maken de uitkomst onverdedigbaar.'
-      : 'Agree the profile with the hiring manager before the first candidate is measured. Weights shifted afterwards make the outcome indefensible.'}</li>
-    <li>{lang === 'nl'
-      ? 'Kies per skill de meetmethode uit kolom Meetmethode. Combineer maximaal drie methoden per kandidaat.'
-      : 'Choose the assessment method per skill from the Assessment method column. Combine at most three methods per candidate.'}</li>
-    <li>{lang === 'nl'
-      ? 'Kalibreer de beoordelaars in een sessie van twee uur met de gedragsankers uit hoofdstuk 5. Ankers zonder beoordelaarstraining leveren weinig op.'
-      : 'Calibrate the assessors in a two-hour session using the anchors in chapter 5. Anchors without rater training deliver little.'}</li>
-    <li>{lang === 'nl'
-      ? 'Vul de matchcalculator en bespreek de gaps in het ontwikkelgesprek. Type A en type G zijn selectiecriteria, geen ontwikkeldoelen van een kwartaal.'
-      : 'Fill in the match calculator and discuss the gaps in the development conversation. Type A and type G are selection criteria, not one-quarter development goals.'}</li>
+    <li>{t('ui.agree-the-profile-with-the-hiring')}</li>
+    <li>{t('ui.choose-the-assessment-method-per-skill')}</li>
+    <li>{t('ui.calibrate-the-assessors-in-a-two')}</li>
+    <li>{t('ui.fill-in-the-match-calculator-and')}</li>
   </ol>
 
   <div class="hsf-card tint" style="margin-top:1.5rem">
     <p class="hsf-xs" style="margin:0">
-      {lang === 'nl'
-        ? `Bron: ${t('framework')}, versie ${meta.version}, gebouwd op ${meta.built}. Crosswalks naar ESCO v1.2.1, O*NET 31.0, Lightcast Open Skills, SFIA 9, DigComp 3.0, EntreComp, LifeComp, GreenComp, AILit, WEF Future of Jobs 2025, ISCO-08 en de Beroepenindeling ROA-CBS 2014 editie 2025. Dit profiel is een startpunt, geen norm: stem het af op de eigen organisatie voordat je ermee selecteert.`
-        : `Source: ${t('framework')}, version ${meta.version}, built ${meta.built}. Crosswalks to ESCO v1.2.1, O*NET 31.0, Lightcast Open Skills, SFIA 9, DigComp 3.0, EntreComp, LifeComp, GreenComp, AILit, WEF Future of Jobs 2025, ISCO-08 and the Dutch CBS occupational classification BRC 2014 edition 2025. This profile is a starting point, not a standard: align it with your own organisation before selecting on it.`}
+      {tf('ui.source-note', { framework: t('framework'), version: meta.version, built: meta.built })}
     </p>
   </div>
   <p class="hsf-xs hsf-muted" style="margin-top:.6rem">hrmforce · hrmforce.com · {fn.id}</p>

@@ -2,16 +2,17 @@
 import Base from '../layouts/HsfBase.astro';
 import Crumbs from '../components/Crumbs.astro';
 import Level from '../components/Level.astro';
-import { useT, path } from '../lib/i18n';
+import { useT, path , useTf} from '../lib/i18n';
 import { functionsOfFamily, constructById, typeLabel, meta } from '../lib/hsf';
 import { dlang } from '../lib/hsf-i18n';
 interface Props { lang: string; fam: any; alternates: Record<string, string> }
 const { lang, fam, alternates } = Astro.props;
 const t = useT(lang);
+const tf = useTf(lang);
 const dl = dlang(lang);
 const list = functionsOfFamily(fam.id).sort((a, b) => a.title[dl].localeCompare(b.title[dl], dl));
-const title = `${fam.name[dl]} | ${lang === 'nl' ? 'functiefamilie, basisprofiel en functies' : 'job family, base profile and jobs'} | hrmforce`;
-const desc = `${fam.description[dl]} ${list.length} ${lang === 'nl' ? 'functies in deze familie.' : 'jobs in this family.'}`;
+const title = `${fam.name[dl]} | ${t('seo.job-family-base-profile-and-jobs')} | hrmforce`;
+const desc = `${fam.description[dl]} ${tf('seo.n-jobs-in-this-family', { n: list.length })}`;
 ---
 <Base lang={lang} title={title} description={desc} active="families" alternates={alternates}>
   <Crumbs items={[
@@ -26,13 +27,11 @@ const desc = `${fam.description[dl]} ${list.length} ${lang === 'nl' ? 'functies 
   </div>
   <h1>{fam.name[dl]}</h1>
   <p class="hsf-lead" style="max-width:64ch">{fam.description[dl]}</p>
-  <p class="hsf-small hsf-muted">{lang === 'nl' ? 'Voorbeeldfuncties' : 'Example roles'}: {fam.typical_roles[dl]}</p>
+  <p class="hsf-small hsf-muted">{t('ui.example-roles')}: {fam.typical_roles[dl]}</p>
 
-  <h2>{lang === 'nl' ? 'Basisprofiel van de familie' : 'Base profile of the family'}</h2>
+  <h2>{t('ui.base-profile-of-the-family')}</h2>
   <p class="hsf-small hsf-muted" style="max-width:70ch">
-    {lang === 'nl'
-      ? 'Elke functie in deze familie erft dit profiel en wijkt daarvan af met een beperkt aantal toevoegingen, aanpassingen en verwijderingen. De streefniveaus hieronder gelden voor het medior niveau.'
-      : 'Every job in this family inherits this profile and deviates from it with a limited number of additions, adjustments and removals. The target levels below apply to the medior level.'}
+    {t('ui.every-job-in-this-family-inherits')}
   </p>
   <div class="hsf-tablewrap">
     <table class="hsf-table">
@@ -54,11 +53,9 @@ const desc = `${fam.description[dl]} ${list.length} ${lang === 'nl' ? 'functies 
     </table>
   </div>
 
-  <h3>{lang === 'nl' ? 'Senioriteitsbijstelling' : 'Seniority adjustment'}</h3>
+  <h3>{t('ui.seniority-adjustment')}</h3>
   <p class="hsf-small hsf-muted" style="max-width:70ch">
-    {lang === 'nl'
-      ? 'Deze waarden worden bij elk streefniveau van de familie opgeteld en daarna begrensd op 1 tot 5.'
-      : 'These values are added to every target level of the family and then clamped to 1 to 5.'}
+    {t('ui.these-values-are-added-to-every')}
   </p>
   <div class="hsf-badges">
     {Object.entries(fam.seniority_delta).map(([k, v]: any) => (

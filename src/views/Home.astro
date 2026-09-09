@@ -1,18 +1,17 @@
 ---
 import Base from '../layouts/HsfBase.astro';
 import Search from '../components/Search.astro';
-import { useT, path } from '../lib/i18n';
+import { useT, path, useTf } from '../lib/i18n';
 import { meta, domains, families, facets } from '../lib/hsf';
 import { dlang } from '../lib/hsf-i18n';
 interface Props { lang: string; alternates: Record<string, string> }
 const { lang, alternates } = Astro.props;
 const t = useT(lang);
+const tf = useTf(lang);
 const dl = dlang(lang);
 const c = meta.counts;
 const title = `${t('framework')} | ${t('tagline')}`;
-const desc = lang === 'nl'
-  ? `Zoek in ${c.functions} functieprofielen en ${c.granular_skills} skills. Per functie zie je de te meten competenties en met welke hrmforce-vragenlijst je die meet.`
-  : `Search ${c.functions} job profiles and ${c.granular_skills} skills. Each job shows the competencies to measure and the hrmforce questionnaire that measures them.`;
+const desc = tf('seo.home-desc', { jobs: c.functions, skills: c.granular_skills });
 const jsonld = [{
   '@context': 'https://schema.org', '@type': 'WebSite', name: t('framework'),
   url: new URL(path(lang), Astro.site).toString(), inLanguage: lang,
@@ -38,14 +37,12 @@ const stats = [
   <section slot="hero" class="hsf-hero">
     <div class="hsf-wrap">
       <img src="/media/wp-content/uploads/2022/03/HRM-LOGO.svg" alt="hrmforce" style="height:48px;width:auto;display:block;margin-bottom:1rem" />
-      <h1>{lang === 'nl' ? 'Elke functie, elke skill, en waarmee je die meet' : 'Every job, every skill, and how to measure it'}</h1>
+      <h1>{t('ui.every-job-every-skill-and-how')}</h1>
       <p class="hsf-lead" style="max-width:62ch">
-        {lang === 'nl'
-          ? 'Zoek een functie of een skill. Je ziet direct het profiel, de competenties die je moet meten, en met welke hrmforce-vragenlijst dat gebeurt. Het volledige onderbouwde profiel kun je downloaden.'
-          : 'Search for a job or a skill. You immediately see the profile, the competencies to measure, and which hrmforce questionnaire does that. The fully evidenced profile is available as a download.'}
+        {t('ui.search-for-a-job-or-a')}
       </p>
       <div class="hsf-stats">
-        {stats.map(([n, l]) => <div class="hsf-stat"><b>{Number(n).toLocaleString(lang === 'nl' ? 'nl-NL' : 'en-GB')}</b><span>{l}</span></div>)}
+        {stats.map(([n, l]) => <div class="hsf-stat"><b>{Number(n).toLocaleString(t('locale'))}</b><span>{l}</span></div>)}
       </div>
     </div>
   </section>
@@ -66,7 +63,7 @@ const stats = [
     ))}
   </div>
 
-  <h2>{lang === 'nl' ? 'De tien skilldomeinen' : 'The ten skill domains'}</h2>
+  <h2>{t('ui.the-ten-skill-domains')}</h2>
   <div class="hsf-cards">
     {domains.map((d: any) => (
       <a class="hsf-card hsf-card-link" href={path(lang, 'skills') + `#${d.id}`}>

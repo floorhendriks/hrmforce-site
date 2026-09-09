@@ -6,13 +6,14 @@ import CompetencyTable from '../components/CompetencyTable.astro';
 import InstrumentList from '../components/InstrumentList.astro';
 import DomainMix from '../components/DomainMix.astro';
 import LeadForm from '../components/LeadForm.astro';
-import { useT, path, SEG } from '../lib/i18n';
+import { useT, path, SEG, useTf } from '../lib/i18n';
 import { existsSync } from 'node:fs';
 import { familyById, functionsOfFamily, domainMix, meta } from '../lib/hsf';
 import { dlang } from '../lib/hsf-i18n';
 interface Props { lang: string; fn: any; alternates: Record<string, string> }
 const { lang, fn, alternates } = Astro.props;
 const t = useT(lang);
+const tf = useTf(lang);
 const dl = dlang(lang);
 const fam = familyById(fn.family_id);
 const mix = domainMix(fn.profile);
@@ -28,8 +29,8 @@ const seg = SEG[lang] ?? SEG.en;
 const pdfPath = `/downloads/${lang}/${fn.slug[dl]}.pdf`;
 const hasPdf = existsSync(new URL(`../../public${pdfPath}`, import.meta.url));
 const pdf = hasPdf ? pdfPath : path(lang, 'functions', fn.slug[dl], 'full');
-const title = `${fn.title[dl]} | ${lang === 'nl' ? 'functieprofiel, skills en competenties' : 'job profile, skills and competencies'} | hrmforce`;
-const desc = `${fn.summary[dl]} ${lang === 'nl' ? 'Bekijk het profiel met' : 'See the profile with'} ${fn.counts.skills} ${lang === 'nl' ? 'skills en' : 'skills and'} ${fn.counts.competencies} ${lang === 'nl' ? 'te meten competenties.' : 'competencies to measure.'}`;
+const title = `${fn.title[dl]} | ${t('seo.job-profile-skills-and-competencies')} | hrmforce`;
+const desc = `${fn.summary[dl]} ${tf('seo.job-desc-tail', { skills: fn.counts.skills, competencies: fn.counts.competencies })}`;
 const jsonld = [{
   '@context': 'https://schema.org', '@type': 'Occupation',
   name: fn.title[dl], description: fn.summary[dl], inLanguage: lang,
@@ -79,9 +80,7 @@ const jsonld = [{
       <p class="hsf-small hsf-muted">{t('fn.profile.note')}</p>
       <ProfileTable rows={top} lang={lang} mode="short" />
       <p class="hsf-small" style="margin-top:.8rem">
-        <a href={pdf}>{lang === 'nl'
-          ? `Bekijk alle ${fn.counts.skills} skills in het volledige profiel`
-          : `See all ${fn.counts.skills} skills in the full profile`}</a>
+        <a href={pdf}>{tf('ui.see-all-skills-in-full-profile', { n: fn.counts.skills })}</a>
       </p>
 
       <h2>{t('fn.instruments')}</h2>
@@ -108,9 +107,7 @@ const jsonld = [{
 
       <div class="hsf-card" style="margin-top:1rem">
         <h3 style="margin-top:0;font-size:1rem">{t('fn.match')}</h3>
-        <p class="hsf-small hsf-muted">{lang === 'nl'
-          ? 'Vul kandidaatniveaus in en zie de fit, de gaps en de knockouts.'
-          : 'Enter candidate levels and see the fit, the gaps and the knockouts.'}</p>
+        <p class="hsf-small hsf-muted">{t('ui.enter-candidate-levels-and-see-the')}</p>
         <a class="hsf-btn ghost block" href={path(lang, 'match', fn.slug[dl])}>{t('fn.match')}</a>
       </div>
 

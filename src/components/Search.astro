@@ -29,6 +29,12 @@ const kinds = [
   data-seg-f={seg.functions}
   data-seg-s={seg.skills}
   data-seg-j={seg.families}
+  data-items-label={t('search.items')}
+  data-results-label={t('search.results')}
+  data-no-results={t('search.no-results')}
+  data-skills-label={t('search.skills-suffix')}
+  data-more-results={t('search.more-results')}
+  data-index-error={t('search.index-error')}
 >
   <div class="hsf-searchbox">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -134,7 +140,7 @@ const kinds = [
       let list;
       if (!terms.length) {
         list = rows.slice(0, shown);
-        countEl.textContent = `${rows.length} ${lang === 'nl' ? 'items' : 'items'}`;
+        countEl.textContent = `${rows.length} ${app.dataset.itemsLabel}`;
       } else {
         const scored = [];
         for (const r of rows) {
@@ -142,10 +148,10 @@ const kinds = [
           if (s >= 0) scored.push([s, r]);
         }
         scored.sort((a, b) => b[0] - a[0] || a[1].n.length - b[1].n.length);
-        countEl.textContent = `${scored.length} ${app.dataset.resultsLabel || (lang === 'nl' ? 'resultaten' : 'results')}`;
+        countEl.textContent = `${scored.length} ${app.dataset.resultsLabel}`;
         list = scored.slice(0, shown).map((x) => x[1]);
         if (!scored.length) {
-          hits.innerHTML = `<p class="hsf-muted">${lang === 'nl' ? 'Geen resultaten. Probeer een kortere zoekterm of een synoniem.' : 'No results. Try a shorter term or a synonym.'}</p>`;
+          hits.innerHTML = `<p class="hsf-muted">${app.dataset.noResults}</p>`;
           moreEl.innerHTML = '';
           return;
         }
@@ -154,11 +160,11 @@ const kinds = [
         <a class="hsf-hit" href="${url(r)}">
           <span class="hsf-kind">${KIND_LABEL[r.t]}</span>
           <span><strong>${highlight(r.n, terms)}</strong><small>${escapeHtml(r.u || '')}</small></span>
-          <span class="hsf-xs hsf-muted">${r.t === 'f' ? (r.c + (lang === 'nl' ? ' skills' : ' skills')) : r.t === 'c' ? (r.c + (lang === 'nl' ? ' skills' : ' skills')) : r.y ? r.y : ''}</span>
+          <span class="hsf-xs hsf-muted">${r.t === 'f' || r.t === 'c' ? `${r.c} ${app.dataset.skillsLabel}` : r.y ? r.y : ''}</span>
         </a>`).join('');
       const total = terms.length ? countEl.textContent : rows.length;
       moreEl.innerHTML = list.length < (terms.length ? Number.parseInt(total) : rows.length)
-        ? `<button class="hsf-btn ghost" type="button" data-loadmore>${lang === 'nl' ? 'Meer resultaten' : 'More results'}</button>` : '';
+        ? `<button class="hsf-btn ghost" type="button" data-loadmore>${app.dataset.moreResults}</button>` : '';
       const lm = moreEl.querySelector('[data-loadmore]');
       if (lm) lm.addEventListener('click', () => { shown += PAGE; render(); });
     }
@@ -176,7 +182,7 @@ const kinds = [
     fetch(`/hsf-data/search-${dl}-core.json`)
       .then((r) => r.json())
       .then((d) => { core = d; render(); if (kind === 's' || kind === 'all') loadGran(); })
-      .catch(() => { countEl.textContent = lang === 'nl' ? 'Zoekindex kon niet worden geladen.' : 'Could not load the search index.'; });
+      .catch(() => { countEl.textContent = app.dataset.indexError; });
 
     let timer;
     input.addEventListener('input', () => {

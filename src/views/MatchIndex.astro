@@ -11,9 +11,7 @@ const t = useT(lang);
 const dl = dlang(lang);
 const mm = (meta as any).match_model;
 const title = `${t('match.title')} | hrmforce`;
-const desc = lang === 'nl'
-  ? 'Kies een functie en bereken online de fit van een kandidaat of medewerker op het profiel. Gewogen fit, gaps per skill en knockouts, zonder dat er iets wordt opgeslagen.'
-  : 'Pick a job and calculate the fit of a candidate or employee against the profile online. Weighted fit, gaps per skill and knockouts, with nothing stored.';
+const desc = t('seo.pick-a-job-and-calculate-the');
 ---
 <Base lang={lang} title={title} description={desc} active="match" alternates={alternates}>
   <Crumbs items={[{ label: t('nav.home'), href: path(lang) }, { label: t('nav.match') }]} />
@@ -22,9 +20,7 @@ const desc = lang === 'nl'
   <h2>{t('match.pick')}</h2>
   <Search lang={lang} scope="f" />
   <p class="hsf-note">
-    {lang === 'nl'
-      ? 'Open een functie en klik daar op Bereken de match, of ga direct naar de calculator van een van deze veelgebruikte functies.'
-      : 'Open a job and click Calculate the match there, or go straight to the calculator for one of these common jobs.'}
+    {t('ui.open-a-job-and-click-calculate')}
   </p>
   <div class="hsf-cards">
     {families.map((f: any) => {

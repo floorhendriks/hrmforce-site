@@ -2,12 +2,13 @@
 import Base from '../layouts/HsfBase.astro';
 import Crumbs from '../components/Crumbs.astro';
 import Level from '../components/Level.astro';
-import { useT, path } from '../lib/i18n';
+import { useT, path , useTf} from '../lib/i18n';
 import { meta, domainById, typeLabel, instrumentInfo, methodInfo, functionById, domains } from '../lib/hsf';
 import { dlang } from '../lib/hsf-i18n';
 interface Props { lang: string; sk: any; alternates: Record<string, string> }
 const { lang, sk, alternates } = Astro.props;
 const t = useT(lang);
+const tf = useTf(lang);
 const dl = dlang(lang);
 const dom = domainById(sk.domain_id);
 const cluster = dom.clusters.find((c: any) => c.id === sk.cluster_id);
@@ -18,8 +19,8 @@ const stdNames: Record<string, string> = {
   esco: 'ESCO v1.2.1', onet: 'O*NET 31.0', lightcast: 'Lightcast Open Skills',
   sfia: 'SFIA 9', eu_framework: 'EU-competentieframework', wef: 'WEF Future of Jobs 2025',
 };
-const title = `${sk.name[dl]} | ${lang === 'nl' ? 'skill, niveaus en meting' : 'skill, levels and measurement'} | hrmforce`;
-const desc = `${sk.definition[dl]} ${lang === 'nl' ? 'Met' : 'With'} ${sk.child_count} ${lang === 'nl' ? 'onderliggende skills en gedragsankers op drie niveaus.' : 'underlying skills and behavioural anchors at three levels.'}`;
+const title = `${sk.name[dl]} | ${t('seo.skill-levels-and-measurement')} | hrmforce`;
+const desc = `${sk.definition[dl]} ${tf('seo.skill-desc-tail', { n: sk.child_count })}`;
 const jsonld = [{
   '@context': 'https://schema.org', '@type': 'DefinedTerm',
   name: sk.name[dl], description: sk.definition[dl], termCode: sk.id, inLanguage: lang,
@@ -64,7 +65,7 @@ const jsonld = [{
                 const info = instrumentInfo(i);
                 return <>{k > 0 && ', '}<span class="hsf-nowrap">{info?.url ? <a href={info.url}>{i}</a> : i}</span></>;
               })
-            : (lang === 'nl' ? 'geen standaardinstrument, klantspecifiek' : 'no standard instrument, client specific')}</dd>
+            : (t('ui.no-standard-instrument-client-specific'))}</dd>
           {sk.competency_2014 && <><dt>{t('tbl.competency')}</dt><dd>{sk.competency_2014}</dd></>}
           <dt>{t('sk.trainability')}</dt><dd>{sk.trainability}</dd>
           <dt>{t('sk.ai')}</dt><dd>{sk.ai_demand}</dd>
@@ -72,9 +73,7 @@ const jsonld = [{
         {method && <p class="hsf-small hsf-muted" style="margin:.7rem 0 0">{method[dl]}</p>}
         {(sk.type === 'A' || sk.type === 'G') && (
           <p class="hsf-small" style="margin:.6rem 0 0;color:var(--hsf-warn)">
-            {lang === 'nl'
-              ? 'Dit is een selectiecriterium, geen ontwikkeldoel op korte termijn. Zet hier geen ontwikkelplan van drie maanden op.'
-              : 'This is a selection criterion, not a short-term development goal. Do not put a three-month development plan on it.'}
+            {t('ui.this-is-a-selection-criterion-not')}
           </p>
         )}
       </div>
@@ -82,7 +81,7 @@ const jsonld = [{
       <h2>{t('sk.anchors')}</h2>
       <div class="hsf-tablewrap">
         <table class="hsf-table">
-          <thead><tr><th class="num">{lang === 'nl' ? 'Niveau' : 'Level'}</th><th>{lang === 'nl' ? 'Gedrag op dit niveau' : 'Behaviour at this level'}</th></tr></thead>
+          <thead><tr><th class="num">{t('ui.level')}</th><th>{t('ui.behaviour-at-this-level')}</th></tr></thead>
           <tbody>
             {sk.anchors.map((a: any) => {
               const l = scale.find((x: any) => x.level === a.level);
@@ -97,9 +96,7 @@ const jsonld = [{
         </table>
       </div>
       <p class="hsf-note" style="margin-top:.6rem">
-        {lang === 'nl'
-          ? 'N2 en N4 zijn bewust niet geankerd. Beoordelaars plaatsen die tussen de ankers, conform de conventie van O*NET.'
-          : 'N2 and N4 are deliberately not anchored. Raters place them between the anchors, following the O*NET convention.'}
+        {t('ui.n2-and-n4-are-deliberately-not')}
       </p>
 
       {sk.children.length > 0 && (
@@ -132,9 +129,9 @@ const jsonld = [{
 
     <aside class="hsf-sticky">
       <div class="hsf-card">
-        <h3 style="margin-top:0;font-size:1rem">{lang === 'nl' ? 'Plaats in het framework' : 'Position in the framework'}</h3>
+        <h3 style="margin-top:0;font-size:1rem">{t('ui.position-in-the-framework')}</h3>
         <dl class="hsf-dl">
-          <dt>{lang === 'nl' ? 'Domein' : 'Domain'}</dt><dd><a href={path(lang, 'skills') + `#${dom.id}`}>{dom.id} {dom.name[dl]}</a></dd>
+          <dt>{t('ui.domain')}</dt><dd><a href={path(lang, 'skills') + `#${dom.id}`}>{dom.id} {dom.name[dl]}</a></dd>
           <dt>Cluster</dt><dd>{cluster ? `${cluster.id} ${cluster.name[dl]}` : sk.cluster_id}</dd>
           <dt>{t('sk.reuse')}</dt><dd>{sk.reusability}</dd>
           <dt>{t('sk.functions')}</dt><dd>{sk.function_count}</dd>
@@ -160,7 +157,7 @@ const jsonld = [{
               <li><a class="hsf-badge" href={path(lang, 'functions', f.slug[dl])}>{f.title[dl]}</a></li>
             ))}
           </ul>
-          {fns.length > 14 && <p class="hsf-xs hsf-muted" style="margin:.6rem 0 0">{lang === 'nl' ? 'en nog' : 'and'} {fns.length - 14} {lang === 'nl' ? 'andere functies' : 'more jobs'}</p>}
+          {fns.length > 14 && <p class="hsf-xs hsf-muted" style="margin:.6rem 0 0">{t('ui.and')} {fns.length - 14} {t('ui.more-jobs')}</p>}
         </div>
       )}
     </aside>

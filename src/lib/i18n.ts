@@ -43,6 +43,17 @@ export function useT(locale: string) {
   return (key: string): string => primary[key] ?? DICT.en[key] ?? key;
 }
 
+/**
+ * Vertaalt een tekst met plaatshouders. In de i18n-bestanden staan die als
+ * {naam}, bijvoorbeeld "Alle {n} functieprofielen ...". De plaatshouders blijven
+ * bij het vertalen onaangeroerd (zie scripts/hsf-translate-ui.mjs).
+ */
+export function useTf(locale: string) {
+  const t = useT(locale);
+  return (key: string, vars: Record<string, string | number>): string =>
+    t(key).replace(/\{(\w+)\}/g, (m, name) => (name in vars ? String(vars[name]) : m));
+}
+
 /** De logische sectiesleutels die door SEG worden vertaald naar padsegmenten. */
 export type Section = 'functions' | 'skills' | 'families' | 'match' | 'method' | 'full';
 const SECTIONS = new Set(['functions', 'skills', 'families', 'match', 'method', 'full']);

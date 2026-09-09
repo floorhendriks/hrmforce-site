@@ -2,19 +2,18 @@
 import Base from '../layouts/HsfBase.astro';
 import Crumbs from '../components/Crumbs.astro';
 import MatchCalculator from '../components/MatchCalculator.astro';
-import { useT, path } from '../lib/i18n';
+import { useT, path, useTf } from '../lib/i18n';
 import { familyById, meta } from '../lib/hsf';
 import { dlang } from '../lib/hsf-i18n';
 interface Props { lang: string; fn: any; alternates: Record<string, string> }
 const { lang, fn, alternates } = Astro.props;
 const t = useT(lang);
+const tf = useTf(lang);
 const dl = dlang(lang);
 const fam = familyById(fn.family_id);
 const mm = (meta as any).match_model;
 const title = `${t('match.title')} ${fn.title[dl]} | hrmforce`;
-const desc = lang === 'nl'
-  ? `Bereken online de fit van een kandidaat op het profiel van ${fn.title[dl]}: ${fn.counts.skills} skills, gewogen fit, gaps en knockouts.`
-  : `Calculate a candidate fit against the ${fn.title[dl]} profile online: ${fn.counts.skills} skills, weighted fit, gaps and knockouts.`;
+const desc = tf('seo.match-desc', { job: fn.title[dl], n: fn.counts.skills });
 ---
 <Base lang={lang} title={title} description={desc} active="match" alternates={alternates}>
   <Crumbs items={[
@@ -24,26 +23,24 @@ const desc = lang === 'nl'
   ]} />
   <h1 style="margin-bottom:.2rem">{t('match.title')}</h1>
   <p class="hsf-lead" style="margin-bottom:1rem">
-    {fn.title[dl]} · <a href={path(lang, 'functions', fn.slug[dl])}>{lang === 'nl' ? 'bekijk het profiel' : 'view the profile'}</a>
+    {fn.title[dl]} · <a href={path(lang, 'functions', fn.slug[dl])}>{t('ui.view-the-profile')}</a>
   </p>
   <MatchCalculator lang={lang} fn={fn} family={fam} />
 
-  <h2>{lang === 'nl' ? 'Zo rekent de calculator' : 'How the calculator computes'}</h2>
+  <h2>{t('ui.how-the-calculator-computes')}</h2>
   <div class="hsf-tablewrap">
     <table class="hsf-table">
-      <thead><tr><th>{lang === 'nl' ? 'Stap' : 'Step'}</th><th>{lang === 'nl' ? 'Formule' : 'Formula'}</th></tr></thead>
+      <thead><tr><th>{t('ui.step')}</th><th>{t('ui.formula')}</th></tr></thead>
       <tbody>
-        <tr><td>{lang === 'nl' ? 'Streefniveau per senioriteit' : 'Target level per seniority'}</td><td><code>{mm.seniority}</code></td></tr>
-        <tr><td>{lang === 'nl' ? 'Fit per skill' : 'Fit per skill'}</td><td><code>{mm.fit_per_skill}</code></td></tr>
-        <tr><td>{lang === 'nl' ? 'Totale fit' : 'Total fit'}</td><td><code>{mm.total_fit}</code></td></tr>
-        <tr><td>{lang === 'nl' ? 'Knockout' : 'Knockout'}</td><td><code>{mm.knockout}</code></td></tr>
-        <tr><td>{lang === 'nl' ? 'Adviesbanden' : 'Advice bands'}</td><td><code>{`>= ${mm.bands.strong} sterk, >= ${mm.bands.fit_with_development} passend, daaronder onvoldoende`}</code></td></tr>
+        <tr><td>{t('ui.target-level-per-seniority')}</td><td><code>{mm.seniority}</code></td></tr>
+        <tr><td>{t('ui.fit-per-skill')}</td><td><code>{mm.fit_per_skill}</code></td></tr>
+        <tr><td>{t('ui.total-fit')}</td><td><code>{mm.total_fit}</code></td></tr>
+        <tr><td>{t('ui.knockout')}</td><td><code>{mm.knockout}</code></td></tr>
+        <tr><td>{t('ui.advice-bands')}</td><td><code>{`>= ${mm.bands.strong} sterk, >= ${mm.bands.fit_with_development} passend, daaronder onvoldoende`}</code></td></tr>
       </tbody>
     </table>
   </div>
   <p class="hsf-note" style="margin-top:.8rem">
-    {lang === 'nl'
-      ? 'Boven het streefniveau presteren telt niet extra mee, want overkwalificatie is geen betere match. De adviesbanden zijn een werkafspraak en geen psychometrische constante.'
-      : 'Performing above the target level does not count extra, because overqualification is not a better match. The advice bands are a working agreement, not a psychometric constant.'}
+    {t('ui.performing-above-the-target-level-does')}
   </p>
 </Base>

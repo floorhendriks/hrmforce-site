@@ -2,26 +2,23 @@
 import Base from '../layouts/HsfBase.astro';
 import Crumbs from '../components/Crumbs.astro';
 import Search from '../components/Search.astro';
-import { useT, path } from '../lib/i18n';
+import { useT, path, useTf } from '../lib/i18n';
 import { domains, skills, meta, typeLabel } from '../lib/hsf';
 import { dlang } from '../lib/hsf-i18n';
 interface Props { lang: string; alternates: Record<string, string> }
 const { lang, alternates } = Astro.props;
 const t = useT(lang);
+const tf = useTf(lang);
 const dl = dlang(lang);
 const byId = new Map(skills.map((s: any) => [s.id, s]));
-const title = `${meta.counts.granular_skills} ${lang === 'nl' ? 'skills en' : 'skills and'} ${meta.counts.constructs} ${lang === 'nl' ? 'meetbare constructen' : 'measurable constructs'} | hrmforce`;
-const desc = lang === 'nl'
-  ? `De volledige skillbibliotheek van het hrmforce Skills Framework: ${meta.counts.constructs} meetbare constructen met gedragsankers, en ${meta.counts.granular_skills} granulaire skills daaronder.`
-  : `The full skill library of the hrmforce Skills Framework: ${meta.counts.constructs} measurable constructs with behavioural anchors, and ${meta.counts.granular_skills} granular skills beneath them.`;
+const title = `${tf('seo.skills-index-title', { skills: meta.counts.granular_skills, constructs: meta.counts.constructs })} | hrmforce`;
+const desc = tf('seo.skills-index-desc', { constructs: meta.counts.constructs, skills: meta.counts.granular_skills });
 ---
 <Base lang={lang} title={title} description={desc} active="skills" alternates={alternates}>
   <Crumbs items={[{ label: t('nav.home'), href: path(lang) }, { label: t('nav.skills') }]} />
   <h1>{t('nav.skills')}</h1>
   <p class="hsf-lead" style="max-width:64ch">
-    {lang === 'nl'
-      ? `Het framework kent twee skilllagen. De ${meta.counts.constructs} constructen zijn de meeteenheid: daar hangen gedragsankers, een meetmethode en een hrmforce-instrument aan. De ${meta.counts.granular_skills} granulaire skills daaronder zijn de zoeklaag en erven die meetroute.`
-      : `The framework has two skill layers. The ${meta.counts.constructs} constructs are the unit of measurement: behavioural anchors, an assessment method and an hrmforce instrument attach there. The ${meta.counts.granular_skills} granular skills beneath them are the search layer and inherit that assessment route.`}
+    {tf('ui.skills-index-lead', { constructs: meta.counts.constructs, skills: meta.counts.granular_skills })}
   </p>
   <Search lang={lang} scope="c" />
 
