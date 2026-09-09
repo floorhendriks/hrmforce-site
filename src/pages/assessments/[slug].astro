@@ -182,7 +182,7 @@ const _offerLd = (shop && shop.price)
         </div>
         <div class="pentagon">
           <img src={a.dimImage || a.image} alt={`${a.title} in de praktijk`} loading="lazy" style="width:100%;border-radius:16px;display:block;box-shadow:var(--shadow);aspect-ratio:4/3;object-fit:cover" />
-          <p style="color:var(--muted);font-size:14px;margin-top:12px">De kerndimensies van dit assessment, vertaald naar werkgerelateerde inzichten.</p>
+          <p style="color:var(--muted);font-size:14px;margin-top:12px">{a.benefit || "De kerndimensies van dit assessment, vertaald naar werkgerelateerde inzichten."}</p>
         </div>
       </div>
     </div>
