@@ -6,6 +6,7 @@ import { useT, path , useTf} from '../lib/i18n';
 import { meta, domainById, typeLabel, instrumentInfo, methodInfo, functionById, domains } from '../lib/hsf';
 import { dlang } from '../lib/hsf-i18n';
 import { vt } from '../lib/vocab';
+import { navHref } from '../i18n/utils.js';
 interface Props { lang: string; sk: any; alternates: Record<string, string> }
 const { lang, sk, alternates } = Astro.props;
 const t = useT(lang);
