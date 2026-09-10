@@ -25,6 +25,18 @@ export const ANALYTICS = { GA4_ID: "G-L4WHLCQ1WY" };
 export const MARKETING = {
   LINKEDIN_PARTNER_ID: "8219026",
   CLARITY_ID: "yezxhal0q8", // Clarity-project "hrmforce"
+  // Google Ads: vul het conversie-ID in (formaat "AW-123456789"). De tag laadt
+  // uitsluitend na toestemming voor de categorie 'marketing'. Vul daarnaast het
+  // conversielabel in (formaat "AW-123456789/AbC-D_efG") om een lead-conversie
+  // te sturen zodra iemand een formulier verstuurt. Leeg = geen Ads-tracking.
+  GOOGLE_ADS_ID: "",
+  GOOGLE_ADS_LEAD_LABEL: "",
+};
+
+// Verificatie-meta-tags. Leeg = geen tag in de <head>.
+// GOOGLE_SITE_VERIFICATION = de content-waarde van de HTML-tag uit Search Console.
+export const VERIFICATION = {
+  GOOGLE_SITE_VERIFICATION: "",
 };
 
 // Externe reviewprofielen. Vul een URL in om de badge te tonen (leeg = verborgen).

@@ -1,0 +1,74 @@
+---
+// Vaste bouwsteen voor oplossingen-, advies- en trainingspagina's:
+// een stappenplan met uitkomst, plus een rolverdeling (hrmforce vs. organisatie).
+const { plan, roles, rolesEyebrow = "Rolverdeling", hrmLabel = "hrmforce doet", orgLabel = "Jullie doen", tone = "soft" } = Astro.props;
+---
+{plan && (
+  <section class={tone === "soft" ? "bg-soft" : ""}>
+    <div class="wrap" style="display:block">
+      <div class="center">
+        {plan.eyebrow && <div class="eyebrow" style="justify-content:center">{plan.eyebrow}</div>}
+        <h2 class="section-title">{plan.title}</h2>
+        {plan.lead && <p class="lead" style="max-width:740px;margin:0 auto 8px">{plan.lead}</p>}
+      </div>
+      <ol class="planlist">
+        {plan.steps.map((st, i) => (
+          <li class="planstep">
+            <span class="pl-n">{i + 1}</span>
+            <div>
+              <h3>{st.t}</h3>
+              <p>{st.d}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      {plan.outcome && (
+        <p class="plan-outcome"><span class="po-ic" aria-hidden="true">&check;</span>{plan.outcome}</p>
+      )}
+    </div>
+  </section>
+)}
+
+{roles && (
+  <section>
+    <div class="wrap" style="display:block">
+      <div class="center">
+        <div class="eyebrow" style="justify-content:center">{rolesEyebrow}</div>
+        <h2 class="section-title" style="margin-bottom:30px">{roles.title}</h2>
+      </div>
+      <div class="rolegrid">
+        <div class="rolecard hrm">
+          <h3>{hrmLabel}</h3>
+          <ul>{roles.hrmforce.map((r) => <li>{r}</li>)}</ul>
+        </div>
+        <div class="rolecard org">
+          <h3>{orgLabel}</h3>
+          <ul>{roles.org.map((r) => <li>{r}</li>)}</ul>
+        </div>
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .planlist { list-style:none; margin:34px auto 0; padding:0; display:flex; flex-direction:column; gap:14px; max-width:900px; }
+  .planstep { display:flex; gap:18px; align-items:flex-start; background:#fff; border:1px solid var(--line); border-radius:14px; padding:22px 24px; box-shadow:var(--shadow-xs); transition:transform .2s ease, box-shadow .2s ease; }
+  .planstep:hover { transform:translateY(-3px); box-shadow:var(--shadow-md); }
+  .pl-n { flex:none; width:34px; height:34px; border-radius:50%; background:var(--navy); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; }
+  .planstep h3 { color:var(--navy); font-size:1.08rem; margin:4px 0 6px; }
+  .planstep p { color:var(--muted); font-size:15px; line-height:1.6; margin:0; }
+  .plan-outcome { display:flex; gap:12px; align-items:flex-start; max-width:900px; margin:20px auto 0; background:var(--navy); color:#fff; border-radius:14px; padding:20px 24px; font-size:15.5px; line-height:1.6; font-weight:600; }
+  .po-ic { flex:none; width:26px; height:26px; border-radius:50%; background:var(--gold); color:#3a2a00; font-weight:800; display:flex; align-items:center; justify-content:center; margin-top:1px; }
+  .rolegrid { display:grid; grid-template-columns:1fr 1fr; gap:22px; max-width:940px; margin:0 auto; }
+  .rolecard { border:1px solid var(--line); border-radius:16px; padding:26px 24px; background:#fff; box-shadow:var(--shadow-xs); transition:transform .2s ease, box-shadow .2s ease; }
+  .rolecard:hover { transform:translateY(-3px); box-shadow:var(--shadow-md); }
+  .rolecard.hrm { border-left:4px solid var(--accent); }
+  .rolecard.org { border-left:4px solid var(--gold); }
+  .rolecard h3 { color:var(--navy); font-size:1.1rem; margin:0 0 14px; }
+  .rolecard ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+  .rolecard li { color:var(--text); font-size:15px; line-height:1.5; padding-left:26px; position:relative; }
+  .rolecard li::before { content:"\2713"; position:absolute; left:0; top:0; color:var(--accent); font-weight:800; }
+  .rolecard.org li::before { color:var(--gold); }
+  @media (max-width:820px) { .rolegrid { grid-template-columns:1fr; } .planstep { padding:18px; gap:14px; } }
+  @media (prefers-reduced-motion: reduce) { .planstep:hover, .rolecard:hover { transform:none; } }
+</style>

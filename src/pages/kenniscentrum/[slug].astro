@@ -38,6 +38,19 @@ const relArticles = (allPosts||[])
   .map((q)=>{ const w=new Set([..._kw(q.title),..._kw(q.category),..._kw(q.excerpt)]); let sc=0; w.forEach((x)=>{ if(_hay.includes(x)) sc++; }); return {q,sc}; })
   .sort((x,y)=>y.sc-x.sc).slice(0,3).filter((x)=>x.sc>0).map((x)=>x.q);
 const RL = {nl:{a:"Gerelateerde assessments",art:"Verder lezen",view:"Bekijk assessment",read:"Lees artikel"},en:{a:"Related assessments",art:"Read more",view:"View assessment",read:"Read article"},de:{a:"Verwandte Assessments",art:"Weiterlesen",view:"Assessment ansehen",read:"Artikel lesen"},fr:{a:"Assessments liés",art:"Lire plus",view:"Voir l'assessment",read:"Lire l'article"},es:{a:"Evaluaciones relacionadas",art:"Leer más",view:"Ver evaluación",read:"Leer artículo"},ro:{a:"Evaluări conexe",art:"Citește mai mult",view:"Vezi evaluarea",read:"Citește articolul"}}[lang] || {a:"Gerelateerde assessments",art:"Verder lezen",view:"Bekijk assessment",read:"Lees artikel"};
+const KC = {
+  nl: { read: "min leestijd", published: "Gepubliceerd op", authorRole: "Managing Partner bij hrmforce", authorBio: "Schrijft over assessments, selectie en talentontwikkeling. Al meer dan 15 jaar betrokken bij psychometrie in de praktijk.", authorCta: "Meer over hrmforce", back: "Naar het kenniscentrum" },
+  en: { read: "min read", published: "Published on", authorRole: "Managing Partner at hrmforce", authorBio: "Writes about assessments, selection and talent development. Involved in applied psychometrics for over 15 years.", authorCta: "More about hrmforce", back: "Back to the knowledge centre" },
+  de: { read: "Min. Lesezeit", published: "Veröffentlicht am", authorRole: "Managing Partner bei hrmforce", authorBio: "Schreibt über Assessments, Auswahl und Talententwicklung. Seit über 15 Jahren in der angewandten Psychometrie tätig.", authorCta: "Mehr über hrmforce", back: "Zum Wissenszentrum" },
+  fr: { read: "min de lecture", published: "Publié le", authorRole: "Managing Partner chez hrmforce", authorBio: "Écrit sur les évaluations, la sélection et le développement des talents. Plus de 15 ans de psychométrie appliquée.", authorCta: "En savoir plus sur hrmforce", back: "Vers le centre de connaissances" },
+  es: { read: "min de lectura", published: "Publicado el", authorRole: "Managing Partner en hrmforce", authorBio: "Escribe sobre evaluaciones, selección y desarrollo del talento. Más de 15 años de psicometría aplicada.", authorCta: "Más sobre hrmforce", back: "Al centro de conocimiento" },
+  ro: { read: "min de citit", published: "Publicat pe", authorRole: "Managing Partner la hrmforce", authorBio: "Scrie despre evaluări, selecție și dezvoltarea talentelor. Peste 15 ani de psihometrie aplicată.", authorCta: "Mai multe despre hrmforce", back: "Spre centrul de cunoștințe" },
+}[lang] || {};
+const LOC = { nl: "nl-NL", en: "en-GB", de: "de-DE", fr: "fr-FR", es: "es-ES", ro: "ro-RO" }[lang] || "nl-NL";
+const dateLabel = p.date ? new Date(p.date).toLocaleDateString(LOC, { day: "numeric", month: "long", year: "numeric" }) : "";
+const _wc = `${p.excerpt || ""} ${(p.body || []).join(" ")}`.split(/\s+/).filter(Boolean).length;
+const readMin = Math.max(2, Math.round(_wc / 200));
+const overHref = localizePath("/over-ons/", lang);
 const _canon = new URL(Astro.url.pathname, "https://hrmforce.com").href;
 const _articleLd = {
   "@context": "https://schema.org",
@@ -61,13 +74,27 @@ const _articleLd = {
   <script type="application/ld+json" is:inline set:html={JSON.stringify(_articleLd)}></script>
   <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={localizePath("/kenniscentrum/", lang)}>Kenniscentrum</a> › <span>{p.title}</span></div></div>
   <section class="ahero"><div class="wrap" style="display:block">
-    <div class="eyebrow" style="color:var(--gold)">{p.category} · {fmt(p.date)}</div>
+    <div class="eyebrow" style="color:var(--gold)">{p.category}</div>
     <h1>{p.title}</h1>
+    <div class="kc-meta">
+      {dateLabel && <span class="kc-mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 11h18"/></svg>{KC.published} {dateLabel}</span>}
+      <span class="kc-mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>{readMin} {KC.read}</span>
+      <span class="kc-mi"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks" width="26" height="26" loading="lazy" />Floor Hendriks</span>
+    </div>
   </div></section>
   <section><div class="wrap" style="max-width:760px">
     <p class="lead" style="margin-bottom:24px">{p.excerpt}</p>
     {(p.body || []).map((para) => <p style="margin-bottom:16px;font-size:17px;color:var(--text)">{para}</p>)}
-    <div style="margin-top:32px"><a href={localizePath("/kenniscentrum/", lang)} class="btn btn-ghost">← Naar het kenniscentrum</a></div>
+    <aside class="kc-author">
+      <img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="76" height="76" loading="lazy" />
+      <div>
+        <b>Floor Hendriks</b>
+        <span class="ka-role">{KC.authorRole}</span>
+        <p>{KC.authorBio}</p>
+        <a href={overHref}>{KC.authorCta} &rarr;</a>
+      </div>
+    </aside>
+    <div style="margin-top:26px"><a href={localizePath("/kenniscentrum/", lang)} class="btn btn-ghost">&larr; {KC.back}</a></div>
   </div></section>
 
   {(relAssess.length > 0 || relArticles.length > 0) && (
@@ -95,3 +122,17 @@ const _articleLd = {
     </div></section>
   )}
 </Base>
+
+<style>
+  .kc-meta { display:flex; flex-wrap:wrap; gap:10px 22px; margin-top:18px; }
+  .kc-mi { display:inline-flex; align-items:center; gap:8px; color:#c4d2e6; font-size:13.5px; font-weight:600; }
+  .kc-mi svg { width:16px; height:16px; color:var(--gold); }
+  .kc-mi img { width:26px; height:26px; border-radius:50%; object-fit:cover; }
+  .kc-author { display:flex; gap:18px; align-items:flex-start; background:#fff; border:1px solid var(--line); border-radius:16px; padding:22px 24px; margin:34px 0 0; box-shadow:var(--shadow-xs); }
+  .kc-author img { width:76px; height:76px; border-radius:50%; object-fit:cover; flex:none; }
+  .kc-author b { color:var(--navy); font-size:1.02rem; display:block; }
+  .kc-author .ka-role { color:var(--muted); font-size:13.5px; display:block; margin-top:2px; }
+  .kc-author p { color:var(--muted); font-size:14.5px; line-height:1.6; margin:10px 0 8px; }
+  .kc-author a { color:var(--accent); font-weight:700; font-size:14px; }
+  @media (max-width:560px) { .kc-author { flex-direction:column; gap:12px; } }
+</style>

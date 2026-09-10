@@ -12,6 +12,8 @@ import { extraFor } from "../../../data/assessment-detail-extra.js";
 import { theoryFor } from "../../../data/assessment-theory.js";
 import { generalFaq } from "../../../data/general-faq.js";
 import QMock from "../../../components/QMock.astro";
+import ReviewSlider from "../../../components/ReviewSlider.astro";
+import SocialProof from "../../../components/SocialProof.astro";
 import { oefentests } from "../../../data/oefentests.js";
 import { createClient } from "@sanity/client";
 import { kenniscentrumContent } from "../../../data/kenniscentrum-content.js";
@@ -150,6 +152,8 @@ const _offerLd = (shop && shop.price)
     </div>
   </section>
 
+<SocialProof lang={lang} />
+
 {(() => {
   const M = {
     en:{e:"How it works",h:"A look inside the questionnaire",l:"This is what the questionnaire looks like for your candidates, from invitation to completion.",c1:"Start in your own language and pace",c2:"Statements with a clear answer scale",c3:"Discuss the results in person"},
@@ -167,7 +171,34 @@ const _offerLd = (shop && shop.price)
       <div class="qshots-track">
         <figure class="qshot"><QMock screen="intro" lang={lang} testName={a.title} /><figcaption>{q.c1}</figcaption></figure>
         <figure class="qshot"><QMock screen="vraag" lang={lang} testName={a.title} question={ex.mockQuestion} scaleNote={ex.scale} answer={ex.answer} options={ex.mockOptions || []} /><figcaption>{q.c2}</figcaption></figure>
-        <figure class="qshot"><Img src={`/mockups/vragenlijst-afgerond.${lang}.svg`} alt={q.c3} loading="eager" /><figcaption>{q.c3}</figcaption></figure>
+        <figure class="qshot"><Img src={`/mockups/vragenlijst-afgerond.${lang}.svg`} alt={`${q.c3}: ${a.title}`} loading="eager" /><figcaption>{q.c3}</figcaption></figure>
+      </div>
+
+      <div class="qex">
+        <h3 class="qex-h">{ex.title}</h3>
+        <p class="qex-lead">{ex.intro}</p>
+        <div class="qex-list">
+          {ex.items.map((qq, i) => (
+            <div class="qex-item">
+              <span class="qex-n">{i + 1}</span>
+              <span class="qex-q">{qq}</span>
+            </div>
+          ))}
+        </div>
+        <p class="qex-scale"><strong>{ex.scaleLabel}:</strong> {ex.scale}</p>
+        {_oefen && (<p style="margin:0 0 18px"><a href={localizePath(`/oefenen/${_oefen.slug}/`, lang)} class="btn btn-ghost">{t.practiceLink} &rarr;</a></p>)}
+        <div class="vv-cta">
+          <div class="vv-copy">
+            <strong>{t.vvTitle}</strong>
+            <span>{t.vvText.replace("{t}", a.title)}</span>
+          </div>
+          <form class="vv-form" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
+            <input type="hidden" name="onderwerp" value={`Voorbeeldvragen ${a.title}`} />
+            <input type="hidden" name="assessment" value={a.title} />
+            <input type="email" name="email" required placeholder={t.vvPlaceholder} aria-label={t.workEmail} />
+            <button type="submit" class="btn btn-primary">{t.vvButton}</button>
+          </form>
+        </div>
       </div>
     </div></section>
   );
@@ -253,43 +284,18 @@ const _offerLd = (shop && shop.price)
   {a.quote.text && (
     <section class="quote">
       <div class="wrap">
-        <div class="avatar">{a.quote.initials}</div>
+        <img class="quote-photo" src="/media/team/floor-hendriks.webp" alt={`${a.quote.author}, ${a.quote.role} - hrmforce`} width="112" height="112" loading="lazy" />
         <div>
           <h3>{a.quote.heading}</h3>
           <blockquote>"{a.quote.text}"</blockquote>
           <div class="who"><b>{a.quote.author}</b>, {a.quote.role}</div>
+          <a class="quote-cta" href={localizePath("/over-ons/", lang)}>{t.teamCta} &rarr;</a>
         </div>
       </div>
     </section>
   )}
 
-  <section class="bg-soft"><div class="wrap" style="max-width:860px">
-    <div class="eyebrow" style="color:var(--gold)">{ex.tag}</div>
-    <h2 class="section-title">{ex.title}</h2>
-    <p class="lead" style="margin-bottom:22px">{ex.intro}</p>
-    {_oefen && (<p style="margin:-8px 0 22px"><a href={localizePath(`/oefenen/${_oefen.slug}/`, lang)} class="btn btn-ghost">{t.practiceLink} &rarr;</a></p>)}
-    <div style="display:flex;flex-direction:column;gap:12px">
-      {ex.items.map((qq, i) => (
-        <div style="display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow-xs)">
-          <span style="flex:none;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center">{i + 1}</span>
-          <span style="color:var(--navy);font-weight:600;font-size:15px;line-height:1.5">{qq}</span>
-        </div>
-      ))}
-    </div>
-    <p style="color:var(--muted);font-size:14px;margin-top:16px"><strong style="color:var(--navy)">{ex.scaleLabel}:</strong> {ex.scale}</p>
-    <div class="vv-cta">
-      <div class="vv-copy">
-        <strong>{t.vvTitle}</strong>
-        <span>{t.vvText.replace("{t}", a.title)}</span>
-      </div>
-      <form class="vv-form" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
-        <input type="hidden" name="onderwerp" value={`Voorbeeldvragen ${a.title}`} />
-        <input type="hidden" name="assessment" value={a.title} />
-        <input type="email" name="email" required placeholder={t.vvPlaceholder} aria-label={t.workEmail} />
-        <button type="submit" class="btn btn-primary">{t.vvButton}</button>
-      </form>
-    </div>
-  </div></section>
+  <ReviewSlider />
 
   <section>
     <div class="wrap">
@@ -399,13 +405,13 @@ const _offerLd = (shop && shop.price)
   }
   .pricebox{
     display:inline-flex;flex-direction:column;gap:2px;
-    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);
     border-left:3px solid var(--gold);
-    padding:12px 18px;border-radius:10px;margin:18px 0 6px;
+    padding:10px 16px;border-radius:10px;margin:16px 0 6px;max-width:420px;
   }
-  .pricebox-label{color:#c4d2e6;font-size:12.5px;text-transform:uppercase;letter-spacing:.6px;font-weight:700}
-  .pricebox-amt{color:#fff;font-size:2.4rem;font-weight:800;line-height:1.05;letter-spacing:-.01em}
-  .pricebox-note{color:#aebfd4;font-size:13px}
+  .pricebox-label{color:#c4d2e6;font-size:12px;text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+  .pricebox-amt{color:#fff;font-size:1.45rem;font-weight:800;line-height:1.15;letter-spacing:-.01em}
+  .pricebox-note{color:#aebfd4;font-size:12.5px;line-height:1.45}
   .rel-img{display:block;width:100%;height:150px;object-fit:contain;background:#fff;border-radius:8px;margin-bottom:14px;padding:10px}
   .readmore{color:var(--blue);font-weight:600;font-size:15px;margin-top:12px}
   .portal-nudge{color:#c4d2e6;font-size:13.5px;margin-top:14px;max-width:460px}
@@ -417,13 +423,29 @@ const _offerLd = (shop && shop.price)
   .ostep p{color:var(--muted);font-size:14px}
   @media(max-width:760px){.order-steps{grid-template-columns:1fr}}
   .qshots{padding:48px 0}
+  .infobar .info-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:22px 0}
+  .infobar .info-grid>div{background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .infobar .info-grid .lbl{font-size:11.5px;margin-bottom:2px}
+  .infobar .info-grid .v{color:var(--navy);font-size:14.5px;font-weight:600;line-height:1.4}
+  @media(max-width:880px){.infobar .info-grid{grid-template-columns:1fr 1fr}}
+  .quote-photo{width:112px;height:112px;border-radius:50%;object-fit:cover;flex:none;border:3px solid rgba(255,255,255,.35)}
+  .quote-cta{display:inline-block;margin-top:14px;color:#fff;font-weight:700;font-size:14.5px;border-bottom:2px solid var(--gold);padding-bottom:2px}
+  .qex{margin-top:34px;padding-top:30px;border-top:1px solid var(--line)}
+  .qex-h{color:var(--navy);font-size:1.35rem;margin:0 0 6px}
+  .qex-lead{color:var(--muted);max-width:640px;margin:0 0 20px}
+  .qex-list{display:flex;flex-direction:column;gap:10px}
+  .qex-item{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:14px 18px;box-shadow:var(--shadow-xs)}
+  .qex-n{flex:none;width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;font-size:13.5px;display:flex;align-items:center;justify-content:center}
+  .qex-q{color:var(--navy);font-weight:600;font-size:15px;line-height:1.5}
+  .qex-scale{color:var(--muted);font-size:14px;margin:16px 0 18px}
+  .qex-scale strong{color:var(--navy)}
   .qshots-h{margin:6px 0 6px}
   .qshots-lead{color:var(--muted);max-width:620px;margin:0 0 22px}
   .qshots-track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;-webkit-overflow-scrolling:touch}
-  .qshot{flex:0 0 88%;max-width:680px;scroll-snap-align:center;margin:0}
+  .qshot{flex:0 0 92%;max-width:940px;scroll-snap-align:center;margin:0}
   .qshot img,.qshot svg{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow-sm);display:block}
   .qshot figcaption{margin-top:10px;color:var(--muted);font-size:14px;text-align:center}
-  @media(min-width:900px){ .qshot{flex-basis:46%} }
+  @media(min-width:900px){ .qshot{flex-basis:62%} }
   .assess-usage{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line); color:var(--text); }
   .vv-cta{margin-top:26px;display:flex;flex-wrap:wrap;align-items:center;gap:18px;justify-content:space-between;background:var(--navy);border-radius:16px;padding:22px 24px}
   .vv-copy{display:flex;flex-direction:column;gap:4px;max-width:440px}

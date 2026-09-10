@@ -12,7 +12,7 @@ export const tarievenContent = {
     ], cta: "Plan een demo" },
     plansTitle: { eyebrow: "Licenties", title: "Onze pakketten" },
     plans: [
-      { name: "Pay-as-you-go", tagline: "Betaal per kandidaat per rapportage. Geen vaste kosten, maar koop in naar behoefte.", price: "€19,- tot €99,-", priceNote: "per test", featured: false, cta: "Plan een demo", groups: [
+      { name: "Pay-as-you-go", tagline: "Betaal per kandidaat per rapportage. Geen vaste kosten, maar koop in naar behoefte.", price: "€19,-", priceFrom: true, priceNote: "per test", featured: false, cta: "Plan een demo", groups: [
         { title: "Vragenlijsten", items: ["37 vragenlijsten", "Onbeperkt competentieprofielen", "50 competenties", "Big50 Personality", "360 Feedback"] },
         { title: "Hrmforce portal", items: ["Standaard Look & Feel", "Volledig online", "Kandidatenbeheer", "Management reporting"] },
         { title: "Support", items: ["Online kennisbank", "Training open inschrijving"] } ] },

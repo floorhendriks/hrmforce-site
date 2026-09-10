@@ -36,7 +36,7 @@ const roiHref = localizePath("/roi-rekentool/", lang);
       <div class={`price-card${p.featured ? " featured" : ""}`}>
         {p.featured && <span class="badge">{t.featuredBadge}</span>}
         <h3>{p.name}</h3>
-        <p class="price-tag">{p.price}<span>{p.priceNote}</span></p>
+        <p class="price-tag">{p.priceFrom && <em class="from">{t.onb?.fromLabel || "vanaf"}</em>}{p.price}<span>{p.priceNote}</span></p>
         <p class="price-desc">{p.tagline}</p>
         <a href={contactHref} class="btn btn-primary" style="width:100%;text-align:center">{p.cta}</a>
         {p.groups.map((g) => (
@@ -116,6 +116,7 @@ const roiHref = localizePath("/roi-rekentool/", lang);
   .price-card .badge{position:absolute;top:-12px;left:24px;background:var(--accent);color:#fff;font-size:12px;font-weight:800;padding:4px 12px;border-radius:999px}
   .price-card h3{font-size:1.4rem;color:var(--navy);margin-bottom:6px}
   .price-tag{font-size:1.6rem;font-weight:800;color:var(--navy);margin:6px 0 4px}
+  .price-tag .from{display:block;font-style:normal;font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px}
   .price-tag span{display:block;font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
   .price-desc{color:var(--muted);font-size:15px;margin:8px 0 18px;line-height:1.6}
   .onb-meta{color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}

@@ -127,3 +127,22 @@
 /asistenta/*              /ro/support/            301
 
 # Let op: per-product redirects naar Shopify-handles later toevoegen.
+
+# --- Sitemap: /sitemap.xml als vaste, submitbare URL (Astro schrijft sitemap-index.xml) ---
+/sitemap.xml                              /sitemap-index.xml                   301
+/sitemap_index.xml                        /sitemap-index.xml                   301
+/page-sitemap.xml                         /sitemap-index.xml                   301
+/post-sitemap.xml                         /sitemap-index.xml                   301
+/assessments-sitemap.xml                  /sitemap-index.xml                   301
+
+# --- Advies-subpagina's zonder eigen pagina op de nieuwe site ---
+/advies/talent-management/                /hrm-oplossingen/                    301
+/advies/competentie-management/           /hrm-oplossingen/                    301
+/advies/consultancy/                      /contact/                            301
+/advies/coaching/                         /contact/                            301
+/advies/selectie-begeleiding/             /advies/selectie-assessment/         301
+
+# --- Demo-aanvraag (conversiepagina) ---
+/demo-aanvragen/                          /demo/                               301
+/aanvragen/                               /demo/                               301
+/plan-een-demo/                           /demo/                               301

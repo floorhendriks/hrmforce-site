@@ -480,3 +480,17 @@ html{overflow-x:hidden;}
 .usp p{color:var(--muted);font-size:14px;line-height:1.5;margin:0}
 @media(max-width:880px){.usps{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.usps{grid-template-columns:1fr}}
+
+/* ---------- Interactie: subtiel vergroten bij hover (batch 6) ---------- */
+.value-tile,.how-step,.metric-card,.ct-card,.testi-card,.price-card,.ostep,.cyc-step,.adv-block,.sol-block,.assess-card{transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.value-tile:hover,.how-step:hover,.metric-card:hover,.ct-card:hover,.testi-card:hover,.ostep:hover,.adv-block:hover,.sol-block:hover{transform:translateY(-5px);box-shadow:var(--shadow-md);border-color:var(--line-strong)}
+.price-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.cyc-step:hover{z-index:3;box-shadow:var(--shadow-md)}
+.traits li{transition:padding-left .18s ease,color .18s ease}
+.traits li:hover{padding-left:38px;color:var(--accent)}
+.rs-card{transition:transform .2s ease,box-shadow .2s ease}
+.rs-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+@media(prefers-reduced-motion:reduce){
+  .value-tile:hover,.how-step:hover,.metric-card:hover,.ct-card:hover,.testi-card:hover,.ostep:hover,.adv-block:hover,.sol-block:hover,.price-card:hover,.rs-card:hover{transform:none}
+  .traits li:hover{padding-left:34px}
+}

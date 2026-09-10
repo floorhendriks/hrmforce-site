@@ -1,4 +1,8 @@
-// Genereert public/_redirects op basis van de echte oude URL's + de nieuwe structuur.
+// LET OP: public/_redirects wordt HANDMATIG bijgehouden en bevat 404-fixes die dit
+// script niet kent (o.a. losse shop-URL's en assessment-pagina's die inmiddels wel
+// bestaan). Dit script schrijft daarom naar public/_redirects.generated; neem er
+// handmatig regels uit over. NIET blind over _redirects heen zetten.
+// Genereert een voorstel op basis van de echte oude URL's + de nieuwe structuur.
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
@@ -63,8 +67,28 @@ lines.push("/es/cesta-de-la-compra/   /es/shop/              301");
 lines.push("/winkelwagen/             /shop/                 301");
 lines.push("/mijn-account/            /shop/                 301");
 lines.push("");
+lines.push("");
+lines.push("# --- Sitemap: /sitemap.xml als vaste, submitbare URL (Astro schrijft sitemap-index.xml) ---");
+lines.push("/sitemap.xml              /sitemap-index.xml     301");
+lines.push("/sitemap_index.xml        /sitemap-index.xml     301");
+lines.push("/assessments-sitemap.xml  /sitemap-index.xml     301");
+lines.push("/page-sitemap.xml         /sitemap-index.xml     301");
+lines.push("/post-sitemap.xml         /sitemap-index.xml     301");
+lines.push("");
+lines.push("# --- Advies-subpagina's zonder eigen pagina op de nieuwe site ---");
+lines.push("/advies/talent-management/        /hrm-oplossingen/   301");
+lines.push("/advies/competentie-management/   /hrm-oplossingen/   301");
+lines.push("/advies/consultancy/              /contact/           301");
+lines.push("/advies/coaching/                 /contact/           301");
+lines.push("/advies/selectie-begeleiding/     /advies/selectie-assessment/  301");
+lines.push("");
+lines.push("# --- Demo-aanvraag ---");
+lines.push("/demo-aanvragen/          /demo/                 301");
+lines.push("/aanvragen/               /demo/                 301");
+lines.push("/plan-een-demo/           /demo/                 301");
+lines.push("");
 lines.push("# Let op: per-product redirects naar Shopify-handles voeg je toe zodra de shop in Shopify staat.");
 
-writeFileSync(join(ROOT, "public", "_redirects"), lines.join("\n") + "\n");
+writeFileSync(join(ROOT, "public", "_redirects.generated"), lines.join("\n") + "\n");
 const count = lines.filter((l) => / 301$/.test(l)).length;
-console.log(`_redirects gegenereerd: ${count} redirect-regels.`);
+console.log(`_redirects.generated gemaakt: ${count} redirect-regels. Neem handmatig over in public/_redirects.`);

@@ -1,7 +1,7 @@
 // Meertalige reviews (referenties). REAL = echte Google-reviews (citaat vertaald, naam behouden).
 export const REVIEW_HEADINGS = {
-  default: { nl:"Wat opdrachtgevers merken", en:"What clients notice", de:"Was Auftraggeber bemerken", fr:"Ce que les clients constatent", es:"Lo que notan los clientes", ro:"Ce observă clienții" },
-  clients: { nl:"Wat opdrachtgevers merken", en:"What clients notice", de:"Was Auftraggeber bemerken", fr:"Ce que les clients constatent", es:"Lo que notan los clientes", ro:"Ce observă clienții" },
+  default: { nl:"Testimonials", en:"Testimonials", de:"Testimonials", fr:"Témoignages", es:"Testimonios", ro:"Testimoniale" },
+  clients: { nl:"Testimonials", en:"Testimonials", de:"Testimonials", fr:"Témoignages", es:"Testimonios", ro:"Testimoniale" },
   buyers: { nl:"Wat kopers zeggen", en:"What buyers say", de:"Was Käufer sagen", fr:"Ce que disent les acheteurs", es:"Lo que dicen los compradores", ro:"Ce spun cumpărătorii" },
 };
 

@@ -5,7 +5,7 @@
 //   2) de bezoeker de categorie "Statistieken" heeft geaccepteerd.
 // Keuze wordt opgeslagen in localStorage (met versienummer). Herzien via
 // window.openCookiePrefs().
-const { lang = "nl", ga4Id = "", linkedinId = "", clarityId = "", t = {} } = Astro.props;
+const { lang = "nl", ga4Id = "", linkedinId = "", clarityId = "", adsId = "", adsLeadLabel = "", t = {} } = Astro.props;
 const cat = t.categories ?? {};
 const nec = cat.necessary ?? {};
 const stat = cat.statistics ?? {};
@@ -73,7 +73,7 @@ const mkt = cat.marketing ?? {};
   </div>
 </div>
 
-<script is:inline define:vars={{ ga4Id, linkedinId, clarityId, lang }}>
+<script is:inline define:vars={{ ga4Id, linkedinId, clarityId, adsId, adsLeadLabel, lang }}>
   (function () {
     var STORAGE_KEY = "hrmforce_cookie_consent";
     var VERSION = 1;
@@ -103,7 +103,22 @@ const mkt = cat.marketing ?? {};
       gtag("config", ga4Id, { anonymize_ip: true });
     }
 
-    var clarityLoaded = false, linkedinLoaded = false;
+    var clarityLoaded = false, linkedinLoaded = false, adsLoaded = false;
+    // Google Ads. Laadt alleen na toestemming voor 'marketing'. Het conversielabel
+    // wordt door de conversie-tracking in Base.astro gebruikt (window.hrmAdsLead).
+    function loadAds() {
+      if (adsLoaded || !adsId) return;
+      adsLoaded = true;
+      if (!gaLoaded) {
+        var s = document.createElement("script");
+        s.async = true;
+        s.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(adsId);
+        document.head.appendChild(s);
+        gtag("js", new Date());
+      }
+      gtag("config", adsId);
+      window.hrmAdsLead = adsLeadLabel || "";
+    }
     function loadClarity() {
       if (clarityLoaded || !clarityId) return;
       clarityLoaded = true;
@@ -148,6 +163,7 @@ const mkt = cat.marketing ?? {};
       if (c.statistics && ga4Id) loadGA4();
       if (c.statistics && clarityId) loadClarity();
       if (c.marketing && linkedinId) loadLinkedIn();
+      if (c.marketing && adsId) loadAds();
     }
 
     function onReady(fn) {

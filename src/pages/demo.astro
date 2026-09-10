@@ -1,0 +1,92 @@
+---
+import Base from "../layouts/Base.astro";
+import { FORMSPREE_ENDPOINT, CONTACT_EMAIL, REVIEWS_EXTERNAL } from "../data/site-config.js";
+
+// Conversiegerichte aanvraagpagina: zo weinig drempels mogelijk. Eén formulier,
+// drie velden, één keer sociale bewijskracht. Geen navigatie-omleidingen, geen FAQ.
+const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
+const googleUrl = REVIEWS_EXTERNAL?.google || "";
+---
+<Base
+  title="Gratis demo aanvragen | hrmforce"
+  description="Vraag een gratis demo van hrmforce aan. Drie velden, binnen 24 uur reactie van een HR-specialist. Vrijblijvend en zonder verkoopdruk."
+  active=""
+>
+  <section class="dm">
+    <div class="wrap dm-grid">
+      <div class="dm-copy">
+        <div class="eyebrow" style="color:var(--gold)">Gratis demo</div>
+        <h1>Zie in 30 minuten wat hrmforce voor jouw HR-vraag doet</h1>
+        <p class="dm-lead">Een specialist laat je het platform zien met jouw situatie als uitgangspunt: welke assessments passen, hoe de rapportage eruitziet en wat het kost.</p>
+
+        <ul class="dm-list">
+          <li>Live meekijken in de portal en een echt voorbeeldrapport</li>
+          <li>Advies over welke vragenlijsten bij jouw vacature of team passen</li>
+          <li>Een prijsindicatie op basis van je organisatiegrootte</li>
+        </ul>
+
+        <div class="dm-proof">
+          <a class="dmp-item" href={googleUrl || "/trust/"} target={googleUrl ? "_blank" : null} rel={googleUrl ? "noopener nofollow" : null}>
+            <span class="dmp-stars" aria-hidden="true">★★★★★</span>
+            <span class="dmp-txt"><b>4,9 op Google</b><em>1.200+ organisaties werken met hrmforce</em></span>
+          </a>
+        </div>
+      </div>
+
+      <div class="dm-card">
+        <h2>Vraag je demo aan</h2>
+        <p class="dm-sub">Drie velden, dat is alles. We reageren binnen 24 uur op werkdagen.</p>
+        <form class="dm-form" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
+          <input type="hidden" name="onderwerp" value="Demo-aanvraag via /demo/" />
+          <label for="dm-naam">Naam</label>
+          <input id="dm-naam" type="text" name="naam" required autocomplete="name" placeholder="Voor- en achternaam" />
+          <label for="dm-mail">Werk e-mail</label>
+          <input id="dm-mail" type="email" name="email" required autocomplete="email" placeholder="jouw@werkmail.nl" />
+          <label for="dm-org">Organisatie</label>
+          <input id="dm-org" type="text" name="bedrijf" required autocomplete="organization" placeholder="Naam van je organisatie" />
+          <details class="dm-more">
+            <summary>Liever gebeld worden of iets toevoegen?</summary>
+            <label for="dm-tel">Telefoonnummer (optioneel)</label>
+            <input id="dm-tel" type="tel" name="telefoon" autocomplete="tel" placeholder="06 12345678" />
+            <label for="dm-vraag">Je vraag (optioneel)</label>
+            <textarea id="dm-vraag" name="bericht" rows="3" placeholder="Waar loop je tegenaan?"></textarea>
+          </details>
+          <button type="submit" class="btn btn-primary dm-submit">Vraag de gratis demo aan</button>
+          <p class="dm-fine">Vrijblijvend, geen verkoopdruk. We gebruiken je gegevens alleen om contact op te nemen, conform onze <a href="/trust/">privacyafspraken</a>.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .dm { background: linear-gradient(160deg, var(--navy) 0%, var(--navy-deep) 100%); }
+  .dm .wrap { padding-top: 52px; padding-bottom: 56px; }
+  .dm-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 48px; align-items: start; }
+  .dm-copy h1 { color: #fff; font-size: clamp(1.7rem, 1.4rem + 1.5vw, 2.4rem); line-height: 1.18; margin: 8px 0 0; }
+  .dm-lead { color: #c4d2e6; font-size: 17.5px; line-height: 1.6; margin: 16px 0 0; max-width: 520px; }
+  .dm-list { list-style: none; margin: 26px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .dm-list li { color: #eaf1fb; font-size: 15.5px; line-height: 1.5; padding-left: 32px; position: relative; }
+  .dm-list li::before { content: "\2713"; position: absolute; left: 0; top: -1px; width: 22px; height: 22px; border-radius: 50%; background: rgba(252,193,27,.2); color: var(--gold); font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+  .dm-proof { margin-top: 30px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.16); }
+  .dmp-item { display: inline-flex; align-items: center; gap: 14px; text-decoration: none; }
+  .dmp-stars { color: var(--gold); letter-spacing: 2px; font-size: 17px; }
+  .dmp-txt { display: flex; flex-direction: column; }
+  .dmp-txt b { color: #fff; font-size: 15px; }
+  .dmp-txt em { color: #a9c0e0; font-style: normal; font-size: 13px; }
+  .dm-card { background: #fff; border-radius: 20px; padding: 32px 30px; box-shadow: 0 30px 60px rgba(8,30,60,.35); }
+  .dm-card h2 { color: var(--navy); font-size: 1.5rem; margin: 0; }
+  .dm-sub { color: var(--muted); font-size: 14.5px; margin: 8px 0 22px; }
+  .dm-form label { display: block; font-weight: 700; font-size: 13.5px; color: var(--navy); margin: 0 0 6px; }
+  .dm-form input, .dm-form textarea { width: 100%; border: 1px solid var(--line-strong, #cfdaea); border-radius: 10px; padding: 12px 14px; font-size: 15.5px; font-family: inherit; color: var(--text); margin-bottom: 16px; background: #fff; }
+  .dm-form input:focus, .dm-form textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+  .dm-more { margin: 0 0 18px; }
+  .dm-more summary { cursor: pointer; color: var(--accent); font-weight: 700; font-size: 14px; margin-bottom: 14px; }
+  .dm-submit { width: 100%; font-size: 16px; padding: 14px 20px; }
+  .dm-fine { color: var(--muted); font-size: 12.5px; line-height: 1.5; margin: 14px 0 0; }
+  .dm-fine a { color: var(--blue); font-weight: 600; }
+  @media (max-width: 900px) {
+    .dm-grid { grid-template-columns: 1fr; gap: 30px; }
+    .dm-card { order: -1; padding: 26px 22px; }
+  }
+</style>

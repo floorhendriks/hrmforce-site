@@ -4,6 +4,9 @@ import { adviesDetail } from "../../data/advies-detail.js";
 import { getLangFromUrl, localizePath } from "../../i18n/utils.js";
 import LogoSlider from "../../components/LogoSlider.astro";
 import ReviewSlider from "../../components/ReviewSlider.astro";
+import SocialProof from "../../components/SocialProof.astro";
+import PlanBlock from "../../components/PlanBlock.astro";
+import { adviesPlanFor, adviesRolesDefault } from "../../data/advies-plan.js";
 
 export async function getStaticPaths() {
   return adviesDetail.map((a) => ({ params: { slug: a.slug }, props: { a } }));
@@ -12,6 +15,8 @@ export async function getStaticPaths() {
 const lang = getLangFromUrl(Astro.url);
 const { a } = Astro.props;
 const adviesHref = localizePath("/advies/", lang);
+const plan = adviesPlanFor(a.slug);
+const roles = a.roles || adviesRolesDefault;
 ---
 <Base title={a.metaTitle} description={a.metaDescription} active="advice">
   <div class="crumb">
@@ -25,11 +30,17 @@ const adviesHref = localizePath("/advies/", lang);
         <h1>{a.title}</h1>
         {a.intro.map((p) => <p style="color:rgba(255,255,255,.85);font-size:17px;margin-bottom:14px">{p}</p>)}
         <div class="btns">
-          <a href={localizePath("/contact/", lang)} class="btn btn-primary">{a.cta}</a>
+          <a href={localizePath("/contact/", lang)} class="btn btn-primary">Plan een gratis kennismaking</a>
+          <a href={localizePath("/tarieven/", lang)} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.45)">Bekijk tarieven</a>
         </div>
+        <p class="cta-note">{a.cta}</p>
       </div>
     </div>
   </section>
+
+  <LogoSlider heading="Vertrouwd door 1.200+ organisaties" />
+
+  <SocialProof lang={lang} tone="soft" />
 
   <section>
     <div class="wrap">
@@ -41,7 +52,7 @@ const adviesHref = localizePath("/advies/", lang);
           {a.bullets && a.bullets.length > 0 && (
             <ul class="traits">{a.bullets.map((b) => <li>{b}</li>)}</ul>
           )}
-          <a href={localizePath("/contact/", lang)} class="btn btn-primary" style="margin-top:14px">{a.cta}</a>
+          <a href={localizePath("/contact/", lang)} class="btn btn-primary" style="margin-top:14px">Plan een gratis kennismaking</a>
         </div>
         <div class="pentagon">
           {a.image
@@ -53,17 +64,22 @@ const adviesHref = localizePath("/advies/", lang);
     </div>
   </section>
 
+  <PlanBlock plan={plan} roles={roles} />
+
+  <ReviewSlider headingKey="clients" />
+
   <section class="cta">
     <div class="wrap">
       <h2>Klaar om hier samen mee aan de slag te gaan?</h2>
-      <p>Plan een vrijblijvende demo en ontdek hoe hrmforce jouw HR-vraagstuk concreet aanpakt, of bekijk direct de mogelijkheden en tarieven.</p>
+      <p>Plan een gratis kennismaking en ontdek hoe hrmforce jouw HR-vraagstuk concreet aanpakt.</p>
       <div class="btns">
-        <a href={localizePath("/contact/", lang)} class="btn btn-primary">Plan een demo</a>
-        <a href={localizePath("/tarieven/", lang)} class="btn btn-light">Bekijk de tarieven</a>
+        <a href={localizePath("/contact/", lang)} class="btn btn-primary">Plan een gratis kennismaking</a>
+        <a href={localizePath("/tarieven/", lang)} class="btn btn-light">Bekijk tarieven</a>
       </div>
     </div>
   </section>
-
-  <LogoSlider heading="Vertrouwd door 1.200+ organisaties" />
-  <ReviewSlider headingKey="clients" />
 </Base>
+
+<style>
+  .cta-note { color:#c4d2e6; font-size:13.5px; margin-top:12px; max-width:520px; }
+</style>

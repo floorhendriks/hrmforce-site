@@ -18,7 +18,7 @@ const feat = (slug, title, goal) => ({ slug, image: IMG[slug], title, goal });
 export const homepageContent = {
   nl: {
     meta: { title: "Talentmanagement software | Assessment bureau | Hrmforce", description: "De talentmanagement software van hrmforce helpt HR-managers wereldwijd meer rendement halen uit medewerkers. Wetenschappelijk gevalideerde online assessments." },
-    sticky: { text: "ontdek vrijblijvend welke aanpak past bij jouw HR-vraag.", ghost: "Bekijk assessments", primary: "Plan een demo" },
+    sticky: { text: "ontdek vrijblijvend welke aanpak past bij jouw HR-vraag.", ghost: "Bekijk assessments", primary: "Plan een gratis demo" },
     hero: { eyebrow: "Talentmanagement software", h1pre: "Neem betere beslissingen over ", h1em: "mensen", h1post: "", sub: "Onderbouwd, snel en objectief. Wetenschappelijk gevalideerde assessments voor selectie, ontwikkeling en teams.", ctaPrimary: "Plan een gratis demo", ctaGhost: "Bekijk alle assessments", micro: "Binnen 24 uur reactie", chooseLabel: "Waar ben je naar op zoek?", chooseSelect: "Ik wil selecteren", chooseDevelop: "Ik wil ontwikkelen", badges: ["Gevalideerd", "NIP-psychologen", "AVG-proof (EU)"], trustlink: "Zo borgen we kwaliteit & AVG" },
     glass: { head: "Competentieprofiel", live: "live data", stats: [{ b: "242.000", label: "tests afgelopen jaar" }, { b: "1.200+", label: "organisaties" }, { b: "4,9★", label: "beoordeling" }], bars: [{ label: "Persoonlijkheid", w: "86%" }, { label: "Drijfveren", w: "72%" }, { label: "Cognitief", w: "64%" }, { label: "Potentieel", w: "91%" }], foot: "↑ Ontwikkeltrend · match met functie <b>88%</b>" },
     metrics: [{ big: "242.000", label: "tests afgelopen jaar" }, { big: "1.200+", label: "organisaties" }, { big: "4,9/5", label: "klantbeoordeling" }, { big: "15+ jaar", label: "ervaring" }],
@@ -29,15 +29,15 @@ export const homepageContent = {
       { name: "Eric H.", ...REV.eric, text: "Goede dienstverlener met uitstekende tools voor talentontwikkeling. Zo help je organisaties vooruit." },
       { name: "Juliëtte K.", ...REV.juliette, text: "Leuke gratis kleurentest gedaan! Prettige en professionele dienstverlening." },
     ],
-    why: { eyebrow: "Waarom hrmforce", title: "Onderbouwde beslissingen, zonder gedoe", lead: "Alles wat je nodig hebt om talent objectief te beoordelen en te ontwikkelen, op één plek." },
+    why: { eyebrow: "", title: "Beoordeel en ontwikkel talent op één plek", lead: "36+ gevalideerde assessments, matchprofielen en gesprekscyclus in één omgeving. Geen losse tools meer." },
     valueProps: [
-      { icon: "shield", h: "Wetenschappelijk gevalideerd", p: "Gebouwd op bewezen modellen (Big Five, klassieke testtheorie) en gereviewd door NIP-geregistreerde psychologen." },
-      { icon: "bolt", h: "Binnen een uur live", p: "Portal in jouw huisstijl klaar, kandidaten in één klik uitgenodigd, rapport automatisch in je inbox." },
-      { icon: "globe", h: "14 talen, één platform", p: "Kandidaten testen in hun eigen taal. Eén omgeving voor de complete HR-cyclus." },
-      { icon: "lock", h: "AVG-proof & veilig", p: "Verwerking binnen de EU, versleutelde verbindingen en instelbare bewaartermijnen per assessment." },
+      { icon: "shield", h: "36+ gevalideerde assessments", p: "Gebouwd op de Big Five en klassieke testtheorie, gereviewd door NIP-geregistreerde psychologen. 242.000 afnames per jaar." },
+      { icon: "bolt", h: "Binnen een uur live", p: "Portal in je eigen huisstijl, kandidaten in één klik uitgenodigd, rapport direct na afronding in je inbox." },
+      { icon: "globe", h: "14 talen, één platform", p: "Kandidaten testen in hun eigen taal. Selectie, ontwikkeling en gesprekscyclus in dezelfde omgeving." },
+      { icon: "lock", h: "100% EU-verwerking", p: "Data blijft binnen de EU, versleutelde verbindingen, verwerkersovereenkomst en bewaartermijn per assessment instelbaar." },
     ],
-    compare: { eyebrow: "Het verschil", title: "Van onderbuik naar onderbouwd", lead: "Stop met gokken op cv en gevoel. Beslis op basis van gevalideerde data.", oldTitle: "De oude manier", newTag: "Met hrmforce", newTitle: "De onderbouwde manier", old: ["Beslissen op cv en onderbuikgevoel", "Dure mismatch bij een verkeerde hire", "Ontwikkeling zonder richting", "Losse tools, geen overzicht"], new: ["Objectieve, gevalideerde inzichten", "Hogere kans op de juiste match", "Gerichte groei met concrete rapporten", "Eén platform voor de hele HR-cyclus"] },
-    outcome: { statBold: "Tot 40% meer rendement", statRest: "van een bovengemiddeld presterende medewerker.", sub: "Onderbouwd selecteren en gericht ontwikkelen loont, meetbaar, voor selectie én groei." },
+    compare: { eyebrow: "", title: "Van onderbuikgevoel naar onderbouwd met data", lead: "Stop met gokken op cv en gevoel. Beslis op basis van gevalideerde data.", oldTitle: "De oude manier", newTag: "Met hrmforce", newTitle: "De onderbouwde manier", old: ["Beslissen op cv en onderbuikgevoel", "Dure mismatch bij een verkeerde hire", "Ontwikkeling zonder richting", "Losse tools, geen overzicht"], new: ["Objectieve scores tegen een normgroep", "Match-score per kandidaat op je eigen topprofiel", "Ontwikkelrapport met concrete acties per competentie", "36+ assessments in 14 talen op één platform"] },
+    outcome: { statBold: "Tot 40% meer rendement", statRest: "van een bovengemiddeld presterende medewerker.", sub: "Een medewerker die goed op zijn plek zit levert meetbaar meer op, maakt minder fouten en blijft langer. Met gevalideerde assessments vergroot je de kans dat je juist die mensen aanneemt en behoudt.", note: "Gebaseerd op onderzoek naar prestatieverschillen tussen medewerkers in dezelfde functie." },
     casesTeaser: { eyebrow: "Klantcases", title: "Zo pakt het uit in de praktijk", lead: "Zo zetten organisaties in uiteenlopende sectoren hrmforce in voor selectie, ontwikkeling en teams.", linkLabel: "Bekijk alle klantcases", highlights: [
       { sector: "Zorg", result: "Kortere doorlooptijd in selectie" },
       { sector: "Onderwijs", result: "Gerichtere ontwikkelgesprekken" },
@@ -51,7 +51,7 @@ export const homepageContent = {
       feat("360-graden-feedback", "360 graden feedback", "Feedback van collega's, leidinggevenden en klanten."),
       feat("studiekeuzetest", "Studiekeuzetest", "Passende opleidingen op basis van interesses."),
     ] },
-    how: { eyebrow: "Zo werkt het", title: "In 3 stappen naar inzicht", lead: "Eenvoudig, bewezen en direct bruikbaar in je gesprek of besluit.", steps: [
+    how: { eyebrow: "Zo werkt het", title: "hrmforce in 3 stappen", lead: "Eenvoudig, bewezen en direct bruikbaar in je gesprek of besluit.", steps: [
       { h: "Kies wat past", p: "Selecteer een wetenschappelijk gevalideerde vragenlijst voor selectie, ontwikkeling of teams. Twijfel je? Onze specialisten adviseren vrijblijvend." },
       { h: "Nodig kandidaten uit", p: "Verstuur in één klik een persoonlijke uitnodigingslink. Kandidaten vullen de vragenlijst online in, in hun eigen taal en tempo." },
       { h: "Krijg direct inzicht", p: "Het rapport komt automatisch in je inbox. Bewezen modellen, heldere uitleg en direct bruikbaar in je gesprek of besluit." },
@@ -65,12 +65,12 @@ export const homepageContent = {
       { q: "Hoe gaan jullie om met persoonsgegevens en de AVG?", a: `Persoonsgegevens worden verwerkt binnen de Europese Unie, met versleutelde verbindingen, rolgebaseerd beheer en instelbare bewaartermijnen. Voor elk traject leggen we een verwerkersovereenkomst vast. Kandidaten zien vooraf wat er met hun gegevens gebeurt en hoe lang deze worden bewaard.` },
       { q: "In welke talen zijn de assessments beschikbaar?", a: `Kandidaten vullen de vragenlijsten in in hun eigen taal, de meeste assessments zijn in maar liefst 14 talen beschikbaar. Per assessment verschilt welke talen actief zijn; op de pagina van het instrument zie je het actuele overzicht.` },
     ],
-    ctaBand: { eyebrow: "Plan een demo", title: "Ontdek welke aanpak past bij jouw HR-vraagstuk", text: "Bespreek je situatie met een hrmforce-specialist. In 30 minuten krijg je concreet advies over welke vragenlijsten of tooling waarde toevoegen.", primary: "Plan een demo", ghost: "Bekijk de assessments", trust: ["Bewezen modellen, transparante onderbouwing", "NIP-geregistreerde psychologen reviewen de inhoud", "1.200+ organisaties gingen je voor", "Vrijblijvend gesprek, geen verkoopdruk"] },
+    ctaBand: { eyebrow: "Gratis assessment check", title: "Doe de gratis assessment check voor jouw organisatie", text: "In 30 minuten kijken we samen naar je HR-vraag en welke assessments of tooling waarde toevoegen.", primary: "Vraag de gratis check aan", ghost: "Bekijk de assessments", trust: ["Binnen 24 uur reactie", "Vrijblijvend, geen verkoopdruk", "1.200+ organisaties gingen je voor"] },
   },
 
   en: {
     meta: { title: "Talent management software | Assessments | Hrmforce", description: "hrmforce talent management software helps HR managers worldwide get more out of their people. Scientifically validated online assessments." },
-    sticky: { text: "discover which approach fits your HR question, no strings attached.", ghost: "View assessments", primary: "Book a demo" },
+    sticky: { text: "discover which approach fits your HR question, no strings attached.", ghost: "View assessments", primary: "Book a free demo" },
     hero: { eyebrow: "Talent management software", h1pre: "Make better decisions about ", h1em: "people", h1post: "", sub: "Grounded, fast and objective. Scientifically validated assessments for selection, development and teams.", ctaPrimary: "Book a free demo", ctaGhost: "View all assessments", micro: "Reply within 24 hours", chooseLabel: "What are you looking for?", chooseSelect: "I want to select", chooseDevelop: "I want to develop", badges: ["Validated", "NIP psychologists", "GDPR-proof (EU)"], trustlink: "How we safeguard quality & GDPR" },
     glass: { head: "Competency profile", live: "live data", stats: [{ b: "242,000", label: "tests last year" }, { b: "1,200+", label: "organisations" }, { b: "4.9★", label: "rating" }], bars: [{ label: "Personality", w: "86%" }, { label: "Drives", w: "72%" }, { label: "Cognitive", w: "64%" }, { label: "Potential", w: "91%" }], foot: "↑ Development trend · job match <b>88%</b>" },
     metrics: [{ big: "242,000", label: "tests last year" }, { big: "1,200+", label: "organisations" }, { big: "4.9/5", label: "customer rating" }, { big: "15+ yrs", label: "experience" }],
@@ -81,15 +81,15 @@ export const homepageContent = {
       { name: "Eric H.", ...REV.eric, text: "A great provider with excellent tools for talent development. That's how you move organisations forward." },
       { name: "Juliëtte K.", ...REV.juliette, text: "Did a fun free colour test! Pleasant and professional service." },
     ],
-    why: { eyebrow: "Why hrmforce", title: "Grounded decisions, without the hassle", lead: "Everything you need to assess and develop talent objectively, in one place." },
+    why: { eyebrow: "", title: "Assess and develop talent in one place", lead: "36+ validated assessments, match profiles and the appraisal cycle in one environment. No more scattered tools." },
     valueProps: [
       { icon: "shield", h: "Scientifically validated", p: "Built on proven models (Big Five, classic test theory) and reviewed by NIP-registered psychologists." },
       { icon: "bolt", h: "Live within an hour", p: "A portal in your branding, candidates invited in one click, report automatically in your inbox." },
       { icon: "globe", h: "14 languages, one platform", p: "Candidates test in their own language. One environment for the entire HR cycle." },
       { icon: "lock", h: "GDPR-proof & secure", p: "Processing within the EU, encrypted connections and configurable retention per assessment." },
     ],
-    compare: { eyebrow: "The difference", title: "From gut feeling to grounded", lead: "Stop guessing on CV and instinct. Decide based on validated data.", oldTitle: "The old way", newTag: "With hrmforce", newTitle: "The grounded way", old: ["Deciding on CV and gut feeling", "Costly mismatch on a wrong hire", "Development without direction", "Scattered tools, no overview"], new: ["Objective, validated insights", "Higher chance of the right match", "Targeted growth with concrete reports", "One platform for the whole HR cycle"] },
-    outcome: { statBold: "Up to 40% more return", statRest: "from an above-average performing employee.", sub: "Grounded selection and targeted development pays off, measurably, for selection and growth." },
+    compare: { eyebrow: "", title: "From gut feeling to grounded in data", lead: "Stop guessing on CV and instinct. Decide based on validated data.", oldTitle: "The old way", newTag: "With hrmforce", newTitle: "The grounded way", old: ["Deciding on CV and gut feeling", "Costly mismatch on a wrong hire", "Development without direction", "Scattered tools, no overview"], new: ["Objective scores against a norm group", "A match score per candidate on your own top profile", "A development report with concrete actions per competency", "36+ assessments in 14 languages on one platform"] },
+    outcome: { statBold: "Up to 40% more return", statRest: "from an above-average performing employee.", sub: "An employee who fits the role delivers measurably more, makes fewer mistakes and stays longer. Validated assessments increase the odds that you hire and keep exactly those people.", note: "Based on research into performance differences between employees in the same role." },
     casesTeaser: { eyebrow: "Client cases", title: "How it plays out in practice", lead: "How organisations across a range of sectors use hrmforce for selection, development and teams.", linkLabel: "View all client cases", highlights: [
       { sector: "Healthcare", result: "Shorter time-to-hire" },
       { sector: "Education", result: "More focused development talks" },
@@ -103,7 +103,7 @@ export const homepageContent = {
       feat("360-graden-feedback", "360-degree feedback", "Feedback from colleagues, managers and clients."),
       feat("studiekeuzetest", "Study choice test", "Suitable studies based on interests."),
     ] },
-    how: { eyebrow: "How it works", title: "Insight in 3 steps", lead: "Simple, proven and directly usable in your conversation or decision.", steps: [
+    how: { eyebrow: "How it works", title: "hrmforce in 3 steps", lead: "Simple, proven and directly usable in your conversation or decision.", steps: [
       { h: "Choose what fits", p: "Select a scientifically validated questionnaire for selection, development or teams. Unsure? Our specialists advise free of charge." },
       { h: "Invite candidates", p: "Send a personal invitation link in one click. Candidates complete the questionnaire online, in their own language and pace." },
       { h: "Get instant insight", p: "The report lands in your inbox automatically. Proven models, clear explanation and directly usable." },
@@ -117,12 +117,12 @@ export const homepageContent = {
       { q: "How do you handle personal data and GDPR?", a: `Personal data is processed within the European Union, with encrypted connections, role-based access and configurable retention periods. We sign a data processing agreement for every track.` },
       { q: "In which languages are the assessments available?", a: `Candidates complete the questionnaires in their own language, most assessments are available in as many as 14 languages. Which languages are active differs per assessment.` },
     ],
-    ctaBand: { eyebrow: "Book a demo", title: "Discover the approach that fits your HR challenge", text: "Discuss your situation with an hrmforce specialist. In 30 minutes you get concrete advice on which questionnaires or tooling add value.", primary: "Book a demo", ghost: "View the assessments", trust: ["Proven models, transparent grounding", "NIP-registered psychologists review the content", "1,200+ organisations went before you", "No-obligation conversation, no sales pressure"] },
+    ctaBand: { eyebrow: "Free assessment check", title: "Get the free assessment check for your organisation", text: "In 30 minutes we look at your HR question together and at which assessments or tooling add value.", primary: "Request the free check", ghost: "View the assessments", trust: ["Reply within 24 hours", "No obligation, no sales pressure", "1,200+ organisations went before you"] },
   },
 
   de: {
     meta: { title: "Talentmanagement-Software | Assessments | Hrmforce", description: "Die Talentmanagement-Software von hrmforce hilft HR-Managern, mehr aus ihren Mitarbeitern herauszuholen. Wissenschaftlich validierte Online-Assessments." },
-    sticky: { text: "finden Sie unverbindlich heraus, welcher Ansatz zu Ihrer HR-Frage passt.", ghost: "Assessments ansehen", primary: "Demo anfragen" },
+    sticky: { text: "finden Sie unverbindlich heraus, welcher Ansatz zu Ihrer HR-Frage passt.", ghost: "Assessments ansehen", primary: "Kostenlose Demo" },
     hero: { eyebrow: "Talentmanagement-Software", h1pre: "Bessere Entscheidungen über ", h1em: "Menschen", h1post: "", sub: "Fundiert, schnell und objektiv. Wissenschaftlich validierte Assessments für Auswahl, Entwicklung und Teams.", ctaPrimary: "Kostenlose Demo anfragen", ctaGhost: "Alle Assessments ansehen", micro: "Antwort binnen 24 Stunden", chooseLabel: "Wonach suchen Sie?", chooseSelect: "Ich möchte auswählen", chooseDevelop: "Ich möchte entwickeln", badges: ["Validiert", "NIP-Psychologen", "DSGVO-konform (EU)"], trustlink: "So sichern wir Qualität & DSGVO" },
     glass: { head: "Kompetenzprofil", live: "Live-Daten", stats: [{ b: "242.000", label: "Tests letztes Jahr" }, { b: "1.200+", label: "Organisationen" }, { b: "4,9★", label: "Bewertung" }], bars: [{ label: "Persönlichkeit", w: "86%" }, { label: "Antriebe", w: "72%" }, { label: "Kognitiv", w: "64%" }, { label: "Potenzial", w: "91%" }], foot: "↑ Entwicklungstrend · Passung <b>88%</b>" },
     metrics: [{ big: "242.000", label: "Tests letztes Jahr" }, { big: "1.200+", label: "Organisationen" }, { big: "4,9/5", label: "Kundenbewertung" }, { big: "15+ Jahre", label: "Erfahrung" }],
@@ -133,15 +133,15 @@ export const homepageContent = {
       { name: "Eric H.", ...REV.eric, text: "Ein guter Dienstleister mit hervorragenden Tools für die Talententwicklung. So bringt man Organisationen voran." },
       { name: "Juliëtte K.", ...REV.juliette, text: "Habe einen netten kostenlosen Farbtest gemacht! Angenehmer und professioneller Service." },
     ],
-    why: { eyebrow: "Warum hrmforce", title: "Fundierte Entscheidungen, ohne Umstände", lead: "Alles, was Sie brauchen, um Talente objektiv zu beurteilen und zu entwickeln, an einem Ort." },
+    why: { eyebrow: "", title: "Talente beurteilen und entwickeln an einem Ort", lead: "36+ validierte Assessments, Match-Profile und Gesprächszyklus in einer Umgebung. Keine verstreuten Tools mehr." },
     valueProps: [
       { icon: "shield", h: "Wissenschaftlich validiert", p: "Aufgebaut auf bewährten Modellen (Big Five, klassische Testtheorie) und geprüft von NIP-registrierten Psychologen." },
       { icon: "bolt", h: "In einer Stunde startklar", p: "Portal in Ihrem Branding, Kandidaten mit einem Klick eingeladen, Bericht automatisch in Ihrem Postfach." },
       { icon: "globe", h: "14 Sprachen, eine Plattform", p: "Kandidaten testen in ihrer eigenen Sprache. Eine Umgebung für den gesamten HR-Zyklus." },
       { icon: "lock", h: "DSGVO-konform & sicher", p: "Verarbeitung innerhalb der EU, verschlüsselte Verbindungen und einstellbare Aufbewahrungsfristen." },
     ],
-    compare: { eyebrow: "Der Unterschied", title: "Vom Bauchgefühl zur Fundierung", lead: "Schluss mit Raten nach Lebenslauf und Gefühl. Entscheiden Sie auf Basis validierter Daten.", oldTitle: "Der alte Weg", newTag: "Mit hrmforce", newTitle: "Der fundierte Weg", old: ["Entscheiden nach Lebenslauf und Bauchgefühl", "Teure Fehlbesetzung", "Entwicklung ohne Richtung", "Verstreute Tools, kein Überblick"], new: ["Objektive, validierte Erkenntnisse", "Höhere Chance auf die richtige Passung", "Gezieltes Wachstum mit konkreten Berichten", "Eine Plattform für den gesamten HR-Zyklus"] },
-    outcome: { statBold: "Bis zu 40% mehr Ertrag", statRest: "durch einen überdurchschnittlich leistenden Mitarbeiter.", sub: "Fundierte Auswahl und gezielte Entwicklung lohnen sich, messbar, für Auswahl und Wachstum." },
+    compare: { eyebrow: "", title: "Vom Bauchgefühl zu datenbasierten Entscheidungen", lead: "Schluss mit Raten nach Lebenslauf und Gefühl. Entscheiden Sie auf Basis validierter Daten.", oldTitle: "Der alte Weg", newTag: "Mit hrmforce", newTitle: "Der fundierte Weg", old: ["Entscheiden nach Lebenslauf und Bauchgefühl", "Teure Fehlbesetzung", "Entwicklung ohne Richtung", "Verstreute Tools, kein Überblick"], new: ["Objektive Werte im Vergleich zur Normgruppe", "Match-Score je Kandidat auf Ihr eigenes Topprofil", "Entwicklungsbericht mit konkreten Maßnahmen je Kompetenz", "36+ Assessments in 14 Sprachen auf einer Plattform"] },
+    outcome: { statBold: "Bis zu 40% mehr Ertrag", statRest: "durch einen überdurchschnittlich leistenden Mitarbeiter.", sub: "Wer auf der richtigen Position sitzt, leistet messbar mehr, macht weniger Fehler und bleibt länger. Validierte Assessments erhöhen die Chance, genau diese Menschen einzustellen und zu halten.", note: "Basierend auf Forschung zu Leistungsunterschieden zwischen Mitarbeitenden in derselben Funktion." },
     casesTeaser: { eyebrow: "Kundenbeispiele", title: "So sieht es in der Praxis aus", lead: "Wie Organisationen unterschiedlicher Branchen hrmforce für Auswahl, Entwicklung und Teams nutzen.", linkLabel: "Alle Kundenbeispiele ansehen", highlights: [
       { sector: "Gesundheitswesen", result: "Kürzere Durchlaufzeit in der Auswahl" },
       { sector: "Bildung", result: "Gezieltere Entwicklungsgespräche" },
@@ -155,7 +155,7 @@ export const homepageContent = {
       feat("360-graden-feedback", "360-Grad-Feedback", "Feedback von Kollegen, Führungskräften und Kunden."),
       feat("studiekeuzetest", "Studienwahltest", "Passende Ausbildungen auf Basis von Interessen."),
     ] },
-    how: { eyebrow: "So funktioniert es", title: "In 3 Schritten zur Erkenntnis", lead: "Einfach, bewährt und direkt nutzbar in Ihrem Gespräch oder Ihrer Entscheidung.", steps: [
+    how: { eyebrow: "So funktioniert es", title: "hrmforce in 3 Schritten", lead: "Einfach, bewährt und direkt nutzbar in Ihrem Gespräch oder Ihrer Entscheidung.", steps: [
       { h: "Wählen Sie das Passende", p: "Wählen Sie einen validierten Fragebogen für Auswahl, Entwicklung oder Teams. Unsicher? Unsere Spezialisten beraten unverbindlich." },
       { h: "Kandidaten einladen", p: "Versenden Sie mit einem Klick einen persönlichen Einladungslink. Kandidaten füllen den Fragebogen online aus." },
       { h: "Sofort Einblick erhalten", p: "Der Bericht landet automatisch in Ihrem Postfach. Bewährte Modelle, klare Erklärung, direkt nutzbar." },
@@ -169,12 +169,12 @@ export const homepageContent = {
       { q: "Wie gehen Sie mit personenbezogenen Daten und der DSGVO um?", a: `Personenbezogene Daten werden innerhalb der EU verarbeitet, mit verschlüsselten Verbindungen, rollenbasiertem Zugriff und einstellbaren Aufbewahrungsfristen. Für jedes Projekt schließen wir einen Auftragsverarbeitungsvertrag.` },
       { q: "In welchen Sprachen sind die Assessments verfügbar?", a: `Kandidaten füllen die Fragebögen in ihrer eigenen Sprache aus, die meisten Assessments sind in bis zu 14 Sprachen verfügbar.` },
     ],
-    ctaBand: { eyebrow: "Demo anfragen", title: "Entdecken Sie den Ansatz für Ihre HR-Herausforderung", text: "Besprechen Sie Ihre Situation mit einem hrmforce-Spezialisten. In 30 Minuten erhalten Sie konkrete Empfehlungen.", primary: "Demo anfragen", ghost: "Assessments ansehen", trust: ["Bewährte Modelle, transparente Fundierung", "NIP-registrierte Psychologen prüfen die Inhalte", "1.200+ Organisationen sind vorangegangen", "Unverbindliches Gespräch, kein Verkaufsdruck"] },
+    ctaBand: { eyebrow: "Kostenloser Assessment-Check", title: "Machen Sie den kostenlosen Assessment-Check für Ihre Organisation", text: "In 30 Minuten schauen wir gemeinsam auf Ihre HR-Frage und darauf, welche Assessments oder Tools Wert schaffen.", primary: "Kostenlosen Check anfragen", ghost: "Assessments ansehen", trust: ["Antwort innerhalb von 24 Stunden", "Unverbindlich, kein Verkaufsdruck", "1.200+ Organisationen sind vorangegangen"] },
   },
 
   fr: {
     meta: { title: "Logiciel de gestion des talents | Évaluations | Hrmforce", description: "Le logiciel de gestion des talents de hrmforce aide les responsables RH à tirer le meilleur de leurs collaborateurs. Évaluations en ligne scientifiquement validées." },
-    sticky: { text: "découvrez sans engagement l'approche adaptée à votre besoin RH.", ghost: "Voir les évaluations", primary: "Demander une démo" },
+    sticky: { text: "découvrez sans engagement l'approche adaptée à votre besoin RH.", ghost: "Voir les évaluations", primary: "Démo gratuite" },
     hero: { eyebrow: "Logiciel de gestion des talents", h1pre: "Prenez de meilleures décisions sur les ", h1em: "personnes", h1post: "", sub: "Fondé, rapide et objectif. Des évaluations scientifiquement validées pour la sélection, le développement et les équipes.", ctaPrimary: "Demander une démo gratuite", ctaGhost: "Voir toutes les évaluations", micro: "Réponse sous 24 heures", chooseLabel: "Que recherchez-vous ?", chooseSelect: "Je veux sélectionner", chooseDevelop: "Je veux développer", badges: ["Validé", "Psychologues NIP", "Conforme RGPD (UE)"], trustlink: "Comment nous garantissons qualité & RGPD" },
     glass: { head: "Profil de compétences", live: "données en direct", stats: [{ b: "242 000", label: "tests l\u2019an dernier" }, { b: "1 200+", label: "organisations" }, { b: "4,9★", label: "note" }], bars: [{ label: "Personnalité", w: "86%" }, { label: "Motivations", w: "72%" }, { label: "Cognitif", w: "64%" }, { label: "Potentiel", w: "91%" }], foot: "↑ Tendance de développement · adéquation <b>88%</b>" },
     metrics: [{ big: "242 000", label: "tests l\u2019an dernier" }, { big: "1 200+", label: "organisations" }, { big: "4,9/5", label: "note clients" }, { big: "15+ ans", label: "d'expérience" }],
@@ -185,15 +185,15 @@ export const homepageContent = {
       { name: "Eric H.", ...REV.eric, text: "Un excellent prestataire avec d'excellents outils de développement des talents. C'est ainsi qu'on fait avancer les organisations." },
       { name: "Juliëtte K.", ...REV.juliette, text: "J'ai fait un test de couleurs gratuit sympa ! Service agréable et professionnel." },
     ],
-    why: { eyebrow: "Pourquoi hrmforce", title: "Des décisions fondées, sans complications", lead: "Tout ce dont vous avez besoin pour évaluer et développer les talents objectivement, au même endroit." },
+    why: { eyebrow: "", title: "Évaluez et développez les talents au même endroit", lead: "36+ évaluations validées, profils de correspondance et cycle d'entretiens dans un seul environnement. Fini les outils dispersés." },
     valueProps: [
       { icon: "shield", h: "Scientifiquement validé", p: "Basé sur des modèles éprouvés (Big Five, théorie classique des tests) et revu par des psychologues agréés NIP." },
       { icon: "bolt", h: "Opérationnel en une heure", p: "Un portail à vos couleurs, des candidats invités en un clic, le rapport automatiquement dans votre boîte mail." },
       { icon: "globe", h: "14 langues, une plateforme", p: "Les candidats passent les tests dans leur langue. Un seul environnement pour tout le cycle RH." },
       { icon: "lock", h: "Conforme RGPD & sécurisé", p: "Traitement au sein de l'UE, connexions chiffrées et durées de conservation configurables." },
     ],
-    compare: { eyebrow: "La différence", title: "De l'intuition à la preuve", lead: "Ne décidez plus au CV et au feeling. Décidez sur la base de données validées.", oldTitle: "L'ancienne méthode", newTag: "Avec hrmforce", newTitle: "La méthode fondée", old: ["Décider au CV et à l'intuition", "Erreur de recrutement coûteuse", "Développement sans direction", "Outils dispersés, aucune vue d'ensemble"], new: ["Des insights objectifs et validés", "Plus de chances de la bonne adéquation", "Une croissance ciblée avec des rapports concrets", "Une plateforme pour tout le cycle RH"] },
-    outcome: { statBold: "Jusqu'à 40% de rendement en plus", statRest: "grâce à un collaborateur performant au-dessus de la moyenne.", sub: "Sélectionner et développer sur des bases solides est rentable, de manière mesurable." },
+    compare: { eyebrow: "", title: "De l'intuition à la décision fondée sur les données", lead: "Ne décidez plus au CV et au feeling. Décidez sur la base de données validées.", oldTitle: "L'ancienne méthode", newTag: "Avec hrmforce", newTitle: "La méthode fondée", old: ["Décider au CV et à l'intuition", "Erreur de recrutement coûteuse", "Développement sans direction", "Outils dispersés, aucune vue d'ensemble"], new: ["Des scores objectifs comparés à un groupe de référence", "Un score de correspondance par candidat sur votre propre profil de réussite", "Un rapport de développement avec des actions concrètes par compétence", "36+ évaluations en 14 langues sur une seule plateforme"] },
+    outcome: { statBold: "Jusqu'à 40% de rendement en plus", statRest: "grâce à un collaborateur performant au-dessus de la moyenne.", sub: "Une personne bien à sa place produit mesurablement plus, commet moins d'erreurs et reste plus longtemps. Des évaluations validées augmentent vos chances de recruter et de garder précisément ces personnes.", note: "D'après les recherches sur les écarts de performance entre collaborateurs occupant le même poste." },
     casesTeaser: { eyebrow: "Cas clients", title: "Ce que cela donne en pratique", lead: "Comment des organisations de secteurs variés utilisent hrmforce pour la sélection, le développement et les équipes.", linkLabel: "Voir tous les cas clients", highlights: [
       { sector: "Santé", result: "Délai de recrutement plus court" },
       { sector: "Éducation", result: "Entretiens de développement plus ciblés" },
@@ -207,7 +207,7 @@ export const homepageContent = {
       feat("360-graden-feedback", "Feedback 360 degrés", "Retours des collègues, managers et clients."),
       feat("studiekeuzetest", "Test d'orientation", "Des formations adaptées selon les intérêts."),
     ] },
-    how: { eyebrow: "Comment ça marche", title: "L'insight en 3 étapes", lead: "Simple, éprouvé et directement exploitable dans votre échange ou votre décision.", steps: [
+    how: { eyebrow: "Comment ça marche", title: "hrmforce en 3 étapes", lead: "Simple, éprouvé et directement exploitable dans votre échange ou votre décision.", steps: [
       { h: "Choisissez ce qui convient", p: "Sélectionnez un questionnaire validé pour la sélection, le développement ou les équipes. Un doute ? Nos spécialistes vous conseillent sans engagement." },
       { h: "Invitez les candidats", p: "Envoyez un lien d'invitation personnel en un clic. Les candidats répondent en ligne, dans leur langue et à leur rythme." },
       { h: "Obtenez un insight immédiat", p: "Le rapport arrive automatiquement dans votre boîte mail. Des modèles éprouvés, une explication claire, directement exploitable." },
@@ -221,7 +221,7 @@ export const homepageContent = {
       { q: "Comment gérez-vous les données personnelles et le RGPD ?", a: `Les données personnelles sont traitées au sein de l'Union européenne, avec des connexions chiffrées, un accès basé sur les rôles et des durées de conservation configurables. Un accord de traitement est signé pour chaque projet.` },
       { q: "Dans quelles langues les évaluations sont-elles disponibles ?", a: `Les candidats répondent dans leur propre langue, la plupart des évaluations sont disponibles dans pas moins de 14 langues.` },
     ],
-    ctaBand: { eyebrow: "Demander une démo", title: "Découvrez l'approche adaptée à votre enjeu RH", text: "Discutez de votre situation avec un spécialiste hrmforce. En 30 minutes, vous obtenez des recommandations concrètes.", primary: "Demander une démo", ghost: "Voir les évaluations", trust: ["Des modèles éprouvés, une base transparente", "Des psychologues agréés NIP revoient le contenu", "1 200+ organisations vous ont précédé", "Échange sans engagement, sans pression commerciale"] },
+    ctaBand: { eyebrow: "Check évaluation gratuit", title: "Faites le check évaluation gratuit pour votre organisation", text: "En 30 minutes, nous examinons ensemble votre enjeu RH et les évaluations ou outils qui apportent de la valeur.", primary: "Demander le check gratuit", ghost: "Voir les évaluations", trust: ["Réponse sous 24 heures", "Sans engagement, sans pression commerciale", "1 200+ organisations vous ont précédé"] },
   },
 
   es: {
@@ -237,15 +237,15 @@ export const homepageContent = {
       { name: "Eric H.", ...REV.eric, text: "Un buen proveedor con excelentes herramientas para el desarrollo del talento. Así se hace avanzar a las organizaciones." },
       { name: "Juliëtte K.", ...REV.juliette, text: "¡Hice un test de colores gratuito muy ameno! Servicio agradable y profesional." },
     ],
-    why: { eyebrow: "Por qué hrmforce", title: "Decisiones fundamentadas, sin complicaciones", lead: "Todo lo que necesita para evaluar y desarrollar el talento de forma objetiva, en un solo lugar." },
+    why: { eyebrow: "", title: "Evalúe y desarrolle el talento en un solo lugar", lead: "36+ evaluaciones validadas, perfiles de coincidencia y ciclo de entrevistas en un mismo entorno. Sin herramientas dispersas." },
     valueProps: [
       { icon: "shield", h: "Validado científicamente", p: "Basado en modelos probados (Big Five, teoría clásica de tests) y revisado por psicólogos colegiados NIP." },
       { icon: "bolt", h: "Operativo en una hora", p: "Un portal con su marca, candidatos invitados con un clic, el informe automáticamente en su bandeja de entrada." },
       { icon: "globe", h: "14 idiomas, una plataforma", p: "Los candidatos realizan los tests en su propio idioma. Un único entorno para todo el ciclo de RR. HH." },
       { icon: "lock", h: "Cumple el RGPD y seguro", p: "Procesamiento dentro de la UE, conexiones cifradas y plazos de conservación configurables." },
     ],
-    compare: { eyebrow: "La diferencia", title: "De la intuición a la evidencia", lead: "Deje de decidir por el CV y la intuición. Decida con datos validados.", oldTitle: "La forma antigua", newTag: "Con hrmforce", newTitle: "La forma fundamentada", old: ["Decidir por el CV y la intuición", "Un error de contratación costoso", "Desarrollo sin rumbo", "Herramientas dispersas, sin visión global"], new: ["Insights objetivos y validados", "Más probabilidad del ajuste correcto", "Crecimiento dirigido con informes concretos", "Una plataforma para todo el ciclo de RR. HH."] },
-    outcome: { statBold: "Hasta un 40% más de rendimiento", statRest: "de un empleado con desempeño por encima de la media.", sub: "Seleccionar y desarrollar con base sólida es rentable, de forma medible." },
+    compare: { eyebrow: "", title: "De la intuición a decisiones basadas en datos", lead: "Deje de decidir por el CV y la intuición. Decida con datos validados.", oldTitle: "La forma antigua", newTag: "Con hrmforce", newTitle: "La forma fundamentada", old: ["Decidir por el CV y la intuición", "Un error de contratación costoso", "Desarrollo sin rumbo", "Herramientas dispersas, sin visión global"], new: ["Puntuaciones objetivas frente a un grupo normativo", "Puntuación de coincidencia por candidato con su propio perfil de éxito", "Informe de desarrollo con acciones concretas por competencia", "36+ evaluaciones en 14 idiomas en una sola plataforma"] },
+    outcome: { statBold: "Hasta un 40% más de rendimiento", statRest: "de un empleado con desempeño por encima de la media.", sub: "Quien está en el puesto adecuado aporta de forma medible más, comete menos errores y se queda más tiempo. Las evaluaciones validadas aumentan la probabilidad de contratar y retener justo a esas personas.", note: "Basado en la investigación sobre diferencias de desempeño entre empleados en el mismo puesto." },
     casesTeaser: { eyebrow: "Casos de clientes", title: "Así se traduce en la práctica", lead: "Cómo organizaciones de sectores diversos usan hrmforce para selección, desarrollo y equipos.", linkLabel: "Ver todos los casos de clientes", highlights: [
       { sector: "Sanidad", result: "Menor plazo de contratación" },
       { sector: "Educación", result: "Conversaciones de desarrollo más enfocadas" },
@@ -259,7 +259,7 @@ export const homepageContent = {
       feat("360-graden-feedback", "Feedback 360 grados", "Feedback de compañeros, responsables y clientes."),
       feat("studiekeuzetest", "Test de orientación", "Formaciones adecuadas según los intereses."),
     ] },
-    how: { eyebrow: "Cómo funciona", title: "Insight en 3 pasos", lead: "Sencillo, probado y directamente utilizable en su conversación o decisión.", steps: [
+    how: { eyebrow: "Cómo funciona", title: "hrmforce en 3 pasos", lead: "Sencillo, probado y directamente utilizable en su conversación o decisión.", steps: [
       { h: "Elija lo que encaja", p: "Seleccione un cuestionario validado para selección, desarrollo o equipos. ¿Dudas? Nuestros especialistas le asesoran sin compromiso." },
       { h: "Invite a los candidatos", p: "Envíe un enlace de invitación personal con un clic. Los candidatos responden online, en su idioma y a su ritmo." },
       { h: "Obtenga insight al instante", p: "El informe llega automáticamente a su bandeja de entrada. Modelos probados, explicación clara y directamente utilizable." },
@@ -273,12 +273,12 @@ export const homepageContent = {
       { q: "¿Cómo gestionan los datos personales y el RGPD?", a: `Los datos personales se procesan dentro de la Unión Europea, con conexiones cifradas, acceso por roles y plazos de conservación configurables. Firmamos un acuerdo de tratamiento de datos en cada proyecto.` },
       { q: "¿En qué idiomas están disponibles las evaluaciones?", a: `Los candidatos responden en su propio idioma, la mayoría de las evaluaciones están disponibles en hasta 14 idiomas.` },
     ],
-    ctaBand: { eyebrow: "Solicitar una demo", title: "Descubra el enfoque para su reto de RR. HH.", text: "Comente su situación con un especialista de hrmforce. En 30 minutos obtendrá recomendaciones concretas.", primary: "Solicitar una demo", ghost: "Ver las evaluaciones", trust: ["Modelos probados, base transparente", "Psicólogos colegiados NIP revisan el contenido", "1.200+ organizaciones le precedieron", "Conversación sin compromiso, sin presión comercial"] },
+    ctaBand: { eyebrow: "Check de evaluación gratuito", title: "Haga el check de evaluación gratuito para su organización", text: "En 30 minutos analizamos juntos su reto de RR. HH. y qué evaluaciones o herramientas aportan valor.", primary: "Solicitar el check gratuito", ghost: "Ver las evaluaciones", trust: ["Respuesta en 24 horas", "Sin compromiso, sin presión comercial", "1.200+ organizaciones le precedieron"] },
   },
 
   ro: {
     meta: { title: "Software de management al talentelor | Evaluări | Hrmforce", description: "Software-ul de management al talentelor de la hrmforce ajută managerii de HR să obțină mai mult de la angajați. Evaluări online validate științific." },
-    sticky: { text: "descoperiți fără obligații ce abordare se potrivește nevoii dvs. de HR.", ghost: "Vezi evaluările", primary: "Solicită o demonstrație" },
+    sticky: { text: "descoperiți fără obligații ce abordare se potrivește nevoii dvs. de HR.", ghost: "Vezi evaluările", primary: "Demo gratuit" },
     hero: { eyebrow: "Software de management al talentelor", h1pre: "Luați decizii mai bune despre ", h1em: "oameni", h1post: "", sub: "Fundamentat, rapid și obiectiv. Evaluări validate științific pentru selecție, dezvoltare și echipe.", ctaPrimary: "Solicită o demonstrație gratuită", ctaGhost: "Vezi toate evaluările", micro: "Răspuns în 24 de ore", chooseLabel: "Ce căutați?", chooseSelect: "Vreau să selectez", chooseDevelop: "Vreau să dezvolt", badges: ["Validat", "Psihologi NIP", "Conform GDPR (UE)"], trustlink: "Cum asigurăm calitatea și GDPR" },
     glass: { head: "Profil de competențe", live: "date live", stats: [{ b: "242.000", label: "teste anul trecut" }, { b: "1.200+", label: "organizații" }, { b: "4,9★", label: "evaluare" }], bars: [{ label: "Personalitate", w: "86%" }, { label: "Motivații", w: "72%" }, { label: "Cognitiv", w: "64%" }, { label: "Potențial", w: "91%" }], foot: "↑ Tendință de dezvoltare · potrivire <b>88%</b>" },
     metrics: [{ big: "242.000", label: "teste anul trecut" }, { big: "1.200+", label: "organizații" }, { big: "4,9/5", label: "evaluare clienți" }, { big: "15+ ani", label: "experiență" }],
@@ -289,15 +289,15 @@ export const homepageContent = {
       { name: "Eric H.", ...REV.eric, text: "Un furnizor bun, cu instrumente excelente pentru dezvoltarea talentelor. Așa faci organizațiile să avanseze." },
       { name: "Juliëtte K.", ...REV.juliette, text: "Am făcut un test de culori gratuit foarte plăcut! Servicii prietenoase și profesioniste." },
     ],
-    why: { eyebrow: "De ce hrmforce", title: "Decizii fundamentate, fără bătăi de cap", lead: "Tot ce aveți nevoie pentru a evalua și dezvolta talentele obiectiv, într-un singur loc." },
+    why: { eyebrow: "", title: "Evaluează și dezvoltă talentele într-un singur loc", lead: "36+ evaluări validate, profiluri de potrivire și ciclul de discuții într-un singur mediu. Fără instrumente disparate." },
     valueProps: [
       { icon: "shield", h: "Validat științific", p: "Construit pe modele dovedite (Big Five, teoria clasică a testelor) și verificat de psihologi înregistrați NIP." },
       { icon: "bolt", h: "Gata într-o oră", p: "Un portal cu identitatea dvs., candidați invitați dintr-un clic, raportul automat în inbox." },
       { icon: "globe", h: "14 limbi, o singură platformă", p: "Candidații susțin testele în limba lor. Un singur mediu pentru întregul ciclu de HR." },
       { icon: "lock", h: "Conform GDPR și sigur", p: "Procesare în UE, conexiuni criptate și perioade de păstrare configurabile." },
     ],
-    compare: { eyebrow: "Diferența", title: "De la intuiție la dovezi", lead: "Nu mai decideți după CV și intuiție. Decideți pe baza datelor validate.", oldTitle: "Metoda veche", newTag: "Cu hrmforce", newTitle: "Metoda fundamentată", old: ["Decizii după CV și intuiție", "O angajare greșită costisitoare", "Dezvoltare fără direcție", "Instrumente disparate, fără imagine de ansamblu"], new: ["Perspective obiective și validate", "Șanse mai mari de potrivire corectă", "Creștere țintită cu rapoarte concrete", "O platformă pentru întregul ciclu de HR"] },
-    outcome: { statBold: "Până la 40% randament în plus", statRest: "de la un angajat cu performanță peste medie.", sub: "Selecția și dezvoltarea fundamentate merită, măsurabil, pentru selecție și creștere." },
+    compare: { eyebrow: "", title: "De la intuiție la decizii bazate pe date", lead: "Nu mai decideți după CV și intuiție. Decideți pe baza datelor validate.", oldTitle: "Metoda veche", newTag: "Cu hrmforce", newTitle: "Metoda fundamentată", old: ["Decizii după CV și intuiție", "O angajare greșită costisitoare", "Dezvoltare fără direcție", "Instrumente disparate, fără imagine de ansamblu"], new: ["Scoruri obiective comparate cu un grup normativ", "Scor de potrivire per candidat pe propriul profil de top", "Raport de dezvoltare cu acțiuni concrete per competență", "36+ evaluări în 14 limbi pe o singură platformă"] },
+    outcome: { statBold: "Până la 40% randament în plus", statRest: "de la un angajat cu performanță peste medie.", sub: "Un angajat potrivit pe post livrează măsurabil mai mult, greșește mai puțin și rămâne mai mult timp. Evaluările validate cresc șansa să angajezi și să păstrezi exact acei oameni.", note: "Pe baza cercetărilor privind diferențele de performanță între angajați aflați pe același post." },
     casesTeaser: { eyebrow: "Studii de caz", title: "Cum arată în practică", lead: "Cum folosesc organizații din sectoare diverse hrmforce pentru selecție, dezvoltare și echipe.", linkLabel: "Vedeți toate studiile de caz", highlights: [
       { sector: "Sănătate", result: "Durată mai scurtă a selecției" },
       { sector: "Educație", result: "Discuții de dezvoltare mai bine țintite" },
@@ -311,7 +311,7 @@ export const homepageContent = {
       feat("360-graden-feedback", "Feedback 360 de grade", "Feedback de la colegi, manageri și clienți."),
       feat("studiekeuzetest", "Test de orientare", "Programe de studiu potrivite pe baza intereselor."),
     ] },
-    how: { eyebrow: "Cum funcționează", title: "Perspective în 3 pași", lead: "Simplu, dovedit și direct utilizabil în discuția sau decizia dvs.", steps: [
+    how: { eyebrow: "Cum funcționează", title: "hrmforce în 3 pași", lead: "Simplu, dovedit și direct utilizabil în discuția sau decizia dvs.", steps: [
       { h: "Alegeți ce se potrivește", p: "Selectați un chestionar validat pentru selecție, dezvoltare sau echipe. Nesigur? Specialiștii noștri vă consiliază fără obligații." },
       { h: "Invitați candidații", p: "Trimiteți un link de invitație personal dintr-un clic. Candidații completează online, în limba și ritmul lor." },
       { h: "Obțineți perspective imediat", p: "Raportul ajunge automat în inbox. Modele dovedite, explicație clară, direct utilizabil." },
@@ -325,6 +325,6 @@ export const homepageContent = {
       { q: "Cum gestionați datele personale și GDPR?", a: `Datele personale sunt procesate în Uniunea Europeană, cu conexiuni criptate, acces pe bază de roluri și perioade de păstrare configurabile. Semnăm un acord de prelucrare a datelor pentru fiecare proiect.` },
       { q: "În ce limbi sunt disponibile evaluările?", a: `Candidații completează chestionarele în limba lor, majoritatea evaluărilor sunt disponibile în până la 14 limbi.` },
     ],
-    ctaBand: { eyebrow: "Solicită o demonstrație", title: "Descoperiți abordarea pentru provocarea dvs. de HR", text: "Discutați situația cu un specialist hrmforce. În 30 de minute primiți recomandări concrete.", primary: "Solicită o demonstrație", ghost: "Vezi evaluările", trust: ["Modele dovedite, fundamentare transparentă", "Psihologi înregistrați NIP verifică conținutul", "1.200+ organizații v-au precedat", "Discuție fără obligații, fără presiune comercială"] },
+    ctaBand: { eyebrow: "Check gratuit de evaluare", title: "Fă checkul gratuit de evaluare pentru organizația ta", text: "În 30 de minute analizăm împreună întrebarea ta de HR și ce evaluări sau instrumente aduc valoare.", primary: "Solicită checkul gratuit", ghost: "Vezi evaluările", trust: ["Răspuns în 24 de ore", "Fără obligații, fără presiune comercială", "1.200+ organizații v-au precedat"] },
   },
 };

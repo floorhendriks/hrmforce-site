@@ -9,7 +9,7 @@ export const oplossingen = [
     metaTitle: "Matching & selectie | Automatisch de beste kandidaten matchen | Hrmforce",
     metaDescription:
       "Met selectieassessments vind je sneller kandidaten die bij je organisatie passen. Zo wordt je selectieproces makkelijk en objectief.",
-    intro: ["Vacatures blijven lang open en de kandidaten die je aanneemt, blijken achteraf niet de beste match. Voorselecteren op cv en onderbuik kost tijd en levert verkeerde aannames op.", "hrmforce matcht kandidaten data-gedreven op de competenties die er echt toe doen. Je krijgt een objectieve ranking en gerichte rapportages, zodat je sneller de juiste mensen selecteert."],
+    intro: ["Vacatures blijven lang open en wie je aanneemt blijkt achteraf niet de beste match. Voorselecteren op cv en onderbuik kost tijd en levert verkeerde aannames op.", "hrmforce matcht kandidaten data-gedreven op de competenties van de functie. Je krijgt een objectieve ranking en rapportages, zodat je sneller de juiste mensen selecteert."],
     body: [
       "Je gebruikt alleen vragenlijsten en assessments die relevant zijn voor de functie in kwestie. Dat bepaal je aan de hand van bijvoorbeeld het functieprofiel en een best-practice-onderzoek. Kandidaten hoeven zo minder onnodige formulieren in te vullen.",
       "Door objectieve, valide analyse selecteer je automatisch alleen de kandidaten met het meeste potentieel. De rapportages zorgen bovendien voor inhoudelijkere gesprekken: zowel jij als de sollicitant krijgt meer inzicht in sterke punten en mogelijke struikelblokken.",
@@ -24,7 +24,35 @@ export const oplossingen = [
     ],
     image: "/media/wp-content/uploads/2023/05/NLP-recruitment-development.webp",
     photo: "https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=900",
+    ctaBtn: "Plan een gratis demo",
     cta: "Bepaal met een HR-specialist welke assessments bij jullie vacatures passen",
+    plan: {
+      eyebrow: "Stappenplan",
+      title: "Van wervingsprobleem naar een onderbouwde keuze",
+      lead: "Zo pakken we het aan als je vacatures lang openstaan of nieuwe medewerkers niet blijken te passen.",
+      steps: [
+        { t: "Intake: waar loopt het vast?", d: "We brengen in kaart waar het knelt: te veel of te weinig kandidaten, verkeerde aannames of een selectieproces dat te lang duurt. Je vertelt wat de functie echt vraagt." },
+        { t: "Matchprofiel opstellen", d: "We bouwen een matchprofiel op basis van het functieprofiel en, als je die data hebt, je eigen goed presterende medewerkers. Daaruit volgt welke assessments relevant zijn." },
+        { t: "Kandidaten testen en ranken", d: "Kandidaten vullen alleen de relevante vragenlijsten in, in hun eigen taal. Het systeem berekent per kandidaat een matchscore van 0% tot 100% en zet ze op een ranglijst." },
+        { t: "Gesprek en besluit", d: "Per kandidaat krijg je een rapport met sterke punten, risico's en doorvraagvragen. Je voert een inhoudelijker gesprek en legt je besluit onderbouwd vast." },
+      ],
+      outcome: "Het resultaat: een kortere doorlooptijd, minder verkeerde aannames en een selectiebesluit dat je aan je directie of aan de kandidaat kunt uitleggen.",
+    },
+    roles: {
+      title: "Wat doet hrmforce, wat doe je zelf?",
+      hrmforce: [
+        "Matchprofiel en assessmentkeuze inrichten",
+        "Portal, uitnodigingen en rapportages klaarzetten",
+        "Certificatietraining en uitleg over interpretatie",
+        "Vragen over scores en normgroepen beantwoorden",
+      ],
+      org: [
+        "Functieprofiel en gewenste competenties aanleveren",
+        "Kandidaten uitnodigen vanuit de portal of je ATS",
+        "Selectiegesprekken voeren met het rapport erbij",
+        "Het besluit nemen en vastleggen",
+      ],
+    },
   },
   {
     slug: "development",
@@ -50,7 +78,36 @@ export const oplossingen = [
     ],
     image: "/mockups/gesprekscyclus.svg",
     photo: "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=900",
+    ctaBtn: "Plan een gratis demo",
     cta: "Bespreek met een HR-specialist welke ontwikkelaanpak bij jullie team past",
+    plan: {
+      eyebrow: "Stappenplan",
+      title: "Zo ziet de gesprekscyclus er in de praktijk uit",
+      lead: "Van losse gesprekken zonder opvolging naar een jaarcyclus die zichzelf bijhoudt.",
+      steps: [
+        { t: "Cyclus inrichten", d: "Je kiest welke gesprekken je per jaar voert: bila, bila+, ontwikkelgesprek en jaargesprek. Per gesprekstype staat een passende vragenlijst en gespreksopzet klaar. Wij richten de cyclus in en zetten de planning voor het hele jaar op." },
+        { t: "Medewerkers inlezen", d: "Medewerkergegevens komen handmatig of via API in de portal. Leidinggevenden en medewerkers krijgen hun eigen omgeving en zien welk gesprek wanneer op de planning staat." },
+        { t: "Voorbereiden met een vragenlijst", d: "Voor het gesprek vult de medewerker de vragenlijst in, bij een ontwikkelgesprek rond de vijf thema's werk, leren en ontwikkelen, gezondheid en conditie, samenwerking en leiding, en familie en sociale contacten. Beide gesprekspartners starten met hetzelfde beeld." },
+        { t: "Gesprek voeren en afspraken vastleggen", d: "Tijdens het gesprek leg je concrete werk- en ontwikkelafspraken vast: wie doet wat, wanneer. Dat vervangt het actielijstje in de mail." },
+        { t: "Voortgang volgen", d: "De tool bewaart alle gesprekken en houdt de voortgang op de afspraken bij. Bij het volgende gesprek begin je waar je gebleven was, en HR ziet organisatiebreed waar het loopt en waar niet." },
+      ],
+      outcome: "Het resultaat: gesprekken die daadwerkelijk plaatsvinden, afspraken die niet verdwijnen en een dossier dat je bij beoordeling en ontwikkeling kunt gebruiken.",
+    },
+    roles: {
+      title: "Wat doet hrmforce, wat doe je zelf?",
+      hrmforce: [
+        "Gesprekscyclus en gesprekstypen inrichten",
+        "Vragenlijst en gespreksopzet per gesprekstype leveren",
+        "Koppeling met je HR-systeem opzetten",
+        "Leidinggevenden trainen in het voeren van de gesprekken",
+      ],
+      org: [
+        "Bepalen welke gesprekken je per jaar voert en met wie",
+        "Medewerkers en teams aanleveren of koppelen",
+        "De gesprekken voeren en afspraken vastleggen",
+        "Opvolging van de afspraken binnen de teams",
+      ],
+    },
   },
   {
     slug: "employability",
@@ -73,7 +130,35 @@ export const oplossingen = [
     ],
     image: "/media/wp-content/uploads/2021/05/pulse-survey-hrmforce.jpg",
     photo: "https://images.pexels.com/photos/3760069/pexels-photo-3760069.jpeg?auto=compress&cs=tinysrgb&w=900",
+    ctaBtn: "Plan een gratis demo",
     cta: "Bepaal met een HR-specialist hoe je duurzame inzetbaarheid meetbaar maakt",
+    plan: {
+      eyebrow: "Stappenplan",
+      title: "Van verzuim en verloop naar zicht op inzetbaarheid",
+      lead: "Zo maak je zichtbaar wie dreigt vast te lopen, voordat het verzuim of vertrek wordt.",
+      steps: [
+        { t: "Nulmeting", d: "Met een Pulse Survey of medewerkertevredenheidsonderzoek meet je hoe teams er nu voor staan. Je ziet per team waar de energie zit en waar de knelpunten liggen." },
+        { t: "Individueel beeld opbouwen", d: "Medewerkers vullen vragenlijsten in over persoonlijkheid, motivatie, gedrag en interesses. Zij zien hun eigen sterke punten, jij ziet het patroon op team- en organisatieniveau." },
+        { t: "Loopbaanrichting verkennen", d: "De employability-module laat medewerkers zelf passende beroepen en vacatures verkennen op basis van hun profiel, intern en extern." },
+        { t: "Bijsturen en herhalen", d: "Je zet ontwikkeling of een andere rol in waar dat nodig is en meet periodiek opnieuw, zodat je effect ziet in plaats van aannames doet." },
+      ],
+      outcome: "Het resultaat: minder verrassingen in verzuim en verloop, mensen die eerder in beweging komen en kennis die in de organisatie blijft.",
+    },
+    roles: {
+      title: "Wat doet hrmforce, wat doe je zelf?",
+      hrmforce: [
+        "Pulse Survey en vragenlijsten inrichten en uitzetten",
+        "Rapportages per team en organisatie opleveren",
+        "Meedenken over de interpretatie van de uitkomsten",
+        "Terugkerende metingen inplannen",
+      ],
+      org: [
+        "Doelgroep en meetmomenten bepalen",
+        "Interne communicatie naar medewerkers",
+        "Gesprekken voeren over de uitkomsten",
+        "Vervolgstappen kiezen per team of medewerker",
+      ],
+    },
   },
   {
     slug: "hr-analytics",
@@ -96,6 +181,34 @@ export const oplossingen = [
     ],
     image: "/media/wp-content/uploads/2022/02/ass-afb3.png",
     photo: "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=900",
+    ctaBtn: "Plan een gratis demo",
     cta: "Bespreek met een HR-specialist welke HR-data jullie beslissingen onderbouwt",
+    plan: {
+      eyebrow: "Stappenplan",
+      title: "Van losse testuitslagen naar stuurinformatie",
+      lead: "Zo maak je van assessmentdata een dashboard waarop je echt kunt sturen.",
+      steps: [
+        { t: "Vraag scherp krijgen", d: "We bepalen welke beslissing je wilt onderbouwen: instroom, doorstroom, teamsamenstelling of ontwikkelbudget. Dat bepaalt welke data je nodig hebt." },
+        { t: "Data samenbrengen", d: "Uitkomsten van vragenlijsten en periodieke tests komen in één omgeving, gekoppeld aan functieprofielen en teams." },
+        { t: "Dashboards inrichten", d: "Je krijgt team-, afdelings- en organisatieoverzichten die automatisch worden bijgewerkt zodra er nieuwe afnames zijn." },
+        { t: "Interpreteren en handelen", d: "Samen kijken we wat de patronen betekenen en welke acties eruit volgen, zodat de data leidt tot een besluit in plaats van een rapport." },
+      ],
+      outcome: "Het resultaat: HR-beslissingen die je met cijfers kunt uitleggen, en trends die je ziet voordat ze een probleem worden.",
+    },
+    roles: {
+      title: "Wat doet hrmforce, wat doe je zelf?",
+      hrmforce: [
+        "Dashboards en rapportages inrichten",
+        "Koppelingen met je HR-systeem verzorgen",
+        "Uitleg geven bij scores, normgroepen en trends",
+        "Nieuwe overzichten toevoegen als je vraag verandert",
+      ],
+      org: [
+        "Bepalen welke beslissing je wilt onderbouwen",
+        "Teams, functies en medewerkers aanleveren",
+        "De overzichten in je overleggen gebruiken",
+        "Acties koppelen aan wat je ziet",
+      ],
+    },
   },
 ];

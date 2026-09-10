@@ -4,6 +4,9 @@ import Base from "../../layouts/Base.astro";
 import { oplossingen } from "../../data/oplossingen.js";
 import { getLangFromUrl, localizePath } from "../../i18n/utils.js";
 import LogoSlider from "../../components/LogoSlider.astro";
+import SocialProof from "../../components/SocialProof.astro";
+import ReviewSlider from "../../components/ReviewSlider.astro";
+import PlanBlock from "../../components/PlanBlock.astro";
 
 export async function getStaticPaths() {
   return oplossingen.map((o) => ({ params: { slug: o.slug }, props: { o } }));
@@ -25,8 +28,10 @@ const solutionsHref = localizePath("/hrm-oplossingen/", lang);
         <h1>{o.title}</h1>
         {o.intro.map((p) => <p style="color:rgba(255,255,255,.85);font-size:17px;margin-bottom:14px">{p}</p>)}
         <div class="btns">
-          <a href={localizePath("/contact/", lang)} class="btn btn-primary">{o.cta}</a>
+          <a href={localizePath("/contact/", lang)} class="btn btn-primary">{o.ctaBtn || "Plan een gratis demo"}</a>
+          <a href={localizePath("/tarieven/", lang)} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.45)">Bekijk tarieven</a>
         </div>
+        <p class="cta-note">{o.cta}</p>
       </div>
       {o.image && (
         <div class="ahero-media">
@@ -38,6 +43,8 @@ const solutionsHref = localizePath("/hrm-oplossingen/", lang);
 
 <LogoSlider heading="Vertrouwd door 1.200+ organisaties" />
 
+<SocialProof lang={lang} tone="soft" />
+
   <section>
     <div class="wrap">
       <div class="eyebrow">Toelichting</div>
@@ -48,7 +55,7 @@ const solutionsHref = localizePath("/hrm-oplossingen/", lang);
           {o.bullets && o.bullets.length > 0 && (
             <ul class="traits">{o.bullets.map((b) => <li>{b}</li>)}</ul>
           )}
-          <a href={localizePath("/contact/", lang)} class="btn btn-primary" style="margin-top:14px">{o.cta}</a>
+          <a href={localizePath("/contact/", lang)} class="btn btn-primary" style="margin-top:14px">{o.ctaBtn || "Plan een gratis demo"}</a>
         </div>
         <div class="pentagon">
           {o.photo && <Img class="sol-photo" src={o.photo} alt={o.title} loading="lazy" />}
@@ -58,18 +65,23 @@ const solutionsHref = localizePath("/hrm-oplossingen/", lang);
     </div>
   </section>
 
+  <PlanBlock plan={o.plan} roles={o.roles} />
+
+  <ReviewSlider />
+
   <section class="cta">
     <div class="wrap">
       <h2>Benieuwd wat deze oplossing voor jouw organisatie kan doen?</h2>
       <p>Plan een vrijblijvende demo en zie deze oplossing in actie, of bekijk direct de mogelijkheden en tarieven.</p>
       <div class="btns">
-        <a href={localizePath("/contact/", lang)} class="btn btn-primary">Plan een demo</a>
-        <a href={localizePath("/tarieven/", lang)} class="btn btn-light">Bekijk de tarieven</a>
+        <a href={localizePath("/contact/", lang)} class="btn btn-primary">Plan een gratis demo</a>
+        <a href={localizePath("/tarieven/", lang)} class="btn btn-light">Bekijk tarieven</a>
       </div>
     </div>
   </section>
 </Base>
 <style>
+  .cta-note { color:#c4d2e6; font-size:13.5px; margin-top:12px; max-width:520px; }
   .pentagon .sol-photo {
     width: 100%;
     height: 260px;

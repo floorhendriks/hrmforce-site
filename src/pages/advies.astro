@@ -1,21 +1,63 @@
 ---
 import Base from "../layouts/Base.astro";
 import LogoSlider from "../components/LogoSlider.astro";
+import SocialProof from "../components/SocialProof.astro";
+import PlanBlock from "../components/PlanBlock.astro";
+import ReviewSlider from "../components/ReviewSlider.astro";
+import { adviesPlanDefault, adviesRolesDefault } from "../data/advies-plan.js";
 
-const items = [
-  { h: "Training", p: "Word met de certificatietraining van hrmforce een gecertificeerd gebruiker: je leert onze vragenlijsten inzetten, resultaten correct interpreteren en zorgvuldig terugkoppelen. Daarnaast bieden we trainingen op maat, zoals 'Het goede gesprek'. Bekijk de trainingskalender en schrijf je direct in.", href: "/advies/trainingen/", cta: "Bekijk trainingen & kalender" },
-  { h: "Live Assessments", p: "Naast de zelfservice online tests begeleiden onze assessoren live assessments: van selectie- en ontwikkelassessments tot loopbaan- en teamtrajecten. Je bekijkt alle beschikbare assessments en zet ze gericht in voor jouw vraagstuk.", href: "/advies/assessments/", cta: "Bekijk alle assessments" },
-  { h: "Talent Management", p: "Als men de 80-20-regel toepast op recruitment, blijkt dat 20% van de aangeworven kandidaten voor 80% van de resultaten zorgt. Meer dan ooit ligt de focus op het werven van deze talenten. Door de huidige economische omstandigheden is het ook noodzakelijk om talent in de organisatie te herkennen en te benutten.", href: "/advies/talent-management/", cta: "Meer informatie" },
-  { h: "Competentie Management", p: "Bij het invoeren van competentiemanagement worden de visie & strategie van je organisatie vertaald in doelstellingen. Goed geimplementeerd competentiemanagement verdient zich dubbel en dwars terug. Het zorgt voor helderheid en structuur in alle functies van de organisatie.", href: "/advies/competentie-management/", cta: "Meer informatie" },
-  { h: "Loopbaan", p: "Een loopbaantraject van hrmforce is gericht op de toekomst en het verlangen: 'Wat wil ik?'. De deelnemer wil iets met zijn of haar loopbaan maar heeft moeite met het richting geven. Op de achtergrond spelen de vragen 'Wie ben ik?' en 'Wat kan ik?' vaak mee.", href: "/advies/loopbaan-assessment/", cta: "Meer informatie" },
-  { h: "Consultancy", p: "Je organisatie verandert. Zij groeit, vernieuwt of past zich aan. In tijden waarin de technologische innovatie zo snel gaat, betekent stilstaan zelfs achteruitgaan. Je kiest voor een ambitieuze strategie en zoals altijd is de realisatie daarvan de grootste uitdaging.", href: "/contact/", cta: "Neem contact op" },
-  { h: "Coaching", p: "Zet coaching in om medewerkers te laten groeien op basis van hun persoonlijkheid, motivatie en gedrag, en om mogelijke beroepen en loopbaanstappen te verkennen die bij hen passen.", href: "/contact/", cta: "Neem contact op" },
-  { h: "Selectie Begeleiding", p: "Een nieuw persoon binnen de organisatie halen voor impactvolle functies is geen dagelijkse bezigheid. Als assessoren beoordelen wij met onze expertise in gedragsonderzoek objectief de geschiktheid tijdens alle fases van het werving- en selectieproces.", href: "/contact/", cta: "Neem contact op" },
+// Vaste indeling, gelijk aan de software-/oplossingenpagina's: hero, bewijs,
+// gegroepeerde kaarten met icoon, stappenplan, rolverdeling, reviews, CTA.
+const icons = {
+  cap: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 2.7 2.5 6 2.5s6-1.5 6-2.5v-5"/></svg>`,
+  chat: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+  clip: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="10" height="4" rx="1"/><path d="M17 5h2a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2"/><path d="M8 12l2 2 4-4"/></svg>`,
+  star: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.1 8.6 22 9.6 17 14.4 18.2 21.3 12 18 5.8 21.3 7 14.4 2 9.6 8.9 8.6 12 2"/></svg>`,
+  grid: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>`,
+  compass: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polygon points="15.5 8.5 10.5 10.5 8.5 15.5 13.5 13.5 15.5 8.5"/></svg>`,
+  users: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/></svg>`,
+  route: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M9 19h6a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h3"/></svg>`,
+};
+
+const groups = [
+  {
+    eyebrow: "Trainingen",
+    title: "Zelf leren werken met assessments",
+    lead: "Zodat je niet bij elke afname een adviseur nodig hebt.",
+    items: [
+      { h: "Certificatietraining", icon: "cap", p: "Word gecertificeerd gebruiker: vragenlijsten kiezen, resultaten correct interpreteren en zorgvuldig terugkoppelen. Inclusief e-learning psychometrie en toets.", href: "/advies/trainingen/", cta: "Bekijk trainingen" },
+      { h: "Training Het goede gesprek", icon: "chat", p: "Voor leidinggevenden die hun bila's, ontwikkel- en jaargesprekken concreter willen maken. Oefenen met eigen casuïstiek en een terugkomsessie.", href: "/advies/training-het-goede-gesprek/", cta: "Bekijk de training" },
+      { h: "Teamtraining", icon: "users", p: "Een sessie met het hele team op basis van de teamanalyse: hoe vullen jullie elkaar aan, waar botst het en welke afspraken maak je daarover.", href: "/advies/team-training/", cta: "Bekijk de teamtraining" },
+    ],
+  },
+  {
+    eyebrow: "Assessments met een assessor",
+    title: "Wij nemen het assessment voor je af",
+    lead: "Onze assessoren combineren online vragenlijsten met een gesprek en koppelen persoonlijk terug. Bekijk ook het <a href=\"/advies/assessments/\">volledige overzicht van live assessments</a>.",
+    items: [
+      { h: "Selectie-assessment", icon: "clip", p: "Onderbouw je aannamebeslissing met een objectief beeld van geschiktheid, potentieel en risico's, plus doorvraagpunten voor het vervolggesprek.", href: "/advies/selectie-assessment/", cta: "Meer over selectie" },
+      { h: "Ontwikkel-assessment", icon: "route", p: "Zicht op waar iemand staat en welke groei realistisch is, als basis voor een ontwikkelplan dat de medewerker zelf herkent.", href: "/advies/ontwikkel-assessment/", cta: "Meer over ontwikkeling" },
+      { h: "Executive assessment", icon: "star", p: "Voor senior en directieposities: diepgaand onderzoek naar leiderschap, besluitvorming en drijfveren, met een vertrouwelijke terugkoppeling.", href: "/advies/executive-assessment/", cta: "Meer over executive" },
+      { h: "Loopbaan-assessment", icon: "compass", p: "Voor de vraag 'wat wil ik?'. Een traject gericht op richting geven, met persoonlijkheid, drijfveren en interesses als vertrekpunt.", href: "/advies/loopbaan-assessment/", cta: "Meer over loopbaan" },
+      { h: "Teamanalyse", icon: "users", p: "Breng in kaart hoe een team is samengesteld: welke rollen zijn sterk vertegenwoordigd, wat ontbreekt en waar zit de spanning.", href: "/advies/teamanalyse/", cta: "Meer over teamanalyse" },
+      { h: "Medezeggenschap", icon: "grid", p: "Ondersteuning bij OR- en medezeggenschapstrajecten, van selectie van leden tot ontwikkeling van het orgaan als geheel.", href: "/advies/medezeggenschap/", cta: "Meer over medezeggenschap" },
+    ],
+  },
+  {
+    eyebrow: "Advies en implementatie",
+    title: "Hulp bij het inrichten van je HR-processen",
+    lead: "Van competentietaal tot de complete gesprekscyclus, samen met een vaste adviseur.",
+    items: [
+      { h: "Talent management", icon: "star", p: "Talent in je organisatie herkennen, benutten en behouden. We vertalen je strategie naar wat dat van mensen vraagt en hoe je dat meet.", href: "/hrm-oplossingen/", cta: "Bekijk de oplossingen" },
+      { h: "Competentiemanagement", icon: "grid", p: "Visie en strategie vertaald naar competenties en functieprofielen, zodat er helderheid en structuur komt in alle functies.", href: "/contact/", cta: "Plan een kennismaking" },
+      { h: "Consultancy en coaching", icon: "chat", p: "Begeleiding bij verandering, en coaching van medewerkers op basis van persoonlijkheid, motivatie en gedrag.", href: "/contact/", cta: "Plan een kennismaking" },
+    ],
+  },
 ];
 ---
 <Base
-  title="Hrmforce advies | Waarmee wij jouw bedrijf helpen"
-  description="Naast onze online assessments en HRM oplossingen kun je bij ons terecht voor adviestrajecten op maat en verschillende trainingen."
+  title="Hrmforce advies | Trainingen, assessments en implementatie"
+  description="Naast onze online assessments en HRM-oplossingen kun je bij ons terecht voor adviestrajecten op maat, live assessments met een assessor en trainingen."
   active="advice"
 >
   <div class="crumb">
@@ -25,47 +67,69 @@ const items = [
   <section class="ahero">
     <div class="wrap" style="display:block">
       <div class="eyebrow" style="color:var(--gold)">Advies</div>
-      <h1>Hrmforce advies</h1>
-      <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">Naast onze online assessments en HRM oplossingen kun je bij ons terecht voor <strong>adviestrajecten op maat</strong> en verschillende trainingen. We helpen met het implementeren en optimaliseren van de HR-processen binnen je organisatie.</p>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <p style="color:var(--text);font-size:17px;max-width:820px;margin-bottom:14px">Naast onze <a href="/online-assessments/">online assessments</a> en <a href="/hrm-oplossingen/">HRM oplossingen</a> kun je bij ons terecht voor <strong>adviestrajecten op maat</strong> en verschillende trainingen. We helpen met het implementeren en optimaliseren van de HR-processen binnen je organisatie.</p>
-
-      <div class="adv">
-        {items.map((it) => (
-          <div class="adv-block">
-            <h2>{it.h}</h2>
-            <p>{it.p}</p>
-            {it.href && <a class="btn btn-primary" href={it.href}>{it.cta || "Meer informatie"}</a>}
-          </div>
-        ))}
+      <h1>Advies, assessments en trainingen</h1>
+      <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">Naast de <a href="/online-assessments/">online assessments</a> en <a href="/hrm-oplossingen/">HRM-oplossingen</a> begeleiden onze adviseurs en assessoren trajecten op maat. Je kiest of je het zelf doet met een training, of dat wij het assessment afnemen.</p>
+      <div class="btns" style="margin-top:18px">
+        <a href="/contact/" class="btn btn-primary">Plan een gratis kennismaking</a>
+        <a href="/advies/trainingen/" class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.45)">Bekijk trainingen</a>
       </div>
+      <p class="cta-note">In 30 minuten bepalen we samen welk traject past bij jouw vraag.</p>
     </div>
   </section>
 
-<LogoSlider heading={null} />
+  <LogoSlider heading="Vertrouwd door 1.200+ organisaties" />
+
+  <SocialProof lang="nl" tone="soft" />
+
+  {groups.map((g, gi) => (
+    <section class={gi % 2 === 1 ? "bg-soft" : ""}>
+      <div class="wrap" style="display:block">
+        <div class="eyebrow">{g.eyebrow}</div>
+        <h2 class="section-title">{g.title}</h2>
+        <p class="lead" style="max-width:720px;margin:0 0 28px" set:html={g.lead}></p>
+        <div class="advgrid">
+          {g.items.map((it) => (
+            <a class="advcard" href={it.href}>
+              <span class="advic" set:html={icons[it.icon]}></span>
+              <h3>{it.h}</h3>
+              <p>{it.p}</p>
+              <span class="readmore">{it.cta} &rarr;</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <PlanBlock plan={adviesPlanDefault} roles={adviesRolesDefault} />
+
+  <ReviewSlider headingKey="clients" />
 
   <section class="cta">
     <div class="wrap">
-      <h2>Benieuwd wat het juiste adviestraject jou oplevert?</h2>
-      <p>Plan een vrijblijvende demo en we stemmen samen de best passende aanpak af, of bekijk direct de mogelijkheden en tarieven.</p>
+      <h2>Benieuwd welk traject bij jouw vraag past?</h2>
+      <p>Plan een gratis kennismaking van 30 minuten. We stemmen de aanpak af op je situatie en je krijgt een voorstel met een vaste prijs.</p>
       <div class="btns">
-        <a href="/contact/" class="btn btn-primary">Plan een demo</a>
-        <a href="/tarieven/" class="btn btn-light">Bekijk de tarieven</a>
+        <a href="/contact/" class="btn btn-primary">Plan een gratis kennismaking</a>
+        <a href="/tarieven/" class="btn btn-light">Bekijk tarieven</a>
       </div>
     </div>
   </section>
 </Base>
 
 <style>
-  .adv { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 28px; }
-  .adv-block { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow); display: flex; flex-direction: column; }
-  .adv-block h2 { color: var(--navy); font-size: 22px; font-weight: 800; margin-bottom: 12px; }
-  .adv-block p { color: var(--muted); font-size: 16px; margin-bottom: 20px; flex: 1; }
-  .adv-block .btn { align-self: flex-start; }
-  section p a { color: var(--blue); font-weight: 600; }
-  @media (max-width: 880px) { .adv { grid-template-columns: 1fr; } }
+  .cta-note { color:#c4d2e6; font-size:13.5px; margin-top:12px; max-width:560px; }
+  .advgrid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .advcard { display:flex; flex-direction:column; background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:26px 24px; box-shadow:var(--shadow-xs); text-decoration:none; color:inherit; transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+  .advcard:hover { transform:translateY(-5px); box-shadow:var(--shadow-md); border-color:var(--line-strong); }
+  .advic { width:50px; height:50px; border-radius:13px; background:linear-gradient(135deg,#e8f0fe,#dbe9fb); color:var(--navy); display:inline-flex; align-items:center; justify-content:center; margin-bottom:14px; }
+  .advic :global(svg) { width:25px; height:25px; }
+  .advcard h3 { color:var(--navy); font-size:1.12rem; margin:0 0 8px; line-height:1.3; }
+  .advcard p { color:var(--muted); font-size:14.5px; line-height:1.6; margin:0 0 16px; flex:1; }
+  .advcard .readmore { color:var(--accent); font-weight:700; font-size:14px; }
+  section p a { color:var(--blue); font-weight:600; }
+  .ahero p a { color:#fff; font-weight:700; border-bottom:1px solid var(--gold); }
+  @media (max-width:980px) { .advgrid { grid-template-columns:1fr 1fr; } }
+  @media (max-width:640px) { .advgrid { grid-template-columns:1fr; } }
+  @media (prefers-reduced-motion: reduce) { .advcard:hover { transform:none; } }
 </style>

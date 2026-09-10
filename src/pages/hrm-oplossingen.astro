@@ -10,11 +10,18 @@ const blocks = [
 
 // De vier fases van de HR-cyclus (processchema).
 const cyclus = [
-  { n: "1", t: "(Pre)selectie", d: "Objectief de juiste kandidaat kiezen met selectie-assessments." },
-  { n: "2", t: "Ontwikkeling", d: "Groei sturen met persoonlijke ontwikkelplannen." },
-  { n: "3", t: "Functioneren", d: "Voortgang volgen via feedback en gesprekscyclus." },
-  { n: "4", t: "Beoordelen", d: "Prestaties objectief evalueren en vastleggen." },
+  { n: "1", t: "(Pre)selectie", d: "Objectief de juiste kandidaat kiezen met selectie-assessments.", icon: "search" },
+  { n: "2", t: "Ontwikkeling", d: "Groei sturen met persoonlijke ontwikkelplannen.", icon: "grow" },
+  { n: "3", t: "Functioneren", d: "Voortgang volgen via feedback en gesprekscyclus.", icon: "talk" },
+  { n: "4", t: "Beoordelen", d: "Prestaties objectief evalueren en vastleggen.", icon: "check" },
 ];
+
+const cycIcons = {
+  search: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>`,
+  grow: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M7 20V12M12 20V7M17 20v-5"/></svg>`,
+  talk: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+  check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`,
+};
 
 // Inline SVG-iconen per oplossing (strak, navy via currentColor).
 const icons = {
@@ -52,6 +59,7 @@ const icons = {
         {cyclus.map((c) => (
           <li class="cyc-step">
             <span class="cyc-n">{c.n}</span>
+            <span class="cyc-ic" set:html={cycIcons[c.icon]}></span>
             <h3>{c.t}</h3>
             <p>{c.d}</p>
           </li>
@@ -82,8 +90,8 @@ const icons = {
       <h2>Benieuwd wat hrmforce voor jouw HR-proces kan doen?</h2>
       <p>Plan een vrijblijvende demo en ontdek hoe onze oplossingen selectie, ontwikkeling en beoordeling versterken.</p>
       <div class="btns">
-        <a href="/contact/" class="btn btn-primary">Plan een demo</a>
-        <a href="/tarieven/" class="btn btn-light">Bekijk de tarieven</a>
+        <a href="/demo/" class="btn btn-primary">Plan een gratis demo</a>
+        <a href="/tarieven/" class="btn btn-light">Bekijk tarieven</a>
       </div>
     </div>
   </section>
@@ -94,7 +102,7 @@ const icons = {
         <h2>Bereken wat objectief selecteren jou oplevert</h2>
         <p>Een verkeerde aanname kost al snel een veelvoud van een assessment. Reken in twee minuten uit wat gerichter selecteren en ontwikkelen voor jouw organisatie kan besparen.</p>
       </div>
-      <a href="/roi-rekentool/" class="btn btn-primary">Open de ROI-rekentool &rarr;</a>
+      <a href="/roi-rekentool/" class="btn btn-primary">Open de ROI-rekentool</a>
     </div>
   </div></section>
   <style>
@@ -117,6 +125,8 @@ const icons = {
     content: ""; position: absolute; right: -11px; top: 50%; transform: translateY(-50%) rotate(45deg);
     width: 20px; height: 20px; background: #fff; border-top: 1px solid var(--line); border-right: 1px solid var(--line); z-index: 2;
   }
+  .cyc-ic { display: block; width: 26px; height: 26px; color: var(--gold); margin: 0 0 8px; }
+  .cyc-ic :global(svg) { width: 26px; height: 26px; }
   .cyc-n { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: var(--navy); color: #fff; font-weight: 800; margin-bottom: 12px; }
   .cyc-step h3 { color: var(--navy); font-size: 1.1rem; margin-bottom: 6px; }
   .cyc-step p { color: var(--muted); font-size: 14px; line-height: 1.55; }

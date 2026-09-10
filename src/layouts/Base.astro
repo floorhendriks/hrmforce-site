@@ -5,13 +5,14 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { getLangFromUrl, localizePath } from "../i18n/utils.js";
 import CookieConsent from "../components/CookieConsent.astro";
-import { ANALYTICS, MARKETING } from "../data/site-config.js";
+import { ANALYTICS, MARKETING, VERIFICATION } from "../data/site-config.js";
 import { consentContent } from "../data/consent-content.js";
 
 const {
   title = "Hrmforce",
   description = "Talentmanagement software en online assessments van hrmforce.",
   active = "",
+  noindex = false,
   image = "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
 } = Astro.props;
 
@@ -84,6 +85,8 @@ const orgLd = {
     <link rel="icon" type="image/png" sizes="192x192" href="/media/cropped-favicon-192x192.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/media/cropped-favicon-180x180.png" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex,follow" />}
+    {VERIFICATION?.GOOGLE_SITE_VERIFICATION && <meta name="google-site-verification" content={VERIFICATION.GOOGLE_SITE_VERIFICATION} />}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="hrmforce" />
     <meta property="og:locale" content={ogLocale} />
@@ -107,7 +110,7 @@ const orgLd = {
     <slot />
     <a
       class="sticky-demo"
-      href={localizePath("/contact/", lang)}
+      href={lang === "nl" ? "/demo/" : localizePath("/contact/", lang)}
       aria-label={stickyDemo.aria}
     >
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -122,14 +125,22 @@ const orgLd = {
         q.addEventListener("click", () => q.parentElement.classList.toggle("open"));
       });
     </script>
-    <CookieConsent lang={lang} ga4Id={ANALYTICS.GA4_ID} linkedinId={MARKETING.LINKEDIN_PARTNER_ID} clarityId={MARKETING.CLARITY_ID} t={consentT} />
+    <CookieConsent lang={lang} ga4Id={ANALYTICS.GA4_ID} linkedinId={MARKETING.LINKEDIN_PARTNER_ID} clarityId={MARKETING.CLARITY_ID} adsId={MARKETING.GOOGLE_ADS_ID} adsLeadLabel={MARKETING.GOOGLE_ADS_LEAD_LABEL} t={consentT} />
     <!-- Henry chatbot -->
     <script src="/henry-widget.js" is:inline defer></script>
     <!-- Conversie-tracking (GA4-events) + exit-intent lead magnet. Events sturen
          alleen als GA4 is geladen (na statistieken-toestemming). -->
     <script is:inline define:vars={{ lang }}>
       (function () {
-        function ev(name, params) { if (window.gtag) window.gtag("event", name, params || {}); if (window.lintrk) try { window.lintrk("track", {}); } catch(e){} }
+        function ev(name, params) {
+          if (window.gtag) window.gtag("event", name, params || {});
+          if (window.lintrk) try { window.lintrk("track", {}); } catch(e){}
+          // Google Ads-conversie bij een lead (alleen als het label is ingevuld
+          // en de bezoeker marketing-cookies heeft toegestaan).
+          if (name === "generate_lead" && window.gtag && window.hrmAdsLead) {
+            window.gtag("event", "conversion", { send_to: window.hrmAdsLead });
+          }
+        }
         document.addEventListener("submit", function (e) {
           var f = e.target; if (!f || f.tagName !== "FORM") return;
           var subj = (f.querySelector('[name=onderwerp]') || {}).value || "";
