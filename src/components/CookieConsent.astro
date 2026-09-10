@@ -5,7 +5,7 @@
 //   2) de bezoeker de categorie "Statistieken" heeft geaccepteerd.
 // Keuze wordt opgeslagen in localStorage (met versienummer). Herzien via
 // window.openCookiePrefs().
-const { lang = "nl", ga4Id = "", linkedinId = "", clarityId = "", adsId = "", adsDemoLabel = "", adsAssessmentLabel = "", t = {} } = Astro.props;
+const { lang = "nl", ga4Id = "", gtmId = "", linkedinId = "", clarityId = "", adsId = "", adsDemoLabel = "", adsAssessmentLabel = "", t = {} } = Astro.props;
 const cat = t.categories ?? {};
 const nec = cat.necessary ?? {};
 const stat = cat.statistics ?? {};
@@ -73,7 +73,7 @@ const mkt = cat.marketing ?? {};
   </div>
 </div>
 
-<script is:inline define:vars={{ ga4Id, linkedinId, clarityId, adsId, adsDemoLabel, adsAssessmentLabel, lang }}>
+<script is:inline define:vars={{ ga4Id, gtmId, linkedinId, clarityId, adsId, adsDemoLabel, adsAssessmentLabel, lang }}>
   (function () {
     var STORAGE_KEY = "hrmforce_cookie_consent";
     var VERSION = 1;
@@ -101,6 +101,20 @@ const mkt = cat.marketing ?? {};
       document.head.appendChild(s);
       gtag("js", new Date());
       gtag("config", ga4Id, { anonymize_ip: true });
+    }
+
+    // Google Tag Manager. Alleen als GTM_ID is ingevuld; dan laden we GA4 en Ads
+    // niet ook zelf, want die horen dan in de container te staan (anders dubbel
+    // meten). Laadt pas na toestemming voor statistieken.
+    var gtmLoaded = false;
+    function loadGTM() {
+      if (gtmLoaded || !gtmId) return;
+      gtmLoaded = true;
+      var s = document.createElement("script");
+      s.async = true;
+      s.src = "https://www.googletagmanager.com/gtm.js?id=" + encodeURIComponent(gtmId);
+      document.head.appendChild(s);
+      window.dataLayer.push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
     }
 
     var clarityLoaded = false, linkedinLoaded = false, adsLoaded = false;
@@ -160,10 +174,11 @@ const mkt = cat.marketing ?? {};
         ad_user_data: c.marketing ? "granted" : "denied",
         ad_personalization: c.marketing ? "granted" : "denied",
       });
-      if (c.statistics && ga4Id) loadGA4();
+      if (c.statistics && gtmId) loadGTM();
+      if (c.statistics && ga4Id && !gtmId) loadGA4();
       if (c.statistics && clarityId) loadClarity();
       if (c.marketing && linkedinId) loadLinkedIn();
-      if (c.marketing && adsId) loadAds();
+      if (c.marketing && adsId && !gtmId) loadAds();
     }
 
     function onReady(fn) {

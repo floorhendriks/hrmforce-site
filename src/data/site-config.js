@@ -16,7 +16,13 @@ export const SHOPIFY = {
 };
 
 // Vul je GA4 Measurement-ID in (G-XXXXXXXXXX). Leeg = geen tracking.
-export const ANALYTICS = { GA4_ID: "G-L4WHLCQ1WY" };
+// GTM_ID: de oude site laadde alles via Google Tag Manager (GTM-M6BLWR4). Deze
+// site stuurt GA4 en Google Ads rechtstreeks via gtag aan, dat is lichter en
+// beter te controleren. Wil je tóch via GTM werken (bijvoorbeeld omdat er nog
+// andere tags in die container staan), vul dan GTM_ID in. Zodra GTM_ID is
+// gevuld, laadt deze site GA4 en Ads NIET meer zelf, want dan zou je dubbel
+// meten: die tags horen dan in de container te staan.
+export const ANALYTICS = { GA4_ID: "G-L4WHLCQ1WY", GTM_ID: "" };
 
 // Marketing- en analytics-tags. Laden uitsluitend na cookie-toestemming
 // (LinkedIn = categorie 'marketing', Clarity = categorie 'statistieken').
@@ -42,6 +48,10 @@ export const MARKETING = {
 // hrmforce de eigen verificatie van de property zodra de oude site verdwijnt.
 export const VERIFICATION = {
   GOOGLE_SITE_VERIFICATION: "By4w3ybUKYoJWT-hw7g8LGQTQ0Ge6j3Q3uf4s8yU5QM",
+  // De tag die op de oude site stond, van de huidige verifieerde eigenaar van de
+  // Search Console-property. Laat deze staan: als hij verdwijnt verliest die
+  // eigenaar zijn verificatie en kan er toegang tot de property wegvallen.
+  GOOGLE_SITE_VERIFICATION_LEGACY: "ts39hmlPA9OTiFPdPDmFUjfKh5Bt1wL2sQA9w-S01pA",
 };
 
 // Externe reviewprofielen. Vul een URL in om de badge te tonen (leeg = verborgen).

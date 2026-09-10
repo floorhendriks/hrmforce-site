@@ -142,23 +142,6 @@ const faqLd = {
 
 <LogoSlider />
 
-<section class="itc-sec">
-  <div class="wrap" style="display:block">
-    <div class="itc-bar">
-      <span class="itc-badge">
-        <Img src="https://images.weserv.nl/?url=www.intestcom.org/images/logo.png&output=webp&w=200&we" alt="Logo International Test Commission" loading="lazy" onerror="this.parentNode.classList.add('is-txt');this.remove();" />
-        <em>ITC</em>
-      </span>
-      <div class="itc-copy">
-        <h2 class="itc-title">{ITC.title}</h2>
-        <p>{ITC.body}</p>
-        <a class="itc-link" href={trustHref}>{ITC.cta} &rarr;</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-
 <section class="bg-soft">
   <div class="wrap" style="display:block">
     {c.compare.eyebrow && <span class="eyebrow center">{c.compare.eyebrow}</span>}
@@ -285,6 +268,22 @@ const faqLd = {
     </div>
     <div class="center" style="margin-top:44px">
       <a class="btn btn-primary" href={contactHref}>{c.hero.ctaPrimary}</a>
+    </div>
+  </div>
+</section>
+
+<section class="itc-sec">
+  <div class="wrap" style="display:block">
+    <div class="itc-bar">
+      <span class="itc-badge">
+        <Img src="https://images.weserv.nl/?url=www.intestcom.org/images/logo.png&output=webp&w=200&we" alt="Logo International Test Commission" loading="lazy" onerror="this.parentNode.classList.add('is-txt');this.remove();" />
+        <em>ITC</em>
+      </span>
+      <div class="itc-copy">
+        <h2 class="itc-title">{ITC.title}</h2>
+        <p>{ITC.body}</p>
+        <a class="itc-link" href={trustHref}>{ITC.cta} &rarr;</a>
+      </div>
     </div>
   </div>
 </section>

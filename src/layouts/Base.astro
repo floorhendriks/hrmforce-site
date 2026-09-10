@@ -87,6 +87,7 @@ const orgLd = {
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex,follow" />}
     {VERIFICATION?.GOOGLE_SITE_VERIFICATION && <meta name="google-site-verification" content={VERIFICATION.GOOGLE_SITE_VERIFICATION} />}
+    {VERIFICATION?.GOOGLE_SITE_VERIFICATION_LEGACY && <meta name="google-site-verification" content={VERIFICATION.GOOGLE_SITE_VERIFICATION_LEGACY} />}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="hrmforce" />
     <meta property="og:locale" content={ogLocale} />
@@ -125,7 +126,7 @@ const orgLd = {
         q.addEventListener("click", () => q.parentElement.classList.toggle("open"));
       });
     </script>
-    <CookieConsent lang={lang} ga4Id={ANALYTICS.GA4_ID} linkedinId={MARKETING.LINKEDIN_PARTNER_ID} clarityId={MARKETING.CLARITY_ID} adsId={MARKETING.GOOGLE_ADS_ID} adsDemoLabel={MARKETING.GOOGLE_ADS_DEMO_LABEL} adsAssessmentLabel={MARKETING.GOOGLE_ADS_ASSESSMENT_LABEL} t={consentT} />
+    <CookieConsent lang={lang} ga4Id={ANALYTICS.GA4_ID} gtmId={ANALYTICS.GTM_ID} linkedinId={MARKETING.LINKEDIN_PARTNER_ID} clarityId={MARKETING.CLARITY_ID} adsId={MARKETING.GOOGLE_ADS_ID} adsDemoLabel={MARKETING.GOOGLE_ADS_DEMO_LABEL} adsAssessmentLabel={MARKETING.GOOGLE_ADS_ASSESSMENT_LABEL} t={consentT} />
     <!-- Henry chatbot -->
     <script src="/henry-widget.js" is:inline defer></script>
     <!-- Conversie-tracking (GA4-events) + exit-intent lead magnet. Events sturen
