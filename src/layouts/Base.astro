@@ -125,7 +125,7 @@ const orgLd = {
         q.addEventListener("click", () => q.parentElement.classList.toggle("open"));
       });
     </script>
-    <CookieConsent lang={lang} ga4Id={ANALYTICS.GA4_ID} linkedinId={MARKETING.LINKEDIN_PARTNER_ID} clarityId={MARKETING.CLARITY_ID} adsId={MARKETING.GOOGLE_ADS_ID} adsLeadLabel={MARKETING.GOOGLE_ADS_LEAD_LABEL} t={consentT} />
+    <CookieConsent lang={lang} ga4Id={ANALYTICS.GA4_ID} linkedinId={MARKETING.LINKEDIN_PARTNER_ID} clarityId={MARKETING.CLARITY_ID} adsId={MARKETING.GOOGLE_ADS_ID} adsDemoLabel={MARKETING.GOOGLE_ADS_DEMO_LABEL} adsAssessmentLabel={MARKETING.GOOGLE_ADS_ASSESSMENT_LABEL} t={consentT} />
     <!-- Henry chatbot -->
     <script src="/henry-widget.js" is:inline defer></script>
     <!-- Conversie-tracking (GA4-events) + exit-intent lead magnet. Events sturen
@@ -135,17 +135,30 @@ const orgLd = {
         function ev(name, params) {
           if (window.gtag) window.gtag("event", name, params || {});
           if (window.lintrk) try { window.lintrk("track", {}); } catch(e){}
-          // Google Ads-conversie bij een lead (alleen als het label is ingevuld
-          // en de bezoeker marketing-cookies heeft toegestaan).
-          if (name === "generate_lead" && window.gtag && window.hrmAdsLead) {
-            window.gtag("event", "conversion", { send_to: window.hrmAdsLead });
-          }
+        }
+        // Google Ads-conversie. Vuurt alleen als de bezoeker marketing-cookies
+        // heeft toegestaan (dan staat window.hrmAds klaar) en alleen bij een
+        // echte aanvraag: "Demo Aangevraagd" voor demo- en contactformulieren,
+        // "Assessment Aangevraagd" voor een assessmentaanvraag. Het opvragen van
+        // voorbeeldvragen is een zachte lead en telt niet als Ads-conversie.
+        function adsConversion(kind) {
+          var a = window.hrmAds; if (!a || !window.gtag) return;
+          var label = kind === "assessment" ? a.assessment : a.demo;
+          if (!label) return;
+          var payload = { send_to: label };
+          if (kind === "assessment") { payload.value = 1.0; payload.currency = "EUR"; }
+          window.gtag("event", "conversion", payload);
         }
         document.addEventListener("submit", function (e) {
           var f = e.target; if (!f || f.tagName !== "FORM") return;
           var subj = (f.querySelector('[name=onderwerp]') || {}).value || "";
-          var isLead = /voorbeeldvragen/i.test(subj) ? "sample_questions" : (f.id === "request" || f.className.indexOf("formcard") > -1 || f.className.indexOf("vv-form") > -1) ? "lead" : "form";
+          var isLead = /voorbeeldvragen/i.test(subj) ? "sample_questions" : (f.id === "request" || f.className.indexOf("formcard") > -1 || f.className.indexOf("dm-form") > -1 || f.className.indexOf("vv-form") > -1) ? "lead" : "form";
           ev("generate_lead", { form: f.id || f.className || "form", subject: subj, type: isLead });
+          if (isLead === "lead") {
+            var isAssessment = /assessment/i.test(subj) || !!f.querySelector('[name=assessment]') || /^\/(en|de|fr|es|ro)?\/?assessments\//.test(location.pathname);
+            var isDemo = /demo/i.test(subj) || location.pathname.indexOf("/demo/") > -1 || f.id === "contactForm";
+            adsConversion(isDemo ? "demo" : (isAssessment ? "assessment" : "demo"));
+          }
         }, true);
         document.addEventListener("click", function (e) {
           var a = e.target.closest && e.target.closest("a"); if (!a) return;
