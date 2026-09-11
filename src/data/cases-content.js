@@ -71,7 +71,7 @@ export const CASES = [
   {
     sector: "industrie", size: "groot", theme: "werving",
     text: {
-      nl: { challenge: "Grote wervingsvolumes voor operationele functies met tijdrovende screening.", approach: "Cognitieve capaciteitentest en korte preselectie vooraan, gekoppeld aan het ATS.", results: ["Snellere voorselectie", "Consistente kwaliteit van kandidaten", "Minder handmatig screeningwerk"] },
+      nl: { challenge: "Grote wervingsvolumes voor operationele functies met tijdrovende screening.", approach: "Cognitieve capaciteitentest en korte preselectie vooraan, gekoppeld aan het ATS.", results: ["Snellere voorselectie", "Consistenter niveau van kandidaten", "Minder handmatig screeningwerk"] },
       en: { challenge: "High recruitment volumes for operational roles with time-consuming screening.", approach: "Cognitive ability test and short pre-selection up front, linked to the ATS.", results: ["Faster pre-selection", "Consistent candidate quality", "Less manual screening work"] },
       de: { challenge: "Hohe Einstellungsvolumina für operative Rollen mit zeitaufwändigem Screening.", approach: "Kognitiver Leistungstest und kurze Vorauswahl am Anfang, mit dem ATS verknüpft.", results: ["Schnellere Vorauswahl", "Konsistente Kandidatenqualität", "Weniger manuelle Screening-Arbeit"] },
       fr: { challenge: "Volumes de recrutement élevés pour des postes opérationnels avec un tri chronophage.", approach: "Test d'aptitude cognitive et présélection courte en amont, liés à l'ATS.", results: ["Présélection plus rapide", "Qualité de candidats constante", "Moins de tri manuel"] },
@@ -137,7 +137,7 @@ export const CASES = [
   {
     sector: "logistiek", size: "groot", theme: "selectie",
     text: {
-      nl: { challenge: "Piekwerving met wisselende kwaliteit van instroom.", approach: "Gestandaardiseerd selectieassessment met matchprofiel per functiegroep.", results: ["Consistentere instroomkwaliteit", "Objectievere selectie", "Beter voorspelbare prestaties"] },
+      nl: { challenge: "Piekwerving met sterk wisselend niveau van instroom.", approach: "Gestandaardiseerd selectieassessment met matchprofiel per functiegroep.", results: ["Consistentere instroomkwaliteit", "Objectievere selectie", "Beter voorspelbare prestaties"] },
       en: { challenge: "Peak recruitment with variable quality of intake.", approach: "Standardised selection assessment with a match profile per job group.", results: ["More consistent intake quality", "More objective selection", "More predictable performance"] },
       de: { challenge: "Spitzenrekrutierung mit schwankender Qualität des Zulaufs.", approach: "Standardisiertes Auswahl-Assessment mit Matchprofil je Funktionsgruppe.", results: ["Konsistentere Zulaufqualität", "Objektivere Auswahl", "Besser vorhersagbare Leistung"] },
       fr: { challenge: "Recrutement de pointe avec une qualité d'entrée variable.", approach: "Évaluation de sélection standardisée avec profil de correspondance par groupe de postes.", results: ["Qualité d'entrée plus régulière", "Sélection plus objective", "Performance plus prévisible"] },
@@ -203,7 +203,7 @@ export const CASES = [
   {
     sector: "uitzend", size: "zeergroot", theme: "werving",
     text: {
-      nl: { challenge: "Grote kandidaatstromen die snel en objectief beoordeeld moesten worden.", approach: "Geautomatiseerde preselectie met capaciteiten- en persoonlijkheidstest via API.", results: ["Snellere plaatsingen", "Objectievere matching", "Hogere kwaliteit van voordrachten"] },
+      nl: { challenge: "Grote kandidaatstromen die snel en objectief beoordeeld moesten worden.", approach: "Geautomatiseerde preselectie met capaciteiten- en persoonlijkheidstest via API.", results: ["Snellere plaatsingen", "Objectievere matching", "Sterkere voordrachten"] },
       en: { challenge: "Large candidate flows needing fast, objective assessment.", approach: "Automated pre-selection with ability and personality test via API.", results: ["Faster placements", "More objective matching", "Higher quality of shortlists"] },
       de: { challenge: "Große Kandidatenströme, die schnell und objektiv bewertet werden mussten.", approach: "Automatisierte Vorauswahl mit Leistungs- und Persönlichkeitstest per API.", results: ["Schnellere Vermittlungen", "Objektiveres Matching", "Höhere Qualität der Vorschläge"] },
       fr: { challenge: "Flux de candidats importants à évaluer vite et objectivement.", approach: "Présélection automatisée avec test d'aptitude et de personnalité via API.", results: ["Placements plus rapides", "Matching plus objectif", "Meilleure qualité des présélections"] },

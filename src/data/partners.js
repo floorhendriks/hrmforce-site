@@ -52,7 +52,7 @@ export const PARTNER_CATS = {
 };
 
 export const PARTNER_UI = {
-  nl: { eyebrow: "Partners & integraties", title: "Gecertificeerde hrmforce-partners", intro: "Sinds onze oprichting bouwen we samen met partners en integratiepartijen wereldwijd aan de kwaliteit van onze producten en ondersteuning. Filter op categorie of klik op een logo om de partner te bezoeken." },
+  nl: { eyebrow: "Partners & integraties", title: "Gecertificeerde hrmforce-partners", intro: "Sinds onze oprichting bouwen we samen met partners en integratiepartijen wereldwijd aan onze producten en ondersteuning. Filter op categorie of klik op een logo om de partner te bezoeken." },
   en: { eyebrow: "Partners & integrations", title: "Certified hrmforce partners", intro: "Since our founding we've built the quality of our products and support together with partners and integration providers worldwide. Filter by category or click a logo to visit the partner." },
   de: { eyebrow: "Partner & Integrationen", title: "Zertifizierte hrmforce-Partner", intro: "Seit unserer Gründung entwickeln wir gemeinsam mit Partnern und Integrationsanbietern weltweit die Qualität unserer Produkte und unseres Supports. Nach Kategorie filtern oder auf ein Logo klicken." },
   fr: { eyebrow: "Partenaires & intégrations", title: "Partenaires certifiés hrmforce", intro: "Depuis notre création, nous construisons la qualité de nos produits et de notre support avec des partenaires et intégrateurs du monde entier. Filtrez par catégorie ou cliquez sur un logo pour visiter le partenaire." },

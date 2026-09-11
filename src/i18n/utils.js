@@ -127,7 +127,7 @@ export function sanitizeBodyLinks(html, lang, validPaths) {
 }
 // Geeft hetzelfde pad in de andere taal (voor de taalwissel). Bestaat de pagina
 // niet in de doeltaal, dan val terug op de sectie-hoofdpagina en anders de
-// homepage van die taal — zo leidt de taalwissel nooit naar een 404.
+// homepage van die taal, zo leidt de taalwissel nooit naar een 404.
 export function switchLocalePath(url, toLang, validPaths) {
   let p = url.pathname;
   const seg = p.split("/")[1];

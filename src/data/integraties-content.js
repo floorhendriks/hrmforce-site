@@ -1,5 +1,5 @@
 // Integraties-content per taal, gebruikt door src/components/Integraties.astro.
-// NL = leidend. EN/DE/FR/ES/RO zijn een eerste vertaalslag — native review aanbevolen.
+// NL = leidend. EN/DE/FR/ES/RO zijn een eerste vertaalslag, native review aanbevolen.
 export const integratiesContent = {
   nl: {
     meta: { title: "Integraties - hrmforce", description: "Koppel hrmforce aan je bestaande HR-stack via API of SSO: ATS, HRIS, payroll en identity. Tijdens de intake bepalen we samen welke koppelingen waarde toevoegen." },
@@ -80,7 +80,7 @@ integratiesContent.de.categories.items = [
   { icon: "🎯", title: "ATS / Recruiting", text: "Starten Sie Assessments aus Ihrem Recruiting-System und lassen Sie Scores und Berichte in die Bewerberakte zurückfließen." },
   { icon: "🗂️", title: "HRIS / Kernsystem", text: "Halten Sie Mitarbeiter- und Stellendaten mit Ihrem HR-Kernsystem im Einklang, damit Profile und Prozesse stimmen." },
   { icon: "💶", title: "Payroll / Lohn", text: "Anbindung an Ihre Lohn- und Personaladministration für konsistente Stammdaten über Systeme hinweg." },
-  { icon: "🔐", title: "SSO / Identity", text: "Lassen Sie Nutzer per Single Sign-on mit dem Identity-Provider Ihrer Organisation anmelden – mit rollenbasierter Zugriffssteuerung." },
+  { icon: "🔐", title: "SSO / Identity", text: "Lassen Sie Nutzer per Single Sign-on mit dem Identity-Provider Ihrer Organisation anmelden, mit rollenbasierter Zugriffssteuerung." },
 ];
 Object.assign(integratiesContent.de.examples, { eyebrow: "Beispiele", title: "Anbindbar u. a. an", intro: "Je nach Situation lässt sich hrmforce mit gängigen HR-Systemen verbinden, darunter:", note: "Die genannten Systeme sind Beispiele für mögliche Anbindungen; sie implizieren keine offizielle Partnerschaft. Welche Anbindung für Sie verfügbar oder sinnvoll ist, legen wir gemeinsam im Intake fest." });
 Object.assign(integratiesContent.de.how, { eyebrow: "Wie funktioniert das?", title: "Vom Intake zur funktionierenden Anbindung" });

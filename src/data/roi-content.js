@@ -26,7 +26,7 @@ export const roiContent = {
         compleet: "Compleet, 3 vragenlijsten (Rv 0,50)",
         premium: "Premium, compleet + extra tools (Rv 0,65)",
       },
-      advancedHeading: "Geavanceerde instellingen",
+      advancedHeading: "Meer instellingen",
       zx: "Selectiescore (Zx)",
       sd: "Standaarddeviatie prestaties (% van salaris)",
       kosten: "Kosten per assessment (€)",
@@ -50,7 +50,7 @@ export const roiContent = {
         "N, aantal nieuwe medewerkers per jaar",
         "Rv, validiteit van het instrument (voorspelkracht)",
         "Zx, selectiescore (hoe selectief je bent)",
-        "SD€, verschil tussen een goede en gemiddelde presteerder",
+        "SD€, verschil tussen een sterke en een gemiddelde presteerder",
       ],
       offerHeading: "<b>Wat biedt hrmforce?</b>",
       offerList: [

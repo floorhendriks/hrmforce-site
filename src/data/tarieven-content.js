@@ -5,10 +5,10 @@ export const tarievenContent = {
     meta: { title: "Tarieven - hrmforce", description: "Bekijk de mogelijkheden en tarieven van hrmforce: eigen portal op licentiebasis of losse afname per assessment." },
     crumb: "Tarieven",
     hero: { eyebrow: "Tarieven", title: "Haal het maximale uit medewerkers met onze talentmanagement-software", intro: "De meeste organisaties starten met een <strong>eigen portal op licentiebasis</strong>: onbeperkt afnemen tegen een vaste jaarprijs, in je eigen huisstijl en gekoppeld aan je HR-systeem. Voor pilots of incidentele afname kan het ook per assessment via de shop.", positioning: "Voor organisaties van 25 tot 2.500 medewerkers", cta: "Plan een demo", roiCta: "Bereken je besparing" },
-    fit: { eyebrow: "Welke vorm past?", title: "Vind snel de juiste opzet voor jouw organisatie", q: "Hoeveel medewerkers heeft je organisatie?", tiers: ["25–250", "250–1.000", "1.000–2.500"], out: [
-      "Bij <b>25–250 medewerkers</b> is een jaarlicentie met een eigen portal meestal het voordeligst zodra je meerdere trajecten per jaar draait. Twijfel je? Start met een pilot en schaal op.",
-      "Bij <b>250–1.000 medewerkers</b> loont een <b>jaarlicentie</b> vrijwel altijd: onbeperkt afnemen, eigen huisstijl en koppeling met je HR-systeem. Vraag een prijs op maat.",
-      "Bij <b>1.000–2.500 medewerkers</b> kies je voor een <b>Pro-licentie</b> met eigen ontwikkelflows, maatwerk-API en een vaste accountmanager.",
+    fit: { eyebrow: "Welke vorm past?", title: "Vind snel de juiste opzet voor jouw organisatie", q: "Hoeveel medewerkers heeft je organisatie?", tiers: ["25-250", "250-1.000", "1.000-2.500"], out: [
+      "Bij <b>25-250 medewerkers</b> is een jaarlicentie met een eigen portal meestal het voordeligst zodra je meerdere trajecten per jaar draait. Twijfel je? Start met een pilot en schaal op.",
+      "Bij <b>250-1.000 medewerkers</b> loont een <b>jaarlicentie</b> vrijwel altijd: onbeperkt afnemen, eigen huisstijl en koppeling met je HR-systeem. Vraag een prijs op maat.",
+      "Bij <b>1.000-2.500 medewerkers</b> kies je voor een <b>Pro-licentie</b> met eigen ontwikkelflows, maatwerk-API en een vaste accountmanager.",
     ], cta: "Plan een demo" },
     plansTitle: { eyebrow: "Licenties", title: "Onze pakketten" },
     plans: [
@@ -49,14 +49,14 @@ export const tarievenContent = {
     ] },
     faqSection: { eyebrow: "Veelgestelde vragen", title: "Veelgestelde vragen over tarieven" },
     faqs: [
-      { q: "Wat voor soort vragenlijsten biedt hrmforce aan?", a: "hrmforce biedt een breed scala aan vragenlijsten, waaronder persoonlijkheidstests, competentie-assessments, 360 graden feedback en medewerkerstevredenheidsonderzoeken, allemaal ontworpen om de HR-processen te versterken." },
+      { q: "Wat voor soort vragenlijsten biedt hrmforce aan?", a: "hrmforce biedt vragenlijsten voor persoonlijkheid, competenties, capaciteiten, drijfveren en inzetbaarheid, waaronder persoonlijkheidstests, competentie-assessments, 360 graden feedback en medewerkerstevredenheidsonderzoeken, allemaal ontworpen om de HR-processen te versterken." },
       { q: "Kunnen de vragenlijsten worden aangepast aan de behoeften van ons bedrijf?", a: "Ja, we bieden maatwerkoplossingen waarbij onze vragenlijsten kunnen worden aangepast om te voldoen aan de specifieke behoeften en doelen van uw organisatie." },
-      { q: "Hoe integreert hrmforce met onze bestaande HR-systemen?", a: "Onze software integreert eenvoudig met de meeste HRIS-, LMS- en ERP-systemen via API of SSO, voor een naadloze dataflow binnen uw organisatie." },
+      { q: "Hoe integreert hrmforce met onze bestaande HR-systemen?", a: "Onze software koppelt met de meeste HRIS-, LMS- en ERP-systemen via API of SSO, zodat gegevens zonder handwerk doorstromen binnen uw organisatie." },
       { q: "Hoe betrouwbaar en valide zijn de vragenlijsten?", a: "Onze vragenlijsten zijn wetenschappelijk onderbouwd en getest op hoge betrouwbaarheid en validiteit, en worden gereviewd door NIP-geregistreerde psychologen." },
       { q: "Hoe wordt de privacy en AVG gewaarborgd?", a: "hrmforce houdt zich strikt aan de AVG. Alle medewerkersgegevens worden binnen de EU verwerkt en veilig opgeslagen met de hoogste standaarden van gegevensbeveiliging." },
       { q: "Wat zijn de kosten?", a: "De kosten variëren met je behoeften en schaal. We bieden flexibele modellen: pay-as-you-go per assessment of een jaarlicentie op basis van het aantal medewerkers." },
     ],
-    ctaBand: { title: "Heb je een andere vraag?", text: "Ons team staat voor je klaar. Vraag een offerte of demo aan en we stemmen de juiste vorm af op jouw situatie.", primary: "Neem contact op", secondary: "Lees meer over hrmforce", hours: "Onze adviseurs zijn bereikbaar op maandag t/m vrijdag van 08:00 – 18:00 uur." },
+    ctaBand: { title: "Heb je een andere vraag?", text: "Ons team staat voor je klaar. Vraag een offerte of demo aan en we stemmen de juiste vorm af op jouw situatie.", primary: "Neem contact op", secondary: "Lees meer over hrmforce", hours: "Onze adviseurs zijn bereikbaar op maandag t/m vrijdag van 08:00 tot 18:00 uur." },
   },
 };
 
@@ -67,10 +67,10 @@ tarievenContent.en = clone(tarievenContent.nl);
 Object.assign(tarievenContent.en.meta, { title: "Pricing - hrmforce", description: "Explore hrmforce options and pricing: your own portal on a licence basis, or pay per assessment." });
 tarievenContent.en.crumb = "Pricing";
 Object.assign(tarievenContent.en.hero, { eyebrow: "Pricing", title: "Get the most out of your people with our talent management software", intro: "Most organisations start with <strong>their own portal on a licence basis</strong>: unlimited use for a fixed annual price, in your own branding and connected to your HR system. For pilots or occasional use you can also pay per assessment via the shop.", positioning: "For organisations of 25 to 2,500 employees", cta: "Book a demo", roiCta: "Calculate your savings" });
-Object.assign(tarievenContent.en.fit, { eyebrow: "Which fits?", title: "Quickly find the right setup for your organisation", q: "How many employees does your organisation have?", tiers: ["25–250", "250–1,000", "1,000–2,500"], out: [
-  "At <b>25–250 employees</b> an annual licence with your own portal is usually most cost-effective once you run several projects a year. Unsure? Start with a pilot and scale up.",
-  "At <b>250–1,000 employees</b> an <b>annual licence</b> almost always pays off: unlimited use, your own branding and a link to your HR system. Request a tailored price.",
-  "At <b>1,000–2,500 employees</b> you choose a <b>Pro licence</b> with custom development flows, a bespoke API and a dedicated account manager.",
+Object.assign(tarievenContent.en.fit, { eyebrow: "Which fits?", title: "Quickly find the right setup for your organisation", q: "How many employees does your organisation have?", tiers: ["25-250", "250-1,000", "1,000-2,500"], out: [
+  "At <b>25-250 employees</b> an annual licence with your own portal is usually most cost-effective once you run several projects a year. Unsure? Start with a pilot and scale up.",
+  "At <b>250-1,000 employees</b> an <b>annual licence</b> almost always pays off: unlimited use, your own branding and a link to your HR system. Request a tailored price.",
+  "At <b>1,000-2,500 employees</b> you choose a <b>Pro licence</b> with custom development flows, a bespoke API and a dedicated account manager.",
 ], cta: "Book a demo" });
 tarievenContent.en.plansTitle = { eyebrow: "Licences", title: "Our packages" };
 tarievenContent.en.featuredBadge = "Most chosen";
@@ -92,16 +92,16 @@ tarievenContent.en.faqs = [
   { q: "How is privacy and GDPR safeguarded?", a: "hrmforce strictly complies with the GDPR. All employee data is processed within the EU and stored securely to the highest data-security standards." },
   { q: "What does it cost?", a: "Costs vary with your needs and scale. We offer flexible models: pay-as-you-go per assessment or an annual licence based on the number of employees." },
 ];
-tarievenContent.en.ctaBand = { title: "Have a different question?", text: "Our team is here to help. Request a quote or demo and we'll match the right setup to your situation.", primary: "Get in touch", secondary: "Read more about hrmforce", hours: "Our advisors are available Monday to Friday, 08:00 – 18:00." };
+tarievenContent.en.ctaBand = { title: "Have a different question?", text: "Our team is here to help. Request a quote or demo and we'll match the right setup to your situation.", primary: "Get in touch", secondary: "Read more about hrmforce", hours: "Our advisors are available Monday to Friday, 08:00 tot 18:00." };
 
 tarievenContent.de = clone(tarievenContent.nl);
 Object.assign(tarievenContent.de.meta, { title: "Preise - hrmforce", description: "Entdecken Sie Optionen und Preise von hrmforce: ein eigenes Portal auf Lizenzbasis oder Abrechnung pro Assessment." });
 tarievenContent.de.crumb = "Preise";
 Object.assign(tarievenContent.de.hero, { eyebrow: "Preise", title: "Holen Sie mit unserer Talentmanagement-Software das Beste aus Ihren Mitarbeitern heraus", intro: "Die meisten Organisationen starten mit einem <strong>eigenen Portal auf Lizenzbasis</strong>: unbegrenzte Nutzung zu einem festen Jahrespreis, in Ihrem Branding und mit Anbindung an Ihr HR-System. Für Pilotprojekte oder gelegentliche Nutzung ist auch die Abrechnung pro Assessment über den Shop möglich.", positioning: "Für Organisationen von 25 bis 2.500 Mitarbeitern", cta: "Demo anfragen", roiCta: "Ersparnis berechnen" });
-Object.assign(tarievenContent.de.fit, { eyebrow: "Was passt?", title: "Finden Sie schnell die richtige Lösung für Ihre Organisation", q: "Wie viele Mitarbeiter hat Ihre Organisation?", tiers: ["25–250", "250–1.000", "1.000–2.500"], out: [
-  "Bei <b>25–250 Mitarbeitern</b> ist eine Jahreslizenz mit eigenem Portal meist am günstigsten, sobald Sie mehrere Projekte pro Jahr durchführen. Unsicher? Starten Sie mit einem Pilotprojekt.",
-  "Bei <b>250–1.000 Mitarbeitern</b> lohnt sich fast immer eine <b>Jahreslizenz</b>: unbegrenzte Nutzung, eigenes Branding und Anbindung an Ihr HR-System. Fordern Sie einen individuellen Preis an.",
-  "Bei <b>1.000–2.500 Mitarbeitern</b> wählen Sie eine <b>Pro-Lizenz</b> mit eigenen Entwicklungs-Flows, maßgeschneiderter API und festem Ansprechpartner.",
+Object.assign(tarievenContent.de.fit, { eyebrow: "Was passt?", title: "Finden Sie schnell die richtige Lösung für Ihre Organisation", q: "Wie viele Mitarbeiter hat Ihre Organisation?", tiers: ["25-250", "250-1.000", "1.000-2.500"], out: [
+  "Bei <b>25-250 Mitarbeitern</b> ist eine Jahreslizenz mit eigenem Portal meist am günstigsten, sobald Sie mehrere Projekte pro Jahr durchführen. Unsicher? Starten Sie mit einem Pilotprojekt.",
+  "Bei <b>250-1.000 Mitarbeitern</b> lohnt sich fast immer eine <b>Jahreslizenz</b>: unbegrenzte Nutzung, eigenes Branding und Anbindung an Ihr HR-System. Fordern Sie einen individuellen Preis an.",
+  "Bei <b>1.000-2.500 Mitarbeitern</b> wählen Sie eine <b>Pro-Lizenz</b> mit eigenen Entwicklungs-Flows, maßgeschneiderter API und festem Ansprechpartner.",
 ], cta: "Demo anfragen" });
 tarievenContent.de.plansTitle = { eyebrow: "Lizenzen", title: "Unsere Pakete" };
 tarievenContent.de.featuredBadge = "Am häufigsten gewählt";
@@ -128,7 +128,7 @@ tarievenContent.fr = clone(tarievenContent.nl);
 Object.assign(tarievenContent.fr.meta, { title: "Tarifs - hrmforce", description: "Découvrez les options et tarifs de hrmforce : votre propre portail sous licence ou paiement à l'évaluation." });
 tarievenContent.fr.crumb = "Tarifs";
 Object.assign(tarievenContent.fr.hero, { eyebrow: "Tarifs", title: "Tirez le meilleur de vos collaborateurs avec notre logiciel de gestion des talents", intro: "La plupart des organisations démarrent avec <strong>leur propre portail sous licence</strong> : utilisation illimitée à un prix annuel fixe, à vos couleurs et connecté à votre système RH. Pour des pilotes ou un usage ponctuel, le paiement à l'évaluation via la boutique est aussi possible.", positioning: "Pour les organisations de 25 à 2 500 collaborateurs", cta: "Demander une démo", roiCta: "Calculez vos économies" });
-Object.assign(tarievenContent.fr.fit, { eyebrow: "Quelle formule ?", title: "Trouvez rapidement la bonne formule pour votre organisation", q: "Combien de collaborateurs compte votre organisation ?", tiers: ["25–250", "250–1 000", "1 000–2 500"], out: [
+Object.assign(tarievenContent.fr.fit, { eyebrow: "Quelle formule ?", title: "Trouvez rapidement la bonne formule pour votre organisation", q: "Combien de collaborateurs compte votre organisation ?", tiers: ["25-250", "250-1 000", "1 000-2 500"], out: [
   "Pour <b>25 à 250 collaborateurs</b>, une licence annuelle avec portail dédié est généralement la plus rentable dès que vous menez plusieurs projets par an. Un doute ? Commencez par un pilote.",
   "Pour <b>250 à 1 000 collaborateurs</b>, une <b>licence annuelle</b> est presque toujours rentable : usage illimité, vos couleurs et connexion à votre SIRH. Demandez un tarif sur mesure.",
   "Pour <b>1 000 à 2 500 collaborateurs</b>, optez pour une <b>licence Pro</b> avec des parcours de développement sur mesure, une API dédiée et un gestionnaire de compte attitré.",
@@ -158,10 +158,10 @@ tarievenContent.es = clone(tarievenContent.nl);
 Object.assign(tarievenContent.es.meta, { title: "Precios - hrmforce", description: "Descubra las opciones y precios de hrmforce: su propio portal con licencia o pago por evaluación." });
 tarievenContent.es.crumb = "Precios";
 Object.assign(tarievenContent.es.hero, { eyebrow: "Precios", title: "Saque el máximo partido a sus empleados con nuestro software de gestión del talento", intro: "La mayoría de las organizaciones empiezan con <strong>su propio portal con licencia</strong>: uso ilimitado por un precio anual fijo, con su marca y conectado a su sistema de RR. HH. Para pilotos o uso puntual también puede pagar por evaluación en la tienda.", positioning: "Para organizaciones de 25 a 2.500 empleados", cta: "Solicitar una demo", roiCta: "Calcule su ahorro" });
-Object.assign(tarievenContent.es.fit, { eyebrow: "¿Qué encaja?", title: "Encuentre rápido la opción adecuada para su organización", q: "¿Cuántos empleados tiene su organización?", tiers: ["25–250", "250–1.000", "1.000–2.500"], out: [
-  "Con <b>25–250 empleados</b>, una licencia anual con portal propio suele ser lo más rentable en cuanto realiza varios proyectos al año. ¿Dudas? Empiece con un piloto.",
-  "Con <b>250–1.000 empleados</b>, una <b>licencia anual</b> casi siempre compensa: uso ilimitado, su marca y conexión con su sistema de RR. HH. Solicite un precio a medida.",
-  "Con <b>1.000–2.500 empleados</b>, elija una <b>licencia Pro</b> con flujos de desarrollo a medida, API personalizada y un gestor de cuenta dedicado.",
+Object.assign(tarievenContent.es.fit, { eyebrow: "¿Qué encaja?", title: "Encuentre rápido la opción adecuada para su organización", q: "¿Cuántos empleados tiene su organización?", tiers: ["25-250", "250-1.000", "1.000-2.500"], out: [
+  "Con <b>25-250 empleados</b>, una licencia anual con portal propio suele ser lo más rentable en cuanto realiza varios proyectos al año. ¿Dudas? Empiece con un piloto.",
+  "Con <b>250-1.000 empleados</b>, una <b>licencia anual</b> casi siempre compensa: uso ilimitado, su marca y conexión con su sistema de RR. HH. Solicite un precio a medida.",
+  "Con <b>1.000-2.500 empleados</b>, elija una <b>licencia Pro</b> con flujos de desarrollo a medida, API personalizada y un gestor de cuenta dedicado.",
 ], cta: "Solicitar una demo" });
 tarievenContent.es.plansTitle = { eyebrow: "Licencias", title: "Nuestros paquetes" };
 tarievenContent.es.featuredBadge = "El más elegido";
@@ -189,10 +189,10 @@ Object.assign(tarievenContent.ro.meta, { title: "Prețuri - hrmforce", descripti
 tarievenContent.ro.meta.description = "Descoperiți opțiunile și prețurile hrmforce: propriul portal pe bază de licență sau plată per evaluare.";
 tarievenContent.ro.crumb = "Prețuri";
 Object.assign(tarievenContent.ro.hero, { eyebrow: "Prețuri", title: "Obțineți maximum de la angajați cu software-ul nostru de management al talentelor", intro: "Majoritatea organizațiilor încep cu <strong>propriul portal pe bază de licență</strong>: utilizare nelimitată la un preț anual fix, cu identitatea dvs. și conectat la sistemul HR. Pentru piloturi sau utilizare ocazională, plata per evaluare prin magazin este de asemenea posibilă.", positioning: "Pentru organizații de la 25 la 2.500 de angajați", cta: "Solicitați o demonstrație", roiCta: "Calculați economiile" });
-Object.assign(tarievenContent.ro.fit, { eyebrow: "Ce se potrivește?", title: "Găsiți rapid soluția potrivită pentru organizația dvs.", q: "Câți angajați are organizația dvs.?", tiers: ["25–250", "250–1.000", "1.000–2.500"], out: [
-  "La <b>25–250 de angajați</b>, o licență anuală cu portal propriu este de obicei cea mai avantajoasă când derulați mai multe proiecte pe an. Nesigur? Începeți cu un pilot.",
-  "La <b>250–1.000 de angajați</b>, o <b>licență anuală</b> este aproape întotdeauna avantajoasă: utilizare nelimitată, identitate proprie și conectare la sistemul HR. Solicitați un preț personalizat.",
-  "La <b>1.000–2.500 de angajați</b>, alegeți o <b>licență Pro</b> cu fluxuri de dezvoltare personalizate, API dedicat și manager de cont dedicat.",
+Object.assign(tarievenContent.ro.fit, { eyebrow: "Ce se potrivește?", title: "Găsiți rapid soluția potrivită pentru organizația dvs.", q: "Câți angajați are organizația dvs.?", tiers: ["25-250", "250-1.000", "1.000-2.500"], out: [
+  "La <b>25-250 de angajați</b>, o licență anuală cu portal propriu este de obicei cea mai avantajoasă când derulați mai multe proiecte pe an. Nesigur? Începeți cu un pilot.",
+  "La <b>250-1.000 de angajați</b>, o <b>licență anuală</b> este aproape întotdeauna avantajoasă: utilizare nelimitată, identitate proprie și conectare la sistemul HR. Solicitați un preț personalizat.",
+  "La <b>1.000-2.500 de angajați</b>, alegeți o <b>licență Pro</b> cu fluxuri de dezvoltare personalizate, API dedicat și manager de cont dedicat.",
 ], cta: "Solicitați o demonstrație" });
 tarievenContent.ro.plansTitle = { eyebrow: "Licențe", title: "Pachetele noastre" };
 tarievenContent.ro.featuredBadge = "Cel mai ales";

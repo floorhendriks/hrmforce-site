@@ -1,6 +1,6 @@
 // Content voor het assessment-overzicht per taal, gebruikt door
 // src/components/AssessmentOverzicht.astro.
-// NL = leidend. DE/FR/ES/RO eerste vertaalslag — native review aanbevolen.
+// NL = leidend. DE/FR/ES/RO eerste vertaalslag, native review aanbevolen.
 // Segment- en uitgever-labels komen uit assessment-shop.js en blijven Nederlands.
 export const ovContent = {
   nl: {
@@ -15,10 +15,10 @@ export const ovContent = {
       { slug: "big-five", title: "Persoonlijkheidstest: Big Five", cats: ["(Pre)Selectie", "Evalueren", "Ontwikkeling"], goal: "Persoonlijkheidskenmerken omzetten naar vaardigheden en zo ontdekken waar iemand kan groeien." },
       { slug: "drijfverentest", title: "Drijfverentest", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Duidelijk helpen begrijpen wat motivatie verhoogt en verlaagt." },
       { slug: "ability-scan", title: "Ability Scan | Cognitieve capaciteitentest", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Hoe snel kan je problemen begrijpen, een mening vormen en nieuwe dingen aanleren. Daaruit gemiddelde niveau opmaken: mbo, hbo of Master." },
-      { slug: "ontwikkelassessment", title: "Ontwikkelassessment", cats: ["Ontwikkeling"], goal: "Valide overzicht van welke competenties ontwikkeling behoeven en welke al goed gaan." },
+      { slug: "ontwikkelassessment", title: "Ontwikkelassessment", cats: ["Ontwikkeling"], goal: "Valide overzicht van welke competenties ontwikkeling vragen en welke al op niveau zijn." },
       { slug: "ontwikkelmatrix", title: "Ontwikkelmatrix", cats: ["Ontwikkeling", "Evalueren"], goal: "Talent (Big Fifty) en gedrag (360 feedback) samengebracht in vier ontwikkelkwadranten, met concrete ontwikkeltips per profiel." },
       { slug: "studiekeuzetest", title: "Studiekeuzetest", cats: ["Ontwikkeling", "Studiekeuze"], goal: "Op basis van interesses scholieren, studenten en werknemers inzicht geven in de best passende opleidingen." },
-      { slug: "lencioni-teamdynamiek", title: "Lencioni Teamdynamiek", cats: ["Ontwikkeling"], goal: "De Lencioni vragenlijst is ontworpen om teams te helpen de teamdynamiek te begrijpen en te evalueren door de aanwezigheid en impact van de vijf disfuncties in teamwork te meten." },
+      { slug: "lencioni-teamdynamiek", title: "Lencioni Teamdynamiek", cats: ["Ontwikkeling"], goal: "De Lencioni vragenlijst is ontworpen om teams te helpen de teamdynamiek te begrijpen en te evalueren door de aanwezigheid en uitwerking van de vijf disfuncties in teamwork te meten." },
       { slug: "pulse-survey", title: "Pulse Survey", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "De mogelijkheid bieden aan organisaties om met behulp van onze standaard vragenlijsten en vragendatabase zelf vragenlijsten te ontwerpen en deze te versturen naar sollicitanten en medewerkers." },
       { slug: "mentale-veerkracht-scan", title: "Mentale Veerkracht Scan", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Inzicht verkrijgen in de mate waarin men effectief blijft werken bij hoge druk en/of tegenslag" },
       { slug: "levensloop-scan", title: "Levensloop Scan", cats: ["Ontwikkeling"], goal: "Inzicht krijgen in de levensloop van een kandidaat om daarmee aanknopingspunten voor coaching en ontwikkeling bloot te leggen." },
@@ -34,7 +34,7 @@ export const ovContent = {
       { slug: "cognitieve-test", title: "Cognitieve Capaciteitentest", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Meten hoe snel een persoon problemen kan begrijpen, zich een mening kan vormen en/of nieuwe dingen kan aanleren." },
       { slug: "appraisal", title: "Appraisal", cats: ["Evalueren", "Ontwikkeling"], goal: "Verschaffen feedback (90 graden) vanuit een aantal verschillende perspectieven. Ideaal als input voor de functionerings- en beoordelingscyclus." },
       { slug: "canmeds", title: "CanMeds", cats: ["(Pre)Selectie", "Evalueren", "Ontwikkeling"], goal: "Aangeven hoe makkelijk een medewerker met een bepaald persoonlijkheidsprofiel specifieke competenties kan laten zien of kan ontwikkelen. Daarnaast wordt het presteren op een specifieke rol gescoord." },
-      { slug: "beroepskeuze-test", title: "Beroepskeuzetest", cats: ["Evalueren", "Ontwikkeling"], goal: "Betrouwbaar advies omtrent passende en minder passende beroepsgroepen." },
+      { slug: "beroepskeuze-test", title: "Beroepskeuzetest", cats: ["Evalueren", "Ontwikkeling"], goal: "Onderbouwd advies over passende en minder passende beroepsgroepen." },
       { slug: "loopbaanwaarden", title: "Loopbaanwaarden", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Bieden van ondersteuning bij het beantwoorden van de vraag of bepaalde functies, rollen of organisties passen bij de loopbaanwaarden van de persoon." },
       { slug: "communicatiestijlen-test", title: "Communicatiestijl test", cats: ["Evalueren", "Ontwikkeling"], goal: "Vergelijken aanwezigheid essentiële omgangsfactoren (macht/invloed en persoonlijke afstand/nabijheid) en het vertalen hiervan naar specifieke communicatiestijlen." },
       { slug: "competentie-check", title: "Competentietest", cats: ["Evalueren", "Ontwikkeling"], goal: "Verschaffen feedback (0 graden) over eigen gedrag van medewerker. Antwoord op de vraag hoe men zichzelf ziet." },

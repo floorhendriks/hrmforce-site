@@ -38,7 +38,7 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
           <select name="country" id="coCountry" required>
             <option value="">{c.pick}</option>
             {euList.map(([code, name]) => (<option value={code}>{name}</option>))}
-            <option value="XX">— {c.sumVatExport} —</option>
+            <option value="XX">, {c.sumVatExport}, </option>
           </select>
         </label>
       </div>
@@ -72,8 +72,8 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
   .co-empty { text-align: center; padding: 50px 0; }
   .co-empty p { color: var(--muted); margin-bottom: 16px; }
   .co-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 28px; align-items: start; }
-  .co-order, .co-form { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px; box-shadow: var(--shadow-sm); }
-  .co-order h2, .co-form h2 { color: var(--navy); font-size: 1.15rem; margin: 0 0 14px; }
+  .co-order.co-form { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px; box-shadow: var(--shadow-sm); }
+  .co-order h2.co-form h2 { color: var(--navy); font-size: 1.15rem; margin: 0 0 14px; }
   .co-line { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
   .co-line-img { width: 52px; height: 52px; border-radius: 8px; background: var(--bg-soft) center/cover no-repeat; flex: none; }
   .co-line-b { flex: 1; min-width: 0; }
@@ -87,16 +87,16 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
   .co-2 { display: flex; gap: 12px; }
   .co-2 > label { flex: 1; min-width: 0; }
   .co-form label { display: block; color: var(--navy); font-weight: 600; font-size: 13px; }
-  .co-form input, .co-form select { width: 100%; margin-top: 4px; padding: 10px 12px; border: 1px solid var(--line-strong); border-radius: 8px; font-family: inherit; font-size: 14px; background: #fff; color: var(--navy); font-weight: 500; }
-  .co-form input:focus, .co-form select:focus { outline: 2px solid var(--blue); border-color: var(--blue); }
+  .co-form input.co-form select { width: 100%; margin-top: 4px; padding: 10px 12px; border: 1px solid var(--line-strong); border-radius: 8px; font-family: inherit; font-size: 14px; background: #fff; color: var(--navy); font-weight: 500; }
+  .co-form input:focus.co-form select:focus { outline: 2px solid var(--blue); border-color: var(--blue); }
   .co-hint { color: var(--muted); font-size: 12px; margin: 4px 0 0; }
-  .co-invalid { border-color: #d64545 !important; box-shadow: 0 0 0 2px rgba(214,69,69,.15); }
+  .co-invalid { border-color: #d64545 !important; box-shadow: 0 0 0 2px rgba(214,69,69.15); }
   .co-sum { border-top: 1px solid var(--line); margin-top: 16px; padding-top: 14px; display: grid; gap: 6px; }
   .co-sum-row { display: flex; justify-content: space-between; font-size: 14px; color: var(--text); }
   .co-sum-total { font-weight: 800; color: var(--navy); font-size: 1.1rem; border-top: 1px solid var(--line); padding-top: 8px; margin-top: 2px; }
   .co-warn { color: #b3261e; background: #fdeceb; border: 1px solid #f6c9c5; border-radius: 8px; padding: 8px 12px; font-size: 13px; font-weight: 600; margin: 12px 0 0; }
   .co-pay { width: 100%; margin-top: 14px; padding: 13px 18px; font-size: 15px; }
-  .co-secure, .co-terms { text-align: center; color: var(--muted); font-size: 12px; margin: 10px 0 0; }
+  .co-secure.co-terms { text-align: center; color: var(--muted); font-size: 12px; margin: 10px 0 0; }
   .co-terms { text-align: left; margin-top: 8px; }
   @media (max-width: 820px) { .co-grid { grid-template-columns: 1fr; } .co-order { order: 2; } }
   @media (max-width: 520px) { .co-2 { flex-direction: column; gap: 12px; } }
@@ -207,7 +207,7 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
       req.forEach(function (name) {
         var el = form.elements[name];
         var ok = (el.value || "").trim().length > 0;
-        el.classList.toggle("co-invalid", !ok);
+        el.classList.toggle("co-invalid"!ok);
         if (!ok) bad = true;
       });
       var emailEl = form.elements["email"];

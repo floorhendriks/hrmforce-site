@@ -11,7 +11,7 @@ export const glossaryContent = {
     { id: "persoonlijkheidstest", term: "Persoonlijkheidstest", def: "Brengt stabiele voorkeuren en gedrag in kaart. Er zijn geen goede of foute antwoorden.", link: "/assessments/big-five/" },
     { id: "drijfveren", term: "Drijfveren", def: "Wat iemand motiveert en energie geeft in het werk. Bepalend voor betrokkenheid en fit.", link: "/assessments/drijfverentest/" },
     { id: "360-feedback", term: "360-graden feedback", def: "Feedback op gedrag vanuit meerdere perspectieven: leidinggevende, collega's, klanten en zelfbeeld.", link: "/assessments/360-graden-feedback/" },
-    { id: "competentie", term: "Competentie", def: "Een cluster van kennis, vaardigheden en gedrag dat nodig is om een taak of rol goed uit te voeren.", link: "/assessments/competentie-check/" },
+    { id: "competentie", term: "Competentie", def: "Een cluster van kennis, vaardigheden en gedrag dat nodig is om een taak of rol naar behoren uit te voeren.", link: "/assessments/competentie-check/" },
     { id: "predictieve-validiteit", term: "Predictieve validiteit", def: "De mate waarin een testscore toekomstig gedrag of prestaties voorspelt.", link: null },
     { id: "percentiel", term: "Percentielscore", def: "Geeft aan welk percentage van de normgroep lager scoort. Percentiel 70 betekent: hoger dan 70% van de groep.", link: null },
     { id: "sjt", term: "Situationele beoordelingstest (SJT)", def: "Legt realistische werksituaties voor en meet welke aanpak iemand kiest.", link: null },

@@ -14,13 +14,13 @@ export const oplossingen = [
       nieuw: ["Matchprofiel op basis van het functieprofiel en je eigen topperformers", "Objectieve match-score van 0% tot 100% per kandidaat", "Alleen de vragenlijsten die relevant zijn voor die functie", "Iedereen beoordeelt op dezelfde competenties", "Risico's en aandachtspunten staan al in het rapport"],
     },
     title: "Matching & selectie",
-    metaTitle: "Matching & selectie | Automatisch de beste kandidaten matchen | Hrmforce",
+    metaTitle: "Matching & selectie | Automatisch de best passende kandidaten matchen | Hrmforce",
     metaDescription:
       "Met selectieassessments vind je sneller kandidaten die bij je organisatie passen. Zo wordt je selectieproces makkelijk en objectief.",
-    intro: ["Vacatures blijven lang open en wie je aanneemt blijkt achteraf niet de beste match. Voorselecteren op cv en onderbuik kost tijd en levert verkeerde aannames op.", "hrmforce matcht kandidaten data-gedreven op de competenties van de functie. Je krijgt een objectieve ranking en rapportages, zodat je sneller de juiste mensen selecteert."],
+    intro: ["Vacatures blijven lang open en wie je aanneemt blijkt achteraf niet de juiste match. Voorselecteren op cv en onderbuik kost tijd en levert verkeerde aannames op.", "hrmforce matcht kandidaten data-gedreven op de competenties van de functie. Je krijgt een objectieve ranking en rapportages, zodat je sneller de juiste mensen selecteert."],
     body: [
       "Je gebruikt alleen vragenlijsten en assessments die relevant zijn voor de functie in kwestie. Dat bepaal je aan de hand van bijvoorbeeld het functieprofiel en een best-practice-onderzoek. Kandidaten hoeven zo minder onnodige formulieren in te vullen.",
-      "Door objectieve, valide analyse selecteer je automatisch alleen de kandidaten met het meeste potentieel. De rapportages zorgen bovendien voor inhoudelijkere gesprekken: zowel jij als de sollicitant krijgt meer inzicht in sterke punten en mogelijke struikelblokken.",
+      "Door objectieve, valide analyse selecteer je automatisch alleen de kandidaten met het meeste potentieel. De rapportages leiden daarnaast tot inhoudelijkere gesprekken: zowel jij als de sollicitant krijgt meer inzicht in sterke punten en mogelijke struikelblokken.",
       "Het systeem genereert automatisch een ranking van kandidaten met scores van 0% tot 100%. Vervolgens klik je in onze software op een kandidaat voor gedetailleerde matchinformatie, handig om tijdens de gesprekken te gebruiken. Zo neem je de meest geschikte kandidaten aan, wat betere resultaten oplevert en je tijd bespaart.",
     ],
     bullets: [
@@ -40,7 +40,7 @@ export const oplossingen = [
       lead: "Zo pakken we het aan als je vacatures lang openstaan of nieuwe medewerkers niet blijken te passen.",
       steps: [
         { t: "Intake: waar loopt het vast?", d: "We brengen in kaart waar het knelt: te veel of te weinig kandidaten, verkeerde aannames of een selectieproces dat te lang duurt. Je vertelt wat de functie echt vraagt." },
-        { t: "Matchprofiel opstellen", d: "We bouwen een matchprofiel op basis van het functieprofiel en, als je die data hebt, je eigen goed presterende medewerkers. Daaruit volgt welke assessments relevant zijn." },
+        { t: "Matchprofiel opstellen", d: "We bouwen een matchprofiel op basis van het functieprofiel en, als je die data hebt, je best presterende medewerkers. Daaruit volgt welke assessments relevant zijn." },
         { t: "Kandidaten testen en ranken", d: "Kandidaten vullen alleen de relevante vragenlijsten in, in hun eigen taal. Het systeem berekent per kandidaat een matchscore van 0% tot 100% en zet ze op een ranglijst." },
         { t: "Gesprek en besluit", d: "Per kandidaat krijg je een rapport met sterke punten, risico's en doorvraagvragen. Je voert een inhoudelijker gesprek en legt je besluit onderbouwd vast." },
       ],
@@ -142,7 +142,7 @@ export const oplossingen = [
     intro: ["Ziekteverzuim, verloop en medewerkers die vastlopen in hun rol kosten veel geld en energie. Vaak zie je te laat dat iemand niet meer op zijn plek zit.", "hrmforce maakt duurzame inzetbaarheid meetbaar met wetenschappelijke vragenlijsten. Je ziet vroeg waar ontwikkeling of bijsturing nodig is, en houdt mensen gezond en gemotiveerd aan het werk."],
     body: [
       "Onze employability-oplossing ondersteunt zowel interne als externe loopbaanontwikkeling. Het verhoogt het engagement van medewerkers en voorkomt dat iemand langdurig in een niet-passende functie actief blijft.",
-      "Een hogere inzetbaarheid is niet alleen voordelig voor de medewerker, maar ook voor de werkgever. Werknemers zijn onder meer flexibeler, beter getraind, effectiever en maken minder fouten. Op de lange termijn draagt werken aan inzetbaarheid eraan bij dat kennis binnen de organisatie geborgd blijft, dat de organisatie zich sneller aanpast aan veranderende marktomstandigheden en dat de loyaliteit van medewerkers toeneemt.",
+      "Een hogere inzetbaarheid levert de medewerker en de werkgever allebei iets op. Werknemers zijn onder meer flexibeler, beter getraind, effectiever en maken minder fouten. Op de lange termijn draagt werken aan inzetbaarheid eraan bij dat kennis binnen de organisatie geborgd blijft, dat de organisatie zich sneller aanpast aan veranderende marktomstandigheden en dat de loyaliteit van medewerkers toeneemt.",
       "Employability biedt personeel de middelen om zelf hun carrièrepad te kiezen, bevraagt de tevredenheid van medewerkers via Pulse Surveys en medewerkertevredenheidsonderzoek, en meet persoonlijkheid, motivatie, gedrag en interessegebieden, inclusief sterktes en zwaktes.",
     ],
     bullets: [

@@ -1,4 +1,4 @@
-// en/de/fr/es/ro eerste vertaalslag — native review aanbevolen.
+// en/de/fr/es/ro eerste vertaalslag, native review aanbevolen.
 export const voorbereidingContent = {
   nl: {
     meta: {
@@ -52,20 +52,20 @@ export const voorbereidingContent = {
 <p>Tijdens een praktijksimulatie wordt een situatie uit de praktijk nagespeeld. Tijdens deze simulatie is je gesprekspartner meestal een acteur die haar of zijn rol realistisch speelt. Door een praktijksituatie na te bootsen, kan er geobserveerd worden hoe iemand reageert in een bepaalde (werk)situatie. De resultaten van de praktijksimulatie worden gekoppeld aan de resultaten uit het interview-assessment, de persoonlijkheidsvragenlijsten en eventuele andere assessments.</p>
 <p>Tijdens een praktijksimulatie wordt er gekeken naar de sociale en communicatieve vaardigheden van de kandidaat. Het gedrag en de gesprekstechnieken van de kandidaat worden geobserveerd.</p>
 <p>Het is aan te raden gekleed te gaan zoals je naar je toekomstige werk gekleed dient te gaan of zoals je naar je huidige werk gaat. Van belang is hierbij dat de dresscode past bij de omgeving waar je terechtkomt of waarvoor je de assessments maakt.</p>
-<h3>Tips voor een goede voorbereiding</h3>
+<h3>Tips om je voor te bereiden</h3>
 <ol>
-  <li>Wees jezelf. Dit is het gemakkelijkst en het zorgt voor de beste inzichten voor jou en de leidinggevende/assessor.</li>
-  <li>Zorg dat je goed uitgerust bent en dat je op tijd aanwezig bent. Zorg daarom van tevoren voor een goede planning.</li>
+  <li>Wees jezelf. Dit is het gemakkelijkst en levert de bruikbaarste inzichten op voor jou en de leidinggevende of assessor.</li>
+  <li>Zorg dat je uitgerust bent en op tijd aanwezig. Plan je dag daar van tevoren op.</li>
   <li>Kijk van tevoren op welke locatie je verwacht wordt en hoe je deze locatie het beste kan bereiken. Vertrek op tijd en houd rekening met mogelijke files/vertragingen. Als je eventuele vertragingen incalculeert, zal dit zorgen voor een geruster gevoel.</li>
   <li>Lees je van tevoren in over de assessments die je moet maken en maak eventuele relevante oefentesten.</li>
   <li>Maak assessments nooit op het laatste moment. Hierdoor weet je zeker dat je de assessments op tijd kunt maken. Mocht er dan toch iets misgaan, dan heb je nog voldoende tijd om het op te lossen en het assessment alsnog te maken.</li>
   <li>Maak assessments altijd in een rustige omgeving waar je niet gestoord wordt.</li>
   <li>Assessments geven een duidelijk beeld van de kandidaat weer. Geef eerlijk antwoord op de vragen en leer jezelf door de uitslag nog beter kennen.</li>
-  <li>Als je uitgenodigd bent voor een assessment-dag, bereid je dan goed voor op het volgende:
+  <li>Als je uitgenodigd bent voor een assessment-dag, bereid je dan voor op het volgende:
     <ol>
       <li>Ken je eigen sterktes en zwaktes en weet deze te beschrijven aan de hand van voorbeelden.</li>
       <li>Geef aan waar jouw ontwikkelpunten liggen.</li>
-      <li>Zorg ervoor dat je je ambitie en motivatie goed onder woorden kunt brengen.</li>
+      <li>Zorg dat je je ambitie en motivatie onder woorden kunt brengen.</li>
     </ol>
   </li>
 </ol>
@@ -73,7 +73,7 @@ export const voorbereidingContent = {
     contact: {
       eyebrow: "Contact",
       title: "Nog vragen? Neem contact op",
-      intro: "Mocht je na het lezen van deze pagina nog aanvullende vragen hebben, neem dan contact met ons op. Dat kan door het contactformulier in te vullen of te bellen met een van onze adviseurs. Onze adviseurs zijn maandag t/m vrijdag van 08:00 – 18:00 uur bereikbaar.",
+      intro: "Mocht je na het lezen van deze pagina nog aanvullende vragen hebben, neem dan contact met ons op. Dat kan door het contactformulier in te vullen of te bellen met een van onze adviseurs. Onze adviseurs zijn maandag t/m vrijdag van 08:00 tot 18:00 uur bereikbaar.",
       cta: "Naar het contactformulier",
     },
   },

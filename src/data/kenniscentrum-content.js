@@ -1,5 +1,5 @@
 // Kenniscentrum-UI-teksten per taal, gebruikt door src/components/Kenniscentrum.astro.
-// en/de/fr/es/ro eerste vertaalslag — native review aanbevolen.
+// en/de/fr/es/ro eerste vertaalslag, native review aanbevolen.
 // De artikelen zelf komen uit Sanity; hier staat alleen de UI + de zoek-logica per taal.
 export const kenniscentrumContent = {
   nl: {
@@ -15,7 +15,7 @@ export const kenniscentrumContent = {
     resetFilters: "Wis de filters",
     dateLocale: "nl-NL",
     cats: { persoonlijkheid: "Persoonlijkheid", drijfveren: "Drijfveren & motivatie", cognitie: "Capaciteiten & cognitie", assessment: "Assessments & tests", selectie: "Werving & selectie", leiderschap: "Leiderschap", teams: "Teams & samenwerking", ontwikkeling: "Ontwikkeling & leren", loopbaan: "Loopbaan & studiekeuze", welzijn: "Welzijn & veerkracht", product: "Product & updates", hr: "HR & organisatie", modellen: "Modellen & theorie", overig: "Overig" },
-    // path match "/kenniscentrum/*" — NL-artikelen (geen taalprefix).
+    // path match "/kenniscentrum/*", NL-artikelen (geen taalprefix).
     sanityMatch: `string::startsWith(path, "/kenniscentrum/")`,
     empty: { title: "Binnenkort meer artikelen", lead: "We vertalen ons kenniscentrum stap voor stap. Ontdek in de tussentijd onze assessments of bekijk de mogelijkheden en tarieven.", ctaAssessments: "Bekijk de assessments", ctaTarieven: "Mogelijkheden & tarieven" },
   },

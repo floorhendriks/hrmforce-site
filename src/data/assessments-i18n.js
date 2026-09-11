@@ -1,5 +1,5 @@
 // Vertaalde teksten per assessment, per taal. NL (src/data/assessments.js) is leidend.
-// en/de/fr/es/ro eerste vertaalslag — native review aanbevolen.
+// en/de/fr/es/ro eerste vertaalslag, native review aanbevolen.
 // Beeld/slug/quote.author/quote.initials worden NIET vertaald; die komen uit assessments.js.
 const qEN = { heading: "Reliable insight", text: "Our instruments are scientifically validated and give organisations a reliable compass for selection and development.", role: "HR specialist" };
 const qDE = { heading: "Verlässliche Erkenntnisse", text: "Unsere Instrumente sind wissenschaftlich validiert und geben Organisationen einen verlässlichen Kompass für Auswahl und Entwicklung.", role: "HR-Spezialist" };

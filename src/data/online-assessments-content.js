@@ -1,6 +1,6 @@
 // Content voor de online-assessments-pagina per taal, gebruikt door
 // src/components/OnlineAssessments.astro.
-// NL = leidend. DE/FR/ES/RO eerste vertaalslag — native review aanbevolen.
+// NL = leidend. DE/FR/ES/RO eerste vertaalslag, native review aanbevolen.
 export const oaContent = {
   nl: {
     meta: { title: "Online assessments | 10.000+ deelnemers, 4,9 sterren", description: "Gevalideerde online assessments voor selectie en ontwikkeling. Beoordeeld met 4,9 sterren door 10.000+ deelnemers. Bekijk het volledige aanbod." },
@@ -17,7 +17,7 @@ export const oaContent = {
       { name: "Esther M.", text: "Enorm klantvriendelijk en meedenkend. hrmforce heeft mij geholpen talenten en ontwikkelpunten van mijn medewerkers in kaart te brengen, wat heeft gezorgd voor een enorm boost voor het bedrijf." },
       { name: "Juliëtte K.", text: "Leuke gratis kleurentest gedaan !" },
     ],
-    ctaBand: { title: "Vraag een gratis demo aan", text: "Wij zijn overtuigd van de kwaliteit van onze assessments en HRM oplossingen. Wil je het graag zelf ervaren? Vul dan het formulier in. Een van onze adviseurs neemt dan (vrijblijvend) contact met je op voor een gratis hrmforce demo.", primary: "Demo aanvragen", secondary: "Bekijk alle assessments" },
+    ctaBand: { title: "Vraag een gratis demo aan", text: "Bekijk in een demo hoe onze assessments en HRM-oplossingen werken, met je eigen vraagstuk als voorbeeld. Vul het formulier in. Een van onze adviseurs neemt dan (vrijblijvend) contact met je op voor een gratis hrmforce demo.", primary: "Demo aanvragen", secondary: "Bekijk alle assessments" },
     ui: { goalLabel: "Doel:", readmore: "Lees meer" },
     cyclus: ["(Pre)Selectie", "Evalueren", "Ontwikkeling", "Studiekeuze"],
     featured: [
@@ -26,9 +26,9 @@ export const oaContent = {
       { slug: "big-five", title: "Persoonlijkheidstest: Big Five", cats: ["(Pre)Selectie", "Evalueren", "Ontwikkeling"], goal: "Persoonlijkheidskenmerken omzetten naar vaardigheden en zo ontdekken waar iemand kan groeien." },
       { slug: "drijfverentest", title: "Drijfverentest", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Duidelijk helpen begrijpen wat motivatie verhoogt en verlaagt." },
       { slug: "ability-scan", title: "Ability Scan | Cognitieve capaciteitentest", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Hoe snel kan je problemen begrijpen, een mening vormen en nieuwe dingen aanleren. Daaruit gemiddelde niveau opmaken: mbo, hbo of Master." },
-      { slug: "ontwikkelassessment", title: "Ontwikkelassessment", cats: ["Ontwikkeling"], goal: "Valide overzicht van welke competenties ontwikkeling behoeven en welke al goed gaan." },
+      { slug: "ontwikkelassessment", title: "Ontwikkelassessment", cats: ["Ontwikkeling"], goal: "Valide overzicht van welke competenties ontwikkeling vragen en welke al op niveau zijn." },
       { slug: "studiekeuzetest", title: "Studiekeuzetest", cats: ["Ontwikkeling", "Studiekeuze"], goal: "Op basis van interesses scholieren, studenten en werknemers inzicht geven in de best passende opleidingen." },
-      { slug: "lencioni-teamdynamiek", title: "Lencioni Teamdynamiek", cats: ["Ontwikkeling"], goal: "De Lencioni vragenlijst is ontworpen om teams te helpen de teamdynamiek te begrijpen en te evalueren door de aanwezigheid en impact van de vijf disfuncties in teamwork te meten." },
+      { slug: "lencioni-teamdynamiek", title: "Lencioni Teamdynamiek", cats: ["Ontwikkeling"], goal: "De Lencioni vragenlijst is ontworpen om teams te helpen de teamdynamiek te begrijpen en te evalueren door de aanwezigheid en uitwerking van de vijf disfuncties in teamwork te meten." },
       { slug: "pulse-survey", title: "Pulse Survey", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "De mogelijkheid bieden aan organisaties om met behulp van onze standaard vragenlijsten en vragendatabase zelf vragenlijsten te ontwerpen en deze te versturen naar sollicitanten en medewerkers." },
       { slug: "mentale-veerkracht-scan", title: "Mentale Veerkracht Scan", cats: ["(Pre)Selectie", "Ontwikkeling"], goal: "Inzicht verkrijgen in de mate waarin men effectief blijft werken bij hoge druk en/of tegenslag" },
     ],

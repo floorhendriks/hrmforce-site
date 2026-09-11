@@ -201,7 +201,7 @@
   "ui.not-a-standard-every-profile-is": "Geen norm. Elk profiel is een startpunt dat je met de organisatie bijsnijdt voordat je ermee selecteert.",
   "ui.not-a-decision-rule-a-fit": "Geen beslisregel. Een fitscore ondersteunt een gesprek. Combineer altijd met een structureel interview, de sterkste enkelvoudige voorspeller.",
   "ui.not-a-normed-measurement-there-are": "Geen genormeerde meting. Er zijn nog geen normgroepen per skill: een niveau is een definitie, niet een percentiel.",
-  "ui.not-a-replacement-for-rater-training": "Geen vervanging voor beoordelaarstraining. Gedragsankers werken pas goed samen met een kalibratiesessie voor de beoordelaars.",
+  "ui.not-a-replacement-for-rater-training": "Geen vervanging voor beoordelaarstraining. Gedragsankers werken pas met een kalibratiesessie voor de beoordelaars erbij.",
   "ui.this-is-a-selection-criterion-not": "Dit is een selectiecriterium, geen ontwikkeldoel op korte termijn. Zet hier geen ontwikkelplan van drie maanden op.",
   "ui.n2-and-n4-are-deliberately-not": "N2 en N4 zijn bewust niet geankerd. Beoordelaars plaatsen die tussen de ankers, conform de conventie van O*NET.",
   "ui.source-note": "Bron: {framework}, versie {version}, gebouwd op {built}. Crosswalks naar ESCO v1.2.1, O*NET 31.0, Lightcast Open Skills, SFIA 9, DigComp 3.0, EntreComp, LifeComp, GreenComp, AILit, WEF Future of Jobs 2025, ISCO-08 en de Beroepenindeling ROA-CBS 2014 editie 2025. Dit profiel is een startpunt, geen norm: stem het af op de eigen organisatie voordat je ermee selecteert.",

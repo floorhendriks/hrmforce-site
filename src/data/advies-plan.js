@@ -54,9 +54,9 @@ export const adviesPlanBySlug = {
     steps: [
       { t: "Intake met HR", d: "We bepalen waar de gesprekken nu op vastlopen: te vaag, te veel over het verleden of ze vinden simpelweg niet plaats." },
       { t: "Voorbereiding deelnemers", d: "Deelnemers vullen een vragenlijst in over hun eigen gedrag en drijfveren, zodat de training over hun praktijk gaat en niet over theorie." },
-      { t: "Trainingsdag", d: "Je oefent gespreksstructuur, doorvragen en het benoemen van wat niet goed gaat. Met eigen casussen en directe feedback." },
+      { t: "Trainingsdag", d: "Je oefent gespreksstructuur, doorvragen en het benoemen van wat stroef loopt. Met eigen casussen en directe feedback." },
       { t: "Toepassen", d: "Deelnemers voeren de eerstvolgende gesprekken met de gesprekopzet uit de training, ondersteund door de gesprekscyclus in de portal." },
-      { t: "Terugkomsessie", d: "Na enkele weken bespreken we wat werkte en wat niet, en scherpen we de aanpak aan." },
+      { t: "Terugkomsessie", d: "Na een paar weken bespreken we wat werkte en wat niet, en scherpen we de aanpak aan." },
     ],
     outcome: "Het resultaat: gesprekken die daadwerkelijk plaatsvinden, concreter zijn en tot afspraken leiden die worden opgevolgd.",
   },

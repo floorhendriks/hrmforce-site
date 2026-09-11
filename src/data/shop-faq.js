@@ -6,10 +6,10 @@ export const GENERAL = {
     { q:"Wat krijg ik als resultaat en hoe ziet het rapport eruit?", a:"Na afronding ontvang je een overzichtelijk rapport met scores, grafieken en een heldere toelichting per dimensie. Het rapport bevat concrete inzichten en, waar relevant, aanbevelingen voor selectie of ontwikkeling." },
     { q:"Zijn de tests wetenschappelijk gevalideerd?", a:"Ja. Onze instrumenten zijn ontwikkeld op basis van gevestigde psychologische modellen en zijn gevalideerd via normonderzoek. We onderbouwen constructvaliditeit en criteriumvaliditeit met periodiek geactualiseerde data." },
     { q:"Hoe betrouwbaar zijn de resultaten?", a:"De tests hebben hoge betrouwbaarheidscoefficienten (interne consistentie en test-hertest). Dit betekent dat de scores stabiel en consistent zijn en een solide basis vormen voor beslissingen." },
-    { q:"Kan ik een abonnement nemen of een test los afnemen?", a:"Beide kan. Je koopt een losse afname voor een enkele kandidaat, of je kiest een abonnement of credits-pakket voor frequent gebruik met voordeliger tarieven en beheer via je eigen omgeving." },
+    { q:"Kan ik een abonnement nemen of een test los afnemen?", a:"Beide kan. Je koopt een losse afname voor een kandidaat, of je kiest een abonnement of credits-pakket voor frequent gebruik met voordeliger tarieven en beheer via je eigen omgeving." },
     { q:"Hoe gaan jullie om met privacy en de AVG?", a:"We verwerken gegevens volgens de AVG. Data wordt versleuteld opgeslagen, alleen gebruikt voor het overeengekomen doel en niet gedeeld met derden. Kandidaten hebben inzage- en verwijderrechten." },
     { q:"Voor wie zijn deze assessments geschikt?", a:"De assessments zijn geschikt voor selectie, loopbaanbegeleiding en ontwikkeling, van starters tot ervaren professionals. Per test staat aangegeven voor welke doelgroep en welk niveau die het meest geschikt is." },
-    { q:"Kan ik meerdere tests combineren?", a:"Ja, tests zijn goed te combineren tot een complete meting. Zo koppel je bijvoorbeeld persoonlijkheid aan capaciteiten of drijfveren voor een breder en betrouwbaarder beeld van een kandidaat." },
+    { q:"Kan ik meerdere tests combineren?", a:"Ja, tests zijn samen af te nemen tot een complete meting. Zo koppel je bijvoorbeeld persoonlijkheid aan capaciteiten of drijfveren voor een breder en betrouwbaarder beeld van een kandidaat." },
     { q:"Welke ondersteuning en certificering bieden jullie?", a:"We bieden support bij inrichting en interpretatie en verzorgen certificeringstrainingen voor professioneel gebruik. Daarnaast is er documentatie en persoonlijk advies beschikbaar bij vragen." }
   ],
   en: [
@@ -78,8 +78,8 @@ export const BY_SEGMENT = {
   "Persoonlijkheid": {
     nl: [
       { q:"Welk persoonlijkheidsmodel gebruiken jullie?", a:"De persoonlijkheidstest is gebaseerd op het wetenschappelijk breed geaccepteerde Big Five-model en meet dimensies zoals extraversie, zorgvuldigheid, emotionele stabiliteit, openheid en altruisme, met onderliggende facetten." },
-      { q:"Kan een kandidaat de test manipuleren of sociaal wenselijk antwoorden?", a:"De test bevat controlemechanismen voor sociale wenselijkheid en inconsistent antwoordgedrag. Zo herkennen we faken of te positief zelfbeeld en blijft de meting betrouwbaar." },
-      { q:"Hoe stabiel is een persoonlijkheidsprofiel over de tijd?", a:"Persoonlijkheidskenmerken zijn relatief stabiel bij volwassenen. Kleine verschuivingen zijn normaal, maar het profiel blijft over maanden en jaren goed vergelijkbaar en herkenbaar." },
+      { q:"Kan een kandidaat de test manipuleren of sociaal wenselijk antwoorden?", a:"De test bevat controlemechanismen voor sociale wenselijkheid en inconsistent antwoordgedrag. Zo herkennen we faken of een te positief zelfbeeld en blijft de meting bruikbaar." },
+      { q:"Hoe stabiel is een persoonlijkheidsprofiel over de tijd?", a:"Persoonlijkheidskenmerken zijn relatief stabiel bij volwassenen. Kleine verschuivingen zijn normaal, en het profiel blijft over maanden en jaren vergelijkbaar en herkenbaar." },
       { q:"Gebruik ik deze test voor selectie of voor ontwikkeling?", a:"Beide. Bij selectie helpt het profiel om fit met rol en team te beoordelen; bij ontwikkeling geeft het aanknopingspunten voor coaching, zelfinzicht en groei." },
       { q:"Hoe verloopt de terugkoppeling naar de kandidaat?", a:"De kandidaat krijgt een begrijpelijk rapport en idealiter een gesprek waarin scores worden geduid. Terugkoppeling is beschrijvend en niet oordelend, gericht op herkenning en dialoog." },
       { q:"Met welke normgroepen worden scores vergeleken?", a:"Scores worden afgezet tegen relevante normgroepen, zoals de algemene beroepsbevolking of een specifieke sector. Zo interpreteer je een score altijd in de juiste context." }
@@ -130,7 +130,7 @@ export const BY_SEGMENT = {
       { q:"Welke cognitieve vaardigheden meet de intelligentietest?", a:"De test meet capaciteiten zoals verbaal, numeriek en abstract redeneren en probleemoplossend vermogen. Samen geven ze een beeld van het algemeen cognitief niveau." },
       { q:"Werkt de test adaptief?", a:"Ja, waar mogelijk passen we adaptief testen toe: de moeilijkheid past zich aan op basis van eerdere antwoorden. Dat maakt de meting korter en nauwkeuriger." },
       { q:"Is de test cultuurfair opgesteld?", a:"We streven naar cultuurfairness door items te gebruiken die zo min mogelijk afhankelijk zijn van taal en culturele achtergrond, en door normgroepen zorgvuldig samen te stellen." },
-      { q:"Wat is de voorspellende waarde voor werkprestaties?", a:"Cognitieve capaciteit is een van de sterkste voorspellers van werkprestaties en leersnelheid, zeker in combinatie met persoonlijkheid en motivatie." },
+      { q:"Wat is de voorspellende waarde voor werkprestaties?", a:"Cognitieve capaciteit is een van de sterkste voorspellers van werkprestaties en leersnelheid, zeker samen met persoonlijkheid en motivatie." },
       { q:"Geeft de test een niveau-indicatie zoals MBO, HBO of WO?", a:"Ja, de scores kunnen worden vertaald naar een indicatie van werk- en denkniveau, zodat je kunt inschatten of een kandidaat past bij het gevraagde niveau." },
       { q:"Kan een kandidaat oefenen voordat de test start?", a:"Ja, elke kandidaat krijgt vooraf voorbeeldopgaven en uitleg. Zo begrijpt iedereen het opgavetype en wordt gemeten wat je wilt meten, zonder verrassingseffect." }
     ],
@@ -229,8 +229,8 @@ export const BY_SEGMENT = {
     nl: [
       { q:"Wat meet een interessetest precies?", a:"Een interessetest brengt in kaart naar welke activiteiten, werkvelden en werkomgevingen iemand van nature wordt aangetrokken. Dat geeft richting bij studie- en loopbaankeuzes." },
       { q:"Hoe worden interesses gekoppeld aan beroepen?", a:"Je interesseprofiel wordt gekoppeld aan beroepen en opleidingsrichtingen die daarbij passen. Zo zie je concrete opties die aansluiten bij wat je energie geeft." },
-      { q:"Kan een interessetest helpen bij een loopbaankeuze of heroriëntatie?", a:"Ja, de test is bij uitstek geschikt voor loopbaanorientatie en heroverweging. Hij helpt patronen te herkennen en keuzes te onderbouwen met inzicht in je voorkeuren." },
-      { q:"Is er een goed of fout antwoord bij interesses?", a:"Nee, er zijn geen goede of foute antwoorden. Het gaat om je persoonlijke voorkeuren; eerlijk antwoorden levert het meest bruikbare en herkenbare profiel op." },
+      { q:"Kan een interessetest helpen bij een loopbaankeuze of heroriëntatie?", a:"Ja, de test is zeer geschikt voor loopbaanorientatie en heroverweging. Hij helpt patronen te herkennen en keuzes te onderbouwen met inzicht in je voorkeuren." },
+      { q:"Bestaat er een goed of fout antwoord bij interesses?", a:"Nee, er zijn geen goede of foute antwoorden. Het gaat om je persoonlijke voorkeuren; eerlijk antwoorden levert het meest bruikbare en herkenbare profiel op." },
       { q:"Veranderen interesses in de loop van een loopbaan?", a:"Interesses zijn redelijk stabiel maar kunnen verschuiven door ervaring en levensfase. Periodiek meten geeft inzicht in hoe je voorkeuren zich ontwikkelen." },
       { q:"Voor welke doelgroep is de interessetest geschikt?", a:"De test is geschikt voor scholieren, studenten en werkenden die keuzes maken over opleiding of loopbaan, en voor loopbaanprofessionals die hen begeleiden." }
     ],
@@ -331,7 +331,7 @@ export const BY_SEGMENT = {
       { q:"Hoe verschillen drijfveren van persoonlijkheid?", a:"Persoonlijkheid beschrijft hoe iemand zich gedraagt; drijfveren verklaren waarom. Samen geven ze een rijker beeld van motivatie en gedrag in werk." },
       { q:"Hoe koppel ik drijfveren aan werk of loopbaan?", a:"Het profiel laat zien welke werkomgeving, cultuur en taken aansluiten bij iemands motieven. Zo vind je rollen waarin iemand duurzaam gemotiveerd en betrokken blijft." },
       { q:"Kunnen drijfveren helpen bij motivatie en bevlogenheid?", a:"Ja, inzicht in drijfveren helpt werk zo in te richten dat het motiveert. Dat vergroot bevlogenheid, werkplezier en behoud van medewerkers." },
-      { q:"Zijn drijfveren stabiel of veranderlijk?", a:"Drijfveren zijn relatief stabiel maar kunnen door levensfase en ervaring in belang verschuiven. Ze vormen een betrouwbare basis voor loopbaangesprekken." },
+      { q:"Zijn drijfveren stabiel of veranderlijk?", a:"Drijfveren zijn relatief stabiel maar kunnen door levensfase en ervaring in belang verschuiven. Ze vormen een stevige basis voor loopbaangesprekken." },
       { q:"Waarvoor gebruik ik een drijfverentest het beste?", a:"De test is waardevol voor loopbaanontwikkeling, teamsamenstelling, cultuurfit en het voorkomen van demotivatie of uitval door een verkeerde match." }
     ],
     en: [
@@ -381,7 +381,7 @@ export const BY_SEGMENT = {
       { q:"Hoe verschilt een vaardighedentest van een capaciteitentest?", a:"Een capaciteitentest meet cognitief potentieel; een vaardighedentest richt zich op ontwikkelde, toepasbare competenties en aangeleerd gedrag in de praktijk." },
       { q:"Meet de test praktijkgedrag of alleen kennis?", a:"De focus ligt op gedrag en toepassing in realistische werksituaties, niet louter op theoretische kennis. Zo zie je hoe iemand vaardigheden daadwerkelijk inzet." },
       { q:"Kan ik de competenties afstemmen op een specifieke functie?", a:"Ja, je kunt de gemeten competenties koppelen aan het competentieprofiel van de functie, zodat de meting relevant is voor de rol en selectie- of ontwikkeldoelen." },
-      { q:"Zijn vaardigheden te ontwikkelen na de meting?", a:"Ja, vaardigheden zijn bij uitstek ontwikkelbaar. Het rapport geeft aanknopingspunten voor training, coaching en gerichte oefening om competenties te versterken." },
+      { q:"Zijn vaardigheden te ontwikkelen na de meting?", a:"Ja, vaardigheden laten zich ontwikkelen. Het rapport geeft aanknopingspunten voor training, coaching en gerichte oefening om competenties te versterken." },
       { q:"Waarvoor gebruik ik een vaardighedentest het beste?", a:"De test is geschikt voor selectie op competenties, in-house ontwikkeling, loopbaanstappen en het onderbouwen van opleidings- en trainingsbehoeften." }
     ],
     en: [
@@ -430,7 +430,7 @@ export const BY_SEGMENT = {
       { q:"Wat meet een capaciteitentest?", a:"Een capaciteitentest meet cognitieve vaardigheden zoals verbaal, numeriek en abstract redeneren. Samen geven ze een beeld van iemands leer- en denkvermogen." },
       { q:"Werken jullie capaciteitentests adaptief?", a:"Waar mogelijk zetten we adaptief testen in, zodat de moeilijkheid meebeweegt met het niveau van de kandidaat. Dat maakt de afname efficienter en nauwkeuriger." },
       { q:"Zijn de capaciteitentests cultuurfair?", a:"We besteden veel aandacht aan cultuurfairness, met items die zo min mogelijk leunen op taal en achtergrond en met representatieve normgroepen." },
-      { q:"Wat is de voorspellende waarde van een capaciteitentest?", a:"Capaciteiten voorspellen sterk hoe snel iemand leert en presteert in complexere functies, en zijn een van de beste voorspellers van werksucces." },
+      { q:"Wat is de voorspellende waarde van een capaciteitentest?", a:"Capaciteiten voorspellen sterk hoe snel iemand leert en presteert in complexere functies, en zijn een van de sterkste voorspellers van werksucces." },
       { q:"Krijg ik een niveau-indicatie zoals MBO, HBO of WO?", a:"Ja, de scores worden vertaald naar een indicatie van werk- en denkniveau, zodat je kunt beoordelen of iemand aansluit bij het gevraagde functieniveau." },
       { q:"Kan een kandidaat oefenen met voorbeeldopgaven?", a:"Ja, voorafgaand aan elke subtest krijgt de kandidaat uitleg en oefenopgaven. Zo meet je zuiver de capaciteit en niet de onbekendheid met het opgavetype." }
     ],

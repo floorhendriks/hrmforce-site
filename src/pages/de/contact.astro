@@ -33,7 +33,7 @@ const offices = [
   },
   {
     naam: "hrmforce India",
-    regels: ["Plot #27, 1-4-190/27/1/A, Phase-I,", "Bhaskara Rao Nagar Sainikpuri P.O.", "Secunderabad – 500 094", "Telangana, India"],
+    regels: ["Plot #27, 1-4-190/27/1/A, Phase-I,", "Bhaskara Rao Nagar Sainikpuri P.O.", "Secunderabad, 500 094", "Telangana, India"],
     tel: "+91 89787 86121",
     telHref: "tel:+918978786121",
     mail: "india@hrmforce.com",
@@ -48,7 +48,7 @@ const offices = [
   },
   {
     naam: "hrmforce Spain",
-    regels: ["Carrer de les Barques 2 – 2nd floor", "46002 València", "Valencia, Spain"],
+    regels: ["Carrer de les Barques 2-2nd floor", "46002 València", "Valencia, Spain"],
     tel: "+31 (0)88 88 321 88",
     telHref: "tel:+31888832188",
     mail: "atencioncliente@hrmforce.com",
@@ -195,13 +195,11 @@ const offices = [
       font-size: 16px;
       margin-bottom: 18px;
     }
-    .contact-list,
-    .legal {
+    .contact-list.legal {
       list-style: none;
       margin: 0 0 18px;
     }
-    .contact-list li,
-    .legal li {
+    .contact-list li.legal li {
       padding: 8px 0;
       border-bottom: 1px dashed var(--line);
       color: var(--text);

@@ -11,7 +11,7 @@ export const adviesDetail = [
     metaDescription:
       "Gebruikers voorbereiden op de praktijk rond de implementatie en het gebruik van hrmforce en de vragenlijsten. Word gecertificeerd hrmforce-gebruiker.",
     intro: [
-      "Voor het gebruik van sommige vragenlijsten en oplossingen van hrmforce is een training nodig. Het is verstandig om je goed te laten informeren over hoe je de verschillende instrumenten inzet. Zeker bij persoonlijkheidsvragenlijsten is een training op maat aan te raden.",
+      "Voor een deel van de vragenlijsten en oplossingen van hrmforce is een training nodig. Laat je vooraf informeren over hoe je de instrumenten inzet. Zeker bij persoonlijkheidsvragenlijsten is een training op maat aan te raden.",
       "Doel van de training: gebruikers voorbereiden op de praktijk rond de implementatie en het gebruik van hrmforce en de vragenlijsten.",
     ],
     body: [
@@ -35,10 +35,10 @@ export const adviesDetail = [
     title: "Loopbaan-assessment",
     metaTitle: "Loopbaan-assessment | Beroepskeuze en carrièreadvies | Hrmforce",
     metaDescription:
-      "Een wetenschappelijk onderbouwd loopbaan-assessment dat persoonlijkheid, talenten en interesses combineert tot een betrouwbaar advies over passende beroepsgroepen.",
+      "Een wetenschappelijk onderbouwd loopbaan-assessment dat persoonlijkheid, talenten en interesses samenbrengt in een onderbouwd advies over passende beroepsgroepen.",
     intro: [
       "Sta je op een kruispunt in je loopbaan of twijfel je tussen verschillende richtingen? Het loopbaan-assessment van hrmforce helpt je een onderbouwde keuze te maken.",
-      "Het assessment combineert de resultaten van meerdere gevalideerde vragenlijsten tot een advies over passende en minder passende beroepsgroepen.",
+      "Het assessment brengt de resultaten van meerdere gevalideerde vragenlijsten samen in een advies over passende en minder passende beroepsgroepen.",
     ],
     body: [
       "In het assessment staan drie fundamentele vragen centraal. Wie ben ik: een analyse van persoonlijkheid, waarden en drijfveren aan de hand van gevalideerde psychometrische methoden. Wat kan ik: het in kaart brengen van talenten, vaardigheden en competenties. Wat wil ik: het onderzoeken van interesses, motivaties en carrièredoelen.",
@@ -49,7 +49,7 @@ export const adviesDetail = [
       "Wat kan ik: talenten, vaardigheden en competenties",
       "Wat wil ik: interesses, motivaties en carrièredoelen",
       "Persoonlijk rapport met concrete beroepssuggesties en ontwikkeladvies",
-      "Optioneel te combineren met persoonlijke coaching",
+      "Optioneel uit te breiden met persoonlijke coaching",
     ],
     cta: "Plan een kennismaking",
   },
@@ -61,7 +61,7 @@ export const adviesDetail = [
     metaDescription:
       "Maatwerktraining voor leden van de medezeggenschapsraad van scholen. Van een afwachtende naar een pro-actieve en daadkrachtige MR.",
     intro: [
-      "Als lid van de medezeggenschapsraad van je school krijg je steeds meer kansen en mogelijkheden om mee te denken en te praten over het beleid van de school en de plannen voor de toekomst. Daardoor is goede en daadkrachtige medezeggenschap niet alleen van groot belang, maar zelfs onmisbaar.",
+      "Als lid van de medezeggenschapsraad van je school krijg je steeds meer kansen en mogelijkheden om mee te denken en te praten over het beleid van de school en de plannen voor de toekomst. Daardoor vraagt medezeggenschap om leden die het beleid doorgronden en er daadkrachtig op reageren.",
       "Deze training is bedoeld voor leden van de medezeggenschapsraad van scholen.",
     ],
     body: [
@@ -86,13 +86,13 @@ export const adviesDetail = [
     metaDescription:
       "Maatwerk teamtraining voor (team)managers die hun team verder willen ontwikkelen. Op basis van feitelijk inzicht in teamkracht, rollen en samenwerking.",
     intro: [
-      "Inzicht in de teamkracht, de teamtaken en de teamdoelen vormt de basis voor een sterk teamplan. Daar dienen de rolopvatting, de rolverdeling en de samenwerking van de teamleden op aan te sluiten. Vanuit die analyse zijn team-ontwikkelpunten scherp te stellen.",
+      "Inzicht in de teamkracht, de teamtaken en de teamdoelen vormt de basis voor een sterk teamplan. Daar dienen de rolopvatting, de rolverdeling en de samenwerking van de teamleden op aan te sluiten. Vanuit die analyse breng je de ontwikkelpunten van het team scherp in beeld.",
       "Deze training is bedoeld voor (team)managers die hun team verder willen ontwikkelen. Het niveau van de training is HBO+.",
     ],
     body: [
       "In de training leer je de succesfactoren voor teams kennen, zoals het communiceren van heldere doelstellingen, het nemen van initiatief, het belang van flexibiliteit, wederzijds respect, open communicatie en gezamenlijke verantwoordelijkheid.",
-      "Daarnaast ontwikkel je de vaardigheden om je team te doorgronden en te laten groeien, passende interventies te kiezen en tot een goed onderbouwd teamplan te komen. De training is interactief en biedt veel ruimte voor de inbreng van eigen casuïstiek.",
-      "Ieder traject wordt aangepast aan de specifieke situatie van jouw organisatie en de deelnemers. De training kan op locatie plaatsvinden; de duur hangt af van de situatie en het maximaal aantal deelnemers bedraagt tien. Door de unieke testmethodiek van hrmforce krijg je op basis van feiten inzicht in jouw team, wat het uitgangspunt van de training vormt.",
+      "Daarnaast ontwikkel je de vaardigheden om je team te doorgronden en te laten groeien, passende interventies te kiezen en tot een onderbouwd teamplan te komen. De training is interactief en biedt veel ruimte voor de inbreng van eigen casuïstiek.",
+      "Ieder traject wordt aangepast aan de specifieke situatie van jouw organisatie en de deelnemers. De training kan op locatie plaatsvinden; de duur hangt af van de situatie en het maximaal aantal deelnemers bedraagt tien. Door de testmethodiek van hrmforce krijg je op basis van meetgegevens inzicht in jouw team, wat het uitgangspunt van de training vormt.",
     ],
     bullets: [
       "Heldere doelstellingen communiceren en initiatief nemen",
@@ -109,13 +109,13 @@ export const adviesDetail = [
     title: "Training 'Het goede gesprek'",
     metaTitle: "Training 'Het goede gesprek' | Beter evaluatiegesprekken voeren | Hrmforce",
     metaDescription:
-      "In deze interactieve training leer je hoe je een goed evaluatiegesprek voert. Voor medewerkers én leidinggevenden, met veel ruimte om te oefenen.",
+      "In deze interactieve training leer je een evaluatiegesprek voeren dat ergens over gaat. Voor medewerkers én leidinggevenden, met veel ruimte om te oefenen.",
     intro: [
       "Al een poos lang voer je zo nu en dan een functioneringsgesprek, met aan het einde van het jaar het beoordelingsgesprek. Ter voorbereiding ontvang je vaak een checklist die ook je leidinggevende invult, waarna het gesprek vooral over de verschillen tussen de lijsten gaat. Als je dat anders wilt aanpakken, biedt deze training uitkomst.",
       "De training is bedoeld voor medewerkers én leidinggevenden. Diversiteit in de groep werkt daarbij verrijkend.",
     ],
     body: [
-      "In de training leer je hoe je een goed evaluatiegesprek voert: in openheid over verwachtingen en doelstellingen praten, oprecht in elkaar geïnteresseerd zijn, feedback vragen en ontwikkelpunten benoemen.",
+      "In de training leer je een evaluatiegesprek voeren dat ergens over gaat: in openheid over verwachtingen en doelstellingen praten, oprecht in elkaar geïnteresseerd zijn, feedback vragen en ontwikkelpunten benoemen.",
       "Na afloop ben je meer verantwoordelijk voor je eigen ontwikkeling en kun je hiervoor een beroep doen op je leidinggevende en collega's. Afspraken over te bereiken doelen zijn bespreekbaar gemaakt en er is oprechte aandacht voor jouw ontwikkeling en bijdrage aan de organisatie. De training is interactief en biedt veel ruimte om in de praktijk te oefenen.",
       "Ieder traject wordt aangepast aan de situatie van jouw organisatie en de deelnemers en kan op locatie plaatsvinden; het maximaal aantal deelnemers bedraagt tien. Door de inzet van 360 graden feedback krijg je inzicht in je gedrag op basis van feiten, wat het uitgangspunt van de training vormt.",
     ],
@@ -136,12 +136,12 @@ export const adviesDetail = [
     metaDescription: "Een selectie-assessment onderbouwt je aannamebeslissing objectief en verhoogt de kans op een productieve, passende medewerker.",
     intro: [
       "Het aannemen van de juiste persoon is mensenwerk en gaat soms mis, met hoge kosten tot gevolg. Een selectie-assessment geeft objectief inzicht in geschiktheid, potentieel en risico's.",
-      "Onze assessoren combineren capaciteitentests, persoonlijkheids- en drijfverenvragenlijsten met een gesprek, en koppelen de uitkomsten persoonlijk terug.",
+      "Onze assessoren zetten capaciteitentests, persoonlijkheids- en drijfverenvragenlijsten in, voeren daarna een gesprek en koppelen de uitkomsten persoonlijk terug.",
     ],
     body: [
       "Je bepaalt vooraf samen met ons het functieprofiel en de competenties die er echt toe doen. Op basis daarvan stellen we het assessment samen, zodat je alleen meet wat relevant is.",
       "Je ontvangt een helder advies over de match met de functie, met concrete aandachtspunten voor het vervolggesprek en de inwerkperiode.",
-      "In de praktijk nodigen we de kandidaat online uit voor de vragenlijsten en plannen we daarna een verdiepend gesprek met een assessor. Binnen enkele werkdagen ontvang je de rapportage en het advies, zodat je zonder onnodige vertraging een onderbouwde beslissing neemt. Je houdt zelf altijd de regie over de eindbeslissing; het assessment is een objectieve extra bron naast je eigen indruk.",
+      "In de praktijk nodigen we de kandidaat online uit voor de vragenlijsten en plannen we daarna een verdiepend gesprek met een assessor. Binnen een paar werkdagen ontvang je de rapportage en het advies, zodat je zonder onnodige vertraging een onderbouwde beslissing neemt. Je houdt zelf altijd de regie over de eindbeslissing; het assessment is een objectieve extra bron naast je eigen indruk.",
       "Naast de online tests kan het assessment praktijksimulaties en rollenspellen bevatten, desgewenst met een getrainde acteur. In zo\u2019n simulatie roepen we het gedrag op dat er in de functie echt toe doet, want getoond gedrag is een betrouwbare voorspeller van toekomstig gedrag. Een assessor observeert en toetst de kerncompetenties in realistische situaties, aangevuld met een competentiegericht interview. Op de assessmentdag volgt een mondelinge nabespreking en binnen twee werkdagen ontvang je een heldere schriftelijke rapportage; conform de NIP-richtlijnen delen we die pas na akkoord van de kandidaat.",
     ],
     bullets: [
@@ -185,7 +185,7 @@ export const adviesDetail = [
     metaTitle: "Executive assessment | Voor management- en directiefuncties | Hrmforce",
     metaDescription: "Een diepgaand executive assessment op maat voor management- en directiefuncties, met vertrouwelijke persoonlijke terugkoppeling.",
     intro: [
-      "Bij benoemingen op management- en directieniveau is de impact groot en de foutmarge klein. Een executive assessment geeft diepgaand, onafhankelijk inzicht in leiderschap, drijfveren en strategisch vermogen.",
+      "Bij benoemingen op management- en directieniveau reikt het gevolg van een misser ver en is de foutmarge klein. Een executive assessment geeft diepgaand, onafhankelijk inzicht in leiderschap, drijfveren en strategisch vermogen.",
       "We stellen het traject op maat samen en koppelen de bevindingen persoonlijk en vertrouwelijk terug.",
     ],
     body: [
@@ -214,9 +214,9 @@ export const adviesDetail = [
       "De uitkomsten bespreken we in een teamsessie, met concrete afspraken voor betere samenwerking.",
     ],
     body: [
-      "We combineren individuele profielen met een teamanalyse en 360 feedback, zodat je zicht krijgt op rolverdeling, drijfveren en onderlinge dynamiek.",
+      "We leggen individuele profielen naast een teamanalyse en 360 feedback, zodat je zicht krijgt op rolverdeling, drijfveren en onderlinge dynamiek.",
       "Zo werk je gericht aan vertrouwen, duidelijke rollen en resultaat.",
-      "Een teamanalyse werkt zowel voor nieuwe teams die goed willen starten als voor bestaande teams die vastlopen of een volgende stap zetten. De begeleide teamsessie sluit af met heldere afspraken en een teamontwikkelplan waar het team zelf mee verder kan, met indien gewenst een vervolgsessie om de voortgang te bespreken.",
+      "Een teamanalyse werkt voor nieuwe teams die met heldere afspraken willen starten en voor bestaande teams die vastlopen of een volgende stap zetten. De begeleide teamsessie eindigt met heldere afspraken en een teamontwikkelplan waar het team zelf mee verder kan, met indien gewenst een vervolgsessie om de voortgang te bespreken.",
     ],
     bullets: [
       "Duidelijke rolverdeling en meer wederzijds begrip",

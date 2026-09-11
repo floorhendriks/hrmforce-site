@@ -18,7 +18,7 @@ export const home = {
     intro: {
       eyebrow: "Compleet talent management",
       title: "Hrmforce helpt bij elk onderdeel van het HR-proces",
-      lead: "Het snelstgroeiende online ontwikkelplatform voor talentmanagement. Altijd uniek, wetenschappelijk onderbouwd en met persoonlijke begeleiding.",
+      lead: "Online ontwikkelplatform voor talentmanagement. Wetenschappelijk onderbouwd, in je eigen huisstijl en met een vaste adviseur.",
     },
     cards: [
       { ic: "1", h: "Assessments", p: "Ideaal voor werving en selectie van nieuw talent.", route: "assessments", cta: "Bekijk de assessments" },
@@ -28,7 +28,7 @@ export const home = {
     logos: { eyebrow: "Vertrouwd door 1.200+ organisaties", title: "Organisaties waarmee wij samenwerken" },
     works: {
       eyebrow: "Werkwijze", title: "In 3 stappen naar inzicht",
-      lead: "Het potentieel van je sollicitanten en medewerkers in kaart brengen - eenvoudig en bewezen.",
+      lead: "Het potentieel van je sollicitanten en medewerkers in kaart brengen, met gevalideerde vragenlijsten.",
       steps: [
         { n: 1, h: "Kies wat past bij jullie vraagstuk", p: "Selecteer een vragenlijst voor selectie, ontwikkeling of teamdynamiek. Twijfel je? Onze specialisten adviseren vrijblijvend." },
         { n: 2, h: "Nodig kandidaten uit", p: "Verstuur in een klik een persoonlijke uitnodigingslink. Kandidaten vullen de vragenlijst online in, in hun eigen taal en tempo." },

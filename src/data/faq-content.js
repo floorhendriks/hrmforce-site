@@ -1,4 +1,4 @@
-// en/de/fr/es/ro eerste vertaalslag — native review aanbevolen.
+// en/de/fr/es/ro eerste vertaalslag, native review aanbevolen.
 
 export const faqContent = {
   nl: {

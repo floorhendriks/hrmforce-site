@@ -1,5 +1,5 @@
 // Trust/security-content per taal, gebruikt door src/components/Trust.astro.
-// NL = leidend. EN/DE/FR/ES/RO zijn een eerste vertaalslag — native review aanbevolen.
+// NL = leidend. EN/DE/FR/ES/RO zijn een eerste vertaalslag, native review aanbevolen.
 export const trustContent = {
   nl: {
     meta: { title: "Trust & security - hrmforce", description: "Hoe hrmforce omgaat met data, privacy en toegang: verwerking binnen de EU, AVG, versleutelde verbindingen, rolgebaseerd toegangsbeheer en wetenschappelijk gevalideerde assessments." },
@@ -54,7 +54,7 @@ Object.assign(trustContent.en.ctaBand, { title: "Questions about data, privacy o
 trustContent.de = clone(trustContent.nl);
 Object.assign(trustContent.de.meta, { title: "Trust & Security - hrmforce", description: "Wie hrmforce mit Daten, Datenschutz und Zugriff umgeht: Verarbeitung innerhalb der EU, DSGVO, verschlüsselte Verbindungen, rollenbasierte Zugriffssteuerung und wissenschaftlich validierte Assessments." });
 trustContent.de.crumb = "Trust & Security";
-Object.assign(trustContent.de.hero, { eyebrow: "Trust & Security", title: "Sorgfältiger Umgang mit Daten, Datenschutz und Zugriff", intro: "Assessment-Daten sind sensibel. Deshalb baut hrmforce auf <strong>europäischer Datenverarbeitung, DSGVO-Konformität und rollenbasierter Zugriffssteuerung</strong> auf – mit wissenschaftlich validierten Assessments und Transparenz gegenüber Kandidaten.", cta: "Kontakt aufnehmen" });
+Object.assign(trustContent.de.hero, { eyebrow: "Trust & Security", title: "Sorgfältiger Umgang mit Daten, Datenschutz und Zugriff", intro: "Assessment-Daten sind sensibel. Deshalb baut hrmforce auf <strong>europäischer Datenverarbeitung, DSGVO-Konformität und rollenbasierter Zugriffssteuerung</strong> auf, mit wissenschaftlich validierten Assessments und Transparenz gegenüber Kandidaten.", cta: "Kontakt aufnehmen" });
 Object.assign(trustContent.de.themes, { eyebrow: "Wofür wir stehen", title: "Unsere Grundsätze für Daten und Datenschutz" });
 trustContent.de.themes.items = [
   { icon: "🇪🇺", title: "Datenverarbeitung innerhalb der EU", text: "Mitarbeiter- und Kandidatendaten werden innerhalb der Europäischen Union verarbeitet und gespeichert." },
