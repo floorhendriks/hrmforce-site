@@ -5,7 +5,7 @@ const { ui, lang } = Astro.props;
 ---
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{ui.idxCrumb}</span></div></div>
 <section class="ahero"><div class="wrap" style="display:block">
-  <div class="eyebrow" style="color:var(--gold)">{ui.idxCrumb}</div>
+  <div class="eyebrow">{ui.idxCrumb}</div>
   <h1>{ui.idxTitle}</h1>
   <p style="color:#c4d2e6;font-size:18px;max-width:760px;margin-top:10px">{ui.idxIntro}</p>
 </div></section>
@@ -13,7 +13,7 @@ const { ui, lang } = Astro.props;
   <div class="cards">
     {WHITEPAPERS.map((w) => { const d = w.i18n[lang] ?? w.i18n.nl; return (
       <a class="card" href={localizePath(`/whitepapers/${w.slug}/`, lang)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
-        <span class="eyebrow" style="color:var(--gold)">{ui.idxCrumb}</span>
+        <span class="eyebrow">{ui.idxCrumb}</span>
         <h3>{d.title}</h3>
         <p style="flex:1">{d.summary}</p>
         <span class="readmore">{ui.read} &rarr;</span>

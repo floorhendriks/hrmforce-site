@@ -7,7 +7,7 @@ const overHref = localizePath("/over-ons/", lang);
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
 
 <section class="ahero"><div class="wrap" style="display:block">
-  <div class="eyebrow" style="color:var(--gold)">{t.hero.eyebrow}</div>
+  <div class="eyebrow">{t.hero.eyebrow}</div>
   <h1>{t.hero.title}</h1>
   <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px" set:html={t.hero.intro}></p>
   <div class="btns" style="margin-top:18px"><a href={contactHref} class="btn btn-primary">{t.hero.cta}</a></div>

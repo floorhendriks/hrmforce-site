@@ -24,7 +24,7 @@ t.categories.forEach((c, i) => {
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={localizePath("/support/", lang)}>{t.crumb.support}</a> › <span>{t.crumb.faq}</span></div></div>
 
 <section class="ahero"><div class="wrap" style="display:block">
-  <div class="eyebrow" style="color:var(--gold)">{t.hero.eyebrow}</div>
+  <div class="eyebrow">{t.hero.eyebrow}</div>
   <h1>{t.hero.title}</h1>
   <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px" set:html={sanitizeBodyLinks(t.hero.intro, lang, validPaths)}></p>
 </div></section>

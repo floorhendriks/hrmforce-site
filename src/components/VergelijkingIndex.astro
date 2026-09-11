@@ -12,7 +12,7 @@ const gidsHref = localizePath("/whitepapers/assessments-kiezen-gids/", lang);
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> &rsaquo; <span>{t.crumb}</span></div></div>
 
 <section class="ahero"><div class="wrap" style="display:block">
-  <div class="eyebrow" style="color:var(--gold)">{t.eyebrow}</div>
+  <div class="eyebrow">{t.eyebrow}</div>
   <h1>{t.hero}</h1>
   <p style="color:#c4d2e6;font-size:18px;max-width:760px;margin-top:10px">{t.intro}</p>
 </div></section>
@@ -26,7 +26,7 @@ const gidsHref = localizePath("/whitepapers/assessments-kiezen-gids/", lang);
 </div></section>
 
 <section class="bg-soft"><div class="wrap">
-  <div class="eyebrow" style="color:var(--gold)">{t.compareTitle}</div>
+  <div class="eyebrow">{t.compareTitle}</div>
   <h2 class="section-title" style="margin-bottom:26px">{t.compareTitle}</h2>
   <div class="cards">
     {comps.map((c) => (
@@ -41,7 +41,7 @@ const gidsHref = localizePath("/whitepapers/assessments-kiezen-gids/", lang);
 
 <script type="application/ld+json" is:inline set:html={JSON.stringify(_faqLd)}></script>
 <section><div class="wrap">
-  <div class="eyebrow" style="color:var(--gold)">{t.guideTitle}</div>
+  <div class="eyebrow">{t.guideTitle}</div>
   <h2 class="section-title" style="margin-bottom:8px">{t.guideTitle}</h2>
   <p class="lead" style="max-width:640px;margin:0 0 16px">{t.guideText}</p>
   <div class="btns"><a class="btn btn-primary" href={testkiezerHref}>{t.guideBtn} &rarr;</a><a class="btn btn-ghost" href={gidsHref} style="margin-left:8px">{t.guideBtn2}</a></div>

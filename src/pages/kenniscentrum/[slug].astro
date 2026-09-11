@@ -74,7 +74,7 @@ const _articleLd = {
   <script type="application/ld+json" is:inline set:html={JSON.stringify(_articleLd)}></script>
   <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={localizePath("/kenniscentrum/", lang)}>Kenniscentrum</a> › <span>{p.title}</span></div></div>
   <section class="ahero"><div class="wrap" style="display:block">
-    <div class="eyebrow" style="color:var(--gold)">{p.category}</div>
+    <div class="eyebrow">{p.category}</div>
     <h1>{p.title}</h1>
     <div class="kc-meta">
       {dateLabel && <span class="kc-mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 11h18"/></svg>{KC.published} {dateLabel}</span>}
@@ -100,7 +100,7 @@ const _articleLd = {
   {(relAssess.length > 0 || relArticles.length > 0) && (
     <section class="bg-soft"><div class="wrap">
       {relAssess.length > 0 && (<>
-        <div class="eyebrow" style="color:var(--gold)">{RL.a}</div>
+        <div class="eyebrow">{RL.a}</div>
         <div class="cards" style="margin-bottom:28px">
           {relAssess.map((a) => (
             <a class="card" href={localizePath(`/assessments/${a.slug}/`, lang)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
@@ -114,7 +114,7 @@ const _articleLd = {
         <div class="cards">
           {relArticles.map((q) => (
             <a class="card" href={navHref(`/kenniscentrum/${q.slug}/`, lang, validPaths)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
-              <span class="eyebrow" style="color:var(--gold)">{q.category}</span><h3>{q.title}</h3><p style="flex:1">{q.excerpt}</p><span class="readmore">{RL.read} &rarr;</span>
+              <span class="eyebrow">{q.category}</span><h3>{q.title}</h3><p style="flex:1">{q.excerpt}</p><span class="readmore">{RL.read} &rarr;</span>
             </a>
           ))}
         </div>

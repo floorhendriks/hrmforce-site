@@ -13,7 +13,7 @@ const T = (l) => (l.i18n[lang] || l.i18n.nl);
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>{ui.home}</a> &rsaquo; <span>{ui.toep}</span></div></div>
 
 <section class="ahero"><div class="wrap" style="display:block">
-  <div class="eyebrow" style="color:var(--gold)">{ui.toep}</div>
+  <div class="eyebrow">{ui.toep}</div>
   <h1>{ui.idxHero}</h1>
   <p style="color:#c4d2e6;font-size:18px;max-width:760px;margin-top:10px">{ui.idxIntro}</p>
 </div></section>
@@ -31,7 +31,7 @@ const T = (l) => (l.i18n[lang] || l.i18n.nl);
 </div></section>
 
 <section class="bg-soft"><div class="wrap">
-  <div class="eyebrow" style="color:var(--gold)">{ui.perSector}</div>
+  <div class="eyebrow">{ui.perSector}</div>
   <h2 class="section-title" style="margin-bottom:32px">{ui.sectors}</h2>
   <div class="cards">
     {sectors.map((l) => (

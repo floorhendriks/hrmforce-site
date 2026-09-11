@@ -16,7 +16,7 @@ const recs = (key) => (TK_SLUGS[key] || []).map((s) => bySlug.get(s)).filter(Boo
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
 
 <section class="ahero"><div class="wrap" style="display:block">
-  <div class="eyebrow" style="color:var(--gold)">{t.crumb}</div>
+  <div class="eyebrow">{t.crumb}</div>
   <h1>{t.hero}</h1>
   <p style="color:#c4d2e6;font-size:18px;max-width:780px;margin-top:10px">{t.intro}</p>
 </div></section>
@@ -33,7 +33,7 @@ const recs = (key) => (TK_SLUGS[key] || []).map((s) => bySlug.get(s)).filter(Boo
 
   {t.options.map((o) => (
     <div class="tk-result" data-result={o.key} hidden>
-      <div class="eyebrow" style="color:var(--gold)">{t.resultLabel}</div>
+      <div class="eyebrow">{t.resultLabel}</div>
       <p class="lead" style="margin:6px 0 20px">{o.resultIntro}</p>
       <div class="cards">
         {recs(o.key).map((a) => (
