@@ -1,7 +1,7 @@
 ---
 // Vaste bouwsteen voor oplossingen-, advies- en trainingspagina's:
 // een stappenplan met uitkomst, plus een rolverdeling (hrmforce vs. organisatie).
-const { plan, roles, rolesEyebrow = "Rolverdeling", hrmLabel = "hrmforce doet", orgLabel = "Jullie doen", tone = "soft" } = Astro.props;
+const { plan, roles, rolesEyebrow = "Rolverdeling", hrmLabel = "Wat hrmforce doet", orgLabel = "Wat jij doet", tone = "soft" } = Astro.props;
 ---
 {plan && (
   <section class={tone === "soft" ? "bg-soft" : ""}>
@@ -63,7 +63,7 @@ const { plan, roles, rolesEyebrow = "Rolverdeling", hrmLabel = "hrmforce doet", 
   .rolecard { border:1px solid var(--line); border-radius:16px; padding:26px 24px; background:#fff; box-shadow:var(--shadow-xs); transition:transform .2s ease, box-shadow .2s ease; }
   .rolecard:hover { transform:translateY(-3px); box-shadow:var(--shadow-md); }
   .rolecard.hrm { border-left:4px solid var(--accent); }
-  .rolecard.org { border-left:4px solid var(--gold); }
+  .rolecard.org { }
   .rolecard h3 { color:var(--navy); font-size:1.1rem; margin:0 0 14px; }
   .rolecard ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
   .rolecard li { color:var(--text); font-size:15px; line-height:1.5; padding-left:26px; position:relative; }

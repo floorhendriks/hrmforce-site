@@ -5,6 +5,14 @@
 export const oplossingen = [
   {
     slug: "matching",
+    vergelijk: {
+      title: "Van onderbuikgevoel naar een onderbouwde keuze",
+      lead: "Dit is wat er misgaat bij selectie zonder data, en wat hrmforce anders doet.",
+      oudTitle: "Zonder onderbouwing",
+      nieuwTitle: "Met hrmforce",
+      oud: ["Voorselecteren op cv en een eerste indruk", "Eén gesprek en één opdracht als hele onderbouwing", "Elke kandidaat vult hetzelfde standaardpakket in", "Iedereen in de selectie kijkt naar iets anders", "Een verkeerde hire merk je pas na maanden"],
+      nieuw: ["Matchprofiel op basis van het functieprofiel en je eigen topperformers", "Objectieve match-score van 0% tot 100% per kandidaat", "Alleen de vragenlijsten die relevant zijn voor die functie", "Iedereen beoordeelt op dezelfde competenties", "Risico's en aandachtspunten staan al in het rapport"],
+    },
     title: "Matching & selectie",
     metaTitle: "Matching & selectie | Automatisch de beste kandidaten matchen | Hrmforce",
     metaDescription:
@@ -25,7 +33,7 @@ export const oplossingen = [
     image: "/media/wp-content/uploads/2023/05/NLP-recruitment-development.webp",
     photo: "https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=900",
     ctaBtn: "Plan een gratis demo",
-    cta: "Bepaal met een HR-specialist welke assessments bij jullie vacatures passen",
+    cta: "Bepaal met een HR-specialist welke assessments bij je vacatures passen",
     plan: {
       eyebrow: "Stappenplan",
       title: "Van wervingsprobleem naar een onderbouwde keuze",
@@ -56,6 +64,14 @@ export const oplossingen = [
   },
   {
     slug: "development",
+    vergelijk: {
+      title: "Van losse gesprekken naar een cyclus die loopt",
+      lead: "Dit gaat er mis zonder structuur in de gesprekscyclus, en zo pakt hrmforce het aan.",
+      oudTitle: "Zonder onderbouwing",
+      nieuwTitle: "Met hrmforce",
+      oud: ["Gesprekken schuiven door en vinden soms niet plaats", "Afspraken staan in een mailtje of een notitieblok", "Feedback blijft algemeen: goed bezig, ga zo door", "Niemand weet wat er vorig jaar is afgesproken", "HR heeft geen zicht op wat er in de teams speelt"],
+      nieuw: ["Jaarplanning met bila, ontwikkelgesprek en jaargesprek klaargezet", "Werkafspraken digitaal vastgelegd, met wie en wanneer", "Onderbouwde feedback uit een wetenschappelijke vragenlijst", "Alle gesprekken bewaard, je begint waar je gebleven was", "Organisatiebreed zicht op voortgang en knelpunten"],
+    },
     title: "HR Gesprekscyclus",
     metaTitle: "HR Gesprekscyclus | Structuur in je gesprekscycli | Hrmforce",
     metaDescription:
@@ -79,7 +95,7 @@ export const oplossingen = [
     image: "/mockups/gesprekscyclus.svg",
     photo: "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=900",
     ctaBtn: "Plan een gratis demo",
-    cta: "Bespreek met een HR-specialist welke ontwikkelaanpak bij jullie team past",
+    cta: "Bespreek met een HR-specialist welke ontwikkelaanpak bij je team past",
     plan: {
       eyebrow: "Stappenplan",
       title: "Zo ziet de gesprekscyclus er in de praktijk uit",
@@ -111,6 +127,14 @@ export const oplossingen = [
   },
   {
     slug: "employability",
+    vergelijk: {
+      title: "Van verrassingen naar zicht op inzetbaarheid",
+      lead: "Zo zie je verzuim en verloop aankomen in plaats van achteraf te constateren.",
+      oudTitle: "Zonder onderbouwing",
+      nieuwTitle: "Met hrmforce",
+      oud: ["Je ziet pas dat iemand vastloopt als het verzuim al begonnen is", "Tevredenheid meet je hooguit één keer per jaar", "Loopbaanvragen komen pas op tafel bij een exitgesprek", "Kennis vertrekt met de medewerker de deur uit"],
+      nieuw: ["Periodieke Pulse Survey laat vroeg zien waar de energie weglekt", "Meten per team en per periode, zodat je effect ziet", "Medewerkers verkennen zelf passende rollen en vacatures", "Ontwikkelen en doorstromen houdt kennis in huis"],
+    },
     title: "Employability",
     metaTitle: "HR Employability | Gezond en gemotiveerd personeel | Hrmforce",
     metaDescription:
@@ -162,6 +186,14 @@ export const oplossingen = [
   },
   {
     slug: "hr-analytics",
+    vergelijk: {
+      title: "Van losse uitslagen naar stuurinformatie",
+      lead: "Zo gaat HR-data van een stapel rapporten naar een besluit dat je kunt uitleggen.",
+      oudTitle: "Zonder onderbouwing",
+      nieuwTitle: "Met hrmforce",
+      oud: ["Testuitslagen staan verspreid in mappen en mailboxen", "Beslissingen over instroom en doorstroom gaan op gevoel", "Je ziet patronen pas als het probleem er al is", "Cijfers voor de directie kosten dagen handwerk"],
+      nieuw: ["Alle uitkomsten in één omgeving, gekoppeld aan functies en teams", "Dashboards per team, afdeling en organisatie", "Trends zichtbaar voordat ze een probleem worden", "Overzichten die automatisch bijwerken bij nieuwe afnames"],
+    },
     title: "HR Analytics",
     metaTitle: "HR Analytics | 24/7 inzicht in personeelsdata | Hrmforce",
     metaDescription:
@@ -182,7 +214,7 @@ export const oplossingen = [
     image: "/media/wp-content/uploads/2022/02/ass-afb3.png",
     photo: "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=900",
     ctaBtn: "Plan een gratis demo",
-    cta: "Bespreek met een HR-specialist welke HR-data jullie beslissingen onderbouwt",
+    cta: "Bespreek met een HR-specialist welke HR-data je beslissingen onderbouwt",
     plan: {
       eyebrow: "Stappenplan",
       title: "Van losse testuitslagen naar stuurinformatie",

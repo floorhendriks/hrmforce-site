@@ -169,6 +169,10 @@ body = body.replace(/<img\b([^>]*)>/gi, (m, attrs) =>
   /\salt\s*=/i.test(attrs) ? m : `<img${attrs} alt="${_altFallback}">`
 );
 
+// K3: eerste afbeelding uit het artikel als header-beeld, zodat de kop niet kaal is.
+const _img = body.match(/<img\b[^>]*\bsrc="([^"]+)"[^>]*>/i);
+const headerImg = _img ? _img[1] : "";
+
 // Meta description uit de eerste alinea's van de body (in plaats van de titel).
 const _plain = body
   .replace(/<(script|style)[\s\S]*?<\/\1>/gi, " ")
@@ -249,7 +253,8 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
     <div class="wrap"><a href={localizePath("/", lang)}>{K.crumbHome}</a> › <a href={kcHref}>{K.crumb}</a> › <span>{article.title}</span></div>
   </div>
 
-  <header class="kc-head">
+  <div class={"kc-head" + (headerImg ? " met-beeld" : "")}>
+    {headerImg && <img class="kc-hero-img" src={headerImg} alt="" aria-hidden="true" loading="eager" />}
     <div class="wrap">
       <div class="eyebrow" style="color:var(--gold)">{K.eyebrow}</div>
       <h1>{article.title}</h1>
@@ -259,7 +264,7 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
         <span class="kc-mi"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks" width="26" height="26" loading="lazy" />Floor Hendriks</span>
       </div>
     </div>
-  </header>
+  </div>
 
   <article class="kc-article">
     <div class="wrap">
@@ -325,7 +330,10 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
 </Base>
 
 <style>
-  .kc-head { background: linear-gradient(160deg, var(--navy), var(--navy-deep)); color: #fff; }
+  .kc-head { position: relative; overflow: hidden; background: linear-gradient(160deg, var(--navy), var(--navy-deep)); color: #fff; }
+  .kc-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .22; }
+  .kc-head.met-beeld::after { content: ""; position: absolute; inset: 0; background: linear-gradient(160deg, rgba(14,70,140,.86), rgba(11,42,92,.92)); }
+  .kc-head .wrap { position: relative; z-index: 2; }
   .kc-head .wrap { max-width: 860px; margin: 0 auto; padding: 40px 20px 34px; }
   .kc-head h1 { color: #fff; font-size: clamp(1.7rem, 1.4rem + 1.4vw, 2.3rem); line-height: 1.2; margin: 6px 0 0; }
   .kc-meta { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 18px; }
@@ -373,7 +381,7 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
   .kc-ctx .ctx-btn:hover { background: var(--accent-hover); }
   @media (max-width: 620px) { .kc-ctx { flex-direction: column; align-items: flex-start; } .kc-ctx .ctx-btn { width: 100%; text-align: center; } }
 
-  .kc-integ { display:flex; gap:20px; align-items:center; justify-content:space-between; flex-wrap:wrap; background:#fff; border:1px solid var(--line); border-left:3px solid var(--gold); border-radius:16px; padding:22px 26px; margin:24px 0; box-shadow:var(--shadow-xs); }
+  .kc-integ { display:flex; gap:20px; align-items:center; justify-content:space-between; flex-wrap:wrap; background:#fff; border:1px solid var(--line); border-radius:16px; padding:22px 26px; margin:24px 0; box-shadow:var(--shadow-xs); }
   .kc-integ h3 { color:var(--navy); font-size:1.15rem; margin:6px 0 6px; }
   .kc-integ p { color:var(--muted); font-size:14.5px; margin:0; max-width:640px; }
   .kc-integ .ctx-tag { color:var(--blue); font-weight:800; font-size:12px; text-transform:uppercase; letter-spacing:.5px; }

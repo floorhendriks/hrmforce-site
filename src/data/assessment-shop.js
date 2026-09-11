@@ -52,3 +52,12 @@ export function shopInfo(slug) {
     url: m.handle ? `/shop/?p=${m.handle}` : `/shop/`,
   };
 }
+
+// Prijs netjes in Nederlandse notatie: hele bedragen als "395,-", anders met twee decimalen.
+export function prijs(v) {
+  if (v === undefined || v === null || v === "") return "";
+  const t = String(v).replace(",", ".");
+  const n = Number(t);
+  if (!isFinite(n)) return String(v);
+  return Number.isInteger(n) ? n.toLocaleString("nl-NL") + ",-" : n.toLocaleString("nl-NL", { minimumFractionDigits: 2 });
+}

@@ -4,16 +4,17 @@ import Base from "../../../layouts/Base.astro";
 import { assessments } from "../../../data/assessments.js";
 import { assessmentsI18n } from "../../../data/assessments-i18n.js";
 import { detailUi } from "../../../data/assessment-detail-ui.js";
-import { shopInfo } from "../../../data/assessment-shop.js";
+import { shopInfo, prijs } from "../../../data/assessment-shop.js";
 import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../../data/site-config.js";
 import { localizePath } from "../../../i18n/utils.js";
 import { examplesFor } from "../../../data/assessment-examples.js";
 import { extraFor } from "../../../data/assessment-detail-extra.js";
 import { theoryFor } from "../../../data/assessment-theory.js";
 import { generalFaq } from "../../../data/general-faq.js";
-import QMock from "../../../components/QMock.astro";
+import QPreview from "../../../components/QPreview.astro";
 import ReviewSlider from "../../../components/ReviewSlider.astro";
 import SocialProof from "../../../components/SocialProof.astro";
+import LogoSlider from "../../../components/LogoSlider.astro";
 import { oefentests } from "../../../data/oefentests.js";
 import { createClient } from "@sanity/client";
 import { kenniscentrumContent } from "../../../data/kenniscentrum-content.js";
@@ -118,12 +119,12 @@ const _offerLd = (shop && shop.price)
         <h1>{a.title}</h1>
         <div class="meta-row"><span class="lbl">{t.phase}</span><span class="val">{a.phase}</span></div>
         <div class="meta-row"><span class="lbl">{t.goal}</span><span class="val">{a.goal}</span></div>
+        {a.time && <div class="meta-row"><span class="lbl">{t.time}</span><span class="val">{a.time}</span></div>}
         {shop.price && (
-          <div class="pricebox">
-            <span class="pricebox-label">{t.priceLabel}</span>
-            <span class="pricebox-amt">&euro;{shop.price}</span>
-            <span class="pricebox-note">{t.priceNote}</span>
-          </div>
+          <p class="priceline">
+            <span class="priceline-amt">&euro;&nbsp;{prijs(shop.price)}</span>
+            <span class="priceline-txt">{t.priceNote}</span>
+          </p>
         )}
         <div class="btns">
           <a href={localizePath("/contact/", lang)} class="btn btn-primary">{t.demo} &rarr;</a>
@@ -131,7 +132,6 @@ const _offerLd = (shop && shop.price)
             {shop.price ? t.orderLoose : t.inShop}
           </a>
         </div>
-        <p class="portal-nudge">{t.portalPre}<a href={localizePath("/tarieven/", lang)}>{t.portalLink}</a>{t.portalPost}</p>
         <div class="guarantee">
           <strong style="color:#fff">{t.guaranteeTitle}</strong>
           <span><span class="stars">★★★★★</span> {t.guaranteeMeta}<b style="color:#fff">{t.guaranteeStars}</b></span>
@@ -154,66 +154,31 @@ const _offerLd = (shop && shop.price)
 
 <SocialProof lang={lang} />
 
-{(() => {
-  const M = {
-    en:{e:"How it works",h:"A look inside the questionnaire",l:"This is what the questionnaire looks like for your candidates, from invitation to completion.",c1:"Start in your own language and pace",c2:"Statements with a clear answer scale",c3:"Discuss the results in person"},
-    de:{e:"So funktioniert es",h:"Ein Blick in den Fragebogen",l:"So sieht der Fragebogen für Ihre Kandidaten aus, von der Einladung bis zum Abschluss.",c1:"Starten in eigener Sprache und im eigenen Tempo",c2:"Aussagen mit einer klaren Antwortskala",c3:"Die Ergebnisse besprechen Sie persönlich"},
-    fr:{e:"Comment ça marche",h:"Un aperçu du questionnaire",l:"Voici à quoi ressemble le questionnaire pour vos candidats, de l'invitation à la fin.",c1:"Commencez dans votre langue et à votre rythme",c2:"Des affirmations avec une échelle de réponse claire",c3:"Les résultats se discutent en personne"},
-    es:{e:"Cómo funciona",h:"Un vistazo al cuestionario",l:"Así ve el cuestionario tu candidato, desde la invitación hasta el final.",c1:"Empieza en tu idioma y a tu ritmo",c2:"Afirmaciones con una escala de respuesta clara",c3:"Los resultados se comentan en persona"},
-    ro:{e:"Cum funcționează",h:"O privire în chestionar",l:"Așa arată chestionarul pentru candidații tăi, de la invitație până la final.",c1:"Începe în limba și ritmul tău",c2:"Afirmații cu o scală de răspuns clară",c3:"Rezultatele se discută personal"}
-  };
-  const q = M[lang] || M.en;
-  return (
-    <section class="qshots"><div class="wrap">
-      <div class="eyebrow" style="color:var(--gold)">{q.e}</div>
-      <h2 class="qshots-h">{q.h}</h2>
-      <p class="qshots-lead">{q.l}</p>
-      <div class="qshots-track">
-        <figure class="qshot"><QMock screen="intro" lang={lang} testName={a.title} /><figcaption>{q.c1}</figcaption></figure>
-        <figure class="qshot"><QMock screen="vraag" lang={lang} testName={a.title} question={ex.mockQuestion} scaleNote={ex.scale} answer={ex.answer} options={ex.mockOptions || []} /><figcaption>{q.c2}</figcaption></figure>
-        <figure class="qshot"><Img src={`/mockups/vragenlijst-afgerond.${lang}.svg`} alt={`${q.c3}: ${a.title}`} loading="eager" /><figcaption>{q.c3}</figcaption></figure>
-      </div>
+<LogoSlider heading={null} note={null} />
 
-      <div class="qex">
-        <h3 class="qex-h">{ex.title}</h3>
-        <p class="qex-lead">{ex.intro}</p>
-        <div class="qex-list">
-          {ex.items.map((qq, i) => (
-            <div class="qex-item">
-              <span class="qex-n">{i + 1}</span>
-              <span class="qex-q">{qq}</span>
-            </div>
-          ))}
-        </div>
-        <p class="qex-scale"><strong>{ex.scaleLabel}:</strong> {ex.scale}</p>
-        {_oefen && (<p style="margin:0 0 18px"><a href={localizePath(`/oefenen/${_oefen.slug}/`, lang)} class="btn btn-ghost">{t.practiceLink} &rarr;</a></p>)}
-        <div class="vv-cta">
-          <div class="vv-copy">
-            <strong>{t.vvTitle}</strong>
-            <span>{t.vvText.replace("{t}", a.title)}</span>
-          </div>
-          <form class="vv-form" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
-            <input type="hidden" name="onderwerp" value={`Voorbeeldvragen ${a.title}`} />
-            <input type="hidden" name="assessment" value={a.title} />
-            <input type="email" name="email" required placeholder={t.vvPlaceholder} aria-label={t.workEmail} />
-            <button type="submit" class="btn btn-primary">{t.vvButton}</button>
-          </form>
-        </div>
-      </div>
-    </div></section>
-  );
-})()}
+<section class="qshots"><div class="wrap">
+  <h2 class="qshots-h">{ex.title}</h2>
+  <p class="qshots-lead">{ex.intro}</p>
 
-  <div class="infobar">
-    <div class="wrap">
-      <div class="info-grid">
-        <div><div class="lbl">{t.time}</div><div class="v">{a.time}</div></div>
-        <div><div class="lbl">{t.form}</div><div class="v">{a.form}</div></div>
-        <div><div class="lbl">{t.feedback}</div><div class="v">{a.feedback}</div></div>
-        <div><div class="lbl">{t.extra}</div><div class="v">{a.extra}</div></div>
-      </div>
+  <QPreview lang={lang} testName={a.title} ex={ex} />
+
+  <p class="qex-scale"><strong>{ex.scaleLabel}:</strong> {ex.scale}</p>
+  {_oefen && (<p style="margin:0 0 20px"><a href={localizePath(`/oefenen/${_oefen.slug}/`, lang)} class="btn btn-ghost">{t.practiceLink} &rarr;</a></p>)}
+
+  <div class="vv-cta">
+    <div class="vv-copy">
+      <strong>{t.vvTitle}</strong>
+      <span>{t.vvText.replace("{t}", a.title)}</span>
     </div>
+    <form class="vv-form" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
+      <input type="hidden" name="onderwerp" value={`Voorbeeldvragen ${a.title}`} />
+      <input type="hidden" name="assessment" value={a.title} />
+      <input type="email" name="email" required placeholder={t.vvPlaceholder} aria-label={t.workEmail} />
+      <button type="submit" class="btn btn-primary">{t.vvButton}</button>
+    </form>
   </div>
+</div></section>
+
 
   <section>
     <div class="wrap">
@@ -252,20 +217,23 @@ const _offerLd = (shop && shop.price)
     </div>
   </section>
 
-  {extra && extra.blocks && extra.blocks.length > 0 && (
-    <section class="bg-soft"><div class="wrap" style="max-width:880px">
-      {extra.blocks.map((b) => (
-        <div class="xblock">
-          <h3 class="xblock-h">{b.title}</h3>
-          {b.lead && <p class="xblock-lead">{b.lead}</p>}
-          {b.type === "list" && b.items.length > 0 && (
-            <ul class="xblock-list">{b.items.map((it) => <li>{it}</li>)}</ul>
-          )}
-          {b.type === "text" && b.text && <p class="xblock-text">{b.text}</p>}
-        </div>
-      ))}
-    </div></section>
-  )}
+  <section style="background:var(--bg)">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">{t.howEyebrow}</div>
+        <h2 class="section-title">{howTitle}</h2>
+      </div>
+      <div class="order-steps">
+        <div class="ostep"><span class="on">1</span><h4>{t.step1t}</h4><p>{t.step1b}</p></div>
+        <div class="ostep"><span class="on">2</span><h4>{t.step2t}</h4><p>{t.step2b}</p></div>
+        <div class="ostep"><span class="on">3</span><h4>{t.step3t}</h4><p>{t.step3b}</p></div>
+      </div>
+      <div style="margin-top:26px">
+        <a href={localizePath("/contact/", lang)} class="btn btn-primary">{t.demoPlain}</a>
+        <a href={localizePath("/tarieven/", lang)} class="btn btn-ghost" style="margin-left:8px">{t.licenseOptions}</a>
+      </div>
+    </div>
+  </section>
 
   {theory && (
     <section><div class="wrap" style="max-width:880px">
@@ -299,7 +267,7 @@ const _offerLd = (shop && shop.price)
 
   <section>
     <div class="wrap">
-      <div class="center">
+      <div>
         <div class="eyebrow">{t.faqEyebrow}</div>
         <h2 class="section-title" style="margin-bottom:42px">{faqTitle}</h2>
       </div>
@@ -314,10 +282,28 @@ const _offerLd = (shop && shop.price)
     </div>
   </section>
 
+  <section class="formsec" id="request">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">{t.requestEyebrow}</div>
+        <h2 class="section-title">{requestTitle}</h2>
+        <p class="lead" style="margin-bottom:36px">{t.requestLead}</p>
+      </div>
+      <form class="formcard" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
+        <div class="frow">
+          <div class="fg"><label>{t.firstName}</label><input type="text" name="voornaam" required /></div>
+          <div class="fg"><label>{t.workEmail}</label><input type="email" name="email" required /></div>
+        </div>
+        <div class="fg"><label>{t.company}</label><input type="text" name="bedrijf" /></div>
+        <button type="submit" class="btn btn-primary">{t.submit}</button>
+      </form>
+    </div>
+  </section>
+
   {related.length > 0 && (
     <section style="background:var(--bg)">
       <div class="wrap">
-        <div class="center">
+        <div>
           <div class="eyebrow">{t.relatedEyebrow}</div>
           <h2 class="section-title" style="margin-bottom:36px">{t.relatedTitle}</h2>
         </div>
@@ -335,61 +321,23 @@ const _offerLd = (shop && shop.price)
     </section>
   )}
 
-  <section style="background:var(--bg)">
-    <div class="wrap">
-      <div class="center">
-        <div class="eyebrow" style="justify-content:center">{t.howEyebrow}</div>
-        <h2 class="section-title">{howTitle}</h2>
-      </div>
-      <div class="order-steps">
-        <div class="ostep"><span class="on">1</span><h4>{t.step1t}</h4><p>{t.step1b}</p></div>
-        <div class="ostep"><span class="on">2</span><h4>{t.step2t}</h4><p>{t.step2b}</p></div>
-        <div class="ostep"><span class="on">3</span><h4>{t.step3t}</h4><p>{t.step3b}</p></div>
-      </div>
-      <div class="center" style="margin-top:26px">
-        <a href={localizePath("/contact/", lang)} class="btn btn-primary">{t.demoPlain}</a>
-        <a href={localizePath("/tarieven/", lang)} class="btn btn-ghost" style="margin-left:8px">{t.licenseOptions}</a>
-      </div>
-    </div>
-  </section>
-
-  {kc && kc.length > 0 && (
-    <section>
-      <div class="wrap">
-        <div class="center">
-          <div class="eyebrow">{t.kcEyebrow}</div>
-          <h2 class="section-title" style="margin-bottom:36px">{t.kcTitle}</h2>
+  {extra && extra.blocks && extra.blocks.length > 0 && (
+    <section class="bg-soft"><div class="wrap" style="max-width:880px">
+      <details class="xdetails">
+        <summary>{t.detailsSummary}</summary>
+      {extra.blocks.map((b) => (
+        <div class="xblock">
+          <h3 class="xblock-h">{b.title}</h3>
+          {b.lead && <p class="xblock-lead">{b.lead}</p>}
+          {b.type === "list" && b.items.length > 0 && (
+            <ul class="xblock-list">{b.items.map((it) => <li>{it}</li>)}</ul>
+          )}
+          {b.type === "text" && b.text && <p class="xblock-text">{b.text}</p>}
         </div>
-        <div class="cards">
-          {kc.map((p) => (
-            <a class="card" href={p.path} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
-              <h3>{p.title}</h3>
-              <p style="flex:1">{p.excerpt}</p>
-              <span class="readmore">{t.kcRead} &rarr;</span>
-            </a>
-          ))}
-        </div>
-      </div>
-    </section>
+      ))}
+      </details>
+    </div></section>
   )}
-
-  <section class="formsec" id="request">
-    <div class="wrap">
-      <div class="center">
-        <div class="eyebrow">{t.requestEyebrow}</div>
-        <h2 class="section-title">{requestTitle}</h2>
-        <p class="lead" style="margin-bottom:36px">{t.requestLead}</p>
-      </div>
-      <form class="formcard" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
-        <div class="frow">
-          <div class="fg"><label>{t.firstName}</label><input type="text" name="voornaam" required /></div>
-          <div class="fg"><label>{t.workEmail}</label><input type="email" name="email" required /></div>
-        </div>
-        <div class="fg"><label>{t.company}</label><input type="text" name="bedrijf" /></div>
-        <button type="submit" class="btn btn-primary">{t.submit}</button>
-      </form>
-    </div>
-  </section>
 </Base>
 
 <style>
@@ -406,7 +354,7 @@ const _offerLd = (shop && shop.price)
   .pricebox{
     display:inline-flex;flex-direction:column;gap:2px;
     background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);
-    border-left:3px solid var(--gold);
+    
     padding:10px 16px;border-radius:10px;margin:16px 0 6px;max-width:420px;
   }
   .pricebox-label{color:#c4d2e6;font-size:12px;text-transform:uppercase;letter-spacing:.5px;font-weight:700}
@@ -422,19 +370,31 @@ const _offerLd = (shop && shop.price)
   .ostep h4{color:var(--navy);font-size:1.05rem;margin-bottom:6px}
   .ostep p{color:var(--muted);font-size:14px}
   @media(max-width:760px){.order-steps{grid-template-columns:1fr}}
-  .qshots{padding:48px 0}
+  .xdetails{border:1px solid var(--line);border-radius:14px;background:#fff}
+  .xdetails>summary{cursor:pointer;list-style:none;padding:16px 20px;color:var(--navy);font-weight:700;font-size:1.02rem;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .xdetails>summary::-webkit-details-marker{display:none}
+  .xdetails>summary::after{content:"+";color:var(--muted);font-weight:700;font-size:1.2rem;line-height:1}
+  .xdetails[open]>summary::after{content:"\2013"}
+  .xdetails[open]>summary{border-bottom:1px solid var(--line)}
+  .xdetails>.xblock{padding:0 20px}
+  .xdetails>.xblock:first-of-type{padding-top:18px}
+  .xdetails>.xblock:last-of-type{padding-bottom:6px}
+  .priceline{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin:18px 0 4px;max-width:520px}
+  .priceline-amt{color:#fff;font-size:1.5rem;font-weight:800;letter-spacing:-.01em}
+  .priceline-txt{color:#c4d2e6;font-size:14px;line-height:1.5}
+  .qshots{padding:34px 0}
   .infobar .info-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:22px 0}
   .infobar .info-grid>div{background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
   .infobar .info-grid .lbl{font-size:11.5px;margin-bottom:2px}
   .infobar .info-grid .v{color:var(--navy);font-size:14.5px;font-weight:600;line-height:1.4}
   @media(max-width:880px){.infobar .info-grid{grid-template-columns:1fr 1fr}}
-  .quote-photo{width:112px;height:112px;border-radius:50%;object-fit:cover;flex:none;border:3px solid rgba(255,255,255,.35)}
+  .quote-photo{width:112px;height:112px;border-radius:50%;object-fit:cover;object-position:50% 18%;flex:none;border:3px solid rgba(255,255,255,.35)}
   .quote-cta{display:inline-block;margin-top:14px;color:#fff;font-weight:700;font-size:14.5px;border-bottom:2px solid var(--gold);padding-bottom:2px}
   .qex{margin-top:34px;padding-top:30px;border-top:1px solid var(--line)}
   .qex-h{color:var(--navy);font-size:1.35rem;margin:0 0 6px}
   .qex-lead{color:var(--muted);max-width:640px;margin:0 0 20px}
   .qex-list{display:flex;flex-direction:column;gap:10px}
-  .qex-item{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:14px 18px;box-shadow:var(--shadow-xs)}
+  .qex-item{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;box-shadow:var(--shadow-xs)}
   .qex-n{flex:none;width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;font-size:13.5px;display:flex;align-items:center;justify-content:center}
   .qex-q{color:var(--navy);font-weight:600;font-size:15px;line-height:1.5}
   .qex-scale{color:var(--muted);font-size:14px;margin:16px 0 18px}
@@ -447,7 +407,7 @@ const _offerLd = (shop && shop.price)
   .qshot figcaption{margin-top:10px;color:var(--muted);font-size:14px;text-align:center}
   @media(min-width:900px){ .qshot{flex-basis:62%} }
   .assess-usage{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line); color:var(--text); }
-  .vv-cta{margin-top:26px;display:flex;flex-wrap:wrap;align-items:center;gap:18px;justify-content:space-between;background:var(--navy);border-radius:16px;padding:22px 24px}
+  .vv-cta{margin-top:20px;display:flex;flex-wrap:wrap;align-items:center;gap:18px;justify-content:space-between;background:var(--navy);border-radius:16px;padding:22px 24px}
   .vv-copy{display:flex;flex-direction:column;gap:4px;max-width:440px}
   .vv-copy strong{color:#fff;font-size:1.05rem}
   .vv-copy span{color:#c4d2e6;font-size:14px;line-height:1.5}

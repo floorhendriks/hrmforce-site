@@ -1,0 +1,153 @@
+---
+// Kijkje in de vragenlijst. Geen schermafbeelding maar de echte opmaak, zodat
+// het meeschaalt en op telefoon leesbaar blijft. Toont het startscherm plus de
+// voorbeeldvragen met de echte antwoordschaal.
+const { lang = "nl", testName = "", ex = {} } = Astro.props;
+
+const T = {
+  nl: { chip: "Vragenlijst", welcome: "Welkom bij", intro: "Je krijgt een reeks vragen. Geef per vraag aan wat het best bij je past.",
+        b1: "Duurt enkele minuten", b2: "Er zijn geen goede of foute antwoorden", b3: "Antwoord spontaan, dat geeft het beste beeld",
+        start: "Start de vragenlijst", own: "In je eigen taal en tempo", sample: "Voorbeeldvragen", of: "van", vraag: "Vraag",
+        note: "Kies wat het best bij je past.", prev: "Vorige", next: "Volgende", demo: "Voorbeeldweergave, je antwoorden worden niet bewaard" },
+  en: { chip: "Questionnaire", welcome: "Welcome to", intro: "You will get a series of questions. For each one, indicate what fits you best.",
+        b1: "Takes a few minutes", b2: "There are no right or wrong answers", b3: "Answer spontaneously, that gives the best picture",
+        start: "Start the questionnaire", own: "In your own language and pace", sample: "Example questions", of: "of", vraag: "Question",
+        note: "Choose what fits you best.", prev: "Previous", next: "Next", demo: "Preview only, your answers are not saved" },
+  de: { chip: "Fragebogen", welcome: "Willkommen bei", intro: "Sie erhalten eine Reihe von Fragen. Geben Sie je Frage an, was am besten passt.",
+        b1: "Dauert einige Minuten", b2: "Es gibt keine richtigen oder falschen Antworten", b3: "Antworten Sie spontan, das ergibt das beste Bild",
+        start: "Fragebogen starten", own: "In Ihrer Sprache und Ihrem Tempo", sample: "Beispielfragen", of: "von", vraag: "Frage",
+        note: "Wählen Sie, was am besten passt.", prev: "Zurück", next: "Weiter", demo: "Vorschau, Ihre Antworten werden nicht gespeichert" },
+  fr: { chip: "Questionnaire", welcome: "Bienvenue dans", intro: "Vous recevrez une série de questions. Indiquez pour chacune ce qui vous correspond le mieux.",
+        b1: "Dure quelques minutes", b2: "Il n'y a pas de bonnes ou mauvaises réponses", b3: "Répondez spontanément, cela donne le meilleur aperçu",
+        start: "Démarrer le questionnaire", own: "Dans votre langue et à votre rythme", sample: "Exemples de questions", of: "sur", vraag: "Question",
+        note: "Choisissez ce qui vous correspond le mieux.", prev: "Précédent", next: "Suivant", demo: "Aperçu, vos réponses ne sont pas enregistrées" },
+  es: { chip: "Cuestionario", welcome: "Bienvenido a", intro: "Recibirás una serie de preguntas. Indica en cada una lo que mejor encaja contigo.",
+        b1: "Dura unos minutos", b2: "No hay respuestas correctas o incorrectas", b3: "Responde de forma espontánea, da la mejor imagen",
+        start: "Iniciar el cuestionario", own: "En tu idioma y a tu ritmo", sample: "Preguntas de ejemplo", of: "de", vraag: "Pregunta",
+        note: "Elige lo que mejor encaje contigo.", prev: "Anterior", next: "Siguiente", demo: "Vista previa, tus respuestas no se guardan" },
+  ro: { chip: "Chestionar", welcome: "Bine ai venit la", intro: "Vei primi o serie de întrebări. Indică pentru fiecare ce ți se potrivește cel mai bine.",
+        b1: "Durează câteva minute", b2: "Nu există răspunsuri corecte sau greșite", b3: "Răspunde spontan, așa iese cea mai bună imagine",
+        start: "Începe chestionarul", own: "În limba și ritmul tău", sample: "Întrebări exemplu", of: "din", vraag: "Întrebarea",
+        note: "Alege ce ți se potrivește cel mai bine.", prev: "Înapoi", next: "Înainte", demo: "Previzualizare, răspunsurile nu se salvează" },
+}[lang] || {};
+
+const vragen = (ex.items || []).slice(0, 6);
+const punten = String(ex.scale || "").split(" - ").map((x) => x.trim()).filter(Boolean);
+const isSchaal = punten.length >= 3;
+const keuzes = Array.isArray(ex.mockOptions) && ex.mockOptions.length ? ex.mockOptions : null;
+// Eén voorbeeldantwoord ingevuld, zodat meteen zichtbaar is hoe het werkt.
+const voorbeeldAntwoord = isSchaal ? Math.min(3, punten.length - 1) : 0;
+const naam = String(testName || "").split("|")[0].trim();
+---
+<div class="qp">
+  <div class="qp-bar">
+    <span class="qp-logo">hrmforce</span>
+    <span class="qp-chip">{T.chip}</span>
+  </div>
+
+  <div class="qp-body">
+    <aside class="qp-start">
+      <p class="qp-kicker">{T.chip}</p>
+      <h3>{T.welcome} {naam}</h3>
+      <p class="qp-lead">{T.intro}</p>
+      <ul class="qp-points">
+        <li>{T.b1}</li>
+        <li>{T.b2}</li>
+        <li>{T.b3}</li>
+      </ul>
+      <span class="qp-btn">{T.start}</span>
+      <p class="qp-own">{T.own}</p>
+    </aside>
+
+    <section class="qp-vragen" aria-label={T.sample}>
+      <div class="qp-vkop">
+        <p class="qp-kicker">{T.sample}</p>
+        <span class="qp-teller">1 {T.of} {vragen.length}</span>
+      </div>
+
+      <ol class="qp-lijst">
+        {vragen.map((v, i) => (
+          <li class="qp-vraag">
+            <p class="qp-tekst"><span class="qp-nr">{i + 1}</span>{v}</p>
+            {isSchaal ? (
+              <div class="qp-schaal" role="group" aria-label={T.note}>
+                {punten.map((pt, j) => (
+                  <span class={"qp-optie" + (i === 0 && j === voorbeeldAntwoord ? " aan" : "")}>
+                    <span class="qp-bol" aria-hidden="true"></span>
+                    <span class="qp-lbl">{pt}</span>
+                  </span>
+                ))}
+              </div>
+            ) : (
+              keuzes && i === 0 && (
+                <div class="qp-keuzes">
+                  {keuzes.map((k, j) => (
+                    <span class={"qp-keuze" + (j === 0 ? " aan" : "")}>{k}</span>
+                  ))}
+                </div>
+              )
+            )}
+          </li>
+        ))}
+      </ol>
+
+      <div class="qp-voet">
+        <span class="qp-ghost">{T.prev}</span>
+        <span class="qp-btn klein">{T.next}</span>
+      </div>
+    </section>
+  </div>
+
+  <p class="qp-demo">{T.demo}</p>
+</div>
+
+<style>
+  .qp { border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: #fff; box-shadow: var(--shadow-sm); }
+  .qp-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 18px; border-bottom: 1px solid var(--line); background: var(--bg-soft); }
+  .qp-logo { color: var(--navy); font-weight: 800; letter-spacing: -.01em; font-size: 15px; }
+  .qp-chip { color: var(--muted); font-size: 12.5px; font-weight: 600; }
+
+  .qp-body { display: grid; grid-template-columns: 300px 1fr; }
+  .qp-start { padding: 24px; border-right: 1px solid var(--line); background: var(--bg-soft); }
+  .qp-kicker { color: var(--accent); font-size: 11.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; margin: 0 0 6px; }
+  .qp-start h3 { color: var(--navy); font-size: 1.05rem; margin: 0 0 8px; line-height: 1.3; }
+  .qp-lead { color: var(--muted); font-size: 14px; line-height: 1.55; margin: 0 0 14px; }
+  .qp-points { list-style: none; margin: 0 0 18px; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+  .qp-points li { color: var(--navy); font-size: 13.5px; line-height: 1.45; padding-left: 24px; position: relative; }
+  .qp-points li::before { content: ""; position: absolute; left: 0; top: 4px; width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--line-strong); }
+  .qp-btn { display: inline-block; background: var(--navy); color: #fff; font-weight: 700; font-size: 14px; padding: 10px 18px; border-radius: 10px; }
+  .qp-btn.klein { padding: 8px 16px; font-size: 13.5px; }
+  .qp-own { color: var(--muted); font-size: 12.5px; margin: 10px 0 0; }
+
+  .qp-vragen { padding: 22px 24px; min-width: 0; }
+  .qp-vkop { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+  .qp-teller { color: var(--muted); font-size: 12.5px; }
+  .qp-lijst { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+  .qp-vraag { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .qp-vraag:last-child { border-bottom: 0; }
+  .qp-tekst { color: var(--navy); font-weight: 600; font-size: 15px; line-height: 1.45; margin: 0 0 10px; display: flex; gap: 10px; align-items: baseline; }
+  .qp-nr { flex: none; color: var(--muted); font-weight: 700; font-size: 12.5px; min-width: 14px; }
+
+  .qp-schaal { display: flex; flex-wrap: wrap; gap: 6px 14px; padding-left: 24px; }
+  .qp-optie { display: inline-flex; align-items: center; gap: 7px; }
+  .qp-bol { width: 15px; height: 15px; border-radius: 50%; border: 2px solid var(--line-strong); flex: none; }
+  .qp-optie.aan .qp-bol { border-color: var(--accent); background: var(--accent); box-shadow: inset 0 0 0 3px #fff; }
+  .qp-lbl { color: var(--muted); font-size: 12.5px; }
+  .qp-optie.aan .qp-lbl { color: var(--navy); font-weight: 700; }
+
+  .qp-keuzes { display: flex; flex-wrap: wrap; gap: 8px; padding-left: 24px; }
+  .qp-keuze { border: 1px solid var(--line-strong); border-radius: 999px; padding: 5px 13px; font-size: 13px; color: var(--muted); }
+  .qp-keuze.aan { border-color: var(--accent); color: var(--navy); font-weight: 700; background: #eef5fd; }
+
+  .qp-voet { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .qp-ghost { color: var(--muted); font-size: 13.5px; }
+  .qp-demo { color: var(--muted); font-size: 12.5px; text-align: center; margin: 0; padding: 10px 16px; border-top: 1px solid var(--line); background: var(--bg-soft); }
+
+  @media (max-width: 820px) {
+    .qp-body { grid-template-columns: 1fr; }
+    .qp-start { border-right: 0; border-bottom: 1px solid var(--line); padding: 20px; }
+    .qp-vragen { padding: 18px; }
+    .qp-schaal, .qp-keuzes { padding-left: 0; }
+    .qp-lbl { font-size: 12px; }
+  }
+</style>

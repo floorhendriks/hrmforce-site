@@ -5,7 +5,7 @@ export const detailUi = {
   nl: {
     eyebrowAssessments: "Online assessments", crumbAssessments: "Online assessments",
     phase: "Wanneer inzetten?", goal: "Doel",
-    priceLabel: "Prijs per los assessment", priceNote: "Bij bulkafname of een eigen portal betaal je aanzienlijk minder per afname.",
+    detailsSummary: "Toelichting en competentieniveaus", priceLabel: "Prijs per los assessment", priceNote: "per losse afname, of onbeperkt afnemen met een eigen portal op licentiebasis.",
     demo: "Plan een gratis demo", orderLoose: "Los bestellen", inShop: "Bekijk in de shop",
     portalPre: "Structureel inzetten? Start met een ", portalLink: "eigen portal op licentiebasis",
     portalPost: ", onbeperkt afnemen tegen een vaste jaarprijs.",
@@ -29,7 +29,7 @@ export const detailUi = {
   en: {
     eyebrowAssessments: "Online assessments", crumbAssessments: "Online assessments",
     phase: "When to use it?", goal: "Goal",
-    priceLabel: "Price per single assessment", priceNote: "With bulk orders or your own portal you pay considerably less per assessment.",
+    detailsSummary: "Background and competency levels", priceLabel: "Price per single assessment", priceNote: "per single assessment, or unlimited use with your own licensed portal.",
     demo: "Book a free demo", orderLoose: "Order individually", inShop: "View in the shop",
     portalPre: "Rolling it out structurally? Start with your ", portalLink: "own licensed portal",
     portalPost: ", unlimited use for a fixed annual price.",
@@ -53,7 +53,7 @@ export const detailUi = {
   de: {
     eyebrowAssessments: "Online assessments", crumbAssessments: "Online assessments",
     phase: "Wann einsetzen?", goal: "Ziel",
-    priceLabel: "Preis pro Einzel-Assessment", priceNote: "Bei Mengenabnahme oder einem eigenen Portal zahlen Sie deutlich weniger pro Assessment.",
+    detailsSummary: "Hintergrund und Kompetenzstufen", priceLabel: "Preis pro Einzel-Assessment", priceNote: "pro Einzel-Assessment, oder unbegrenzt nutzen mit einem eigenen Lizenzportal.",
     demo: "Kostenlose Demo buchen", orderLoose: "Einzeln bestellen", inShop: "Im Shop ansehen",
     portalPre: "Strukturell einsetzen? Starten Sie mit einem ", portalLink: "eigenen Portal auf Lizenzbasis",
     portalPost: ", unbegrenzte Nutzung zu einem festen Jahrespreis.",
@@ -77,7 +77,7 @@ export const detailUi = {
   fr: {
     eyebrowAssessments: "Évaluations en ligne", crumbAssessments: "Évaluations en ligne",
     phase: "Quand l'utiliser ?", goal: "Objectif",
-    priceLabel: "Prix par évaluation isolée", priceNote: "En volume ou avec votre propre portail, vous payez nettement moins par évaluation.",
+    detailsSummary: "Explications et niveaux de compétence", priceLabel: "Prix par évaluation isolée", priceNote: "par évaluation isolée, ou en illimité avec votre propre portail sous licence.",
     demo: "Réserver une démo gratuite", orderLoose: "Commander à l'unité", inShop: "Voir dans la boutique",
     portalPre: "Un déploiement structurel ? Commencez avec votre ", portalLink: "propre portail sous licence",
     portalPost: ", utilisation illimitée pour un prix annuel fixe.",
@@ -101,7 +101,7 @@ export const detailUi = {
   es: {
     eyebrowAssessments: "Evaluaciones online", crumbAssessments: "Evaluaciones online",
     phase: "¿Cuándo usarla?", goal: "Objetivo",
-    priceLabel: "Precio por evaluación individual", priceNote: "Con volumen o con tu propio portal pagas bastante menos por evaluación.",
+    detailsSummary: "Explicación y niveles de competencia", priceLabel: "Precio por evaluación individual", priceNote: "por evaluación individual, o uso ilimitado con tu propio portal con licencia.",
     demo: "Reservar una demo gratis", orderLoose: "Pedir por unidad", inShop: "Ver en la tienda",
     portalPre: "¿Implementación estructural? Empieza con tu ", portalLink: "propio portal con licencia",
     portalPost: ", uso ilimitado por un precio anual fijo.",
@@ -125,7 +125,7 @@ export const detailUi = {
   ro: {
     eyebrowAssessments: "Evaluări online", crumbAssessments: "Evaluări online",
     phase: "Când o folosești?", goal: "Obiectiv",
-    priceLabel: "Preț per evaluare individuală", priceNote: "La volum sau cu propriul portal plătești considerabil mai puțin per evaluare.",
+    detailsSummary: "Explicații și niveluri de competență", priceLabel: "Preț per evaluare individuală", priceNote: "per evaluare individuală, sau nelimitat cu propriul portal pe bază de licență.",
     demo: "Rezervă o demonstrație gratuită", orderLoose: "Comandă individual", inShop: "Vezi în magazin",
     portalPre: "Implementare structurală? Începe cu ", portalLink: "propriul portal pe bază de licență",
     portalPost: ", utilizare nelimitată la un preț anual fix.",

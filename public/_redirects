@@ -136,8 +136,6 @@
 /assessments-sitemap.xml                  /sitemap-index.xml                   301
 
 # --- Advies-subpagina's zonder eigen pagina op de nieuwe site ---
-/advies/talent-management/                /hrm-oplossingen/                    301
-/advies/competentie-management/           /hrm-oplossingen/                    301
 /advies/consultancy/                      /contact/                            301
 /advies/coaching/                         /contact/                            301
 /advies/selectie-begeleiding/             /advies/selectie-assessment/         301

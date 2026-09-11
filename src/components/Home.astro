@@ -119,7 +119,12 @@ const faqLd = {
         <a class="btn btn-primary" href={demoHref}>{c.hero.ctaPrimary} →</a>
         <a class="btn btn-ghost hero-ghost" href={assessHref}>{c.hero.ctaGhost}</a>
       </div>
-      <p class="hero-micro">{c.hero.micro}</p>
+      {googleUrl && (
+        <a class="hero-rating" href={googleUrl} target="_blank" rel="noopener nofollow">
+          <span class="hr-stars" aria-hidden="true">★★★★★</span>
+          <span class="hr-txt"><b>{GOOG.score}</b> {GOOG.label}</span>
+        </a>
+      )}
       <div class="hero-badges">
         {c.hero.badges.map((b) => <span class="hb"><span class="hb-ic">✓</span> {b}</span>)}
       </div>
@@ -276,7 +281,7 @@ const faqLd = {
   <div class="wrap" style="display:block">
     <div class="itc-bar">
       <span class="itc-badge">
-        <Img src="https://images.weserv.nl/?url=www.intestcom.org/images/logo.png&output=webp&w=200&we" alt="Logo International Test Commission" loading="lazy" onerror="this.parentNode.classList.add('is-txt');this.remove();" />
+        <Img src="https://images.weserv.nl/?url=www.intestcom.org/images/logo.png&output=webp&w=560&we" alt="Logo International Test Commission" loading="lazy" onerror="this.parentNode.classList.add('is-txt');this.remove();" />
         <em>ITC</em>
       </span>
       <div class="itc-copy">
@@ -379,7 +384,11 @@ const faqLd = {
   .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin: 28px 0 8px; }
   .hero-ghost { background: rgba(255,255,255,.06); color: #fff; border-color: rgba(255,255,255,.45); }
   .hero-ghost:hover { background: rgba(255,255,255,.14); color: #fff; border-color: #fff; }
-  .hero-micro { color: #a9c0e0; font-size: 13.5px; margin-top: 12px; }
+  .hero-rating { display: inline-flex; align-items: center; gap: 10px; margin-top: 14px; text-decoration: none; }
+  .hero-rating .hr-stars { color: var(--gold); letter-spacing: 2px; font-size: 17px; }
+  .hero-rating .hr-txt { color: #dbe7f7; font-size: 14.5px; font-weight: 600; }
+  .hero-rating .hr-txt b { color: #fff; font-size: 16px; font-weight: 800; }
+  .hero-rating:hover .hr-txt { color: #fff; }
   .hero-badges { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 24px; }
   .hb { display: inline-flex; align-items: center; gap: 8px; color: #dbe7f7; font-size: 13.5px; font-weight: 600; }
   .hb-ic { width: 24px; height: 24px; border-radius: 7px; background: rgba(255,255,255,.12); color: var(--gold); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; }
@@ -495,7 +504,7 @@ const faqLd = {
   .cases-teaser { background: var(--bg); }
   .ct-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
   @media (max-width: 780px) { .ct-grid { grid-template-columns: 1fr; } }
-  .ct-card { background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--gold); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-xs); }
+  .ct-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 24px; box-shadow: var(--shadow-xs); }
   .ct-sector { display: inline-block; background: var(--navy); color: #fff; font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; padding: 4px 11px; border-radius: 999px; margin-bottom: 12px; }
   .ct-result { color: var(--navy); font-size: 1.05rem; font-weight: 700; line-height: 1.4; margin: 0; }
   .faq-a p { padding-top: 16px; }
@@ -510,20 +519,20 @@ const faqLd = {
   .testi-card figcaption b { color:var(--navy); font-size:14.5px; }
   .testi-card figcaption span { color:var(--muted); font-size:13px; }
   .itc-sec { background:var(--bg-soft); border-bottom:1px solid var(--line); }
-  .itc-sec .wrap { padding-top:30px; padding-bottom:30px; }
-  .itc-bar { display:flex; align-items:center; gap:22px; margin:0 auto; background:#fff; border:1px solid var(--line); border-left:4px solid var(--gold); border-radius:16px; padding:22px 26px; max-width:920px; box-shadow:var(--shadow-sm); }
-  .itc-badge { flex:none; width:112px; min-height:72px; padding:10px 12px; border-radius:12px; background:#fff; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; }
-  .itc-badge img { max-height:52px; max-width:88px; width:auto; object-fit:contain; display:block; }
+  .itc-sec .wrap { padding-top:26px; padding-bottom:26px; }
+  .itc-bar { display:flex; align-items:center; gap:30px; margin:0 auto; background:#fff; border:1px solid var(--line); border-radius:18px; padding:30px 34px; max-width:980px; box-shadow:var(--shadow-sm); }
+  .itc-badge { flex:none; width:188px; min-height:118px; padding:16px 18px; border-radius:14px; background:#fff; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; }
+  .itc-badge img { max-height:86px; max-width:152px; width:auto; object-fit:contain; display:block; }
   .itc-badge em { display:none; font-style:normal; font-weight:800; font-size:17px; color:#fff; letter-spacing:1px; }
   .itc-badge.is-txt { background:var(--navy); border:0; }
   .itc-badge.is-txt em { display:inline; }
   .itc-copy { min-width:0; }
-  .itc-title { color:var(--navy); font-size:1.1rem; margin:0 0 6px; line-height:1.3; }
-  .itc-bar p { color:var(--muted); font-size:14.5px; margin:0; line-height:1.6; }
+  .itc-title { color:var(--navy); font-size:1.35rem; margin:0 0 8px; line-height:1.25; }
+  .itc-bar p { color:var(--muted); font-size:15.5px; margin:0; line-height:1.65; }
   .itc-link { display:inline-block; margin-top:10px; color:var(--accent); font-weight:700; font-size:14px; }
   @media (max-width:640px) {
     .itc-bar { flex-direction:column; align-items:flex-start; gap:14px; padding:20px; border-radius:14px; }
-    .itc-badge { width:auto; min-width:96px; }
+    .itc-badge { width:100%; max-width:260px; min-height:96px; }
     .itc-title { font-size:1.02rem; }
   }
   .outcome-note { color:#b8c8de; font-size:13px; margin-top:10px; }
