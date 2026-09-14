@@ -92,7 +92,6 @@ const logos = [
   <div class="wrap">
     <div class="explain">
       <div>
-        <div class="eyebrow">{c.why.eyebrow}</div>
         <h2 class="section-title">{c.why.title}</h2>
         <p>{c.why.body}</p>
       </div>
@@ -105,7 +104,6 @@ const logos = [
 
 <section style="background:var(--bg)">
   <div class="wrap">
-    <div class="eyebrow">{c.how.eyebrow}</div>
     <h2 class="section-title">{c.how.title}</h2>
     <p style="max-width:900px;color:var(--text);font-size:17px" set:html={c.how.body}></p>
   </div>
@@ -113,7 +111,6 @@ const logos = [
 
 <section>
   <div class="wrap">
-    <div class="eyebrow">{c.clients.eyebrow}</div>
     <h2 class="section-title">{c.clients.title}</h2>
     <div class="logos">
       {logos.map((l) => <Img src={l.src} alt={l.alt} title={l.alt} loading="lazy" />)}
@@ -145,7 +142,6 @@ const logos = [
       <Img src="/media/wp-content/uploads/2022/03/youtube-afbeelding2.png" alt={c.video.alt} loading="lazy" style="max-width:100%;height:auto;display:block;border-radius:var(--radius)" />
       <span class="yt-play" aria-hidden="true"></span>
     </button>
-    <div class="eyebrow" style="margin-top:28px">{c.video.eyebrow}</div>
     <h2 class="section-title">{c.video.title}</h2>
     <p style="max-width:900px;color:var(--text);font-size:17px" set:html={c.video.body}></p>
     <div class="btns" style="margin-top:8px"><a class="btn btn-primary" href={contactHref}>{c.video.cta}</a></div>
@@ -154,7 +150,6 @@ const logos = [
 
 <section style="background:var(--bg)">
   <div class="wrap">
-    <div class="eyebrow">{c.reviews.eyebrow}</div>
     <h2 class="section-title">{c.reviews.title}</h2>
     <p style="max-width:900px;color:var(--text);font-size:17px">{c.reviews.body}</p>
     <div class="cards" style="margin-top:28px">

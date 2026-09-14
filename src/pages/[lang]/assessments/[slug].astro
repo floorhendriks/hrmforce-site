@@ -8,7 +8,7 @@ import { assessmentsI18n } from "../../../data/assessments-i18n.js";
 import { detailUi } from "../../../data/assessment-detail-ui.js";
 import { shopInfo, prijs } from "../../../data/assessment-shop.js";
 import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../../data/site-config.js";
-import { localizePath } from "../../../i18n/utils.js";
+import { localizePath, demoPath } from "../../../i18n/utils.js";
 import { examplesFor } from "../../../data/assessment-examples.js";
 import { extraFor } from "../../../data/assessment-detail-extra.js";
 import { theoryFor } from "../../../data/assessment-theory.js";
@@ -143,7 +143,7 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
           </p>
         )}
         <div class="btns">
-          <a href={localizePath("/contact/", lang)} class="btn btn-primary">{t.demo} &rarr;</a>
+          <a href={demoPath(lang)} class="btn btn-primary">{t.demo} &rarr;</a>
           <a href={localizePath(shop.url, lang)} class="btn btn-light">
             {shop.price ? t.orderLoose : t.inShop}
           </a>
@@ -245,7 +245,7 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
         <div class="ostep"><span class="on">3</span><h4>{t.step3t}</h4><p>{t.step3b}</p></div>
       </div>
       <div style="margin-top:26px">
-        <a href={localizePath("/contact/", lang)} class="btn btn-primary">{t.demoPlain}</a>
+        <a href={demoPath(lang)} class="btn btn-primary">{t.demoPlain}</a>
         <a href={localizePath("/tarieven/", lang)} class="btn btn-ghost" style="margin-left:8px">{t.licenseOptions}</a>
       </div>
     </div>

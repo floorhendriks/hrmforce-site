@@ -371,7 +371,7 @@ const FAQ_DEFAULT = generalFaq(lang);
   .cart-warn { color: #b3261e; background: #fdeceb; border: 1px solid #f6c9c5; border-radius: var(--radius-sm); padding: 8px 12px; font-size: 13px; font-weight: 600; margin: 0 0 10px; }
 </style>
 
-<script is:inline define:vars={{ L, ENRICH, LANG, IMGMAP: shopImages, SC: SHOP_CONTENT, FORM: FORMSPREE_ENDPOINT, VENDOR_LOGO, RQ: rq, FAQ_SEG, FAQ_DEFAULT, CATALOG: catalog, CHECKOUT_URL: afrekenenHref }}>
+<script is:inline define:vars={{ L, ENRICH, LANG, IMGMAP: shopImages, SC_URL: "/shop-products.json", FORM: FORMSPREE_ENDPOINT, VENDOR_LOGO, RQ: rq, FAQ_SEG, FAQ_DEFAULT, CATALOG: catalog, CHECKOUT_URL: afrekenenHref }}>
   (function () {
     var app = document.getElementById("shopApp");
     if (!app) return;
@@ -400,7 +400,11 @@ const FAQ_DEFAULT = generalFaq(lang);
     function enrichHtml(p) { var d = enrichD(p); return "<p>" + esc(d.intro.replace("{name}", p.title)) + "</p><p>" + esc(d.body) + "</p><ul>" + d.bullets.map(function (b) { return "<li>" + esc(b) + "</li>"; }).join("") + "</ul>"; }
     function enrichBullets() { var d = enrichD(); return "<ul>" + d.bullets.map(function (b) { return "<li>" + esc(b) + "</li>"; }).join("") + "</ul>"; }
 
-    /* ---------- Echte productinhoud (van hrmforce.com) + logo per product ---------- */
+    /* ---------- Echte productinhoud (van hrmforce.com) + logo per product ----------
+       SC komt uit /shop-products.json en arriveert vlak na het renderen. Tot die
+       tijd valt elke tekst terug op de generieke beschrijving, dus de pagina is
+       meteen bruikbaar. */
+    var SC = null;
     function scFor(p) { return (SC && SC[p.title]) || null; }
     // Echte beschrijving (NL) uit SHOP_CONTENT; val terug op de generieke tekst.
     function descOf(p) { var c = scFor(p); if (!c || !c.desc) return null; return (typeof c.desc === "string") ? c.desc : (c.desc[LANG] || c.desc.nl); }
@@ -668,6 +672,14 @@ const FAQ_DEFAULT = generalFaq(lang);
       fillSelect(fSegment, Object.keys(segSet));
       fillSelect(fUitgever, Object.keys(uitSet));
       render();
+      // Productteksten nakomen en daarna opnieuw tekenen.
+      try {
+        fetch(SC_URL).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+          if (!d) return;
+          SC = d;
+          render();
+        }).catch(function () {});
+      } catch (e) {}
       // Deeplink: /shop/?p=<handle> opent meteen het juiste product.
       try {
         var _pq = new URLSearchParams(location.search).get("p");

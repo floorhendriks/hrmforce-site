@@ -1,5 +1,5 @@
 ---
-import { localizePath } from "../i18n/utils.js";
+import { localizePath, demoPath } from "../i18n/utils.js";
 import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../data/site-config.js";
 const { wp, ui, lang } = Astro.props;
 const d = wp.i18n[lang] ?? wp.i18n.nl;
@@ -38,7 +38,7 @@ const wpHref = localizePath("/whitepapers/", lang);
       </div>
     ))}
     <p style="padding:16px 20px;background:var(--bg-soft);border-radius:var(--radius)"><strong>{ui.takeawayLabel}:</strong> {d.takeaway}</p>
-    <div style="margin-top:22px"><a href={wpHref} class="btn btn-ghost">← {ui.back}</a> <a href={localizePath("/contact/", lang)} class="btn btn-primary" style="margin-left:8px">{ui.form} →</a></div>
+    <div style="margin-top:22px"><a href={wpHref} class="btn btn-ghost">← {ui.back}</a> <a href={demoPath(lang)} class="btn btn-primary" style="margin-left:8px">{ui.form} →</a></div>
   </div>
 </div></section>
 

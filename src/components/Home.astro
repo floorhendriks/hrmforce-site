@@ -1,6 +1,7 @@
 ---
 import Sterren from "./Sterren.astro";
 import Datavisual from "./Datavisual.astro";
+import Hulpmiddelen from "./Hulpmiddelen.astro";
 import Img from "./Img.astro";
 // Gedeelde homepage-component. Wordt per taal gevuld via `c` (content) + `lang`.
 import { clients } from "../data/home.js";
@@ -149,9 +150,10 @@ const faqLd = {
 
 <LogoSlider />
 
+<Hulpmiddelen lang={lang} />
+
 <section class="bg-soft">
   <div class="wrap" style="display:block">
-    {c.compare.eyebrow && <span class="eyebrow center">{c.compare.eyebrow}</span>}
     <h2 class="section-title center">{c.compare.title}</h2>
     <p class="lead center" style="margin:0 0 40px">{c.compare.lead}</p>
     <div class="vs-grid">
@@ -170,7 +172,6 @@ const faqLd = {
 
 <section>
   <div class="wrap" style="display:block">
-    {c.why.eyebrow && <span class="eyebrow center">{c.why.eyebrow}</span>}
     <h2 class="section-title center">{c.why.title}</h2>
     <p class="lead center" style="margin:0 0 40px">{c.why.lead}</p>
     <div class="value-grid">
@@ -216,7 +217,6 @@ const faqLd = {
 {c.casesTeaser && (
 <section class="cases-teaser">
   <div class="wrap" style="display:block">
-    <span class="eyebrow center">{c.casesTeaser.eyebrow}</span>
     <h2 class="section-title center">{c.casesTeaser.title}</h2>
     <p class="lead center" style="margin:0 0 40px">{c.casesTeaser.lead}</p>
     <div class="ct-grid">
@@ -236,13 +236,12 @@ const faqLd = {
 
 <section>
   <div class="wrap" style="display:block">
-    <span class="eyebrow center">{c.featured.eyebrow}</span>
     <h2 class="section-title center">{c.featured.title}</h2>
     <p class="lead center" style="margin:0 0 40px">{c.featured.lead}</p>
     <div class="assess-grid">
       {c.featured.items.map((a) => (
         <a class="assess-card" href={lang === "nl" ? `/assessments/${a.slug}/` : assessHref}>
-          <div class="assess-img"><Img src={a.image} alt={a.title} loading="lazy" /></div>
+          <div class="assess-img"><Img src={a.image} alt={a.title} width="981" height="1000" loading="lazy" /></div>
           <div class="assess-body">
             <h3>{a.title}</h3>
             <p>{a.goal}</p>
@@ -259,7 +258,6 @@ const faqLd = {
 
 <section class="bg-soft">
   <div class="wrap" style="display:block">
-    <span class="eyebrow center">{c.how.eyebrow}</span>
     <h2 class="section-title center">{c.how.title}</h2>
     <p class="lead center" style="margin:0 0 44px">{c.how.lead}</p>
     <div class="how-steps">
@@ -286,7 +284,7 @@ const faqLd = {
   <div class="wrap" style="display:block">
     <div class="itc-bar">
       <span class="itc-badge">
-        <Img src="https://images.weserv.nl/?url=www.intestcom.org/images/logo.png&output=webp&w=560&we" alt="Logo International Test Commission" loading="lazy" onerror="this.parentNode.classList.add('is-txt');this.remove();" />
+        <Img src="https://images.weserv.nl/?url=www.intestcom.org/images/logo.png&output=webp&w=560&we" alt="Logo International Test Commission" width="560" height="152" loading="lazy" onerror="this.parentNode.classList.add('is-txt');this.remove();" />
         <em>ITC</em>
       </span>
       <div class="itc-copy">
@@ -300,7 +298,6 @@ const faqLd = {
 
 <section class="blog">
   <div class="wrap" style="display:block;max-width:900px">
-    <div class="eyebrow center">{c.faqSection.eyebrow}</div>
     <h2 class="section-title center">{c.faqSection.title}</h2>
     <p class="lead center" style="margin-bottom:32px">{c.faqSection.lead}</p>
     {c.faqs.map((f) => (
@@ -314,7 +311,6 @@ const faqLd = {
 
 <section class="cta">
   <div class="wrap" style="display:block">
-    <div class="eyebrow center">{c.ctaBand.eyebrow}</div>
     <h2>{c.ctaBand.title}</h2>
     <p>{c.ctaBand.text}</p>
     <div class="btns">

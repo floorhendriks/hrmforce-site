@@ -1,0 +1,70 @@
+---
+/**
+ * Smalle band met de twee hulpmiddelen die nu diep in de site zitten:
+ * de testkiezer en de ROI-rekentool. Geen kaarten, alleen haarlijnen,
+ * zodat hij hoog op de pagina kan staan zonder een blok te worden.
+ */
+import Ico from "./Ico.astro";
+import { localizePath } from "../i18n/utils.js";
+const { lang = "nl" } = Astro.props;
+
+const T = {
+  nl: { lbl1: "Testkiezer", k1: "Welke test past bij jouw vraag?", t1: "Beantwoord vier vragen en je krijgt een onderbouwd voorstel.", c1: "Open de testkiezer",
+        lbl2: "Rekentool", k2: "Wat levert objectief selecteren op?", t2: "Reken je besparing door met je eigen aantallen en verloopcijfers.", c2: "Open de ROI-rekentool" },
+  en: { lbl1: "Test selector", k1: "Which assessment fits your question?", t1: "Answer four questions and get a grounded suggestion.", c1: "Open the test selector",
+        lbl2: "Calculator", k2: "What does objective selection deliver?", t2: "Work out your saving with your own headcount and turnover figures.", c2: "Open the ROI calculator" },
+  de: { lbl1: "Testauswahl", k1: "Welcher Test passt zu Ihrer Frage?", t1: "Vier Fragen beantworten und Sie erhalten einen fundierten Vorschlag.", c1: "Zur Testauswahl",
+        lbl2: "Rechner", k2: "Was bringt objektive Auswahl?", t2: "Rechnen Sie Ihre Ersparnis mit eigenen Zahlen durch.", c2: "Zum ROI-Rechner" },
+  fr: { lbl1: "Sélecteur", k1: "Quel test correspond à votre question ?", t1: "Répondez à quatre questions et recevez une proposition argumentée.", c1: "Ouvrir le sélecteur",
+        lbl2: "Calculateur", k2: "Que rapporte une sélection objective ?", t2: "Calculez votre gain avec vos propres effectifs et taux de rotation.", c2: "Ouvrir le calculateur ROI" },
+  es: { lbl1: "Selector", k1: "¿Qué test encaja con tu pregunta?", t1: "Responde cuatro preguntas y recibe una propuesta fundamentada.", c1: "Abrir el selector de tests",
+        lbl2: "Calculadora", k2: "¿Qué aporta una selección objetiva?", t2: "Calcula tu ahorro con tus propias cifras de plantilla y rotación.", c2: "Abrir la calculadora ROI" },
+  ro: { lbl1: "Selector", k1: "Ce test se potrivește întrebării tale?", t1: "Răspunde la patru întrebări și primești o propunere argumentată.", c1: "Deschide selectorul de teste",
+        lbl2: "Calculator", k2: "Ce aduce o selecție obiectivă?", t2: "Calculează economia cu propriile cifre de personal și fluctuație.", c2: "Deschide calculatorul ROI" },
+}[lang] || {};
+
+const testHref = localizePath("/testkiezer/", lang);
+const roiHref = localizePath("/roi-rekentool/", lang);
+---
+<section class="hulp">
+  <div class="wrap hulp-grid">
+    <a class="hulp-item" href={testHref}>
+      <span class="hulp-ic"><Ico name="vragenlijst" size={26} /></span>
+      <span class="hulp-txt">
+        <span class="hulp-lbl">{T.lbl1}</span>
+        <strong>{T.k1}</strong>
+        <span class="hulp-sub">{T.t1}</span>
+        <span class="hulp-cta">{T.c1} &rarr;</span>
+      </span>
+    </a>
+    <a class="hulp-item" href={roiHref}>
+      <span class="hulp-ic"><Ico name="groei" size={26} /></span>
+      <span class="hulp-txt">
+        <span class="hulp-lbl">{T.lbl2}</span>
+        <strong>{T.k2}</strong>
+        <span class="hulp-sub">{T.t2}</span>
+        <span class="hulp-cta">{T.c2} &rarr;</span>
+      </span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .hulp { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 0; }
+  .hulp-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; }
+  .hulp-item { display: flex; gap: 16px; align-items: flex-start; padding: 26px 28px 26px 0; text-decoration: none; color: inherit; }
+  .hulp-item + .hulp-item { border-left: 1px solid var(--line); padding-left: 28px; }
+  .hulp-ic { flex: none; color: var(--navy); border-left: 2px solid var(--gold); padding-left: 12px; display: flex; }
+  .hulp-txt { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .hulp-lbl { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .13em; text-transform: uppercase; color: var(--muted); }
+  .hulp-item strong { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: var(--navy); line-height: 1.25; }
+  .hulp-sub { color: var(--muted); font-size: 14.5px; line-height: 1.5; }
+  .hulp-cta { font-weight: 600; font-size: 14.5px; color: var(--blue); margin-top: 4px; }
+  .hulp-item:hover strong { color: var(--accent); }
+  .hulp-item:hover .hulp-cta { color: var(--accent); }
+  @media (max-width: 760px) {
+    .hulp-grid { grid-template-columns: minmax(0, 1fr); }
+    .hulp-item { padding: 22px 0; }
+    .hulp-item + .hulp-item { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; }
+  }
+</style>

@@ -19,6 +19,14 @@ export function useTranslations(lang) {
 
 // Zet een NL-pad om naar het juiste pad voor de gekozen taal.
 //   localizePath("/shop/", "de") => "/de/shop/"
+/**
+ * Waar de knop "gratis demo" heen moet. De aparte demopagina bestaat alleen in
+ * het Nederlands; andere talen houden de contactpagina.
+ */
+export function demoPath(lang) {
+  return lang === "nl" || !lang ? "/demo/" : localizePath("/contact/", lang);
+}
+
 export function localizePath(path, lang) {
   return lang === "nl" ? path : "/" + lang + path;
 }
