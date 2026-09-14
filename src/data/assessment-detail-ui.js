@@ -5,7 +5,7 @@ export const detailUi = {
   nl: {
     eyebrowAssessments: "Online assessments", crumbAssessments: "Online assessments",
     phase: "Wanneer inzetten?", goal: "Doel",
-    detailsSummary: "Toelichting en competentieniveaus", priceLabel: "Prijs per los assessment", visualCaption: "Zo ziet een uitkomst eruit: scores per competentie tegen het vereiste niveau", priceNote: "Per losse afname. Onbeperkte bulkafname met eigen licentie tot 70% goedkoper.",
+    detailsSummary: "Toelichting en competentieniveaus", priceLabel: "Prijs per los assessment", visualCaption: "Voorbeeldrapportage, niet de scores van een echte kandidaat", visualScale: "Score per dimensie op een vijfpuntsschaal, de stippellijn is het vereiste niveau", visualMark: "voorbeeld", visualNorm: "Percentielscore binnen de normgroep", priceNote: "Per losse afname. Onbeperkte bulkafname met eigen licentie tot 70% goedkoper.",
     demo: "Plan een gratis demo", orderLoose: "Los bestellen", inShop: "Bekijk in de shop",
     portalPre: "Structureel inzetten? Start met een ", portalLink: "eigen portal op licentiebasis",
     portalPost: ", onbeperkt afnemen tegen een vaste jaarprijs.",
@@ -29,7 +29,7 @@ export const detailUi = {
   en: {
     eyebrowAssessments: "Online assessments", crumbAssessments: "Online assessments",
     phase: "When to use it?", goal: "Goal",
-    detailsSummary: "Background and competency levels", priceLabel: "Price per single assessment", visualCaption: "What a result looks like: scores per competency against the required level", priceNote: "Per single assessment. Unlimited volume use with your own licence, up to 70% cheaper.",
+    detailsSummary: "Background and competency levels", priceLabel: "Price per single assessment", visualCaption: "Sample report, not the scores of a real candidate", visualScale: "Score per dimension on a five-point scale, the dotted line is the required level", visualMark: "example", visualNorm: "Percentile score within the norm group", priceNote: "Per single assessment. Unlimited volume use with your own licence, up to 70% cheaper.",
     demo: "Book a free demo", orderLoose: "Order individually", inShop: "View in the shop",
     portalPre: "Rolling it out structurally? Start with your ", portalLink: "own licensed portal",
     portalPost: ", unlimited use for a fixed annual price.",
@@ -53,7 +53,7 @@ export const detailUi = {
   de: {
     eyebrowAssessments: "Online assessments", crumbAssessments: "Online assessments",
     phase: "Wann einsetzen?", goal: "Ziel",
-    detailsSummary: "Hintergrund und Kompetenzstufen", priceLabel: "Preis pro Einzel-Assessment", visualCaption: "So sieht ein Ergebnis aus: Werte je Kompetenz gegenüber dem geforderten Niveau", priceNote: "Pro Einzel-Assessment. Unbegrenzte Nutzung mit eigener Lizenz, bis zu 70% günstiger.",
+    detailsSummary: "Hintergrund und Kompetenzstufen", priceLabel: "Preis pro Einzel-Assessment", visualCaption: "Beispielbericht, nicht die Werte einer echten Person", visualScale: "Wert je Dimension auf einer fünfstufigen Skala, die gestrichelte Linie ist das geforderte Niveau", visualMark: "beispiel", visualNorm: "Perzentilwert innerhalb der Normgruppe", priceNote: "Pro Einzel-Assessment. Unbegrenzte Nutzung mit eigener Lizenz, bis zu 70% günstiger.",
     demo: "Kostenlose Demo buchen", orderLoose: "Einzeln bestellen", inShop: "Im Shop ansehen",
     portalPre: "Strukturell einsetzen? Starten Sie mit einem ", portalLink: "eigenen Portal auf Lizenzbasis",
     portalPost: ", unbegrenzte Nutzung zu einem festen Jahrespreis.",
@@ -77,7 +77,7 @@ export const detailUi = {
   fr: {
     eyebrowAssessments: "Évaluations en ligne", crumbAssessments: "Évaluations en ligne",
     phase: "Quand l'utiliser ?", goal: "Objectif",
-    detailsSummary: "Explications et niveaux de compétence", priceLabel: "Prix par évaluation isolée", visualCaption: "À quoi ressemble un résultat : scores par compétence face au niveau requis", priceNote: "Par évaluation isolée. Usage illimité avec votre propre licence, jusqu’à 70% moins cher.",
+    detailsSummary: "Explications et niveaux de compétence", priceLabel: "Prix par évaluation isolée", visualCaption: "Rapport d’exemple, pas les scores d’un candidat réel", visualScale: "Score par dimension sur une échelle en cinq points, la ligne pointillée est le niveau requis", visualMark: "exemple", visualNorm: "Score centile dans le groupe de référence", priceNote: "Par évaluation isolée. Usage illimité avec votre propre licence, jusqu’à 70% moins cher.",
     demo: "Réserver une démo gratuite", orderLoose: "Commander à l'unité", inShop: "Voir dans la boutique",
     portalPre: "Un déploiement structurel ? Commencez avec votre ", portalLink: "propre portail sous licence",
     portalPost: ", utilisation illimitée pour un prix annuel fixe.",
@@ -101,7 +101,7 @@ export const detailUi = {
   es: {
     eyebrowAssessments: "Evaluaciones online", crumbAssessments: "Evaluaciones online",
     phase: "¿Cuándo usarla?", goal: "Objetivo",
-    detailsSummary: "Explicación y niveles de competencia", priceLabel: "Precio por evaluación individual", visualCaption: "Así se ve un resultado: puntuaciones por competencia frente al nivel requerido", priceNote: "Por evaluación individual. Uso ilimitado con licencia propia, hasta un 70% más barato.",
+    detailsSummary: "Explicación y niveles de competencia", priceLabel: "Precio por evaluación individual", visualCaption: "Informe de ejemplo, no las puntuaciones de un candidato real", visualScale: "Puntuación por dimensión en una escala de cinco puntos, la línea discontinua es el nivel requerido", visualMark: "ejemplo", visualNorm: "Percentil dentro del grupo normativo", priceNote: "Por evaluación individual. Uso ilimitado con licencia propia, hasta un 70% más barato.",
     demo: "Reservar una demo gratis", orderLoose: "Pedir por unidad", inShop: "Ver en la tienda",
     portalPre: "¿Implementación estructural? Empieza con tu ", portalLink: "propio portal con licencia",
     portalPost: ", uso ilimitado por un precio anual fijo.",
@@ -125,7 +125,7 @@ export const detailUi = {
   ro: {
     eyebrowAssessments: "Evaluări online", crumbAssessments: "Evaluări online",
     phase: "Când o folosești?", goal: "Obiectiv",
-    detailsSummary: "Explicații și niveluri de competență", priceLabel: "Preț per evaluare individuală", visualCaption: "Cum arată un rezultat: scoruri pe competență față de nivelul cerut", priceNote: "Per evaluare individuală. Utilizare nelimitată cu licență proprie, cu până la 70% mai ieftin.",
+    detailsSummary: "Explicații și niveluri de competență", priceLabel: "Preț per evaluare individuală", visualCaption: "Raport exemplu, nu scorurile unui candidat real", visualScale: "Scor pe dimensiune pe o scală în cinci trepte, linia punctată este nivelul cerut", visualMark: "exemplu", visualNorm: "Scor percentil în grupul normativ", priceNote: "Per evaluare individuală. Utilizare nelimitată cu licență proprie, cu până la 70% mai ieftin.",
     demo: "Rezervă o demonstrație gratuită", orderLoose: "Comandă individual", inShop: "Vezi în magazin",
     portalPre: "Implementare structurală? Începe cu ", portalLink: "propriul portal pe bază de licență",
     portalPost: ", utilizare nelimitată la un preț anual fix.",

@@ -99,6 +99,20 @@ const kcRelated = (kcPosts || [])
 const _offerLd = (shop && shop.price)
   ? { "@context": "https://schema.org", "@type": "Product", name: a.title, description: a.goal, brand: { "@type": "Brand", name: "hrmforce" }, ...(a.image ? { image: a.image } : {}), offers: { "@type": "Offer", price: String(shop.price), priceCurrency: "EUR", availability: "https://schema.org/InStock", url: _canon } }
   : { "@context": "https://schema.org", "@type": "Service", name: a.title, description: a.goal, provider: { "@type": "Organization", name: "hrmforce" }, areaServed: "EU" };
+// Voorbeeldrapportage per assessment. De dimensies komen uit de test zelf, de
+// scores zijn afgeleid van de slug zodat elke test een eigen, vast beeld heeft.
+// Het is nadrukkelijk een voorbeeld, dat staat ook in het bijschrift.
+const _dvHash = (str) => {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return ((h >>> 0) % 1000) / 1000;
+};
+const _dvDims = (a.traits && a.traits.length ? a.traits : []).slice(0, 6);
+const dvRijen = _dvDims.map((n) => ({ n, v: Math.round((2.4 + _dvHash(a.slug + "|" + n) * 2.2) * 10) / 10 }));
+const dvNorm = /capacit|cognit|abstract|numer|verbaal|redeneer|ability|iq|intelligen|aanleg/i
+  .test(`${a.slug} ${a.title} ${(a.traits || []).join(" ")}`);
+const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentieprofiel";
+
 ---
 <Base title={a.metaTitle} description={a.metaDescription} active="assessments">
   <script type="application/ld+json" is:inline set:html={JSON.stringify(_offerLd)}></script>
@@ -226,7 +240,15 @@ const _offerLd = (shop && shop.price)
         <ul class="theory-refs">{theory.refs.map((r) => <li>{r}</li>)}</ul>
         <p class="theory-note">{theory.note}</p>
       </div>
-      <Datavisual soort="competentieprofiel" titel={"Zo ziet een uitkomst eruit: scores per competentie tegen het vereiste niveau"} class="theory-visual" />
+      <Datavisual
+        soort={dvSoort}
+        rijen={dvRijen}
+        merk="voorbeeld"
+        bij={dvSoort === "normverdeling"
+          ? `Percentielscore binnen de normgroep, ${a.title}`
+          : "Score per dimensie op een vijfpuntsschaal, de stippellijn is het vereiste niveau"}
+        titel="Voorbeeldrapportage, niet de scores van een echte kandidaat"
+        class="theory-visual" />
     </div></section>
   )}
 
