@@ -5,4 +5,4 @@ import { VERG_UI, COMPETITORS } from "../../data/vergelijking-content.js";
 export function getStaticPaths(){ return Object.keys(COMPETITORS).map((slug)=>({ params:{slug}, props:{slug} })); }
 const { slug } = Astro.props; const t = VERG_UI.nl; const c = COMPETITORS[slug];
 ---
-<Base title={`${t.altPrefix} ${c.name} | hrmforce`} description={t.metaD} active=""><Vergelijking slug={slug} lang="nl" /></Base>
+<Base title={`${t.altPrefix} ${c.name} | hrmforce`} description={`hrmforce naast ${c.name}: wat de instrumenten meten, in welke talen ze beschikbaar zijn en wat een licentie kost. Zonder verkooppraat.`} active=""><Vergelijking slug={slug} lang="nl" /></Base>

@@ -16,8 +16,21 @@ export async function getStaticPaths() {
   // Statische routes hebben voorrang; sluit paden uit die we nu als eigen
   // pagina bouwen (bijv. de sectoren-index) om dubbele routes te voorkomen.
   const OWN = new Set(["sectoren", "en/sectoren", "de/sectoren", "fr/sectoren", "es/sectoren", "ro/sectoren", "sectoren/onderwijs"]);
+  // Migratieresten uit WordPress: paden als /?page_id=8355/. Het zijn dubbelen
+  // van echte pagina's (templates, testpagina's, tweede versies van Support en
+  // de algemene voorwaarden) met een URL zonder betekenis. Ze niet bouwen haalt
+  // ze ook uit de sitemap.
+  // Artikelen uit een serie beginnen vaak met dezelfde zin, waardoor de
+  // automatische metadescription op meerdere pagina's gelijk wordt. Markeer die,
+  // zodat de titel er straks voor komt te staan.
+  const kop = (b) => String(b || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 160);
+  const telling = {};
+  for (const a of arts) { const k = kop(a.body); if (k) telling[k] = (telling[k] || 0) + 1; }
+
   return arts
     .filter((a) => a.path && a.path.includes("/"))
+    .filter((a) => !/page_id=/i.test(a.path))
+    .map((a) => ({ ...a, gedeeldeIntro: telling[kop(a.body)] > 1 }))
     .map((a) => ({ p: a.path.replace(/^\/+|\/+$/g, ""), a }))
     .filter((x) => !OWN.has(x.p))
     .map((x) => ({ params: { path: x.p }, props: { article: x.a } }));
@@ -139,6 +152,9 @@ const _articleLd = {
 
 // Body splitsen: contextuele kaart na de eerste </h2> (anders vóór de eindband).
 let body = sanitizeBodyLinks(article.body || "", lang, validPaths);
+// Afbeeldingen stonden nog op de oude WordPress-site. Ze staan nu in /media/,
+// zodat de pagina niet afhankelijk is van een domein dat vervangen wordt.
+body = body.replace(/https:\/\/(?:www\.)?hrmforce\.com\/wp-content\//g, "/media/wp-content/");
 // Verwijder de lege, doelloze kop "Organisaties die u voorgingen" die uit de oude
 // WordPress-logoslider-plugin in de gemigreerde artikelinhoud is achtergebleven.
 body = body
@@ -195,6 +211,25 @@ const _descFallback = {
   ro: "Mai multe despre evaluări, selecție și dezvoltarea talentelor la hrmforce.",
 }[lang] || "Lees meer over assessments, selectie en talentontwikkeling bij hrmforce.";
 if (metaDesc.length < 60) metaDesc = `${article.title}. ${_descFallback}`;
+// Deelt dit artikel zijn openingszin met andere delen uit dezelfde serie, dan
+// zet de titel ervoor. Anders krijgen meerdere pagina's dezelfde beschrijving.
+if (article.gedeeldeIntro) metaDesc = `${article.title}. ${metaDesc}`.slice(0, 170);
+
+// Video in de body: markeren als VideoObject, zodat Google er een
+// videoresultaat van kan maken met een voorbeeldafbeelding.
+const _vid = (body.match(/youtube(?:-nocookie)?\.com\/embed\/([A-Za-z0-9_-]{6,})/) || [])[1] || "";
+const videoLd = _vid
+  ? {
+      "@context": "https://schema.org",
+      "@type": "VideoObject",
+      name: article.title,
+      description: metaDesc,
+      thumbnailUrl: [`https://i.ytimg.com/vi/${_vid}/maxresdefault.jpg`],
+      embedUrl: `https://www.youtube.com/embed/${_vid}`,
+      uploadDate: article.date ? new Date(article.date).toISOString() : undefined,
+      publisher: { "@type": "Organization", name: "hrmforce" },
+    }
+  : null;
 
 // H2-koppen een id geven en daaruit een klikbare inhoudsopgave opbouwen.
 const _slug = (txt) =>
@@ -248,6 +283,7 @@ const bodyTop = cut !== -1 ? body.slice(0, cut + 5) : body;
 const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
 ---
 <Base title={`${article.title} | hrmforce`} description={metaDesc}>
+  {videoLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(videoLd)} />}
   <script type="application/ld+json" is:inline set:html={JSON.stringify(_articleLd)}></script>
   <div class="crumb">
     <div class="wrap"><a href={localizePath("/", lang)}>{K.crumbHome}</a> › <a href={kcHref}>{K.crumb}</a> › <span>{article.title}</span></div>

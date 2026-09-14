@@ -15,7 +15,6 @@ const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList", 
   { "@type": "ListItem", position: 2, name: d.name, item: _canon },
 ] };
 ---
-<script type="application/ld+json" is:inline set:html={JSON.stringify(_crumbLd)}></script>
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={localizePath("/online-assessments/", lang)}>Online assessments</a> › <span>{d.hero}</span></div></div>
 
 <section class="ahero"><div class="wrap" style="display:block">

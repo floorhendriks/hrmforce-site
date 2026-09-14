@@ -24,7 +24,7 @@ const gvzSchema = [
   { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: gvzFaq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) },
 ];
 ---
-<Base
+<Base crumbs={false}
   title="Geschikt voor de Zorg | Hrmforce"
   description="Met de Geschikt voor Zorg-test vind je de juiste persoon voor iedere doelgroep in de zorg. Data-gedreven matching met 90% retentie."
   active=""

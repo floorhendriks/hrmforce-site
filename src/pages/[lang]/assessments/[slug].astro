@@ -122,7 +122,6 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
 <Base title={a.metaTitle} description={a.metaDescription} active="assessments">
   <script type="application/ld+json" is:inline set:html={JSON.stringify(_offerLd)}></script>
   <script type="application/ld+json" is:inline set:html={JSON.stringify(_faqLd)}></script>
-  <script type="application/ld+json" is:inline set:html={JSON.stringify(_crumbLd)}></script>
 
   <div class="crumb">
     <div class="wrap"><a href={localizePath("/", lang)}>{t.home}</a> › <a href={assessHref}>{t.crumbAssessments}</a> › <span>{a.title}</span></div>

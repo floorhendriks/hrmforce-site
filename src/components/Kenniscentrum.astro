@@ -1,6 +1,6 @@
 ---
 import { createClient } from "@sanity/client";
-import { localizePath, localizeExisting } from "../i18n/utils.js";
+import { localizePath, localizeExisting, eigenMedia } from "../i18n/utils.js";
 import validPaths from "../data/valid-paths.js";
 
 const { t, lang } = Astro.props;
@@ -42,7 +42,7 @@ function categorize(title) {
   return "overig";
 }
 function firstImage(body) {
-  const m = (body || "").match(/<img[^>]+src=["']([^"']+)["']/i);
+  const m = eigenMedia(body || "").match(/<img[^>]+src=["']([^"']+)["']/i);
   return m ? m[1] : null;
 }
 function excerpt(body) {

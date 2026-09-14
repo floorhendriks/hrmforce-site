@@ -5,4 +5,4 @@ import { oefentests, OEFEN_UI } from "../../data/oefentests.js";
 export function getStaticPaths(){ return oefentests.map((o)=>({ params:{slug:o.slug}, props:{o} })); }
 const { o } = Astro.props; const d=o.i18n.nl; const ui=OEFEN_UI.nl;
 ---
-<Base title={`${d.hero} | hrmforce`} description={ui.metaD} active=""><Oefenen o={o} lang="nl" /></Base>
+<Base title={`${d.hero} | hrmforce`} description={`Oefen met ${d.name}. Voorbeeldvragen, uitleg over de antwoordschaal en tips waarmee je rustiger en scherper aan de echte afname begint.`} active=""><Oefenen o={o} lang="nl" /></Base>

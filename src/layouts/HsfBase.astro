@@ -53,7 +53,7 @@ const nav = [
     </body>
   </html>
 ) : (
-  <SiteBase title={title} description={description} active="kennisbank">
+  <SiteBase crumbs={false} title={title} description={description} active="kennisbank">
     <Fragment slot="head">
       {noindex && <meta name="robots" content="noindex, follow" />}
       {Object.entries(alternates).map(([l, href]) => (

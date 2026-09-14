@@ -5,4 +5,4 @@ import { oefentests, OEFEN_UI } from "../../../data/oefentests.js";
 export function getStaticPaths(){ return oefentests.map((o)=>({ params:{slug:o.slug}, props:{o} })); }
 const { o } = Astro.props; const d=o.i18n.en; const ui=OEFEN_UI.en;
 ---
-<Base title={`${d.hero} | hrmforce`} description={ui.metaD} active=""><Oefenen o={o} lang="en" /></Base>
+<Base title={`${d.hero} | hrmforce`} description={`Practise with ${d.name}. Example questions, an explanation of the answer scale and tips to start the real test calmer and sharper.`} active=""><Oefenen o={o} lang="en" /></Base>

@@ -89,6 +89,14 @@ const SECTION_ROOTS = {
 // bestemming: bekende oude patronen worden geremapt; anders val terug op de
 // sectie-hoofdpagina en uiteindelijk het kenniscentrum-overzicht in dezelfde
 // taal. Voorkomt 404's in artikel- en paginateksten.
+/**
+ * Afbeeldingen die bij de migratie naar de oude WordPress-site bleven wijzen,
+ * naar de eigen map halen. Zo hangt de site niet aan een domein dat vervangen wordt.
+ */
+export function eigenMedia(html) {
+  return String(html || "").replace(/https:\/\/(?:www\.)?hrmforce\.com\/wp-content\//g, "/media/wp-content/");
+}
+
 export function sanitizeBodyLinks(html, lang, validPaths) {
   if (!html) return html;
   const valid = validPaths instanceof Set ? validPaths : new Set(validPaths);

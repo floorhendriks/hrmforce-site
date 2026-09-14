@@ -35,7 +35,6 @@ const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList", 
 const _svcLd = { "@context": "https://schema.org", "@type": "Service", name: t.title, description: t.metaDescription, provider: { "@type": "Organization", name: "hrmforce" }, areaServed: "EU" };
 const _faqLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: (t.faq || []).map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) };
 ---
-<script type="application/ld+json" is:inline set:html={JSON.stringify(_crumbLd)}></script>
 <script type="application/ld+json" is:inline set:html={JSON.stringify(_svcLd)}></script>
 <script type="application/ld+json" is:inline set:html={JSON.stringify(_faqLd)}></script>
 

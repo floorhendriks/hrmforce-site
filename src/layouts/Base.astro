@@ -24,12 +24,65 @@ const {
   description = "Talentmanagement software en online assessments van hrmforce.",
   active = "",
   noindex = false,
+  crumbs = true,   // uit zetten waar de pagina zelf al een BreadcrumbList levert
   image = "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
 } = Astro.props;
 
 const lang = getLangFromUrl(Astro.url);
 const consentT = consentContent[lang] ?? consentContent.nl;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://hrmforce.com");
+
+// Titel: Google kapt rond de 60 tot 65 tekens af. Is de titel al lang genoeg
+// om op zichzelf te staan, dan laten we de merknaam achterwege. Google zet de
+// sitenaam zelf achter het resultaat.
+const titelKort = (t) => {
+  const v = String(t || "").trim();
+  return v.length > 60 ? v.replace(/\s*\|\s*hrmforce\s*$/i, "").trim() : v;
+};
+const paginaTitel = titelKort(title);
+
+// Kruimelpad als BreadcrumbList. Google toont dat pad in het zoekresultaat in
+// plaats van de kale URL. Opgebouwd uit het pad zelf, zodat elke pagina met een
+// map erboven het krijgt en niet alleen de artikelen.
+const RUBRIEK = {
+  assessments: { nl: "Assessments", en: "Assessments", de: "Assessments", fr: "Évaluations", es: "Evaluaciones", ro: "Evaluări" },
+  kenniscentrum: { nl: "Kenniscentrum", en: "Knowledge centre", de: "Wissenszentrum", fr: "Centre de connaissances", es: "Centro de conocimiento", ro: "Centru de cunoștințe" },
+  "hrm-oplossingen": { nl: "HRM-oplossingen", en: "HR solutions", de: "HR-Lösungen", fr: "Solutions RH", es: "Soluciones RR. HH.", ro: "Soluții HR" },
+  advies: { nl: "Advies", en: "Advice", de: "Beratung", fr: "Conseil", es: "Asesoramiento", ro: "Consultanță" },
+  integraties: { nl: "Integraties", en: "Integrations", de: "Anbindungen", fr: "Intégrations", es: "Integraciones", ro: "Integrări" },
+  vergelijking: { nl: "Vergelijken", en: "Compare", de: "Vergleichen", fr: "Comparer", es: "Comparar", ro: "Comparați" },
+  oefenen: { nl: "Oefenen", en: "Practise", de: "Üben", fr: "S'entraîner", es: "Practicar", ro: "Exersați" },
+  sectoren: { nl: "Sectoren", en: "Sectors", de: "Branchen", fr: "Secteurs", es: "Sectores", ro: "Sectoare" },
+  toepassingen: { nl: "Toepassingen", en: "Use cases", de: "Anwendungen", fr: "Cas d'usage", es: "Casos de uso", ro: "Aplicații" },
+  whitepapers: { nl: "Whitepapers", en: "Whitepapers", de: "Whitepapers", fr: "Livres blancs", es: "Whitepapers", ro: "Whitepapers" },
+  vacatures: { nl: "Vacatures", en: "Vacancies", de: "Stellen", fr: "Offres", es: "Vacantes", ro: "Posturi" },
+  support: { nl: "Support", en: "Support", de: "Support", fr: "Assistance", es: "Soporte", ro: "Asistență" },
+  partner: { nl: "Partners", en: "Partners", de: "Partner", fr: "Partenaires", es: "Socios", ro: "Parteneri" },
+};
+const netjes = (seg) =>
+  decodeURIComponent(seg).replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase());
+const _delen = Astro.url.pathname.split("/").filter(Boolean);
+if (["en", "de", "fr", "es", "ro"].includes(_delen[0])) _delen.shift();
+const _basis = Astro.site ? String(Astro.site).replace(/\/$/, "") : "https://hrmforce.com";
+const _pre = lang === "nl" ? "" : "/" + lang;
+const kruimelLd = crumbs && _delen.length
+  ? {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${_basis}${_pre}/` },
+        ..._delen.map((seg, i) => ({
+          "@type": "ListItem",
+          position: i + 2,
+          name:
+            i === _delen.length - 1
+              ? paginaTitel.replace(/\s*\|\s*hrmforce\s*$/i, "").trim()
+              : (RUBRIEK[seg] && (RUBRIEK[seg][lang] || RUBRIEK[seg].nl)) || netjes(seg),
+          item: `${_basis}${_pre}/${_delen.slice(0, i + 1).join("/")}/`,
+        })),
+      ],
+    }
+  : null;
 const LOCALE_MAP = { nl: "nl_NL", en: "en_US", de: "de_DE", fr: "fr_FR", es: "es_ES", ro: "ro_RO" };
 const ogLocale = LOCALE_MAP[lang] || "nl_NL";
 const STICKY_DEMO = {
@@ -109,12 +162,13 @@ const orgLd = {
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={image} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
+    <meta name="twitter:title" content={paginaTitel} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image} />
     <link rel="canonical" href={canonical} />
     {hreflangs.map((h) => <link rel="alternate" hreflang={h.lang} href={h.href} />)}
-    <title>{title}</title>
+    <title>{paginaTitel}</title>
+    {kruimelLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(kruimelLd)} />}
     <script type="application/ld+json" set:html={JSON.stringify(orgLd)} is:inline></script>
     <script type="application/ld+json" is:inline set:html={JSON.stringify({"@context":"https://schema.org","@type":"WebSite",name:"hrmforce",url:"https://hrmforce.com/",potentialAction:{"@type":"SearchAction",target:{"@type":"EntryPoint",urlTemplate:"https://hrmforce.com/kenniscentrum/?q={search_term_string}"},"query-input":"required name=search_term_string"}})}></script>
     <slot name="head" />
