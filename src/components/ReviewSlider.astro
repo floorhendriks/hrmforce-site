@@ -7,7 +7,7 @@ const reviews = Astro.props.reviews ?? REVIEWS[lang] ?? REVIEWS.nl;
 const headingKey = Astro.props.headingKey || "default";
 const heading = Astro.props.heading ?? (REVIEW_HEADINGS[headingKey]?.[lang] ?? REVIEW_HEADINGS.default[lang] ?? REVIEW_HEADINGS.default.nl);
 const sample = Astro.props.sample ?? false;
-const stars = (n) => "\u2605".repeat(n) + "\u2606".repeat(5 - n);
+const STER = "M12 3l2.6 6.1 6.4.5-4.9 4.2 1.5 6.2L12 16.7 6.4 20l1.5-6.2L3 9.6l6.4-.5z";
 ---
 {reviews.length > 0 && (
 <section class="reviewslider">
@@ -19,7 +19,11 @@ const stars = (n) => "\u2605".repeat(n) + "\u2606".repeat(5 - n);
     <div class="rs-track">
       { reviews.map((r) => (
         <figure class="rs-card">
-          <div class="rs-stars" aria-label={r.stars + " van 5 sterren"}>{stars(r.stars)}</div>
+          <div class="rs-stars" aria-label={r.stars + " van 5 sterren"}>
+            {Array.from({ length: 5 }).map((_, i) => (
+              <svg viewBox="0 0 24 24" class={i < r.stars ? "vol" : "leeg"} aria-hidden="true"><path d={STER} /></svg>
+            ))}
+          </div>
           <blockquote class="rs-quote">{r.quote}</blockquote>
           <figcaption class="rs-by">
             <span class="rs-avatar" aria-hidden="true">{r.who.slice(0,1)}</span>
@@ -38,7 +42,10 @@ const stars = (n) => "\u2605".repeat(n) + "\u2606".repeat(5 - n);
   .rs-sample{ font-size:12px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:#8a6d1a; background:#fbf4e1; border:1px solid #e7cf8a; padding:4px 10px; border-radius:var(--radius-pill); }
   .rs-track{ display:flex; gap:20px; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:12px; -webkit-overflow-scrolling:touch; }
   .rs-card{ flex:0 0 88%; max-width:380px; scroll-snap-align:start; margin:0; background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:24px; box-shadow:var(--shadow-xs); display:flex; flex-direction:column; gap:12px; }
-  .rs-stars{ color:var(--gold); font-size:18px; letter-spacing:2px; }
+  .rs-stars{ color:var(--gold); display:flex; gap:3px; }
+  .rs-stars svg{ width:17px; height:17px; display:block; }
+  .rs-stars svg.vol{ fill:var(--gold); }
+  .rs-stars svg.leeg{ fill:none; stroke:var(--gold); stroke-width:1.5; }
   .rs-quote{ margin:0; color:var(--text); font-size:16px; line-height:1.55; }
   .rs-by{ display:flex; align-items:center; gap:12px; margin-top:auto; }
   .rs-avatar{ width:44px; height:44px; border-radius:var(--radius-sm); background:var(--navy); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
