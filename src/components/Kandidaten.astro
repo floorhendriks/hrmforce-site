@@ -1,5 +1,5 @@
 ---
-import { localizePath } from "../i18n/utils.js";
+import { localizePath, demoPath } from "../i18n/utils.js";
 const { t, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
 const _canon = new URL(Astro.url.pathname, "https://hrmforce.com").href;
@@ -45,7 +45,7 @@ const cardHref = (h) => (h === "/voorbereiding/" ? localizePath(h, lang) : h);
   <h2 style="color:#fff">{t.cta.title}</h2>
   <p style="color:rgba(255,255,255,.9);max-width:620px;margin:12px auto 0">{t.cta.text}</p>
   <div class="btns" style="justify-content:center;margin-top:20px">
-    <a href={contactHref} class="btn btn-light">{t.cta.primary}</a>
+    <a href={demoPath(lang)} class="btn btn-light">{t.cta.primary}</a>
     <a href={localizePath("/voorbereiding/", lang)} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">{t.cta.secondary}</a>
   </div>
 </div></section>

@@ -1,6 +1,6 @@
 ---
 import LogoSlider from "./LogoSlider.astro";
-import { getLangFromUrl, localizePath } from "../i18n/utils.js";
+import { getLangFromUrl, localizePath, demoPath } from "../i18n/utils.js";
 import { liveAssessmentsFor } from "../data/live-assessments-content.js";
 
 const lang = getLangFromUrl(Astro.url);
@@ -8,6 +8,7 @@ const { ui, options } = liveAssessmentsFor(lang);
 const homeHref = localizePath("/", lang);
 const adviesHref = localizePath("/advies/", lang);
 const contactHref = localizePath("/contact/", lang);
+const demoHref = demoPath(lang);
 const overzichtHref = localizePath("/assessment-overzicht/", lang);
 const testkiezerHref = localizePath("/testkiezer/", lang);
 ---
@@ -21,7 +22,7 @@ const testkiezerHref = localizePath("/testkiezer/", lang);
     <h1>{ui.h1}</h1>
     <p style="color:#c4d2e6;font-size:19px;max-width:840px;margin-top:8px">{ui.lead}</p>
     <div class="btns" style="margin-top:16px">
-      <a href={contactHref} class="btn btn-primary">{ui.ctaBtn1}</a>
+      <a href={demoHref} class="btn btn-primary">{ui.ctaBtn1}</a>
       <a href={overzichtHref} class="btn btn-light">{ui.ctaBtn2}</a>
     </div>
   </div>
@@ -51,7 +52,7 @@ const testkiezerHref = localizePath("/testkiezer/", lang);
     <h2>{ui.ctaTitle}</h2>
     <p>{ui.ctaText}</p>
     <div class="btns">
-      <a href={contactHref} class="btn btn-primary">{ui.ctaBtn1}</a>
+      <a href={demoHref} class="btn btn-primary">{ui.ctaBtn1}</a>
       <a href={testkiezerHref} class="btn btn-light">{ui.ctaBtn2}</a>
     </div>
   </div>

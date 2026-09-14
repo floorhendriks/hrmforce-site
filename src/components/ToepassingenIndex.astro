@@ -1,6 +1,6 @@
 ---
 import { landings, LAND_UI } from "../data/landings.js";
-import { localizePath } from "../i18n/utils.js";
+import { localizePath, demoPath } from "../i18n/utils.js";
 
 const { lang = "nl" } = Astro.props;
 const ui = LAND_UI[lang] || LAND_UI.nl;
@@ -45,5 +45,5 @@ const T = (l) => (l.i18n[lang] || l.i18n.nl);
 <section class="cta"><div class="wrap" style="padding:56px 0;text-align:center">
   <h2 style="color:#fff">{ui.ctaT}</h2>
   <p style="color:rgba(255,255,255,.9);max-width:620px;margin:12px auto 0">{ui.ctaD}</p>
-  <div class="btns" style="justify-content:center;margin-top:20px"><a href={localizePath("/contact/", lang)} class="btn btn-light">{ui.ctaBtn}</a></div>
+  <div class="btns" style="justify-content:center;margin-top:20px"><a href={demoPath(lang)} class="btn btn-light">{ui.ctaBtn}</a></div>
 </div></section>

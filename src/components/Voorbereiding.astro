@@ -1,9 +1,10 @@
 ---
-import { localizePath, sanitizeBodyLinks } from "../i18n/utils.js";
+import { localizePath, sanitizeBodyLinks, demoPath } from "../i18n/utils.js";
 import validPaths from "../data/valid-paths.js";
 import { oefentests } from "../data/oefentests.js";
 const { t, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
+const demoHref = demoPath(lang);
 const PREP_UI = {
   nl: { title: "Bereid je voor per test", intro: "Zoek je test en oefen met echte voorbeeldvragen. Zo weet je precies wat je kunt verwachten.", search: "Zoek je test...", none: "Geen test gevonden.", practice: "Oefen deze test" },
   en: { title: "Prepare per test", intro: "Find your test and practise with real example questions, so you know exactly what to expect.", search: "Search your test...", none: "No test found.", practice: "Practise this test" },
@@ -89,7 +90,7 @@ const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voo
     <li><strong>E:</strong> <a href="mailto:service@hrmforce.com">service@hrmforce.com</a></li>
   </ul>
   <div class="btns" style="margin-top:20px">
-    <a href={contactHref} class="btn btn-primary">{t.contact.cta}</a>
+    <a href={demoHref} class="btn btn-primary">{t.contact.cta}</a>
   </div>
 </div></section>
 <style>

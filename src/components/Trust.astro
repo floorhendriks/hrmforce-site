@@ -1,8 +1,9 @@
 ---
-import { localizePath } from "../i18n/utils.js";
+import { localizePath, demoPath } from "../i18n/utils.js";
 import Ico from "./Ico.astro";
 const { t, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
+const demoHref = demoPath(lang);
 const overHref = localizePath("/over-ons/", lang);
 ---
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
@@ -11,7 +12,7 @@ const overHref = localizePath("/over-ons/", lang);
   <div class="eyebrow">{t.hero.eyebrow}</div>
   <h1>{t.hero.title}</h1>
   <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px" set:html={t.hero.intro}></p>
-  <div class="btns" style="margin-top:18px"><a href={contactHref} class="btn btn-primary">{t.hero.cta}</a></div>
+  <div class="btns" style="margin-top:18px"><a href={demoHref} class="btn btn-primary">{t.hero.cta}</a></div>
 </div></section>
 
 <section><div class="wrap">
@@ -34,7 +35,7 @@ const overHref = localizePath("/over-ons/", lang);
   <h2 style="color:#fff">{t.ctaBand.title}</h2>
   <p style="color:rgba(255,255,255,.9);max-width:620px;margin:12px auto 0">{t.ctaBand.text}</p>
   <div class="btns" style="justify-content:center;margin-top:20px">
-    <a href={contactHref} class="btn btn-light">{t.ctaBand.primary}</a>
+    <a href={demoPath(lang)} class="btn btn-light">{t.ctaBand.primary}</a>
     <a href={overHref} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">{t.ctaBand.secondary}</a>
   </div>
   <p style="color:rgba(255,255,255,.9);margin-top:22px">

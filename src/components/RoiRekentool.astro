@@ -1,7 +1,8 @@
 ---
-import { localizePath } from "../i18n/utils.js";
+import { localizePath, demoPath } from "../i18n/utils.js";
 const { t, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
+const demoHref = demoPath(lang);
 ---
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
 
@@ -50,7 +51,7 @@ const contactHref = localizePath("/contact/", lang);
           <div><div class="lbl">{t.result.aantal}</div><div class="v" id="aantal">0</div></div>
           <div><div class="lbl">{t.result.roi}</div><div class="v" id="roi">0%</div></div>
         </div>
-        <a href={contactHref} class="btn btn-primary" style="margin-top:22px">{t.result.cta}</a>
+        <a href={demoHref} class="btn btn-primary" style="margin-top:22px">{t.result.cta}</a>
       </div>
       <p class="note" style="margin-top:18px;text-align:left" set:html={t.result.note}></p>
     </div>

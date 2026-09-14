@@ -1,9 +1,10 @@
 ---
 import Img from "./Img.astro";
 import Ico from "./Ico.astro";
-import { localizePath } from "../i18n/utils.js";
+import { localizePath, demoPath } from "../i18n/utils.js";
 const { t, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
+const demoHref = demoPath(lang);
 const tarievenHref = localizePath("/tarieven/", lang);
 import { PARTNERS, PARTNER_CAT_ORDER, PARTNER_CATS, PARTNER_UI } from "../data/partners.js";
 import { INT_SYSTEMS } from "../data/integraties-detail.js";
@@ -18,7 +19,7 @@ const pcats = PARTNER_CATS[lang] || PARTNER_CATS.nl;
   <h1>{t.hero.title}</h1>
   <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px" set:html={t.hero.intro}></p>
   <p style="color:var(--gold);font-weight:700;font-size:14px;margin-top:12px">{t.hero.positioning}</p>
-  <div class="btns" style="margin-top:18px"><a href={contactHref} class="btn btn-primary">{t.hero.cta}</a></div>
+  <div class="btns" style="margin-top:18px"><a href={demoHref} class="btn btn-primary">{t.hero.cta}</a></div>
 </div></section>
 
 <section class="bg-soft"><div class="wrap">
@@ -86,7 +87,7 @@ const pcats = PARTNER_CATS[lang] || PARTNER_CATS.nl;
   <h2 style="color:#fff">{t.ctaBand.title}</h2>
   <p style="color:rgba(255,255,255,.9);max-width:620px;margin:12px auto 0">{t.ctaBand.text}</p>
   <div class="btns" style="justify-content:center;margin-top:20px">
-    <a href={contactHref} class="btn btn-light">{t.ctaBand.primary}</a>
+    <a href={demoPath(lang)} class="btn btn-light">{t.ctaBand.primary}</a>
     <a href={tarievenHref} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">{t.ctaBand.secondary}</a>
   </div>
   <p style="color:rgba(255,255,255,.9);margin-top:22px">

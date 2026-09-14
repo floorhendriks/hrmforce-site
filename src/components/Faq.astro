@@ -1,5 +1,5 @@
 ---
-import { localizePath, sanitizeBodyLinks } from "../i18n/utils.js";
+import { localizePath, sanitizeBodyLinks, demoPath } from "../i18n/utils.js";
 import validPaths from "../data/valid-paths.js";
 const { t, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
@@ -58,7 +58,7 @@ t.categories.forEach((c, i) => {
   <h2 style="color:#fff">{t.cta.title}</h2>
   <p style="color:rgba(255,255,255,.9);max-width:640px;margin:12px auto 0">{t.cta.lead}</p>
   <div class="btns" style="justify-content:center;margin-top:20px">
-    <a href={contactHref} class="btn btn-light">{t.cta.btnDemo}</a>
+    <a href={demoPath(lang)} class="btn btn-light">{t.cta.btnDemo}</a>
     <a href={contactHref} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">{t.cta.btnContact}</a>
   </div>
 </div></section>

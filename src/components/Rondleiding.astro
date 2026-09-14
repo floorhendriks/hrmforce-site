@@ -1,7 +1,7 @@
 ---
 import Img from "./Img.astro";
 import { TOUR_UI, TOUR_IMGS } from "../data/rondleiding-content.js";
-import { localizePath } from "../i18n/utils.js";
+import { localizePath, demoPath } from "../i18n/utils.js";
 const { lang = "nl" } = Astro.props;
 const t = TOUR_UI[lang] || TOUR_UI.nl;
 const _sfx = lang === "nl" ? "" : "." + lang;
@@ -49,7 +49,7 @@ const steps = t.steps.map((s, i) => ({ ...s, img: `/mockups/vragenlijst-${TOUR_I
   <h2 style="color:#fff">{t.ctaTitle}</h2>
   <p style="color:rgba(255,255,255,.9);max-width:620px;margin:12px auto 0">{t.ctaText}</p>
   <div class="btns" style="justify-content:center;margin-top:20px">
-    <a href={localizePath("/contact/", lang)} class="btn btn-light">{t.ctaBtn}</a>
+    <a href={demoPath(lang)} class="btn btn-light">{t.ctaBtn}</a>
     <a href={localizePath("/online-assessments/", lang)} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">{t.secondary}</a>
   </div>
 </div></section>

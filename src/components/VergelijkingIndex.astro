@@ -1,6 +1,6 @@
 ---
 import { VERG_UI, COMPETITORS } from "../data/vergelijking-content.js";
-import { localizePath } from "../i18n/utils.js";
+import { localizePath, demoPath } from "../i18n/utils.js";
 const { lang = "nl" } = Astro.props;
 const t = VERG_UI[lang] || VERG_UI.nl;
 const comps = Object.entries(COMPETITORS).map(([slug, c]) => ({ slug, name: c.name, intro: (c.intro[lang] || c.intro.nl) }));
@@ -55,7 +55,7 @@ const gidsHref = localizePath("/whitepapers/assessments-kiezen-gids/", lang);
 <section class="cta"><div class="wrap" style="padding:56px 0;text-align:center">
   <h2 style="color:#fff">{t.ctaTitle}</h2>
   <p style="color:rgba(255,255,255,.9);max-width:620px;margin:12px auto 0">{t.ctaText}</p>
-  <div class="btns" style="justify-content:center;margin-top:20px"><a href={localizePath("/contact/", lang)} class="btn btn-light">{t.ctaBtn}</a></div>
+  <div class="btns" style="justify-content:center;margin-top:20px"><a href={demoPath(lang)} class="btn btn-light">{t.ctaBtn}</a></div>
 </div></section>
 
 <style>

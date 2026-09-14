@@ -1,7 +1,7 @@
 ---
 import LogoSlider from "./LogoSlider.astro";
 import Img from "./Img.astro";
-import { getLangFromUrl, localizePath } from "../i18n/utils.js";
+import { getLangFromUrl, localizePath, demoPath } from "../i18n/utils.js";
 import { trainingenFor } from "../data/trainingen-content.js";
 
 const lang = getLangFromUrl(Astro.url);
@@ -97,7 +97,7 @@ const cardHref = (nlHref) => (lang === "nl" ? nlHref : contactHref);
     <p>{t.ctaText}</p>
     <div class="btns">
       <a href={signupHref} class="btn btn-primary">{t.ctaBtn1}</a>
-      <a href={contactHref} class="btn btn-light">{t.ctaBtn2}</a>
+      <a href={demoPath(lang)} class="btn btn-light">{t.ctaBtn2}</a>
     </div>
   </div>
 </section>

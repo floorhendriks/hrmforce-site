@@ -1,8 +1,9 @@
 ---
 import Img from "./Img.astro";
-import { localizePath } from "../i18n/utils.js";
+import { localizePath, demoPath } from "../i18n/utils.js";
 const { c, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
+const demoHref = demoPath(lang);
 const overzichtHref = localizePath("/assessment-overzicht/", lang);
 // NL linkt naar de root-detailpagina; andere talen naar /<lang>/assessments/<slug>/.
 const cardHref = (slug) => localizePath(`/assessments/${slug}/`, lang);
@@ -144,7 +145,7 @@ const logos = [
     </button>
     <h2 class="section-title">{c.video.title}</h2>
     <p style="max-width:900px;color:var(--text);font-size:17px" set:html={c.video.body}></p>
-    <div class="btns" style="margin-top:8px"><a class="btn btn-primary" href={contactHref}>{c.video.cta}</a></div>
+    <div class="btns" style="margin-top:8px"><a class="btn btn-primary" href={demoHref}>{c.video.cta}</a></div>
   </div>
 </section>
 
@@ -168,7 +169,7 @@ const logos = [
     <h2>{c.ctaBand.title}</h2>
     <p>{c.ctaBand.text}</p>
     <div class="btns">
-      <a href={contactHref} class="btn btn-primary">{c.ctaBand.primary}</a>
+      <a href={demoHref} class="btn btn-primary">{c.ctaBand.primary}</a>
       <a href={overzichtHref} class="btn btn-light">{c.ctaBand.secondary}</a>
     </div>
   </div>

@@ -2,7 +2,7 @@
 import Base from "../layouts/Base.astro";
 import LogoSlider from "./LogoSlider.astro";
 import { routes } from "../i18n/ui.js";
-import { getLangFromUrl, localizePath } from "../i18n/utils.js";
+import { getLangFromUrl, localizePath, demoPath } from "../i18n/utils.js";
 
 const { page, active = "" } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
@@ -18,6 +18,7 @@ const CTA = {
 const cta = CTA[lang] || CTA.en;
 const homeHref = localizePath("/", lang);
 const contactHref = localizePath(routes.contact, lang);
+const demoHref = demoPath(lang);
 const assessHref = localizePath(routes.assessments, lang);
 ---
 <Base title={page.metaTitle} description={page.metaDescription} active={active}>
@@ -71,7 +72,7 @@ const assessHref = localizePath(routes.assessments, lang);
       <h2>{cta.title}</h2>
       <p>{cta.text}</p>
       <div class="btns">
-        <a href={contactHref} class="btn btn-primary">{cta.primary}</a>
+        <a href={demoHref} class="btn btn-primary">{cta.primary}</a>
         <a href={assessHref} class="btn btn-light">{cta.secondary}</a>
       </div>
     </div>

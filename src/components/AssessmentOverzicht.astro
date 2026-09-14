@@ -1,8 +1,9 @@
 ---
-import { localizePath } from "../i18n/utils.js";
+import { localizePath, demoPath } from "../i18n/utils.js";
 import { shopMap } from "../data/assessment-shop.js";
 const { c, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
+const demoHref = demoPath(lang);
 // NL linkt naar de root-detailpagina; andere talen naar de gelokaliseerde
 // detailpagina /<lang>/assessments/<slug>/ (die nu bestaat).
 const cardHref = (slug) => localizePath(`/assessments/${slug}/`, lang);
@@ -27,7 +28,7 @@ const allUitgevers = [...new Set(items.map((i) => i.uitgever).filter(Boolean))].
     <div class="eyebrow">{c.hero.eyebrow}</div>
     <h1>{c.hero.title}</h1>
     <p style="color:#c4d2e6;font-size:19px;max-width:840px;margin-top:8px" set:html={c.hero.intro}></p>
-    <div class="btns"><a class="btn btn-primary" href={contactHref}>{c.hero.cta}</a></div>
+    <div class="btns"><a class="btn btn-primary" href={demoHref}>{c.hero.cta}</a></div>
   </div>
 </section>
 
