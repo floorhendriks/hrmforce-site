@@ -207,7 +207,7 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
       req.forEach(function (name) {
         var el = form.elements[name];
         var ok = (el.value || "").trim().length > 0;
-        el.classList.toggle("co-invalid"!ok);
+        el.classList.toggle("co-invalid", !ok);
         if (!ok) bad = true;
       });
       var emailEl = form.elements["email"];

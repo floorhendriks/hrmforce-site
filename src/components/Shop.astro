@@ -258,13 +258,13 @@ const FAQ_DEFAULT = generalFaq(lang);
   .sp-card { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow:none; transition: transform .2s, box-shadow .2s; }
   .sp-card:hover { border-color:var(--navy); box-shadow:none; }
   .sp-img { position: relative; display: block; height: 172px; width: 100%; border: 0; padding: 0; cursor: pointer; background-color: var(--bg-soft); background-size: cover; background-position: center; background-repeat: no-repeat; }
-  .sp-vendor { position: absolute; top: 10px; left: 10px; background: rgba(11,52,104.86); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: var(--radius-pill); }
+  .sp-vendor { position: absolute; top: 10px; left: 10px; background: rgba(11,52,104,.86); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: var(--radius-pill); }
   /* Merk-/uitgeverslogo als badge i.p.v. de naam */
   /* Vaste badge-grootte zodat alle logo's even groot/overzichtelijk ogen */
   .sp-brand { position: absolute; top: 10px; left: 10px; display: inline-flex; align-items: center; justify-content: center; width: 94px; height: 36px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 5px 8px; box-shadow:none; }
   .sp-brand img { max-height: 24px; max-width: 100%; width: auto; object-fit: contain; display: block; }
   .sp-brand em { display: none; font-style: normal; font-weight: 700; font-size: 11px; color: var(--navy); text-align: center; line-height: 1.1; }
-  .sp-brand.is-txt { background: rgba(11,52,104.9); border: 0; box-shadow:none; }
+  .sp-brand.is-txt { background: rgba(11,52,104,.9); border: 0; box-shadow:none; }
   .sp-brand.is-txt img { display: none; }
   .sp-brand.is-txt em { display: inline; color: #fff; }
   .pm-brand { display: inline-flex; align-items: center; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 5px 10px; margin-bottom: 10px; box-shadow:none; }
@@ -309,7 +309,7 @@ const FAQ_DEFAULT = generalFaq(lang);
   .cart-fab { position: fixed; right: 20px; bottom: 160px; z-index: 55; width: 56px; height: 56px; border-radius:var(--radius-sm); background: var(--navy); color: #fff; border: 0; cursor: pointer; box-shadow: var(--shadow-pop); display: flex; align-items: center; justify-content: center; }
   .cart-fab:hover { background: var(--navy-deep); }
   .cart-fab-count { position: absolute; top: -4px; right: -4px; min-width: 22px; height: 22px; padding: 0 6px; border-radius: var(--radius-pill); background: var(--gold); color: #3a2a00; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
-  .cart-overlay { position: fixed; inset: 0; background: rgba(11,42,92.5); z-index: 70; }
+  .cart-overlay { position: fixed; inset: 0; background: rgba(11,42,92,.5); z-index: 70; }
   .cart-drawer { position: fixed; top: 0; right: 0; height: 100%; width: 400px; max-width: 92vw; background: #fff; z-index: 71; box-shadow: var(--shadow-pop); display: flex; flex-direction: column; }
   .cart-head { display: flex; align-items: center; justify-content: space-between; padding: 20px 22px; border-bottom: 1px solid var(--line); }
   .cart-head strong { font-size: 1.15rem; color: var(--navy); }
@@ -335,10 +335,10 @@ const FAQ_DEFAULT = generalFaq(lang);
   /* [hidden] moet altijd winnen van de display-regels hieronder,
      anders blijft een leeg overlay-paneel de pagina blokkeren (klikken lijken te 'hangen'). */
   @media (max-width: 720px) { .cart-fab { bottom: 92px; right: 14px; } }
-  .pm-overlay[hidden].cart-overlay[hidden].cart-drawer[hidden].cart-fab[hidden] { display: none !important; }
+  .pm-overlay[hidden], .cart-overlay[hidden], .cart-drawer[hidden], .cart-fab[hidden] { display: none !important; }
 
   /* Product-detail-paneel */
-  .pm-overlay { position: fixed; inset: 0; background: rgba(11,42,92.55); z-index: 72; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .pm-overlay { position: fixed; inset: 0; background: rgba(11,42,92,.55); z-index: 72; display: flex; align-items: center; justify-content: center; padding: 20px; }
   .pm-panel { position: relative; background: #fff; border-radius: var(--radius); max-width: 820px; width: 100%; max-height: 90vh; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; box-shadow: var(--shadow-pop); }
   .pm-x { position: absolute; top: 12px; right: 14px; z-index: 2; }
   .pm-media { background: var(--bg-soft); }
@@ -554,7 +554,7 @@ const FAQ_DEFAULT = generalFaq(lang);
       groups.forEach(function (g) {
         var nm = g.querySelector(".cand-name"), ml = g.querySelector(".cand-mail");
         var okN = nm.value.trim().length > 0, okM = validEmail(ml.value);
-        nm.classList.toggle("cand-invalid"!okN); ml.classList.toggle("cand-invalid"!okM);
+        nm.classList.toggle("cand-invalid", !okN); ml.classList.toggle("cand-invalid", !okM);
         if (!okN || !okM) bad = true;
       });
       if (bad) { if (warnEl) { warnEl.textContent = REQMSG[LANG] || REQMSG.nl; warnEl.hidden = false; } var fb = linesEl.querySelector(".cand-invalid"); if (fb) fb.focus(); return; }
