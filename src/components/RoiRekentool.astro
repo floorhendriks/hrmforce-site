@@ -15,7 +15,7 @@ const demoHref = demoPath(lang);
 </div></section>
 
 <section><div class="wrap">
-  <div class="explain" style="grid-template-columns:1fr 1fr">
+  <div class="explain grid-2">
     <div class="formcard" style="max-width:none;margin:0">
       <div class="eyebrow">{t.form.orgHeading}</div>
       <div class="fg"><label for="wervingen">{t.form.wervingen}</label><input type="number" id="wervingen" value="50" min="0" /></div>
@@ -45,7 +45,7 @@ const demoHref = demoPath(lang);
         <div class="eyebrow">{t.result.eyebrow}</div>
         <div style="font-size:40px;font-weight:800;color:var(--navy)" id="netto">€ 0</div>
         <p style="color:var(--muted);font-size:14px;margin:0 0 18px">{t.result.nettoLabel}</p>
-        <div class="info-grid" style="grid-template-columns:1fr 1fr;padding:0;gap:14px">
+        <div class="info-grid grid-2" style="padding:0;gap:14px">
           <div><div class="lbl">{t.result.bruto}</div><div class="v" id="bruto">€ 0</div></div>
           <div><div class="lbl">{t.result.investering}</div><div class="v" id="investering">€ 0</div></div>
           <div><div class="lbl">{t.result.aantal}</div><div class="v" id="aantal">0</div></div>

@@ -15,6 +15,7 @@ import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { getLangFromUrl, localizePath, demoPath } from "../i18n/utils.js";
+import validPaths from "../data/valid-paths.js";
 import CookieConsent from "../components/CookieConsent.astro";
 import { ANALYTICS, MARKETING, VERIFICATION } from "../data/site-config.js";
 import { consentContent } from "../data/consent-content.js";
@@ -95,28 +96,25 @@ const STICKY_DEMO = {
 };
 const stickyDemo = STICKY_DEMO[lang] || STICKY_DEMO.nl;
 
-// hreflang: alternatieve taalversies voor pagina's die in alle 6 talen bestaan.
+// hreflang: alternatieve taalversies. Niet meer uit een handmatige lijst, maar
+// uit de paden die de build echt oplevert. Zo krijgt elke pagina die in meerdere
+// talen bestaat de juiste verwijzingen, en de rest geen.
 const SITE = "https://hrmforce.com";
 const OTHER_LANGS = ["en", "de", "fr", "es", "ro"];
-const LOCALIZED_PATHS = new Set([
-  "/", "/tarieven/", "/online-assessments/", "/assessment-overzicht/", "/over-ons/",
-  "/advies/", "/contact/", "/hrm-oplossingen/", "/support/", "/shop/",
-  "/kenniscentrum/", "/voorbereiding/", "/support/f-a-q/", "/klantcases/", "/integraties/",
-  "/trust/", "/roi-rekentool/",
-]);
+const _alle = validPaths instanceof Set ? validPaths : new Set(validPaths);
 const _segs = Astro.url.pathname.split("/").filter(Boolean);
 const _hasLang = _segs.length > 0 && OTHER_LANGS.includes(_segs[0]);
 let basePath = "/" + (_hasLang ? _segs.slice(1) : _segs).join("/");
 if (!basePath.endsWith("/")) basePath += "/";
-const _isAssessmentDetail = /^\/assessments\/[^/]+\/$/.test(basePath);
-const _localized = LOCALIZED_PATHS.has(basePath) || _isAssessmentDetail;
-const hreflangs = _localized
-  ? [
-      { lang: "nl", href: SITE + basePath },
-      ...OTHER_LANGS.map((l) => ({ lang: l, href: SITE + "/" + l + basePath })),
-      { lang: "x-default", href: SITE + basePath },
-    ]
-  : [];
+const _talen = OTHER_LANGS.filter((l) => _alle.has("/" + l + basePath));
+const hreflangs =
+  _alle.has(basePath) && _talen.length
+    ? [
+        { lang: "nl", href: SITE + basePath },
+        ..._talen.map((l) => ({ lang: l, href: SITE + "/" + l + basePath })),
+        { lang: "x-default", href: SITE + basePath },
+      ]
+    : [];
 
 // Organisatie-structured-data (voor Google + AI-samenvattingen)
 const orgLd = {
