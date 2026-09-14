@@ -1,0 +1,42 @@
+---
+/**
+ * hrmforce-icoonset.
+ * Eigen tekeningen, geen bibliotheek en geen emoji. Eén stijl:
+ * raster van 24, lijndikte 1.5, rechte uiteinden, rechte hoeken.
+ * De onderwerpen komen uit het vak: vragenlijsten, normgroepen,
+ * profielen en rapportages.
+ *
+ * Gebruik: <Ico name="normgroep" size={28} />
+ */
+const { name = "vink", size = 24, stroke = 1.5, class: cls = "", label = "" } = Astro.props;
+
+const P = {
+  vragenlijst: '<path d="M4 3h16v18H4z"/><path d="M8 8h9M8 13h9M8 18h5"/>',
+  normgroep:   '<path d="M2 19h20"/><path d="M2 19c4 0 4-13 10-13s6 13 10 13"/><path d="M8 19v-2M12 19v-4M16 19v-2"/>',
+  negenbox:    '<path d="M3 3h18v18H3z"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/><path d="M15 3h6v6h-6z" fill="currentColor" stroke="none"/>',
+  profiel:     '<path d="M4 3v18"/><path d="M4 7h14M4 12h8M4 17h17"/>',
+  match:       '<path d="M3 21V10h5v11M16 21V4h5v17"/><path d="M8 14h6"/><path d="M12 12l2 2-2 2"/>',
+  rapport:     '<path d="M5 2h9l5 5v15H5z"/><path d="M14 2v5h5"/><path d="M9 18v-4M12 18v-7M15 18v-2"/>',
+  eu:          '<path d="M2 4h20v16H2z" stroke-dasharray="3 2.6"/><path d="M7 9h10v6H7z"/>',
+  document:    '<path d="M5 2h9l5 5v15H5z"/><path d="M14 2v5h5"/><path d="M9 12h6M9 16h4"/>',
+  slot:        '<path d="M4 10h16v11H4z"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14v3"/>',
+  rol:         '<path d="M3 3h18v18H3z"/><circle cx="12" cy="10" r="2.2"/><path d="M8 18v-1.4c0-1.7 1.8-2.6 4-2.6s4 .9 4 2.6V18"/>',
+  kalender:    '<path d="M3 5h18v16H3z"/><path d="M3 10h18"/><path d="M8 3v4M16 3v4"/><path d="M8 14h3v3H8z" fill="currentColor" stroke="none"/>',
+  validatie:   '<path d="M5 2h9l5 5v15H5z"/><path d="M14 2v5h5"/><path d="M8.5 15l2.5 2.5 5-5"/>',
+  uitwisseling:'<path d="M7 3v14M3 13l4 4 4-4"/><path d="M17 21V7M13 11l4-4 4 4"/>',
+  doel:        '<path d="M3 3h18v18H3z"/><path d="M8 8h8v8H8z"/><path d="M11 11h2v2h-2z" fill="currentColor" stroke="none"/>',
+  koppeling:   '<path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 12l9 4 9-4"/><path d="M3 17l9 4 9-4"/>',
+  euro:        '<path d="M4 3h16v18H4z"/><path d="M15.5 9.2a4 4 0 1 0 0 5.6"/><path d="M7.5 11h6M7.5 13.5h6"/>',
+  sleutel:     '<path d="M21 3l-8.4 8.4"/><path d="M16 8l2 2M18.5 5.5l2 2"/><circle cx="9" cy="15" r="4"/>',
+  ster:        '<path d="M12 3l2.6 6.1 6.4.5-4.9 4.2 1.5 6.2L12 16.7 6.4 20l1.5-6.2L3 9.6l6.4-.5z" fill="currentColor" stroke="none"/>',
+  vink:        '<path d="M4 12.5l5 5L20 6.5"/>',
+  pijl:        '<path d="M4 12h14"/><path d="M13 7l5 5-5 5"/>',
+  team:        '<path d="M3 4h8v8H3zM13 4h8v8h-8zM3 14h8v6H3zM13 14h8v6h-8z"/>',
+  groei:       '<path d="M3 21V3"/><path d="M3 21h18"/><path d="M6 17l4-5 4 3 6-8"/><path d="M20 7h-4M20 7v4"/>',
+};
+const d = P[name] || P.vink;
+---
+<svg class={cls} width={size} height={size} viewBox="0 0 24 24" fill="none"
+     stroke="currentColor" stroke-width={stroke} stroke-linecap="square" stroke-linejoin="miter"
+     role={label ? "img" : undefined} aria-label={label || undefined} aria-hidden={label ? undefined : "true"}
+     set:html={d} />

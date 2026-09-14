@@ -1,0 +1,15 @@
+---
+/** Vijf getekende sterren in de hrmforce-icoonstijl. Neemt kleur en
+ *  grootte over van de omliggende tekst, zodat bestaande classes blijven werken. */
+const { n = 5, label = "" } = Astro.props;
+const d = "M12 3l2.6 6.1 6.4.5-4.9 4.2 1.5 6.2L12 16.7 6.4 20l1.5-6.2L3 9.6l6.4-.5z";
+---
+<span class="ico-sterren" role={label ? "img" : undefined} aria-label={label || undefined} aria-hidden={label ? undefined : "true"}>
+  {Array.from({ length: n }).map(() => (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={d} /></svg>
+  ))}
+</span>
+<style is:global>
+  .ico-sterren { display: inline-flex; gap: .14em; vertical-align: -.11em; }
+  .ico-sterren svg { width: .95em; height: .95em; display: block; }
+</style>

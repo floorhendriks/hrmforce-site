@@ -1,4 +1,5 @@
 ---
+import Sterren from "../../components/Sterren.astro";
 import Img from "../../components/Img.astro";
 import Base from "../../layouts/Base.astro";
 import { FORMSPREE_ENDPOINT } from "../../data/site-config.js";
@@ -43,7 +44,7 @@ const gvzSchema = [
         <a href="/geschiktvoorzorg/klantcases/" class="btn btn-light">Bekijk klantcases</a>
       </div>
       <div class="guarantee">
-        <span class="stars">★★★★★</span>
+        <span class="stars"><Sterren /></span>
         <span><b style="color:#fff">90%</b> van onze matches wil minimaal 5 jaar in dezelfde rol blijven.</span>
       </div>
     </div>
@@ -117,7 +118,7 @@ const gvzSchema = [
     <div class="center">
       <div class="eyebrow">Klantcases</div>
       <h2 class="section-title">Zorgorganisaties die met ons matchen</h2>
-      <p class="lead center" style="max-width:720px;margin:0 auto 40px">Van ouderenzorg tot gehandicaptenzorg en eerstelijnszorg, tientallen organisaties vinden met Geschikt voor Zorg duurzaam de juiste mensen.</p>
+      <p class="lead center" style="max-width:720px;margin:0 0 40px">Van ouderenzorg tot gehandicaptenzorg en eerstelijnszorg, tientallen organisaties vinden met Geschikt voor Zorg duurzaam de juiste mensen.</p>
     </div>
     <div class="gvz-cases">
       <article class="gvz-case">
@@ -201,7 +202,7 @@ const gvzSchema = [
     <div class="center">
       <div class="eyebrow">Gratis demo</div>
       <h2 class="section-title">Vraag een gratis demo aan</h2>
-      <p class="lead center" style="max-width:640px;margin:0 auto 8px">Doe zelf de test en ontvang een voorbeeldrapportage. Gratis &middot; geen verplichting &middot; per e-mail.</p>
+      <p class="lead center" style="max-width:640px;margin:0 0 8px">Doe zelf de test en ontvang een voorbeeldrapportage. Gratis &middot; geen verplichting &middot; per e-mail.</p>
     </div>
     <form class="gvz-form" id="gvzForm" method="POST" action={formAction}>
       <input type="hidden" name="_subject" value="Demo-aanvraag Geschikt voor Zorg" />
@@ -232,9 +233,9 @@ const gvzSchema = [
 <style>
   .gvz-cases { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
   @media (max-width: 900px) { .gvz-cases { grid-template-columns: 1fr; } }
-  .gvz-case { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 26px 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; border-top: 3px solid var(--gold); }
+  .gvz-case { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 24px; box-shadow:none; display: flex; flex-direction: column; border-top: 3px solid var(--gold); }
   .gvz-org { font-size: 1.25rem; font-weight: 800; color: var(--navy); }
-  .gvz-metric { display: inline-block; align-self: flex-start; background: #e8f0fe; color: var(--navy); font-size: 12.5px; font-weight: 700; padding: 4px 11px; border-radius: 999px; margin: 8px 0 12px; }
+  .gvz-metric { display: inline-block; align-self: flex-start; background: #e8f0fe; color: var(--navy); font-size: 12.5px; font-weight: 700; padding: 4px 11px; border-radius: var(--radius-pill); margin: 8px 0 12px; }
   .gvz-case p { color: var(--muted); font-size: 14.5px; line-height: 1.55; margin: 0 0 12px; }
   .gvz-case blockquote { color: var(--navy); font-weight: 600; font-size: 14.5px; line-height: 1.5; font-style: italic; padding-left: 14px; margin: 0 0 14px; flex: 1; }
   .gvz-who { font-size: 13px; color: var(--muted); }
@@ -251,14 +252,14 @@ const gvzSchema = [
   .gvz-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 36px; }
   @media (max-width: 900px) { .gvz-steps { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 560px) { .gvz-steps { grid-template-columns: 1fr; } }
-  .gvz-step { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 24px 22px; box-shadow: var(--shadow-xs); }
-  .gvz-n { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: var(--navy); color: #fff; font-weight: 800; margin-bottom: 12px; }
+  .gvz-step { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 22px; box-shadow:none; }
+  .gvz-n { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius:var(--radius-sm); background: var(--navy); color: #fff; font-weight: 800; margin-bottom: 12px; }
   .gvz-step h3 { color: var(--navy); font-size: 1.05rem; margin-bottom: 6px; }
   .gvz-step p { color: var(--muted); font-size: 14px; line-height: 1.55; }
   .gvz-form { max-width: 640px; margin: 30px auto 0; }
   .gvz-form-row { display: flex; gap: 12px; margin-bottom: 12px; }
   @media (max-width: 560px) { .gvz-form-row { flex-direction: column; } }
-  .gvz-form input { width: 100%; padding: 12px 14px; border: 1px solid var(--line-strong); border-radius: 10px; font-family: inherit; font-size: 15px; }
+  .gvz-form input { width: 100%; padding: 12px 14px; border: 1px solid var(--line-strong); border-radius: var(--radius); font-family: inherit; font-size: 15px; }
   .gvz-form input:focus { outline: 2px solid var(--blue); border-color: var(--blue); }
   .gvz-form .btn { width: 100%; margin-top: 4px; }
   .gvz-form-done { color: #1a8a55; font-weight: 700; text-align: center; margin-top: 12px; }

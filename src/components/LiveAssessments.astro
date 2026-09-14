@@ -59,8 +59,8 @@ const testkiezerHref = localizePath("/testkiezer/", lang);
 
 <style>
   .la-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 8px; }
-  .la-card { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 22px; box-shadow: var(--shadow-xs); text-decoration: none; transition: transform .15s, box-shadow .15s; }
-  .la-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+  .la-card { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow:none; text-decoration: none; transition: transform .15s, box-shadow .15s; }
+  .la-card:hover { border-color:var(--navy); box-shadow:none; }
   .la-card h3 { color: var(--navy); font-size: 17px; font-weight: 800; margin: 0 0 8px; }
   .la-card p { color: var(--muted); font-size: 14px; line-height: 1.5; margin: 0 0 14px; flex: 1; }
   .la-more { color: var(--navy); font-size: 14px; font-weight: 700; }

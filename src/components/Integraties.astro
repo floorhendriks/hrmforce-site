@@ -1,5 +1,6 @@
 ---
 import Img from "./Img.astro";
+import Ico from "./Ico.astro";
 import { localizePath } from "../i18n/utils.js";
 const { t, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
@@ -26,7 +27,7 @@ const pcats = PARTNER_CATS[lang] || PARTNER_CATS.nl;
   <div class="cards">
     {t.categories.items.map((c) => (
       <div class="card">
-        <div class="ic">{c.icon}</div>
+        <div class="ic"><Ico name={c.icon} size={28} /></div>
         <h3>{c.title}</h3>
         <p>{c.text}</p>
       </div>
@@ -102,7 +103,7 @@ const pcats = PARTNER_CATS[lang] || PARTNER_CATS.nl;
     background: #fff; border: 1px solid var(--line-strong);
     color: var(--navy); font-weight: 700; font-size: 15px;
     padding: 10px 20px; border-radius: var(--radius-pill);
-    box-shadow: var(--shadow-sm);
+    box-shadow:none;
   }
 
   .partners .pt-filter { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 26px; }
@@ -110,8 +111,8 @@ const pcats = PARTNER_CATS[lang] || PARTNER_CATS.nl;
   .pt-chip:hover { background: #f1f5fb; }
   .pt-chip.is-active { background: var(--navy); color: #fff; border-color: var(--navy); }
   .pt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 16px; }
-  .pt-card { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; background: #fff; border: 1px solid var(--line-strong); border-radius: 14px; padding: 20px 14px 16px; box-shadow: var(--shadow-sm); transition: transform .15s, box-shadow .15s, border-color .15s; text-decoration: none; }
-  .pt-card:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(14,70,140,.14); border-color: var(--gold); }
+  .pt-card { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; background: #fff; border: 1px solid var(--line-strong); border-radius: var(--radius); padding: 20px 14px 16px; box-shadow:none; transition: transform .15s, box-shadow .15s, border-color .15s; text-decoration: none; }
+  .pt-card:hover { border-color:var(--navy); box-shadow:none; border-color: var(--gold); }
   .pt-logo { display: flex; align-items: center; justify-content: center; height: 64px; width: 100%; }
   .pt-logo img { max-height: 56px; max-width: 130px; width: auto; height: auto; object-fit: contain; }
   .pt-name { font-weight: 700; font-size: 14px; color: var(--navy); line-height: 1.25; }
@@ -119,7 +120,7 @@ const pcats = PARTNER_CATS[lang] || PARTNER_CATS.nl;
   .pt-card[hidden] { display: none !important; }
   .pt-empty { margin-top: 20px; color: var(--muted, #6b7280); }
   .int-sys{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:22px}
-  .int-sys-link{display:flex;flex-direction:column;gap:2px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;text-decoration:none;transition:border-color .2s,box-shadow .2s}
+  .int-sys-link{display:flex;flex-direction:column;gap:2px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;text-decoration:none;transition:border-color .2s,box-shadow .2s}
   .int-sys-link:hover{border-color:var(--gold);box-shadow:var(--shadow-sm)}
   .int-sys-link b{color:var(--navy)}
   .int-sys-link span{color:var(--muted);font-size:13px}

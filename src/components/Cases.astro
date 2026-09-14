@@ -70,8 +70,8 @@ const tarievenHref = localizePath("/tarieven/", lang);
 
 <style>
   .case-filters{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:26px}
-  .case-search{flex:1;min-width:220px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:15px}
-  .case-select{padding:11px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:14px;background:#fff;color:var(--navy);font-weight:600;cursor:pointer}
+  .case-search{flex:1;min-width:220px;padding:11px 14px;border:1px solid var(--line);border-radius:var(--radius);font:inherit;font-size:15px}
+  .case-select{padding:11px 14px;border:1px solid var(--line);border-radius:var(--radius);font:inherit;font-size:14px;background:#fff;color:var(--navy);font-weight:600;cursor:pointer}
   .case-count{color:var(--muted);font-size:14px;font-weight:700;margin-left:auto}
   .case-none{color:var(--muted);font-size:16px;text-align:center;padding:40px 0}
   .case-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
@@ -79,7 +79,7 @@ const tarievenHref = localizePath("/tarieven/", lang);
   @media(max-width:680px){.case-grid{grid-template-columns:1fr}.case-count{margin-left:0}}
   .case-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
   .case-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
-  .case-tag{background:var(--navy);color:#fff;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:4px 11px;border-radius:999px}
+  .case-tag{background:var(--navy);color:#fff;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:4px 11px;border-radius:var(--radius-pill)}
   .case-size{color:var(--muted);font-size:13px;font-weight:700}
   .case-sector{color:var(--navy);font-size:1.3rem;margin:0 0 16px;padding-bottom:14px;border-bottom:1px solid var(--line)}
   .case-block{margin-bottom:16px}
@@ -87,7 +87,7 @@ const tarievenHref = localizePath("/tarieven/", lang);
   .case-block p{color:var(--text);font-size:14.5px;line-height:1.6;margin:0}
   .case-results{list-style:none;margin:0;padding:0}
   .case-results li{position:relative;padding:6px 0 6px 24px;color:var(--navy);font-size:14.5px;line-height:1.5;font-weight:600}
-  .case-results li:before{content:"✓";position:absolute;left:0;top:6px;color:var(--gold);font-weight:800}
+  .case-results li:before{content:"";position:absolute;left:0;top:6px;width:14px;height:14px;background:var(--gold);-webkit-mask:var(--mark-vink) center/contain no-repeat;mask:var(--mark-vink) center/contain no-repeat}
   .cta .wrap{text-align:center}
 </style>
 

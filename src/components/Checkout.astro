@@ -72,29 +72,29 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
   .co-empty { text-align: center; padding: 50px 0; }
   .co-empty p { color: var(--muted); margin-bottom: 16px; }
   .co-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 28px; align-items: start; }
-  .co-order.co-form { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px; box-shadow: var(--shadow-sm); }
+  .co-order.co-form { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px; box-shadow:none; }
   .co-order h2.co-form h2 { color: var(--navy); font-size: 1.15rem; margin: 0 0 14px; }
   .co-line { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
-  .co-line-img { width: 52px; height: 52px; border-radius: 8px; background: var(--bg-soft) center/cover no-repeat; flex: none; }
+  .co-line-img { width: 52px; height: 52px; border-radius: var(--radius-sm); background: var(--bg-soft) center/cover no-repeat; flex: none; }
   .co-line-b { flex: 1; min-width: 0; }
   .co-line-t { color: var(--navy); font-weight: 700; font-size: 14px; margin: 0; display: flex; justify-content: space-between; gap: 10px; }
   .co-line-meta { color: var(--muted); font-size: 12.5px; margin: 2px 0 0; }
   .co-cands { margin: 6px 0 0; padding: 0; list-style: none; display: grid; gap: 4px; }
-  .co-cand { font-size: 12px; color: var(--text); background: var(--bg-soft); border-radius: 6px; padding: 4px 8px; }
+  .co-cand { font-size: 12px; color: var(--text); background: var(--bg-soft); border-radius: var(--radius-sm); padding: 4px 8px; }
   .co-edit { display: inline-block; margin-top: 12px; font-size: 13px; color: var(--navy); text-decoration: underline; }
   .co-edit:hover { color: var(--accent); }
   .co-row { margin-bottom: 12px; }
   .co-2 { display: flex; gap: 12px; }
   .co-2 > label { flex: 1; min-width: 0; }
   .co-form label { display: block; color: var(--navy); font-weight: 600; font-size: 13px; }
-  .co-form input.co-form select { width: 100%; margin-top: 4px; padding: 10px 12px; border: 1px solid var(--line-strong); border-radius: 8px; font-family: inherit; font-size: 14px; background: #fff; color: var(--navy); font-weight: 500; }
+  .co-form input.co-form select { width: 100%; margin-top: 4px; padding: 10px 12px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); font-family: inherit; font-size: 14px; background: #fff; color: var(--navy); font-weight: 500; }
   .co-form input:focus.co-form select:focus { outline: 2px solid var(--blue); border-color: var(--blue); }
   .co-hint { color: var(--muted); font-size: 12px; margin: 4px 0 0; }
-  .co-invalid { border-color: #d64545 !important; box-shadow: 0 0 0 2px rgba(214,69,69.15); }
+  .co-invalid { border-color: #d64545 !important; box-shadow:none; }
   .co-sum { border-top: 1px solid var(--line); margin-top: 16px; padding-top: 14px; display: grid; gap: 6px; }
   .co-sum-row { display: flex; justify-content: space-between; font-size: 14px; color: var(--text); }
   .co-sum-total { font-weight: 800; color: var(--navy); font-size: 1.1rem; border-top: 1px solid var(--line); padding-top: 8px; margin-top: 2px; }
-  .co-warn { color: #b3261e; background: #fdeceb; border: 1px solid #f6c9c5; border-radius: 8px; padding: 8px 12px; font-size: 13px; font-weight: 600; margin: 12px 0 0; }
+  .co-warn { color: #b3261e; background: #fdeceb; border: 1px solid #f6c9c5; border-radius: var(--radius-sm); padding: 8px 12px; font-size: 13px; font-weight: 600; margin: 12px 0 0; }
   .co-pay { width: 100%; margin-top: 14px; padding: 13px 18px; font-size: 15px; }
   .co-secure.co-terms { text-align: center; color: var(--muted); font-size: 12px; margin: 10px 0 0; }
   .co-terms { text-align: left; margin-top: 8px; }

@@ -35,13 +35,13 @@ const stars = (n) => "\u2605".repeat(n) + "\u2606".repeat(5 - n);
   .reviewslider{ padding:48px 0; }
   .rs-head{ display:flex; align-items:center; gap:14px; margin:0 0 20px; flex-wrap:wrap; }
   .rs-title{ margin:0; }
-  .rs-sample{ font-size:12px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:#8a6d1a; background:#fbf4e1; border:1px solid #e7cf8a; padding:4px 10px; border-radius:999px; }
+  .rs-sample{ font-size:12px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:#8a6d1a; background:#fbf4e1; border:1px solid #e7cf8a; padding:4px 10px; border-radius:var(--radius-pill); }
   .rs-track{ display:flex; gap:20px; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:12px; -webkit-overflow-scrolling:touch; }
-  .rs-card{ flex:0 0 88%; max-width:380px; scroll-snap-align:start; margin:0; background:#fff; border:1px solid var(--line); border-radius:16px; padding:24px; box-shadow:var(--shadow-xs); display:flex; flex-direction:column; gap:12px; }
+  .rs-card{ flex:0 0 88%; max-width:380px; scroll-snap-align:start; margin:0; background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:24px; box-shadow:var(--shadow-xs); display:flex; flex-direction:column; gap:12px; }
   .rs-stars{ color:var(--gold); font-size:18px; letter-spacing:2px; }
   .rs-quote{ margin:0; color:var(--text); font-size:16px; line-height:1.55; }
   .rs-by{ display:flex; align-items:center; gap:12px; margin-top:auto; }
-  .rs-avatar{ width:44px; height:44px; border-radius:50%; background:linear-gradient(160deg,var(--navy),var(--navy-deep)); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
+  .rs-avatar{ width:44px; height:44px; border-radius:var(--radius-sm); background:var(--navy); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
   .rs-meta{ display:flex; flex-direction:column; line-height:1.25; }
   .rs-meta small{ color:var(--muted); }
   @media(min-width:820px){ .rs-card{ flex-basis:calc(33.333% - 14px); } }

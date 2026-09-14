@@ -51,7 +51,7 @@ const recs = (key) => (TK_SLUGS[key] || []).map((s) => bySlug.get(s)).filter(Boo
 
 <style>
   .tk-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:26px 0}
-  .tk-opt{text-align:left;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;cursor:pointer;display:flex;flex-direction:column;gap:4px;transition:border-color .2s,box-shadow .2s}
+  .tk-opt{text-align:left;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;cursor:pointer;display:flex;flex-direction:column;gap:4px;transition:border-color .2s,box-shadow .2s}
   .tk-opt:hover,.tk-opt[aria-selected="true"]{border-color:var(--gold);box-shadow:var(--shadow-sm)}
   .tk-opt b{color:var(--navy);font-size:1.05rem}
   .tk-opt span{color:var(--muted);font-size:14px}

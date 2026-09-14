@@ -1,0 +1,145 @@
+---
+/**
+ * Eigen datavisuals in de hrmforce-icoonstijl: rechte hoeken, haarlijnen,
+ * één kleur plus goud voor de waarde die ertoe doet. Geen stockbeeld.
+ * De tekeningen kloppen met hun eigen schaal: assen, ijkstreepjes en labels
+ * verwijzen naar echte waarden uit een assessmentrapport.
+ *
+ * <Datavisual soort="normverdeling" tone="donker" />
+ */
+const { soort = "normverdeling", tone = "licht", class: cls = "", titel = "" } = Astro.props;
+
+// Normaalverdeling: y = piek * exp(-0.5 * z^2), z in standaarddeviaties
+const X0 = 60, X1 = 440, BASE = 196, PIEK = 150, MID = 250, SD = 62;
+const yv = (x) => BASE - PIEK * Math.exp(-0.5 * Math.pow((x - MID) / SD, 2));
+const curve = Array.from({ length: 77 }, (_, i) => {
+  const x = X0 + (i * (X1 - X0)) / 76;
+  return `${i ? "L" : "M"}${x.toFixed(1)} ${yv(x).toFixed(1)}`;
+}).join(" ");
+// Kandidaat op z = +1,1 komt overeen met percentiel 86
+const zK = 1.1, xK = MID + zK * SD;
+const vlak = Array.from({ length: 40 }, (_, i) => {
+  const x = X0 + (i * (xK - X0)) / 39;
+  return `${i ? "L" : "M"}${x.toFixed(1)} ${yv(x).toFixed(1)}`;
+}).join(" ") + ` L${xK.toFixed(1)} ${BASE} L${X0} ${BASE} Z`;
+const asLabels = [[-2, "2"], [-1, "16"], [0, "50"], [1, "84"], [2, "98"]];
+
+// Competentieprofiel: schaal 1 tot 5, vereist niveau 3,5
+const comps = [
+  { n: "Analytisch vermogen", v: 4.2 },
+  { n: "Klantgerichtheid", v: 4.5 },
+  { n: "Samenwerken", v: 3.6 },
+  { n: "Plannen en organiseren", v: 3.1 },
+  { n: "Leidinggeven", v: 2.8 },
+];
+const CX0 = 186, CX1 = 452, VEREIST = 3.5;
+const cx = (v) => CX0 + ((v - 1) / 4) * (CX1 - CX0);
+
+// 9-box: prestatie horizontaal, potentieel verticaal, aantallen per cel
+const cellen = [[1,3],[2,9],[3,4],[4,7],[5,22],[6,11],[7,2],[8,8],[9,5]];
+---
+<figure class={`dv dv-${tone} ${cls}`.trim()}>
+  {soort === "normverdeling" && (
+    <svg viewBox="0 0 500 250" role="img" aria-label="Normaalverdeling met de score van een kandidaat op percentiel 86">
+      <g class="dv-grid">
+        {asLabels.map(([z]) => <line x1={MID + z * SD} y1="34" x2={MID + z * SD} y2={BASE} />)}
+        <line x1={X0} y1={BASE} x2={X1} y2={BASE} class="dv-as" />
+      </g>
+      <path d={vlak} class="dv-vlak" />
+      <path d={curve} class="dv-lijn" />
+      <line x1={xK} y1="46" x2={xK} y2={BASE} class="dv-merk" />
+      <circle cx={xK} cy={yv(xK)} r="4.5" class="dv-punt" />
+      <text x={xK} y="38" class="dv-waarde" text-anchor="middle">percentiel 86</text>
+      {asLabels.map(([z, l]) => <text x={MID + z * SD} y={BASE + 20} class="dv-tick" text-anchor="middle">{l}</text>)}
+      <text x={X0} y={BASE + 42} class="dv-bij">Percentielscore binnen de normgroep, n = 2.480</text>
+    </svg>
+  )}
+
+  {soort === "competentieprofiel" && (
+    <svg viewBox="0 0 500 250" role="img" aria-label="Competentieprofiel met vijf competenties op een vijfpuntsschaal en het vereiste niveau">
+      <g class="dv-grid">
+        {[1,2,3,4,5].map((v) => <line x1={cx(v)} y1="30" x2={cx(v)} y2="196" />)}
+      </g>
+      {comps.map((c, i) => (
+        <g>
+          <text x="10" y={54 + i * 33} class="dv-rij">{c.n}</text>
+          <rect x={CX0} y={42 + i * 33} width={CX1 - CX0} height="15" class="dv-spoor" />
+          <rect x={CX0} y={42 + i * 33} width={Math.max(2, cx(c.v) - CX0)} height="15" class="dv-balk" />
+          <text x={cx(c.v) + 7} y={54 + i * 33} class="dv-cijfer">{String(c.v).replace(".", ",")}</text>
+        </g>
+      ))}
+      <line x1={cx(VEREIST)} y1="34" x2={cx(VEREIST)} y2="196" class="dv-merk" />
+      <text x={cx(VEREIST)} y="26" class="dv-waarde" text-anchor="middle">vereist 3,5</text>
+      {[1,2,3,4,5].map((v) => <text x={cx(v)} y="215" class="dv-tick" text-anchor="middle">{v}</text>)}
+      <text x="10" y="237" class="dv-bij">Gemiddelde competentiescore op een vijfpuntsschaal</text>
+    </svg>
+  )}
+
+  {soort === "negenbox" && (
+    <svg viewBox="0 0 500 250" role="img" aria-label="Negenbox met de verdeling van 71 medewerkers over prestatie en potentieel">
+      <g class="dv-grid">
+        {[0,1,2,3].map((i) => <line x1={150 + i * 90} y1="20" x2={150 + i * 90} y2="200" />)}
+        {[0,1,2,3].map((i) => <line x1="150" y1={20 + i * 60} x2="420" y2={20 + i * 60} />)}
+      </g>
+      {cellen.map(([i, n]) => {
+        const col = (i - 1) % 3, row = 2 - Math.floor((i - 1) / 3);
+        return (
+          <g>
+            <rect x={151 + col * 90} y={21 + row * 60} width="88" height="58"
+                  class={n >= 15 ? "dv-cel dv-cel-top" : "dv-cel"} />
+            <text x={195 + col * 90} y={56 + row * 60} class="dv-celtxt" text-anchor="middle">{n}</text>
+          </g>
+        );
+      })}
+      <text x="285" y="222" class="dv-tick" text-anchor="middle">Prestatie, laag naar hoog</text>
+      <text x="140" y="112" class="dv-tick" text-anchor="end">Potentieel</text>
+      <text x="150" y="243" class="dv-bij">71 medewerkers, indeling uit het laatste beoordelingsronde-overzicht</text>
+    </svg>
+  )}
+
+  {soort === "matchscore" && (
+    <svg viewBox="0 0 500 160" role="img" aria-label="Matchscore van 88 procent tussen kandidaat en functieprofiel">
+      <text x="10" y="42" class="dv-groot">88%</text>
+      <text x="118" y="42" class="dv-rij">match met het functieprofiel</text>
+      <rect x="10" y="70" width="480" height="20" class="dv-spoor" />
+      <rect x="10" y="70" width="422" height="20" class="dv-balk" />
+      {[0,10,20,30,40,50,60,70,80,90,100].map((p) => (
+        <line x1={10 + p * 4.8} y1="70" x2={10 + p * 4.8} y2={p % 50 === 0 ? 100 : 95} class="dv-ijk" />
+      ))}
+      {[0,50,100].map((p) => <text x={10 + p * 4.8} y="118" class="dv-tick" text-anchor={p === 0 ? "start" : p === 100 ? "end" : "middle"}>{p}</text>)}
+      <text x="10" y="144" class="dv-bij">Gewogen match op zeven competenties en twee capaciteitentests</text>
+    </svg>
+  )}
+  {titel && <figcaption>{titel}</figcaption>}
+</figure>
+
+<style is:global>
+  .dv { margin: 0; width: 100%; }
+  .dv svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .dv figcaption { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; margin-top: 12px; }
+
+  .dv-licht { --dv-lijn: var(--navy); --dv-vlak: rgba(14,70,140,.10); --dv-spoor: var(--bg-soft);
+              --dv-ink: var(--text); --dv-zacht: var(--muted); --dv-raster: var(--line); --dv-merk: var(--accent); }
+  .dv-donker { --dv-lijn: #ffffff; --dv-vlak: rgba(255,255,255,.14); --dv-spoor: rgba(255,255,255,.14);
+               --dv-ink: #ffffff; --dv-zacht: #b9cbe3; --dv-raster: rgba(255,255,255,.18); --dv-merk: var(--gold); }
+  .dv figcaption { color: var(--dv-zacht); }
+
+  .dv-grid line { stroke: var(--dv-raster); stroke-width: 1; }
+  .dv-as { stroke: var(--dv-zacht) !important; stroke-width: 1.5 !important; }
+  .dv-lijn { fill: none; stroke: var(--dv-lijn); stroke-width: 2; stroke-linejoin: miter; }
+  .dv-vlak { fill: var(--dv-vlak); stroke: none; }
+  .dv-punt { fill: var(--dv-merk); stroke: none; }
+  .dv-merk { stroke: var(--dv-merk); stroke-width: 2; stroke-dasharray: 4 3; }
+  .dv-ijk { stroke: var(--dv-zacht); stroke-width: 1; }
+  .dv-spoor { fill: var(--dv-spoor); }
+  .dv-balk { fill: var(--dv-lijn); }
+  .dv-cel { fill: var(--dv-vlak); }
+  .dv-cel-top { fill: var(--dv-merk); }
+  .dv-celtxt { fill: var(--dv-ink); font-family: var(--font-mono); font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .dv-cel-top + text, .dv-celtxt.op-merk { fill: var(--dv-ink); }
+  .dv-tick, .dv-bij { fill: var(--dv-zacht); font-family: var(--font-mono); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+  .dv-rij { fill: var(--dv-ink); font-family: var(--font-sans); font-size: 13px; }
+  .dv-cijfer { fill: var(--dv-ink); font-family: var(--font-mono); font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .dv-waarde { fill: var(--dv-merk); font-family: var(--font-mono); font-size: 11.5px; font-weight: 600; letter-spacing: .06em; }
+  .dv-groot { fill: var(--dv-ink); font-family: var(--font-display); font-size: 44px; font-weight: 700; font-variant-numeric: tabular-nums; }
+</style>

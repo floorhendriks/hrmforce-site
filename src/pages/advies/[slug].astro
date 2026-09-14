@@ -56,7 +56,7 @@ const roles = a.roles || adviesRolesDefault;
         </div>
         <div class="pentagon">
           {a.image
-            ? <img src={a.image} alt={a.title} loading="lazy" style="width:100%;border-radius:16px;display:block;box-shadow:var(--shadow);aspect-ratio:4/3;object-fit:cover" />
+            ? <img src={a.image} alt={a.title} loading="lazy" style="width:100%;border-radius:var(--radius);display:block;box-shadow:var(--shadow);aspect-ratio:4/3;object-fit:cover" />
             : <div class="ring"></div>}
           <p style="color:var(--muted);font-size:14px;margin-top:12px">Wij stellen samen met jou een traject op maat samen dat past bij jouw vraagstuk.</p>
         </div>

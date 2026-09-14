@@ -65,17 +65,17 @@ t.categories.forEach((c, i) => {
 
 <style>
   .faq-controls{margin-bottom:22px}
-  .faq-search{width:100%;max-width:480px;padding:12px 15px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:15px;margin-bottom:14px}
+  .faq-search{width:100%;max-width:480px;padding:12px 15px;border:1px solid var(--line);border-radius:var(--radius);font:inherit;font-size:15px;margin-bottom:14px}
   .faq-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-  .faq-tag{border:1px solid var(--line);background:#fff;color:var(--navy);font:inherit;font-size:13px;font-weight:700;padding:7px 14px;border-radius:999px;cursor:pointer;transition:.15s}
+  .faq-tag{border:1px solid var(--line);background:#fff;color:var(--navy);font:inherit;font-size:13px;font-weight:700;padding:7px 14px;border-radius:var(--radius-pill);cursor:pointer;transition:.15s}
   .faq-tag:hover{border-color:var(--navy)}
   .faq-tag.is-active{background:var(--navy);color:#fff;border-color:var(--navy)}
   .faq-count{color:var(--muted);font-size:14px;font-weight:700;margin:0}
   .faq-list{max-width:900px}
-  .faq-item{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:#fff;overflow:hidden}
+  .faq-item{border:1px solid var(--line);border-radius:var(--radius);margin-bottom:10px;background:#fff;overflow:hidden}
   .faq-q{width:100%;display:flex;align-items:center;gap:12px;text-align:left;background:none;border:0;padding:16px 18px;font:inherit;font-size:16px;font-weight:700;color:var(--navy);cursor:pointer}
   .faq-q > span:first-child{flex:1}
-  .tagpill{flex:none;font-size:11px;font-weight:700;color:var(--blue);background:#eaf1fb;padding:3px 9px;border-radius:999px;text-transform:uppercase;letter-spacing:.4px}
+  .tagpill{flex:none;font-size:11px;font-weight:700;color:var(--blue);background:#eaf1fb;padding:3px 9px;border-radius:var(--radius-pill);text-transform:uppercase;letter-spacing:.4px}
   .faq-q .pl{flex:none;font-size:22px;color:var(--gold);line-height:1;transition:transform .2s}
   .faq-item.open .faq-q .pl{transform:rotate(45deg)}
   .faq-a{max-height:0;overflow:hidden;padding:0 18px;transition:max-height .25s ease,padding .25s ease;color:var(--text)}

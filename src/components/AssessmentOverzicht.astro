@@ -83,7 +83,7 @@ const allUitgevers = [...new Set(items.map((i) => i.uitgever).filter(Boolean))].
 </section>
 
 <style>
-  .filterbar { display: grid; gap: 14px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm); margin-bottom: 18px; }
+  .filterbar { display: grid; gap: 14px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow:none; margin-bottom: 18px; }
   .fb-search input { width: 100%; padding: 12px 16px; border: 1px solid var(--line-strong); border-radius: var(--radius-pill); font-size: 15px; font-family: inherit; }
   .fb-search input:focus { outline: 2px solid var(--blue); border-color: var(--blue); }
   .fb-group { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -101,7 +101,7 @@ const allUitgevers = [...new Set(items.map((i) => i.uitgever).filter(Boolean))].
   .noresult { text-align: center; color: var(--muted); padding: 30px 0; }
   .linklike { background: none; border: none; color: var(--accent); font-weight: 700; cursor: pointer; text-decoration: underline; font-family: inherit; }
   .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-  .tag { background: #e8f0fe; color: var(--navy); font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+  .tag { background: #e8f0fe; color: var(--navy); font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: var(--radius-pill); }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
 </style>
 

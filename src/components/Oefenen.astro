@@ -34,8 +34,8 @@ const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList", 
   <p class="lead" style="margin-bottom:22px">{ex.intro}</p>
   <div style="display:flex;flex-direction:column;gap:12px">
     {ex.items.map((qq, i) => (
-      <div style="display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow-xs)">
-        <span style="flex:none;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center">{i + 1}</span>
+      <div style="display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow-xs)">
+        <span style="flex:none;width:28px;height:28px;border-radius:var(--radius-sm);background:var(--navy);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center">{i + 1}</span>
         <span style="color:var(--navy);font-weight:600;font-size:15px;line-height:1.5">{qq}</span>
       </div>
     ))}
@@ -47,7 +47,7 @@ const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList", 
   <div class="eyebrow">{ui.tipsEyebrow}</div>
   <h2 class="section-title">{ui.tipsTitle}</h2>
   <div class="ot-tips">
-    {d.tips.map((tp) => (<div class="ot-tip"><span aria-hidden="true">✓</span><p>{tp}</p></div>))}
+    {d.tips.map((tp) => (<div class="ot-tip"><span class="ot-vink" aria-hidden="true"></span><p>{tp}</p></div>))}
   </div>
 </div></section>
 
@@ -65,8 +65,9 @@ const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList", 
 
 <style>
   .ot-tips{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
-  .ot-tip{display:flex;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow-xs)}
+  .ot-tip{display:flex;gap:12px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-xs)}
   .ot-tip span{color:var(--gold);font-weight:800;font-size:18px}
   .ot-tip p{margin:0;color:var(--navy);font-weight:600;font-size:15px;line-height:1.5}
   @media(max-width:820px){.ot-tips{grid-template-columns:1fr}}
+  .ot-vink{display:inline-block;width:14px;height:14px;flex:none;background:var(--gold);-webkit-mask:var(--mark-vink) center/contain no-repeat;mask:var(--mark-vink) center/contain no-repeat}
 </style>

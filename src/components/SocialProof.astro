@@ -1,4 +1,5 @@
 ---
+import Sterren from "./Sterren.astro";
 // Compacte sociale-bewijskracht-balk: Google-beoordeling, ITC-lidmaatschap en reactietijd.
 // Herbruikbaar op assessment-, oplossingen- en adviespagina's.
 import { REVIEWS_EXTERNAL } from "../data/site-config.js";
@@ -21,7 +22,7 @@ const trustHref = localizePath("/trust/", lang);
   <div class="wrap" style="display:block">
     <div class="sp-row">
       <a class="sp-item" href={googleUrl || trustHref} target={googleUrl ? "_blank" : null} rel={googleUrl ? "noopener nofollow" : null}>
-        <span class="sp-ic stars" aria-hidden="true">★★★★★</span>
+        <span class="sp-ic stars" aria-hidden="true"><Sterren /></span>
         <span class="sp-txt"><b>{T.score} {T.google}</b><em>{T.googleSub}</em></span>
       </a>
       <a class="sp-item" href={trustHref}>
@@ -46,7 +47,7 @@ const trustHref = localizePath("/trust/", lang);
   .sp-row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
   .sp-item { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; padding:6px 2px; min-width:0; }
   a.sp-item:hover .sp-txt b { color:var(--accent); }
-  .sp-ic { flex:none; width:40px; height:40px; border-radius:11px; background:var(--bg-soft); color:var(--navy); display:inline-flex; align-items:center; justify-content:center; }
+  .sp-ic { flex:none; width:40px; height:40px; border-radius:var(--radius); background:var(--bg-soft); color:var(--navy); display:inline-flex; align-items:center; justify-content:center; }
   .sp-ic svg { width:21px; height:21px; }
   .sp-ic.stars { background:transparent; color:var(--gold); width:auto; letter-spacing:1px; font-size:15px; }
   .sp-txt { display:flex; flex-direction:column; min-width:0; }

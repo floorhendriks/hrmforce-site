@@ -113,7 +113,7 @@ const roiHref = localizePath("/roi-rekentool/", lang);
   @media(max-width:900px){.price-grid{grid-template-columns:1fr}}
   .price-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow-sm)}
   .price-card.featured{border-color:var(--blue);box-shadow:var(--shadow-md);position:relative}
-  .price-card .badge{position:absolute;top:-12px;left:24px;background:var(--accent);color:#fff;font-size:12px;font-weight:800;padding:4px 12px;border-radius:999px}
+  .price-card .badge{position:absolute;top:-12px;left:24px;background:var(--accent);color:#fff;font-size:12px;font-weight:800;padding:4px 12px;border-radius:var(--radius-pill)}
   .price-card h3{font-size:1.4rem;color:var(--navy);margin-bottom:6px}
   .price-tag{font-size:1.6rem;font-weight:800;color:var(--navy);margin:6px 0 4px}
   .price-tag .from{display:block;font-style:normal;font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px}
@@ -124,11 +124,11 @@ const roiHref = localizePath("/roi-rekentool/", lang);
   .price-group h4{font-size:13px;text-transform:uppercase;letter-spacing:.8px;color:var(--blue);margin-bottom:8px}
   .price-group ul{list-style:none;margin:0;padding:0}
   .price-group li{position:relative;padding:7px 0 7px 26px;border-bottom:1px dashed var(--line);color:var(--navy);font-size:15px}
-  .price-group li:before{content:"✓";position:absolute;left:0;color:var(--gold);font-weight:800}
+  .price-group li:before{content:"";position:absolute;left:0;top:5px;width:14px;height:14px;background:var(--gold);-webkit-mask:var(--mark-vink) center/contain no-repeat;mask:var(--mark-vink) center/contain no-repeat}
   .incl-grid{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
   @media(max-width:760px){.incl-grid{grid-template-columns:1fr}}
-  .incl-grid li{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;font-weight:700;color:var(--navy);position:relative;padding-left:44px;box-shadow:var(--shadow-xs)}
-  .incl-grid li:before{content:"✓";position:absolute;left:18px;color:var(--gold);font-weight:800}
+  .incl-grid li{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;font-weight:700;color:var(--navy);position:relative;padding-left:44px;box-shadow:var(--shadow-xs)}
+  .incl-grid li:before{content:"";position:absolute;left:18px;top:5px;width:14px;height:14px;background:var(--gold);-webkit-mask:var(--mark-vink) center/contain no-repeat;mask:var(--mark-vink) center/contain no-repeat}
   .cta .wrap{text-align:center}
   .compare-scroll{overflow-x:auto;margin-top:28px;border-radius:var(--radius);border:1px solid var(--line);background:#fff}
   table.compare{width:100%;border-collapse:collapse;min-width:720px}

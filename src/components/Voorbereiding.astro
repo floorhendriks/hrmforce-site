@@ -100,13 +100,13 @@ const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voo
   .kc-body :global(p){margin:0 0 14px}
   .kc-body :global(ul),.kc-body :global(ol){margin:0 0 14px 22px}
   .kc-body :global(li){margin:6px 0}
-  .kc-body :global(img){max-width:100%;height:auto;border-radius:8px;margin:14px 0}
+  .kc-body :global(img){max-width:100%;height:auto;border-radius:var(--radius-sm);margin:14px 0}
   .kc-body :global(a){color:var(--blue,#4691CE)}
   .kc-body :global(.btn){color:#fff}
   .contact-list{list-style:none;margin:0;padding:0;font-size:17px;line-height:2}
   .contact-list a{color:var(--blue,#4691CE)}
     .prep-books{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:920px}
-  .pb-col{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px;box-shadow:var(--shadow-xs)}
+  .pb-col{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--shadow-xs)}
   .pb-h{color:var(--navy);font-size:16px;font-weight:800;margin:0 0 12px}
   .pb-list{list-style:none;margin:0;padding:0}
   .pb-list li{padding:10px 0;border-top:1px solid var(--line)}
@@ -114,9 +114,9 @@ const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voo
   .pb-title{display:block;color:var(--text);font-weight:600;font-size:15px}
   .pb-author{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
   @media(max-width:760px){ .prep-books{grid-template-columns:1fr} }
-  .prep-search{width:100%;max-width:420px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:15px;margin-bottom:16px}
+  .prep-search{width:100%;max-width:420px;padding:11px 14px;border:1px solid var(--line);border-radius:var(--radius);font:inherit;font-size:15px;margin-bottom:16px}
   .prep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  .prep-card{display:flex;flex-direction:column;gap:8px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;text-decoration:none}
+  .prep-card{display:flex;flex-direction:column;gap:8px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;text-decoration:none}
   .prep-card:hover{box-shadow:var(--shadow-sm)}
   .prep-name{color:var(--navy);font-weight:800;font-size:15px}
   .prep-link{color:var(--blue);font-weight:700;font-size:13.5px}

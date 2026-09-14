@@ -1,4 +1,5 @@
 ---
+import Sterren from "../components/Sterren.astro";
 import Base from "../layouts/Base.astro";
 import { FORMSPREE_ENDPOINT, CONTACT_EMAIL, REVIEWS_EXTERNAL } from "../data/site-config.js";
 
@@ -27,7 +28,7 @@ const googleUrl = REVIEWS_EXTERNAL?.google || "";
 
         <div class="dm-proof">
           <a class="dmp-item" href={googleUrl || "/trust/"} target={googleUrl ? "_blank" : null} rel={googleUrl ? "noopener nofollow" : null}>
-            <span class="dmp-stars" aria-hidden="true">★★★★★</span>
+            <span class="dmp-stars" aria-hidden="true"><Sterren /></span>
             <span class="dmp-txt"><b>4,9 op Google</b><em>1.200+ organisaties werken met hrmforce</em></span>
           </a>
         </div>
@@ -60,25 +61,25 @@ const googleUrl = REVIEWS_EXTERNAL?.google || "";
 </Base>
 
 <style>
-  .dm { background: linear-gradient(160deg, var(--navy) 0%, var(--navy-deep) 100%); }
+  .dm { background: var(--navy); }
   .dm .wrap { padding-top: 52px; padding-bottom: 56px; }
   .dm-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 48px; align-items: start; }
   .dm-copy h1 { color: #fff; font-size: clamp(1.7rem, 1.4rem + 1.5vw, 2.4rem); line-height: 1.18; margin: 8px 0 0; }
   .dm-lead { color: #c4d2e6; font-size: 17.5px; line-height: 1.6; margin: 16px 0 0; max-width: 520px; }
   .dm-list { list-style: none; margin: 26px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
   .dm-list li { color: #eaf1fb; font-size: 15.5px; line-height: 1.5; padding-left: 32px; position: relative; }
-  .dm-list li::before { content: "\2713"; position: absolute; left: 0; top: -1px; width: 22px; height: 22px; border-radius: 50%; background: rgba(252,193,27,.2); color: var(--gold); font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+  .dm-list li::before { content: "\2713"; position: absolute; left: 0; top: -1px; width: 22px; height: 22px; border-radius:var(--radius-sm); background: rgba(252,193,27,.2); color: var(--gold); font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center; }
   .dm-proof { margin-top: 30px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.16); }
   .dmp-item { display: inline-flex; align-items: center; gap: 14px; text-decoration: none; }
   .dmp-stars { color: var(--gold); letter-spacing: 2px; font-size: 17px; }
   .dmp-txt { display: flex; flex-direction: column; }
   .dmp-txt b { color: #fff; font-size: 15px; }
   .dmp-txt em { color: #a9c0e0; font-style: normal; font-size: 13px; }
-  .dm-card { background: #fff; border-radius: 20px; padding: 32px 30px; box-shadow: 0 30px 60px rgba(8,30,60,.35); }
+  .dm-card { background: #fff; border-radius: var(--radius); padding: 32px 30px; box-shadow:none; }
   .dm-card h2 { color: var(--navy); font-size: 1.5rem; margin: 0; }
   .dm-sub { color: var(--muted); font-size: 14.5px; margin: 8px 0 22px; }
   .dm-form label { display: block; font-weight: 700; font-size: 13.5px; color: var(--navy); margin: 0 0 6px; }
-  .dm-form input, .dm-form textarea { width: 100%; border: 1px solid var(--line-strong, #cfdaea); border-radius: 10px; padding: 12px 14px; font-size: 15.5px; font-family: inherit; color: var(--text); margin-bottom: 16px; background: #fff; }
+  .dm-form input, .dm-form textarea { width: 100%; border: 1px solid var(--line-strong, #cfdaea); border-radius: var(--radius); padding: 12px 14px; font-size: 15.5px; font-family: inherit; color: var(--text); margin-bottom: 16px; background: #fff; }
   .dm-form input:focus, .dm-form textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
   .dm-more { margin: 0 0 18px; }
   .dm-more summary { cursor: pointer; color: var(--accent); font-weight: 700; font-size: 14px; margin-bottom: 14px; }
