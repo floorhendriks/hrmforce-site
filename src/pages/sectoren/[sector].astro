@@ -1,0 +1,148 @@
+---
+import Base from "../../layouts/Base.astro";
+import LogoSlider from "../../components/LogoSlider.astro";
+import { SECTORPAGINAS } from "../../data/sector-paginas.js";
+import { assessments } from "../../data/assessments.js";
+import { localizePath, demoPath, navHref } from "../../i18n/utils.js";
+import validPaths from "../../data/valid-paths.js";
+
+export async function getStaticPaths() {
+  return Object.entries(SECTORPAGINAS).map(([sector, s]) => ({ params: { sector }, props: { s } }));
+}
+
+const { s } = Astro.props;
+const lang = "nl";
+const titelVoor = (slug) => (assessments.find((a) => a.slug === slug) || {}).title || slug;
+const assessHref = (slug) => navHref(`/assessments/${slug}/`, lang, validPaths);
+const andere = Object.entries(SECTORPAGINAS)
+  .filter(([k]) => k !== Astro.params.sector)
+  .slice(0, 6)
+  .map(([k, v]) => ({ k, titel: v.kort }));
+---
+<Base title={s.metaTitle} description={s.metaDescription} active="solutions">
+  <div class="crumb">
+    <div class="wrap">
+      <a href="/">Home</a> › <a href="/sectoren/">Sectoren</a> › <span>{s.kort}</span>
+    </div>
+  </div>
+
+  <section class="ahero">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">Sectoren</div>
+        <h1>{s.h1}</h1>
+        {s.intro.map((p) => <p class="sec-intro">{p}</p>)}
+        <div class="btns">
+          <a href={demoPath(lang)} class="btn btn-light">Plan een gratis demo</a>
+          <a href="/assessment-overzicht/" class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">Bekijk alle assessments</a>
+        </div>
+      </div>
+      <div class="device"><img src={s.omslag} alt="" width="400" height="240" class="sec-beeld" /></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap" style="display:block">
+      <h2 class="section-title">{s.rollenKop}</h2>
+      <p class="lead">{s.rollenTekst}</p>
+      <ul class="traits sec-rollen">{s.rollen.map((r) => <li>{r}</li>)}</ul>
+      <p style="margin-top:20px"><a href={demoPath(lang)} class="btn btn-ghost">Bespreek je functies met ons</a></p>
+    </div>
+  </section>
+
+  <section style="background:var(--bg)">
+    <div class="wrap" style="display:block">
+      <h2 class="section-title">{s.lastigKop}</h2>
+      <p class="sec-body">{s.lastigTekst}</p>
+      <p style="margin-top:18px"><a href="/trust/" class="btn btn-ghost">Zo meten we dat</a></p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap" style="display:block">
+      <h2 class="section-title">{s.assessmentsKop}</h2>
+      <p class="lead">Deze instrumenten worden in deze sector het vaakst ingezet. Elk assessment heeft een eigen pagina met de onderbouwing en voorbeeldvragen.</p>
+      <div class="cards sec-cards">
+        {s.assessments.map((a) => (
+          <a class="card" href={assessHref(a.slug)}>
+            <h3>{titelVoor(a.slug)}</h3>
+            <p>{a.waarom}</p>
+            <span class="sec-meer">Bekijk het assessment →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--bg)">
+    <div class="wrap" style="display:block">
+      <h2 class="section-title">{s.aanpakKop}</h2>
+      <div class="order-steps">
+        {s.aanpak.map((stap, i) => (
+          <div class="ostep"><span class="on">{i + 1}</span><p>{stap}</p></div>
+        ))}
+      </div>
+      <p style="margin-top:24px"><a href={demoPath(lang)} class="btn btn-primary">Plan een gratis demo</a><a href="/tarieven/" class="btn btn-ghost" style="margin-left:8px">Bekijk de tarieven</a></p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap" style="display:block">
+      <h2 class="section-title">{s.opleverKop}</h2>
+      <p class="sec-body">{s.opleverTekst}</p>
+      <ul class="traits sec-rollen">{s.oplever.map((o) => <li>{o}</li>)}</ul>
+      <p style="margin-top:20px"><a href="/klantcases/" class="btn btn-ghost">Lees de klantcases</a></p>
+    </div>
+  </section>
+
+  <section style="background:var(--bg)">
+    <div class="wrap" style="display:block;max-width:820px">
+      <h2 class="section-title">Veelgestelde vragen</h2>
+      {s.faq.map((f) => (
+        <div class="faq-item">
+          <div class="faq-q">{f.q}<span class="pl">+</span></div>
+          <div class="faq-a"><p>{f.a}</p></div>
+        </div>
+      ))}
+      <p style="margin-top:22px"><a href="/contact/" class="btn btn-ghost">Staat je vraag er niet bij? Neem contact op</a></p>
+    </div>
+  </section>
+
+  <LogoSlider heading="Organisaties die u voorgingen" />
+
+  <section>
+    <div class="wrap" style="display:block">
+      <h2 class="section-title">Andere sectoren</h2>
+      <p class="sec-andere">{andere.map((x, i) => (<>{i > 0 && " · "}<a href={`/sectoren/${x.k}/`}>{x.titel}</a></>))}</p>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap" style="padding:56px 0;text-align:center">
+      <h2 style="color:#fff">Benieuwd wat dit in jouw organisatie oplevert?</h2>
+      <p style="color:rgba(255,255,255,.9);max-width:640px;margin:12px auto 0">In een demo van een half uur laten we zien hoe de meting eruitziet voor jouw functies, en wat een rapport je vertelt.</p>
+      <div class="btns" style="justify-content:center;margin-top:20px">
+        <a href={demoPath(lang)} class="btn btn-light">Plan een gratis demo</a>
+        <a href="/contact/" class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">Neem contact op</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .sec-intro { color: rgba(255,255,255,.88); font-size: 17px; max-width: 640px; margin-top: 12px; }
+  .sec-beeld { width: 100%; height: auto; border: 1px solid rgba(255,255,255,.25); display: block; }
+  .sec-body { font-size: 1.05rem; line-height: 1.7; color: #343434; max-width: 760px; }
+  .sec-rollen { margin-top: 16px; }
+  .sec-cards { margin-top: 22px; }
+  .sec-meer { color: var(--accent); font-weight: 700; font-size: 14px; display: block; margin-top: 10px; }
+  .sec-andere { font-size: 15px; }
+  .sec-andere a { color: var(--blue, #4691CE); }
+  .ostep p { margin: 8px 0 0; color: #444; }
+</style>
+
+<script is:inline>
+  document.querySelectorAll(".faq-q").forEach(function (q) {
+    q.addEventListener("click", function () { q.parentElement.classList.toggle("open"); });
+  });
+</script>

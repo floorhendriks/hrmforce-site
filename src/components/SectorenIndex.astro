@@ -2,6 +2,7 @@
 import LogoSlider from "./LogoSlider.astro";
 import { getLangFromUrl, localizePath, demoPath } from "../i18n/utils.js";
 import { sectorsFor } from "../data/sectoren-content.js";
+import { SECTORPAGINAS } from "../data/sector-paginas.js";
 
 const lang = getLangFromUrl(Astro.url);
 const { ui, sectors } = sectorsFor(lang);
@@ -35,7 +36,9 @@ const landHref = (slug) => localizePath(`/toepassingen/${slug}/`, lang);
         {s.casus && <p class="sec-casus"><span>{_exLabel}</span> {s.casus}</p>}
         {s.landing
           ? <a class="sec-link" href={landHref(s.landing)}>{ui.view} &rarr;</a>
-          : <a class="sec-link" href={contactHref}>{ui.ask} &rarr;</a>}
+          : (lang === "nl" && SECTORPAGINAS[s.key])
+            ? <a class="sec-link" href={`/sectoren/${s.key}/`}>{ui.view} &rarr;</a>
+            : <a class="sec-link" href={contactHref}>{ui.ask} &rarr;</a>}
       </article>
     ))}
   </div>

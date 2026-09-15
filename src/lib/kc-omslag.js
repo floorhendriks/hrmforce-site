@@ -124,7 +124,7 @@ const MOTIEF = {
 };
 
 export const OMSLAG_THEMAS = Object.keys(MOTIEF);
-export const OMSLAG_VARIANTEN = 6;
+export const OMSLAG_VARIANTEN = 10;
 
 /** Tekent een omslag-SVG voor een thema en een variantnummer. */
 export function omslagSvg(cat, variant) {
@@ -132,14 +132,16 @@ export function omslagSvg(cat, variant) {
   const teken = MOTIEF[cat] || MOTIEF.overig;
   // Het motief is 160 bij 120 en staat gecentreerd in het vlak van 400 bij 240,
   // met een kleine verschuiving per variant zodat ze niet identiek ogen.
-  const x = 104 + Math.round(r() * 32);
-  const y = 50 + Math.round(r() * 20);
+  const x = 96 + Math.round(r() * 48);
+  const y = 44 + Math.round(r() * 28);
+  const s = (0.96 + r() * 0.26).toFixed(2);
+  const spiegel = r() > 0.5;
   const raster = Array.from({ length: 8 }, (_, i) =>
     `<line x1='${i * 50}' y1='0' x2='${i * 50}' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/>`).join("");
   return (
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true">` +
     `<rect width='400' height='240' fill='${TINT}'/>` + raster +
-    `<g transform='translate(${x} ${y}) scale(1.12)'>${teken(r)}</g>` +
+    `<g transform='translate(${x} ${y}) scale(${spiegel ? -s : s} ${s})${spiegel ? " translate(-160 0)" : ""}'>${teken(r)}</g>` +
     `<rect x='0' y='236' width='${90 + Math.round(r() * 120)}' height='4' fill='${GOUD}'/>` +
     `</svg>`
   );
