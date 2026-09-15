@@ -13,7 +13,8 @@
     "hsf:translate-ui": "node scripts/hsf-translate-ui.mjs",
     "hsf:search": "node scripts/hsf-build-search.mjs",
     "hsf:manifest": "node scripts/hsf-build-downloads-manifest.mjs",
-    "hsf:upload": "bash scripts/hsf-upload-downloads.sh"
+    "hsf:upload": "bash scripts/hsf-upload-downloads.sh",
+    "hsf:redirects": "node scripts/hsf-build-redirect-fallbacks.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.0",
