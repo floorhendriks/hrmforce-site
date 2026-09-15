@@ -1,4 +1,16 @@
-# 301-redirects WordPress -> nieuwe site. Compact: Cloudflare Pages kapt dit bestand af rond 10 kB.
+# 301-redirects van de oude WordPress-site naar de nieuwe site.
+# Volgorde = prioriteit: Cloudflare Pages past hier alleen de eerste ~132 regels toe.
+# Eerste match wint, dus exacte regels staan voor de bijbehorende wildcard.
+/persoonlijkheid/ /kenniscentrum/ 301
+/recruitment/ /hrm-oplossingen/ 301
+/selectie/ /assessment-overzicht/ 301
+/product-categorie/* /shop/ 301
+/news_category/* /kenniscentrum/ 301
+/testimonials-category/* /klantcases/ 301
+/partner_categorie/* /partners/ 301
+/carousels-category/* / 301
+/advies_categorieen/training/ /advies/trainingen/ 301
+/advies_categorieen/* /advies/ 301
 /assessments/big-fifty/ /assessments/big-five/ 301
 /assessments/cognitieve-capaciteitentest/ /assessments/cognitieve-test/ 301
 /assessments/preselectie/disc-test/ /assessments/disc-test/ 301
@@ -6,16 +18,14 @@
 /partner/flowpeople/ /partners/ 301
 /ro/testen/ /ro/online-assessments/ 301
 /shop/fase-hr-cyclus/ontwikkeling/lencioni-teamdynamiek/ /assessments/lencioni-teamdynamiek/ 301
-/shop/segment/gedrag/disc-vragenlijst-met-feedback/ /assessments/disc-test/ 301
-/shop/segment/gedrag/disc-vragenlijst/ /assessments/disc-test/ 301
+/shop/segment/gedrag/disc-vragenlijst* /assessments/disc-test/ 301
 /assessments/ /assessment-overzicht/ 301
 /hrm-oplossingen/recruitment/ /hrm-oplossingen/matching/ 301
 /voorbereiden-assessment/ /voorbereiding/ 301
 /en/assessments/big-fifty-personality-test/ /en/assessments/big-five/ 301
 /de/assessments/entwicklung/persoenlichkeitstest-big-five/ /de/assessments/big-five/ 301
 /es/assessments/preseleccion/perfil-big-fifty/ /es/assessments/big-five/ 301
-/de/hrm-loesungen/ /de/hrm-oplossingen/ 301
-/de/hrm-loesungen-2/ /de/hrm-oplossingen/ 301
+/de/hrm-loesungen* /de/hrm-oplossingen/ 301
 /de/hrmforce/ /de/over-ons/ 301
 /de/kontakt/ /de/contact/ 301
 /de/wissenszentrum/ /de/kenniscentrum/ 301
@@ -32,16 +42,12 @@
 /ro/ce-facem-noi/ /ro/over-ons/ 301
 /ro/asistenta/ /ro/support/ 301
 /product/* https://shop.hrmforce.com 301
-/winkel/* https://shop.hrmforce.com 301
-/winkelwagen/ https://shop.hrmforce.com 301
+/winkel* https://shop.hrmforce.com 301
 /mijn-account/ https://shop.hrmforce.com 301
 /de/einkaufswagen/ https://shop.hrmforce.com 301
 /es/cesta-de-la-compra/ https://shop.hrmforce.com 301
 /boutique/ https://shop.hrmforce.com 301
-/home/ / 301
-/home-new/ / 301
-/home-new-ro/ / 301
-/about-us-new-translations/ /over-ons/ 301
+/home* / 301
 /hrmforce/ /over-ons/ 301
 /assessment/* /assessment-overzicht/ 301
 /assessment-locaties/ /contact/ 301
@@ -50,7 +56,6 @@
 /competentiespel/ / 301
 /big-five-persoonlijkheidsmodel/ /kenniscentrum/ 301
 /training-360-graden-feedback/ /advies/ 301
-/expertsessie-jho/ / 301
 /contact/register-now/ /contact/ 301
 /contact/inregistreaza-te-acum/ /contact/ 301
 /general-terms-privacy-statement/ /support/algemene-voorwaarden/ 301
@@ -59,8 +64,7 @@
 /preise/ /de/tarieven/ 301
 /partner/ /de/partners/ 301
 /impressum/ /de/over-ons/ 301
-/hrm-loesungen/ /de/hrm-oplossingen/ 301
-/hrm-loesungen-2/* /de/hrm-oplossingen/ 301
+/hrm-loesungen* /de/hrm-oplossingen/ 301
 /wissenszentrum/* /de/kenniscentrum/ 301
 /branchen/ /de/sectoren/ 301
 /vorbereitung-auf-ein-assessment/ /de/voorbereiding/ 301
@@ -72,7 +76,6 @@
 /pricing/ /en/tarieven/ 301
 /key-benefits/ /en/hrmforce/voordelen/ 301
 /vacancies/* /en/vacatures/ 301
-/vavcancies/* /en/vacatures/ 301
 /knowledge-center/* /en/kenniscentrum/ 301
 /preparing-for-assessment/ /en/voorbereiding/ 301
 /independent-hr-business-partner-value-added-reseller-distributor-in-spain/ /en/vacatures/ 301
@@ -120,8 +123,7 @@
 /instructievideos/ /kenniscentrum/ 301
 /heerlijk-helder-hrmforce/ /kenniscentrum/ 301
 /wekelijkse-update/ /kenniscentrum/ 301
-/concurrentvergelijk/test-vergelijking/ /vergelijking/ 301
-/concurrentvergel_nw/test-2/ /vergelijking/ 301
+/concurrentvergel* /vergelijking/ 301
 /uitgever/hrmforce/ /shop/ 301
 /capaciteiten/ /kenniscentrum/ 301
 /competenties/ /kenniscentrum/ 301
@@ -131,13 +133,6 @@
 /onderwijs/ /kenniscentrum/ 301
 /ontwikkeling/ /kenniscentrum/ 301
 /organisatie/ /kenniscentrum/ 301
-/persoonlijkheid/ /kenniscentrum/ 301
-/recruitment/ /hrm-oplossingen/ 301
-/selectie/ /assessment-overzicht/ 301
-/product-categorie/* /shop/ 301
-/news_category/* /kenniscentrum/ 301
-/testimonials-category/* /klantcases/ 301
-/partner_categorie/* /partners/ 301
-/carousels-category/* / 301
-/advies_categorieen/training/ /advies/trainingen/ 301
-/advies_categorieen/* /advies/ 301
+/about-us-new-translations/ /over-ons/ 301
+/expertsessie-jho/ / 301
+/vavcancies/* /en/vacatures/ 301
