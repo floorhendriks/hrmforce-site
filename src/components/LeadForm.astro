@@ -14,6 +14,7 @@
  * al is gedownload, zodat een terugkerende bezoeker niet opnieuw het formulier
  * hoeft te vullen. Die vlag staat in localStorage en bevat geen persoonsgegevens.
  */
+import { localizePath } from '../i18n/utils.js';
 import { useT } from '../lib/i18n';
 interface Props {
   lang: string;
@@ -27,7 +28,8 @@ interface Props {
   isPdf?: boolean;
 }
 const { lang, fileUrl, fileName, subject, subjectId, endpoint = 'https://formspree.io/f/mqpznaqn',
-        privacyUrl = '/privacy-statement/', isPdf = true } = Astro.props;
+        privacyUrl = null, isPdf = true } = Astro.props;
+const privacyHref = privacyUrl || localizePath('/support/privacy-statement/', lang);
 const t = useT(lang);
 ---
 <div class="hsf-card tint hsf-noprint hsf-leadform" data-endpoint={endpoint} data-file={fileUrl}
@@ -73,7 +75,7 @@ const t = useT(lang);
            style="position:absolute;left:-9999px" aria-hidden="true" />
     <button class="hsf-btn block" type="submit" data-submit>{t('lead.submit')}</button>
     <p class="hsf-note" style="margin:.7rem 0 0">
-      {t('lead.privacy')} <a href={privacyUrl}>{t('ui.privacy-policy')}</a>
+      {t('lead.privacy')} <a href={privacyHref}>{t('ui.privacy-policy')}</a>
     </p>
   </form>
 </div>

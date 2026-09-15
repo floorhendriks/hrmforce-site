@@ -14,8 +14,8 @@
 /advies_categorieen/* /advies/ 301
 /shop/segment/gedrag/disc-vragenlijst* /assessments/disc-test/ 301
 /de/hrm-loesungen* /de/hrm-oplossingen/ 301
-/product/* https://shop.hrmforce.com 301
-/winkel* https://shop.hrmforce.com 301
+/product/* https://shop.hrmforce.com/shop/ 301
+/winkel* https://shop.hrmforce.com/shop/ 301
 /home* / 301
 /assessment/* /assessment-overzicht/ 301
 /hrm-loesungen* /de/hrm-oplossingen/ 301
@@ -69,10 +69,10 @@
 /ro/solutii/ /ro/hrm-oplossingen/ 301
 /ro/ce-facem-noi/ /ro/over-ons/ 301
 /ro/asistenta/ /ro/support/ 301
-/mijn-account/ https://shop.hrmforce.com 301
-/de/einkaufswagen/ https://shop.hrmforce.com 301
-/es/cesta-de-la-compra/ https://shop.hrmforce.com 301
-/boutique/ https://shop.hrmforce.com 301
+/mijn-account/ https://shop.hrmforce.com/shop/ 301
+/de/einkaufswagen/ https://shop.hrmforce.com/shop/ 301
+/es/cesta-de-la-compra/ https://shop.hrmforce.com/shop/ 301
+/boutique/ https://shop.hrmforce.com/shop/ 301
 /hrmforce/ /over-ons/ 301
 /assessment-locaties/ /contact/ 301
 /assessment-ubersicht/ /de/assessment-overzicht/ 301

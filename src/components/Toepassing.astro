@@ -2,7 +2,8 @@
 import { LAND_UI } from "../data/landings.js";
 import { assessments } from "../data/assessments.js";
 import { assessmentsI18n } from "../data/assessments-i18n.js";
-import { localizePath, demoPath } from "../i18n/utils.js";
+import { localizePath, demoPath, navHref } from "../i18n/utils.js";
+import validPaths from "../data/valid-paths.js";
 import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../data/site-config.js";
 
 const { l, lang = "nl" } = Astro.props;
@@ -24,7 +25,7 @@ const toepPath = localizePath("/toepassingen/", lang);
 const contactPath = localizePath("/contact/", lang);
 const demoHrefT = demoPath(lang);
 const onlinePath = localizePath("/online-assessments/", lang);
-const assessPath = (slug) => localizePath(`/assessments/${slug}/`, lang);
+const assessPath = (slug) => navHref(`/assessments/${slug}/`, lang, validPaths);
 
 const _canon = new URL(Astro.url.pathname, "https://hrmforce.com").href;
 const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [

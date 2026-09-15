@@ -1,5 +1,6 @@
 ---
-import { localizePath } from "../i18n/utils.js";
+import { localizePath, navHref } from "../i18n/utils.js";
+import validPaths from "../data/valid-paths.js";
 import { OEFEN_UI } from "../data/oefentests.js";
 import { examplesFor } from "../data/assessment-examples.js";
 import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../data/site-config.js";
@@ -8,7 +9,7 @@ const d = o.i18n[lang] ?? o.i18n.nl;
 const ui = OEFEN_UI[lang] ?? OEFEN_UI.nl;
 const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
 const ex = examplesFor(o.assessmentSlug, lang);
-const assessHref = localizePath(`/assessments/${o.assessmentSlug}/`, lang);
+const assessHref = navHref(`/assessments/${o.assessmentSlug}/`, lang, validPaths);
 const _canon = new URL(Astro.url.pathname, "https://hrmforce.com").href;
 const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
   { "@type": "ListItem", position: 1, name: "Home", item: "https://hrmforce.com/" },

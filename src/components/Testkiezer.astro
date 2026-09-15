@@ -1,5 +1,6 @@
 ---
-import { localizePath } from "../i18n/utils.js";
+import { localizePath, navHref } from "../i18n/utils.js";
+import validPaths from "../data/valid-paths.js";
 import { testkiezerContent, TK_SLUGS } from "../data/testkiezer-content.js";
 import { assessments } from "../data/assessments.js";
 import { assessmentsI18n } from "../data/assessments-i18n.js";
@@ -37,7 +38,7 @@ const recs = (key) => (TK_SLUGS[key] || []).map((s) => bySlug.get(s)).filter(Boo
       <p class="lead" style="margin:6px 0 20px">{o.resultIntro}</p>
       <div class="cards">
         {recs(o.key).map((a) => (
-          <a class="card" href={localizePath(`/assessments/${a.slug}/`, lang)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+          <a class="card" href={navHref(`/assessments/${a.slug}/`, lang, validPaths)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
             <h3>{a.title}</h3>
             <p style="flex:1">{a.goal}</p>
             <span class="readmore">{t.view} &rarr;</span>
