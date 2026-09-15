@@ -14,7 +14,8 @@
     "hsf:search": "node scripts/hsf-build-search.mjs",
     "hsf:manifest": "node scripts/hsf-build-downloads-manifest.mjs",
     "hsf:upload": "bash scripts/hsf-upload-downloads.sh",
-    "hsf:redirects": "node scripts/hsf-build-redirect-fallbacks.mjs"
+    "hsf:redirects": "node scripts/hsf-build-redirect-fallbacks.mjs",
+    "hsf:omslagen": "node scripts/hsf-build-kc-covers.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.0",

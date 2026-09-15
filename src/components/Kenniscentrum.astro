@@ -2,6 +2,7 @@
 import { createClient } from "@sanity/client";
 import { localizePath, localizeExisting, eigenMedia } from "../i18n/utils.js";
 import validPaths from "../data/valid-paths.js";
+import { omslagUrl } from "../lib/kc-omslag.js";
 
 const { t, lang } = Astro.props;
 
@@ -58,7 +59,9 @@ const list = raw
   .filter((p) => p.path && p.title)
   .map((p) => {
     const key = categorize(p.title);
-    return { title: p.title, path: p.path, date: p.date, cat: key, catLabel: t.cats[key] || t.cats.overig, img: firstImage(p.body), excerpt: excerpt(p.body) };
+    // Artikelen zonder beeld in de tekst krijgen een getekende omslag per thema,
+    // zodat er in het overzicht geen leeg vlak staat.
+    return { title: p.title, path: p.path, date: p.date, cat: key, catLabel: t.cats[key] || t.cats.overig, img: firstImage(p.body) || omslagUrl(key, p.title), excerpt: excerpt(p.body) };
   });
 
 const featured = list[0] || null;
