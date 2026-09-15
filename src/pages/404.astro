@@ -17,6 +17,25 @@ import Base from "../layouts/Base.astro";
   </section>
 </Base>
 
+<script is:inline>
+  // Vangnet voor oude WordPress-adressen. De wildcardregels in _redirects
+  // vallen soms weg, omdat Cloudflare Pages maar een deel van dat bestand
+  // toepast. Herkennen we hier een oud patroon, dan sturen we alsnog door
+  // naar de juiste plek in plaats van deze pagina te tonen.
+  (function () {
+    var p = location.pathname;
+    var naar = null;
+    if (/^\/(winkel|product|winkelmand|winkelwagen|mijn-account)(\/|$)/.test(p)) naar = "https://shop.hrmforce.com/shop/";
+    else if (/^\/wp-content\//.test(p)) naar = "/media" + p;
+    else if (/^\/(product-categorie|uitgever)(\/|$)/.test(p)) naar = "https://shop.hrmforce.com/shop/";
+    else if (/^\/(news_category|kenniscentrum_category)(\/|$)/.test(p)) naar = "/kenniscentrum/";
+    else if (/^\/testimonials-category(\/|$)/.test(p)) naar = "/klantcases/";
+    else if (/^\/partner_categorie(\/|$)/.test(p)) naar = "/partners/";
+    else if (/^\/advies_categorieen(\/|$)/.test(p)) naar = "/advies/";
+    if (naar) location.replace(naar);
+  })();
+</script>
+
 <style>
   .nf { padding: 88px 0 96px; text-align: center; }
   .nf .wrap { max-width: 640px; margin: 0 auto; padding: 0 20px; }

@@ -36,7 +36,7 @@ export const shopContent = {
     toShop: "Naar de shop →",
     placeholder: {
       title: "De ingebouwde shop wordt geactiveerd",
-      lead: "De volledige shop verschijnt hier binnen website.hrmforce.com zodra de Shopify-koppeling is geactiveerd. Bekijk in de tussentijd het volledige aanbod in onze webshop.",
+      lead: "De volledige shop verschijnt hier zodra de Shopify-koppeling is geactiveerd. Bekijk in de tussentijd het volledige aanbod in onze webshop.",
     },
     usps: [
       { strong: "Veilig betalen", span: "Afrekenen via de beveiligde Shopify-checkout." },
@@ -80,7 +80,7 @@ export const shopContent = {
     toShop: "Go to the shop →",
     placeholder: {
       title: "The built-in shop is being activated",
-      lead: "The full shop will appear here within website.hrmforce.com once the Shopify connection is activated. In the meantime, browse the full range in our webshop.",
+      lead: "The full shop will appear here once the Shopify connection is activated. In the meantime, browse the full range in our webshop.",
     },
     usps: [
       { strong: "Secure payment", span: "Check out via the secure Shopify checkout." },
@@ -124,7 +124,7 @@ export const shopContent = {
     toShop: "Zum Shop →",
     placeholder: {
       title: "Der integrierte Shop wird aktiviert",
-      lead: "Der vollständige Shop erscheint hier innerhalb von website.hrmforce.com, sobald die Shopify-Anbindung aktiviert ist. Sehen Sie sich in der Zwischenzeit das gesamte Angebot in unserem Webshop an.",
+      lead: "Der vollständige Shop erscheint hier, sobald die Shopify-Anbindung aktiviert ist. Sehen Sie sich in der Zwischenzeit das gesamte Angebot in unserem Webshop an.",
     },
     usps: [
       { strong: "Sicher bezahlen", span: "Bezahlung über den sicheren Shopify-Checkout." },
@@ -168,7 +168,7 @@ export const shopContent = {
     toShop: "Aller à la boutique →",
     placeholder: {
       title: "La boutique intégrée est en cours d'activation",
-      lead: "La boutique complète apparaîtra ici sur website.hrmforce.com dès que la connexion Shopify sera activée. En attendant, découvrez toute l'offre dans notre boutique en ligne.",
+      lead: "La boutique complète apparaîtra ici dès que la connexion Shopify sera activée. En attendant, découvrez toute l'offre dans notre boutique en ligne.",
     },
     usps: [
       { strong: "Paiement sécurisé", span: "Paiement via le checkout sécurisé Shopify." },
@@ -212,7 +212,7 @@ export const shopContent = {
     toShop: "Ir a la tienda →",
     placeholder: {
       title: "La tienda integrada se está activando",
-      lead: "La tienda completa aparecerá aquí dentro de website.hrmforce.com en cuanto se active la conexión con Shopify. Mientras tanto, consulte toda la oferta en nuestra tienda en línea.",
+      lead: "La tienda completa aparecerá aquí en cuanto se active la conexión con Shopify. Mientras tanto, consulte toda la oferta en nuestra tienda en línea.",
     },
     usps: [
       { strong: "Pago seguro", span: "Pague mediante el checkout seguro de Shopify." },
@@ -256,7 +256,7 @@ export const shopContent = {
     toShop: "Mergeți la magazin →",
     placeholder: {
       title: "Magazinul integrat este în curs de activare",
-      lead: "Magazinul complet va apărea aici pe website.hrmforce.com de îndată ce conexiunea Shopify este activată. Între timp, consultați întreaga ofertă în magazinul nostru online.",
+      lead: "Magazinul complet va apărea aici de îndată ce conexiunea Shopify este activată. Între timp, consultați întreaga ofertă în magazinul nostru online.",
     },
     usps: [
       { strong: "Plată sigură", span: "Plătiți prin checkout-ul securizat Shopify." },

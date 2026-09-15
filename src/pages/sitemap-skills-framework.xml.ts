@@ -10,7 +10,7 @@ import { functions, skills, families } from '../lib/hsf';
 import { path, LOCALES } from '../lib/i18n';
 
 export const GET: APIRoute = ({ site }) => {
-  const base = (site ?? new URL('https://website.hrmforce.com')).toString().replace(/\/$/, '');
+  const base = (site ?? new URL('https://hrmforce.com')).toString().replace(/\/$/, '');
   const today = new Date().toISOString().slice(0, 10);
   type Entry = { paths: Record<string, string>; prio: string; freq: string };
   const entries: Entry[] = [];
