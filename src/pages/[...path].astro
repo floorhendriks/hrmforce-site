@@ -175,6 +175,19 @@ const INTEG = {
   ro: { title: "Conectează hrmforce la sistemele tale", text: "hrmforce se integrează cu sistemele tale ATS, HR și payroll precum AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix și OTYS.", btn: "Vezi integrările" },
 };
 const INT = INTEG[lang] || INTEG.nl;
+// Sommige gemigreerde artikelen brengen hun eigen paginaopmaak mee: een
+// <article> eromheen en een <section> met max-width en margin:0 auto. Die
+// wrapper loopt dwars door de opmaak van de pagina heen, waardoor blokken
+// eronder (zoals het auteursblok) breder uitvallen dan de tekst. De inhoud
+// hoort geen eigen kader te bepalen, dus die wrappers halen we eruit.
+body = body
+  .replace(/<\/?article\b[^>]*>/gi, "")
+  .replace(/<section\b([^>]*)>/gi, (m, attrs) =>
+    /max-width|margin\s*:\s*0\s+auto/i.test(attrs)
+      ? `<section${attrs.replace(/\sstyle\s*=\s*("[^"]*"|'[^']*')/i, "")}>`
+      : m
+  );
+
 // De gemigreerde WordPress-body bevat vaak zijn eigen <h1>. De pagina heeft al een
 // <h1> in de header, dus degraderen we die naar <h2> (max één H1 per pagina).
 body = body.replace(/<h1(\s[^>]*)?>([\s\S]*?)<\/h1>/gi, (m, attrs, inner) => `<h2${attrs || ""}>${inner}</h2>`);

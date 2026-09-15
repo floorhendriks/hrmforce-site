@@ -166,6 +166,27 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
 
 <LogoSlider heading="Vertrouwd door 1.200+ organisaties" note={null} />
 
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">Uitleg</div>
+      <h2 class="section-title">{a.title}</h2>
+      <div class="explain">
+        <div>
+          {a.intro.map((p) => <p>{p}</p>)}
+          {extra && extra.aliasNote && (<p class="alias-note" set:html={extra.aliasNote}></p>)}
+          {a.traits.length > 0 && <ul class="traits">{a.traits.map((t) => <li>{t}</li>)}</ul>}
+          {a.body.map((p) => <p>{p}</p>)}
+          <p class="assess-usage">{[a.traits && a.traits.length ? "De test meet " + a.traits.join(", ") + ". " : "", a.phase ? "Je zet deze test in binnen de HR-cyclus: " + a.phase + ". " : "", a.feedback ? a.feedback + " " : "", a.time ? "Invullen duurt " + a.time + (a.form ? " (" + a.form + ")" : "") + " en je ontvangt de uitkomsten in je inbox, zonder pdf om te downloaden." : ""].join("")}</p>
+          <a href="#request" class="btn btn-primary" style="margin-top:8px">Direct starten</a>
+        </div>
+        <div class="pentagon">
+          <img src={a.dimImage || a.image} alt={`${a.title} in de praktijk`} loading="lazy" style="width:100%;border-radius:var(--radius);display:block;box-shadow:var(--shadow);aspect-ratio:4/3;object-fit:cover" />
+          <p style="color:var(--muted);font-size:14px;margin-top:12px">{a.benefit || "De kerndimensies van dit assessment, vertaald naar werkgerelateerde inzichten."}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
 <section class="qshots"><div class="wrap">
   <h2 class="qshots-h">Een kijkje in de vragenlijst</h2>
   <p class="qshots-lead">{ex.intro}</p>
@@ -189,27 +210,6 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
   </div>
 </div></section>
 
-  <section>
-    <div class="wrap">
-      <div class="eyebrow">Uitleg</div>
-      <h2 class="section-title">{a.title}</h2>
-      <div class="explain">
-        <div>
-          {a.intro.map((p) => <p>{p}</p>)}
-          {extra && extra.aliasNote && (<p class="alias-note" set:html={extra.aliasNote}></p>)}
-          {a.traits.length > 0 && <ul class="traits">{a.traits.map((t) => <li>{t}</li>)}</ul>}
-          {a.body.map((p) => <p>{p}</p>)}
-          <p class="assess-usage">{[a.traits && a.traits.length ? "De test meet " + a.traits.join(", ") + ". " : "", a.phase ? "Je zet deze test in binnen de HR-cyclus: " + a.phase + ". " : "", a.feedback ? a.feedback + " " : "", a.time ? "Invullen duurt " + a.time + (a.form ? " (" + a.form + ")" : "") + " en je ontvangt de uitkomsten in je inbox, zonder pdf om te downloaden." : ""].join("")}</p>
-          <a href="#request" class="btn btn-primary" style="margin-top:8px">Direct starten</a>
-        </div>
-        <div class="pentagon">
-          <img src={a.dimImage || a.image} alt={`${a.title} in de praktijk`} loading="lazy" style="width:100%;border-radius:var(--radius);display:block;box-shadow:var(--shadow);aspect-ratio:4/3;object-fit:cover" />
-          <p style="color:var(--muted);font-size:14px;margin-top:12px">{a.benefit || "De kerndimensies van dit assessment, vertaald naar werkgerelateerde inzichten."}</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section style="background:var(--bg)">
     <div class="wrap">
       <div>
@@ -227,6 +227,26 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
       </div>
     </div>
   </section>
+
+  {a.quote.text && (
+    <section class="quote">
+      <div class="wrap">
+        <img class="quote-photo" src="/media/team/floor-hendriks.webp" alt={`${a.quote.author}, ${a.quote.role} bij hrmforce`} width="112" height="112" loading="lazy" />
+        <div>
+          <h3>{a.quote.heading}</h3>
+          <blockquote>"{a.quote.text}"</blockquote>
+          <div class="who"><b>{a.quote.author}</b>, {a.quote.role}</div>
+          <a class="quote-cta" href={localizePath("/over-ons/", lang)}>Meer over hrmforce &rarr;</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <ReviewSlider />
+
+  <div class="wrap center" style="margin-top:-18px;margin-bottom:8px">
+    <a href="#request" class="btn btn-primary">{a.title} aanvragen</a>
+  </div>
 
   {theory && (
     <section><div class="wrap">
@@ -248,24 +268,9 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
           : "Score per dimensie op een vijfpuntsschaal, de stippellijn is het vereiste niveau"}
         titel="Voorbeeldrapportage, niet de scores van een echte kandidaat"
         class="theory-visual" />
+      <div class="center" style="margin-top:22px"><a href="#request" class="btn btn-ghost">{a.title} aanvragen</a></div>
     </div></section>
   )}
-
-  {a.quote.text && (
-    <section class="quote">
-      <div class="wrap">
-        <img class="quote-photo" src="/media/team/floor-hendriks.webp" alt={`${a.quote.author}, ${a.quote.role} bij hrmforce`} width="112" height="112" loading="lazy" />
-        <div>
-          <h3>{a.quote.heading}</h3>
-          <blockquote>"{a.quote.text}"</blockquote>
-          <div class="who"><b>{a.quote.author}</b>, {a.quote.role}</div>
-          <a class="quote-cta" href={localizePath("/over-ons/", lang)}>Meer over hrmforce &rarr;</a>
-        </div>
-      </div>
-    </section>
-  )}
-
-  <ReviewSlider />
 
   <section>
     <div class="wrap">
@@ -282,10 +287,14 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
         ))}
       </div>
     </div>
+      <div class="center" style="margin-top:24px">
+        <a href="#request" class="btn btn-primary">{a.title} aanvragen</a>
+        <a href={localizePath("/contact/", lang)} class="btn btn-ghost" style="margin-left:8px">Staat je vraag er niet bij? Neem contact op</a>
+      </div>
   </section>
 
   <section class="formsec" id="request">
-    <div class="wrap">
+    <div class="wrap"><div class="formwrap">
       <div class="center">
         <div class="eyebrow">Aanvragen</div>
         <h2 class="section-title">{a.title} aanvragen</h2>
@@ -299,6 +308,7 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
         <div class="fg"><label>Bedrijfsnaam</label><input type="text" name="bedrijf" /></div>
         <button type="submit" class="btn btn-primary">Verzenden</button>
       </form>
+      </div>
     </div>
   </section>
 

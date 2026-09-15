@@ -171,30 +171,6 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
 
 <LogoSlider heading={null} note={null} />
 
-<section class="qshots"><div class="wrap">
-  <h2 class="qshots-h">{ex.title}</h2>
-  <p class="qshots-lead">{ex.intro}</p>
-
-  <QPreview lang={lang} testName={a.title} ex={ex} />
-
-  <p class="qex-scale"><strong>{ex.scaleLabel}:</strong> {ex.scale}</p>
-  {_oefen && (<p style="margin:0 0 20px"><a href={localizePath(`/oefenen/${_oefen.slug}/`, lang)} class="btn btn-ghost">{t.practiceLink} &rarr;</a></p>)}
-
-  <div class="vv-cta">
-    <div class="vv-copy">
-      <strong>{t.vvTitle}</strong>
-      <span>{t.vvText.replace("{t}", a.title)}</span>
-    </div>
-    <form class="vv-form" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
-      <input type="hidden" name="onderwerp" value={`Voorbeeldvragen ${a.title}`} />
-      <input type="hidden" name="assessment" value={a.title} />
-      <input type="email" name="email" required placeholder={t.vvPlaceholder} aria-label={t.workEmail} />
-      <button type="submit" class="btn btn-primary">{t.vvButton}</button>
-    </form>
-  </div>
-</div></section>
-
-
   <section>
     <div class="wrap">
       <div class="eyebrow">{t.explain}</div>
@@ -232,6 +208,29 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
     </div>
   </section>
 
+<section class="qshots"><div class="wrap">
+  <h2 class="qshots-h">{ex.title}</h2>
+  <p class="qshots-lead">{ex.intro}</p>
+
+  <QPreview lang={lang} testName={a.title} ex={ex} />
+
+  <p class="qex-scale"><strong>{ex.scaleLabel}:</strong> {ex.scale}</p>
+  {_oefen && (<p style="margin:0 0 20px"><a href={localizePath(`/oefenen/${_oefen.slug}/`, lang)} class="btn btn-ghost">{t.practiceLink} &rarr;</a></p>)}
+
+  <div class="vv-cta">
+    <div class="vv-copy">
+      <strong>{t.vvTitle}</strong>
+      <span>{t.vvText.replace("{t}", a.title)}</span>
+    </div>
+    <form class="vv-form" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
+      <input type="hidden" name="onderwerp" value={`Voorbeeldvragen ${a.title}`} />
+      <input type="hidden" name="assessment" value={a.title} />
+      <input type="email" name="email" required placeholder={t.vvPlaceholder} aria-label={t.workEmail} />
+      <button type="submit" class="btn btn-primary">{t.vvButton}</button>
+    </form>
+  </div>
+</div></section>
+
   <section style="background:var(--bg)">
     <div class="wrap">
       <div>
@@ -249,6 +248,26 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
       </div>
     </div>
   </section>
+
+  {a.quote.text && (
+    <section class="quote">
+      <div class="wrap">
+        <img class="quote-photo" src="/media/team/floor-hendriks.webp" alt={`${a.quote.author}, ${a.quote.role} - hrmforce`} width="112" height="112" loading="lazy" />
+        <div>
+          <h3>{a.quote.heading}</h3>
+          <blockquote>"{a.quote.text}"</blockquote>
+          <div class="who"><b>{a.quote.author}</b>, {a.quote.role}</div>
+          <a class="quote-cta" href={localizePath("/over-ons/", lang)}>{t.teamCta} &rarr;</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <ReviewSlider />
+
+  <div class="wrap center" style="margin-top:-18px;margin-bottom:8px">
+    <a href="#request" class="btn btn-primary">{t.blokCta.replace("{t}", a.title)}</a>
+  </div>
 
   {theory && (
     <section><div class="wrap">
@@ -268,24 +287,9 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
         bij={dvSoort === "normverdeling" ? `${t.visualNorm}, ${a.title}` : t.visualScale}
         titel={t.visualCaption}
         class="theory-visual" />
+      <div class="center" style="margin-top:22px"><a href="#request" class="btn btn-ghost">{t.blokCta.replace("{t}", a.title)}</a></div>
     </div></section>
   )}
-
-  {a.quote.text && (
-    <section class="quote">
-      <div class="wrap">
-        <img class="quote-photo" src="/media/team/floor-hendriks.webp" alt={`${a.quote.author}, ${a.quote.role} - hrmforce`} width="112" height="112" loading="lazy" />
-        <div>
-          <h3>{a.quote.heading}</h3>
-          <blockquote>"{a.quote.text}"</blockquote>
-          <div class="who"><b>{a.quote.author}</b>, {a.quote.role}</div>
-          <a class="quote-cta" href={localizePath("/over-ons/", lang)}>{t.teamCta} &rarr;</a>
-        </div>
-      </div>
-    </section>
-  )}
-
-  <ReviewSlider />
 
   <section>
     <div class="wrap">
@@ -302,10 +306,14 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
         ))}
       </div>
     </div>
+      <div class="center" style="margin-top:24px">
+        <a href="#request" class="btn btn-primary">{t.blokCta.replace("{t}", a.title)}</a>
+        <a href={localizePath("/contact/", lang)} class="btn btn-ghost" style="margin-left:8px">{t.faqCta}</a>
+      </div>
   </section>
 
   <section class="formsec" id="request">
-    <div class="wrap">
+    <div class="wrap"><div class="formwrap">
       <div>
         <div class="eyebrow">{t.requestEyebrow}</div>
         <h2 class="section-title">{requestTitle}</h2>
@@ -319,6 +327,7 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
         <div class="fg"><label>{t.company}</label><input type="text" name="bedrijf" /></div>
         <button type="submit" class="btn btn-primary">{t.submit}</button>
       </form>
+      </div>
     </div>
   </section>
 
