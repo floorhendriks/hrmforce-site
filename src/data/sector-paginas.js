@@ -70,6 +70,70 @@ export const SECTORPAGINAS = {
     "thema": "welzijn",
     "omslag": "/media/kc-omslag/welzijn-0.svg"
   },
+  "onderwijs": {
+    "kort": "Onderwijs",
+    "metaTitle": "Assessments voor het onderwijs | Leraren, schoolleiders en teams",
+    "metaDescription": "Assessments voor scholen en onderwijsinstellingen: werven van leraren, ontwikkelgesprekken met inhoud en teams die beter samenwerken.",
+    "h1": "Assessments voor het onderwijs",
+    "intro": [
+      "Scholen werven in een krappe markt en houden tegelijk het gesprek over ontwikkeling gaande met mensen die er al jaren werken. Beide vragen om een beeld dat verder gaat dan een lesbezoek en een functioneringsformulier.",
+      "hrmforce meet competenties, drijfveren en samenwerking, met rapportages die een schoolleider zelf kan lezen en bespreken."
+    ],
+    "rollenKop": "Functies in het onderwijs",
+    "rollenTekst": "Onderwijsinstellingen zetten assessments in bij werving en bij ontwikkeling, en soms bij een reorganisatie. Dit zijn de rollen die het vaakst langskomen.",
+    "rollen": [
+      "Leraren in het primair, voortgezet en middelbaar beroepsonderwijs",
+      "Onderwijsassistenten en instructeurs",
+      "Teamleiders, afdelingsleiders en schoolleiders",
+      "Zij-instromers uit een andere sector"
+    ],
+    "lastigKop": "Het ontwikkelgesprek dat elk jaar hetzelfde is",
+    "lastigTekst": "In veel scholen gaat het jaargesprek over lesbezoek en een formulier dat sinds vorig jaar nauwelijks veranderde. Leraren ervaren het als een verplichting, leidinggevenden als iets dat af moet. 360 graden feedback met collega's en leerlingen als bron brengt daar inhoud in: je bespreekt gedrag dat anderen zien, niet een indruk van één les. Bij werving speelt iets anders. Een zij-instromer heeft geen onderwijservaring, en de vraag is of hij een klas aankan.",
+    "assessmentsKop": "Welke assessments in het onderwijs worden gebruikt",
+    "assessments": [
+      {
+        "slug": "360-graden-feedback",
+        "waarom": "Haalt het beeld op van collega's, leidinggevende en waar passend leerlingen."
+      },
+      {
+        "slug": "competentie-check",
+        "waarom": "Meet tegen de competenties uit je eigen onderwijskader."
+      },
+      {
+        "slug": "drijfverentest",
+        "waarom": "Geeft richting in loopbaangesprekken met mensen die er al lang werken."
+      },
+      {
+        "slug": "mentale-veerkracht-scan",
+        "waarom": "Laat zien hoe iemand omgaat met werkdruk, wat in het onderwijs zwaar telt."
+      }
+    ],
+    "aanpakKop": "Hoe een school het inricht",
+    "aanpak": [
+      "Je legt het competentiekader van de school vast in de portal. De rapportage meet daartegen, dus in de taal die het team al kent.",
+      "Voor de jaarcyclus zet je 360 graden feedback in, één keer per jaar of per twee jaar, met een vast moment in de agenda.",
+      "Bij werving krijgt een kandidaat een korte set voor het tweede gesprek, en zie je als schoolleider waar je op doorvraagt."
+    ],
+    "opleverKop": "Wat het oplevert",
+    "opleverTekst": "Een onderwijsinstelling met ongeveer 320 medewerkers maakte ontwikkelgesprekken concreter met 360 graden feedback en competentieprofielen per rol. De gesprekken duurden niet langer, wel gingen ze ergens over.",
+    "oplever": [
+      "Jaargesprekken met inhoud in plaats van een formulier",
+      "Zicht op zij-instromers voordat ze voor de klas staan",
+      "Een gedeeld beeld binnen een team over wat er van een rol wordt verwacht"
+    ],
+    "faq": [
+      {
+        "q": "Mogen leerlingen feedback geven?",
+        "a": "Dat kan, en het werkt in het voortgezet en middelbaar beroepsonderwijs vaak sterk. Je bepaalt zelf welke bronnen meedoen en hoeveel gewicht ze krijgen."
+      },
+      {
+        "q": "Werkt dit binnen de cao en het gesprekscyclusbeleid?",
+        "a": "De rapportage is een hulpmiddel bij het gesprek, geen beoordeling op zichzelf. Scholen nemen het meestal op in de bestaande cyclus, zonder die te wijzigen."
+      }
+    ],
+    "thema": "modellen",
+    "omslag": "/media/kc-omslag/modellen-7.svg"
+  },
   "industrie": {
     "kort": "Industrie",
     "metaTitle": "Assessments voor de industrie | Selectie en ontwikkeling in productie",

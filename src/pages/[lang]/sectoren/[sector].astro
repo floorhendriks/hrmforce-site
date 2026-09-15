@@ -1,26 +1,49 @@
 ---
-import Base from "../../layouts/Base.astro";
-import LogoSlider from "../../components/LogoSlider.astro";
-import { SECTORPAGINAS } from "../../data/sector-paginas.js";
-import { assessments } from "../../data/assessments.js";
-import { localizePath, demoPath, navHref } from "../../i18n/utils.js";
-import { SECTOR_UI } from "../../data/sector-ui.js";
-import validPaths from "../../data/valid-paths.js";
+import Base from "../../../layouts/Base.astro";
+import LogoSlider from "../../../components/LogoSlider.astro";
+import { SECTORPAGINAS } from "../../../data/sector-paginas.js";
+import { SECTORPAGINAS_I18N } from "../../../data/sector-paginas-i18n.js";
+import { assessments } from "../../../data/assessments.js";
+import { assessmentsI18n } from "../../../data/assessments-i18n.js";
+import { localizePath, demoPath, navHref } from "../../../i18n/utils.js";
+import { SECTOR_UI } from "../../../data/sector-ui.js";
+import validPaths from "../../../data/valid-paths.js";
 
 export async function getStaticPaths() {
-  return Object.entries(SECTORPAGINAS).map(([sector, s]) => ({ params: { sector }, props: { s } }));
+  const langs = ["en", "de", "fr", "es", "ro"];
+  const paden = [];
+  for (const lang of langs) {
+    for (const [sector, nl] of Object.entries(SECTORPAGINAS)) {
+      const tr = (SECTORPAGINAS_I18N[lang] || {})[sector];
+      if (!tr) continue;
+      // Thema, omslag en de assessment-slugs komen uit de Nederlandse bron.
+      const s = {
+        ...nl,
+        ...tr,
+        omslag: nl.omslag,
+        thema: nl.thema,
+        assessments: tr.assessments.map((a, i) => ({ slug: nl.assessments[i].slug, waarom: a.waarom })),
+      };
+      paden.push({ params: { lang, sector }, props: { s, lang } });
+    }
+  }
+  return paden;
 }
 
-const { s } = Astro.props;
-const lang = "nl";
+const { s, lang } = Astro.props;
 const ui = SECTOR_UI[lang];
 const L = (pad) => navHref(pad, lang, validPaths);
-const titelVoor = (slug) => (assessments.find((a) => a.slug === slug) || {}).title || slug;
+// Assessmenttitels in de taal van de pagina, met de Nederlandse titel als terugval.
+const titelVoor = (slug) =>
+  ((assessmentsI18n[lang] || {})[slug] || {}).title ||
+  (assessments.find((a) => a.slug === slug) || {}).title ||
+  slug;
 const assessHref = (slug) => navHref(`/assessments/${slug}/`, lang, validPaths);
+const _vert = SECTORPAGINAS_I18N[lang] || {};
 const andere = Object.entries(SECTORPAGINAS)
-  .filter(([k]) => k !== Astro.params.sector)
+  .filter(([k]) => k !== Astro.params.sector && _vert[k])
   .slice(0, 6)
-  .map(([k, v]) => ({ k, titel: v.kort }));
+  .map(([k]) => ({ k, titel: _vert[k].kort }));
 ---
 <Base title={s.metaTitle} description={s.metaDescription} active="solutions">
   <div class="crumb">

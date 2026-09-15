@@ -2,7 +2,10 @@
 import Base from "../../../layouts/Base.astro";
 import Toepassing from "../../../components/Toepassing.astro";
 import { landings } from "../../../data/landings.js";
-export function getStaticPaths(){ return landings.map((l)=>({ params:{slug:l.slug}, props:{l} })); }
+// De sectorlandings (zorg, onderwijs, industrie) staan nu onder /sectoren/,
+// zodat er per sector nog maar een pagina is. /toepassingen/ houdt de
+// thematische landings over: werving, ontwikkeling, leidinggevenden, jong talent.
+export function getStaticPaths(){ const sectorlandings = ["zorg", "onderwijs", "industrie"]; return landings.filter((l)=>!sectorlandings.includes(l.slug)).map((l)=>({ params:{slug:l.slug}, props:{l} })); }
 const { l } = Astro.props; const t=l.i18n.ro;
 ---
 <Base title={t.metaTitle} description={t.metaDescription} active="solutions"><Toepassing l={l} lang="ro" /></Base>

@@ -8,6 +8,24 @@
 #  5. /winkel* als vangnet, voor producten die hier niet bij naam staan
 # Elke exacte regel heeft daarnaast een statische terugvalpagina in public/,
 # aangemaakt met npm run hsf:redirects. Eerste match wint.
+/toepassingen/zorg/ /sectoren/zorg/ 301
+/toepassingen/onderwijs/ /sectoren/onderwijs/ 301
+/toepassingen/industrie/ /sectoren/industrie/ 301
+/en/toepassingen/zorg/ /en/sectoren/zorg/ 301
+/en/toepassingen/onderwijs/ /en/sectoren/onderwijs/ 301
+/en/toepassingen/industrie/ /en/sectoren/industrie/ 301
+/de/toepassingen/zorg/ /de/sectoren/zorg/ 301
+/de/toepassingen/onderwijs/ /de/sectoren/onderwijs/ 301
+/de/toepassingen/industrie/ /de/sectoren/industrie/ 301
+/fr/toepassingen/zorg/ /fr/sectoren/zorg/ 301
+/fr/toepassingen/onderwijs/ /fr/sectoren/onderwijs/ 301
+/fr/toepassingen/industrie/ /fr/sectoren/industrie/ 301
+/es/toepassingen/zorg/ /es/sectoren/zorg/ 301
+/es/toepassingen/onderwijs/ /es/sectoren/onderwijs/ 301
+/es/toepassingen/industrie/ /es/sectoren/industrie/ 301
+/ro/toepassingen/zorg/ /ro/sectoren/zorg/ 301
+/ro/toepassingen/onderwijs/ /ro/sectoren/onderwijs/ 301
+/ro/toepassingen/industrie/ /ro/sectoren/industrie/ 301
 /wp-content/* /media/wp-content/:splat 301
 /product-categorie/* /shop/ 301
 /news_category/* /kenniscentrum/ 301
