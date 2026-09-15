@@ -1,9 +1,13 @@
 # 301-redirects van de oude WordPress-site naar de nieuwe site.
 # Cloudflare Pages past maar een deel van dit bestand toe en negeert de rest stil.
-# Daarom: wildcards eerst (die dekken elk veel URL's), daarna de exacte regels.
+# De volgorde is dus prioriteitsvolgorde:
+#  1. afbeeldingen en wildcards, die kunnen geen terugvalpagina hebben
+#  2. paden waar ook een echte pagina staat, daar zou de redirect anders wegvallen
+#  3. de oude productpagina's naar hun assessmentpagina
+#  4. de overige losse regels
+#  5. /winkel* als vangnet, voor producten die hier niet bij naam staan
 # Elke exacte regel heeft daarnaast een statische terugvalpagina in public/,
-# zodat een genegeerde regel geen 404 oplevert maar alsnog doorstuurt.
-# Eerste match wint, dus een exacte regel staat voor de wildcard die hem dekt.
+# aangemaakt met npm run hsf:redirects. Eerste match wint.
 /wp-content/* /media/wp-content/:splat 301
 /product-categorie/* /shop/ 301
 /news_category/* /kenniscentrum/ 301
@@ -15,7 +19,6 @@
 /shop/segment/gedrag/disc-vragenlijst* /assessments/disc-test/ 301
 /de/hrm-loesungen* /de/hrm-oplossingen/ 301
 /product/* https://shop.hrmforce.com/shop/ 301
-/winkel* https://shop.hrmforce.com/shop/ 301
 /home* / 301
 /assessment/* /assessment-overzicht/ 301
 /hrm-loesungen* /de/hrm-oplossingen/ 301
@@ -38,25 +41,9 @@
 /page-sitemap.xml /sitemap-index.xml 301
 /post-sitemap.xml /sitemap-index.xml 301
 /assessments-sitemap.xml /sitemap-index.xml 301
-/persoonlijkheid/ /kenniscentrum/ 301
-/recruitment/ /hrm-oplossingen/ 301
-/selectie/ /assessment-overzicht/ 301
-/assessments/big-fifty/ /assessments/big-five/ 301
-/assessments/cognitieve-capaciteitentest/ /assessments/cognitieve-test/ 301
-/assessments/preselectie/disc-test/ /assessments/disc-test/ 301
-/faq/big-fifty/ /assessments/big-five/ 301
-/partner/flowpeople/ /partners/ 301
-/ro/testen/ /ro/online-assessments/ 301
-/shop/fase-hr-cyclus/ontwikkeling/lencioni-teamdynamiek/ /assessments/lencioni-teamdynamiek/ 301
-/assessments/ /assessment-overzicht/ 301
-/hrm-oplossingen/recruitment/ /hrm-oplossingen/matching/ 301
 /voorbereiden-assessment/ /voorbereiding/ 301
-/en/assessments/big-fifty-personality-test/ /en/assessments/big-five/ 301
-/de/assessments/entwicklung/persoenlichkeitstest-big-five/ /de/assessments/big-five/ 301
-/es/assessments/preseleccion/perfil-big-fifty/ /es/assessments/big-five/ 301
 /de/hrmforce/ /de/over-ons/ 301
 /de/kontakt/ /de/contact/ 301
-/de/wissenszentrum/ /de/kenniscentrum/ 301
 /de/impressum/ /de/over-ons/ 301
 /fr/hrm-solutions/ /fr/hrm-oplossingen/ 301
 /fr/hrmforce/ /fr/over-ons/ 301
@@ -69,6 +56,111 @@
 /ro/solutii/ /ro/hrm-oplossingen/ 301
 /ro/ce-facem-noi/ /ro/over-ons/ 301
 /ro/asistenta/ /ro/support/ 301
+/winkel/fase-hr-cyclus/selectie/big-fifty-personality/ /assessments/big-five/ 301
+/winkel/fase-hr-cyclus/selectie/logiks-general-intermediate/ /assessments/cognitieve-test/ 301
+/winkel/fase-hr-cyclus/selectie/logiks-numerical/ /assessments/cognitieve-test/ 301
+/winkel/geen-categorie/corona-scans/ https://shop.hrmforce.com/shop/ 301
+/winkel/geen-categorie/hrmforce-competentiespel/ https://shop.hrmforce.com/shop/ 301
+/winkel/segment/360-feedback-gedrag/360-graden-feedback/ /assessments/360-graden-feedback/ 301
+/winkel/segment/360-feedback-gedrag/appraisal/ /assessments/appraisal/ 301
+/winkel/segment/360-feedback-gedrag/career-interest/ /assessments/interesse-scan/ 301
+/winkel/segment/360-feedback-gedrag/communication-styles/ /assessments/communicatiestijlen-test/ 301
+/winkel/segment/360-feedback-gedrag/competency-check/ /assessments/competentie-check/ 301
+/winkel/segment/360-feedback-gedrag/conflict-styles/ /assessments/conflictstijlen-test/ 301
+/winkel/segment/360-feedback-gedrag/cubiks-360/ /assessments/360-graden-feedback/ 301
+/winkel/segment/360-feedback-gedrag/employee-satisfaction/ /assessments/tevredenheidsonderzoek-medewerkers/ 301
+/winkel/segment/360-feedback-gedrag/reference-check/ /assessments/referentie-check/ 301
+/winkel/segment/360-feedback-gedrag/reflector-360/ /assessments/360-graden-feedback/ 301
+/winkel/segment/360-feedback-gedrag/team-roles/ /assessments/groepsrollen/ 301
+/winkel/segment/intelligentie/ability-analysis/ /assessments/cognitieve-test/ 301
+/winkel/segment/intelligentie/ability-scan/ /assessments/ability-scan/ 301
+/winkel/segment/intelligentie/connector-ability/ /assessments/cognitieve-test/ 301
+/winkel/segment/intelligentie/logiks-verbal/ /assessments/cognitieve-test/ 301
+/winkel/segment/interesse/interesse-scan/ /assessments/interesse-scan/ 301
+/winkel/segment/motivatie/motivation/ /assessments/drijfverentest/ 301
+/winkel/segment/persoonlijkheid/assessment-support-rapport/ https://shop.hrmforce.com/shop/ 301
+/winkel/segment/persoonlijkheid/facet5/ /assessments/big-five/ 301
+/winkel/segment/persoonlijkheid/leadership/ /assessments/leiderschapstest/ 301
+/winkel/segment/persoonlijkheid/learning-styles/ /assessments/leerstijlen/ 301
+/winkel/segment/persoonlijkheid/papi3-n/ https://shop.hrmforce.com/shop/ 301
+/winkel/segment/persoonlijkheid/personality-for-professionals-inventory-pfpi/ https://shop.hrmforce.com/shop/ 301
+/winkel/segment/persoonlijkheid/reflector-big-five-leadership/ /assessments/leiderschapstest/ 301
+/winkel/segment/persoonlijkheid/reflector-big-five-personality/ /assessments/big-five/ 301
+/winkel/segment/persoonlijkheid/td-12-persoonlijkheidsvragenlijst/ https://shop.hrmforce.com/shop/ 301
+/winkel/segment/vaardigheden/verkoopvaardigheden/ /assessments/verkoopvaardigheden/ 301
+/winkel/uitgever/cubiks/logiks-abstract/ /assessments/cognitieve-test/ 301
+/winkel/uitgever/cubiks/logiks-general-advanced/ /assessments/cognitieve-test/ 301
+/winkel/uitgever/cubiks/papi-factors/ https://shop.hrmforce.com/shop/ 301
+/winkel/uitgever/cubiks/papi3-i/ https://shop.hrmforce.com/shop/ 301
+/winkel/uitgever/hrmforce/15pf/ /assessments/15pf/ 301
+/winkel/uitgever/hrmforce/career-orientations/ /assessments/loopbaanwaarden/ 301
+/winkel/uitgever/hrmforce/coaching-screener-scan/ /assessments/coaching-screener-scan/ 301
+/winkel/uitgever/hrmforce/competentieboek/ https://shop.hrmforce.com/shop/ 301
+/winkel/uitgever/hrmforce/duurzame-inzetbaarheid-scan/ /assessments/duurzame-inzetbaarheid-scan/ 301
+/winkel/uitgever/hrmforce/e-assessment/ https://shop.hrmforce.com/shop/ 301
+/winkel/uitgever/hrmforce/executive-assessment/ https://shop.hrmforce.com/shop/ 301
+/winkel/uitgever/hrmforce/exit-assessment/ /assessments/exit-assessment/ 301
+/winkel/uitgever/hrmforce/feedback-interpretatie/ https://shop.hrmforce.com/shop/ 301
+/winkel/uitgever/hrmforce/intake-candidate/ /assessments/intake-candidate/ 301
+/winkel/uitgever/hrmforce/job-profiler/ /assessments/job-profiler/ 301
+/winkel/uitgever/hrmforce/lean-scan/ /assessments/lean-scan/ 301
+/winkel/uitgever/hrmforce/levensloop-scan/ /assessments/levensloop-scan/ 301
+/winkel/uitgever/hrmforce/management-assessment/ https://shop.hrmforce.com/shop/ 301
+/winkel/uitgever/hrmforce/mentale-veerkracht-scan/ /assessments/mentale-veerkracht-scan/ 301
+/winkel/uitgever/hrmforce/online-certificatietraining/ /advies/trainingen/ 301
+/winkel/uitgever/hrmforce/ontwikkelmatrix/ /assessments/ontwikkelmatrix/ 301
+/winkel/uitgever/hrmforce/professional-assessment/ https://shop.hrmforce.com/shop/ 301
+/winkel/uitgever/hrmforce/pulse-survey/ /assessments/pulse-survey/ 301
+/winkel/uitgever/hrmforce/studiekeuzetest-basis/ /assessments/studiekeuzetest/ 301
+/winkel/uitgever/hrmforce/studiekeuzetest-compleet/ /assessments/studiekeuzetest/ 301
+/winkel/uitgever/hrmforce/studiekeuzetest-uitgebreid/ /assessments/studiekeuzetest/ 301
+/winkel/uitgever/hrmforce/team-analyse/ /assessments/teamanalyse/ 301
+/winkel/uitgever/hrmforce/teamflow-vloerkleed/ https://shop.hrmforce.com/shop/ 301
+/winkel/uitgever/hrmforce/typology/ /assessments/typology/ 301
+/winkel/uitgever/hrmforce/value-drives/ /assessments/value-drives/ 301
+/winkel/uitgever/pearson/sosie-2nd-generation/ https://shop.hrmforce.com/shop/ 301
+/winkel/uitgever/pearson/watson-glaser-iii/ /assessments/cognitieve-test/ 301
+/winkel/uitgever/pera/commercieel-succes/ /assessments/verkoopvaardigheden/ 301
+/winkel/uitgever/pera/jong-talent/ https://shop.hrmforce.com/shop/ 301
+/winkel/uitgever/pera/taalvaardigheid-engels/ https://shop.hrmforce.com/shop/ 301
+/winkel/uitgever/pera/toekomstgericht/ https://shop.hrmforce.com/shop/ 301
+/winkel/uitgever/shl/development-action-planner/ /assessments/ontwikkelassessment/ 301
+/winkel/uitgever/shl/dsi/ https://shop.hrmforce.com/shop/ 301
+/winkel/uitgever/shl/effectiever-leren/ /assessments/leerstijlen/ 301
+/winkel/uitgever/shl/emotionele-intelligentie/ https://shop.hrmforce.com/shop/ 301
+/winkel/uitgever/shl/goii/ /assessments/interesse-scan/ 301
+/winkel/uitgever/shl/leiderschapsrapport/ /assessments/leiderschapstest/ 301
+/winkel/uitgever/shl/management-competentie-rapport/ /assessments/competentie-check/ 301
+/winkel/uitgever/shl/manager-plus-rapport/ /assessments/leiderschapstest/ 301
+/winkel/uitgever/shl/mq-rapport-motivational-questionnaire/ /assessments/drijfverentest/ 301
+/winkel/uitgever/shl/opq-persoonlijk-rapport/ https://shop.hrmforce.com/shop/ 301
+/winkel/uitgever/shl/opq-profiel/ https://shop.hrmforce.com/shop/ 301
+/winkel/uitgever/shl/opq-universal-competency-rapport/ /assessments/competentie-check/ 301
+/winkel/uitgever/shl/rollen-rapport/ /assessments/groepsrollen/ 301
+/winkel/uitgever/shl/sales-rapport/ /assessments/verkoopvaardigheden/ 301
+/winkel/uitgever/shl/team-impact-ontwikkeling/ /assessments/teamanalyse/ 301
+/winkel/uitgever/shl/team-impact-selectie/ /assessments/teamanalyse/ 301
+/winkel/uitgever/shl/verify-checking/ /assessments/cognitieve-test/ 301
+/winkel/uitgever/shl/verify-inductief/ /assessments/cognitieve-test/ 301
+/winkel/uitgever/shl/verify-numeriek/ /assessments/cognitieve-test/ 301
+/winkel/uitgever/shl/verify-verbaal/ /assessments/cognitieve-test/ 301
+/winkelwagen/ https://shop.hrmforce.com/shop/ 301
+/persoonlijkheid/ /kenniscentrum/ 301
+/recruitment/ /hrm-oplossingen/ 301
+/selectie/ /assessment-overzicht/ 301
+/assessments/big-fifty/ /assessments/big-five/ 301
+/assessments/cognitieve-capaciteitentest/ /assessments/cognitieve-test/ 301
+/assessments/preselectie/disc-test/ /assessments/disc-test/ 301
+/faq/big-fifty/ /assessments/big-five/ 301
+/partner/flowpeople/ /partners/ 301
+/ro/testen/ /ro/online-assessments/ 301
+/shop/fase-hr-cyclus/ontwikkeling/lencioni-teamdynamiek/ /assessments/lencioni-teamdynamiek/ 301
+/assessments/ /assessment-overzicht/ 301
+/hrm-oplossingen/recruitment/ /hrm-oplossingen/matching/ 301
+/en/assessments/big-fifty-personality-test/ /en/assessments/big-five/ 301
+/de/assessments/entwicklung/persoenlichkeitstest-big-five/ /de/assessments/big-five/ 301
+/es/assessments/preseleccion/perfil-big-fifty/ /es/assessments/big-five/ 301
+/de/wissenszentrum/ /de/kenniscentrum/ 301
 /mijn-account/ https://shop.hrmforce.com/shop/ 301
 /de/einkaufswagen/ https://shop.hrmforce.com/shop/ 301
 /es/cesta-de-la-compra/ https://shop.hrmforce.com/shop/ 301
@@ -140,3 +232,4 @@
 /organisatie/ /kenniscentrum/ 301
 /about-us-new-translations/ /over-ons/ 301
 /expertsessie-jho/ / 301
+/winkel* https://shop.hrmforce.com/shop/ 301
