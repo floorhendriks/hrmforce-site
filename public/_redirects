@@ -144,3 +144,48 @@
 /demo-aanvragen/                          /demo/                               301
 /aanvragen/                               /demo/                               301
 /plan-een-demo/                           /demo/                               301
+
+# --- Overstap van WordPress naar de nieuwe site (september 2026) ---
+# Getest tegen de 385 URL's uit de oude sitemap: deze 76 hadden anders een 404
+# gegeven. Het zijn vooral WordPress-archiefpagina's zonder eigen plek op de
+# nieuwe site, plus een paar losse pagina's die wel een goede bestemming hebben.
+
+# Drie artikelen staan nu zonder de categorie in het pad
+/kenniscentrum/onderwijs/werkdruk-onderwijs/                                        /kenniscentrum/werkdruk-onderwijs/                                        301
+/kenniscentrum/ontwikkeling/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/  /kenniscentrum/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/  301
+/kenniscentrum/ontwikkeling/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/           /kenniscentrum/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/           301
+/kenniscentrum/ontwikkeling/piramide-van-lencioni/                                  /assessments/lencioni-teamdynamiek/                                       301
+
+# Losse pagina's met een duidelijke opvolger
+/hrm-software/           /hrm-oplossingen/        301
+/hrmforce-scans/         /assessment-overzicht/   301
+/instructievideos/       /kenniscentrum/          301
+/heerlijk-helder-hrmforce/  /kenniscentrum/       301
+/wekelijkse-update/      /kenniscentrum/          301
+/concurrentvergelijk/test-vergelijking/  /vergelijking/  301
+/concurrentvergel_nw/test-2/             /vergelijking/  301
+/uitgever/hrmforce/      /shop/                   301
+
+# Oude kenniscentrum-categorieen. Het kenniscentrum heeft nu een index met
+# filters in plaats van losse categoriepagina's.
+/capaciteiten/     /kenniscentrum/   301
+/competenties/     /kenniscentrum/   301
+/cultuur/          /kenniscentrum/   301
+/leiding-geven/    /kenniscentrum/   301
+/motivatie/        /kenniscentrum/   301
+/onderwijs/        /kenniscentrum/   301
+/ontwikkeling/     /kenniscentrum/   301
+/organisatie/      /kenniscentrum/   301
+/persoonlijkheid/  /kenniscentrum/   301
+/recruitment/      /hrm-oplossingen/ 301
+/selectie/         /assessment-overzicht/ 301
+
+# WordPress-archieven. Deze prefixen hebben geen enkele echte pagina op de
+# nieuwe site, dus een wildcard is hier veilig.
+/product-categorie/*      /shop/           301
+/news_category/*          /kenniscentrum/  301
+/testimonials-category/*  /klantcases/     301
+/partner_categorie/*      /partners/       301
+/carousels-category/*     /               301
+/advies_categorieen/training/  /advies/trainingen/  301
+/advies_categorieen/*     /advies/         301
