@@ -4,6 +4,7 @@
 # Elke exacte regel heeft daarnaast een statische terugvalpagina in public/,
 # zodat een genegeerde regel geen 404 oplevert maar alsnog doorstuurt.
 # Eerste match wint, dus een exacte regel staat voor de wildcard die hem dekt.
+/wp-content/* /media/wp-content/:splat 301
 /product-categorie/* /shop/ 301
 /news_category/* /kenniscentrum/ 301
 /testimonials-category/* /klantcases/ 301
