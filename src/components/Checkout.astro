@@ -13,51 +13,79 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
 
   <div id="coEmpty" class="co-empty" hidden>
     <p>{c.empty}</p>
-    <a class="btn btn-primary" href={shopHref}>{c.toShop} →</a>
+    <a class="btn btn-primary" href={shopHref}>{c.toShop} &rarr;</a>
   </div>
 
   <div id="coMain" class="co-grid" hidden>
-    <div class="co-order">
-      <h2>{c.orderTitle}</h2>
+    <aside class="co-order">
+      <h2 class="co-kop">{c.orderTitle}</h2>
       <div id="coLines"></div>
+      <div class="co-sum" id="coSum"></div>
       <a class="co-edit" href={shopHref}>{c.editCart}</a>
-    </div>
+    </aside>
 
     <form class="co-form" id="coForm" novalidate>
-      <h2>{c.billTitle}</h2>
-      <div class="co-row">
-        <label>{c.company}*<input type="text" name="company" required autocomplete="organization" /></label>
+      <h2 class="co-kop">{c.billTitle}</h2>
+
+      <div class="co-veld">
+        <label for="coCompany">{c.company}<span class="co-req">*</span></label>
+        <input id="coCompany" type="text" name="company" required autocomplete="organization" />
       </div>
-      <div class="co-row co-2">
-        <label>{c.contact}*<input type="text" name="contact" required autocomplete="name" /></label>
-        <label>{c.email}*<input type="email" name="email" required autocomplete="email" /></label>
+
+      <div class="co-rij">
+        <div class="co-veld">
+          <label for="coContact">{c.contact}<span class="co-req">*</span></label>
+          <input id="coContact" type="text" name="contact" required autocomplete="name" />
+        </div>
+        <div class="co-veld">
+          <label for="coEmail">{c.email}<span class="co-req">*</span></label>
+          <input id="coEmail" type="email" name="email" required autocomplete="email" />
+        </div>
       </div>
-      <div class="co-row co-2">
-        <label>{c.phone}<input type="tel" name="phone" autocomplete="tel" /></label>
-        <label>{c.country}*
+
+      <div class="co-rij">
+        <div class="co-veld">
+          <label for="coPhone">{c.phone}</label>
+          <input id="coPhone" type="tel" name="phone" autocomplete="tel" />
+        </div>
+        <div class="co-veld">
+          <label for="coCountry">{c.country}<span class="co-req">*</span></label>
           <select name="country" id="coCountry" required>
             <option value="">{c.pick}</option>
             {euList.map(([code, name]) => (<option value={code}>{name}</option>))}
-            <option value="XX">, {c.sumVatExport}, </option>
+            <option value="XX">{c.outsideEu}</option>
           </select>
-        </label>
-      </div>
-      <div class="co-row">
-        <label>{c.vat}<input type="text" name="vat" id="coVat" placeholder="NL000000000B00" /></label>
-        <p class="co-hint">{c.vatHint}</p>
-      </div>
-      <div class="co-row co-2">
-        <label>{c.street}*<input type="text" name="street" required autocomplete="street-address" /></label>
-        <label>{c.city}*<input type="text" name="city" required autocomplete="address-level2" /></label>
-      </div>
-      <div class="co-row co-2">
-        <label>{c.postal}*<input type="text" name="postal" required autocomplete="postal-code" /></label>
-        <label>{c.reference}<input type="text" name="reference" /></label>
+        </div>
       </div>
 
-      <div class="co-sum" id="coSum"></div>
+      <div class="co-veld">
+        <label for="coVat">{c.vat}</label>
+        <input id="coVat" type="text" name="vat" placeholder="NL000000000B00" />
+        <p class="co-hint">{c.vatHint}</p>
+      </div>
+
+      <div class="co-rij co-rij-adres">
+        <div class="co-veld">
+          <label for="coStreet">{c.street}<span class="co-req">*</span></label>
+          <input id="coStreet" type="text" name="street" required autocomplete="street-address" />
+        </div>
+        <div class="co-veld">
+          <label for="coPostal">{c.postal}<span class="co-req">*</span></label>
+          <input id="coPostal" type="text" name="postal" required autocomplete="postal-code" />
+        </div>
+        <div class="co-veld">
+          <label for="coCity">{c.city}<span class="co-req">*</span></label>
+          <input id="coCity" type="text" name="city" required autocomplete="address-level2" />
+        </div>
+      </div>
+
+      <div class="co-veld">
+        <label for="coRef">{c.reference}</label>
+        <input id="coRef" type="text" name="reference" />
+      </div>
+
       <p class="co-warn" id="coWarn" hidden></p>
-      <button type="submit" class="btn btn-primary co-pay" id="coPay">{c.pay} →</button>
+      <button type="submit" class="btn btn-primary co-pay" id="coPay">{c.pay} &rarr;</button>
       <p class="co-secure">{c.secure}</p>
       <p class="co-terms">{c.terms}</p>
     </form>
@@ -65,41 +93,68 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
 </section>
 
 <style is:global>
-  .co-wrap { padding: 32px 0 60px; max-width: 1040px; }
-  .co-back { display: inline-block; color: var(--navy); font-weight: 600; font-size: 14px; margin-bottom: 10px; text-decoration: none; }
+  .co-wrap { padding: 28px 0 72px; max-width: 1080px; }
+  .co-back { display: inline-block; color: var(--navy); font-weight: 600; font-size: 14px; margin-bottom: 8px; text-decoration: none; }
   .co-back:hover { color: var(--accent); }
-  .co-h1 { color: var(--navy); font-size: 1.9rem; margin: 0 0 20px; }
-  .co-empty { text-align: center; padding: 50px 0; }
-  .co-empty p { color: var(--muted); margin-bottom: 16px; }
-  .co-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 28px; align-items: start; }
-  .co-order.co-form { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px; box-shadow:none; }
-  .co-order h2.co-form h2 { color: var(--navy); font-size: 1.15rem; margin: 0 0 14px; }
-  .co-line { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
-  .co-line-img { width: 52px; height: 52px; border-radius: var(--radius-sm); background: var(--bg-soft) center/cover no-repeat; flex: none; }
+  .co-h1 { font-family: var(--font-display); color: var(--navy); font-size: clamp(1.7rem, 3vw, 2.15rem); line-height: 1.15; margin: 0 0 22px; }
+  .co-empty { text-align: center; padding: 60px 0; }
+  .co-empty p { color: var(--muted); margin-bottom: 18px; }
+
+  .co-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .85fr); gap: 28px; align-items: start; }
+  .co-form { order: 1; }
+  .co-order { order: 2; position: sticky; top: 96px; }
+
+  .co-order, .co-form { background: #fff; border: 1px solid var(--line); padding: 24px 26px 26px; }
+  .co-kop { font-family: var(--font-display); color: var(--navy); font-size: 1.05rem; letter-spacing: .01em; margin: 0 0 4px; padding-bottom: 12px; border-bottom: 2px solid var(--navy); }
+
+  /* Bestelregels */
+  .co-line { display: flex; gap: 13px; padding: 15px 0; border-bottom: 1px solid var(--line); }
+  .co-line-img { width: 56px; height: 56px; background: var(--bg-soft) center/cover no-repeat; border: 1px solid var(--line); flex: none; }
   .co-line-b { flex: 1; min-width: 0; }
-  .co-line-t { color: var(--navy); font-weight: 700; font-size: 14px; margin: 0; display: flex; justify-content: space-between; gap: 10px; }
-  .co-line-meta { color: var(--muted); font-size: 12.5px; margin: 2px 0 0; }
-  .co-cands { margin: 6px 0 0; padding: 0; list-style: none; display: grid; gap: 4px; }
-  .co-cand { font-size: 12px; color: var(--text); background: var(--bg-soft); border-radius: var(--radius-sm); padding: 4px 8px; }
-  .co-edit { display: inline-block; margin-top: 12px; font-size: 13px; color: var(--navy); text-decoration: underline; }
+  .co-line-t { color: var(--navy); font-weight: 700; font-size: 14.5px; line-height: 1.3; margin: 0; display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+  .co-line-t span:last-child { white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .co-line-meta { color: var(--muted); font-size: 12.5px; margin: 3px 0 0; }
+  .co-cands { margin: 8px 0 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+  .co-cand { font-size: 12px; line-height: 1.45; color: var(--text); background: var(--bg-soft); border-left: 2px solid var(--blue); padding: 5px 9px; }
+  .co-edit { display: inline-block; margin-top: 16px; font-size: 13px; color: var(--navy); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
   .co-edit:hover { color: var(--accent); }
-  .co-row { margin-bottom: 12px; }
-  .co-2 { display: flex; gap: 12px; }
-  .co-2 > label { flex: 1; min-width: 0; }
-  .co-form label { display: block; color: var(--navy); font-weight: 600; font-size: 13px; }
-  .co-form input.co-form select { width: 100%; margin-top: 4px; padding: 10px 12px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); font-family: inherit; font-size: 14px; background: #fff; color: var(--navy); font-weight: 500; }
-  .co-form input:focus.co-form select:focus { outline: 2px solid var(--blue); border-color: var(--blue); }
-  .co-hint { color: var(--muted); font-size: 12px; margin: 4px 0 0; }
-  .co-invalid { border-color: #d64545 !important; box-shadow:none; }
-  .co-sum { border-top: 1px solid var(--line); margin-top: 16px; padding-top: 14px; display: grid; gap: 6px; }
-  .co-sum-row { display: flex; justify-content: space-between; font-size: 14px; color: var(--text); }
-  .co-sum-total { font-weight: 800; color: var(--navy); font-size: 1.1rem; border-top: 1px solid var(--line); padding-top: 8px; margin-top: 2px; }
-  .co-warn { color: #b3261e; background: #fdeceb; border: 1px solid #f6c9c5; border-radius: var(--radius-sm); padding: 8px 12px; font-size: 13px; font-weight: 600; margin: 12px 0 0; }
-  .co-pay { width: 100%; margin-top: 14px; padding: 13px 18px; font-size: 15px; }
-  .co-secure.co-terms { text-align: center; color: var(--muted); font-size: 12px; margin: 10px 0 0; }
-  .co-terms { text-align: left; margin-top: 8px; }
-  @media (max-width: 820px) { .co-grid { grid-template-columns: 1fr; } .co-order { order: 2; } }
-  @media (max-width: 520px) { .co-2 { flex-direction: column; gap: 12px; } }
+
+  /* Totalen */
+  .co-sum { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); display: grid; gap: 8px; }
+  .co-sum-row { display: flex; justify-content: space-between; gap: 14px; font-size: 14px; color: var(--text); }
+  .co-sum-row span:last-child { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .co-sum-total { font-weight: 800; color: var(--navy); font-size: 1.15rem; border-top: 2px solid var(--navy); padding-top: 12px; margin-top: 4px; }
+
+  /* Formulier */
+  .co-veld { margin-bottom: 15px; }
+  .co-veld > label { display: block; color: var(--navy); font-weight: 600; font-size: 13px; line-height: 1.35; margin-bottom: 6px; }
+  .co-req { color: var(--accent); margin-left: 2px; }
+  .co-rij { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+  .co-rij-adres { grid-template-columns: 2fr 1fr 1.4fr; }
+  .co-form input, .co-form select { display: block; width: 100%; padding: 11px 12px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); font-family: inherit; font-size: 14.5px; background: #fff; color: var(--navy); font-weight: 500; }
+  .co-form input::placeholder { color: #9aa8b6; font-weight: 400; }
+  .co-form input:hover, .co-form select:hover { border-color: var(--blue); }
+  .co-form input:focus, .co-form select:focus { outline: 0; border-color: var(--blue); box-shadow: var(--focus); }
+  .co-hint { color: var(--muted); font-size: 12px; line-height: 1.45; margin: 6px 0 0; }
+  .co-invalid { border-color: #d64545 !important; background: #fffafa; }
+
+  .co-warn { color: #b3261e; background: #fdeceb; border: 1px solid #f6c9c5; padding: 10px 13px; font-size: 13px; font-weight: 600; line-height: 1.45; margin: 16px 0 0; }
+  .co-warn a { color: #b3261e; text-decoration: underline; }
+  .co-pay { width: 100%; margin-top: 18px; padding: 14px 18px; font-size: 15.5px; }
+  .co-secure, .co-terms { color: var(--muted); font-size: 12px; line-height: 1.5; margin: 12px 0 0; }
+  .co-secure { font-weight: 600; color: var(--text); text-align: center; }
+
+  @media (max-width: 900px) {
+    .co-grid { grid-template-columns: 1fr; gap: 22px; }
+    .co-order { order: 1; position: static; }
+    .co-form { order: 2; }
+  }
+  @media (max-width: 560px) {
+    .co-wrap { padding-bottom: 48px; }
+    .co-order, .co-form { padding: 20px 18px 22px; }
+    .co-rij, .co-rij-adres { grid-template-columns: 1fr; gap: 0; }
+    .co-rij > .co-veld, .co-rij-adres > .co-veld { margin-bottom: 15px; }
+  }
 </style>
 
 <script is:inline define:vars={{ C: c, LANG: lang, EU: EU_COUNTRIES, SHOP: shopHref }}>
