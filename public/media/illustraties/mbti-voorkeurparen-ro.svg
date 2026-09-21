@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 490" role="img" aria-label="Cele patru perechi de preferințe MBTI: extraversiune sau introversiune, senzorial sau intuitiv, gândire sau simțire, judecată sau percepție. Patru alegeri dau șaisprezece tipuri.">
+  <style>
+    .t  { font-family: "IBM Plex Sans", Arial, sans-serif; }
+    .kop{ font-family: Archivo, "Arial Narrow", Arial, sans-serif; font-weight: 700; }
+  </style>
+  <rect width="900" height="490" fill="#ffffff"/>
+  <rect x="0" y="0" width="900" height="6" fill="#0e468c"/>
+
+  <text class="kop" x="48" y="62" font-size="23" fill="#0e468c">Cele patru perechi de preferințe MBTI</text>
+  <text class="t" x="48" y="90" font-size="15" fill="#5a6b7b">Alegeți o parte din fiecare pereche. Patru alegeri dau șaisprezece tipuri.</text>
+
+  <g class="t" font-size="16" fill="#26313d">
+    <rect x="48" y="122" width="390" height="54" fill="#eef3fa" stroke="#e3eaf2"/>
+    <rect x="438" y="122" width="390" height="54" fill="#ffffff" stroke="#e3eaf2"/>
+    <rect x="435" y="114" width="6" height="70" fill="#d95d15"/>
+    <text x="72" y="155" font-weight="600" fill="#0e468c">Extraversiune</text>
+    <text x="462" y="155" font-weight="600">Introversiune</text>
+    <text x="852" y="155" text-anchor="end" font-size="12.5" fill="#5a6b7b">unde vă îndreptați atenția</text>
+
+    <rect x="48" y="196" width="390" height="54" fill="#eef3fa" stroke="#e3eaf2"/>
+    <rect x="438" y="196" width="390" height="54" fill="#ffffff" stroke="#e3eaf2"/>
+    <rect x="435" y="188" width="6" height="70" fill="#d95d15"/>
+    <text x="72" y="229" font-weight="600" fill="#0e468c">Senzorial</text>
+    <text x="462" y="229" font-weight="600">Intuitiv</text>
+    <text x="852" y="229" text-anchor="end" font-size="12.5" fill="#5a6b7b">cum preluați informația</text>
+
+    <rect x="48" y="270" width="390" height="54" fill="#eef3fa" stroke="#e3eaf2"/>
+    <rect x="438" y="270" width="390" height="54" fill="#ffffff" stroke="#e3eaf2"/>
+    <rect x="435" y="262" width="6" height="70" fill="#d95d15"/>
+    <text x="72" y="303" font-weight="600" fill="#0e468c">Gândire</text>
+    <text x="462" y="303" font-weight="600">Simțire</text>
+    <text x="852" y="303" text-anchor="end" font-size="12.5" fill="#5a6b7b">pe ce vă bazați o decizie</text>
+
+    <rect x="48" y="344" width="390" height="54" fill="#eef3fa" stroke="#e3eaf2"/>
+    <rect x="438" y="344" width="390" height="54" fill="#ffffff" stroke="#e3eaf2"/>
+    <rect x="435" y="336" width="6" height="70" fill="#d95d15"/>
+    <text x="72" y="377" font-weight="600" fill="#0e468c">Judecată</text>
+    <text x="462" y="377" font-weight="600">Percepție</text>
+    <text x="852" y="377" text-anchor="end" font-size="12.5" fill="#5a6b7b">cum finalizați lucrurile</text>
+  </g>
+
+  <rect x="48" y="428" width="46" height="3" fill="#fcc11b"/>
+  <line x1="48" y1="429.5" x2="852" y2="429.5" stroke="#e3eaf2" stroke-width="1"/>
+  <text class="t" x="48" y="453" font-size="13.5" fill="#5a6b7b">Separarea din mijloc este netă: nu există o poziție intermediară. Un chestionar Big Five măsoară aceleași</text>
+  <text class="t" x="48" y="472" font-size="13.5" fill="#5a6b7b">teme pe o scară continuă.</text>
+</svg>

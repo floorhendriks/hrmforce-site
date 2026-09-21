@@ -162,7 +162,7 @@ body = body.replace(/https:\/\/(?:www\.)?hrmforce\.com\/wp-content\//g, "/media/
 body = webpHtml(body);
 // Verhuisde bronnen bijwerken, dode bronlinks ontkoppelen en verdwenen
 // beelden weglaten; zie src/data/link-onderhoud.js.
-body = herstelLinks(body);
+body = herstelLinks(body, lang);
 // Verwijder de lege, doelloze kop "Organisaties die u voorgingen" die uit de oude
 // WordPress-logoslider-plugin in de gemigreerde artikelinhoud is achtergebleven.
 body = body
@@ -425,6 +425,10 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
   .kc-body :global(h2) { font-size: 1.5rem; color: var(--navy, #0E468C); margin: 32px 0 12px; }
   .kc-body :global(h3) { font-size: 1.2rem; color: var(--navy, #0E468C); margin: 24px 0 10px; }
   .kc-body :global(p) { margin: 0 0 16px; }
+  .kc-body :global(.kc-fig) { margin: 22px 0 24px; }
+  .kc-body :global(.kc-fig img) { display: block; width: 100%; height: auto; border: 1px solid var(--line, #e3eaf2); }
+  .kc-body :global(.kc-fig figcaption) { margin-top: 8px; font-size: 13.5px; line-height: 1.5; color: var(--muted, #5a6b7b); }
+  .kc-body :global(.kc-fig-bron) { color: #8593a2; }
   .kc-body :global(ul), .kc-body :global(ol) { margin: 0 0 16px 22px; }
   .kc-body :global(li) { margin: 6px 0; }
   .kc-body :global(img) { max-width: 100%; height: auto; border-radius: var(--radius-sm); margin: 16px 0; }

@@ -2,6 +2,8 @@
 // Gecontroleerd op 21-09-2026; draai de controle opnieuw met
 // node scripts/hsf-controleer-links.mjs na het bouwen.
 
+import { MBTI_FIGUUR } from "../../scripts/hsf-build-mbti-figuur.mjs";
+
 /** Verplaatste pagina's: oude URL naar de gecontroleerde nieuwe URL. */
 export const VERHUISD = {
   "https://www.cbs.nl/nl-nl/onze-diensten/methoden/classificaties/onderwijs-en-beroepen/beroepenindeling-roa-cbs-2014--brc-2014--":
@@ -27,24 +29,37 @@ export const DOOD = [
   "https://www.wvdws.nl/mentaal-en-fysiek-sterk",
 ];
 
-/** Beelden die niet meer bestaan. Het img-element wordt weggelaten.
- *  De eerste is een verlopen tijdelijke URL, de tweede een Wikimedia-thumb
- *  die van een tif is afgeleid en niet meer wordt gegenereerd. */
+/** Beelden die niet meer bestaan. Staat er een vervanger bij, dan komt die in
+ *  de plaats; anders vervalt het img-element.
+ *  De eerste is een verlopen tijdelijke URL. De tweede was een Wikimedia-thumb
+ *  van een tif-bestand dat niet meer wordt gegenereerd; daarvoor in de plaats
+ *  komt een eigen tekening, per taal, uit scripts/hsf-build-mbti-figuur.mjs. */
 export const DODE_BEELDEN = [
-  "sdmntprnortheu.oaiusercontent.com",
-  "upload.wikimedia.org/wikipedia/commons/thumb/5/5b/ETH-BIB-Jung",
+  { herken: "sdmntprnortheu.oaiusercontent.com", vervang: null },
+  {
+    herken: "upload.wikimedia.org/wikipedia/commons/thumb/5/5b/ETH-BIB-Jung",
+    vervang: (taal) => {
+      const d = MBTI_FIGUUR[taal] || MBTI_FIGUUR.nl;
+      return `<figure class="kc-fig"><img src="/media/illustraties/mbti-voorkeurparen-${
+        MBTI_FIGUUR[taal] ? taal : "nl"
+      }.svg" alt="${d.alt.replace(/"/g, "&quot;")}" width="900" height="490" loading="lazy" decoding="async"><figcaption>${
+        d.bijschrift
+      } <span class="kc-fig-bron">Illustratie: hrmforce</span></figcaption></figure>`;
+    },
+  },
 ];
 
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 /** Past alle drie de lijsten toe op een stuk artikel-HTML. */
-export function herstelLinks(html) {
+export function herstelLinks(html, taal = "nl") {
   let h = html || "";
   for (const [oud, nieuw] of Object.entries(VERHUISD)) {
     h = h.split(oud).join(nieuw);
   }
-  for (const url of DODE_BEELDEN) {
-    h = h.replace(new RegExp(`<img\\b[^>]*src="[^"]*${esc(url)}[^"]*"[^>]*>`, "gi"), "");
+  for (const { herken, vervang } of DODE_BEELDEN) {
+    const nieuw = typeof vervang === "function" ? vervang(taal) : vervang || "";
+    h = h.replace(new RegExp(`<img\\b[^>]*src="[^"]*${esc(herken)}[^"]*"[^>]*>`, "gi"), () => nieuw);
   }
   for (const url of DOOD) {
     // <a href="dood" ...>tekst</a> wordt tekst

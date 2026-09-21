@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 490" role="img" aria-label="Los cuatro pares de preferencias del MBTI: extraversión o introversión, sensación o intuición, pensamiento o sentimiento, juicio o percepción. Cuatro elecciones dan dieciséis tipos.">
+  <style>
+    .t  { font-family: "IBM Plex Sans", Arial, sans-serif; }
+    .kop{ font-family: Archivo, "Arial Narrow", Arial, sans-serif; font-weight: 700; }
+  </style>
+  <rect width="900" height="490" fill="#ffffff"/>
+  <rect x="0" y="0" width="900" height="6" fill="#0e468c"/>
+
+  <text class="kop" x="48" y="62" font-size="23" fill="#0e468c">Los cuatro pares de preferencias del MBTI</text>
+  <text class="t" x="48" y="90" font-size="15" fill="#5a6b7b">Se elige un lado por par. Cuatro elecciones dan dieciséis tipos.</text>
+
+  <g class="t" font-size="16" fill="#26313d">
+    <rect x="48" y="122" width="390" height="54" fill="#eef3fa" stroke="#e3eaf2"/>
+    <rect x="438" y="122" width="390" height="54" fill="#ffffff" stroke="#e3eaf2"/>
+    <rect x="435" y="114" width="6" height="70" fill="#d95d15"/>
+    <text x="72" y="155" font-weight="600" fill="#0e468c">Extraversión</text>
+    <text x="462" y="155" font-weight="600">Introversión</text>
+    <text x="852" y="155" text-anchor="end" font-size="12.5" fill="#5a6b7b">dónde diriges la atención</text>
+
+    <rect x="48" y="196" width="390" height="54" fill="#eef3fa" stroke="#e3eaf2"/>
+    <rect x="438" y="196" width="390" height="54" fill="#ffffff" stroke="#e3eaf2"/>
+    <rect x="435" y="188" width="6" height="70" fill="#d95d15"/>
+    <text x="72" y="229" font-weight="600" fill="#0e468c">Sensación</text>
+    <text x="462" y="229" font-weight="600">Intuición</text>
+    <text x="852" y="229" text-anchor="end" font-size="12.5" fill="#5a6b7b">cómo recoges la información</text>
+
+    <rect x="48" y="270" width="390" height="54" fill="#eef3fa" stroke="#e3eaf2"/>
+    <rect x="438" y="270" width="390" height="54" fill="#ffffff" stroke="#e3eaf2"/>
+    <rect x="435" y="262" width="6" height="70" fill="#d95d15"/>
+    <text x="72" y="303" font-weight="600" fill="#0e468c">Pensamiento</text>
+    <text x="462" y="303" font-weight="600">Sentimiento</text>
+    <text x="852" y="303" text-anchor="end" font-size="12.5" fill="#5a6b7b">en qué basas una decisión</text>
+
+    <rect x="48" y="344" width="390" height="54" fill="#eef3fa" stroke="#e3eaf2"/>
+    <rect x="438" y="344" width="390" height="54" fill="#ffffff" stroke="#e3eaf2"/>
+    <rect x="435" y="336" width="6" height="70" fill="#d95d15"/>
+    <text x="72" y="377" font-weight="600" fill="#0e468c">Juicio</text>
+    <text x="462" y="377" font-weight="600">Percepción</text>
+    <text x="852" y="377" text-anchor="end" font-size="12.5" fill="#5a6b7b">cómo cierras los asuntos</text>
+  </g>
+
+  <rect x="48" y="428" width="46" height="3" fill="#fcc11b"/>
+  <line x1="48" y1="429.5" x2="852" y2="429.5" stroke="#e3eaf2" stroke-width="1"/>
+  <text class="t" x="48" y="453" font-size="13.5" fill="#5a6b7b">La separación del centro es tajante: no hay posición intermedia. Un cuestionario Big Five mide los mismos</text>
+  <text class="t" x="48" y="472" font-size="13.5" fill="#5a6b7b">temas en una escala continua.</text>
+</svg>
