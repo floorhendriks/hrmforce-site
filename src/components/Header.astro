@@ -155,7 +155,8 @@ for (const p of _forLang) {
   .has-dd > a, .nav-item > a { padding: 8px 12px; border-radius: var(--radius-sm); }
   .has-dd > a .caret { font-size: .7em; margin-left: 5px; }
   .has-dd .dd { position: absolute; top: 100%; left: 0; z-index: 60; display: none; background: #fff; border: 1px solid #e2e2e2; border-radius: var(--radius); box-shadow:none; padding: 10px; }
-  .has-dd:hover .dd, .has-dd:focus-within .dd { display: block; }
+  .has-dd:focus-within .dd { display: block; }
+  @media (hover: hover) and (pointer: fine) { .has-dd:hover .dd { display: block; } }
   .has-dd .dd a { display: block; padding: 9px 12px; color: #343434; text-decoration: none; font-weight: 600; border-radius: var(--radius-sm); white-space: nowrap; font-size: 14px; }
   .has-dd .dd a:hover { background: #f1f5fb; color: var(--navy, #0E468C); }
 
@@ -164,10 +165,36 @@ for (const p of _forLang) {
 
   /* Oplossingen: mega-menu met gegroepeerde kolommen */
   .dd-mega { display: none; grid-template-columns: repeat(3, minmax(180px, 1fr)); gap: 8px 22px; min-width: 640px; padding: 18px; }
-  .has-dd:hover .dd-mega, .has-dd:focus-within .dd-mega { display: grid; }
+  .has-dd:focus-within .dd-mega { display: grid; }
+  @media (hover: hover) and (pointer: fine) { .has-dd:hover .dd-mega { display: grid; } }
   .dd-col { display: flex; flex-direction: column; }
   .dd-col:not(:first-child) { border-left: 1px solid #eef1f6; padding-left: 18px; }
   .dd-col-t { font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .6px; color: var(--navy, #0E468C); padding: 0 12px 6px; }
+
+
+  /* Mobiel (hamburger): submenu's staan open onder hun kop. In global.css lukte
+     dit niet, die selector verliest het van de scoped selectors hierboven. */
+  @media (max-width: 980px) {
+    header.nav-open .menu { flex-direction: column; align-items: stretch; }
+    header.nav-open .menu .has-dd { display: block; width: 100%; position: static; }
+    header.nav-open .menu .has-dd > a { display: flex; justify-content: space-between; align-items: center; }
+    header.nav-open .menu .has-dd .dd,
+    header.nav-open .menu .has-dd .dd-mega { display: none; }
+    header.nav-open .menu .has-dd.sub-open .dd,
+    header.nav-open .menu .has-dd.sub-open .dd-mega {
+      display: block; position: static; min-width: 0; border: 0; padding: 2px 0 10px 14px;
+      background: transparent; grid-template-columns: 1fr;
+    }
+    header.nav-open .menu .has-dd > a .caret {
+      margin: -11px -8px -11px 0; padding: 11px 10px; font-size: .85em;
+      transition: transform .18s;
+    }
+    header.nav-open .menu .has-dd.sub-open > a .caret { transform: rotate(180deg); }
+    header.nav-open .menu .has-dd .dd a { white-space: normal; font-weight: 500; font-size: 14px; padding: 9px 0; }
+    header.nav-open .menu .dd-cols { display: grid; grid-template-columns: 1fr; min-width: 0; }
+    header.nav-open .menu .dd-col { border-left: 0; padding-left: 0; }
+    header.nav-open .menu .dd-col-t { padding: 10px 0 2px; }
+  }
 
   .topbar .login-btn {
     color: #fff; font-weight: 700; font-size: 14px; padding: 6px 16px;
@@ -243,6 +270,32 @@ for (const p of _forLang) {
         var tag = (document.activeElement && document.activeElement.tagName || "").toLowerCase();
         if (tag !== "input" && tag !== "textarea") { e.preventDefault(); open(); }
       }
+    });
+  })();
+</script>
+
+<script is:inline>
+  /* Mobiel: het pijltje naast een menukop klapt het submenu uit. De kop zelf
+     blijft een gewone link naar de overzichtspagina. Zonder dit zag je op
+     Android het submenu even oplichten door :hover en sprong de pagina weg. */
+  (function () {
+    document.querySelectorAll("header nav.menu .has-dd > a .caret").forEach(function (c) {
+      c.addEventListener("click", function (ev) {
+        if (!document.querySelector("header.nav-open")) return;
+        ev.preventDefault();
+        ev.stopPropagation();
+        var li = c.closest(".has-dd");
+        var open = li.classList.toggle("sub-open");
+        li.querySelector(":scope > a").setAttribute("aria-expanded", open);
+      });
+    });
+    /* Menu sluit mee als je op het scherm buiten het menu tikt. */
+    document.addEventListener("click", function (ev) {
+      var h = document.querySelector("header.nav-open");
+      if (!h || h.contains(ev.target)) return;
+      h.classList.remove("nav-open");
+      var b = h.querySelector(".nav-toggle");
+      if (b) b.setAttribute("aria-expanded", "false");
     });
   })();
 </script>

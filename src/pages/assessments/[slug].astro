@@ -96,8 +96,28 @@ const kcRelated = (kcPosts || [])
   .sort((x, y) => y.score - x.score || new Date(y.p.date) - new Date(x.p.date))
   .slice(0, 3)
   .map((x) => x.p);
+const _euLanden = ["NL","BE","DE","FR","ES","IT","AT","PT","IE","LU","DK","SE","FI","PL","CZ","RO","GR","HU","SK","SI","HR","BG","EE","LV","LT","CY","MT"];
+// Digitale levering: de kandidaat krijgt de vragenlijst per e-mail, er wordt
+// niets verzonden. Retour na levering is niet mogelijk; annuleren vóór de
+// leverdatum gaat volgens de algemene voorwaarden.
+const _levering = {
+  "@type": "OfferShippingDetails",
+  shippingRate: { "@type": "MonetaryAmount", value: "0", currency: "EUR" },
+  shippingDestination: { "@type": "DefinedRegion", addressCountry: _euLanden },
+  deliveryTime: {
+    "@type": "ShippingDeliveryTime",
+    handlingTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 1, unitCode: "DAY" },
+    transitTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 0, unitCode: "DAY" },
+  },
+};
+const _retour = {
+  "@type": "MerchantReturnPolicy",
+  applicableCountry: _euLanden,
+  returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
+  merchantReturnLink: "https://hrmforce.com/support/algemene-voorwaarden/",
+};
 const _offerLd = (shop && shop.price)
-  ? { "@context": "https://schema.org", "@type": "Product", name: a.title, description: a.goal, brand: { "@type": "Brand", name: "hrmforce" }, ...(a.image ? { image: a.image } : {}), offers: { "@type": "Offer", price: String(shop.price), priceCurrency: "EUR", availability: "https://schema.org/InStock", url: _canon } }
+  ? { "@context": "https://schema.org", "@type": "Product", name: a.title, description: a.goal, brand: { "@type": "Brand", name: "hrmforce" }, ...(a.image ? { image: a.image } : {}), offers: { "@type": "Offer", price: String(shop.price), priceCurrency: "EUR", availability: "https://schema.org/InStock", url: _canon, shippingDetails: _levering, hasMerchantReturnPolicy: _retour } }
   : { "@context": "https://schema.org", "@type": "Service", name: a.title, description: a.goal, provider: { "@type": "Organization", name: "hrmforce" }, areaServed: "EU" };
 // Voorbeeldrapportage per assessment. De dimensies komen uit de test zelf, de
 // scores zijn afgeleid van de slug zodat elke test een eigen, vast beeld heeft.

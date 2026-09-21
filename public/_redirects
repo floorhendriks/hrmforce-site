@@ -8,6 +8,11 @@
 #  5. /winkel* als vangnet, voor producten die hier niet bij naam staan
 # Elke exacte regel heeft daarnaast een statische terugvalpagina in public/,
 # aangemaakt met npm run hsf:redirects. Eerste match wint.
+
+# www naar het hoofddomein, anders staat dezelfde pagina onder twee adressen.
+# Search Console meldt dat als "Alternative page with proper canonical tag".
+https://www.hrmforce.com/* https://hrmforce.com/:splat 301
+
 /toepassingen/zorg/ /sectoren/zorg/ 301
 /toepassingen/onderwijs/ /sectoren/onderwijs/ 301
 /toepassingen/industrie/ /sectoren/industrie/ 301

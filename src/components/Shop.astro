@@ -1,5 +1,5 @@
 ---
-import { SHOPIFY, FORMSPREE_ENDPOINT } from "../data/site-config.js";
+import { SHOP, FORMSPREE_ENDPOINT } from "../data/site-config.js";
 import { localizePath } from "../i18n/utils.js";
 import { shopImages } from "../data/shop-images.js";
 import { SHOP_CONTENT } from "../data/shop-products.js";
@@ -8,13 +8,8 @@ import { faqFor, BY_SEGMENT, generalFaq } from "../data/shop-faq.js";
 
 const { t, lang } = Astro.props;
 
-const configured = Boolean(SHOPIFY.STOREFRONT_TOKEN);
-const cfg = {
-  domain: SHOPIFY.DOMAIN,
-  token: SHOPIFY.STOREFRONT_TOKEN,
-  version: SHOPIFY.API_VERSION,
-  publicUrl: SHOPIFY.PUBLIC_SHOP_URL,
-};
+const configured = SHOP.ENABLED;
+const cfg = { publicUrl: SHOP.PUBLIC_URL };
 const tarievenHref = localizePath("/tarieven/", lang);
 const afrekenenHref = localizePath("/afrekenen/", lang);
 
@@ -156,7 +151,7 @@ const FAQ_DEFAULT = generalFaq(lang);
 
 <section><div class="wrap">
   {configured ? (
-    <div id="shopApp" data-domain={cfg.domain} data-token={cfg.token} data-version={cfg.version} data-publicurl={cfg.publicUrl}>
+    <div id="shopApp" data-publicurl={cfg.publicUrl}>
       <div class="shop-toolbar">
         <div class="shop-search"><input type="search" id="shopq" placeholder={t.search} aria-label={t.search} /></div>
         <div class="shop-selects">
@@ -350,6 +345,9 @@ const FAQ_DEFAULT = generalFaq(lang);
   .pm-price { color: var(--navy); font-weight: 800; font-size: 1.3rem; margin-bottom: 14px; }
   .pm-desc { color: var(--text); font-size: 14.5px; line-height: 1.6; margin-bottom: 20px; }
   .pm-desc :global(p) { margin: 0 0 10px; }
+  .pm-desc :global(.pm-meer) { margin: 12px 0 14px; }
+  .pm-desc :global(.pm-meer a) { color: var(--navy); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+  .pm-desc :global(.pm-meer a:hover) { color: var(--accent); }
   .pm-faq { margin: 4px 0 20px; }
   .pm-faq-item { border-top: 1px solid var(--line); padding: 10px 0; }
   .pm-faq-item summary { cursor: pointer; font-weight: 700; color: var(--navy); font-size: 14.5px; list-style: none; }
@@ -409,7 +407,13 @@ const FAQ_DEFAULT = generalFaq(lang);
     // Echte beschrijving (NL) uit SHOP_CONTENT; val terug op de generieke tekst.
     function descOf(p) { var c = scFor(p); if (!c || !c.desc) return null; return (typeof c.desc === "string") ? c.desc : (c.desc[LANG] || c.desc.nl); }
     function descText(p) { return descOf(p) || enrichText(p); }
-    function descHtml(p) { var d = descOf(p); return d ? ("<p>" + esc(d) + "</p>" + enrichBullets()) : enrichHtml(p); }
+    function descHtml(p) { var d = descOf(p); return d ? ("<p>" + esc(d) + "</p>" + meerLink(p) + enrichBullets()) : enrichHtml(p); }
+    // Optionele verwijzing naar een verdiepende pagina, per taal, uit SHOP_CONTENT.meer.
+    function meerLink(p) {
+      var c = scFor(p); if (!c || !c.meer) return "";
+      var h = c.meer.href[LANG] || c.meer.href.nl, l = c.meer.label[LANG] || c.meer.label.nl;
+      return '<p class="pm-meer"><a href="' + esc(h) + '">' + esc(l) + ' &rarr;</a></p>';
+    }
     // FAQ per product: segment-specifiek + algemeen (≥10) uit shop-faq.js.
     function faqOf(p) { var seg = (p.taxo && p.taxo.segment && p.taxo.segment[0]); return (seg && FAQ_SEG[seg]) || FAQ_DEFAULT; }
     // Logo-URL: eigen merk-/testlogo van het product, anders het uitgeverslogo.

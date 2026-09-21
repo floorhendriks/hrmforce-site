@@ -4,17 +4,14 @@
 export const FORMSPREE_ENDPOINT = "https://formspree.io/f/mqpznaqn";
 export const CONTACT_EMAIL = "service@hrmforce.com";
 
-// Shopify Storefront (voor de ingebedde /shop/). Vul STOREFRONT_TOKEN in met een
-// Storefront API access token uit Shopify-admin (Settings → Apps and sales channels
-// → Develop apps → jouw app → Storefront API). Zolang deze leeg is, toont /shop/
-// een nette placeholder met een knop naar shop.hrmforce.com.
-export const SHOPIFY = {
-  DOMAIN: "nad8cn-ni.myshopify.com", // Shopify-verkoopdomein (niet het custom domein)
-  STOREFRONT_TOKEN: "eec96c05b11f763039d06b54f372c00f", // publiek Storefront-token (Headless-kanaal, bedoeld voor client-side)
-  API_VERSION: "2024-07",
-  PUBLIC_SHOP_URL: "https://shop.hrmforce.com",
+// De shop draait op de catalogus in deze repo (src/data/shop-catalog.json) en
+// rekent af via /afrekenen/. Shopify wordt niet meer gebruikt; het Storefront-
+// token is daarom weg. SHOP.ENABLED op false toont in plaats van de productlijst
+// een verwijzing naar PUBLIC_URL.
+export const SHOP = {
+  ENABLED: true,
+  PUBLIC_URL: "https://shop.hrmforce.com",
 };
-
 // Vul je GA4 Measurement-ID in (G-XXXXXXXXXX). Leeg = geen tracking.
 // GTM_ID: de oude site laadde alles via Google Tag Manager (GTM-M6BLWR4). Deze
 // site stuurt GA4 en Google Ads rechtstreeks via gtag aan, dat is lichter en

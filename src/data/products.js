@@ -72,7 +72,7 @@ export const products = [
   { name: "PAPI 3-n", price: 153.0, vendor: "Cubiks", segment: "Persoonlijkheid", phase: "Selectie" },
   { name: "PAPI 3-i", price: 153.0, vendor: "Cubiks", segment: "Persoonlijkheid", phase: "Selectie" },
   { name: "Talogy 360", price: 242.0, vendor: "Talogy", segment: "360 Feedback", phase: "Ontwikkeling" },
-  { name: "Online Certificatietraining", price: 600.0, vendor: "hrmforce", segment: "Materialen", phase: "Ontwikkeling" },
+  { name: "Certificatietraining", price: 595.0, vendor: "hrmforce", segment: "Materialen", phase: "Ontwikkeling" },
   { name: "Executive Assessment", price: 2805.0, vendor: "hrmforce", segment: "Live assessment", phase: "Selectie" },
   { name: "Management Assessment", price: 1955.0, vendor: "hrmforce", segment: "Live assessment", phase: "Selectie" },
   { name: "Professional Assessment", price: 1855.0, vendor: "hrmforce", segment: "Live assessment", phase: "Selectie" },
