@@ -1,6 +1,7 @@
 ---
 import { webpHtml } from "../lib/beeld.js";
 import { titel, omschrijving } from "../lib/meta.js";
+import { herstelLinks } from "../data/link-onderhoud.js";
 import Base from "../layouts/Base.astro";
 import { createClient } from "@sanity/client";
 import { shopInfo } from "../data/assessment-shop.js";
@@ -159,6 +160,9 @@ let body = sanitizeBodyLinks(article.body || "", lang, validPaths);
 body = body.replace(/https:\/\/(?:www\.)?hrmforce\.com\/wp-content\//g, "/media/wp-content/");
 // De beelden staan als webp in public/media; zie src/lib/beeld.js.
 body = webpHtml(body);
+// Verhuisde bronnen bijwerken, dode bronlinks ontkoppelen en verdwenen
+// beelden weglaten; zie src/data/link-onderhoud.js.
+body = herstelLinks(body);
 // Verwijder de lege, doelloze kop "Organisaties die u voorgingen" die uit de oude
 // WordPress-logoslider-plugin in de gemigreerde artikelinhoud is achtergebleven.
 body = body
