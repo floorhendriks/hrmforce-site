@@ -5,7 +5,7 @@
 export const adviesDetail = [
   {
     slug: "certificatietraining",
-    image: "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=900",
+    image: "/media/stock/pexels-3184465.webp",
     title: "Certificatietraining",
     metaTitle: "Certificatietraining | Gecertificeerd hrmforce-gebruiker worden | Hrmforce",
     metaDescription:
@@ -31,7 +31,7 @@ export const adviesDetail = [
   },
   {
     slug: "loopbaan-assessment",
-    image: "https://images.pexels.com/photos/1181533/pexels-photo-1181533.jpeg?auto=compress&cs=tinysrgb&w=900",
+    image: "/media/stock/pexels-1181533.webp",
     title: "Loopbaan-assessment",
     metaTitle: "Loopbaan-assessment | Beroepskeuze en carrièreadvies | Hrmforce",
     metaDescription:
@@ -55,7 +55,7 @@ export const adviesDetail = [
   },
   {
     slug: "medezeggenschap",
-    image: "https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=900",
+    image: "/media/stock/pexels-3182812.webp",
     title: "Medezeggenschapstraining",
     metaTitle: "Medezeggenschapstraining | Training voor de MR | Hrmforce",
     metaDescription:
@@ -80,7 +80,7 @@ export const adviesDetail = [
   },
   {
     slug: "team-training",
-    image: "https://images.pexels.com/photos/3182746/pexels-photo-3182746.jpeg?auto=compress&cs=tinysrgb&w=900",
+    image: "/media/stock/pexels-3182746.webp",
     title: "Teamtraining",
     metaTitle: "Teamtraining | Je team gericht ontwikkelen | Hrmforce",
     metaDescription:
@@ -105,7 +105,7 @@ export const adviesDetail = [
   },
   {
     slug: "training-het-goede-gesprek",
-    image: "https://images.pexels.com/photos/3153207/pexels-photo-3153207.jpeg?auto=compress&cs=tinysrgb&w=900",
+    image: "/media/stock/pexels-3153207.webp",
     title: "Training 'Het goede gesprek'",
     metaTitle: "Training 'Het goede gesprek' | Beter evaluatiegesprekken voeren | Hrmforce",
     metaDescription:
@@ -130,7 +130,7 @@ export const adviesDetail = [
   },
   {
     slug: "selectie-assessment",
-    image: "https://images.pexels.com/photos/3760067/pexels-photo-3760067.jpeg?auto=compress&cs=tinysrgb&w=900",
+    image: "/media/stock/pexels-3760067.webp",
     title: "Selectie-assessment",
     metaTitle: "Selectie-assessment | Onderbouwde selectiebeslissingen | Hrmforce",
     metaDescription: "Een selectie-assessment onderbouwt je aannamebeslissing objectief en verhoogt de kans op een productieve, passende medewerker.",
@@ -155,7 +155,7 @@ export const adviesDetail = [
   },
   {
     slug: "ontwikkel-assessment",
-    image: "https://images.pexels.com/photos/2422293/pexels-photo-2422293.jpeg?auto=compress&cs=tinysrgb&w=900",
+    image: "/media/stock/pexels-2422293.webp",
     title: "Ontwikkel-assessment / potentieelbeoordeling",
     metaTitle: "Ontwikkel-assessment | Potentieel en ontwikkelrichting | Hrmforce",
     metaDescription: "Een ontwikkel-assessment brengt potentieel en ontwikkelrichting in kaart, als basis voor gerichte groei en loopbaanstappen.",
@@ -180,7 +180,7 @@ export const adviesDetail = [
   },
   {
     slug: "executive-assessment",
-    image: "https://images.pexels.com/photos/3862130/pexels-photo-3862130.jpeg?auto=compress&cs=tinysrgb&w=900",
+    image: "/media/stock/pexels-3862130.webp",
     title: "Executive assessment",
     metaTitle: "Executive assessment | Voor management- en directiefuncties | Hrmforce",
     metaDescription: "Een diepgaand executive assessment op maat voor management- en directiefuncties, met vertrouwelijke persoonlijke terugkoppeling.",
@@ -205,7 +205,7 @@ export const adviesDetail = [
   },
   {
     slug: "teamanalyse",
-    image: "https://images.pexels.com/photos/1516440/pexels-photo-1516440.jpeg?auto=compress&cs=tinysrgb&w=900",
+    image: "/media/stock/pexels-1516440.webp",
     title: "Teamanalyse / groepsassessment",
     metaTitle: "Teamanalyse | Talenten en samenwerking in je team | Hrmforce",
     metaDescription: "Een teamanalyse maakt talenten, teamrollen en ontwikkelpunten van een team zichtbaar en versterkt de samenwerking.",

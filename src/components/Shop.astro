@@ -36,7 +36,7 @@ const CAND_I18N = {
 // Website-verrijking (Optie A): relevante foto per segment + uitgebreidere,
 // vertaalde beschrijving per product. Wordt op de site getoond bovenop de
 // live Shopify-prijs/voorraad.
-const PX = (i) => `https://images.pexels.com/photos/${i}/pexels-photo-${i}.jpeg?auto=compress&cs=tinysrgb&w=900`;
+const PX = (i) => `/media/stock/pexels-${i}.webp`;
 const ENRICH = {
   imgBySeg: { "Persoonlijkheid": PX(3184418), "Capaciteiten": PX(3184338), "Gedrag": PX(3183197), "360 & Gedrag": PX(3183197), "Drijfveren": PX(1181533), "Interesse": PX(2422293), "Vaardigheden": PX(1367271) },
   defImg: PX(3184291),
@@ -116,11 +116,11 @@ const L = {
 // merk-/testlogo heeft (uit SHOP_CONTENT.img) wordt dat gebruikt; anders dit.
 const VENDOR_LOGO = {
   "hrmforce": "/media/wp-content/uploads/2022/03/HRM-LOGO.svg",
-  "SHL": "https://logo.clearbit.com/shl.com",
-  "Cubiks": "https://logo.clearbit.com/cubiks.com",
-  "Pearson": "https://logo.clearbit.com/pearson.com",
-  "GITP": "https://logo.clearbit.com/gitp.nl",
-  "Talogy": "https://logo.clearbit.com/talogy.com",
+  "SHL": "",
+  "Cubiks": "",
+  "Pearson": "/media/wp-content/uploads/2021/07/pearson-logo-vierkant-1.png",
+  "GITP": "",
+  "Talogy": "",
 };
 
 // "Voorbeeldrapport aanvragen"-formulier (lead capture). Naam + e-mail verplicht, telefoon optioneel.

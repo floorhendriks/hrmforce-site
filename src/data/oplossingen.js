@@ -31,7 +31,7 @@ export const oplossingen = [
       "Rapportages die inhoudelijkere selectiegesprekken opleveren",
     ],
     image: "/media/wp-content/uploads/2023/05/NLP-recruitment-development.webp",
-    photo: "https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=900",
+    photo: "/media/stock/pexels-3183197.webp",
     ctaBtn: "Plan een gratis demo",
     cta: "Bepaal met een HR-specialist welke assessments bij je vacatures passen",
     plan: {
@@ -93,7 +93,7 @@ export const oplossingen = [
       "Automatische voortgangsbewaking en concrete actielijsten",
     ],
     image: "/mockups/gesprekscyclus.svg",
-    photo: "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=900",
+    photo: "/media/stock/pexels-3184418.webp",
     ctaBtn: "Plan een gratis demo",
     cta: "Bespreek met een HR-specialist welke ontwikkelaanpak bij je team past",
     plan: {
@@ -153,7 +153,7 @@ export const oplossingen = [
       "Borgt kennis en vergroot de loyaliteit van medewerkers",
     ],
     image: "/media/wp-content/uploads/2021/05/pulse-survey-hrmforce.jpg",
-    photo: "https://images.pexels.com/photos/3760069/pexels-photo-3760069.jpeg?auto=compress&cs=tinysrgb&w=900",
+    photo: "/media/stock/pexels-3760069.webp",
     ctaBtn: "Plan een gratis demo",
     cta: "Bepaal met een HR-specialist hoe je duurzame inzetbaarheid meetbaar maakt",
     plan: {
@@ -212,7 +212,7 @@ export const oplossingen = [
       "Onderbouw HR-beslissingen met feiten in plaats van aannames",
     ],
     image: "/media/wp-content/uploads/2022/02/ass-afb3.png",
-    photo: "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=900",
+    photo: "/media/stock/pexels-3184338.webp",
     ctaBtn: "Plan een gratis demo",
     cta: "Bespreek met een HR-specialist welke HR-data je beslissingen onderbouwt",
     plan: {
