@@ -118,7 +118,7 @@ const VENDOR_LOGO = {
   "hrmforce": "/media/wp-content/uploads/2022/03/HRM-LOGO.svg",
   "SHL": "",
   "Cubiks": "",
-  "Pearson": "/media/wp-content/uploads/2021/07/pearson-logo-vierkant-1.png",
+  "Pearson": "/media/wp-content/uploads/2021/07/pearson-logo-vierkant-1.webp",
   "GITP": "",
   "Talogy": "",
 };
@@ -252,7 +252,8 @@ const FAQ_DEFAULT = generalFaq(lang);
   @media (max-width: 480px) { .shop-grid { grid-template-columns: 1fr; } }
   .sp-card { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow:none; transition: transform .2s, box-shadow .2s; }
   .sp-card:hover { border-color:var(--navy); box-shadow:none; }
-  .sp-img { position: relative; display: block; height: 172px; width: 100%; border: 0; padding: 0; cursor: pointer; background-color: var(--bg-soft); background-size: cover; background-position: center; background-repeat: no-repeat; }
+  .sp-img { position: relative; display: block; height: 172px; width: 100%; border: 0; padding: 0; cursor: pointer; background-color: var(--bg-soft); overflow: hidden; }
+  .sp-foto { display: block; width: 100%; height: 100%; object-fit: cover; }
   .sp-vendor { position: absolute; top: 10px; left: 10px; background: rgba(11,52,104,.86); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: var(--radius-pill); }
   /* Merk-/uitgeverslogo als badge i.p.v. de naam */
   /* Vaste badge-grootte zodat alle logo's even groot/overzichtelijk ogen */
@@ -633,7 +634,9 @@ const FAQ_DEFAULT = generalFaq(lang);
         if (!(okC && okS && okU && okT)) return;
         shown++;
         var chips = p.taxo.cyclus.concat(p.taxo.segment).slice(0, 3).map(function (x) { return '<span class="sp-tag">' + esc(x) + "</span>"; }).join("");
-        var img = 'style="background-image:url(\'' + enrichImg(p) + "')\"" ;
+        // Echte img met loading="lazy": een CSS-achtergrond laadt altijd meteen,
+        // waardoor alle 87 productfoto's tegelijk binnenkwamen.
+        var img = '<img class="sp-foto" src="' + esc(enrichImg(p)) + '" alt="" width="400" height="172" loading="lazy" decoding="async">';
         var vendor = brandBadge(p);
         var et = descText(p); var desc = '<p class="sp-desc">' + esc(et).slice(0, 130) + (et.length > 130 ? "…" : "") + "</p>";
         var buy = p.variantId && p.available
@@ -641,7 +644,7 @@ const FAQ_DEFAULT = generalFaq(lang);
           : '<button class="sp-buy" data-open="' + idx + '">' + esc(L.view) + "</button>";
         html +=
           '<div class="sp-card">' +
-          '<button class="sp-img" ' + img + ' data-open="' + idx + '" aria-label="' + esc(p.title) + '">' + vendor + "</button>" +
+          '<button class="sp-img" data-open="' + idx + '" aria-label="' + esc(p.title) + '">' + img + vendor + "</button>" +
           '<div class="sp-body"><div class="sp-tags">' + chips + "</div>" +
           '<button class="sp-title" data-open="' + idx + '">' + esc(p.title) + "</button>" +
           desc +

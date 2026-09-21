@@ -225,16 +225,16 @@ export const home = {
 };
 
 export const clients = [
-  { name: "Rabobank", logo: "/media/wp-content/uploads/2025/06/logo-Rabobank.png" },
-  { name: "Siemens", logo: "/media/wp-content/uploads/2025/06/logo-siemens.jpg" },
-  { name: "Fugro", logo: "/media/wp-content/uploads/2025/06/logo-fugro.jpg" },
-  { name: "Athlon", logo: "/media/wp-content/uploads/2025/06/logo-athlon.jpg" },
-  { name: "Cordaan", logo: "/media/wp-content/uploads/2025/06/logo-cordaan.jpg" },
-  { name: "Mitsubishi", logo: "/media/wp-content/uploads/2025/07/logo-Mitsubishi.png" },
-  { name: "ArcelorMittal", logo: "/media/wp-content/uploads/2025/06/logo-arcelorMittal.jpg" },
-  { name: "Royal HaskoningDHV", logo: "/media/wp-content/uploads/2025/06/logo-RHDHV.jpg" },
-  { name: "Office Depot", logo: "/media/wp-content/uploads/2025/07/logo-officedepot.png" },
-  { name: "vidaXL", logo: "/media/wp-content/uploads/2025/06/logo-vidaXL.jpg" },
-  { name: "Wageningen Univ.", logo: "/media/wp-content/uploads/2025/07/logo-Wageningen-University.jpg" },
-  { name: "City of Amsterdam", logo: "/media/wp-content/uploads/2025/06/logo-cityofamsterdam.jpg" },
+  { name: "Rabobank", logo: "/media/wp-content/uploads/2025/06/logo-Rabobank.webp" },
+  { name: "Siemens", logo: "/media/wp-content/uploads/2025/06/logo-siemens.webp" },
+  { name: "Fugro", logo: "/media/wp-content/uploads/2025/06/logo-fugro.webp" },
+  { name: "Athlon", logo: "/media/wp-content/uploads/2025/06/logo-athlon.webp" },
+  { name: "Cordaan", logo: "/media/wp-content/uploads/2025/06/logo-cordaan.webp" },
+  { name: "Mitsubishi", logo: "/media/wp-content/uploads/2025/07/logo-Mitsubishi.webp" },
+  { name: "ArcelorMittal", logo: "/media/wp-content/uploads/2025/06/logo-arcelorMittal.webp" },
+  { name: "Royal HaskoningDHV", logo: "/media/wp-content/uploads/2025/06/logo-RHDHV.webp" },
+  { name: "Office Depot", logo: "/media/wp-content/uploads/2025/07/logo-officedepot.webp" },
+  { name: "vidaXL", logo: "/media/wp-content/uploads/2025/06/logo-vidaXL.webp" },
+  { name: "Wageningen Univ.", logo: "/media/wp-content/uploads/2025/07/logo-Wageningen-University.webp" },
+  { name: "City of Amsterdam", logo: "/media/wp-content/uploads/2025/06/logo-cityofamsterdam.webp" },
 ];

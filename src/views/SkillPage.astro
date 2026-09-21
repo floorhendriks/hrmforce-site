@@ -1,4 +1,5 @@
 ---
+import { titel, omschrijving } from '../lib/meta.js';
 import Base from '../layouts/HsfBase.astro';
 import Crumbs from '../components/Crumbs.astro';
 import Level from '../components/Level.astro';
@@ -21,8 +22,8 @@ const stdNames: Record<string, string> = {
   esco: 'ESCO v1.2.1', onet: 'O*NET 31.0', lightcast: 'Lightcast Open Skills',
   sfia: 'SFIA 9', eu_framework: vt('EU-competentieframework', dl), wef: 'WEF Future of Jobs 2025',
 };
-const title = `${sk.name[dl]} | ${t('seo.skill-levels-and-measurement')} | hrmforce`;
-const desc = `${sk.definition[dl]} ${tf('seo.skill-desc-tail', { n: sk.child_count })}`;
+const title = titel(sk.name[dl], t('seo.skill-levels-and-measurement'));
+const desc = omschrijving(sk.definition[dl], tf('seo.skill-desc-tail', { n: sk.child_count }));
 const jsonld = [{
   '@context': 'https://schema.org', '@type': 'DefinedTerm',
   name: sk.name[dl], description: sk.definition[dl], termCode: sk.id, inLanguage: lang,

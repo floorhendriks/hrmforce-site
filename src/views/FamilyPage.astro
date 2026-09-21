@@ -1,4 +1,5 @@
 ---
+import { titel, omschrijving } from '../lib/meta.js';
 import Base from '../layouts/HsfBase.astro';
 import Crumbs from '../components/Crumbs.astro';
 import Level from '../components/Level.astro';
@@ -11,8 +12,8 @@ const t = useT(lang);
 const tf = useTf(lang);
 const dl = dlang(lang);
 const list = functionsOfFamily(fam.id).sort((a, b) => a.title[dl].localeCompare(b.title[dl], dl));
-const title = `${fam.name[dl]} | ${t('seo.job-family-base-profile-and-jobs')} | hrmforce`;
-const desc = `${fam.description[dl]} ${tf('seo.n-jobs-in-this-family', { n: list.length })}`;
+const title = titel(fam.name[dl], t('seo.job-family-base-profile-and-jobs'));
+const desc = omschrijving(fam.description[dl], tf('seo.n-jobs-in-this-family', { n: list.length }));
 ---
 <Base lang={lang} title={title} description={desc} active="families" alternates={alternates}>
   <Crumbs items={[

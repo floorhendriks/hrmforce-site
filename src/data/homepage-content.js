@@ -3,7 +3,7 @@
 const IMG = {
   "big-five": "/media/wp-content/uploads/2021/01/big-fifty.svg",
   "cognitieve-test": "/media/wp-content/uploads/2021/01/abilityscan-1.svg",
-  "disc-test": "/media/wp-content/uploads/2025/10/Disc-test-screen.png",
+  "disc-test": "/media/wp-content/uploads/2025/10/Disc-test-screen.webp",
   "drijfverentest": "/media/wp-content/uploads/2021/01/drijfverentest-2.svg",
   "360-graden-feedback": "/media/wp-content/uploads/2021/02/360graden-feedback.svg",
   "studiekeuzetest": "/media/wp-content/uploads/2023/02/studiekeuze-test-hrmforce.webp",

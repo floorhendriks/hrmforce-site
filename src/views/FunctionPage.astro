@@ -1,4 +1,5 @@
 ---
+import { titel, omschrijving } from '../lib/meta.js';
 import Base from '../layouts/HsfBase.astro';
 import Crumbs from '../components/Crumbs.astro';
 import ProfileTable from '../components/ProfileTable.astro';
@@ -29,8 +30,8 @@ const seg = SEG[lang] ?? SEG.en;
  */
 const hasPdf = hasDownload(lang, fn.slug[dl]);
 const pdf = hasPdf ? downloadUrl(lang, fn.slug[dl]) : path(lang, 'functions', fn.slug[dl], 'full');
-const title = `${fn.title[dl]} | ${t('seo.job-profile-skills-and-competencies')} | hrmforce`;
-const desc = `${fn.summary[dl]} ${tf('seo.job-desc-tail', { skills: fn.counts.skills, competencies: fn.counts.competencies })}`;
+const title = titel(fn.title[dl], t('seo.job-profile-skills-and-competencies'));
+const desc = omschrijving(fn.summary[dl], tf('seo.job-desc-tail', { skills: fn.counts.skills, competencies: fn.counts.competencies }));
 const jsonld = [{
   '@context': 'https://schema.org', '@type': 'Occupation',
   name: fn.title[dl], description: fn.summary[dl], inLanguage: lang,

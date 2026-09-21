@@ -1,4 +1,5 @@
 ---
+import { titel, omschrijving } from '../lib/meta.js';
 /**
  * Volledig profiel, print- en pdf-geoptimaliseerd.
  * Deze pagina is de bron voor de pdf-download: scripts/build-pdfs.mjs rendert
@@ -24,7 +25,7 @@ const methods = [...new Set(fn.profile.map((r: any) => r.assessment))]
   .map((m: any) => ({ name: m, ...((meta as any).assessment_methods[m] ?? {}) }));
 const byDomain = (meta as any) && domainMix(fn.profile);
 ---
-<Base lang={lang} title={`${fn.title[dl]} | ${t('framework')}`} description={fn.summary[dl]} noindex={true} bodyClass="hsf-print">
+<Base lang={lang} title={titel(fn.title[dl], t('framework'), '')} description={omschrijving(fn.summary[dl])} noindex={true} bodyClass="hsf-print">
   <header style="border-bottom:3px solid var(--hsf-accent);padding-bottom:.8rem;margin-bottom:1.2rem">
     <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:1rem;flex-wrap:wrap">
       <div>

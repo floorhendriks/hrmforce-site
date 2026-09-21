@@ -74,7 +74,7 @@ export const assessments = [
     related: ["Persoonlijkheidstest: Big Five"],
   },
   {
-    image: "/media/wp-content/uploads/2025/10/Disc-test-screen.png",
+    image: "/media/wp-content/uploads/2025/10/Disc-test-screen.webp",
     dimImage: "/media/stock/pexels-267885.webp",
     slug: "disc-test", title: "DISC Test",
     metaTitle: "DISC persoonlijkheidstest | Gedrag & communicatie | Hrmforce", metaDescription: "Breng communicatie- en gedragsstijl in kaart met de DISC-vragenlijst.",
@@ -119,7 +119,7 @@ export const assessments = [
     related: ["360 graden feedback"],
   },
   {
-    image: "/media/wp-content/uploads/2023/09/Scherm%C2%ADafbeelding-2023-09-15-om-15.14.33.png",
+    image: "/media/wp-content/uploads/2023/09/Scherm%C2%ADafbeelding-2023-09-15-om-15.14.33.webp",
     dimImage: "/media/stock/pexels-3183153.webp",
     slug: "lencioni-teamdynamiek", title: "Lencioni Teamdynamiek",
     metaTitle: "Lencioni Teamdynamiek | Teamontwikkeling | Hrmforce", metaDescription: "Meet de vijf frustraties van teamwork volgens het model van Patrick Lencioni.",
@@ -134,7 +134,7 @@ export const assessments = [
     related: ["360 graden feedback", "DISC Test"],
   },
   {
-    image: "/media/wp-content/uploads/2017/02/Leiderschapstest.jpg",
+    image: "/media/wp-content/uploads/2017/02/Leiderschapstest.webp",
     dimImage: "/media/stock/pexels-3183183.webp",
     slug: "leiderschapstest", title: "Leiderschapstest",
     metaTitle: "Leiderschapstest | Leiderschapsstijl & ontwikkeling | Hrmforce", metaDescription: "Brengt leiderschapsstijl en ontwikkelpunten van (aankomende) leidinggevenden in kaart.",
@@ -149,7 +149,7 @@ export const assessments = [
     related: ["Persoonlijkheidstest: Big Five", "360 graden feedback"],
   },
   {
-    image: "/media/wp-content/uploads/2021/01/ontwikkelmatrix-hrmforce-v2.png",
+    image: "/media/wp-content/uploads/2021/01/ontwikkelmatrix-hrmforce-v2.webp",
     dimImage: "/media/stock/pexels-3183197.webp",
     slug: "ontwikkelmatrix", title: "Ontwikkelmatrix",
     metaTitle: "Ontwikkelmatrix | Talent en gedrag in vier kwadranten | Hrmforce", metaDescription: "De Ontwikkelmatrix zet talent uit de Big Fifty af tegen gedrag uit de 360 graden feedback en plaatst medewerkers in vier ontwikkelkwadranten met concrete ontwikkeltips.",
@@ -164,7 +164,7 @@ export const assessments = [
     related: ["Persoonlijkheidstest: Big Five", "360 graden feedback"],
   },
   {
-    image: "/media/wp-content/uploads/2021/01/ontwikkelmatrix-hrmforce-v2.png",
+    image: "/media/wp-content/uploads/2021/01/ontwikkelmatrix-hrmforce-v2.webp",
     dimImage: "/media/stock/pexels-3184291.webp",
     slug: "ontwikkelassessment", title: "Ontwikkelassessment",
     metaTitle: "Ontwikkelassessment | Groei en ontwikkeling | Hrmforce", metaDescription: "Een systematische methode om ontwikkelpotentieel en groeirichting in kaart te brengen.",
@@ -179,7 +179,7 @@ export const assessments = [
     related: ["Persoonlijkheidstest: Big Five", "Drijfverentest"],
   },
   {
-    image: "/media/wp-content/uploads/2017/02/15pf-hrmforce.jpg",
+    image: "/media/wp-content/uploads/2017/02/15pf-hrmforce.webp",
     dimImage: "/media/stock/pexels-3184292.webp",
     slug: "15pf", title: "15PF",
     metaTitle: "15PF | Persoonlijkheidsvragenlijst | Hrmforce",
@@ -217,7 +217,7 @@ export const assessments = [
     related: ["Persoonlijkheidstest: Big Five", "Mentale veerkracht scan", "Levensloop Scan"],
   },
   {
-    image: "/media/wp-content/uploads/2017/02/appraisal-hrmforce.jpg",
+    image: "/media/wp-content/uploads/2017/02/appraisal-hrmforce.webp",
     dimImage: "/media/stock/pexels-3184298.webp",
     slug: "appraisal", title: "Appraisal",
     metaTitle: "Appraisal | 90 graden feedback | Hrmforce",
@@ -236,7 +236,7 @@ export const assessments = [
     related: ["360 graden feedback", "Competentietest", "Typology"],
   },
   {
-    image: "/media/wp-content/uploads/2017/02/Beroepskeuzetest-hrmforce.jpg",
+    image: "/media/wp-content/uploads/2017/02/Beroepskeuzetest-hrmforce.webp",
     dimImage: "/media/stock/pexels-3184338.webp",
     slug: "beroepskeuze-test", title: "Beroepskeuzetest",
     metaTitle: "Beroepskeuze test afnemen? Dit beroep past bij jou | Gratis demo",
@@ -293,7 +293,7 @@ export const assessments = [
     related: ["Mentale veerkracht scan", "Levensloop Scan", "Duurzame Inzetbaarheid Scan"],
   },
   {
-    image: "/media/wp-content/uploads/2017/02/Communicatiestijlen-hrmforce.jpg",
+    image: "/media/wp-content/uploads/2017/02/Communicatiestijlen-hrmforce.webp",
     dimImage: "/media/stock/pexels-3184405.webp",
     slug: "communicatiestijlen-test", title: "Communicatiestijl test",
     metaTitle: "Communicatiestijl test afnemen? | Start met gratis demo | Hrmforce",
@@ -312,7 +312,7 @@ export const assessments = [
     related: ["DISC Test", "Conflictstijlen test", "Leerstijlen test"],
   },
   {
-    image: "/media/wp-content/uploads/2017/02/Schermafbeelding-2024-10-27-151016.png",
+    image: "/media/wp-content/uploads/2017/02/Schermafbeelding-2024-10-27-151016.webp",
     dimImage: "/media/stock/pexels-3184418.webp",
     slug: "competentie-check", title: "Competentietest",
     metaTitle: "Competentietest | Hoe ziet de medewerker zichzelf? | Hrmforce",
@@ -331,7 +331,7 @@ export const assessments = [
     related: ["360 graden feedback", "Appraisal", "Typology"],
   },
   {
-    image: "/media/wp-content/uploads/2017/02/Conflictstijlentest-hrmforce.jpg",
+    image: "/media/wp-content/uploads/2017/02/Conflictstijlentest-hrmforce.webp",
     dimImage: "/media/stock/pexels-3184423.webp",
     slug: "conflictstijlen-test", title: "Conflictstijlen test",
     metaTitle: "Conflictstijlen test | Hrmforce",
@@ -369,7 +369,7 @@ export const assessments = [
     related: ["Mentale veerkracht scan", "Levensloop Scan", "Lean Scan"],
   },
   {
-    image: "/media/wp-content/uploads/2017/04/Exit-assessment-hrmforce.jpg",
+    image: "/media/wp-content/uploads/2017/04/Exit-assessment-hrmforce.webp",
     dimImage: "/media/stock/pexels-3184639.webp",
     slug: "exit-assessment", title: "Exit Assessment",
     metaTitle: "Exit gesprek voeren? | Zorg voor een exit assessment | Hrmforce",
@@ -388,7 +388,7 @@ export const assessments = [
     related: ["Tevredenheidsonderzoek", "Drijfverentest", "Pulse Survey"],
   },
   {
-    image: "/media/wp-content/uploads/2017/02/groepsrollen-hrmforce.jpg",
+    image: "/media/wp-content/uploads/2017/02/groepsrollen-hrmforce.webp",
     dimImage: "/media/stock/pexels-3860809.webp",
     slug: "groepsrollen", title: "Groepsrollen",
     metaTitle: "Groepsrollen | Hrmforce",
@@ -407,7 +407,7 @@ export const assessments = [
     related: ["Teamanalyse", "Lencioni Teamdynamiek", "Typology"],
   },
   {
-    image: "/media/wp-content/uploads/2017/04/Intake-candidate-hrmforce.jpg",
+    image: "/media/wp-content/uploads/2017/04/Intake-candidate-hrmforce.webp",
     dimImage: "/media/stock/pexels-3861958.webp",
     slug: "intake-candidate", title: "Intake Candidate",
     metaTitle: "Kandidaat intake | Bereid je interview slim voor | Hrmforce",
@@ -445,7 +445,7 @@ export const assessments = [
     related: ["Beroepskeuzetest", "Studiekeuzetest", "Loopbaanwaarden"],
   },
   {
-    image: "/media/wp-content/uploads/2017/04/Job-profiler-hrmforce.jpg",
+    image: "/media/wp-content/uploads/2017/04/Job-profiler-hrmforce.webp",
     dimImage: "/media/stock/pexels-3865557.webp",
     slug: "job-profiler", title: "Job Profiler",
     metaTitle: "Job Profiler | Hrmforce",
@@ -483,7 +483,7 @@ export const assessments = [
     related: ["Teamanalyse", "Duurzame Inzetbaarheid Scan", "Tevredenheidsonderzoek"],
   },
   {
-    image: "/media/wp-content/uploads/2017/02/leerstijlen-hrmforce.jpg",
+    image: "/media/wp-content/uploads/2017/02/leerstijlen-hrmforce.webp",
     dimImage: "/media/stock/pexels-3153207.webp",
     slug: "leerstijlen", title: "Leerstijlen test",
     metaTitle: "Leerstijlen test afnemen? | Gratis demo | Hrmforce",
@@ -540,7 +540,7 @@ export const assessments = [
     related: ["Drijfverentest", "Beroepskeuzetest", "Interesse test"],
   },
   {
-    image: "/media/wp-content/uploads/2021/05/pulse-survey-hrmforce.jpg",
+    image: "/media/wp-content/uploads/2021/05/pulse-survey-hrmforce.webp",
     dimImage: "/media/stock/pexels-1516440.webp",
     slug: "pulse-survey", title: "Pulse Survey",
     metaTitle: "Pulse Survey | Zelf vragenlijsten maken voor personeel | Hrmforce",
@@ -559,7 +559,7 @@ export const assessments = [
     related: ["Tevredenheidsonderzoek", "Teamanalyse", "Exit Assessment"],
   },
   {
-    image: "/media/wp-content/uploads/2017/02/referentie-check-hrmforce.jpg",
+    image: "/media/wp-content/uploads/2017/02/referentie-check-hrmforce.webp",
     dimImage: "/media/stock/pexels-2422293.webp",
     slug: "referentie-check", title: "Referentie Check",
     metaTitle: "Referentie Check | Hrmforce",
@@ -597,7 +597,7 @@ export const assessments = [
     related: ["Lencioni Teamdynamiek", "Groepsrollen", "Pulse Survey"],
   },
   {
-    image: "/media/wp-content/uploads/2017/02/tevredenheidsonderzoek-hrmforce.jpg",
+    image: "/media/wp-content/uploads/2017/02/tevredenheidsonderzoek-hrmforce.webp",
     dimImage: "/media/stock/pexels-1181533.webp",
     slug: "tevredenheidsonderzoek-medewerkers", title: "Tevredenheidsonderzoek",
     metaTitle: "Tevredenheidsonderzoek voor medewerkers | Start je gratis demo",
@@ -616,7 +616,7 @@ export const assessments = [
     related: ["Pulse Survey", "Teamanalyse", "Exit Assessment"],
   },
   {
-    image: "/media/wp-content/uploads/2017/02/typology-hrmforce.jpg",
+    image: "/media/wp-content/uploads/2017/02/typology-hrmforce.webp",
     dimImage: "/media/stock/pexels-3760067.webp",
     slug: "typology", title: "Typology",
     metaTitle: "Typology test | Ontdek je kleurtype in een paar minuten | Hrmforce",
@@ -635,7 +635,7 @@ export const assessments = [
     related: ["Persoonlijkheidstest: Big Five", "DISC Test", "Groepsrollen"],
   },
   {
-    image: "/media/wp-content/uploads/2019/02/value-drives-hrmforce.jpg",
+    image: "/media/wp-content/uploads/2019/02/value-drives-hrmforce.webp",
     dimImage: "/media/stock/pexels-3862130.webp",
     slug: "value-drives", title: "Value Drives",
     metaTitle: "Value Drives vragenlijst | Hrmforce",

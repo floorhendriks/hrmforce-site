@@ -1,4 +1,5 @@
 ---
+import { titel, omschrijving } from '../lib/meta.js';
 import Base from '../layouts/HsfBase.astro';
 import Crumbs from '../components/Crumbs.astro';
 import MatchCalculator from '../components/MatchCalculator.astro';
@@ -12,8 +13,8 @@ const tf = useTf(lang);
 const dl = dlang(lang);
 const fam = familyById(fn.family_id);
 const mm = (meta as any).match_model;
-const title = `${t('match.title')} ${fn.title[dl]} | hrmforce`;
-const desc = tf('seo.match-desc', { job: fn.title[dl], n: fn.counts.skills });
+const title = titel(`${t('match.title')} ${fn.title[dl]}`);
+const desc = omschrijving(tf('seo.match-desc', { job: fn.title[dl], n: fn.counts.skills }));
 ---
 <Base lang={lang} title={title} description={desc} active="match" alternates={alternates}>
   <Crumbs items={[

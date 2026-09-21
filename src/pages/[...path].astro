@@ -1,4 +1,6 @@
 ---
+import { webpHtml } from "../lib/beeld.js";
+import { titel, omschrijving } from "../lib/meta.js";
 import Base from "../layouts/Base.astro";
 import { createClient } from "@sanity/client";
 import { shopInfo } from "../data/assessment-shop.js";
@@ -155,6 +157,8 @@ let body = sanitizeBodyLinks(article.body || "", lang, validPaths);
 // Afbeeldingen stonden nog op de oude WordPress-site. Ze staan nu in /media/,
 // zodat de pagina niet afhankelijk is van een domein dat vervangen wordt.
 body = body.replace(/https:\/\/(?:www\.)?hrmforce\.com\/wp-content\//g, "/media/wp-content/");
+// De beelden staan als webp in public/media; zie src/lib/beeld.js.
+body = webpHtml(body);
 // Verwijder de lege, doelloze kop "Organisaties die u voorgingen" die uit de oude
 // WordPress-logoslider-plugin in de gemigreerde artikelinhoud is achtergebleven.
 body = body
@@ -205,9 +209,14 @@ const headerImg = _img ? _img[1] : "";
 // Meta description uit de eerste alinea's van de body (in plaats van de titel).
 const _plain = body
   .replace(/<(script|style)[\s\S]*?<\/\1>/gi, " ")
+  // WordPress-shortcodes zoals [caption ...] en [/caption] stonden anders
+  // letterlijk in de meta-omschrijving.
+  .replace(/\[\/?[a-z][^\]]*\]/gi, " ")
   .replace(/<[^>]+>/g, " ")
   .replace(/&nbsp;/g, " ")
-  .replace(/&amp;/g, "&")
+  .replace(/&(amp|#38);/g, "&")
+  .replace(/&(quot|#34);/g, '"')
+  .replace(/&(#39|apos);/g, "'")
   .replace(/\s+/g, " ")
   .trim();
 let metaDesc = _plain.slice(0, 200);
@@ -295,7 +304,7 @@ const cut = body.indexOf("</h2>");
 const bodyTop = cut !== -1 ? body.slice(0, cut + 5) : body;
 const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
 ---
-<Base title={`${article.title} | hrmforce`} description={metaDesc}>
+<Base title={titel(article.title)} description={omschrijving(metaDesc)}>
   {videoLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(videoLd)} />}
   <script type="application/ld+json" is:inline set:html={JSON.stringify(_articleLd)}></script>
   <div class="crumb">
