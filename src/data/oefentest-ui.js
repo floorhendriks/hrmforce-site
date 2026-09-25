@@ -62,17 +62,74 @@ export const OT_UI = {
     laag:"Mai este loc de crescut. Citește explicația fiecărei întrebări, arată eroarea de raționament." },
 };
 
+export const ONDERZOEK_UI = {
+  nl: { eyebrow: "Oefenen", title: "Oefentesten", lead: "Vijf onderdelen, elk met een bank van 250 oefenvragen. Je krijgt er per ronde 25 willekeurig uit, met na afloop per vraag het juiste antwoord en de toelichting.", cta: "Start de oefentest" },
+  en: { eyebrow: "Practise", title: "Practice tests", lead: "Five components, each with a bank of 250 practice questions. You get 25 at random per round, with the correct answer and an explanation per question afterwards.", cta: "Start the practice test" },
+  de: { eyebrow: "Üben", title: "Übungstests", lead: "Fünf Teile mit je 250 Übungsfragen. Pro Runde erhalten Sie 25 davon zufällig, danach je Frage die richtige Antwort und die Erläuterung.", cta: "Übungstest starten" },
+  fr: { eyebrow: "S'entraîner", title: "Tests d'entraînement", lead: "Cinq parties, chacune avec 250 questions d'entraînement. Vous en recevez 25 au hasard par série, puis la bonne réponse et l'explication pour chaque question.", cta: "Démarrer le test" },
+  es: { eyebrow: "Practicar", title: "Tests de práctica", lead: "Cinco partes, cada una con 250 preguntas de práctica. Recibes 25 al azar por ronda y, al final, la respuesta correcta y la explicación de cada pregunta.", cta: "Empezar el test" },
+  ro: { eyebrow: "Exersează", title: "Teste de exersare", lead: "Cinci părți, fiecare cu 250 de întrebări de exersare. Primești 25 alese aleatoriu pe rundă, iar la final răspunsul corect și explicația pentru fiecare întrebare.", cta: "Începe testul" },
+};
+
 export const ONDERDELEN = {
   numeriek: {
-    slug: { nl:"numeriek-redeneren", en:"numerical-reasoning", de:"numerisches-denken",
-            fr:"raisonnement-numerique", es:"razonamiento-numerico", ro:"rationament-numeric" },
-    naam: { nl:"Numeriek redeneren", en:"Numerical reasoning", de:"Numerisches Denken",
-            fr:"Raisonnement numérique", es:"Razonamiento numérico", ro:"Raționament numeric" },
-    lead: { nl:"Cijfers uit een werkcontext lezen en er de juiste conclusie uit trekken: percentages, verhoudingen, gemiddelden en prijzen per eenheid.",
-            en:"Reading figures from a work context and drawing the right conclusion: percentages, ratios, averages and unit prices.",
-            de:"Zahlen aus dem Arbeitskontext lesen und richtig deuten: Prozente, Verhältnisse, Durchschnitte und Stückpreise.",
-            fr:"Lire des chiffres issus d'un contexte professionnel et en tirer la bonne conclusion : pourcentages, rapports, moyennes et prix unitaires.",
-            es:"Leer cifras de un contexto laboral y sacar la conclusión correcta: porcentajes, proporciones, medias y precios por unidad.",
-            ro:"Citirea cifrelor dintr-un context de lucru și tragerea concluziei corecte: procente, rapoarte, medii și prețuri unitare." },
+    slug: { nl: "cijferreeksen", en: "number-series", de: "zahlenreihen", fr: "suites-numeriques", es: "series-numericas", ro: "siruri-de-numere" },
+    naam: { nl: "Cijferreeksen", en: "Number series", de: "Zahlenreihen", fr: "Suites numériques", es: "Series numéricas", ro: "Șiruri de numere" },
+    lead: {
+      nl: "Elke reeks is volgens één principe geordend. Je zoekt dat principe en zet de reeks voort met één getal.",
+      en: "Every series follows a single principle. You work out that principle and continue the series with one number.",
+      de: "Jede Reihe folgt einem Prinzip. Sie finden das Prinzip und setzen die Reihe mit einer Zahl fort.",
+      fr: "Chaque suite obéit à un seul principe. Vous cherchez ce principe et prolongez la suite d'un nombre.",
+      es: "Cada serie sigue un único principio. Descubres ese principio y continúas la serie con un número.",
+      ro: "Fiecare șir urmează un singur principiu. Îl descoperi și continui șirul cu un număr.",
+    },
+  },
+  verbaal: {
+    slug: { nl: "analogieen", en: "verbal-analogies", de: "analogien", fr: "analogies-verbales", es: "analogias-verbales", ro: "analogii-verbale" },
+    naam: { nl: "Analogieën", en: "Verbal analogies", de: "Analogien", fr: "Analogies verbales", es: "Analogías verbales", ro: "Analogii verbale" },
+    lead: {
+      nl: "Je zoekt het woordenpaar waarvan het linker woord op de linker plek past en het rechter woord op de rechter plek.",
+      en: "You look for the word pair whose left word fits the left blank and whose right word fits the right blank.",
+      de: "Sie suchen das Wortpaar, dessen linkes Wort in die linke Lücke passt und dessen rechtes Wort in die rechte.",
+      fr: "Vous cherchez la paire de mots dont le mot de gauche complète le premier espace et celui de droite le second.",
+      es: "Buscas la pareja de palabras cuya palabra izquierda encaja en el primer hueco y la derecha en el segundo.",
+      ro: "Cauți perechea de cuvinte al cărei cuvânt din stânga se potrivește în primul spațiu, iar cel din dreapta în al doilea.",
+    },
+  },
+  calculation: {
+    slug: { nl: "rekenopgaven", en: "numerical-calculation", de: "rechenaufgaben", fr: "calcul-numerique", es: "calculo-numerico", ro: "calcul-numeric" },
+    naam: { nl: "Rekenopgaven", en: "Numerical calculation", de: "Rechenaufgaben", fr: "Calcul numérique", es: "Cálculo numérico", ro: "Calcul numeric" },
+    lead: {
+      nl: "Cijfers uit een werkcontext lezen en er de juiste conclusie uit trekken: percentages, verhoudingen, gemiddelden en prijzen per eenheid. Kladpapier mag, een rekenmachine niet.",
+      en: "Reading figures from a work context and drawing the right conclusion: percentages, ratios, averages and unit prices. Scrap paper is allowed, a calculator is not.",
+      de: "Zahlen aus dem Arbeitskontext lesen und richtig deuten: Prozente, Verhältnisse, Durchschnitte und Stückpreise. Schmierpapier ist erlaubt, ein Taschenrechner nicht.",
+      fr: "Lire des chiffres issus d'un contexte professionnel et en tirer la bonne conclusion : pourcentages, rapports, moyennes et prix unitaires. Le brouillon est autorisé, la calculatrice non.",
+      es: "Leer cifras de un contexto laboral y sacar la conclusión correcta: porcentajes, proporciones, medias y precios por unidad. Se permite papel de borrador, la calculadora no.",
+      ro: "Citirea cifrelor dintr-un context de lucru și tragerea concluziei corecte: procente, rapoarte, medii și prețuri unitare. Ciorna este permisă, calculatorul nu.",
+    },
+  },
+  ruimtelijk: {
+    slug: { nl: "ruimtelijk-inzicht", en: "spatial-reasoning", de: "raumvorstellung", fr: "raisonnement-spatial", es: "razonamiento-espacial", ro: "rationament-spatial" },
+    naam: { nl: "Ruimtelijk inzicht", en: "Spatial reasoning", de: "Raumvorstellung", fr: "Raisonnement spatial", es: "Razonamiento espacial", ro: "Raționament spațial" },
+    lead: {
+      nl: "Je ziet een uitslag van een kubus en zoekt de kubus die daaruit te vouwen is. Vouwen doe je in je hoofd.",
+      en: "You see the net of a cube and look for the cube that can be folded from it. The folding happens in your head.",
+      de: "Sie sehen das Netz eines Würfels und suchen den Würfel, der sich daraus falten lässt. Gefaltet wird im Kopf.",
+      fr: "Vous voyez le patron d'un cube et cherchez le cube que l'on peut en plier. Le pliage se fait mentalement.",
+      es: "Ves el desarrollo de un cubo y buscas el cubo que se puede plegar con él. El plegado ocurre en tu cabeza.",
+      ro: "Vezi desfășurarea unui cub și cauți cubul care se poate plia din ea. Plierea se face în minte.",
+    },
+  },
+  abstract: {
+    slug: { nl: "abstract-redeneren", en: "abstract-reasoning", de: "abstraktes-denken", fr: "raisonnement-abstrait", es: "razonamiento-abstracto", ro: "rationament-abstract" },
+    naam: { nl: "Abstract redeneren", en: "Abstract reasoning", de: "Abstraktes Denken", fr: "Raisonnement abstrait", es: "Razonamiento abstracto", ro: "Raționament abstract" },
+    lead: {
+      nl: "Je ziet een figuur en zoekt dezelfde figuur terug, alleen gedraaid. Spiegelbeelden lijken er sterk op en tellen niet mee.",
+      en: "You see a figure and look for the same figure rotated. Mirror images look very similar and do not count.",
+      de: "Sie sehen eine Figur und suchen dieselbe Figur, nur gedreht. Spiegelbilder sehen sehr ähnlich aus und zählen nicht.",
+      fr: "Vous voyez une figure et cherchez la même figure, mais tournée. Les images miroir y ressemblent beaucoup et ne comptent pas.",
+      es: "Ves una figura y buscas la misma figura girada. Las imágenes reflejadas se parecen mucho y no cuentan.",
+      ro: "Vezi o figură și o cauți pe aceeași, doar rotită. Imaginile în oglindă seamănă mult și nu contează.",
+    },
   },
 };

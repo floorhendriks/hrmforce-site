@@ -8,11 +8,12 @@ const { onderdeel, lang = "nl", bank } = Astro.props;
 const t = OT_UI[lang] || OT_UI.nl;
 const o = ONDERDELEN[onderdeel];
 const naam = o.naam[lang] || o.naam.nl;
+const oefenHref = localizePath("/oefentest/", lang);
 const voorbereidingHref = localizePath("/voorbereiding/", lang);
 const privacyHref = localizePath("/support/privacy-statement/", lang);
 ---
 <div class="crumb"><div class="wrap">
-  <a href={localizePath("/", lang)}>Home</a> &rsaquo; <a href={voorbereidingHref}>{t.eyebrow}</a> &rsaquo; <span>{naam}</span>
+  <a href={localizePath("/", lang)}>Home</a> &rsaquo; <a href={oefenHref}>{t.eyebrow}</a> &rsaquo; <span>{naam}</span>
 </div></div>
 
 <section class="wrap ot-wrap">
@@ -39,6 +40,9 @@ const privacyHref = localizePath("/support/privacy-statement/", lang);
     <div class="ot-voortgang"><div class="ot-balk" id="otBalk"></div></div>
     <p class="ot-teller" id="otTeller"></p>
     <p class="ot-vraagtekst" id="otVraagTekst"></p>
+    <div class="ot-reeks" id="otReeks" hidden></div>
+    <p class="ot-stam" id="otStam" hidden></p>
+    <div class="ot-beeld" id="otBeeld" hidden></div>
     <div class="ot-opties" id="otOpties" role="radiogroup"></div>
     <button type="button" class="btn btn-primary ot-knop" id="otVolgende" disabled>{t.volgende} &rarr;</button>
   </div>
@@ -77,7 +81,20 @@ const privacyHref = localizePath("/support/privacy-statement/", lang);
   .ot-balk { height:4px; background:var(--accent); width:0; transition:width .25s; }
   .ot-teller { color:var(--muted); font-size:13px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; margin:0 0 10px; }
   .ot-vraagtekst { color:var(--navy); font-size:1.15rem; line-height:1.55; font-weight:600; margin:0 0 20px; }
+  .ot-reeks { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 22px; }
+  .ot-reeks span { min-width:54px; padding:12px 10px; border:1px solid var(--line-strong); background:var(--bg-soft); text-align:center; font-size:1.15rem; font-weight:700; color:var(--navy); font-variant-numeric:tabular-nums; }
+  .ot-reeks span.vraag { background:var(--navy); color:#fff; border-color:var(--navy); }
+  .ot-stam { margin:0 0 22px; padding:16px 18px; background:var(--bg-soft); border-left:3px solid var(--gold); color:var(--navy); font-size:1.1rem; font-weight:600; line-height:1.5; }
+  .ot-beeld { margin:0 0 22px; display:flex; justify-content:center; }
+  .ot-beeld svg { max-width:100%; height:auto; }
   .ot-opties { display:grid; gap:10px; }
+  .ot-opties.beeldrij { grid-template-columns:repeat(5,1fr); gap:8px; }
+  .ot-opties.beeldrij .ot-optie { flex-direction:column; gap:8px; align-items:center; padding:12px 6px; }
+  .ot-opties.beeldrij .ot-optie svg { max-width:100%; height:auto; }
+  .ot-nakijk .nbeeld { display:flex; gap:14px; align-items:flex-start; margin:8px 0 0; flex-wrap:wrap; }
+  .ot-nakijk .nbeeld figure { margin:0; }
+  .ot-nakijk .nbeeld figcaption { font-size:12.5px; margin-top:4px; }
+  .ot-nakijk .nbeeld svg { width:74px; height:auto; }
   .ot-optie { display:flex; align-items:center; gap:12px; width:100%; text-align:left; padding:14px 16px; border:1px solid var(--line-strong); background:#fff; font-family:inherit; font-size:15.5px; color:var(--text); cursor:pointer; }
   .ot-optie:hover { border-color:var(--blue); background:#f7fafd; }
   .ot-optie.gekozen { border-color:var(--navy); background:#eef3fa; color:var(--navy); font-weight:700; }
@@ -96,12 +113,21 @@ const privacyHref = localizePath("/support/privacy-statement/", lang);
   .ot-nakijk .fout { color:#b3261e; }
   .ot-nakijk .goed { color:#1a7f4b; }
   .ot-nakijk .nu { font-size:13.5px; color:var(--muted); background:var(--bg-soft); padding:9px 12px; margin:8px 0 0; }
-  @media (max-width:620px) { .ot-rij { grid-template-columns:1fr; } .ot-kaart { padding:20px 18px 22px; } .ot-voortgang { margin:-20px -18px 18px; } }
+  @media (max-width:620px) { .ot-opties.beeldrij { grid-template-columns:repeat(3,1fr); } .ot-rij { grid-template-columns:1fr; } .ot-kaart { padding:20px 18px 22px; } .ot-voortgang { margin:-20px -18px 18px; } }
 </style>
 
-<script is:inline define:vars={{ BANK: bank, T: t, ONDERDEEL: onderdeel, LANG: lang }}>
+<script type="application/json" id="otData" set:html={JSON.stringify({ bank, t, onderdeel, lang }).replace(/</g, "\\u003c")}></script>
+
+<script>
+  import { beeldSvg } from "../lib/oefenfiguur.js";
+
   (function () {
+    var bron = document.getElementById("otData");
+    if (!bron) return;
+    var cfg = JSON.parse(bron.textContent);
+    var BANK = cfg.bank, T = cfg.t, ONDERDEEL = cfg.onderdeel, LANG = cfg.lang;
     var AANTAL = 25;
+    var LETTERS = "ABCDE";
     var el = function (id) { return document.getElementById(id); };
     var set = [], huidig = 0, antwoorden = [], deelnemer = null;
 
@@ -151,12 +177,42 @@ const privacyHref = localizePath("/support/privacy-statement/", lang);
       el("otTeller").textContent = T.vraag + " " + (huidig + 1) + " " + T.van + " " + set.length;
       el("otBalk").style.width = ((huidig) / set.length * 100) + "%";
       el("otVraagTekst").textContent = v.q;
-      var doos = el("otOpties"); doos.innerHTML = "";
-      v.o.forEach(function (tekst, i) {
+
+      /* cijferreeks */
+      var reeks = el("otReeks");
+      reeks.innerHTML = "";
+      reeks.hidden = !v.r;
+      if (v.r) v.r.forEach(function (getal) {
+        var sp = document.createElement("span");
+        if (getal === "?") sp.className = "vraag";
+        sp.textContent = getal;
+        reeks.appendChild(sp);
+      });
+
+      /* analogie */
+      var stam = el("otStam");
+      stam.hidden = !v.m;
+      stam.textContent = v.m || "";
+
+      /* figuur */
+      var beeld = el("otBeeld");
+      beeld.hidden = !v.b;
+      beeld.innerHTML = v.b ? beeldSvg(v.f, v.b, true) : "";
+
+      var doos = el("otOpties");
+      doos.innerHTML = "";
+      doos.className = "ot-opties" + (v.f ? " beeldrij" : "");
+      v.o.forEach(function (waarde, i) {
         var b = document.createElement("button");
-        b.type = "button"; b.className = "ot-optie"; b.setAttribute("role", "radio"); b.setAttribute("aria-checked", "false");
-        b.innerHTML = '<span class="ot-letter">' + "ABCD".charAt(i) + "</span><span></span>";
-        b.lastChild.textContent = tekst;
+        b.type = "button"; b.className = "ot-optie";
+        b.setAttribute("role", "radio"); b.setAttribute("aria-checked", "false");
+        b.setAttribute("aria-label", LETTERS.charAt(i));
+        var letter = document.createElement("span");
+        letter.className = "ot-letter"; letter.textContent = LETTERS.charAt(i);
+        var inhoud = document.createElement("span");
+        if (v.f) inhoud.innerHTML = beeldSvg(v.f, waarde, false);
+        else inhoud.textContent = waarde;
+        b.appendChild(letter); b.appendChild(inhoud);
         b.addEventListener("click", function () {
           [].forEach.call(doos.children, function (c) { c.classList.remove("gekozen"); c.setAttribute("aria-checked", "false"); });
           b.classList.add("gekozen"); b.setAttribute("aria-checked", "true");
@@ -165,13 +221,30 @@ const privacyHref = localizePath("/support/privacy-statement/", lang);
         doos.appendChild(b);
       });
       el("otVolgende").disabled = antwoorden[huidig] === undefined;
-      el("otVolgende").textContent = (huidig === set.length - 1 ? T.afronden : T.volgende) + " →";
+      el("otVolgende").textContent = (huidig === set.length - 1 ? T.afronden : T.volgende) + " \u2192";
     }
 
     el("otVolgende").addEventListener("click", function () {
       if (huidig < set.length - 1) { huidig++; toon(); el("otVraag").scrollIntoView({ behavior: "smooth", block: "start" }); }
       else afronden();
     });
+
+    function nakijkBeeld(v, gekozen) {
+      var wrap = document.createElement("div");
+      wrap.className = "nbeeld";
+      var maak = function (waarde, label, klasse) {
+        var fig = document.createElement("figure");
+        var vak = document.createElement("div");
+        vak.innerHTML = beeldSvg(v.f, waarde, false);
+        var cap = document.createElement("figcaption");
+        cap.className = klasse; cap.textContent = label;
+        fig.appendChild(vak); fig.appendChild(cap);
+        return fig;
+      };
+      if (gekozen !== undefined) wrap.appendChild(maak(v.o[gekozen], T.jouw, gekozen === v.j ? "goed" : "fout"));
+      if (gekozen !== v.j) wrap.appendChild(maak(v.o[v.j], T.juist, "goed"));
+      return wrap;
+    }
 
     function afronden() {
       var goed = 0;
@@ -183,13 +256,19 @@ const privacyHref = localizePath("/support/privacy-statement/", lang);
       var lijst = el("otNakijk"); lijst.innerHTML = "";
       set.forEach(function (v, i) {
         var li = document.createElement("li");
-        var p = document.createElement("p"); p.className = "nv"; p.textContent = v.q; li.appendChild(p);
-        var jouw = document.createElement("p"); jouw.className = "na " + (antwoorden[i] === v.j ? "goed" : "fout");
-        jouw.textContent = T.jouw + ": " + (antwoorden[i] === undefined ? "-" : v.o[antwoorden[i]]);
-        li.appendChild(jouw);
-        if (antwoorden[i] !== v.j) {
-          var j = document.createElement("p"); j.className = "na goed";
-          j.textContent = T.juist + ": " + v.o[v.j]; li.appendChild(j);
+        var p = document.createElement("p"); p.className = "nv";
+        p.textContent = v.m ? v.m : v.r ? v.r.join("   ") : v.q;
+        li.appendChild(p);
+        if (v.f) {
+          li.appendChild(nakijkBeeld(v, antwoorden[i]));
+        } else {
+          var jouw = document.createElement("p"); jouw.className = "na " + (antwoorden[i] === v.j ? "goed" : "fout");
+          jouw.textContent = T.jouw + ": " + (antwoorden[i] === undefined ? "-" : v.o[antwoorden[i]]);
+          li.appendChild(jouw);
+          if (antwoorden[i] !== v.j) {
+            var j = document.createElement("p"); j.className = "na goed";
+            j.textContent = T.juist + ": " + v.o[v.j]; li.appendChild(j);
+          }
         }
         var u = document.createElement("p"); u.className = "nu"; u.textContent = T.uitlegKop + ": " + v.u;
         li.appendChild(u);

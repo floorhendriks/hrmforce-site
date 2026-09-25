@@ -1,0 +1,9 @@
+---
+import Base from "../../layouts/Base.astro";
+import OefentestOverzicht from "../../components/OefentestOverzicht.astro";
+import { ONDERZOEK_UI } from "../../data/oefentest-ui.js";
+const u = ONDERZOEK_UI["nl"];
+---
+<Base lang="nl" title={`${u.title} | hrmforce`} description={u.lead} active="">
+  <OefentestOverzicht lang="nl" />
+</Base>

@@ -1,6 +1,17 @@
 {
   "numeriek": {
-    "aantal": 250,
-    "gescoord": true
+    "aantal": 250
+  },
+  "verbaal": {
+    "aantal": 250
+  },
+  "calculation": {
+    "aantal": 250
+  },
+  "ruimtelijk": {
+    "aantal": 250
+  },
+  "abstract": {
+    "aantal": 250
   }
 }

@@ -9,6 +9,15 @@
 # Elke exacte regel heeft daarnaast een statische terugvalpagina in public/,
 # aangemaakt met npm run hsf:redirects. Eerste match wint.
 
+# De oefentest had eerst één onderdeel onder een naam die de lading niet dekte;
+# die zes adressen wijzen nu naar de rekenopgaven.
+/oefentest/numeriek-redeneren/ /oefentest/rekenopgaven/ 301
+/en/oefentest/numerical-reasoning/ /en/oefentest/numerical-calculation/ 301
+/de/oefentest/numerisches-denken/ /de/oefentest/rechenaufgaben/ 301
+/fr/oefentest/raisonnement-numerique/ /fr/oefentest/calcul-numerique/ 301
+/es/oefentest/razonamiento-numerico/ /es/oefentest/calculo-numerico/ 301
+/ro/oefentest/rationament-numeric/ /ro/oefentest/calcul-numeric/ 301
+
 /toepassingen/zorg/ /sectoren/zorg/ 301
 /toepassingen/onderwijs/ /sectoren/onderwijs/ 301
 /toepassingen/industrie/ /sectoren/industrie/ 301

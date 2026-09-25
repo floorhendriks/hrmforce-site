@@ -2,7 +2,12 @@
 import Base from "../../../layouts/Base.astro";
 import Oefentest from "../../../components/Oefentest.astro";
 import { ONDERDELEN, OT_UI } from "../../../data/oefentest-ui.js";
-import bank from "../../../data/oefenbank/numeriek.de.json";
+import numeriek from "../../../data/oefenbank/numeriek.de.json";
+import verbaal from "../../../data/oefenbank/verbaal.de.json";
+import calculation from "../../../data/oefenbank/calculation.de.json";
+import ruimtelijk from "../../../data/oefenbank/ruimtelijk.de.json";
+import abstract from "../../../data/oefenbank/abstract.de.json";
+const BANKEN = { numeriek, verbaal, calculation, ruimtelijk, abstract };
 export function getStaticPaths() {
   return Object.entries(ONDERDELEN).map(([sleutel, o]) => ({
     params: { onderdeel: o.slug["de"] }, props: { sleutel, o },
@@ -13,5 +18,5 @@ const t = OT_UI["de"];
 const naam = o.naam["de"];
 ---
 <Base lang="de" title={`${naam} | ${t.eyebrow} | hrmforce`} description={o.lead["de"]} active="">
-  <Oefentest onderdeel={sleutel} lang="de" bank={bank} />
+  <Oefentest onderdeel={sleutel} lang="de" bank={BANKEN[sleutel]} />
 </Base>
