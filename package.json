@@ -18,7 +18,8 @@
     "hsf:omslagen": "node scripts/hsf-build-kc-covers.mjs",
     "hsf:media": "node scripts/hsf-optimaliseer-media.mjs",
     "hsf:links": "node scripts/hsf-controleer-links.mjs",
-    "hsf:figuren": "node scripts/hsf-build-mbti-figuur.mjs"
+    "hsf:figuren": "node scripts/hsf-build-mbti-figuur.mjs",
+    "hsf:oefenbank": "node scripts/hsf-build-oefenbank.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.0",

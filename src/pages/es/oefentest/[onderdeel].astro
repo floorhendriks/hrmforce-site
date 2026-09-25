@@ -1,0 +1,17 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Oefentest from "../../../components/Oefentest.astro";
+import { ONDERDELEN, OT_UI } from "../../../data/oefentest-ui.js";
+import bank from "../../../data/oefenbank/numeriek.es.json";
+export function getStaticPaths() {
+  return Object.entries(ONDERDELEN).map(([sleutel, o]) => ({
+    params: { onderdeel: o.slug["es"] }, props: { sleutel, o },
+  }));
+}
+const { sleutel, o } = Astro.props;
+const t = OT_UI["es"];
+const naam = o.naam["es"];
+---
+<Base lang="es" title={`${naam} | ${t.eyebrow} | hrmforce`} description={o.lead["es"]} active="">
+  <Oefentest onderdeel={sleutel} lang="es" bank={bank} />
+</Base>

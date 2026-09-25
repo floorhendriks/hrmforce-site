@@ -1,0 +1,203 @@
+---
+/* Oefentest: registratie, 25 willekeurige vragen achter elkaar, daarna een
+   overzicht met de uitleg per vraag. De vragenbank staat in src/data/oefenbank
+   en wordt per taal ingeladen, zodat de pagina niet zes talen meesleept. */
+import { OT_UI, ONDERDELEN } from "../data/oefentest-ui.js";
+import { localizePath } from "../i18n/utils.js";
+const { onderdeel, lang = "nl", bank } = Astro.props;
+const t = OT_UI[lang] || OT_UI.nl;
+const o = ONDERDELEN[onderdeel];
+const naam = o.naam[lang] || o.naam.nl;
+const voorbereidingHref = localizePath("/voorbereiding/", lang);
+const privacyHref = localizePath("/support/privacy-statement/", lang);
+---
+<div class="crumb"><div class="wrap">
+  <a href={localizePath("/", lang)}>Home</a> &rsaquo; <a href={voorbereidingHref}>{t.eyebrow}</a> &rsaquo; <span>{naam}</span>
+</div></div>
+
+<section class="wrap ot-wrap">
+  <div class="eyebrow">{t.eyebrow}</div>
+  <h1 class="ot-h1">{naam}</h1>
+  <p class="ot-lead">{o.lead[lang] || o.lead.nl}</p>
+
+  <!-- 1. registratie -->
+  <div class="ot-kaart" id="otStart">
+    <p class="ot-uitleg">{t.lead}</p>
+    <form id="otForm" novalidate>
+      <div class="ot-rij">
+        <div class="ot-veld"><label for="otNaam">{t.naam}</label><input id="otNaam" name="naam" type="text" autocomplete="name" required /></div>
+        <div class="ot-veld"><label for="otMail">{t.email}</label><input id="otMail" name="email" type="email" autocomplete="email" required /></div>
+      </div>
+      <p class="ot-klein">{t.akkoord} <a href={privacyHref}>{t.privacy}</a>.</p>
+      <p class="ot-waarschuwing" id="otWaarschuwing" hidden></p>
+      <button type="submit" class="btn btn-primary ot-knop" id="otStartKnop">{t.start} &rarr;</button>
+    </form>
+  </div>
+
+  <!-- 2. vragen -->
+  <div class="ot-kaart" id="otVraag" hidden>
+    <div class="ot-voortgang"><div class="ot-balk" id="otBalk"></div></div>
+    <p class="ot-teller" id="otTeller"></p>
+    <p class="ot-vraagtekst" id="otVraagTekst"></p>
+    <div class="ot-opties" id="otOpties" role="radiogroup"></div>
+    <button type="button" class="btn btn-primary ot-knop" id="otVolgende" disabled>{t.volgende} &rarr;</button>
+  </div>
+
+  <!-- 3. uitslag -->
+  <div class="ot-kaart" id="otUitslag" hidden>
+    <h2 class="ot-kop">{t.uitslag}</h2>
+    <p class="ot-score" id="otScore"></p>
+    <p class="ot-duiding" id="otDuiding"></p>
+    <p class="ot-let-op">{t.oefening}</p>
+    <div class="ot-acties">
+      <button type="button" class="btn btn-primary" id="otOpnieuw">{t.herkansing}</button>
+      <a class="btn btn-ghost" href={voorbereidingHref}>{t.terug}</a>
+    </div>
+    <h3 class="ot-kop-klein">{t.nakijken}</h3>
+    <ol class="ot-nakijk" id="otNakijk"></ol>
+  </div>
+</section>
+
+<style is:global>
+  .ot-wrap { padding: 26px 0 70px; max-width: 820px; }
+  .ot-h1 { font-family: var(--font-display); color: var(--navy); font-size: clamp(1.7rem,3vw,2.15rem); line-height:1.15; margin: 4px 0 10px; }
+  .ot-lead { color: var(--muted); font-size: 17px; line-height:1.6; margin: 0 0 24px; }
+  .ot-kaart { background:#fff; border:1px solid var(--line); padding: 26px 28px 28px; }
+  .ot-uitleg { color: var(--text); margin: 0 0 18px; line-height:1.6; }
+  .ot-rij { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+  .ot-veld label { display:block; color:var(--navy); font-weight:600; font-size:13px; margin-bottom:6px; }
+  .ot-veld input { display:block; width:100%; padding:11px 12px; border:1px solid var(--line-strong); border-radius:var(--radius-sm); font-family:inherit; font-size:14.5px; color:var(--navy); background:#fff; }
+  .ot-veld input:focus { outline:0; border-color:var(--blue); box-shadow:var(--focus); }
+  .ot-veld input.ot-mis { border-color:#d64545; background:#fffafa; }
+  .ot-klein { color:var(--muted); font-size:12.5px; line-height:1.5; margin:14px 0 0; }
+  .ot-klein a { color:var(--navy); text-decoration:underline; }
+  .ot-waarschuwing { color:#b3261e; background:#fdeceb; border:1px solid #f6c9c5; padding:9px 12px; font-size:13px; font-weight:600; margin:14px 0 0; }
+  .ot-knop { margin-top:18px; }
+  .ot-voortgang { height:4px; background:var(--bg-soft); margin:-26px -28px 20px; }
+  .ot-balk { height:4px; background:var(--accent); width:0; transition:width .25s; }
+  .ot-teller { color:var(--muted); font-size:13px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; margin:0 0 10px; }
+  .ot-vraagtekst { color:var(--navy); font-size:1.15rem; line-height:1.55; font-weight:600; margin:0 0 20px; }
+  .ot-opties { display:grid; gap:10px; }
+  .ot-optie { display:flex; align-items:center; gap:12px; width:100%; text-align:left; padding:14px 16px; border:1px solid var(--line-strong); background:#fff; font-family:inherit; font-size:15.5px; color:var(--text); cursor:pointer; }
+  .ot-optie:hover { border-color:var(--blue); background:#f7fafd; }
+  .ot-optie.gekozen { border-color:var(--navy); background:#eef3fa; color:var(--navy); font-weight:700; }
+  .ot-letter { flex:none; width:26px; height:26px; border:1px solid var(--line-strong); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:var(--muted); }
+  .ot-optie.gekozen .ot-letter { background:var(--navy); border-color:var(--navy); color:#fff; }
+  .ot-kop { font-family:var(--font-display); color:var(--navy); font-size:1.3rem; margin:0 0 6px; }
+  .ot-kop-klein { font-family:var(--font-display); color:var(--navy); font-size:1.05rem; margin:30px 0 12px; padding-bottom:10px; border-bottom:2px solid var(--navy); }
+  .ot-score { font-size:2.4rem; font-weight:800; color:var(--navy); margin:8px 0 4px; line-height:1.1; }
+  .ot-duiding { color:var(--text); font-size:15.5px; line-height:1.6; margin:0 0 14px; }
+  .ot-let-op { color:var(--muted); font-size:12.5px; line-height:1.5; background:var(--bg-soft); border-left:3px solid var(--gold); padding:10px 13px; margin:0 0 20px; }
+  .ot-acties { display:flex; gap:12px; flex-wrap:wrap; }
+  .ot-nakijk { margin:0; padding:0 0 0 22px; display:grid; gap:18px; }
+  .ot-nakijk li { color:var(--text); line-height:1.55; }
+  .ot-nakijk .nv { font-weight:600; color:var(--navy); margin:0 0 6px; }
+  .ot-nakijk .na { font-size:14px; margin:0; }
+  .ot-nakijk .fout { color:#b3261e; }
+  .ot-nakijk .goed { color:#1a7f4b; }
+  .ot-nakijk .nu { font-size:13.5px; color:var(--muted); background:var(--bg-soft); padding:9px 12px; margin:8px 0 0; }
+  @media (max-width:620px) { .ot-rij { grid-template-columns:1fr; } .ot-kaart { padding:20px 18px 22px; } .ot-voortgang { margin:-20px -18px 18px; } }
+</style>
+
+<script is:inline define:vars={{ BANK: bank, T: t, ONDERDEEL: onderdeel, LANG: lang }}>
+  (function () {
+    var AANTAL = 25;
+    var el = function (id) { return document.getElementById(id); };
+    var set = [], huidig = 0, antwoorden = [], deelnemer = null;
+
+    /* Trekt een nieuwe willekeurige set; elke ronde dus andere vragen. */
+    function trek() {
+      var kopie = BANK.slice();
+      for (var i = kopie.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var h = kopie[i]; kopie[i] = kopie[j]; kopie[j] = h;
+      }
+      return kopie.slice(0, Math.min(AANTAL, kopie.length));
+    }
+
+    function geldigMail(s) {
+      s = (s || "").trim();
+      var at = s.indexOf("@");
+      return at > 0 && s.indexOf(".", at) > at + 1 && s.indexOf(" ") < 0;
+    }
+
+    el("otForm").addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var naam = el("otNaam"), mail = el("otMail"), waar = el("otWaarschuwing");
+      var naamOk = naam.value.trim().length > 1, mailOk = geldigMail(mail.value);
+      naam.classList.toggle("ot-mis", !naamOk);
+      mail.classList.toggle("ot-mis", !mailOk);
+      if (!naamOk || !mailOk) { waar.textContent = T.verplicht; waar.hidden = false; return; }
+      waar.hidden = true;
+      deelnemer = { naam: naam.value.trim(), email: mail.value.trim() };
+      var knop = el("otStartKnop"); knop.disabled = true; knop.textContent = T.bezig;
+      /* De registratie gaat naar de server; de test start hoe dan ook door,
+         een storing aan onze kant hoort de oefenaar niet op te houden. */
+      fetch("/api/oefentest", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ naam: deelnemer.naam, email: deelnemer.email, onderdeel: ONDERDEEL, taal: LANG }),
+      }).catch(function () {}).then(function () { begin(); });
+    });
+
+    function begin() {
+      set = trek(); huidig = 0; antwoorden = [];
+      el("otStart").hidden = true; el("otUitslag").hidden = true; el("otVraag").hidden = false;
+      toon();
+      el("otVraag").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function toon() {
+      var v = set[huidig];
+      el("otTeller").textContent = T.vraag + " " + (huidig + 1) + " " + T.van + " " + set.length;
+      el("otBalk").style.width = ((huidig) / set.length * 100) + "%";
+      el("otVraagTekst").textContent = v.q;
+      var doos = el("otOpties"); doos.innerHTML = "";
+      v.o.forEach(function (tekst, i) {
+        var b = document.createElement("button");
+        b.type = "button"; b.className = "ot-optie"; b.setAttribute("role", "radio"); b.setAttribute("aria-checked", "false");
+        b.innerHTML = '<span class="ot-letter">' + "ABCD".charAt(i) + "</span><span></span>";
+        b.lastChild.textContent = tekst;
+        b.addEventListener("click", function () {
+          [].forEach.call(doos.children, function (c) { c.classList.remove("gekozen"); c.setAttribute("aria-checked", "false"); });
+          b.classList.add("gekozen"); b.setAttribute("aria-checked", "true");
+          antwoorden[huidig] = i; el("otVolgende").disabled = false;
+        });
+        doos.appendChild(b);
+      });
+      el("otVolgende").disabled = antwoorden[huidig] === undefined;
+      el("otVolgende").textContent = (huidig === set.length - 1 ? T.afronden : T.volgende) + " →";
+    }
+
+    el("otVolgende").addEventListener("click", function () {
+      if (huidig < set.length - 1) { huidig++; toon(); el("otVraag").scrollIntoView({ behavior: "smooth", block: "start" }); }
+      else afronden();
+    });
+
+    function afronden() {
+      var goed = 0;
+      set.forEach(function (v, i) { if (antwoorden[i] === v.j) goed++; });
+      var pct = Math.round(goed / set.length * 100);
+      el("otVraag").hidden = true; el("otUitslag").hidden = false;
+      el("otScore").textContent = goed + " / " + set.length + " " + T.goed;
+      el("otDuiding").textContent = pct >= 80 ? T.goedGedaan : pct >= 55 ? T.redelijk : T.laag;
+      var lijst = el("otNakijk"); lijst.innerHTML = "";
+      set.forEach(function (v, i) {
+        var li = document.createElement("li");
+        var p = document.createElement("p"); p.className = "nv"; p.textContent = v.q; li.appendChild(p);
+        var jouw = document.createElement("p"); jouw.className = "na " + (antwoorden[i] === v.j ? "goed" : "fout");
+        jouw.textContent = T.jouw + ": " + (antwoorden[i] === undefined ? "-" : v.o[antwoorden[i]]);
+        li.appendChild(jouw);
+        if (antwoorden[i] !== v.j) {
+          var j = document.createElement("p"); j.className = "na goed";
+          j.textContent = T.juist + ": " + v.o[v.j]; li.appendChild(j);
+        }
+        var u = document.createElement("p"); u.className = "nu"; u.textContent = T.uitlegKop + ": " + v.u;
+        li.appendChild(u);
+        lijst.appendChild(li);
+      });
+      el("otUitslag").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    el("otOpnieuw").addEventListener("click", begin);
+  })();
+</script>

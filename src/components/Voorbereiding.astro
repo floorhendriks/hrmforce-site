@@ -2,6 +2,7 @@
 import { localizePath, sanitizeBodyLinks, demoPath } from "../i18n/utils.js";
 import validPaths from "../data/valid-paths.js";
 import { oefentests } from "../data/oefentests.js";
+import { ONDERDELEN } from "../data/oefentest-ui.js";
 const { t, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
 const demoHref = demoPath(lang);
@@ -35,6 +36,21 @@ const BOOK_UI = {
   ro: { eyebrow: "Cărți", title: "Cărți pentru pregătire", intro: "Vrei să te pregătești și mai temeinic? Aceste cărți te ajută să te familiarizezi cu assessment-urile, testele de aptitudini și chestionarele de personalitate.", nlLabel: "În neerlandeză", enLabel: "În engleză" },
 };
 const books = BOOK_UI[lang] || BOOK_UI.nl;
+const OT_BLOK = {
+  nl: { eyebrow:"Oefentest", title:"Doe de oefentest", intro:"Wil je een hele ronde achter elkaar maken? In de oefentest krijg je 25 willekeurige vragen, met daarna per vraag het juiste antwoord en de toelichting. Elke ronde is een nieuwe set.", cta:"Start de oefentest" },
+  en: { eyebrow:"Practice test", title:"Take the practice test", intro:"Want to do a full round in one go? The practice test gives you 25 random questions, with the correct answer and an explanation per question afterwards. Every round is a new set.", cta:"Start the practice test" },
+  de: { eyebrow:"Übungstest", title:"Machen Sie den Übungstest", intro:"Möchten Sie eine ganze Runde am Stück machen? Der Übungstest stellt 25 zufällige Fragen, danach sehen Sie je Frage die richtige Antwort und die Erläuterung. Jede Runde ist ein neuer Satz.", cta:"Übungstest starten" },
+  fr: { eyebrow:"Test d'entraînement", title:"Faites le test d'entraînement", intro:"Envie de faire une série complète d'affilée ? Le test propose 25 questions au hasard, puis la bonne réponse et l'explication pour chacune. Chaque série est différente.", cta:"Démarrer le test" },
+  es: { eyebrow:"Test de práctica", title:"Haz el test de práctica", intro:"¿Quieres hacer una ronda completa de una vez? El test te da 25 preguntas al azar y después, por pregunta, la respuesta correcta y la explicación. Cada ronda es un conjunto nuevo.", cta:"Empezar el test" },
+  ro: { eyebrow:"Test de exersare", title:"Fă testul de exersare", intro:"Vrei o rundă completă dintr-o dată? Testul îți dă 25 de întrebări alese aleatoriu, iar la final vezi pentru fiecare răspunsul corect și explicația. Fiecare rundă este un set nou.", cta:"Începe testul" },
+};
+const otBlok = OT_BLOK[lang] || OT_BLOK.nl;
+const otBase = lang === "nl" ? "/oefentest/" : localizePath("/oefentest/", lang);
+const otOnderdelen = Object.values(ONDERDELEN).map((o) => ({
+  slug: o.slug[lang] || o.slug.nl,
+  naam: o.naam[lang] || o.naam.nl,
+  lead: o.lead[lang] || o.lead.nl,
+}));
 const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voor deze zoekterm."}, en:{ph:"Search the preparation...", none:"Nothing found for this term."}, de:{ph:"In der Vorbereitung suchen...", none:"Nichts zu diesem Begriff gefunden."}, fr:{ph:"Rechercher dans la préparation...", none:"Rien trouvé pour ce terme."}, es:{ph:"Buscar en la preparación...", none:"No se encontró nada para este término."}, ro:{ph:"Caută în pregătire...", none:"Nimic găsit pentru acest termen."} }[lang] || {ph:"Zoek...", none:"Niets gevonden."};
 ---
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
@@ -50,6 +66,21 @@ const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voo
 </div></section>
 
 <section class="bg-soft"><div class="wrap" style="display:block">
+  <div class="eyebrow">{otBlok.eyebrow}</div>
+  <h2 class="section-title">{otBlok.title}</h2>
+  <p style="max-width:820px;color:var(--muted);margin-bottom:18px">{otBlok.intro}</p>
+  <div class="ot-grid">
+    {otOnderdelen.map((o) => (
+      <a class="ot-card" href={`${otBase}${o.slug}/`}>
+        <span class="ot-naam">{o.naam}</span>
+        <span class="ot-lead">{o.lead}</span>
+        <span class="ot-cta">{otBlok.cta} &rarr;</span>
+      </a>
+    ))}
+  </div>
+</div></section>
+
+<section><div class="wrap" style="display:block">
   <div class="eyebrow">{prep.title}</div>
   <h2 class="section-title">{prep.title}</h2>
   <p style="max-width:820px;color:var(--muted);margin-bottom:18px">{prep.intro}</p>
@@ -121,6 +152,13 @@ const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voo
   .prep-card:hover{box-shadow:var(--shadow-sm)}
   .prep-name{color:var(--navy);font-weight:800;font-size:15px}
   .prep-link{color:var(--blue);font-weight:700;font-size:13.5px}
+  .ot-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:920px}
+  .ot-card{display:flex;flex-direction:column;gap:8px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;text-decoration:none}
+  .ot-card:hover{box-shadow:var(--shadow-sm)}
+  .ot-naam{color:var(--navy);font-weight:800;font-size:17px}
+  .ot-lead{color:var(--muted);font-size:14.5px;line-height:1.6}
+  .ot-cta{color:var(--blue);font-weight:700;font-size:14px}
+  @media(max-width:760px){.ot-grid{grid-template-columns:1fr}}
   .prep-none{color:var(--muted);text-align:center;padding:30px 0}
   @media(max-width:880px){.prep-grid{grid-template-columns:1fr 1fr}}
   @media(max-width:560px){.prep-grid{grid-template-columns:1fr}}
