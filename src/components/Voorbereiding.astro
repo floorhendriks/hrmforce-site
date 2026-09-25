@@ -37,12 +37,12 @@ const BOOK_UI = {
 };
 const books = BOOK_UI[lang] || BOOK_UI.nl;
 const OT_BLOK = {
-  nl: { eyebrow:"Oefentest", title:"Doe de oefentest", intro:"Wil je een hele ronde achter elkaar maken? In de oefentest krijg je 25 willekeurige vragen, met daarna per vraag het juiste antwoord en de toelichting. Elke ronde is een nieuwe set.", cta:"Start de oefentest" },
-  en: { eyebrow:"Practice test", title:"Take the practice test", intro:"Want to do a full round in one go? The practice test gives you 25 random questions, with the correct answer and an explanation per question afterwards. Every round is a new set.", cta:"Start the practice test" },
-  de: { eyebrow:"Übungstest", title:"Machen Sie den Übungstest", intro:"Möchten Sie eine ganze Runde am Stück machen? Der Übungstest stellt 25 zufällige Fragen, danach sehen Sie je Frage die richtige Antwort und die Erläuterung. Jede Runde ist ein neuer Satz.", cta:"Übungstest starten" },
-  fr: { eyebrow:"Test d'entraînement", title:"Faites le test d'entraînement", intro:"Envie de faire une série complète d'affilée ? Le test propose 25 questions au hasard, puis la bonne réponse et l'explication pour chacune. Chaque série est différente.", cta:"Démarrer le test" },
-  es: { eyebrow:"Test de práctica", title:"Haz el test de práctica", intro:"¿Quieres hacer una ronda completa de una vez? El test te da 25 preguntas al azar y después, por pregunta, la respuesta correcta y la explicación. Cada ronda es un conjunto nuevo.", cta:"Empezar el test" },
-  ro: { eyebrow:"Test de exersare", title:"Fă testul de exersare", intro:"Vrei o rundă completă dintr-o dată? Testul îți dă 25 de întrebări alese aleatoriu, iar la final vezi pentru fiecare răspunsul corect și explicația. Fiecare rundă este un set nou.", cta:"Începe testul" },
+  nl: { eyebrow:"Oefentest", title:"Doe de oefentest", intro:"Wil je een hele ronde achter elkaar maken? In de oefentest krijg je 25 willekeurige vragen, met daarna per vraag het juiste antwoord en de toelichting. Elke ronde is een nieuwe set.", cta:"Start de oefentest", alles:"Naar alle oefentesten en vragenlijsten" },
+  en: { eyebrow:"Practice test", title:"Take the practice test", intro:"Want to do a full round in one go? The practice test gives you 25 random questions, with the correct answer and an explanation per question afterwards. Every round is a new set.", cta:"Start the practice test", alles:"To all practice tests and questionnaires" },
+  de: { eyebrow:"Übungstest", title:"Machen Sie den Übungstest", intro:"Möchten Sie eine ganze Runde am Stück machen? Der Übungstest stellt 25 zufällige Fragen, danach sehen Sie je Frage die richtige Antwort und die Erläuterung. Jede Runde ist ein neuer Satz.", cta:"Übungstest starten", alles:"Zu allen Übungstests und Fragebögen" },
+  fr: { eyebrow:"Test d'entraînement", title:"Faites le test d'entraînement", intro:"Envie de faire une série complète d'affilée ? Le test propose 25 questions au hasard, puis la bonne réponse et l'explication pour chacune. Chaque série est différente.", cta:"Démarrer le test", alles:"Vers tous les tests et questionnaires" },
+  es: { eyebrow:"Test de práctica", title:"Haz el test de práctica", intro:"¿Quieres hacer una ronda completa de una vez? El test te da 25 preguntas al azar y después, por pregunta, la respuesta correcta y la explicación. Cada ronda es un conjunto nuevo.", cta:"Empezar el test", alles:"A todos los tests y cuestionarios" },
+  ro: { eyebrow:"Test de exersare", title:"Fă testul de exersare", intro:"Vrei o rundă completă dintr-o dată? Testul îți dă 25 de întrebări alese aleatoriu, iar la final vezi pentru fiecare răspunsul corect și explicația. Fiecare rundă este un set nou.", cta:"Începe testul", alles:"Spre toate testele și chestionarele" },
 };
 const otBlok = OT_BLOK[lang] || OT_BLOK.nl;
 const otBase = lang === "nl" ? "/oefentest/" : localizePath("/oefentest/", lang);
@@ -77,6 +77,9 @@ const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voo
         <span class="ot-cta">{otBlok.cta} &rarr;</span>
       </a>
     ))}
+  </div>
+  <div class="btns" style="margin-top:18px">
+    <a href={otBase} class="btn btn-ghost">{otBlok.alles} &rarr;</a>
   </div>
 </div></section>
 

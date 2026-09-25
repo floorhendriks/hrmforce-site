@@ -5,6 +5,12 @@ import { bouwCalculation } from "./hsf-oefenbank-calculation.mjs";
 import { bouwNumeriek } from "./hsf-oefenbank-numeriek.mjs";
 import { bouwVerbaal } from "./hsf-oefenbank-verbaal.mjs";
 import { bouwAbstract, bouwRuimtelijk } from "./hsf-oefenbank-figuren.mjs";
+import { BIGFIVE } from "./hsf-vragenlijst-bigfive.mjs";
+import { DISC } from "./hsf-vragenlijst-disc.mjs";
+import { DRIJFVEREN } from "./hsf-vragenlijst-drijfveren.mjs";
+import { LEIDERSCHAP } from "./hsf-vragenlijst-leiderschap.mjs";
+import { COMPETENTIES } from "./hsf-vragenlijst-competenties.mjs";
+import { STUDIEKEUZE } from "./hsf-vragenlijst-studiekeuze.mjs";
 
 const TALEN = ["nl", "en", "de", "fr", "es", "ro"];
 const MAP = "src/data/oefenbank";
@@ -35,4 +41,15 @@ for (const [naam, bouw] of Object.entries(ONDERDELEN)) {
   }
   console.log(`${naam}: ${items.length} items x ${TALEN.length} talen`);
 }
+// De vragenlijsten: zelfrapportage, dus geen juist antwoord en geen score.
+const VRAGENLIJSTEN = { bigfive: BIGFIVE, disc: DISC, drijfveren: DRIJFVEREN, leiderschap: LEIDERSCHAP, competenties: COMPETENTIES, studiekeuze: STUDIEKEUZE };
+for (const [naam, stellingen] of Object.entries(VRAGENLIJSTEN)) {
+  overzicht[`vl-${naam}`] = { aantal: stellingen.length };
+  for (const t of TALEN) {
+    const smal = stellingen.map((i, n) => ({ id: `${naam}-${String(n + 1).padStart(3, "0")}`, d: i.d, k: i.k, q: i.t[t] }));
+    await writeFile(`${MAP}/vl-${naam}.${t}.json`, JSON.stringify(smal), "utf8");
+  }
+  console.log(`vl-${naam}: ${stellingen.length} stellingen x ${TALEN.length} talen`);
+}
+
 await writeFile(`${MAP}/overzicht.json`, JSON.stringify(overzicht, null, 2), "utf8");

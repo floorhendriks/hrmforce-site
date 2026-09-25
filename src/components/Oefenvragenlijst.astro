@@ -1,0 +1,212 @@
+---
+/* Oefenvragenlijst: registratie, 25 willekeurige stellingen op een vijfpunts-
+   schaal, daarna een profielschets. Geen goede of foute antwoorden, dus ook
+   geen score. De stellingen staan in src/data/oefenbank/vl-*.json. */
+import { VL_UI, VRAGENLIJSTEN } from "../data/oefenvragenlijst.js";
+import { OT_UI } from "../data/oefentest-ui.js";
+import { localizePath } from "../i18n/utils.js";
+const { onderdeel, lang = "nl", bank } = Astro.props;
+const t = VL_UI[lang] || VL_UI.nl;
+/* naam, e-mail en de privacyregel zijn gelijk aan die van de oefentest */
+const g = OT_UI[lang] || OT_UI.nl;
+const v = VRAGENLIJSTEN[onderdeel];
+const naam = v.naam[lang] || v.naam.nl;
+const oefenHref = localizePath("/oefentest/", lang);
+const privacyHref = localizePath("/support/privacy-statement/", lang);
+/* alleen wat de pagina nodig heeft, in de taal van de pagina */
+const dims = v.dimensies.map((d) => ({ naam: d.naam[lang] || d.naam.nl, hoog: d.hoog[lang] || d.hoog.nl, laag: d.laag[lang] || d.laag.nl }));
+/* de drie zinnen zijn functies; ze gaan als sjabloon met %s naar de pagina */
+const sjabloon = {
+  hoog: t.hoog("%1"), laag: t.laag("%1"), midden: t.midden("%1", "%2"),
+};
+---
+<div class="crumb"><div class="wrap">
+  <a href={localizePath("/", lang)}>Home</a> &rsaquo; <a href={oefenHref}>{t.eyebrow}</a> &rsaquo; <span>{naam}</span>
+</div></div>
+
+<section class="wrap ot-wrap">
+  <div class="eyebrow">{t.eyebrow}</div>
+  <h1 class="ot-h1">{naam}</h1>
+  <p class="ot-lead">{v.lead[lang] || v.lead.nl}</p>
+
+  <div class="ot-kaart" id="vlStart">
+    <p class="ot-uitleg">{t.lead}</p>
+    <form id="vlForm" novalidate>
+      <div class="ot-rij">
+        <div class="ot-veld"><label for="vlNaam">{g.naam}</label><input id="vlNaam" name="naam" type="text" autocomplete="name" required /></div>
+        <div class="ot-veld"><label for="vlMail">{g.email}</label><input id="vlMail" name="email" type="email" autocomplete="email" required /></div>
+      </div>
+      <p class="ot-klein">{g.akkoord} <a href={privacyHref}>{g.privacy}</a>.</p>
+      <p class="ot-waarschuwing" id="vlWaarschuwing" hidden></p>
+      <button type="submit" class="btn btn-primary ot-knop" id="vlStartKnop">{t.start} &rarr;</button>
+    </form>
+  </div>
+
+  <div class="ot-kaart" id="vlVraag" hidden>
+    <div class="ot-voortgang"><div class="ot-balk" id="vlBalk"></div></div>
+    <p class="ot-teller" id="vlTeller"></p>
+    <p class="ot-vraagtekst" id="vlStelling"></p>
+    <div class="ot-opties" id="vlOpties" role="radiogroup"></div>
+    <button type="button" class="btn btn-primary ot-knop" id="vlVolgende" disabled>{t.volgende} &rarr;</button>
+  </div>
+
+  <div class="ot-kaart" id="vlUitslag" hidden>
+    <h2 class="ot-kop">{t.uitslag}</h2>
+    <p class="ot-duiding">{t.duiding}</p>
+    <p class="ot-let-op">{t.oefening}</p>
+    <ul class="vl-schets" id="vlSchets"></ul>
+    <div class="ot-acties">
+      <button type="button" class="btn btn-primary" id="vlOpnieuw">{t.herkansing}</button>
+      <a class="btn btn-ghost" href={oefenHref}>{t.terug}</a>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .vl-schets { list-style:none; margin:22px 0 26px; padding:0; display:grid; gap:14px; }
+  .vl-schets li { border:1px solid var(--line); padding:15px 17px; background:#fff; }
+  .vl-schets .vd { color:var(--navy); font-weight:800; font-size:15.5px; margin:0 0 5px; }
+  .vl-schets .vz { color:var(--text); font-size:14.5px; line-height:1.6; margin:0; }
+  .vl-schets .vmeter { height:6px; background:var(--bg-soft); margin:10px 0 0; position:relative; }
+  .vl-schets .vmeter i { position:absolute; top:0; height:6px; width:10px; background:var(--navy); }
+</style>
+
+<script type="application/json" id="vlData" set:html={JSON.stringify({ bank, t: { schaal: t.schaal, stelling: t.stelling, van: t.van, volgende: t.volgende, afronden: t.afronden, bezig: g.bezig, verplicht: g.verplicht, weinig: t.weinig }, sjabloon, dims, onderdeel, lang }).replace(/</g, "\\u003c")}></script>
+
+<script>
+  (function () {
+    var bron = document.getElementById("vlData");
+    if (!bron) return;
+    var cfg = JSON.parse(bron.textContent);
+    var BANK = cfg.bank, T = cfg.t, SJ = cfg.sjabloon, DIMS = cfg.dims;
+    var ONDERDEEL = cfg.onderdeel, LANG = cfg.lang;
+    var AANTAL = 25;
+    var LETTERS = "ABCDE";
+    var el = function (id) { return document.getElementById(id); };
+    var set = [], huidig = 0, antwoorden = [];
+
+    function husselen(lijst) {
+      for (var i = lijst.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var h = lijst[i]; lijst[i] = lijst[j]; lijst[j] = h;
+      }
+      return lijst;
+    }
+
+    /* Trekt evenveel stellingen per dimensie, zodat elke dimensie genoeg
+       stellingen krijgt om iets over te kunnen zeggen. Binnen een dimensie en
+       in de volgorde is het verder willekeurig, dus elke ronde is anders. */
+    function trek() {
+      var perDim = [];
+      for (var d = 0; d < DIMS.length; d++) perDim.push([]);
+      BANK.forEach(function (v) { if (perDim[v.d]) perDim[v.d].push(v); });
+      perDim.forEach(husselen);
+      var uit = [], ronde = 0, doel = Math.min(AANTAL, BANK.length);
+      while (uit.length < doel && ronde < 100) {
+        for (var i = 0; i < perDim.length && uit.length < doel; i++) {
+          if (perDim[i][ronde]) uit.push(perDim[i][ronde]);
+        }
+        ronde++;
+      }
+      return husselen(uit);
+    }
+
+    function geldigMail(s) {
+      s = (s || "").trim();
+      var at = s.indexOf("@");
+      return at > 0 && s.indexOf(".", at) > at + 1 && s.indexOf(" ") < 0;
+    }
+
+    el("vlForm").addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var naam = el("vlNaam"), mail = el("vlMail"), waar = el("vlWaarschuwing");
+      var naamOk = naam.value.trim().length > 1, mailOk = geldigMail(mail.value);
+      naam.classList.toggle("ot-mis", !naamOk);
+      mail.classList.toggle("ot-mis", !mailOk);
+      if (!naamOk || !mailOk) { waar.textContent = T.verplicht; waar.hidden = false; return; }
+      waar.hidden = true;
+      var knop = el("vlStartKnop"); knop.disabled = true; knop.textContent = T.bezig;
+      fetch("/api/oefentest", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ naam: naam.value.trim(), email: mail.value.trim(), onderdeel: "vl-" + ONDERDEEL, taal: LANG }),
+      }).catch(function () {}).then(function () { begin(); });
+    });
+
+    function begin() {
+      set = trek(); huidig = 0; antwoorden = [];
+      el("vlStart").hidden = true; el("vlUitslag").hidden = true; el("vlVraag").hidden = false;
+      toon();
+      el("vlVraag").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function toon() {
+      var v = set[huidig];
+      el("vlTeller").textContent = T.stelling + " " + (huidig + 1) + " " + T.van + " " + set.length;
+      el("vlBalk").style.width = (huidig / set.length * 100) + "%";
+      el("vlStelling").textContent = v.q;
+      var doos = el("vlOpties"); doos.innerHTML = "";
+      T.schaal.forEach(function (label, i) {
+        var b = document.createElement("button");
+        b.type = "button"; b.className = "ot-optie";
+        b.setAttribute("role", "radio"); b.setAttribute("aria-checked", "false");
+        var letter = document.createElement("span");
+        letter.className = "ot-letter"; letter.textContent = LETTERS.charAt(i);
+        var tekst = document.createElement("span"); tekst.textContent = label;
+        b.appendChild(letter); b.appendChild(tekst);
+        if (antwoorden[huidig] === i) { b.classList.add("gekozen"); b.setAttribute("aria-checked", "true"); }
+        b.addEventListener("click", function () {
+          [].forEach.call(doos.children, function (c) { c.classList.remove("gekozen"); c.setAttribute("aria-checked", "false"); });
+          b.classList.add("gekozen"); b.setAttribute("aria-checked", "true");
+          antwoorden[huidig] = i; el("vlVolgende").disabled = false;
+        });
+        doos.appendChild(b);
+      });
+      el("vlVolgende").disabled = antwoorden[huidig] === undefined;
+      el("vlVolgende").textContent = (huidig === set.length - 1 ? T.afronden : T.volgende) + " \u2192";
+    }
+
+    el("vlVolgende").addEventListener("click", function () {
+      if (huidig < set.length - 1) { huidig++; toon(); el("vlVraag").scrollIntoView({ behavior: "smooth", block: "start" }); }
+      else afronden();
+    });
+
+    /* Per dimensie het gemiddelde van de gegeven antwoorden, waarbij een
+       omgekeerd gestelde stelling wordt teruggedraaid. Geen score, alleen de
+       kant waar de antwoorden naartoe neigen. */
+    function afronden() {
+      var som = [], tel = [];
+      for (var d = 0; d < DIMS.length; d++) { som[d] = 0; tel[d] = 0; }
+      set.forEach(function (v, i) {
+        if (antwoorden[i] === undefined) return;
+        var waarde = antwoorden[i] + 1;
+        if (v.k < 0) waarde = 6 - waarde;
+        som[v.d] += waarde; tel[v.d]++;
+      });
+      el("vlVraag").hidden = true; el("vlUitslag").hidden = false;
+      var lijst = el("vlSchets"); lijst.innerHTML = "";
+      DIMS.forEach(function (dim, d) {
+        var li = document.createElement("li");
+        var kop = document.createElement("p"); kop.className = "vd"; kop.textContent = dim.naam;
+        li.appendChild(kop);
+        var zin = document.createElement("p"); zin.className = "vz";
+        if (tel[d] < 2) {
+          zin.textContent = T.weinig;
+          li.appendChild(zin); lijst.appendChild(li); return;
+        }
+        var gem = som[d] / tel[d];
+        if (gem >= 3.6) zin.textContent = SJ.hoog.replace("%1", dim.hoog);
+        else if (gem <= 2.4) zin.textContent = SJ.laag.replace("%1", dim.laag);
+        else zin.textContent = SJ.midden.replace("%1", dim.laag).replace("%2", dim.hoog);
+        li.appendChild(zin);
+        var meter = document.createElement("div"); meter.className = "vmeter";
+        var punt = document.createElement("i");
+        punt.style.left = Math.max(0, Math.min(96, (gem - 1) / 4 * 100)) + "%";
+        meter.appendChild(punt); li.appendChild(meter);
+        lijst.appendChild(li);
+      });
+      el("vlUitslag").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    el("vlOpnieuw").addEventListener("click", begin);
+  })();
+</script>

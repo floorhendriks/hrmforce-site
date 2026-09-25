@@ -13,5 +13,23 @@
   },
   "abstract": {
     "aantal": 250
+  },
+  "vl-bigfive": {
+    "aantal": 50
+  },
+  "vl-disc": {
+    "aantal": 40
+  },
+  "vl-drijfveren": {
+    "aantal": 48
+  },
+  "vl-leiderschap": {
+    "aantal": 40
+  },
+  "vl-competenties": {
+    "aantal": 48
+  },
+  "vl-studiekeuze": {
+    "aantal": 48
   }
 }

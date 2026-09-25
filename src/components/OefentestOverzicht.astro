@@ -2,6 +2,7 @@
 /* Overzicht van de vijf oefenonderdelen. Vanaf hier kiest de oefenaar een
    onderdeel; de bank zelf zit op de pagina van dat onderdeel. */
 import { ONDERZOEK_UI, ONDERDELEN } from "../data/oefentest-ui.js";
+import { VRAGENLIJSTEN, VL_UI } from "../data/oefenvragenlijst.js";
 import { localizePath } from "../i18n/utils.js";
 const { lang = "nl" } = Astro.props;
 const u = ONDERZOEK_UI[lang] || ONDERZOEK_UI.nl;
@@ -13,6 +14,22 @@ const onderdelen = Object.entries(ONDERDELEN).map(([sleutel, o]) => ({
   naam: o.naam[lang] || o.naam.nl,
   lead: o.lead[lang] || o.lead.nl,
 }));
+const lijsten = Object.entries(VRAGENLIJSTEN).map(([sleutel, o]) => ({
+  sleutel,
+  href: `${basis}${o.slug[lang] || o.slug.nl}/`,
+  naam: o.naam[lang] || o.naam.nl,
+  lead: o.lead[lang] || o.lead.nl,
+}));
+const vl = VL_UI[lang] || VL_UI.nl;
+const KOPPEN = {
+  nl: { test: "Capaciteiten", testLead: "Vijf onderdelen met goede en foute antwoorden. Je krijgt per ronde 25 willekeurige vragen en daarna per vraag de toelichting.", lijst: "Vragenlijsten", lijstLead: "Zes zelfrapportagelijsten. Hier zijn geen goede of foute antwoorden; je krijgt een profielschets in plaats van een score." },
+  en: { test: "Aptitude", testLead: "Five components with right and wrong answers. You get 25 random questions per round and an explanation per question afterwards.", lijst: "Questionnaires", lijstLead: "Six self-report questionnaires. There are no right or wrong answers here; you get a profile sketch instead of a score." },
+  de: { test: "Fähigkeiten", testLead: "Fünf Teile mit richtigen und falschen Antworten. Pro Runde 25 zufällige Fragen, danach je Frage die Erläuterung.", lijst: "Fragebögen", lijstLead: "Sechs Selbsteinschätzungen. Hier gibt es keine richtigen oder falschen Antworten; statt einer Punktzahl erhalten Sie eine Profilskizze." },
+  fr: { test: "Aptitudes", testLead: "Cinq parties avec de bonnes et de mauvaises réponses. 25 questions au hasard par série, puis l'explication de chacune.", lijst: "Questionnaires", lijstLead: "Six questionnaires d'auto-évaluation. Ici il n'y a ni bonne ni mauvaise réponse ; vous obtenez une esquisse de profil plutôt qu'un score." },
+  es: { test: "Capacidades", testLead: "Cinco partes con respuestas correctas e incorrectas. 25 preguntas al azar por ronda y después la explicación de cada una.", lijst: "Cuestionarios", lijstLead: "Seis cuestionarios de autoinforme. Aquí no hay respuestas correctas ni incorrectas; recibes un esbozo de perfil en vez de una puntuación." },
+  ro: { test: "Aptitudini", testLead: "Cinci părți cu răspunsuri corecte și greșite. 25 de întrebări alese aleatoriu pe rundă, apoi explicația fiecăreia.", lijst: "Chestionare", lijstLead: "Șase chestionare de autoevaluare. Aici nu există răspunsuri corecte sau greșite; primești o schiță de profil în loc de un scor." },
+};
+const koppen = KOPPEN[lang] || KOPPEN.nl;
 const MEER = {
   nl: { kop: "Meer voorbereiding", link: "Naar de voorbereidingspagina" },
   en: { kop: "More preparation", link: "To the preparation page" },
@@ -34,12 +51,30 @@ const meer = MEER[lang] || MEER.nl;
 </div></section>
 
 <section><div class="wrap" style="display:block">
+  <div class="eyebrow">{koppen.test}</div>
+  <h2 class="section-title">{koppen.test}</h2>
+  <p style="max-width:820px;color:var(--muted);margin-bottom:18px">{koppen.testLead}</p>
   <div class="oo-grid">
     {onderdelen.map((o) => (
       <a class="oo-kaart" href={o.href}>
         <span class="oo-naam">{o.naam}</span>
         <span class="oo-lead">{o.lead}</span>
         <span class="oo-cta">{u.cta} &rarr;</span>
+      </a>
+    ))}
+  </div>
+</div></section>
+
+<section><div class="wrap" style="display:block">
+  <div class="eyebrow">{koppen.lijst}</div>
+  <h2 class="section-title">{koppen.lijst}</h2>
+  <p style="max-width:820px;color:var(--muted);margin-bottom:18px">{koppen.lijstLead}</p>
+  <div class="oo-grid">
+    {lijsten.map((o) => (
+      <a class="oo-kaart" href={o.href}>
+        <span class="oo-naam">{o.naam}</span>
+        <span class="oo-lead">{o.lead}</span>
+        <span class="oo-cta">{vl.start} &rarr;</span>
       </a>
     ))}
   </div>

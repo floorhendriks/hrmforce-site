@@ -30,9 +30,12 @@ const EXTRA = ["/afrekenen/","/en/afrekenen/","/de/afrekenen/","/fr/afrekenen/",
 
 // De oefentest: het overzicht en de vijf onderdelen, per taal.
 import { ONDERDELEN } from "./oefentest-ui.js";
+import { VRAGENLIJSTEN } from "./oefenvragenlijst.js";
 const OEFEN = ["nl", "en", "de", "fr", "es", "ro"].flatMap((t) => {
   const basis = t === "nl" ? "/oefentest/" : `/${t}/oefentest/`;
-  return [basis, ...Object.values(ONDERDELEN).map((o) => `${basis}${o.slug[t]}/`)];
+  return [basis,
+    ...Object.values(ONDERDELEN).map((o) => `${basis}${o.slug[t]}/`),
+    ...Object.values(VRAGENLIJSTEN).map((o) => `${basis}${o.slug[t]}/`)];
 });
 
 export default Array.from(new Set([...STATIC, ...EXTRA, ...OEFEN, ...sanityPaths]));

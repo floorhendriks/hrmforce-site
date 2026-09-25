@@ -1,22 +1,37 @@
 ---
 import Base from "../../layouts/Base.astro";
 import Oefentest from "../../components/Oefentest.astro";
+import Oefenvragenlijst from "../../components/Oefenvragenlijst.astro";
 import { ONDERDELEN, OT_UI } from "../../data/oefentest-ui.js";
+import { VRAGENLIJSTEN, VL_UI } from "../../data/oefenvragenlijst.js";
 import numeriek from "../../data/oefenbank/numeriek.nl.json";
 import verbaal from "../../data/oefenbank/verbaal.nl.json";
 import calculation from "../../data/oefenbank/calculation.nl.json";
 import ruimtelijk from "../../data/oefenbank/ruimtelijk.nl.json";
 import abstract from "../../data/oefenbank/abstract.nl.json";
+import vlbigfive from "../../data/oefenbank/vl-bigfive.nl.json";
+import vldisc from "../../data/oefenbank/vl-disc.nl.json";
+import vldrijfveren from "../../data/oefenbank/vl-drijfveren.nl.json";
+import vlleiderschap from "../../data/oefenbank/vl-leiderschap.nl.json";
+import vlcompetenties from "../../data/oefenbank/vl-competenties.nl.json";
+import vlstudiekeuze from "../../data/oefenbank/vl-studiekeuze.nl.json";
 const BANKEN = { numeriek, verbaal, calculation, ruimtelijk, abstract };
+const BANKEN_VL = { bigfive: vlbigfive, disc: vldisc, drijfveren: vldrijfveren, leiderschap: vlleiderschap, competenties: vlcompetenties, studiekeuze: vlstudiekeuze };
 export function getStaticPaths() {
-  return Object.entries(ONDERDELEN).map(([sleutel, o]) => ({
-    params: { onderdeel: o.slug["nl"] }, props: { sleutel, o },
+  const tests = Object.entries(ONDERDELEN).map(([sleutel, o]) => ({
+    params: { onderdeel: o.slug["nl"] }, props: { sleutel, o, vragenlijst: false },
   }));
+  const lijsten = Object.entries(VRAGENLIJSTEN).map(([sleutel, o]) => ({
+    params: { onderdeel: o.slug["nl"] }, props: { sleutel, o, vragenlijst: true },
+  }));
+  return [...tests, ...lijsten];
 }
-const { sleutel, o } = Astro.props;
-const t = OT_UI["nl"];
+const { sleutel, o, vragenlijst } = Astro.props;
+const t = vragenlijst ? VL_UI["nl"] : OT_UI["nl"];
 const naam = o.naam["nl"];
 ---
 <Base lang="nl" title={`${naam} | ${t.eyebrow} | hrmforce`} description={o.lead["nl"]} active="">
-  <Oefentest onderdeel={sleutel} lang="nl" bank={BANKEN[sleutel]} />
+  {vragenlijst
+    ? <Oefenvragenlijst onderdeel={sleutel} lang="nl" bank={BANKEN_VL[sleutel]} />
+    : <Oefentest onderdeel={sleutel} lang="nl" bank={BANKEN[sleutel]} />}
 </Base>
