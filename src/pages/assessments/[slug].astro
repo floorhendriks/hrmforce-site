@@ -6,6 +6,7 @@ import Base from "../../layouts/Base.astro";
 import { assessments } from "../../data/assessments.js";
 import { shopInfo, prijs } from "../../data/assessment-shop.js";
 import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../data/site-config.js";
+import OefenAanvraagForm from "../../components/OefenAanvraagForm.astro";
 import { getLangFromUrl, localizePath, demoPath } from "../../i18n/utils.js";
 import { examplesFor } from "../../data/assessment-examples.js";
 import { extraFor } from "../../data/assessment-detail-extra.js";
@@ -221,12 +222,8 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
       <strong>Alle voorbeeldvragen ontvangen?</strong>
       <span>Laat je e-mail achter en we sturen je een set voorbeeldvragen van {a.title}, plus uitleg over de rapportage.</span>
     </div>
-    <form class="vv-form" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
-      <input type="hidden" name="onderwerp" value={`Voorbeeldvragen ${a.title}`} />
-      <input type="hidden" name="assessment" value={a.title} />
-      <input type="email" name="email" required placeholder="jouw@werkmail.nl" aria-label="Werk e-mail" />
-      <button type="submit" class="btn btn-primary">Stuur mij de vragen</button>
-    </form>
+    <OefenAanvraagForm lang="nl" onderdeel={a.slug} titel={a.title} bron="assessment" klasse="vv-form"
+      knop="Stuur mij de vragen" placeholder="jouw@werkmail.nl" />
   </div>
 </div></section>
 

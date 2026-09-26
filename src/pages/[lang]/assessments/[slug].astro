@@ -8,6 +8,7 @@ import { assessmentsI18n } from "../../../data/assessments-i18n.js";
 import { detailUi } from "../../../data/assessment-detail-ui.js";
 import { shopInfo, prijs } from "../../../data/assessment-shop.js";
 import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../../data/site-config.js";
+import OefenAanvraagForm from "../../../components/OefenAanvraagForm.astro";
 import { localizePath, demoPath } from "../../../i18n/utils.js";
 import { examplesFor } from "../../../data/assessment-examples.js";
 import { extraFor } from "../../../data/assessment-detail-extra.js";
@@ -242,12 +243,8 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
       <strong>{t.vvTitle}</strong>
       <span>{t.vvText.replace("{t}", a.title)}</span>
     </div>
-    <form class="vv-form" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
-      <input type="hidden" name="onderwerp" value={`Voorbeeldvragen ${a.title}`} />
-      <input type="hidden" name="assessment" value={a.title} />
-      <input type="email" name="email" required placeholder={t.vvPlaceholder} aria-label={t.workEmail} />
-      <button type="submit" class="btn btn-primary">{t.vvButton}</button>
-    </form>
+    <OefenAanvraagForm lang={lang} onderdeel={a.slug} titel={a.title} bron="assessment" klasse="vv-form"
+      knop={t.vvButton} placeholder={t.vvPlaceholder} />
   </div>
 </div></section>
 

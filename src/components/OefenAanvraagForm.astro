@@ -1,0 +1,65 @@
+---
+/* Aanvraagformulier voor de oefenvragen. Post naar /api/oefenmateriaal, dat het
+   document als bijlage naar de kandidaat stuurt met oefenen@hrmforce.com in cc.
+   Zonder javascript valt het terug op een gewone formulierpost naar hetzelfde
+   adres; de bezoeker ziet dan de bevestiging van de server. */
+const { lang = "nl", onderdeel, titel, bron = "", knop, placeholder, klasse = "" } = Astro.props;
+const BEVESTIGING = {
+  nl: { ok: "Gelukt. Je oefenvragen zijn onderweg naar je mailbox.", fout: "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar oefenen@hrmforce.com.", bezig: "Bezig…" },
+  en: { ok: "Done. Your practice questions are on their way to your inbox.", fout: "Something went wrong while sending. Please try again or email oefenen@hrmforce.com.", bezig: "Working…" },
+  de: { ok: "Geschafft. Ihre Übungsfragen sind auf dem Weg in Ihr Postfach.", fout: "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an oefenen@hrmforce.com mailen.", bezig: "Läuft…" },
+  fr: { ok: "C'est fait. Vos questions d'entraînement arrivent dans votre boîte mail.", fout: "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à oefenen@hrmforce.com.", bezig: "En cours…" },
+  es: { ok: "Listo. Tus preguntas de práctica van camino a tu correo.", fout: "Algo salió mal al enviar. Inténtalo de nuevo o escribe a oefenen@hrmforce.com.", bezig: "Enviando…" },
+  ro: { ok: "Gata. Întrebările tale de exersare sunt pe drum spre inbox.", fout: "A apărut o eroare la trimitere. Încearcă din nou sau scrie la oefenen@hrmforce.com.", bezig: "Se trimite…" },
+};
+const b = BEVESTIGING[lang] || BEVESTIGING.nl;
+---
+<form class={`oa-form ${klasse}`} method="POST" action="/api/oefenmateriaal"
+      data-oefenaanvraag data-ok={b.ok} data-fout={b.fout} data-bezig={b.bezig}>
+  <input type="hidden" name="onderdeel" value={onderdeel} />
+  <input type="hidden" name="taal" value={lang} />
+  <input type="hidden" name="titel" value={titel} />
+  <input type="hidden" name="bron" value={bron} />
+  <input type="email" name="email" required placeholder={placeholder} aria-label={placeholder} />
+  <button type="submit" class="btn btn-primary">{knop}</button>
+</form>
+<p class="oa-melding" hidden></p>
+
+<style is:global>
+  .oa-melding { margin: 10px 0 0; font-size: 14px; font-weight: 600; }
+  .oa-melding.ok { color: #1a7f4b; }
+  .oa-melding.fout { color: #b3261e; }
+  .vv-cta .oa-melding { color: #fff; }
+</style>
+
+<script>
+  /* Eén afhandelaar voor alle aanvraagformulieren op de pagina. */
+  document.addEventListener("submit", function (ev) {
+    var form = ev.target;
+    if (!form || !form.matches || !form.matches("form[data-oefenaanvraag]")) return;
+    ev.preventDefault();
+    var knop = form.querySelector("button[type=submit]");
+    var melding = form.parentNode.querySelector(".oa-melding");
+    var oudeTekst = knop ? knop.textContent : "";
+    if (knop) { knop.disabled = true; knop.textContent = form.dataset.bezig; }
+    if (melding) { melding.hidden = true; melding.className = "oa-melding"; }
+    var data = {};
+    new FormData(form).forEach(function (v, k) { data[k] = v; });
+    fetch("/api/oefenmateriaal", {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data),
+    }).then(function (r) { return r.json().catch(function () { return {}; }); })
+      .then(function (uit) {
+        if (knop) { knop.disabled = false; knop.textContent = oudeTekst; }
+        if (!melding) return;
+        var gelukt = uit && uit.ok;
+        melding.textContent = gelukt ? form.dataset.ok : form.dataset.fout;
+        melding.className = "oa-melding " + (gelukt ? "ok" : "fout");
+        melding.hidden = false;
+        if (gelukt) form.reset();
+      })
+      .catch(function () {
+        if (knop) { knop.disabled = false; knop.textContent = oudeTekst; }
+        if (melding) { melding.textContent = form.dataset.fout; melding.className = "oa-melding fout"; melding.hidden = false; }
+      });
+  });
+</script>

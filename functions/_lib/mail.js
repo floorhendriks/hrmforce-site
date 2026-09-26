@@ -12,10 +12,10 @@ function b64(bytes) {
   return btoa(bin);
 }
 
-// mail = { to:[..], subject, text, html?, attachments:[{filename, content(Uint8Array)}] }
+// mail = { to:[..], cc:[..], subject, text, html?, attachments:[{filename, content(Uint8Array)}] }
 export async function sendMail(env, mail) {
   const provider = (env && env.MAIL_PROVIDER) || (env && env.RESEND_API_KEY ? "resend" : "formspree");
-  const from = (env && env.ORDER_EMAIL_FROM) || "shop@hrmforce.com";
+  const from = mail.from || (env && env.ORDER_EMAIL_FROM) || "shop@hrmforce.com";
   const to = Array.isArray(mail.to) ? mail.to : [mail.to];
 
   if (provider === "resend" && env && env.RESEND_API_KEY) {
@@ -26,6 +26,7 @@ export async function sendMail(env, mail) {
       text: mail.text || "",
     };
     if (mail.html) payload.html = mail.html;
+    if (mail.cc && mail.cc.length) payload.cc = Array.isArray(mail.cc) ? mail.cc : [mail.cc];
     if (mail.attachments && mail.attachments.length) {
       payload.attachments = mail.attachments.map((a) => ({ filename: a.filename, content: b64(a.content) }));
     }

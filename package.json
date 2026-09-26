@@ -19,7 +19,8 @@
     "hsf:media": "node scripts/hsf-optimaliseer-media.mjs",
     "hsf:links": "node scripts/hsf-controleer-links.mjs",
     "hsf:figuren": "node scripts/hsf-build-mbti-figuur.mjs",
-    "hsf:oefenbank": "node scripts/hsf-build-oefenbank.mjs"
+    "hsf:oefenbank": "node scripts/hsf-build-oefenbank.mjs",
+    "hsf:oefendocs": "node scripts/hsf-build-oefendocs.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.0",

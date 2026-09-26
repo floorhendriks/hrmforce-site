@@ -4,6 +4,7 @@ import validPaths from "../data/valid-paths.js";
 import { OEFEN_UI } from "../data/oefentests.js";
 import { examplesFor } from "../data/assessment-examples.js";
 import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../data/site-config.js";
+import OefenAanvraagForm from "./OefenAanvraagForm.astro";
 const { o, lang } = Astro.props;
 const d = o.i18n[lang] ?? o.i18n.nl;
 const ui = OEFEN_UI[lang] ?? OEFEN_UI.nl;
@@ -55,11 +56,8 @@ const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList", 
   <div class="center"><div class="eyebrow">{ui.moreQ}</div>
     <h2 class="section-title">{ui.formTitle}</h2>
     <p class="lead" style="margin-bottom:36px">{ui.formLead} {d.name}.</p></div>
-  <form class="formcard" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
-    <input type="hidden" name="onderwerp" value={`Oefenmateriaal ${d.name}`} />
-    <div class="fg"><label>{ui.email} *</label><input type="email" name="email" required /></div>
-    <button type="submit" class="btn btn-primary">{ui.submit}</button>
-  </form>
+  <OefenAanvraagForm lang={lang} onderdeel={o.slug} titel={d.name} bron="oefenen" klasse="formcard"
+    knop={ui.submit} placeholder={ui.email} />
   <p style="text-align:center;margin-top:20px"><a href="/oefen-assessment-maken/" style="color:var(--blue);font-weight:600">{ui.full} →</a></p>
 </div></section>
 
