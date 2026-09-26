@@ -55,6 +55,7 @@ const offices = [
     mail: "atencioncliente@hrmforce.com",
   },
 ];
+import AanvraagSoort from "../../components/AanvraagSoort.astro";
 ---
 <Base
   title="Kontakt - hrmforce"
@@ -120,9 +121,8 @@ const offices = [
         <form
           id="contactForm"
           class="formcard"
-          action="mailto:service@hrmforce.com"
+          action="/api/aanvraag"
           method="POST"
-          enctype="text/plain"
           novalidate
         >
           <div class="fg">
@@ -148,6 +148,7 @@ const offices = [
             <textarea id="bericht" name="bericht" rows="5" required></textarea>
           </div>
           <div class="next-steps"><strong>Wie geht es weiter?</strong><ol><li>Wir antworten innerhalb von 1 Werktag.</li><li>Ein kurzes Kennenlernen, auf Ihre Frage abgestimmt.</li><li>Eine individuelle Demo, unverbindlich.</li></ol><div class="ns-proof"><span class="ns-stars"><Sterren /></span> 10.000+ Teilnehmende · 1.200+ Organisationen · 4,9/5</div></div>
+          <AanvraagSoort lang="de" bron="contact" />
           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
           <button type="submit" class="btn btn-primary">Senden</button>
           <p class="privacy-note">
@@ -327,8 +328,29 @@ const offices = [
           (missing[0] || email).focus();
           return;
         }
-        msg.className = "form-msg success";
-        msg.textContent = "Vielen Dank! Ihre Nachricht wird in Ihrem E-Mail-Programm geöffnet. Wir melden uns so schnell wie möglich bei Ihnen.";
+        e.preventDefault();
+        var knop = form.querySelector("button[type=submit]");
+        var oud = knop ? knop.textContent : "";
+        if (knop) { knop.disabled = true; knop.textContent = "Wird gesendet…"; }
+        msg.className = "form-msg"; msg.textContent = "";
+        fetch("/api/aanvraag", { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
+          .then(function (r) { return r.json().catch(function () { return {}; }); })
+          .then(function (uit) {
+            if (knop) { knop.disabled = false; knop.textContent = oud; }
+            if (uit && uit.ok) {
+              form.reset();
+              msg.className = "form-msg success";
+              msg.textContent = uit.doorverwezen ? "Danke. Wir haben Ihnen die Möglichkeiten für Privatpersonen per E-Mail geschickt." : "Danke für Ihre Nachricht. Wir melden uns so schnell wie möglich.";
+            } else {
+              msg.className = "form-msg error";
+              msg.textContent = "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.";
+            }
+          })
+          .catch(function () {
+            if (knop) { knop.disabled = false; knop.textContent = oud; }
+            msg.className = "form-msg error";
+            msg.textContent = "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.";
+          });
       });
     })();
   </script>

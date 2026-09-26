@@ -2,6 +2,7 @@
 import Sterren from "../components/Sterren.astro";
 import Base from "../layouts/Base.astro";
 import { FORMSPREE_ENDPOINT, CONTACT_EMAIL, REVIEWS_EXTERNAL } from "../data/site-config.js";
+import AanvraagSoort from "../components/AanvraagSoort.astro";
 
 // Conversiegerichte aanvraagpagina: zo weinig drempels mogelijk. Eén formulier,
 // drie velden, één keer sociale bewijskracht. Geen navigatie-omleidingen, geen FAQ.
@@ -37,7 +38,7 @@ const googleUrl = REVIEWS_EXTERNAL?.google || "";
       <div class="dm-card">
         <h2>Vraag je demo aan</h2>
         <p class="dm-sub">Drie velden, dat is alles. We reageren binnen 24 uur op werkdagen.</p>
-        <form class="dm-form" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
+        <form class="dm-form" id="demoForm" action="/api/aanvraag" method="POST">
           <input type="hidden" name="onderwerp" value="Demo-aanvraag via /demo/" />
           <label for="dm-naam">Naam</label>
           <input id="dm-naam" type="text" name="naam" required autocomplete="name" placeholder="Voor- en achternaam" />
@@ -45,6 +46,7 @@ const googleUrl = REVIEWS_EXTERNAL?.google || "";
           <input id="dm-mail" type="email" name="email" required autocomplete="email" placeholder="jouw@werkmail.nl" />
           <label for="dm-org">Organisatie</label>
           <input id="dm-org" type="text" name="bedrijf" required autocomplete="organization" placeholder="Naam van je organisatie" />
+          <AanvraagSoort lang="nl" bron="demo" />
           <details class="dm-more">
             <summary>Liever gebeld worden of iets toevoegen?</summary>
             <label for="dm-tel">Telefoonnummer (optioneel)</label>
@@ -52,6 +54,7 @@ const googleUrl = REVIEWS_EXTERNAL?.google || "";
             <label for="dm-vraag">Je vraag (optioneel)</label>
             <textarea id="dm-vraag" name="bericht" rows="3" placeholder="Waar loop je tegenaan?"></textarea>
           </details>
+          <p id="demoMsg" class="form-msg" role="status" aria-live="polite"></p>
           <button type="submit" class="btn btn-primary dm-submit">Vraag de gratis demo aan</button>
           <p class="dm-fine">Vrijblijvend, geen verkoopdruk. We gebruiken je gegevens alleen om contact op te nemen, conform onze <a href="/trust/">privacyafspraken</a>.</p>
         </form>
@@ -59,6 +62,49 @@ const googleUrl = REVIEWS_EXTERNAL?.google || "";
     </div>
   </section>
 </Base>
+
+<script is:inline>
+  /* Verstuurt de aanvraag zonder de pagina te verlaten. De conversietelling in
+     Base.astro luistert op de submit zelf en blijft dus werken. */
+  (function () {
+    var form = document.getElementById("demoForm");
+    if (!form) return;
+    var msg = document.getElementById("demoMsg");
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var knop = form.querySelector("button[type=submit]");
+      var oud = knop ? knop.textContent : "";
+      if (knop) { knop.disabled = true; knop.textContent = "Verzenden…"; }
+      msg.className = "form-msg"; msg.textContent = "";
+      fetch("/api/aanvraag", { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
+        .then(function (r) { return r.json().catch(function () { return {}; }); })
+        .then(function (uit) {
+          if (knop) { knop.disabled = false; knop.textContent = oud; }
+          if (uit && uit.ok) {
+            form.reset();
+            msg.className = "form-msg success";
+            msg.textContent = uit.doorverwezen
+              ? "Bedankt. We hebben je een mail gestuurd met de mogelijkheden voor particulieren."
+              : "Bedankt voor je aanvraag. We reageren binnen 24 uur op werkdagen.";
+          } else {
+            msg.className = "form-msg error";
+            msg.textContent = "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.";
+          }
+        })
+        .catch(function () {
+          if (knop) { knop.disabled = false; knop.textContent = oud; }
+          msg.className = "form-msg error";
+          msg.textContent = "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.";
+        });
+    });
+  })();
+</script>
+
+<style is:global>
+  .dm-form .form-msg { font-size: 14px; font-weight: 600; margin: 0 0 10px; }
+  .dm-form .form-msg.success { color: #1a7f4b; }
+  .dm-form .form-msg.error { color: #b3261e; }
+</style>
 
 <style>
   .dm { background: var(--navy); }

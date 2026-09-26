@@ -46,6 +46,7 @@ const offices = [
     mail: "atencioncliente@hrmforce.com",
   },
 ];
+import AanvraagSoort from "../../components/AanvraagSoort.astro";
 ---
 <Base
   title="Contact - hrmforce"
@@ -111,9 +112,8 @@ const offices = [
         <form
           id="contactForm"
           class="formcard"
-          action="mailto:service@hrmforce.com"
+          action="/api/aanvraag"
           method="POST"
-          enctype="text/plain"
           novalidate
         >
           <div class="frow">
@@ -149,6 +149,7 @@ const offices = [
             <textarea id="mesaj" name="mesaj" rows="5" required></textarea>
           </div>
           <div class="next-steps"><strong>Ce urmează?</strong><ol><li>Răspundem în maximum 1 zi lucrătoare.</li><li>O scurtă discuție, adaptată întrebării tale.</li><li>O demonstrație personalizată, fără obligații.</li></ol><div class="ns-proof"><span class="ns-stars"><Sterren /></span> 10.000+ participanți · 1.200+ organizații · 4,9/5</div></div>
+          <AanvraagSoort lang="ro" bron="contact" />
           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -238,8 +239,29 @@ const offices = [
           (missing[0] || email).focus();
           return;
         }
-        msg.className = "form-msg success";
-        msg.textContent = "Vă mulțumim! Mesajul dumneavoastră se va deschide în programul de e-mail. Vă vom contacta cât mai curând posibil.";
+        e.preventDefault();
+        var knop = form.querySelector("button[type=submit]");
+        var oud = knop ? knop.textContent : "";
+        if (knop) { knop.disabled = true; knop.textContent = "Se trimite…"; }
+        msg.className = "form-msg"; msg.textContent = "";
+        fetch("/api/aanvraag", { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
+          .then(function (r) { return r.json().catch(function () { return {}; }); })
+          .then(function (uit) {
+            if (knop) { knop.disabled = false; knop.textContent = oud; }
+            if (uit && uit.ok) {
+              form.reset();
+              msg.className = "form-msg success";
+              msg.textContent = uit.doorverwezen ? "Mulțumim. Ți-am trimis pe e-mail opțiunile pentru persoane fizice." : "Mulțumim pentru mesaj. Revenim cât de repede putem.";
+            } else {
+              msg.className = "form-msg error";
+              msg.textContent = "A apărut o eroare la trimitere. Încearcă din nou sau scrie la service@hrmforce.com.";
+            }
+          })
+          .catch(function () {
+            if (knop) { knop.disabled = false; knop.textContent = oud; }
+            msg.className = "form-msg error";
+            msg.textContent = "A apărut o eroare la trimitere. Încearcă din nou sau scrie la service@hrmforce.com.";
+          });
       });
     })();
   </script>

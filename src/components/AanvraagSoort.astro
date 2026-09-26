@@ -1,0 +1,32 @@
+---
+/* Vraagt of de aanvraag zakelijk of particulier is. Een particuliere aanvraag
+   krijgt automatisch de doorverwijzing naar de webshop; zakelijk loopt zoals
+   altijd. De keuze staat standaard op zakelijk, zodat niemand hem per ongeluk
+   leeg laat. */
+import { SOORT_UI } from "../data/aanvraag-tekst.js";
+const { lang = "nl", bron = "" } = Astro.props;
+const u = SOORT_UI[lang] || SOORT_UI.nl;
+---
+<input type="hidden" name="taal" value={lang} />
+<input type="hidden" name="bron" value={bron} />
+<fieldset class="as-veld">
+  <legend>{u.vraag}</legend>
+  <label class="as-optie">
+    <input type="radio" name="soort" value="zakelijk" checked />
+    <span>{u.zakelijk}</span>
+  </label>
+  <label class="as-optie">
+    <input type="radio" name="soort" value="particulier" />
+    <span>{u.particulier}</span>
+  </label>
+</fieldset>
+
+<style is:global>
+  .as-veld { border: 0; margin: 0 0 14px; padding: 0; }
+  .as-veld legend { display: block; color: var(--navy); font-weight: 600; font-size: 13px; margin: 0 0 7px; padding: 0; float: none; width: auto; }
+  .as-veld .as-optie { display: flex; align-items: center; gap: 9px; padding: 9px 12px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); margin: 0 0 7px; cursor: pointer; font-size: 14.5px; font-weight: 400; line-height: 1.35; background: #fff; color: var(--text); }
+  .as-veld .as-optie:hover { border-color: var(--blue); }
+  .as-veld .as-optie input[type="radio"] { width: 16px; height: 16px; min-width: 16px; margin: 0; flex: none; accent-color: var(--navy); }
+  .as-veld .as-optie span { display: inline; margin: 0; }
+  .as-veld .as-optie:has(input:checked) { border-color: var(--navy); background: #eef3fa; color: var(--navy); font-weight: 600; }
+</style>
