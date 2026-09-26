@@ -4,6 +4,10 @@
    Zonder javascript valt het terug op een gewone formulierpost naar hetzelfde
    adres; de bezoeker ziet dan de bevestiging van de server. */
 const { lang = "nl", onderdeel, titel, bron = "", knop, placeholder, klasse = "" } = Astro.props;
+const NAAM_LABEL = {
+  nl: "Je naam", en: "Your name", de: "Ihr Name", fr: "Votre nom", es: "Tu nombre", ro: "Numele t\u0103u",
+};
+const naamLabel = NAAM_LABEL[lang] || NAAM_LABEL.nl;
 const BEVESTIGING = {
   nl: { ok: "Gelukt. Je oefenvragen zijn onderweg naar je mailbox.", fout: "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar oefenen@hrmforce.com.", bezig: "Bezig…" },
   en: { ok: "Done. Your practice questions are on their way to your inbox.", fout: "Something went wrong while sending. Please try again or email oefenen@hrmforce.com.", bezig: "Working…" },
@@ -20,16 +24,36 @@ const b = BEVESTIGING[lang] || BEVESTIGING.nl;
   <input type="hidden" name="taal" value={lang} />
   <input type="hidden" name="titel" value={titel} />
   <input type="hidden" name="bron" value={bron} />
+  <input type="text" name="naam" autocomplete="name" placeholder={naamLabel} aria-label={naamLabel} />
   <input type="email" name="email" required placeholder={placeholder} aria-label={placeholder} />
   <button type="submit" class="btn btn-primary">{knop}</button>
 </form>
 <p class="oa-melding" hidden></p>
 
 <style is:global>
-  .oa-melding { margin: 10px 0 0; font-size: 14px; font-weight: 600; }
+  .oa-melding { margin: 10px 0 0; font-size: 14px; font-weight: 600; line-height: 1.45; }
   .oa-melding.ok { color: #1a7f4b; }
   .oa-melding.fout { color: #b3261e; }
-  .vv-cta .oa-melding { color: #fff; }
+  /* in de blauwe balk op de assessmentpagina: hele breedte, onder het formulier */
+  .vv-cta { flex-wrap: wrap; }
+  .vv-cta .oa-melding { flex-basis: 100%; width: 100%; color: #fff; text-align: right; margin: 4px 0 0; }
+  .vv-cta .oa-melding.fout { color: #ffd4cf; }
+  /* De blauwe balk op de assessmentpagina. Deze opmaak stond eerder in de
+     pagina zelf; omdat het formulier nu een component is, hoort ze hier. */
+  .vv-form { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .vv-form input[type="text"], .vv-form input[type="email"] {
+    border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.08); color: #fff;
+    border-radius: var(--radius); padding: 11px 14px; font-size: 15px; font-family: inherit;
+  }
+  .vv-form input[type="email"] { min-width: 210px; }
+  .vv-form input[type="text"] { min-width: 170px; }
+  .vv-form input::placeholder { color: #9fb2c9; }
+  .vv-form input:focus { outline: none; border-color: #fff; background: rgba(255,255,255,.16); }
+  @media (max-width: 620px) { .vv-form { flex-direction: column; align-items: stretch; } .vv-form .btn { width: 100%; } }
+
+  /* De kaart op de oefenpagina: de velden onder elkaar met ruimte ertussen. */
+  .formcard.oa-form input[type="text"], .formcard.oa-form input[type="email"] { display: block; width: 100%; margin-bottom: 14px; }
+  @media (max-width: 760px) { .vv-cta .oa-melding { text-align: left; } }
 </style>
 
 <script>
