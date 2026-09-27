@@ -48,6 +48,7 @@ const offices = [
   },
 ];
 import AanvraagSoort from "../../components/AanvraagSoort.astro";
+import Mensencheck from "../../components/Mensencheck.astro";
 ---
 <Base
   title="Contacto - hrmforce"
@@ -150,6 +151,7 @@ import AanvraagSoort from "../../components/AanvraagSoort.astro";
           </div>
           <div class="next-steps"><strong>¿Qué pasa después?</strong><ol><li>Respondemos en un plazo de 1 día laborable.</li><li>Una breve toma de contacto, adaptada a tu pregunta.</li><li>Una demo personalizada, sin compromiso.</li></ol><div class="ns-proof"><span class="ns-stars"><Sterren /></span> 10.000+ participantes · 1.200+ organizaciones · 4,9/5</div></div>
           <AanvraagSoort lang="es" bron="contact" />
+          <Mensencheck lang="es" />
           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
           <button type="submit" class="btn btn-primary">Enviar</button>
         </form>
@@ -331,7 +333,7 @@ import AanvraagSoort from "../../components/AanvraagSoort.astro";
               msg.textContent = uit.doorverwezen ? "Gracias. Te hemos enviado por correo las opciones para particulares." : "Gracias por tu mensaje. Nos pondremos en contacto lo antes posible.";
             } else {
               msg.className = "form-msg error";
-              msg.textContent = "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.";
+              msg.textContent = (uit && uit.error === "geen_mens") ? "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo." : "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.";
             }
           })
           .catch(function () {

@@ -46,6 +46,7 @@ const offices = [
   },
 ];
 import AanvraagSoort from "../../components/AanvraagSoort.astro";
+import Mensencheck from "../../components/Mensencheck.astro";
 ---
 <Base
   title="Contact - hrmforce"
@@ -148,6 +149,7 @@ import AanvraagSoort from "../../components/AanvraagSoort.astro";
           </div>
           <div class="next-steps"><strong>Que se passe-t-il ensuite ?</strong><ol><li>Nous repondons sous 1 jour ouvre.</li><li>Un court echange, adapte a votre question.</li><li>Une demo personnalisee, sans engagement.</li></ol><div class="ns-proof"><span class="ns-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> 10 000+ participants &middot; 1 200+ organisations &middot; 4,9/5</div></div>
           <AanvraagSoort lang="fr" bron="contact" />
+          <Mensencheck lang="fr" />
           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
           <button type="submit" class="btn btn-primary">Envoyer</button>
           <p class="privacy-note">
@@ -342,7 +344,7 @@ import AanvraagSoort from "../../components/AanvraagSoort.astro";
               msg.textContent = uit.doorverwezen ? "Merci. Nous vous avons envoyé par e-mail les possibilités pour les particuliers." : "Merci pour votre message. Nous vous recontactons au plus vite.";
             } else {
               msg.className = "form-msg error";
-              msg.textContent = "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.";
+              msg.textContent = (uit && uit.error === "geen_mens") ? "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez." : "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.";
             }
           })
           .catch(function () {

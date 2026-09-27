@@ -47,6 +47,7 @@ const offices = [
   },
 ];
 import AanvraagSoort from "../../components/AanvraagSoort.astro";
+import Mensencheck from "../../components/Mensencheck.astro";
 ---
 <Base
   title="Contact - hrmforce"
@@ -149,6 +150,7 @@ import AanvraagSoort from "../../components/AanvraagSoort.astro";
           </div>
           <div class="next-steps"><strong>What happens next?</strong><ol><li>We respond within 1 business day.</li><li>A short intro call, tailored to your question.</li><li>A personalised demo, no obligation.</li></ol><div class="ns-proof"><span class="ns-stars"><Sterren /></span> 10,000+ participants · 1,200+ organisations · 4.9/5</div></div>
           <AanvraagSoort lang="en" bron="contact" />
+          <Mensencheck lang="en" />
           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
           <button type="submit" class="btn btn-primary">Submit</button>
           <p class="privacy-note">
@@ -341,7 +343,7 @@ import AanvraagSoort from "../../components/AanvraagSoort.astro";
               msg.textContent = uit.doorverwezen ? "Thank you. We have emailed you the options for individuals." : "Thank you for your message. We will get in touch as soon as we can.";
             } else {
               msg.className = "form-msg error";
-              msg.textContent = "Something went wrong while sending. Please try again or email service@hrmforce.com.";
+              msg.textContent = (uit && uit.error === "geen_mens") ? "We could not confirm that you are human. Tick the box and try again." : "Something went wrong while sending. Please try again or email service@hrmforce.com.";
             }
           })
           .catch(function () {

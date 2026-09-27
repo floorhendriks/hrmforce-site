@@ -5,6 +5,12 @@ const { wp, ui, lang } = Astro.props;
 const d = wp.i18n[lang] ?? wp.i18n.nl;
 const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
 const wpHref = localizePath("/whitepapers/", lang);
+import Mensencheck from "./Mensencheck.astro";
+const MC_OK = { nl: "Bedankt. We nemen zo snel mogelijk contact met je op.", en: "Thank you. We will get in touch as soon as we can.", de: "Danke. Wir melden uns so schnell wie möglich.", fr: "Merci. Nous vous recontactons au plus vite.", es: "Gracias. Nos pondremos en contacto lo antes posible.", ro: "Mulțumim. Revenim cât de repede putem." };
+const MC_FOUT = { nl: "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.", en: "Something went wrong while sending. Please try again or email service@hrmforce.com.", de: "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.", fr: "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.", es: "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.", ro: "A apărut o eroare la trimitere. Încearcă din nou sau scrie la service@hrmforce.com." };
+const MC_MENS = { nl: "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.", en: "We could not confirm that you are human. Tick the box and try again.", de: "Wir konnten nicht feststellen, dass Sie ein Mensch sind. Bitte das Kästchen anklicken und erneut versuchen.", fr: "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez.", es: "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo.", ro: "Nu am putut confirma că ești o persoană. Bifează căsuța și încearcă din nou." };
+const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…", fr: "Envoi…", es: "Enviando…", ro: "Se trimite…" };
+
 ---
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={wpHref}>{ui.idxCrumb}</a> › <span>{d.title}</span></div></div>
 
@@ -19,11 +25,14 @@ const wpHref = localizePath("/whitepapers/", lang);
   <h2 class="section-title" style="margin-top:26px">{ui.inside}</h2>
   <ul class="traits">{d.inside.map((x) => <li>{x}</li>)}</ul>
 
-  <form class="wp-form formcard" id="wpform" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"} style="margin-top:26px">
+  <form class="wp-form formcard" id="wpform" action="/api/aanvraag" method="POST" style="margin-top:26px" data-mensform data-ok={MC_OK[lang] || MC_OK.nl} data-fout={MC_FOUT[lang] || MC_FOUT.nl} data-mensfout={MC_MENS[lang] || MC_MENS.nl} data-bezig={MC_BEZIG[lang] || MC_BEZIG.nl}>
     <input type="hidden" name="onderwerp" value={`Whitepaper: ${d.title}`} />
     <input type="hidden" name="whitepaper" value={d.title} />
     <div class="eyebrow">{ui.form}</div>
     <div class="fg" style="margin-top:10px"><label>{ui.email} *</label><input type="email" name="email" required placeholder="jouw@werkmail.nl" /></div>
+    <input type="hidden" name="taal" value={lang} />
+    <input type="hidden" name="bron" value="whitepaper" />
+    <Mensencheck lang={lang} />
     <button type="submit" class="btn btn-primary">{ui.submit} &darr;</button>
     <p class="note" style="margin-top:10px;font-size:13px;color:var(--muted)">{ui.note}</p>
   </form>

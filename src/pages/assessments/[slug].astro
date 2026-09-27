@@ -7,6 +7,7 @@ import { assessments } from "../../data/assessments.js";
 import { shopInfo, prijs } from "../../data/assessment-shop.js";
 import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../data/site-config.js";
 import OefenAanvraagForm from "../../components/OefenAanvraagForm.astro";
+import Mensencheck from "../../components/Mensencheck.astro";
 import { getLangFromUrl, localizePath, demoPath } from "../../i18n/utils.js";
 import { examplesFor } from "../../data/assessment-examples.js";
 import { extraFor } from "../../data/assessment-detail-extra.js";
@@ -133,6 +134,11 @@ const dvRijen = _dvDims.map((n) => ({ n, v: Math.round((2.4 + _dvHash(a.slug + "
 const dvNorm = /capacit|cognit|abstract|numer|verbaal|redeneer|ability|iq|intelligen|aanleg/i
   .test(`${a.slug} ${a.title} ${(a.traits || []).join(" ")}`);
 const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentieprofiel";
+
+const MC_OK = { nl: "Bedankt. We nemen zo snel mogelijk contact met je op.", en: "Thank you. We will get in touch as soon as we can.", de: "Danke. Wir melden uns so schnell wie möglich.", fr: "Merci. Nous vous recontactons au plus vite.", es: "Gracias. Nos pondremos en contacto lo antes posible.", ro: "Mulțumim. Revenim cât de repede putem." };
+const MC_FOUT = { nl: "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.", en: "Something went wrong while sending. Please try again or email service@hrmforce.com.", de: "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.", fr: "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.", es: "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.", ro: "A apărut o eroare la trimitere. Încearcă din nou sau scrie la service@hrmforce.com." };
+const MC_MENS = { nl: "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.", en: "We could not confirm that you are human. Tick the box and try again.", de: "Wir konnten nicht feststellen, dass Sie ein Mensch sind. Bitte das Kästchen anklicken und erneut versuchen.", fr: "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez.", es: "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo.", ro: "Nu am putut confirma că ești o persoană. Bifează căsuța și încearcă din nou." };
+const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…", fr: "Envoi…", es: "Enviando…", ro: "Se trimite…" };
 
 ---
 <Base title={a.metaTitle} description={a.metaDescription} active="assessments">
@@ -317,12 +323,15 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
         <h2 class="section-title">{a.title} aanvragen</h2>
         <p class="lead" style="margin-bottom:36px">Vul het formulier in en krijg binnen 24 uur toegang.</p>
       </div>
-      <form class="formcard" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
+      <form class="formcard" action="/api/aanvraag" method="POST" data-mensform data-ok={MC_OK["nl"] || MC_OK.nl} data-fout={MC_FOUT["nl"] || MC_FOUT.nl} data-mensfout={MC_MENS["nl"] || MC_MENS.nl} data-bezig={MC_BEZIG["nl"] || MC_BEZIG.nl}>
         <div class="frow">
           <div class="fg"><label>Voornaam *</label><input type="text" name="voornaam" required /></div>
           <div class="fg"><label>Werk e-mail *</label><input type="email" name="email" required /></div>
         </div>
         <div class="fg"><label>Bedrijfsnaam</label><input type="text" name="bedrijf" /></div>
+        <input type="hidden" name="taal" value={"nl"} />
+        <input type="hidden" name="bron" value="assessment-toegang" />
+        <Mensencheck lang={"nl"} />
         <button type="submit" class="btn btn-primary">Verzenden</button>
       </form>
       </div>

@@ -1,0 +1,89 @@
+---
+/* Spamcontrole voor alle formulieren. Drie lagen:
+   1. een verborgen veld dat alleen een bot invult
+   2. de tijd tussen openen en verzenden; onder de drie seconden is het geen mens
+   3. het vakje van Cloudflare Turnstile, zodra de sleutels zijn ingesteld
+   Zonder sleutels blijven laag 1 en 2 gewoon werken en ziet de bezoeker niets
+   extra's. De server controleert alle drie; hier staat alleen wat de bezoeker
+   nodig heeft. */
+import { MENS_UI } from "../data/mensencheck-tekst.js";
+const { lang = "nl" } = Astro.props;
+const u = MENS_UI[lang] || MENS_UI.nl;
+const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
+const TAAL = { nl: "nl", en: "en", de: "de", fr: "fr", es: "es", ro: "ro" };
+---
+<div class="mc-val" aria-hidden="true">
+  <label for={`mc-web-${lang}`}>{u.val}</label>
+  <input id={`mc-web-${lang}`} type="text" name="website" tabindex="-1" autocomplete="off" />
+</div>
+<input type="hidden" name="gestart" value="" />
+{siteKey && (
+  <div class="mc-vak cf-turnstile" data-sitekey={siteKey} data-language={TAAL[lang] || "nl"} data-theme="light" data-size="flexible"></div>
+)}
+
+<style is:global>
+  .mc-val { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+  .mc-vak { margin: 0 0 14px; max-width: 320px; }
+  .vv-form .mc-vak { flex-basis: 100%; margin: 4px 0 0; }
+  .dm-form .mc-vak { margin: 0 0 16px; }
+  .mc-melding { margin: 12px 0 0; font-size: 14px; font-weight: 600; line-height: 1.45; }
+  .mc-melding.ok { color: #1a7f4b; }
+  .mc-melding.fout { color: #b3261e; }
+  .pm-req .mc-melding, .gvz-form .mc-melding { color: #fff; }
+  .pm-req .mc-melding.fout, .gvz-form .mc-melding.fout { color: #ffd4cf; }
+</style>
+
+<script>
+  (function () {
+    /* Zet het starttijdstip zodra de pagina er staat. Een bot die het formulier
+       rechtstreeks post heeft dit veld niet ingevuld. */
+    function stempel() {
+      document.querySelectorAll('input[name="gestart"]').forEach(function (i) {
+        if (!i.value) i.value = String(Date.now());
+      });
+    }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", stempel);
+    else stempel();
+
+    /* Afhandeling voor de formulieren die hiervoor rechtstreeks naar Formspree
+       gingen. Formulieren met een eigen script doen niet mee. */
+    document.addEventListener("submit", function (ev) {
+      var form = ev.target;
+      if (!form || !form.matches || !form.matches("form[data-mensform]")) return;
+      if (ev.defaultPrevented) return;
+      ev.preventDefault();
+      var knop = form.querySelector("button[type=submit], input[type=submit]");
+      var melding = form.querySelector(".mc-melding");
+      if (!melding) {
+        melding = document.createElement("p");
+        melding.className = "mc-melding";
+        form.appendChild(melding);
+      }
+      var oud = knop ? knop.textContent : "";
+      if (knop) { knop.disabled = true; knop.textContent = form.dataset.bezig || "..."; }
+      melding.className = "mc-melding";
+      melding.textContent = "";
+      fetch(form.getAttribute("action"), {
+        method: "POST", body: new FormData(form), headers: { Accept: "application/json" },
+      })
+        .then(function (r) { return r.json().catch(function () { return {}; }); })
+        .then(function (uit) {
+          if (knop) { knop.disabled = false; knop.textContent = oud; }
+          if (uit && uit.ok) {
+            form.reset();
+            stempel();
+            melding.className = "mc-melding ok";
+            melding.textContent = form.dataset.ok || "";
+          } else {
+            melding.className = "mc-melding fout";
+            melding.textContent = (uit && uit.error === "geen_mens") ? (form.dataset.mensfout || "") : (form.dataset.fout || "");
+          }
+        })
+        .catch(function () {
+          if (knop) { knop.disabled = false; knop.textContent = oud; }
+          melding.className = "mc-melding fout";
+          melding.textContent = form.dataset.fout || "";
+        });
+    });
+  })();
+</script>

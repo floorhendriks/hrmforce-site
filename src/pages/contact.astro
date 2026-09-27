@@ -51,6 +51,7 @@ const offices = [
   },
 ];
 import AanvraagSoort from "../components/AanvraagSoort.astro";
+import Mensencheck from "../components/Mensencheck.astro";
 ---
 <Base
   title="Contact opnemen | Hrmforce.com"
@@ -130,6 +131,7 @@ import AanvraagSoort from "../components/AanvraagSoort.astro";
           </div>
           <div class="next-steps"><strong>Wat gebeurt er daarna?</strong><ol><li>We reageren binnen 1 werkdag.</li><li>Een korte kennismaking, afgestemd op jouw vraag.</li><li>Een demo op maat, vrijblijvend.</li></ol><div class="ns-proof"><span class="ns-stars"><Sterren /></span> 10.000+ deelnemers · 1.200+ organisaties · 4,9/5</div></div>
           <AanvraagSoort lang="nl" bron="contact" />
+          <Mensencheck lang="nl" />
           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
           <button type="submit" class="btn btn-primary">Verstuur</button>
           <p class="privacy-note">
@@ -335,7 +337,7 @@ import AanvraagSoort from "../components/AanvraagSoort.astro";
               msg.textContent = uit.doorverwezen ? "Bedankt. We hebben je een mail gestuurd met de mogelijkheden voor particulieren." : "Bedankt voor je bericht. We nemen zo snel mogelijk contact met je op.";
             } else {
               msg.className = "form-msg error";
-              msg.textContent = "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.";
+              msg.textContent = (uit && uit.error === "geen_mens") ? "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw." : "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.";
             }
           })
           .catch(function () {

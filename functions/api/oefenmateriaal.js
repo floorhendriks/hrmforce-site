@@ -2,6 +2,7 @@
 // kandidaat, met oefenen@hrmforce.com in cc zodat de aanvraag daar binnenkomt.
 // De documenten staan als PDF in public/media/oefenvragen.
 import { sendMail } from "../_lib/mail.js";
+import { controleerMens } from "../_lib/mens.js";
 
 const schoon = (s, max) => String(s == null ? "" : s).replace(/[\r\n\t]+/g, " ").trim().slice(0, max);
 const mailOk = (s) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s);
@@ -93,6 +94,9 @@ export async function onRequestPost({ request, env }) {
   let taal = schoon(body.taal, 5).toLowerCase();
   if (!TALEN.includes(taal)) taal = "nl";
   if (!mailOk(email)) return json({ error: "invalid_email" }, 400);
+
+  const mens = await controleerMens(env, body, request);
+  if (!mens.ok) return json({ error: "geen_mens", reden: mens.reden }, 422);
 
   const t = T[taal];
   const doc = DOCUMENT[onderdeel];

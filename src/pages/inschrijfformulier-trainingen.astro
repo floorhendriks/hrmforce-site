@@ -7,6 +7,7 @@ const trainingen = [
   "24-09-2026 Certificatietraining",
   "19-11-2026 Certificatietraining",
 ];
+import Mensencheck from "../components/Mensencheck.astro";
 ---
 <Base
   title="Inschrijfformulier trainingen | Hrmforce"
@@ -24,7 +25,11 @@ const trainingen = [
   </div></section>
 
   <section class="formsec"><div class="wrap">
-    <form id="training-form" class="formcard" action="/contact/" method="POST" novalidate>
+    <form id="training-form" class="formcard" action="/api/aanvraag" method="POST" novalidate
+      data-mensform data-ok="Bedankt voor je inschrijving. We nemen zo snel mogelijk contact met je op."
+      data-fout="Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com."
+      data-mensfout="We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw."
+      data-bezig="Verzenden…">
       <div class="fg">
         <label for="aanhef">Aanhef *</label>
         <select id="aanhef" name="aanhef" required>
@@ -54,6 +59,9 @@ const trainingen = [
       </div>
       <div class="fg"><label for="opmerking">Opmerking</label><textarea id="opmerking" name="opmerking" rows="4"></textarea></div>
       <div id="form-msg" style="display:none;margin-bottom:16px;padding:12px 14px;border-radius:var(--radius);font-size:14px"></div>
+      <input type="hidden" name="taal" value="nl" />
+      <input type="hidden" name="bron" value="training" />
+      <Mensencheck lang="nl" />
       <button type="submit" class="btn btn-primary">Verzenden</button>
       <p style="color:var(--muted);font-size:13px;margin-top:14px">Velden met een * zijn verplicht. Na verzending nemen wij zo snel mogelijk contact met je op.</p>
     </form>

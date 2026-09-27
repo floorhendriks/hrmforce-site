@@ -8,6 +8,7 @@ import AanvraagSoort from "../components/AanvraagSoort.astro";
 // drie velden, één keer sociale bewijskracht. Geen navigatie-omleidingen, geen FAQ.
 const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
 const googleUrl = REVIEWS_EXTERNAL?.google || "";
+import Mensencheck from "../components/Mensencheck.astro";
 ---
 <Base
   title="Gratis demo aanvragen | hrmforce"
@@ -54,6 +55,7 @@ const googleUrl = REVIEWS_EXTERNAL?.google || "";
             <label for="dm-vraag">Je vraag (optioneel)</label>
             <textarea id="dm-vraag" name="bericht" rows="3" placeholder="Waar loop je tegenaan?"></textarea>
           </details>
+          <Mensencheck lang="nl" />
           <p id="demoMsg" class="form-msg" role="status" aria-live="polite"></p>
           <button type="submit" class="btn btn-primary dm-submit">Vraag de gratis demo aan</button>
           <p class="dm-fine">Vrijblijvend, geen verkoopdruk. We gebruiken je gegevens alleen om contact op te nemen, conform onze <a href="/trust/">privacyafspraken</a>.</p>
@@ -88,7 +90,7 @@ const googleUrl = REVIEWS_EXTERNAL?.google || "";
               : "Bedankt voor je aanvraag. We reageren binnen 24 uur op werkdagen.";
           } else {
             msg.className = "form-msg error";
-            msg.textContent = "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.";
+            msg.textContent = (uit && uit.error === "geen_mens") ? "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw." : "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.";
           }
         })
         .catch(function () {

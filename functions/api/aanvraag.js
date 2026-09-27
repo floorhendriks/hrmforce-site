@@ -5,6 +5,7 @@
 // pagina waarop is aangevraagd.
 import { sendMail } from "../_lib/mail.js";
 import { PARTICULIER_MAIL } from "../../src/data/aanvraag-tekst.js";
+import { controleerMens, TECHNISCH } from "../_lib/mens.js";
 
 const TALEN = ["nl", "en", "de", "fr", "es", "ro"];
 const schoon = (s, max) => String(s == null ? "" : s).replace(/[\r\n\t]+/g, " ").trim().slice(0, max);
@@ -38,6 +39,9 @@ export async function onRequestPost({ request, env }) {
 
   if (!mailOk(email)) return json({ error: "invalid_email" }, 400);
 
+  const mens = await controleerMens(env, body, request);
+  if (!mens.ok) return json({ error: "geen_mens", reden: mens.reden }, 422);
+
   const naarIntern = (env && env.REQUEST_EMAIL_TO) || "service@hrmforce.com";
   const ccIntern = (env && env.REQUEST_EMAIL_CC) || "f.hendriks@hrmforce.com";
   const van = (env && env.REQUEST_EMAIL_FROM) || "service@hrmforce.com";
@@ -55,6 +59,17 @@ export async function onRequestPost({ request, env }) {
     "Bericht:",
     bericht || "-",
   ].filter((r) => r !== "");
+
+  // Alles wat dit formulier verder meestuurt, zodat er niets verloren gaat.
+  const gebruikt = new Set(["naam", "voornaam", "firstname", "nombre", "prenume", "vorname",
+    "achternaam", "surname", "apellido", "nume", "email", "e-mail", "correo",
+    "bedrijf", "company", "organisatie", "empresa", "firma", "entreprise", "companie",
+    "telefoon", "phone", "tel", "telefono", "telefon",
+    "bericht", "message", "vraag", "mensaje", "nachricht", "mesaj", "subject", "asunto", "betreff", "sujet", "subiect"]);
+  const overig = Object.entries(body)
+    .filter(([k, v]) => !gebruikt.has(k) && !TECHNISCH.has(k) && String(v).trim() !== "")
+    .map(([k, v]) => `${k}: ${schoon(v, 500)}`);
+  if (overig.length) regels.push("", "Overige velden:", ...overig);
 
   const kop = soort === "particulier"
     ? "Particuliere aanvraag, doorverwijzing is automatisch verstuurd."

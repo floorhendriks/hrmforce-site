@@ -23,6 +23,7 @@ const gvzSchema = [
   ] },
   { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: gvzFaq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) },
 ];
+import Mensencheck from "../../components/Mensencheck.astro";
 ---
 <Base crumbs={false}
   title="Geschikt voor de Zorg | Hrmforce"
@@ -204,7 +205,7 @@ const gvzSchema = [
       <h2 class="section-title">Vraag een gratis demo aan</h2>
       <p class="lead center" style="max-width:640px;margin:0 0 8px">Doe zelf de test en ontvang een voorbeeldrapportage. Gratis &middot; geen verplichting &middot; per e-mail.</p>
     </div>
-    <form class="gvz-form" id="gvzForm" method="POST" action={formAction}>
+    <form class="gvz-form" id="gvzForm" method="POST" action="/api/aanvraag">
       <input type="hidden" name="_subject" value="Demo-aanvraag Geschikt voor Zorg" />
       <div class="gvz-form-row">
         <input type="text" name="naam" placeholder="Naam" required />
@@ -214,6 +215,9 @@ const gvzSchema = [
         <input type="text" name="organisatie" placeholder="Organisatie" />
         <input type="text" name="vacatures" placeholder="Aantal openstaande vacatures (optioneel)" />
       </div>
+      <input type="hidden" name="taal" value="nl" />
+      <input type="hidden" name="bron" value="geschiktvoorzorg" />
+      <Mensencheck lang="nl" />
       <button type="submit" class="btn btn-primary" id="gvzBtn">Vraag de gratis demo aan</button>
       <p class="gvz-form-done" id="gvzDone" hidden>Bedankt! We sturen de voorbeeldrapportage zo snel mogelijk per e-mail.</p>
       <p class="gvz-form-note">We gebruiken je gegevens alleen om je de demo en rapportage te sturen.</p>
