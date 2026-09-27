@@ -3,6 +3,9 @@ import Base from "../layouts/Base.astro";
 import LogoSlider from "./LogoSlider.astro";
 import { routes } from "../i18n/ui.js";
 import { getLangFromUrl, localizePath, demoPath } from "../i18n/utils.js";
+import Mensencheck from "./Mensencheck.astro";
+import { FORM_UI } from "../data/formulier-tekst.js";
+import { MENS_UI } from "../data/mensencheck-tekst.js";
 
 const { page, active = "" } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
@@ -20,6 +23,8 @@ const homeHref = localizePath("/", lang);
 const contactHref = localizePath(routes.contact, lang);
 const demoHref = demoPath(lang);
 const assessHref = localizePath(routes.assessments, lang);
+const f = FORM_UI[lang] || FORM_UI.nl;
+const mensfout = (MENS_UI[lang] || MENS_UI.nl).fout;
 ---
 <Base title={page.metaTitle} description={page.metaDescription} active={active}>
   <div class="crumb">
@@ -42,7 +47,8 @@ const assessHref = localizePath(routes.assessments, lang);
           <p style="color:var(--muted)">Solitudolaan 396<br />1096 DS Amsterdam<br />The Netherlands</p>
           <p style="margin-top:14px;color:var(--muted)">T: +31 (0)88 88 321 88<br />E: service@hrmforce.com</p>
         </div>
-        <form class="formcard" action="https://formspree.io/f/JOUW_FORM_ID" method="POST">
+        <form class="formcard" action="/api/aanvraag" method="POST" data-mensform
+              data-ok={f.ok} data-fout={f.fout} data-mensfout={mensfout} data-bezig={f.bezig}>
           <div class="fg"><label>{page.form.name} *</label><input type="text" name="naam" required /></div>
           <div class="fg"><label>{page.form.company}</label><input type="text" name="bedrijf" /></div>
           <div class="frow">
@@ -50,6 +56,9 @@ const assessHref = localizePath(routes.assessments, lang);
             <div class="fg"><label>{page.form.phone}</label><input type="tel" name="telefoon" /></div>
           </div>
           <div class="fg"><label>{page.form.message} *</label><textarea name="bericht" rows="4" required></textarea></div>
+          <input type="hidden" name="taal" value={lang} />
+          <input type="hidden" name="bron" value="subpagina" />
+          <Mensencheck lang={lang} />
           <button type="submit" class="btn btn-primary">{page.form.submit}</button>
         </form>
       </div>

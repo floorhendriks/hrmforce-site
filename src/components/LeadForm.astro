@@ -2,13 +2,10 @@
 /**
  * Leadgated download van het volledige profiel.
  *
- * AANSLUITEN OP JE EIGEN VERWERKING:
- * Het formulier post JSON naar het endpoint in `data-endpoint`. Standaard is dat
- * /api/lead/. In src/pages/api/lead.ts staat een implementatie met adapters voor
- * Resend, een webhook en Netlify Forms. Kies er een en zet de env-variabelen.
- * Wil je een bestaande formulierdienst gebruiken (bijvoorbeeld HubSpot of
- * Formspree), zet dan alleen `endpoint` op die url. Het antwoord hoeft niets
- * terug te geven: bij status 200 start de download.
+ * Het formulier post naar /api/aanvraag, dezelfde route als de andere
+ * formulieren op de site. De aanvraag gaat naar service@hrmforce.com met
+ * f.hendriks@hrmforce.com in cc. Bij status 200 start de download. Een ander
+ * endpoint kan nog steeds via de eigenschap `endpoint`.
  *
  * AVG: er wordt niets in de browser opgeslagen behalve een vlag dat dit profiel
  * al is gedownload, zodat een terugkerende bezoeker niet opnieuw het formulier
@@ -16,6 +13,8 @@
  */
 import { localizePath } from '../i18n/utils.js';
 import { useT } from '../lib/i18n';
+import Mensencheck from './Mensencheck.astro';
+import { MENS_UI } from '../data/mensencheck-tekst.js';
 interface Props {
   lang: string;
   fileUrl: string;
@@ -27,14 +26,15 @@ interface Props {
   /** Waar bij een echte pdf, onwaar als de link naar de printpagina wijst. */
   isPdf?: boolean;
 }
-const { lang, fileUrl, fileName, subject, subjectId, endpoint = 'https://formspree.io/f/mqpznaqn',
+const { lang, fileUrl, fileName, subject, subjectId, endpoint = '/api/aanvraag',
         privacyUrl = null, isPdf = true } = Astro.props;
 const privacyHref = privacyUrl || localizePath('/support/privacy-statement/', lang);
 const t = useT(lang);
+const mensfout = (MENS_UI[lang] || MENS_UI.nl).fout;
 ---
 <div class="hsf-card tint hsf-noprint hsf-leadform" data-endpoint={endpoint} data-file={fileUrl}
      data-filename={fileName} data-subject={subject} data-subject-id={subjectId}
-     data-ispdf={isPdf ? '1' : '0'}>
+     data-ispdf={isPdf ? '1' : '0'} data-mensfout={mensfout}>
   <h3 style="margin-top:0">{t('lead.title')}</h3>
   <p class="hsf-small">{t('lead.intro')}</p>
 
@@ -48,7 +48,7 @@ const t = useT(lang);
   <form data-form novalidate>
     <div class="hsf-field">
       <label for={`lead-name-${subjectId}`}>{t('lead.name')}</label>
-      <input id={`lead-name-${subjectId}`} name="name" type="text" required autocomplete="name" />
+      <input id={`lead-name-${subjectId}`} name="naam" type="text" required autocomplete="name" />
     </div>
     <div class="hsf-field">
       <label for={`lead-email-${subjectId}`}>{t('lead.email')}</label>
@@ -56,11 +56,11 @@ const t = useT(lang);
     </div>
     <div class="hsf-field">
       <label for={`lead-org-${subjectId}`}>{t('lead.org')}</label>
-      <input id={`lead-org-${subjectId}`} name="organisation" type="text" required autocomplete="organization" />
+      <input id={`lead-org-${subjectId}`} name="bedrijf" type="text" required autocomplete="organization" />
     </div>
     <div class="hsf-field">
       <label for={`lead-role-${subjectId}`}>{t('lead.role')}</label>
-      <input id={`lead-role-${subjectId}`} name="role" type="text" autocomplete="organization-title" />
+      <input id={`lead-role-${subjectId}`} name="functie" type="text" autocomplete="organization-title" />
     </div>
     <label class="hsf-check">
       <input type="checkbox" name="consent" required />
@@ -70,9 +70,7 @@ const t = useT(lang);
       <input type="checkbox" name="newsletter" />
       <span>{t('lead.consent.newsletter')}</span>
     </label>
-    <!-- eenvoudige spamval, geen cookie en geen extern script nodig -->
-    <input type="text" name="company_website" tabindex="-1" autocomplete="off"
-           style="position:absolute;left:-9999px" aria-hidden="true" />
+    <Mensencheck lang={lang} />
     <button class="hsf-btn block" type="submit" data-submit>{t('lead.submit')}</button>
     <p class="hsf-note" style="margin:.7rem 0 0">
       {t('lead.privacy')} <a href={privacyHref}>{t('ui.privacy-policy')}</a>
@@ -92,6 +90,7 @@ const t = useT(lang);
     const filename = box.dataset.filename;
     const key = 'hsf-lead-' + (box.dataset.subjectId || 'x');
     const labelIdle = btn.textContent;
+    const errIdle = err.textContent;
     const isPdf = box.dataset.ispdf === '1';
 
     const start = () => {
@@ -107,23 +106,27 @@ const t = useT(lang);
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       err.hidden = true;
+      err.textContent = errIdle;
       if (!form.reportValidity()) return;
-      if (form.company_website.value) return; // spamval
       btn.disabled = true;
       btn.textContent = btn.dataset.sending || labelIdle;
-      // Formspree: verstuur als FormData met Accept: application/json.
       const fd = new FormData(form);
-      fd.append('_subject', 'Skills Framework download: ' + (box.dataset.subject || ''));
-      fd.append('functie', box.dataset.subject || '');
-      fd.append('functie_id', box.dataset.subjectId || '');
+      fd.append('onderwerp', 'Download functieprofiel: ' + (box.dataset.subject || ''));
+      fd.append('profiel', box.dataset.subject || '');
+      fd.append('profiel_id', box.dataset.subjectId || '');
       fd.append('bestand', filename || '');
       fd.append('pagina', location.pathname);
+      fd.append('bron', 'functieprofiel');
       fd.append('taal', document.documentElement.lang || '');
       try {
         const res = await fetch(endpoint, {
           method: 'POST', body: fd, headers: { Accept: 'application/json' },
         });
-        if (!res.ok) throw new Error('endpoint ' + res.status);
+        if (!res.ok) {
+          const uit = await res.json().catch(() => ({}));
+          if (uit && uit.error === 'geen_mens') err.textContent = box.dataset.mensfout || err.textContent;
+          throw new Error('endpoint ' + res.status);
+        }
         try { localStorage.setItem(key, '1'); } catch (e) {}
         done(); start();
       } catch (e) {

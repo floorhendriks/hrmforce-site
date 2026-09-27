@@ -1,9 +1,8 @@
 ---
 import { localizePath, demoPath } from "../i18n/utils.js";
-import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../data/site-config.js";
+import { CONTACT_EMAIL } from "../data/site-config.js";
 const { wp, ui, lang } = Astro.props;
 const d = wp.i18n[lang] ?? wp.i18n.nl;
-const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
 const wpHref = localizePath("/whitepapers/", lang);
 import Mensencheck from "./Mensencheck.astro";
 const MC_OK = { nl: "Bedankt. We nemen zo snel mogelijk contact met je op.", en: "Thank you. We will get in touch as soon as we can.", de: "Danke. Wir melden uns so schnell wie möglich.", fr: "Merci. Nous vous recontactons au plus vite.", es: "Gracias. Nos pondremos en contacto lo antes posible.", ro: "Mulțumim. Revenim cât de repede putem." };

@@ -4,12 +4,11 @@ import { assessments } from "../data/assessments.js";
 import { assessmentsI18n } from "../data/assessments-i18n.js";
 import { localizePath, demoPath, navHref } from "../i18n/utils.js";
 import validPaths from "../data/valid-paths.js";
-import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../data/site-config.js";
+import { CONTACT_EMAIL } from "../data/site-config.js";
 
 const { l, lang = "nl" } = Astro.props;
 const t = l.i18n[lang] || l.i18n.nl;
 const ui = LAND_UI[lang] || LAND_UI.nl;
-const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
 
 const bySlug = new Map(assessments.map((a) => [a.slug, a]));
 function locAssess(slug) {

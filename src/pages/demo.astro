@@ -1,12 +1,11 @@
 ---
 import Sterren from "../components/Sterren.astro";
 import Base from "../layouts/Base.astro";
-import { FORMSPREE_ENDPOINT, CONTACT_EMAIL, REVIEWS_EXTERNAL } from "../data/site-config.js";
+import { CONTACT_EMAIL, REVIEWS_EXTERNAL } from "../data/site-config.js";
 import AanvraagSoort from "../components/AanvraagSoort.astro";
 
 // Conversiegerichte aanvraagpagina: zo weinig drempels mogelijk. Eén formulier,
 // drie velden, één keer sociale bewijskracht. Geen navigatie-omleidingen, geen FAQ.
-const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
 const googleUrl = REVIEWS_EXTERNAL?.google || "";
 import Mensencheck from "../components/Mensencheck.astro";
 ---

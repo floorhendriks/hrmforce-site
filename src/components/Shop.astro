@@ -1,5 +1,5 @@
 ---
-import { SHOP, FORMSPREE_ENDPOINT } from "../data/site-config.js";
+import { SHOP } from "../data/site-config.js";
 import { localizePath } from "../i18n/utils.js";
 import { shopImages } from "../data/shop-images.js";
 import { SHOP_CONTENT } from "../data/shop-products.js";
@@ -379,7 +379,7 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
   .cart-warn { color: #b3261e; background: #fdeceb; border: 1px solid #f6c9c5; border-radius: var(--radius-sm); padding: 8px 12px; font-size: 13px; font-weight: 600; margin: 0 0 10px; }
 </style>
 
-<script is:inline define:vars={{ L, ENRICH, LANG, IMGMAP: shopImages, SC_URL: "/shop-products.json", FORM: FORMSPREE_ENDPOINT, VENDOR_LOGO, RQ: rq, FAQ_SEG, FAQ_DEFAULT, CATALOG: catalog, CHECKOUT_URL: afrekenenHref }}>
+<script is:inline define:vars={{ L, ENRICH, LANG, IMGMAP: shopImages, SC_URL: "/shop-products.json", VENDOR_LOGO, RQ: rq, FAQ_SEG, FAQ_DEFAULT, CATALOG: catalog, CHECKOUT_URL: afrekenenHref }}>
   (function () {
     var app = document.getElementById("shopApp");
     if (!app) return;

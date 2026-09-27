@@ -7,7 +7,7 @@ import { assessments } from "../../../data/assessments.js";
 import { assessmentsI18n } from "../../../data/assessments-i18n.js";
 import { detailUi } from "../../../data/assessment-detail-ui.js";
 import { shopInfo, prijs } from "../../../data/assessment-shop.js";
-import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../../data/site-config.js";
+import { CONTACT_EMAIL } from "../../../data/site-config.js";
 import OefenAanvraagForm from "../../../components/OefenAanvraagForm.astro";
 import Mensencheck from "../../../components/Mensencheck.astro";
 import { localizePath, demoPath } from "../../../i18n/utils.js";
@@ -23,7 +23,6 @@ import { oefentests } from "../../../data/oefentests.js";
 import { createClient } from "@sanity/client";
 import { kenniscentrumContent } from "../../../data/kenniscentrum-content.js";
 
-const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
 
 // (lang ∈ en,de,fr,es,ro) × (36 slugs). Data = merge van assessments.js
 // (beeld/slug/quote.author/quote.initials) + assessmentsI18n[lang][slug] (teksten).

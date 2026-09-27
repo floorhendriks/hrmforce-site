@@ -5,7 +5,7 @@ import Img from "../../components/Img.astro";
 import Base from "../../layouts/Base.astro";
 import { assessments } from "../../data/assessments.js";
 import { shopInfo, prijs } from "../../data/assessment-shop.js";
-import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../data/site-config.js";
+import { CONTACT_EMAIL } from "../../data/site-config.js";
 import OefenAanvraagForm from "../../components/OefenAanvraagForm.astro";
 import Mensencheck from "../../components/Mensencheck.astro";
 import { getLangFromUrl, localizePath, demoPath } from "../../i18n/utils.js";
@@ -22,7 +22,6 @@ import ReviewSlider from "../../components/ReviewSlider.astro";
 import SocialProof from "../../components/SocialProof.astro";
 import LogoSlider from "../../components/LogoSlider.astro";
 
-const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
 
 // Alle assessments komen uit het lokale databestand (36 stuks), zodat álle
 // detailpagina's gegenereerd worden ongeacht de Sanity-inhoud.

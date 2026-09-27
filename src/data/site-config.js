@@ -1,7 +1,7 @@
-// Centrale site-config. Vul FORMSPREE_ENDPOINT in met je eigen Formspree-URL
-// (bijv. "https://formspree.io/f/xxxxxxxx"). Zolang deze leeg is, vallen de
-// formulieren terug op een mailto-link naar service@hrmforce.com.
-export const FORMSPREE_ENDPOINT = "https://formspree.io/f/mqpznaqn";
+// Centrale site-config. Alle formulieren posten naar /api/aanvraag of
+// /api/oefenmateriaal, dus Formspree wordt niet meer gebruikt. De constante
+// blijft leeg staan zodat een oude import niets stuks maakt.
+export const FORMSPREE_ENDPOINT = "";
 export const CONTACT_EMAIL = "service@hrmforce.com";
 
 // De shop draait op de catalogus in deze repo (src/data/shop-catalog.json) en
