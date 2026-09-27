@@ -19,7 +19,7 @@ const TAAL = { nl: "nl", en: "en", de: "de", fr: "fr", es: "es", ro: "ro" };
 </div>
 <input type="hidden" name="gestart" value="" />
 {siteKey && (
-  <div class="mc-vak cf-turnstile" data-sitekey={siteKey} data-language={TAAL[lang] || "nl"} data-theme="light" data-size="flexible"></div>
+  <div class="mc-vak cf-turnstile" data-sitekey={siteKey} data-language={TAAL[lang] || "nl"} data-theme="light" data-size="flexible" data-traag={u.traag}></div>
 )}
 {siteKey && (
   <script is:inline>
@@ -57,6 +57,46 @@ const TAAL = { nl: "nl", en: "en", de: "de", fr: "fr", es: "es", ro: "ro" };
     }
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", stempel);
     else stempel();
+
+    /* Turnstile heeft na het laden van de pagina een paar tellen nodig. Wie
+       sneller klaar is met invullen dan het vakje met verifieren, zou anders
+       een afwijzing krijgen. Deze afhandeling loopt voor die van de pagina
+       zelf, houdt het verzenden even vast en probeert het daarna opnieuw. */
+    var WACHT_MS = 8000;
+    document.addEventListener("submit", function (ev) {
+      var form = ev.target;
+      if (!form || !form.querySelector) return;
+      var vak = form.querySelector(".cf-turnstile");
+      if (!vak) return;
+      if (form.dataset.mcGewacht === "1") return;
+      var veld = function () { return form.querySelector('input[name="cf-turnstile-response"]'); };
+      var nu = veld();
+      if (nu && nu.value) return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      var knop = form.querySelector("button[type=submit], input[type=submit]");
+      if (knop) knop.disabled = true;
+      var regel = form.querySelector(".mc-wacht");
+      if (!regel) {
+        regel = document.createElement("p");
+        regel.className = "mc-melding mc-wacht";
+        vak.parentNode.insertBefore(regel, vak.nextSibling);
+      }
+      regel.textContent = vak.dataset.traag || "";
+      var tot = Date.now() + WACHT_MS;
+      var tik = setInterval(function () {
+        var v = veld();
+        if ((v && v.value) || Date.now() > tot) {
+          clearInterval(tik);
+          regel.textContent = "";
+          if (knop) knop.disabled = false;
+          form.dataset.mcGewacht = "1";
+          if (form.requestSubmit) form.requestSubmit(knop || undefined);
+          else form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+          setTimeout(function () { delete form.dataset.mcGewacht; }, 0);
+        }
+      }, 200);
+    }, true);
 
     /* Een token is eenmalig. Elk formulier dat na een geslaagde verzending
        reset() aanroept krijgt hier een vers vakje en een nieuw starttijdstip. */
