@@ -163,6 +163,7 @@ export function invoicePdf(inv) {
   y -= 10;
   const tl = 360;
   T(tl, y, 9.5, "Subtotaal (excl. btw)", { color: MUT }); T(R, y, 9.5, inv.subtotal, { right: true, color: INK }); y -= 15;
+  if (inv.korting) { T(tl, y, 9.5, inv.kortingLabel, { color: MUT }); T(R, y, 9.5, inv.korting, { right: true, color: INK }); y -= 15; }
   T(tl, y, 9.5, inv.vatLabel, { color: MUT }); T(R, y, 9.5, inv.vat, { right: true, color: INK }); y -= 8;
   rects.push({ x: tl - 6, y: y - 20, w: R - tl + 6, h: 26, color: NAVY });
   T(tl, y - 14, 11.5, "Totaal", { bold: true, color: [1, 1, 1] });

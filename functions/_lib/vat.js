@@ -29,7 +29,7 @@ export function computeVat(country, vat) {
 }
 
 // Bedragen in centen om afrondingsfouten te vermijden.
-export function priceOrder(lines, prices, country, vat) {
+export function priceOrder(lines, prices, country, vat, kortingCents) {
   let subtotalCents = 0;
   const items = [];
   for (const l of lines || []) {
@@ -42,9 +42,12 @@ export function priceOrder(lines, prices, country, vat) {
     items.push({ handle: l.handle, title: p.title, qty, unitCents, lineCents, candidates: l.candidates || [] });
   }
   const v = computeVat(country, vat);
-  const vatCents = Math.round(subtotalCents * v.rate);
-  const totalCents = subtotalCents + vatCents;
-  return { items, subtotalCents, vatCents, totalCents, vatRate: v.rate, vatMode: v.mode };
+  // Een korting gaat van het subtotaal af voordat de btw wordt berekend.
+  const korting = Math.max(0, Math.min(subtotalCents, Math.round(Number(kortingCents) || 0)));
+  const grondslag = subtotalCents - korting;
+  const vatCents = Math.round(grondslag * v.rate);
+  const totalCents = grondslag + vatCents;
+  return { items, subtotalCents, kortingCents: korting, vatCents, totalCents, vatRate: v.rate, vatMode: v.mode };
 }
 
 export function eur(cents) { return (cents / 100).toFixed(2); }

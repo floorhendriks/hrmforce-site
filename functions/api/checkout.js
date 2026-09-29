@@ -4,6 +4,7 @@
 // Vereist: env.MOLLIE_API_KEY (secret). Optioneel: env.DB (D1) voor orderopslag.
 import { PRICES } from "../_lib/catalog.js";
 import { priceOrder, eur } from "../_lib/vat.js";
+import { bepaalKorting } from "../_lib/kortingen.js";
 
 const json = (obj, status = 200) =>
   new Response(JSON.stringify(obj), { status, headers: { "Content-Type": "application/json" } });
@@ -36,6 +37,14 @@ export async function onRequestPost(context) {
   try { priced = priceOrder(lines, PRICES, b.country, b.vat); }
   catch (e) { return json({ error: "pricing_failed", detail: String(e.message || e) }, 400); }
 
+  // De korting wordt hier bepaald, niet in de browser. Een code die niet klopt
+  // laat de bestelling gewoon doorgaan tegen de normale prijs.
+  const korting = bepaalKorting(body.kortingscode, priced.items);
+  if (korting && korting.ok) {
+    try { priced = priceOrder(lines, PRICES, b.country, b.vat, korting.cents); }
+    catch (e) { return json({ error: "pricing_failed", detail: String(e.message || e) }, 400); }
+  }
+
   if (priced.totalCents <= 0) return json({ error: "zero_total" }, 400);
 
   const orderId = uuid();
@@ -56,6 +65,7 @@ export async function onRequestPost(context) {
       city: b.city, reference: b.reference || "",
     },
     items: priced.items,
+    korting: korting && korting.ok ? { code: korting.code, percent: korting.percent, cents: korting.cents } : null,
     subtotalCents: priced.subtotalCents,
     vatCents: priced.vatCents,
     totalCents: priced.totalCents,
@@ -74,7 +84,7 @@ export async function onRequestPost(context) {
         orderId, orderRecord.created, "open", locale, b.email, b.company, b.contact, b.phone || "",
         b.country, b.vat || "", b.street, b.postal, b.city, b.reference || "",
         priced.subtotalCents, priced.vatCents, priced.totalCents, priced.vatMode, "EUR", null,
-        JSON.stringify({ items: priced.items })
+        JSON.stringify({ items: priced.items, korting: orderRecord.korting })
       ).run();
     } catch (e) {
       // Opslag mislukt: log en ga door (betaling blijft mogelijk, webhook valt terug op metadata).

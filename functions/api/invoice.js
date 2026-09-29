@@ -4,12 +4,12 @@ import { invoiceModel } from "../_lib/invoice.js";
 import { invoicePdf } from "../_lib/pdf.js";
 
 function rowToOrder(row) {
-  let items = [];
-  try { items = (JSON.parse(row.items_json || "{}").items) || []; } catch (e) {}
+  let items = [], korting = null;
+  try { const j = JSON.parse(row.items_json || "{}"); items = j.items || []; korting = j.korting || null; } catch (e) {}
   return {
     id: row.id, created: row.created, status: row.status, locale: row.locale,
     billing: { company: row.company, contact: row.contact, email: row.email, phone: row.phone, country: row.country, vat: row.vat, street: row.street, postal: row.postal, city: row.city, reference: row.reference },
-    items, subtotalCents: row.subtotal_cents, vatCents: row.vat_cents, totalCents: row.total_cents, vatMode: row.vat_mode, currency: row.currency, paidAt: row.paid_at,
+    items, korting, subtotalCents: row.subtotal_cents, vatCents: row.vat_cents, totalCents: row.total_cents, vatMode: row.vat_mode, currency: row.currency, paidAt: row.paid_at,
   };
 }
 

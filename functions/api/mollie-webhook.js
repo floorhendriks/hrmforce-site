@@ -8,8 +8,8 @@ import { sendMail } from "../_lib/mail.js";
 import { eur } from "../_lib/vat.js";
 
 function rowToOrder(row) {
-  let items = [];
-  try { items = (JSON.parse(row.items_json || "{}").items) || []; } catch (e) {}
+  let items = [], korting = null;
+  try { const j = JSON.parse(row.items_json || "{}"); items = j.items || []; korting = j.korting || null; } catch (e) {}
   return {
     id: row.id, created: row.created, status: row.status, locale: row.locale,
     billing: {
@@ -18,6 +18,7 @@ function rowToOrder(row) {
       city: row.city, reference: row.reference,
     },
     items,
+    korting,
     subtotalCents: row.subtotal_cents, vatCents: row.vat_cents, totalCents: row.total_cents,
     vatMode: row.vat_mode, currency: row.currency, paidAt: row.paid_at,
   };

@@ -62,6 +62,8 @@ export function invoiceModel(order, env, opts) {
     ].filter(Boolean),
     items,
     subtotal: money(order.subtotalCents),
+    kortingLabel: order.korting ? "Korting " + order.korting.code + " (" + order.korting.percent + "%)" : "",
+    korting: order.korting ? "- " + money(order.korting.cents) : "",
     vatLabel,
     vat: money(order.vatCents),
     total: money(order.totalCents),
@@ -87,6 +89,7 @@ export function orderTextSummary(order) {
   }
   lines.push("");
   lines.push("Subtotaal (excl. btw): " + money(order.subtotalCents));
+  if (order.korting) lines.push("Korting " + order.korting.code + " (" + order.korting.percent + "%): -" + money(order.korting.cents));
   lines.push("Btw (" + order.vatMode + "): " + money(order.vatCents));
   lines.push("Totaal: " + money(order.totalCents));
   return lines.join("\n");

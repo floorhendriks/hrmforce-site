@@ -20,6 +20,14 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
     <aside class="co-order">
       <h2 class="co-kop">{c.orderTitle}</h2>
       <div id="coLines"></div>
+      <div class="co-korting">
+        <label for="coCode">{c.k}</label>
+        <div class="co-korting-rij">
+          <input id="coCode" type="text" name="kortingscode" placeholder={c.kPlace} autocomplete="off" spellcheck="false" />
+          <button type="button" class="btn btn-light co-korting-knop" id="coCodeBtn">{c.kApply}</button>
+        </div>
+        <p class="co-korting-melding" id="coCodeMsg" hidden></p>
+      </div>
       <div class="co-sum" id="coSum"></div>
       <a class="co-edit" href={shopHref}>{c.editCart}</a>
     </aside>
@@ -120,6 +128,16 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
   .co-edit:hover { color: var(--accent); }
 
   /* Totalen */
+  .co-korting { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .co-korting label { display: block; font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .co-korting-rij { display: flex; gap: 8px; }
+  .co-korting-rij input { flex: 1 1 auto; min-width: 0; padding: 9px 12px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); font-family: inherit; font-size: 14px; text-transform: uppercase; }
+  .co-korting-rij input:focus { outline: 2px solid var(--blue); border-color: var(--blue); }
+  .co-korting-knop { flex: 0 0 auto; }
+  .co-korting-melding { margin: 8px 0 0; font-size: 13px; font-weight: 600; line-height: 1.45; }
+  .co-korting-melding.ok { color: #1a7f4b; }
+  .co-korting-melding.fout { color: #b3261e; }
+  .co-sum-korting span:last-child { color: #1a7f4b; }
   .co-sum { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); display: grid; gap: 8px; }
   .co-sum-row { display: flex; justify-content: space-between; gap: 14px; font-size: 14px; color: var(--text); }
   .co-sum-row span:last-child { font-variant-numeric: tabular-nums; white-space: nowrap; }
@@ -222,12 +240,21 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
       else { rate = 0.21; mode = "nl"; label = C.sumVat + " (21%)"; }
       return { rate: rate, mode: mode, label: label };
     }
+    // De server bepaalt de korting; hier staat alleen wat hij teruggaf.
+    var korting = null;
+    function kortingLabel() {
+      return (C.kLabel || "Korting {code} ({percent}%)")
+        .replace("{code}", korting.code).replace("{percent}", korting.percent);
+    }
     function renderSum() {
       var v = computeVat();
-      var vatAmt = subtotal * v.rate;
-      var total = subtotal + vatAmt;
+      var kort = korting ? Math.min(subtotal, korting.cents / 100) : 0;
+      var grondslag = subtotal - kort;
+      var vatAmt = grondslag * v.rate;
+      var total = grondslag + vatAmt;
       sumEl.innerHTML =
         '<div class="co-sum-row"><span>' + esc(C.sumSubtotal) + '</span><span>' + money(subtotal) + '</span></div>' +
+        (kort ? '<div class="co-sum-row co-sum-korting"><span>' + esc(kortingLabel()) + '</span><span>- ' + money(kort) + '</span></div>' : '') +
         '<div class="co-sum-row"><span>' + esc(v.label) + '</span><span>' + money(vatAmt) + '</span></div>' +
         '<div class="co-sum-row co-sum-total"><span>' + esc(C.sumTotal) + '</span><span>' + money(total) + '</span></div>';
       return v;
@@ -235,6 +262,50 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
     renderSum();
     countryEl.addEventListener("change", renderSum);
     vatEl.addEventListener("input", renderSum);
+
+    /* ---------- Kortingscode ---------- */
+    var codeEl = document.getElementById("coCode");
+    var codeBtn = document.getElementById("coCodeBtn");
+    var codeMsg = document.getElementById("coCodeMsg");
+    var REDEN = { onbekend: C.kUnknown, verlopen: C.kExpired, niet_van_toepassing: C.kNotFor, lege_mand: C.kNotFor };
+    function toonCodeMelding(tekst, goed) {
+      codeMsg.textContent = tekst || "";
+      codeMsg.className = "co-korting-melding" + (tekst ? (goed ? " ok" : " fout") : "");
+      codeMsg.hidden = !tekst;
+    }
+    function zetKnop(bezig) {
+      codeBtn.disabled = bezig;
+      codeBtn.textContent = bezig ? C.kBusy : (korting ? C.kRemove : C.kApply);
+    }
+    function wisKorting() {
+      korting = null; codeEl.value = ""; codeEl.disabled = false;
+      toonCodeMelding("", true); zetKnop(false); renderSum();
+    }
+    function controleerCode() {
+      if (korting) { wisKorting(); return; }
+      var code = (codeEl.value || "").trim();
+      if (!code) { toonCodeMelding("", true); return; }
+      zetKnop(true);
+      fetch("/api/korting", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ kortingscode: code, lines: cart.lines.map(function (l) { return { handle: l.lineId, qty: l.qty }; }) }),
+      })
+        .then(function (r) { return r.json().catch(function () { return {}; }); })
+        .then(function (uit) {
+          if (uit && uit.ok) {
+            korting = { code: uit.code, percent: uit.percent, cents: uit.cents };
+            codeEl.value = uit.code; codeEl.disabled = true;
+            toonCodeMelding((C.kOk || "").replace("{code}", uit.code).replace("{percent}", uit.percent), true);
+          } else {
+            korting = null;
+            toonCodeMelding(REDEN[uit && uit.reden] || C.kUnknown, false);
+          }
+          zetKnop(false); renderSum();
+        })
+        .catch(function () { korting = null; toonCodeMelding(C.kError, false); zetKnop(false); renderSum(); });
+    }
+    codeBtn.addEventListener("click", controleerCode);
+    codeEl.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); controleerCode(); } });
 
     var form = document.getElementById("coForm");
     var warnEl = document.getElementById("coWarn");
@@ -289,6 +360,7 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
           street: form.elements["street"].value.trim(), postal: form.elements["postal"].value.trim(),
           city: form.elements["city"].value.trim(), reference: form.elements["reference"].value.trim(),
         },
+        kortingscode: korting ? korting.code : "",
         vatHint: { mode: v.mode, rate: v.rate },
       };
 

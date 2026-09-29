@@ -88,6 +88,7 @@ export function orderEmailHtml(inv, opts) {
     // totalen
     '<tr><td style="padding:12px 32px 0"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-radius:10px;overflow:hidden">' +
     totalsRow("Subtotaal (excl. btw)", inv.subtotal, false, false) +
+    (inv.korting ? totalsRow(inv.kortingLabel, inv.korting, false, false) : "") +
     totalsRow(inv.vatLabel, inv.vat, false, false) +
     totalsRow("Totaal", inv.total, true, true) +
     "</table></td></tr>" +
