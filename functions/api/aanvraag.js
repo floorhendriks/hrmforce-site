@@ -93,7 +93,9 @@ export async function onRequestPost({ request, env }) {
       await sendMail(env, {
         from: van,
         to: [email],
-        cc: [ccIntern],
+        // service@ en f.hendriks@ lezen mee, zodat de doorverwijzing ook in de
+        // eigen postbus staat en het gesprek daar verder kan lopen.
+        cc: adressen(naarIntern, ccIntern),
         subject: m.onderwerp,
         text: m.tekst,
       });
@@ -103,6 +105,17 @@ export async function onRequestPost({ request, env }) {
 
   if (!intern && !naarAanvrager) return json({ ok: false, error: "mail_failed" }, 202);
   return json({ ok: true, soort, doorverwezen: naarAanvrager });
+}
+
+// Adressen samenvoegen, ontdubbeld, ook als een variabele meerdere adressen
+// met komma's bevat.
+function adressen(...regels) {
+  const uit = [];
+  regels.forEach((r) => String(r || "").split(",").forEach((a) => {
+    const x = a.trim();
+    if (x && !uit.includes(x)) uit.push(x);
+  }));
+  return uit;
 }
 
 function json(data, status = 200) {
