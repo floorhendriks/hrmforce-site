@@ -6,6 +6,7 @@ import { SHOP_CONTENT } from "../data/shop-products.js";
 import catalog from "../data/shop-catalog.json";
 import { faqFor, BY_SEGMENT, generalFaq } from "../data/shop-faq.js";
 import { TRAINING_HANDLES, TRAINING_SEGMENT, TRAINING_BULLETS, TRAINING_FAQ } from "../data/shop-trainingen.js";
+import { shopLabels } from "../data/shop-labels.js";
 
 const { t, lang } = Astro.props;
 
@@ -141,6 +142,7 @@ const FAQ_SEG = {};
 Object.keys(BY_SEGMENT).forEach((s) => { FAQ_SEG[s] = faqFor(s, lang); });
 
 // Trainingen: eigen segment, eigen kenmerken en eigen vragen.
+const LABELS = shopLabels(lang);
 const TRAIN = {
   handles: TRAINING_HANDLES,
   segment: TRAINING_SEGMENT,
@@ -388,7 +390,7 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
   .cart-warn { color: #b3261e; background: #fdeceb; border: 1px solid #f6c9c5; border-radius: var(--radius-sm); padding: 8px 12px; font-size: 13px; font-weight: 600; margin: 0 0 10px; }
 </style>
 
-<script is:inline define:vars={{ L, ENRICH, LANG, TRAIN, IMGMAP: shopImages, SC_URL: "/shop-products.json", VENDOR_LOGO, RQ: rq, FAQ_SEG, FAQ_DEFAULT, CATALOG: catalog, CHECKOUT_URL: afrekenenHref }}>
+<script is:inline define:vars={{ L, ENRICH, LANG, TRAIN, LABELS, IMGMAP: shopImages, SC_URL: "/shop-products.json", VENDOR_LOGO, RQ: rq, FAQ_SEG, FAQ_DEFAULT, CATALOG: catalog, CHECKOUT_URL: afrekenenHref }}>
   (function () {
     var app = document.getElementById("shopApp");
     if (!app) return;
@@ -411,7 +413,13 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
     }
     function nl(n) { var v = (Math.round(n * 100) / 100); return Number.isInteger(v) ? v.toString() + ",-" : v.toFixed(2).replace(".", ","); }
     function money(a, c) { var n = parseFloat(a); return (c === "EUR" ? "€\u00a0" : (c + " ")) + nl(n); }
-    function fillSelect(sel, values) { values.sort().forEach(function (v) { var o = document.createElement("option"); o.value = v; o.textContent = v; sel.appendChild(o); }); }
+    // De waarde blijft zoals Shopify hem levert; alleen het label wordt vertaald.
+    function label(v) { return (LABELS && LABELS[v]) || v; }
+    function fillSelect(sel, values) {
+      values.map(function (v) { return { v: v, t: label(v) }; })
+        .sort(function (a, b) { return a.t.localeCompare(b.t, LANG); })
+        .forEach(function (x) { var o = document.createElement("option"); o.value = x.v; o.textContent = x.t; sel.appendChild(o); });
+    }
     function esc(s) { return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
     function enrichImg(p) { return (IMGMAP && IMGMAP[p.handle]) || (p.taxo.segment[0] && ENRICH.imgBySeg[p.taxo.segment[0]]) || ENRICH.defImg; }
     function isTraining(p) { return !!(p && TRAIN.handles.indexOf(p.handle) > -1); }
@@ -609,7 +617,7 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
       if (_burl) { vd.className = "pm-brand"; vd.innerHTML = '<img src="' + _burl + '" alt="' + esc(_vn) + '" onerror="this.remove()">'; vd.hidden = false; }
       else if (_vn) { vd.className = "pm-vendor"; vd.textContent = _vn; vd.hidden = false; }
       else vd.hidden = true;
-      document.getElementById("pmTags").innerHTML = p.taxo.cyclus.concat(p.taxo.segment).map(function (x) { return '<span class="sp-tag">' + esc(x) + "</span>"; }).join("");
+      document.getElementById("pmTags").innerHTML = p.taxo.cyclus.concat(p.taxo.segment).map(function (x) { return '<span class="sp-tag">' + esc(label(x)) + "</span>"; }).join("");
       document.getElementById("pmDesc").innerHTML = descHtml(p);
       var faqs = faqOf(p);
       document.getElementById("pmFaq").innerHTML = faqs.map(function (f) { return '<details class="pm-faq-item"><summary>' + esc(f.q) + '</summary><p>' + esc(f.a) + "</p></details>"; }).join("");
@@ -656,7 +664,7 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
         var okT = !term || p.title.toLowerCase().indexOf(term) > -1;
         if (!(okC && okS && okU && okT)) return;
         shown++;
-        var chips = p.taxo.cyclus.concat(p.taxo.segment).slice(0, 3).map(function (x) { return '<span class="sp-tag">' + esc(x) + "</span>"; }).join("");
+        var chips = p.taxo.cyclus.concat(p.taxo.segment).slice(0, 3).map(function (x) { return '<span class="sp-tag">' + esc(label(x)) + "</span>"; }).join("");
         // Echte img met loading="lazy": een CSS-achtergrond laadt altijd meteen,
         // waardoor alle 87 productfoto's tegelijk binnenkwamen.
         var img = '<img class="sp-foto" src="' + esc(enrichImg(p)) + '" alt="" width="400" height="172" loading="lazy" decoding="async">';
