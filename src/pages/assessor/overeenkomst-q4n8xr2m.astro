@@ -1,0 +1,16 @@
+---
+/* Verborgen ondertekenpagina voor nieuwe assessoren.
+   Het pad bevat een willekeurig deel, staat op noindex, niet in de sitemap en
+   nergens in de navigatie. Floor deelt de link zelf. Wil je het pad vervangen,
+   hernoem dan dit bestand; de pagina zelf hoeft niet te veranderen. */
+import Base from "../../layouts/Base.astro";
+import AssessorOvereenkomst from "../../components/AssessorOvereenkomst.astro";
+---
+<Base
+  title="Assessorovereenkomst ondertekenen | hrmforce"
+  description="Overeenkomst voor assessoren, geheimhouding en gegevensverwerking."
+  active=""
+>
+  <meta slot="head" name="robots" content="noindex, nofollow" />
+  <AssessorOvereenkomst />
+</Base>

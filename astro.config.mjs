@@ -8,10 +8,12 @@ export default defineConfig({
     sitemap({
       // Pagina's met noindex horen niet in de sitemap. Anders meldt Search Console
       // ze als "verzonden URL met noindex". Het gaat om de volledige profielen van
-      // het skills framework en de bevestigingspagina's na een bestelling.
+      // het skills framework, de bevestigingspagina's na een bestelling en de
+      // verborgen ondertekenpagina voor assessoren.
       filter: (page) =>
         !/\/skills-framework\/jobs\/[^/]+\/full\/?$/.test(page) &&
-        !/\/(bestelling-gelukt|afrekenen)\/?$/.test(page),
+        !/\/(bestelling-gelukt|afrekenen)\/?$/.test(page) &&
+        !/\/assessor\//.test(page),
     }),
   ],
   i18n: {

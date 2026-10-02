@@ -1,0 +1,5 @@
+Caveat (latin subset), ontworpen door Pablo Impallari.
+Licentie: SIL Open Font License 1.1, https://openfontlicense.org
+Bron: Google Fonts, https://fonts.google.com/specimen/Caveat
+
+Zelf gehost zodat de ondertekenpagina geen extern verzoek hoeft te doen.
