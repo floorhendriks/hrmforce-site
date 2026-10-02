@@ -1,0 +1,9 @@
+---
+import Base from "../../../layouts/Base.astro";
+import CameraTest from "../../../components/CameraTest.astro";
+import { cameraTestContent } from "../../../data/camera-test-content.js";
+const t = cameraTestContent.ro;
+---
+<Base title={t.meta.title} description={t.meta.description} active="">
+  <CameraTest t={t} lang="ro" />
+</Base>

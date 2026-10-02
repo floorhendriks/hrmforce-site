@@ -51,12 +51,33 @@ const otOnderdelen = Object.values(ONDERDELEN).map((o) => ({
   naam: o.naam[lang] || o.naam.nl,
   lead: o.lead[lang] || o.lead.nl,
 }));
+const CT_UI = {
+  nl: { eyebrow: "Camera en geluid", title: "Test je camera en geluid vooraf", text: "Heb je een gesprek via Google Meet of Microsoft Teams? Test dan vooraf in je eigen browser of je camera, microfoon en speakers werken. Dat scheelt gedoe op het moment zelf.", cta: "Doe de test" },
+  en: { eyebrow: "Camera and sound", title: "Test your camera and sound beforehand", text: "Do you have a meeting in Google Meet or Microsoft Teams? Check in your own browser whether your camera, microphone and speakers work. That saves trouble at the start.", cta: "Take the test" },
+  de: { eyebrow: "Kamera und Ton", title: "Testen Sie Kamera und Ton vorab", text: "Haben Sie ein Gespräch über Google Meet oder Microsoft Teams? Prüfen Sie vorab im eigenen Browser, ob Kamera, Mikrofon und Lautsprecher funktionieren. Das erspart Ärger zu Beginn.", cta: "Zum Test" },
+  fr: { eyebrow: "Caméra et son", title: "Testez votre caméra et votre son à l'avance", text: "Vous avez un entretien sur Google Meet ou Microsoft Teams ? Vérifiez à l'avance dans votre navigateur si votre caméra, votre micro et vos haut-parleurs fonctionnent. Cela évite les soucis au démarrage.", cta: "Faire le test" },
+  es: { eyebrow: "Cámara y sonido", title: "Prueba tu cámara y tu sonido antes", text: "¿Tienes una entrevista por Google Meet o Microsoft Teams? Comprueba antes en tu navegador si tu cámara, tu micrófono y tus altavoces funcionan. Así evitas problemas al empezar.", cta: "Hacer la prueba" },
+  ro: { eyebrow: "Cameră și sunet", title: "Testează camera și sunetul din timp", text: "Ai o discuție pe Google Meet sau Microsoft Teams? Verifică din timp, în propriul browser, dacă funcționează camera, microfonul și boxele. Așa eviți bătăile de cap la început.", cta: "Fă testul" },
+};
+const ct = CT_UI[lang] || CT_UI.nl;
+const ctHref = localizePath("/voorbereiding/camera-en-geluid-testen/", lang);
 const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voor deze zoekterm."}, en:{ph:"Search the preparation...", none:"Nothing found for this term."}, de:{ph:"In der Vorbereitung suchen...", none:"Nichts zu diesem Begriff gefunden."}, fr:{ph:"Rechercher dans la préparation...", none:"Rien trouvé pour ce terme."}, es:{ph:"Buscar en la preparación...", none:"No se encontró nada para este término."}, ro:{ph:"Caută în pregătire...", none:"Nimic găsit pentru acest termen."} }[lang] || {ph:"Zoek...", none:"Niets gevonden."};
 ---
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
 <section class="ahero"><div class="wrap" style="display:block">
   <div class="eyebrow">{t.hero.eyebrow}</div>
   <h1>{t.hero.title}</h1>
+</div></section>
+
+<section><div class="wrap" style="display:block">
+  <div class="ct-promo">
+    <div>
+      <div class="eyebrow">{ct.eyebrow}</div>
+      <h2 class="ct-promo-h">{ct.title}</h2>
+      <p class="ct-promo-p">{ct.text}</p>
+    </div>
+    <a href={ctHref} class="btn btn-primary">{ct.cta} &rarr;</a>
+  </div>
 </div></section>
 
 <section><div class="wrap" style="display:block">
@@ -128,6 +149,9 @@ const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voo
   </div>
 </div></section>
 <style>
+  .ct-promo{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;max-width:920px;background:var(--tint,#EEF4FA);border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px}
+  .ct-promo-h{color:var(--navy);font-size:20px;margin:4px 0 8px}
+  .ct-promo-p{color:#343434;font-size:15px;line-height:1.7;margin:0;max-width:620px}
   .kc-body{max-width:820px;line-height:1.7;color:#343434}
   .kc-body :global(mark){background:var(--gold,#fcc11b);color:#1a1a1a;padding:0 2px;border-radius:2px}
   .kc-body :global(h2){color:var(--navy,#0E468C);margin:28px 0 10px}
