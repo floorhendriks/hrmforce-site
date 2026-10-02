@@ -5,6 +5,8 @@
 import { PRICES } from "../_lib/catalog.js";
 import { priceOrder, eur } from "../_lib/vat.js";
 import { bepaalKorting } from "../_lib/kortingen.js";
+import { sendMail } from "../_lib/mail.js";
+import { orderTextSummary } from "../_lib/invoice.js";
 
 const json = (obj, status = 200) =>
   new Response(JSON.stringify(obj), { status, headers: { "Content-Type": "application/json" } });
@@ -91,6 +93,26 @@ export async function onRequestPost(context) {
       console.log("order_store_failed", String(e.message || e));
     }
   }
+
+  // Interne melding zodra de bestelling binnen is, dus voordat er betaald is.
+  // Bij een overboeking duurt de betaling dagen; zonder deze mail ziet niemand
+  // dat er een bestelling ligt. Loopt in de achtergrond, de klant wacht er niet op.
+  const meldIntern = async () => {
+    try {
+      const naar = String((env && env.ORDER_EMAIL_TO) || "service@hrmforce.com")
+        .split(",").map((x) => x.trim()).filter(Boolean);
+      await sendMail(env, {
+        to: naar,
+        subject: "Bestelling geplaatst " + orderId.slice(0, 8) + " - " + b.company + " (betaling nog niet binnen)",
+        text: "Er is zojuist een bestelling geplaatst in de webshop. De betaling is nog niet bevestigd.\n" +
+          "Bij een overboeking kan dat enkele dagen duren. Zodra de betaling binnen is volgt de\n" +
+          "gebruikelijke melding met de factuur.\n\n" +
+          orderTextSummary(orderRecord) + "\n\nStatus: wachten op betaling.\n",
+      });
+    } catch (e) { console.log("order_placed_mail_failed", String(e.message || e)); }
+  };
+  if (context.waitUntil) context.waitUntil(meldIntern());
+  else await meldIntern();
 
   if (!env.MOLLIE_API_KEY) return json({ error: "payments_unconfigured" }, 503);
 

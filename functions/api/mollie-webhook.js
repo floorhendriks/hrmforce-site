@@ -2,6 +2,7 @@
 // Verifieert de status bij Mollie, werkt de order bij en stuurt bij 'paid'
 // eenmalig de teammelding + klantbevestiging met factuur-PDF. Idempotent.
 import { invoiceModel, orderTextSummary } from "../_lib/invoice.js";
+import { wachtOpBetalingMail } from "../_lib/bestelstatus.js";
 import { invoicePdf } from "../_lib/pdf.js";
 import { orderEmailHtml } from "../_lib/email-template.js";
 import { sendMail } from "../_lib/mail.js";
@@ -67,7 +68,19 @@ export async function onRequestPost(context) {
       .bind(newStatus, paidAt, paymentId, row.id).run();
   } catch (e) { console.log("order_update_failed", String(e.message || e)); }
 
-  if (pay.status !== "paid") return new Response("ok", { status: 200 });
+  // Nog niet betaald. Bij de eerste overgang van open naar in afwachting laten
+  // we de klant weten dat de bestelling binnen is. Vooral bij een overboeking,
+  // want die kan dagen duren en tot dan hoort de klant anders niets van ons.
+  if (pay.status !== "paid") {
+    if (newStatus === "pending" && row.status === "open" && (env.MAIL_PROVIDER || "").toLowerCase() === "resend") {
+      try {
+        const wacht = rowToOrder(row);
+        const m = wachtOpBetalingMail(wacht, pay.method || "");
+        await sendMail(env, { to: [wacht.billing.email], subject: m.onderwerp, text: m.tekst, orderId: wacht.id });
+      } catch (e) { console.log("pending_mail_failed", String(e.message || e)); }
+    }
+    return new Response("ok", { status: 200 });
+  }
 
   // Betaald: eenmalig mailen.
   const order = rowToOrder({ ...row, status: "paid", paid_at: paidAt });
