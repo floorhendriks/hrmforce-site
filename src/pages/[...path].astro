@@ -1,6 +1,6 @@
 ---
 import { webpHtml } from "../lib/beeld.js";
-import { titel, omschrijving } from "../lib/meta.js";
+import { titel, omschrijving, kortZin } from "../lib/meta.js";
 import { herstelLinks } from "../data/link-onderhoud.js";
 import Base from "../layouts/Base.astro";
 import { createClient } from "@sanity/client";
@@ -227,11 +227,9 @@ const _plain = body
   .replace(/&(#39|apos);/g, "'")
   .replace(/\s+/g, " ")
   .trim();
-let metaDesc = _plain.slice(0, 200);
-if (_plain.length > 160) {
-  const cutAt = metaDesc.slice(0, 158).lastIndexOf(" ");
-  metaDesc = metaDesc.slice(0, cutAt > 80 ? cutAt : 158).replace(/[,;:]$/, "") + "...";
-}
+// De eerste hele zinnen van het artikel, zonder beletselteken: een
+// omschrijving die midden in een zin ophoudt kost kliks in de zoekresultaten.
+let metaDesc = kortZin(_plain, 160);
 const _descFallback = {
   nl: "Lees meer over assessments, selectie en talentontwikkeling bij hrmforce.",
   en: "Read more about assessments, selection and talent development at hrmforce.",
@@ -243,7 +241,7 @@ const _descFallback = {
 if (metaDesc.length < 60) metaDesc = `${article.title}. ${_descFallback}`;
 // Deelt dit artikel zijn openingszin met andere delen uit dezelfde serie, dan
 // zet de titel ervoor. Anders krijgen meerdere pagina's dezelfde beschrijving.
-if (article.gedeeldeIntro) metaDesc = `${article.title}. ${metaDesc}`.slice(0, 170);
+if (article.gedeeldeIntro) metaDesc = kortZin(`${article.title}. ${metaDesc}`, 170);
 
 // Video in de body: markeren als VideoObject, zodat Google er een
 // videoresultaat van kan maken met een voorbeeldafbeelding.
