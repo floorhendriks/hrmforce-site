@@ -20,7 +20,8 @@
     "hsf:links": "node scripts/hsf-controleer-links.mjs",
     "hsf:figuren": "node scripts/hsf-build-mbti-figuur.mjs",
     "hsf:oefenbank": "node scripts/hsf-build-oefenbank.mjs",
-    "hsf:oefendocs": "node scripts/hsf-build-oefendocs.mjs"
+    "hsf:oefendocs": "node scripts/hsf-build-oefendocs.mjs",
+    "hsf:afmetingen": "node scripts/hsf-media-afmetingen.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.0",
@@ -29,5 +30,8 @@
     "@fontsource/ibm-plex-sans": "^5.3.0",
     "@sanity/client": "^6.21.0",
     "astro": "^5.13.0"
+  },
+  "devDependencies": {
+    "image-size": "^2.0.4"
   }
 }

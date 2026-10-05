@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import AFMETINGEN from "../data/media-afmetingen.json";
 const raster = import.meta.glob(
   "/src/assets/media/**/*.{jpg,jpeg,png,gif,webp,JPG,JPEG,PNG,GIF,WEBP}",
   { eager: true }
@@ -15,7 +16,16 @@ function resolve(p) {
   return mod ? mod.default : null;
 }
 const meta = resolve(src);
+
+// Valt de afbeelding terug op een gewoon img-element, dan weet de browser de
+// verhouding niet en springt de pagina tijdens het laden. Daarom de afmetingen
+// uit media-afmetingen.json, gemeten met npm run hsf:afmetingen. Staat er al een
+// breedte of hoogte in de aanroep, dan blijft die staan.
+const bekend = !meta && src ? AFMETINGEN[String(src)] : null;
+const maat = bekend && rest.width == null && rest.height == null
+  ? { width: bekend[0], height: bekend[1] }
+  : {};
 ---
 {meta
   ? <Image src={meta} alt={alt} format="webp" {...rest} />
-  : <img src={src} alt={alt} {...rest} />}
+  : <img src={src} alt={alt} {...maat} {...rest} />}

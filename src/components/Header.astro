@@ -14,6 +14,9 @@ const otherLangs = Object.keys(languages).filter((c) => c !== lang);
 const H = (p) => navHref(p, lang, validPaths);
 
 // --- Site-brede zoekindex ---
+// De lijst zelf staat niet meer in de pagina maar in /zoekindex-<taal>.json en
+// wordt opgehaald zodra iemand het zoekvenster opent. Dat scheelde 61 KB op
+// elke pagina, op een gemiddelde van 113 KB.
 const SEARCH_I18N = {
   nl: { ph: "Zoek op de hele site\u2026", none: "Geen resultaten gevonden", label: "Zoeken" },
   en: { ph: "Search the entire site\u2026", none: "No results found", label: "Search" },
@@ -23,39 +26,8 @@ const SEARCH_I18N = {
   ro: { ph: "C\u0103uta\u021bi pe tot site-ul\u2026", none: "Niciun rezultat", label: "C\u0103utare" },
 };
 const si = SEARCH_I18N[lang] || SEARCH_I18N.nl;
+const zoekindexUrl = `/zoekindex-${lang}.json`;
 
-const stripLang = (p) => {
-  const m = p.match(/^\/(en|de|fr|es|ro)(\/|$)/);
-  return m ? p.slice(m[1].length + 1) : p;
-};
-const humanize = (p) => {
-  const seg = p.replace(/\/$/, "").split("/").filter(Boolean).pop() || "";
-  if (!seg) return "Home";
-  return seg.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-};
-const labelOverride = {};
-nav.assessments.forEach((it) => { labelOverride[it.path] = it.label; });
-nav.solutions.forEach((g) => g.items.forEach((it) => { labelOverride[it.path] = it.label; }));
-nav.kennisbank.forEach((it) => { labelOverride[it.path] = it.label; });
-nav.about.forEach((it) => { labelOverride[it.path] = it.label; });
-labelOverride["/tarieven/"] = nav.labels.tarieven;
-labelOverride[routes.contact] = nav.contact;
-
-const _forLang = validPaths.filter((p) => {
-  if (p.includes("%3F")) return false;
-  const isPrefixed = /^\/(en|de|fr|es|ro)\//.test(p);
-  return lang === "nl" ? !isPrefixed : p.startsWith("/" + lang + "/");
-});
-const _seen = new Set();
-const searchIndex = [];
-for (const p of _forLang) {
-  const base = stripLang(p);
-  if (base === "/") continue;
-  const title = labelOverride[base] || humanize(base);
-  if (_seen.has(p)) continue;
-  _seen.add(p);
-  searchIndex.push({ t: title, u: p });
-}
 ---
 <div class="topbar">
   <div class="wrap">
@@ -229,7 +201,7 @@ for (const p of _forLang) {
 </style>
 
 
-<script is:inline define:vars={{ SEARCH: searchIndex }}>
+<script is:inline define:vars={{ ZOEKINDEX_URL: zoekindexUrl }}>
   (function () {
     var btn = document.getElementById("siteSearchBtn");
     var ov = document.getElementById("siteSearch");
@@ -238,6 +210,18 @@ for (const p of _forLang) {
     var none = document.getElementById("siteSearchNone");
     var closeBtn = document.getElementById("siteSearchClose");
     if (!btn || !ov || !inp) return;
+    // De index komt pas binnen bij de eerste keer openen. Tot die tijd is hij
+    // leeg; het zoekveld werkt dan nog niet, en dat duurt een fractie.
+    var SEARCH = [];
+    var opgehaald = false;
+    function haalIndex() {
+      if (opgehaald) return Promise.resolve();
+      opgehaald = true;
+      return fetch(ZOEKINDEX_URL)
+        .then(function (r) { return r.ok ? r.json() : []; })
+        .then(function (lijst) { if (Array.isArray(lijst)) SEARCH = lijst; })
+        .catch(function () { opgehaald = false; });
+    }
     function norm(s) { return (s || "").toLowerCase(); }
     function render(q) {
       q = norm(q).trim();
@@ -255,8 +239,15 @@ for (const p of _forLang) {
         a.appendChild(sp); li.appendChild(a); res.appendChild(li);
       });
     }
-    function open() { ov.hidden = false; document.body.style.overflow = "hidden"; render(""); setTimeout(function () { inp.focus(); }, 30); }
+    function open() {
+      ov.hidden = false;
+      document.body.style.overflow = "hidden";
+      render("");
+      setTimeout(function () { inp.focus(); }, 30);
+      haalIndex().then(function () { render(inp.value); });
+    }
     function close() { ov.hidden = true; document.body.style.overflow = ""; inp.value = ""; }
+    btn.addEventListener("mouseenter", haalIndex);
     btn.addEventListener("click", open);
     closeBtn.addEventListener("click", close);
     inp.addEventListener("input", function () { render(inp.value); });
