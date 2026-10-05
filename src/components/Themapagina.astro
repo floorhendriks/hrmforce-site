@@ -4,6 +4,8 @@
 // een datamodule, de kaarten verwijzen naar bestaande pagina's.
 import { localizePath, localizeExisting, demoPath } from "../i18n/utils.js";
 import validPaths from "../data/valid-paths.js";
+import Documenten from "./Documenten.astro";
+import { documentenVoor } from "../data/instrument-documenten.js";
 const { t, lang, kaarten = [] } = Astro.props;
 const demoHref = demoPath(lang);
 const tarievenHref = localizeExisting("/tarieven/", lang, validPaths);
@@ -22,6 +24,10 @@ const faqLd = t.faq && t.faq.items && t.faq.items.length
       })),
     }
   : null;
+
+// Documenten bij dit instrument, opgezocht op het pad. Zo hoeft geen enkele
+// paginabestand te weten welke bestanden erbij horen.
+const docs = documentenVoor(Astro.url.pathname);
 ---
 {faqLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(faqLd)}></script>}
 
@@ -81,6 +87,8 @@ const faqLd = t.faq && t.faq.items && t.faq.items.length
     )}
   </div>
 </div></section>
+
+<Documenten docs={docs} lang={lang} />
 
 <section><div class="wrap" style="display:block">
   <h2 class="section-title">{t.faq.title}</h2>

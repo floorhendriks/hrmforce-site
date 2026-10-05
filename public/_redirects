@@ -74,24 +74,11 @@
 /fr/trainingskalender/ /fr/advies/trainingen/ 301
 /es/trainingskalender/ /es/advies/trainingen/ 301
 /ro/trainingskalender/ /ro/advies/trainingen/ 301
-/wp-content/uploads/2021/03/OPQ32-BPS-Review-2007.pdf /opq32/ 301
 /wp-content/uploads/2021/03/COTAN-Handleiding-OPQ32i.pdf /opq32/ 301
-/wp-content/uploads/2021/03/Best-Practice-Gebruik-T-scores.pdf /normgroepen/ 301
-/wp-content/uploads/2021/03/Normgroepen-details-MBO-BA-MA.pdf /normgroepen/ 301
-/wp-content/uploads/2021/03/Verify-Technical-Manual.pdf /capaciteitentest/ 301
-/wp-content/uploads/2021/03/Verify-Flyer-Checking-and-Calculation-1.pdf /capaciteitentest/ 301
-/wp-content/uploads/2021/03/FAQ-Connector-Ability-v1_6.pdf /capaciteitentest/ 301
-/wp-content/uploads/2021/03/Handboek-ConA-e-learning-2_1.pdf /capaciteitentest/ 301
-/wp-content/uploads/2021/04/Connector-Ability-prof-manual_UPDATE-DEF.pdf /capaciteitentest/ 301
-/wp-content/uploads/2021/03/Best-Practice-Inzet-Connector-A-bij-dyslexie.pdf /capaciteitentest/ 301
-/wp-content/uploads/2021/03/Kandidaatbrochure-Reflector-Big-Five-Personality.pdf /persoonlijkheidstest/ 301
 /wp-content/uploads/2021/03/Facet5-NL-families.pdf /persoonlijkheidstest/ 301
 /wp-content/uploads/2020/12/Effectief-Bila-gesprekken-voeren-hrmforce.pdf /kenniscentrum/bila-gesprek/ 301
-/wp-content/uploads/2021/04/Sample-UCR1.pdf /assessment-overzicht/ 301
-/wp-content/uploads/2021/04/Mr-Sample-Report-Team-Impact-Individual-Development-Report.pdf /teamrollentest/ 301
 /wp-content/uploads/2021/04/Dependability-Presentation.pdf /assessment-overzicht/ 301
 /wp-content/uploads/2021/04/DSI-User-Guide.pdf /assessment-overzicht/ 301
-/wp-content/uploads/2021/03/NL-Sales-Rapport-factsheet.pdf /assessments/verkoopvaardigheden/ 301
 
 /wp-content/* /media/wp-content/:splat 301
 /product-categorie/* /shop/ 301

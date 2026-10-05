@@ -1,0 +1,59 @@
+---
+// Lijst met documenten bij een instrument: brochures, voorbeeldrapportages,
+// handleidingen. De bestanden staan onder public/media, dus ze zijn direct te
+// openen zonder formulier. Dat is bewust: wie een voorbeeldrapport wil zien,
+// haakt af bij een drempel.
+//
+// De titels staan in het Nederlands en het Engels. Voor de overige talen valt
+// de lijst terug op het Engels, omdat de documenten zelf ook niet in die talen
+// bestaan. De taal van het document staat erbij, zodat niemand voor verrassingen
+// komt te staan.
+const { docs = [], lang = "nl" } = Astro.props;
+
+const L = {
+  nl: { titel: "Documenten en voorbeeldrapporten", intro: "Direct te openen, zonder formulier. De uitgever van het instrument staat erbij.", open: "Openen" },
+  en: { titel: "Documents and sample reports", intro: "Open directly, no form required. The publisher of the instrument is listed with each file.", open: "Open" },
+  de: { titel: "Dokumente und Musterberichte", intro: "Direkt zu öffnen, ohne Formular. Der Herausgeber des Instruments ist jeweils angegeben.", open: "Öffnen" },
+  fr: { titel: "Documents et rapports types", intro: "À ouvrir directement, sans formulaire. L'éditeur de l'instrument est indiqué.", open: "Ouvrir" },
+  es: { titel: "Documentos e informes de ejemplo", intro: "Se abren directamente, sin formulario. Se indica el editor del instrumento.", open: "Abrir" },
+  ro: { titel: "Documente și rapoarte model", intro: "Se deschid direct, fără formular. Editorul instrumentului este menționat.", open: "Deschide" },
+};
+const l = L[lang] || L.nl;
+const titelVan = (d) => d.titel[lang] || d.titel.en || d.titel.nl;
+---
+{docs.length > 0 && (
+<section class="doc-sec">
+  <div class="wrap">
+    <h2 class="section-title">{l.titel}</h2>
+    <p class="tp-sub">{l.intro}</p>
+    <ul class="doc-lijst">
+      {docs.map((d) => (
+        <li class="doc-item">
+          <a href={d.href} class="doc-link">
+            <span class="doc-ico" aria-hidden="true">PDF</span>
+            <span class="doc-tekst">
+              <span class="doc-titel">{titelVan(d)}</span>
+              <span class="doc-meta">{d.bron} &middot; {d.taal}{d.mb ? " · " + d.mb + " MB" : ""}</span>
+            </span>
+            <span class="doc-open">{l.open} &rarr;</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+)}
+
+<style>
+  .doc-sec { padding: 46px 0; }
+  .doc-lijst { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 10px; }
+  .doc-item { margin: 0; }
+  .doc-link { display: flex; align-items: center; gap: 14px; padding: 13px 16px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: #fff; text-decoration: none; color: inherit; }
+  .doc-link:hover { border-color: var(--navy); }
+  .doc-ico { flex: none; font-size: 10.5px; font-weight: 800; letter-spacing: .04em; color: #fff; background: var(--navy); border-radius: 4px; padding: 5px 7px; }
+  .doc-tekst { display: block; flex: 1; min-width: 0; }
+  .doc-titel { display: block; font-weight: 700; color: var(--navy); font-size: 15px; }
+  .doc-meta { display: block; color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+  .doc-open { flex: none; color: var(--accent); font-weight: 700; font-size: 13.5px; }
+  @media (max-width: 560px) { .doc-open { display: none; } }
+</style>

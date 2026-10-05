@@ -5,6 +5,7 @@ import { shopImages } from "../data/shop-images.js";
 import { SHOP_CONTENT } from "../data/shop-products.js";
 import catalog from "../data/shop-catalog.json";
 import { faqFor, BY_SEGMENT, generalFaq } from "../data/shop-faq.js";
+import { documentenPerProduct } from "../data/instrument-documenten.js";
 import { TRAINING_HANDLES, TRAINING_SEGMENT, TRAINING_BULLETS, TRAINING_FAQ } from "../data/shop-trainingen.js";
 import { shopLabels } from "../data/shop-labels.js";
 
@@ -141,6 +142,19 @@ const rq = REQ_I18N[lang] || REQ_I18N.nl;
 const FAQ_SEG = {};
 Object.keys(BY_SEGMENT).forEach((s) => { FAQ_SEG[s] = faqFor(s, lang); });
 
+// Documenten van de uitgever bij de instrumenten die hrmforce niet zelf uitgeeft.
+// Per producttitel, zodat het paneel ze zonder extra verzoek kan tonen.
+const DOCS = documentenPerProduct(lang);
+const DOCS_T = {
+  nl: "Documenten bij dit instrument",
+  en: "Documents for this instrument",
+  de: "Dokumente zu diesem Instrument",
+  fr: "Documents relatifs \u00e0 cet instrument",
+  es: "Documentos de este instrumento",
+  ro: "Documente pentru acest instrument",
+};
+const docsTitel = DOCS_T[lang] || DOCS_T.nl;
+
 // Trainingen: eigen segment, eigen kenmerken en eigen vragen.
 const LABELS = shopLabels(lang);
 const TRAIN = {
@@ -234,6 +248,7 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
           <div class="pm-tags" id="pmTags"></div>
           <div class="pm-price" id="pmPrice"></div>
           <div class="pm-desc" id="pmDesc"></div>
+          <div class="pm-docs" id="pmDocs"></div>
           <div class="pm-faq" id="pmFaq"></div>
           <button class="btn btn-primary pm-add" id="pmAdd" type="button">{ct.add}</button>
           <form class="pm-req" id="pmReq" method="POST" action="/api/aanvraag" data-mensform data-ok={MC_OK[lang] || MC_OK.nl} data-fout={MC_FOUT[lang] || MC_FOUT.nl} data-mensfout={MC_MENS[lang] || MC_MENS.nl} data-bezig={MC_BEZIG[lang] || MC_BEZIG.nl}>
@@ -369,6 +384,13 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
   .pm-desc :global(.pm-meer) { margin: 12px 0 14px; }
   .pm-desc :global(.pm-meer a) { color: var(--navy); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
   .pm-desc :global(.pm-meer a:hover) { color: var(--accent); }
+  .pm-docs { margin: 0 0 18px; }
+  .pm-docs-h { font-weight: 700; color: var(--navy); font-size: 14.5px; margin: 0 0 8px; }
+  .pm-doc { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--radius-sm); text-decoration: none; color: inherit; margin-bottom: 6px; }
+  .pm-doc:hover { border-color: var(--navy); }
+  .pm-doc-ico { flex: none; font-size: 9.5px; font-weight: 800; color: #fff; background: var(--navy); border-radius: 3px; padding: 4px 6px; }
+  .pm-doc-t { font-size: 13.5px; font-weight: 600; color: var(--navy); line-height: 1.35; }
+  .pm-doc-t em { display: block; font-style: normal; font-weight: 400; color: var(--muted); font-size: 12px; margin-top: 1px; }
   .pm-faq { margin: 4px 0 20px; }
   .pm-faq-item { border-top: 1px solid var(--line); padding: 10px 0; }
   .pm-faq-item summary { cursor: pointer; font-weight: 700; color: var(--navy); font-size: 14.5px; list-style: none; }
@@ -390,7 +412,7 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
   .cart-warn { color: #b3261e; background: #fdeceb; border: 1px solid #f6c9c5; border-radius: var(--radius-sm); padding: 8px 12px; font-size: 13px; font-weight: 600; margin: 0 0 10px; }
 </style>
 
-<script is:inline define:vars={{ L, ENRICH, LANG, TRAIN, LABELS, IMGMAP: shopImages, SC_URL: "/shop-products.json", VENDOR_LOGO, RQ: rq, FAQ_SEG, FAQ_DEFAULT, CATALOG: catalog, CHECKOUT_URL: afrekenenHref }}>
+<script is:inline define:vars={{ L, ENRICH, LANG, TRAIN, LABELS, IMGMAP: shopImages, SC_URL: "/shop-products.json", VENDOR_LOGO, RQ: rq, FAQ_SEG, FAQ_DEFAULT, DOCS, DOCS_TITEL: docsTitel, CATALOG: catalog, CHECKOUT_URL: afrekenenHref }}>
   (function () {
     var app = document.getElementById("shopApp");
     if (!app) return;
@@ -619,6 +641,12 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
       else vd.hidden = true;
       document.getElementById("pmTags").innerHTML = p.taxo.cyclus.concat(p.taxo.segment).map(function (x) { return '<span class="sp-tag">' + esc(label(x)) + "</span>"; }).join("");
       document.getElementById("pmDesc").innerHTML = descHtml(p);
+      var docs = (DOCS && DOCS[p.title]) || [];
+      document.getElementById("pmDocs").innerHTML = docs.length
+        ? '<div class="pm-docs-h">' + esc(DOCS_TITEL) + "</div>" + docs.map(function (d) {
+            return '<a class="pm-doc" href="' + esc(d.href) + '" target="_blank" rel="noopener"><span class="pm-doc-ico">PDF</span><span class="pm-doc-t">' + esc(d.titel) + '<em>' + esc(d.meta) + "</em></span></a>";
+          }).join("")
+        : "";
       var faqs = faqOf(p);
       document.getElementById("pmFaq").innerHTML = faqs.map(function (f) { return '<details class="pm-faq-item"><summary>' + esc(f.q) + '</summary><p>' + esc(f.a) + "</p></details>"; }).join("");
       var add = document.getElementById("pmAdd");
