@@ -1,13 +1,17 @@
 ---
 import Base from "../../layouts/Base.astro";
 import Klantcase from "../../components/Klantcase.astro";
-import { alleCaseSlugs, caseFor } from "../../data/cases-content.js";
+import { alleCaseSlugs, caseFor, caseOmschrijving } from "../../data/cases-content.js";
+import { titel as maakTitel } from "../../lib/meta.js";
 export function getStaticPaths() {
   return alleCaseSlugs().map((slug) => ({ params: { case: slug } }));
 }
 const c = caseFor(Astro.params.case, "nl");
-const titel = c.titel + " | hrmforce";
-const omschrijving = c.challenge;
+// De titel kan te lang worden in de vertalingen; maakTitel laat dan eerst de
+// merknaam vallen. De omschrijving was vaak maar een halve regel, te kort voor
+// het zoekresultaat, dus de resultaten komen erachteraan.
+const titel = maakTitel(c.titel);
+const omschrijving = caseOmschrijving(c);
 ---
 <Base title={titel} description={omschrijving} active="">
   <Klantcase c={c} lang="nl" />

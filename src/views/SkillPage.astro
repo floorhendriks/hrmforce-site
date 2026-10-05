@@ -6,6 +6,7 @@ import Level from '../components/Level.astro';
 import { useT, path , useTf} from '../lib/i18n';
 import { meta, domainById, typeLabel, instrumentInfo, methodInfo, functionById, domains } from '../lib/hsf';
 import { dlang } from '../lib/hsf-i18n';
+import { functieNaam } from '../lib/hsf-titels';
 import { vt } from '../lib/vocab';
 import { navHref } from '../i18n/utils.js';
 interface Props { lang: string; sk: any; alternates: Record<string, string> }
@@ -158,7 +159,7 @@ const jsonld = [{
           <h3 style="margin-top:0;font-size:1rem">{t('sk.functions')}</h3>
           <ul class="hsf-pills">
             {fns.slice(0, 14).map((f: any) => (
-              <li><a class="hsf-badge" href={path(lang, 'functions', f.slug[dl])}>{f.title[dl]}</a></li>
+              <li><a class="hsf-badge" href={path(lang, 'functions', f.slug[dl])}>{functieNaam(f, dl)}</a></li>
             ))}
           </ul>
           {fns.length > 14 && <p class="hsf-xs hsf-muted" style="margin:.6rem 0 0">{t('ui.and')} {fns.length - 14} {t('ui.more-jobs')}</p>}

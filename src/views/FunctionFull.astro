@@ -12,12 +12,14 @@ import CompetencyTable from '../components/CompetencyTable.astro';
 import { useT, path, useTf } from '../lib/i18n';
 import { familyById, meta, domainMix, constructById } from '../lib/hsf';
 import { dlang } from '../lib/hsf-i18n';
+import { functieNaam } from '../lib/hsf-titels';
 import { vt } from '../lib/vocab';
 interface Props { lang: string; fn: any }
 const { lang, fn } = Astro.props;
 const t = useT(lang);
 const tf = useTf(lang);
 const dl = dlang(lang);
+const fnNaam = functieNaam(fn, dl);
 const fam = familyById(fn.family_id);
 const mix = domainMix(fn.profile);
 const scale = (meta as any).proficiency_scale;
@@ -25,7 +27,7 @@ const methods = [...new Set(fn.profile.map((r: any) => r.assessment))]
   .map((m: any) => ({ name: m, ...((meta as any).assessment_methods[m] ?? {}) }));
 const byDomain = (meta as any) && domainMix(fn.profile);
 ---
-<Base lang={lang} title={titel(fn.title[dl], t('framework'), '')} description={omschrijving(fn.summary[dl])} noindex={true} bodyClass="hsf-print">
+<Base lang={lang} title={titel(fnNaam, t('framework'), '')} description={omschrijving(fn.summary[dl])} noindex={true} bodyClass="hsf-print">
   <header style="border-bottom:3px solid var(--hsf-accent);padding-bottom:.8rem;margin-bottom:1.2rem">
     <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:1rem;flex-wrap:wrap">
       <div>
@@ -39,7 +41,7 @@ const byDomain = (meta as any) && domainMix(fn.profile);
     </div>
   </header>
 
-  <h1 style="margin-bottom:.2rem">{fn.title[dl]}</h1>
+  <h1 style="margin-bottom:.2rem">{fnNaam}</h1>
   <p class="hsf-small hsf-muted" style="margin-bottom:1rem">
     {fam.id} {fam.name[dl]} · ISCO-08 {fn.isco} · CBS {fn.brc} {vt(fn.brc_naam, dl)} ·
     {' '}{t('ui.seniority')} {fn.seniority_default}

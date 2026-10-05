@@ -6,6 +6,7 @@ import { assessments } from "../../data/assessments.js";
 import { posts as allPosts } from "../../data/blog.js";
 import validPaths from "../../data/valid-paths.js";
 import { merknaam, merknaamInHtml } from "../../lib/merknaam.js";
+import { altAanvullen } from "../../lib/beeld.js";
 import { DUBBELE_SLUGS } from "../../data/kenniscentrum-duplicaten.js";
 
 export async function getStaticPaths() {
@@ -35,7 +36,7 @@ if (!p) {
 // Merknaam kleinschrijven in alles wat uit Sanity komt.
 p = { ...p, title: merknaam(p.title || ""), excerpt: merknaam(p.excerpt || ""),
       metaDescription: merknaam(p.metaDescription || ""),
-      body: (p.body || []).map((b) => (typeof b === "string" ? merknaamInHtml(b) : b)) };
+      body: (p.body || []).map((b) => (typeof b === "string" ? altAanvullen(merknaamInHtml(b), p.title) : b)) };
 const fmt = (d) => new Date(d).toLocaleDateString("nl-NL");
 // Pillar-cluster: gerelateerde assessments + verwante artikelen (interne links).
 const _hay = `${p.title||""} ${p.category||""} ${p.excerpt||""} ${(p.body||[]).join(" ")}`.toLowerCase();

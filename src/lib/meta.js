@@ -28,7 +28,7 @@ const LOSSE_WOORDEN = new Set([
   // Spaans
   "y", "o", "el", "los", "las", "un", "una", "para", "con", "por",
   // Roemeens
-  "și", "sau", "un", "o", "pentru", "cu", "din", "la", "de",
+  "și", "sau", "un", "o", "pentru", "cu", "din", "la", "de", "în", "pe", "al", "ale",
 ]);
 
 const schoon = (t) => (t || "").replace(/\s+/g, " ").trim();
@@ -86,7 +86,26 @@ function korterOpStrepen(naam, max) {
   const delen = naam.split(" / ");
   if (delen.length < 3) return null;
   const kort2 = `${delen[0]} / ${delen[delen.length - 1]}`;
-  return kort2.length <= max ? kort2 : null;
+  // Een paar tekens boven de limiet mag hier. Google kapt de weergave af, maar
+  // het onderscheid blijft in de titel staan. Zonder deze speling vallen zes
+  // vacatures in zes landen in het Duits en het Spaans terug op precies dezelfde
+  // titel, en dat is wel een probleem.
+  const ruim = max + 8;
+  if (kort2.length <= ruim) return kort2;
+  // Past het nog niet, dan korten we het eerste deel in in plaats van de staart
+  // weg te laten. In het Roemeens is de functienaam alleen al zestig tekens,
+  // en zonder het land erachter zijn vier vacatures niet van elkaar te
+  // onderscheiden.
+  const laatste = delen[delen.length - 1];
+  // Het eerste deel krijgt een vaste maximumlengte, niet de ruimte die toevallig
+  // overblijft. Anders krijgt de vacature in Mexico een langere functienaam dan
+  // die in Colombia, alleen omdat de landnaam korter is.
+  const ruimte = Math.min(ruim - laatste.length - 3, 38);
+  if (ruimte >= 15) {
+    const voor = kort(delen[0], ruimte);
+    if (voor) return `${voor} / ${laatste}`;
+  }
+  return null;
 }
 
 /**

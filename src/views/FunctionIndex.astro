@@ -5,6 +5,7 @@ import Search from '../components/Search.astro';
 import { useT, path, useTf } from '../lib/i18n';
 import { functions, families, meta, facets } from '../lib/hsf';
 import { dlang } from '../lib/hsf-i18n';
+import { functieNaam } from '../lib/hsf-titels';
 interface Props { lang: string; alternates: Record<string, string> }
 const { lang, alternates } = Astro.props;
 const t = useT(lang);
@@ -12,7 +13,7 @@ const tf = useTf(lang);
 const dl = dlang(lang);
 const byFam = families.map((f: any) => ({
   fam: f, list: functions.filter((x) => x.family_id === f.id)
-    .sort((a, b) => a.title[dl].localeCompare(b.title[dl], dl)),
+    .sort((a, b) => functieNaam(a, dl).localeCompare(functieNaam(b, dl), dl)),
 }));
 const title = `${meta.counts.functions} ${t('seo.job-profiles-with-skills-and-competencies')} | hrmforce`;
 const desc = tf('seo.jobs-index-desc', { n: meta.counts.functions });
@@ -38,7 +39,7 @@ const jsonld = {
       <div class="hsf-cards">
         {list.map((f: any) => (
           <a class="hsf-card hsf-card-link" href={path(lang, 'functions', f.slug[dl])}>
-            <strong style="color:var(--hsf-navy)">{f.title[dl]}</strong>
+            <strong style="color:var(--hsf-navy)">{functieNaam(f, dl)}</strong>
             <p class="hsf-xs hsf-muted" style="margin:.35rem 0 .5rem">{f.summary[dl]}</p>
             <div class="hsf-badges">
               <span class="hsf-badge">{f.counts.skills} {t('count.skills')}</span>

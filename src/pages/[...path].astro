@@ -1,5 +1,5 @@
 ---
-import { webpHtml } from "../lib/beeld.js";
+import { webpHtml, altAanvullen } from "../lib/beeld.js";
 import { titel, omschrijving, kortZin } from "../lib/meta.js";
 import { herstelLinks } from "../data/link-onderhoud.js";
 import { merknaam, merknaamInHtml } from "../lib/merknaam.js";
@@ -191,7 +191,7 @@ const _articleLd = {
 };
 
 // Body splitsen: contextuele kaart na de eerste </h2> (anders vóór de eindband).
-let body = merknaamInHtml(sanitizeBodyLinks(article.body || "", lang, validPaths));
+let body = altAanvullen(merknaamInHtml(sanitizeBodyLinks(article.body || "", lang, validPaths)), article.title);
 // Afbeeldingen stonden nog op de oude WordPress-site. Ze staan nu in /media/,
 // zodat de pagina niet afhankelijk is van een domein dat vervangen wordt.
 body = body.replace(/https:\/\/(?:www\.)?hrmforce\.com\/wp-content\//g, "/media/wp-content/");

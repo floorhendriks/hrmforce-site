@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/HsfBase.astro';
+import { titel } from '../lib/meta.js';
 import Search from '../components/Search.astro';
 import { useT, path, useTf } from '../lib/i18n';
 import { meta, domains, families, facets } from '../lib/hsf';
@@ -10,7 +11,9 @@ const t = useT(lang);
 const tf = useTf(lang);
 const dl = dlang(lang);
 const c = meta.counts;
-const title = `${t('framework')} | ${t('tagline')}`;
+// De tagline is in sommige talen zo lang dat de titel op 107 tekens uitkwam.
+// titel() laat hem in zijn geheel vallen als het geheel niet past.
+const title = titel(t('framework'), t('tagline'), '');
 const desc = tf('seo.home-desc', { jobs: c.functions, skills: c.granular_skills });
 const jsonld = [{
   '@context': 'https://schema.org', '@type': 'WebSite', name: t('framework'),

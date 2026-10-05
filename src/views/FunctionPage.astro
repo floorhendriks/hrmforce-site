@@ -10,6 +10,7 @@ import LeadForm from '../components/LeadForm.astro';
 import { useT, path, SEG, useTf } from '../lib/i18n';
 import { familyById, functionsOfFamily, domainMix, meta } from '../lib/hsf';
 import { dlang } from '../lib/hsf-i18n';
+import { functieNaam } from '../lib/hsf-titels';
 import { hasDownload, downloadUrl } from '../lib/downloads';
 import { vt } from '../lib/vocab';
 interface Props { lang: string; fn: any; alternates: Record<string, string> }
@@ -17,6 +18,7 @@ const { lang, fn, alternates } = Astro.props;
 const t = useT(lang);
 const tf = useTf(lang);
 const dl = dlang(lang);
+const fnNaam = functieNaam(fn, dl);
 const fam = familyById(fn.family_id);
 const mix = domainMix(fn.profile);
 const related = functionsOfFamily(fn.family_id).filter((x) => x.id !== fn.id).slice(0, 8);
@@ -30,11 +32,11 @@ const seg = SEG[lang] ?? SEG.en;
  */
 const hasPdf = hasDownload(lang, fn.slug[dl]);
 const pdf = hasPdf ? downloadUrl(lang, fn.slug[dl]) : path(lang, 'functions', fn.slug[dl], 'full');
-const title = titel(fn.title[dl], t('seo.job-profile-skills-and-competencies'));
+const title = titel(fnNaam, t('seo.job-profile-skills-and-competencies'));
 const desc = omschrijving(fn.summary[dl], tf('seo.job-desc-tail', { skills: fn.counts.skills, competencies: fn.counts.competencies }));
 const jsonld = [{
   '@context': 'https://schema.org', '@type': 'Occupation',
-  name: fn.title[dl], description: fn.summary[dl], inLanguage: lang,
+  name: fnNaam, description: fn.summary[dl], inLanguage: lang,
   alternateName: fn.aliases[dl],
   occupationalCategory: [
     { '@type': 'CategoryCode', codeValue: fn.isco, inCodeSet: { '@type': 'CategoryCodeSet', name: 'ISCO-08' } },
@@ -47,7 +49,7 @@ const jsonld = [{
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: t('framework'), item: new URL(path(lang), Astro.site).toString() },
     { '@type': 'ListItem', position: 2, name: t('nav.functions'), item: new URL(path(lang, 'functions'), Astro.site).toString() },
-    { '@type': 'ListItem', position: 3, name: fn.title[dl] },
+    { '@type': 'ListItem', position: 3, name: fnNaam },
   ],
 }];
 ---
@@ -56,7 +58,7 @@ const jsonld = [{
     { label: t('nav.home'), href: path(lang) },
     { label: t('nav.functions'), href: path(lang, 'functions') },
     { label: fam.name[dl], href: path(lang, 'families', fam.slug[dl]) },
-    { label: fn.title[dl] },
+    { label: fnNaam },
   ]} />
 
   <div class="hsf-grid hsf-cols">
@@ -66,7 +68,7 @@ const jsonld = [{
         <span class="hsf-badge">{fn.seniority_default}</span>
         {fn.sector_tags.map((s: string) => <span class="hsf-badge">{vt(s, dl)}</span>)}
       </div>
-      <h1 style="margin-bottom:.3rem">{fn.title[dl]}</h1>
+      <h1 style="margin-bottom:.3rem">{fnNaam}</h1>
       {fn.aliases[dl].length > 0 && (
         <p class="hsf-small hsf-muted">{t('fn.aliases')}: {fn.aliases[dl].join(' · ')}</p>
       )}
@@ -93,7 +95,7 @@ const jsonld = [{
           <div class="hsf-cards">
             {related.map((r: any) => (
               <a class="hsf-card hsf-card-link" href={path(lang, 'functions', r.slug[dl])}>
-                <strong style="color:var(--hsf-navy)">{r.title[dl]}</strong>
+                <strong style="color:var(--hsf-navy)">{functieNaam(r, dl)}</strong>
                 <p class="hsf-xs hsf-muted" style="margin:.3rem 0 0">{r.counts.skills} {t('fn.skills.count')} · {r.seniority_default}</p>
               </a>
             ))}
@@ -104,7 +106,7 @@ const jsonld = [{
 
     <aside class="hsf-sticky">
       <LeadForm lang={lang} fileUrl={pdf} fileName={`hrmforce-${fn.slug[dl]}.pdf`}
-                subject={fn.title[dl]} subjectId={fn.id} isPdf={hasPdf} />
+                subject={fnNaam} subjectId={fn.id} isPdf={hasPdf} />
 
       <div class="hsf-card" style="margin-top:1rem">
         <h3 style="margin-top:0;font-size:1rem">{t('fn.match')}</h3>

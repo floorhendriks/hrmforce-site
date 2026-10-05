@@ -6,6 +6,8 @@
 // mee. Deze lijst koppelt de varianten daarom expliciet aan elkaar.
 import { TESTHUBS } from "./testhubs.js";
 import { THEMAPAGINAS } from "./themapaginas.js";
+import { ONDERDELEN } from "./oefentest-ui.js";
+import { VRAGENLIJSTEN } from "./oefenvragenlijst.js";
 
 const TALEN = ["nl", "en", "de", "fr", "es", "ro"];
 
@@ -19,6 +21,19 @@ const groepen = [...Object.values(TESTHUBS), ...Object.values(THEMAPAGINAS)]
   }
   return uit;
 });
+
+// De gratis tests staan onder /oefentest/<slug>/ met een eigen slug per taal:
+// /oefentest/cijferreeksen/ tegenover /en/oefentest/number-series/. Zonder deze
+// koppeling krijgen 66 testpagina's geen hreflang en weet Google niet dat het
+// vertalingen van elkaar zijn.
+for (const o of [...Object.values(ONDERDELEN), ...Object.values(VRAGENLIJSTEN)]) {
+  const uit = {};
+  for (const taal of TALEN) {
+    if (!o.slug[taal]) continue;
+    uit[taal] = (taal === "nl" ? "/oefentest/" : `/${taal}/oefentest/`) + o.slug[taal] + "/";
+  }
+  if (Object.keys(uit).length > 1) groepen.push(uit);
+}
 
 // Pad -> { taal: pad } voor elke variant in de groep.
 export const SLUGVARIANTEN = new Map();

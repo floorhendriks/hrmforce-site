@@ -20,6 +20,7 @@ import CookieConsent from "../components/CookieConsent.astro";
 import { ANALYTICS, MARKETING, VERIFICATION } from "../data/site-config.js";
 import { consentContent } from "../data/consent-content.js";
 import { variantenVoor } from "../data/slugvarianten.js";
+import { kortZin } from "../lib/meta.js";
 
 const {
   title = "hrmforce",
@@ -42,6 +43,12 @@ const titelKort = (t) => {
   return v.length > 60 ? v.replace(/\s*\|\s*hrmforce\s*$/i, "").trim() : v;
 };
 const paginaTitel = titelKort(title);
+
+// Omschrijving: Google toont er ongeveer 155 tekens van. Wat langer is wordt
+// midden in een zin afgekapt, en dat kost kliks. Hier gebeurt het centraal, op
+// de laatste hele zin die nog past, zodat elke pagina het krijgt en niet alleen
+// de pagina's waar het apart is geregeld.
+const paginaOmschrijving = kortZin(description, 155);
 
 // Kruimelpad als BreadcrumbList. Google toont dat pad in het zoekresultaat in
 // plaats van de kale URL. Opgebouwd uit het pad zelf, zodat elke pagina met een
@@ -163,7 +170,7 @@ const orgLd = {
     <link rel="icon" type="image/png" sizes="32x32" href="/media/cropped-favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/media/cropped-favicon-192x192.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/media/cropped-favicon-180x180.png" />
-    <meta name="description" content={description} />
+    <meta name="description" content={paginaOmschrijving} />
     {noindex && <meta name="robots" content="noindex,follow" />}
     {VERIFICATION?.GOOGLE_SITE_VERIFICATION && <meta name="google-site-verification" content={VERIFICATION.GOOGLE_SITE_VERIFICATION} />}
     {VERIFICATION?.GOOGLE_SITE_VERIFICATION_LEGACY && <meta name="google-site-verification" content={VERIFICATION.GOOGLE_SITE_VERIFICATION_LEGACY} />}
@@ -171,12 +178,12 @@ const orgLd = {
     <meta property="og:site_name" content="hrmforce" />
     <meta property="og:locale" content={ogLocale} />
     <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={paginaOmschrijving} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={image} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={paginaTitel} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:description" content={paginaOmschrijving} />
     <meta name="twitter:image" content={image} />
     <link rel="canonical" href={canonical} />
     {hreflangs.map((h) => <link rel="alternate" hreflang={h.lang} href={h.href} />)}

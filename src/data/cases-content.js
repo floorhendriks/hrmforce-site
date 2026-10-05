@@ -320,3 +320,28 @@ export function casesFor(lang) {
   });
   return { ui, themeList, sectorList, sizeList, cases };
 }
+
+/**
+ * Omschrijving van een klantcase voor het zoekresultaat.
+ *
+ * De uitdaging alleen was vaak maar een halve regel: 81 van de 108 cases bleven
+ * onder de zeventig tekens, zodat de helft van het zoekresultaat leeg bleef. De
+ * resultaten komen er daarom achteraan, een voor een, zolang het geheel onder
+ * de 155 tekens blijft. Zo staat er altijd een hele zin en nooit een afgekapte.
+ */
+export function caseOmschrijving(c, max = 155) {
+  const basis = String(c.challenge || "").trim();
+  const label = (c.labels && c.labels.results) || "";
+  const lijst = Array.isArray(c.results) ? c.results : [];
+  if (!label || !lijst.length) return basis;
+  let uit = basis;
+  const gekozen = [];
+  for (const r of lijst) {
+    const stuk = String(r).trim().replace(/^./, (ch) => ch.toLowerCase());
+    const kandidaat = `${basis} ${label}: ${[...gekozen, stuk].join(", ")}.`;
+    if (kandidaat.length > max) break;
+    gekozen.push(stuk);
+    uit = kandidaat;
+  }
+  return uit;
+}

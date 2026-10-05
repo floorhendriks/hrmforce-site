@@ -7,6 +7,7 @@ import { assessments } from "../../../data/assessments.js";
 import { assessmentsI18n } from "../../../data/assessments-i18n.js";
 import { localizePath, demoPath, navHref } from "../../../i18n/utils.js";
 import { SECTOR_UI } from "../../../data/sector-ui.js";
+import { titel as maakTitel, kortZin } from "../../../lib/meta.js";
 import validPaths from "../../../data/valid-paths.js";
 
 export async function getStaticPaths() {
@@ -44,8 +45,16 @@ const andere = Object.entries(SECTORPAGINAS)
   .filter(([k]) => k !== Astro.params.sector && _vert[k])
   .slice(0, 6)
   .map(([k]) => ({ k, titel: _vert[k].kort }));
+
+// De titels staan als "Assessments voor X | Y" in de data. 86 van de 108 liepen
+// over de zestig tekens en werden door Google middenin een woord afgekapt. De
+// hulpfunctie laat het tweede deel in zijn geheel vallen als het niet past, in
+// plaats van er een halve zin van te maken.
+const _delen = String(s.metaTitle || "").split(" | ");
+const paginaTitel = maakTitel(_delen[0], _delen.slice(1).join(" | "));
+const paginaOmschrijving = kortZin(s.metaDescription || "", 155);
 ---
-<Base title={s.metaTitle} description={s.metaDescription} active="solutions">
+<Base title={paginaTitel} description={paginaOmschrijving} active="solutions">
   <div class="crumb">
     <div class="wrap">
       <a href={L("/")}>{ui.home}</a> › <a href={L("/sectoren/")}>{ui.eyebrow}</a> › <span>{s.kort}</span>
@@ -63,7 +72,7 @@ const andere = Object.entries(SECTORPAGINAS)
           <a href={L("/assessment-overzicht/")} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">{ui.alle}</a>
         </div>
       </div>
-      <div class="device"><img src={s.omslag} alt="" width="400" height="240" class="sec-beeld" /></div>
+      <div class="device"><img src={s.omslag} alt={s.h1 || s.kort} width="400" height="240" class="sec-beeld" /></div>
     </div>
   </section>
 

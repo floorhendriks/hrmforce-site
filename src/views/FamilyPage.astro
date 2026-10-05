@@ -6,12 +6,13 @@ import Level from '../components/Level.astro';
 import { useT, path , useTf} from '../lib/i18n';
 import { functionsOfFamily, constructById, typeLabel, meta } from '../lib/hsf';
 import { dlang } from '../lib/hsf-i18n';
+import { functieNaam } from '../lib/hsf-titels';
 interface Props { lang: string; fam: any; alternates: Record<string, string> }
 const { lang, fam, alternates } = Astro.props;
 const t = useT(lang);
 const tf = useTf(lang);
 const dl = dlang(lang);
-const list = functionsOfFamily(fam.id).sort((a, b) => a.title[dl].localeCompare(b.title[dl], dl));
+const list = functionsOfFamily(fam.id).sort((a, b) => functieNaam(a, dl).localeCompare(functieNaam(b, dl), dl));
 const title = titel(fam.name[dl], t('seo.job-family-base-profile-and-jobs'));
 const desc = omschrijving(fam.description[dl], tf('seo.n-jobs-in-this-family', { n: list.length }));
 ---
@@ -68,7 +69,7 @@ const desc = omschrijving(fam.description[dl], tf('seo.n-jobs-in-this-family', {
   <div class="hsf-cards">
     {list.map((f: any) => (
       <a class="hsf-card hsf-card-link" href={path(lang, 'functions', f.slug[dl])}>
-        <strong style="color:var(--hsf-navy)">{f.title[dl]}</strong>
+        <strong style="color:var(--hsf-navy)">{functieNaam(f, dl)}</strong>
         <p class="hsf-xs hsf-muted" style="margin:.35rem 0 .5rem">{f.summary[dl]}</p>
         <div class="hsf-badges">
           <span class="hsf-badge">{f.counts.skills} {t('count.skills')}</span>

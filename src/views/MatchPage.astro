@@ -6,15 +6,17 @@ import MatchCalculator from '../components/MatchCalculator.astro';
 import { useT, path, useTf } from '../lib/i18n';
 import { familyById, meta } from '../lib/hsf';
 import { dlang } from '../lib/hsf-i18n';
+import { functieNaam } from '../lib/hsf-titels';
 interface Props { lang: string; fn: any; alternates: Record<string, string> }
 const { lang, fn, alternates } = Astro.props;
 const t = useT(lang);
 const tf = useTf(lang);
 const dl = dlang(lang);
+const fnNaam = functieNaam(fn, dl);
 const fam = familyById(fn.family_id);
 const mm = (meta as any).match_model;
-const title = titel(`${t('match.title')} ${fn.title[dl]}`);
-const desc = omschrijving(tf('seo.match-desc', { job: fn.title[dl], n: fn.counts.skills }));
+const title = titel(`${t('match.title')} ${fnNaam}`);
+const desc = omschrijving(tf('seo.match-desc', { job: fnNaam, n: fn.counts.skills }));
 /* De rekenhulp per functie staat op noindex: het scherm rekent, het profiel
    vertelt. De profielpagina is de pagina die mag ranken; deze 450 maal zes
    schermen kostten alleen crawlbudget. De overzichtspagina blijft indexeerbaar. */
@@ -23,11 +25,11 @@ const desc = omschrijving(tf('seo.match-desc', { job: fn.title[dl], n: fn.counts
   <Crumbs items={[
     { label: t('nav.home'), href: path(lang) },
     { label: t('nav.match'), href: path(lang, 'match') },
-    { label: fn.title[dl] },
+    { label: fnNaam },
   ]} />
   <h1 style="margin-bottom:.2rem">{t('match.title')}</h1>
   <p class="hsf-lead" style="margin-bottom:1rem">
-    {fn.title[dl]} · <a href={path(lang, 'functions', fn.slug[dl])}>{t('ui.view-the-profile')}</a>
+    {fnNaam} · <a href={path(lang, 'functions', fn.slug[dl])}>{t('ui.view-the-profile')}</a>
   </p>
   <MatchCalculator lang={lang} fn={fn} family={fam} />
 
