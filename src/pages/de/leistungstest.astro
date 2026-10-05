@@ -1,0 +1,10 @@
+---
+import Base from "../../layouts/Base.astro";
+import Themapagina from "../../components/Themapagina.astro";
+import { TESTHUBS } from "../../data/testhubs.js";
+const hub = TESTHUBS.capaciteiten;
+const t = hub.i18n.de;
+---
+<Base title={t.meta.title} description={t.meta.description} active="">
+  <Themapagina t={t} lang="de" kaarten={hub.kaarten} />
+</Base>

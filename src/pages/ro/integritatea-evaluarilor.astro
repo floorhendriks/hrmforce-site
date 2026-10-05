@@ -1,0 +1,10 @@
+---
+import Base from "../../layouts/Base.astro";
+import Themapagina from "../../components/Themapagina.astro";
+import { THEMAPAGINAS } from "../../data/themapaginas.js";
+const pagina = THEMAPAGINAS.integriteit;
+const t = pagina.i18n.ro;
+---
+<Base title={t.meta.title} description={t.meta.description} active="">
+  <Themapagina t={t} lang="ro" kaarten={pagina.kaarten} />
+</Base>

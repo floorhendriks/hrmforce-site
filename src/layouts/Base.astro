@@ -19,6 +19,7 @@ import validPaths from "../data/valid-paths.js";
 import CookieConsent from "../components/CookieConsent.astro";
 import { ANALYTICS, MARKETING, VERIFICATION } from "../data/site-config.js";
 import { consentContent } from "../data/consent-content.js";
+import { variantenVoor } from "../data/slugvarianten.js";
 
 const {
   title = "Hrmforce",
@@ -108,8 +109,15 @@ const _hasLang = _segs.length > 0 && OTHER_LANGS.includes(_segs[0]);
 let basePath = "/" + (_hasLang ? _segs.slice(1) : _segs).join("/");
 if (!basePath.endsWith("/")) basePath += "/";
 const _talen = OTHER_LANGS.filter((l) => _alle.has("/" + l + basePath));
-const hreflangs =
-  _alle.has(basePath) && _talen.length
+// Pagina's met een eigen slug per taal staan in slugvarianten.js; daar is het
+// pad zelf vertaald, dus de taalprefix alleen levert geen geldig adres op.
+const _varianten = variantenVoor(Astro.url.pathname);
+const hreflangs = _varianten
+  ? [
+      ...Object.entries(_varianten).map(([l, p]) => ({ lang: l, href: SITE + p })),
+      { lang: "x-default", href: SITE + (_varianten.nl || Astro.url.pathname) },
+    ]
+  : _alle.has(basePath) && _talen.length
     ? [
         { lang: "nl", href: SITE + basePath },
         ..._talen.map((l) => ({ lang: l, href: SITE + "/" + l + basePath })),

@@ -1,0 +1,14 @@
+---
+import Base from "../../layouts/Base.astro";
+import Klantcase from "../../components/Klantcase.astro";
+import { alleCaseSlugs, caseFor } from "../../data/cases-content.js";
+export function getStaticPaths() {
+  return alleCaseSlugs().map((slug) => ({ params: { case: slug } }));
+}
+const c = caseFor(Astro.params.case, "nl");
+const titel = c.titel + " | hrmforce";
+const omschrijving = c.challenge;
+---
+<Base title={titel} description={omschrijving} active="">
+  <Klantcase c={c} lang="nl" />
+</Base>

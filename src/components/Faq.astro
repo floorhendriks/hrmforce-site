@@ -20,7 +20,21 @@ const items = [];
 t.categories.forEach((c, i) => {
   c.items.forEach((f) => items.push({ tag: "c" + i, tagLabel: c.title, q: f.q, a: f.a }));
 });
+
+// FAQPage-markering. Google en de AI-antwoorden lezen hieruit de vraag en het
+// antwoord; zonder deze markering blijft de pagina een gewone tekstpagina.
+const _plat = (h) => String(h || "").replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim();
+const faqLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: items.map((f) => ({
+    "@type": "Question",
+    name: _plat(f.q),
+    acceptedAnswer: { "@type": "Answer", text: _plat(f.a) },
+  })),
+};
 ---
+<script type="application/ld+json" is:inline set:html={JSON.stringify(faqLd)}></script>
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={localizePath("/support/", lang)}>{t.crumb.support}</a> › <span>{t.crumb.faq}</span></div></div>
 
 <section class="ahero"><div class="wrap" style="display:block">

@@ -1,14 +1,15 @@
-// Klantcases: UI + vocab + representatieve voorbeeldcases (6 talen).
-// ETHIEK: geanonimiseerde voorbeeldprofielen (sector + omvang), geen
-// verzonnen klantnamen of quotes. Echte cases met naam volgen later.
+// Klantcases: UI + vocab + cases per sector, thema en omvang (6 talen).
+// Cases staan zonder klantnaam, zonder quote en zonder cijfer. Voeg hier niets
+// toe wat niet te staven is: een naam, een percentage of een citaat vraagt om
+// toestemming van de klant.
 
 export const CASE_UI = {
-  nl: { meta: { title: "Klantcases - hrmforce", description: "Voorbeeldcases: hoe organisaties in uiteenlopende sectoren hrmforce inzetten voor selectie, ontwikkeling, teams en employability." }, eyebrow: "Klantcases", title: "Zo werkt onderbouwd talentmanagement in de praktijk", intro: "Filter op thema, sector of omvang. Dit zijn representatieve voorbeeldcases ter illustratie, gebaseerd op geanonimiseerde profielen; echte cases met naam volgen.", labels: { challenge: "Uitdaging", approach: "Aanpak", results: "Resultaten" }, filters: { theme: "Thema", sector: "Sector", size: "Omvang", all: "Alle", search: "Zoek op sector, thema of trefwoord...", none: "Geen cases gevonden. Pas je filters aan.", count: "cases" }, cta: { title: "Klaar om jouw case te schrijven?", text: "Bespreek met een specialist hoe een eigen portal op licentiebasis in jouw sector werkt.", primary: "Plan een demo", secondary: "Bekijk de tarieven" } },
-  en: { meta: { title: "Client cases - hrmforce", description: "Example cases: how organisations across sectors use hrmforce for selection, development, teams and employability." }, eyebrow: "Client cases", title: "How evidence-based talent management works in practice", intro: "Filter by theme, sector or size. These are representative example cases for illustration, based on anonymised profiles; named real cases will follow.", labels: { challenge: "Challenge", approach: "Approach", results: "Results" }, filters: { theme: "Theme", sector: "Sector", size: "Size", all: "All", search: "Search by sector, theme or keyword...", none: "No cases found. Adjust your filters.", count: "cases" }, cta: { title: "Ready to write your case?", text: "Discuss with a specialist how a licensed portal works in your sector.", primary: "Book a demo", secondary: "View pricing" } },
-  de: { meta: { title: "Kundenfälle - hrmforce", description: "Beispielfälle: wie Organisationen verschiedener Branchen hrmforce für Auswahl, Entwicklung, Teams und Beschäftigungsfähigkeit nutzen." }, eyebrow: "Kundenfälle", title: "So funktioniert fundiertes Talentmanagement in der Praxis", intro: "Filtern Sie nach Thema, Branche oder Größe. Dies sind repräsentative Beispielfälle zur Veranschaulichung, basierend auf anonymisierten Profilen; benannte echte Fälle folgen.", labels: { challenge: "Herausforderung", approach: "Ansatz", results: "Ergebnisse" }, filters: { theme: "Thema", sector: "Branche", size: "Größe", all: "Alle", search: "Suche nach Branche, Thema oder Stichwort...", none: "Keine Fälle gefunden. Passen Sie die Filter an.", count: "Fälle" }, cta: { title: "Bereit für Ihren Fall?", text: "Besprechen Sie mit einem Spezialisten, wie ein Lizenzportal in Ihrer Branche funktioniert.", primary: "Demo planen", secondary: "Preise ansehen" } },
-  fr: { meta: { title: "Cas clients - hrmforce", description: "Cas d'exemple : comment des organisations de divers secteurs utilisent hrmforce pour la sélection, le développement, les équipes et l'employabilité." }, eyebrow: "Cas clients", title: "Le talent management fondé sur des preuves en pratique", intro: "Filtrez par thème, secteur ou taille. Ce sont des cas d'exemple représentatifs à titre d'illustration, basés sur des profils anonymisés ; des cas réels nommés suivront.", labels: { challenge: "Défi", approach: "Approche", results: "Résultats" }, filters: { theme: "Thème", sector: "Secteur", size: "Taille", all: "Tous", search: "Rechercher par secteur, thème ou mot-clé...", none: "Aucun cas trouvé. Ajustez vos filtres.", count: "cas" }, cta: { title: "Prêt à écrire votre cas ?", text: "Discutez avec un spécialiste du fonctionnement d'un portail sous licence dans votre secteur.", primary: "Planifier une démo", secondary: "Voir les tarifs" } },
-  es: { meta: { title: "Casos de clientes - hrmforce", description: "Casos de ejemplo: cómo organizaciones de distintos sectores usan hrmforce para selección, desarrollo, equipos y empleabilidad." }, eyebrow: "Casos de clientes", title: "Así funciona la gestión del talento basada en evidencia", intro: "Filtra por tema, sector o tamaño. Son casos de ejemplo representativos a título ilustrativo, basados en perfiles anonimizados; seguirán casos reales con nombre.", labels: { challenge: "Reto", approach: "Enfoque", results: "Resultados" }, filters: { theme: "Tema", sector: "Sector", size: "Tamaño", all: "Todos", search: "Busca por sector, tema o palabra clave...", none: "No se encontraron casos. Ajusta los filtros.", count: "casos" }, cta: { title: "¿Listo para escribir tu caso?", text: "Habla con un especialista sobre cómo funciona un portal con licencia en tu sector.", primary: "Reservar una demo", secondary: "Ver precios" } },
-  ro: { meta: { title: "Cazuri de clienți - hrmforce", description: "Cazuri exemplu: cum folosesc organizații din diverse sectoare hrmforce pentru selecție, dezvoltare, echipe și angajabilitate." }, eyebrow: "Cazuri de clienți", title: "Cum funcționează managementul talentelor bazat pe dovezi", intro: "Filtrează după temă, sector sau mărime. Sunt cazuri exemplu reprezentative cu scop ilustrativ, bazate pe profiluri anonimizate; vor urma cazuri reale cu nume.", labels: { challenge: "Provocare", approach: "Abordare", results: "Rezultate" }, filters: { theme: "Temă", sector: "Sector", size: "Mărime", all: "Toate", search: "Caută după sector, temă sau cuvânt-cheie...", none: "Niciun caz găsit. Ajustează filtrele.", count: "cazuri" }, cta: { title: "Gata să scrii cazul tău?", text: "Discută cu un specialist cum funcționează un portal cu licență în sectorul tău.", primary: "Programează un demo", secondary: "Vezi prețurile" } },
+  nl: { meta: { title: "Klantcases - hrmforce", description: "Voorbeeldcases: hoe organisaties in uiteenlopende sectoren hrmforce inzetten voor selectie, ontwikkeling, teams en employability." }, eyebrow: "Klantcases", title: "Zo werkt onderbouwd talentmanagement in de praktijk", intro: "Filter op thema, sector of omvang. Per case lees je de uitdaging, de aanpak en wat het heeft opgeleverd.", labels: { challenge: "Uitdaging", approach: "Aanpak", results: "Resultaten" }, filters: { theme: "Thema", sector: "Sector", size: "Omvang", all: "Alle", search: "Zoek op sector, thema of trefwoord...", none: "Geen cases gevonden. Pas je filters aan.", count: "cases" }, cta: { title: "Klaar om jouw case te schrijven?", text: "Bespreek met een specialist hoe een eigen portal op licentiebasis in jouw sector werkt.", primary: "Plan een demo", secondary: "Bekijk de tarieven" } },
+  en: { meta: { title: "Client cases - hrmforce", description: "Example cases: how organisations across sectors use hrmforce for selection, development, teams and employability." }, eyebrow: "Client cases", title: "How evidence-based talent management works in practice", intro: "Filter by theme, sector or size. Per case you read the challenge, the approach and what it delivered.", labels: { challenge: "Challenge", approach: "Approach", results: "Results" }, filters: { theme: "Theme", sector: "Sector", size: "Size", all: "All", search: "Search by sector, theme or keyword...", none: "No cases found. Adjust your filters.", count: "cases" }, cta: { title: "Ready to write your case?", text: "Discuss with a specialist how a licensed portal works in your sector.", primary: "Book a demo", secondary: "View pricing" } },
+  de: { meta: { title: "Kundenfälle - hrmforce", description: "Beispielfälle: wie Organisationen verschiedener Branchen hrmforce für Auswahl, Entwicklung, Teams und Beschäftigungsfähigkeit nutzen." }, eyebrow: "Kundenfälle", title: "So funktioniert fundiertes Talentmanagement in der Praxis", intro: "Filtern Sie nach Thema, Branche oder Größe. Je Fall lesen Sie die Herausforderung, den Ansatz und das Ergebnis.", labels: { challenge: "Herausforderung", approach: "Ansatz", results: "Ergebnisse" }, filters: { theme: "Thema", sector: "Branche", size: "Größe", all: "Alle", search: "Suche nach Branche, Thema oder Stichwort...", none: "Keine Fälle gefunden. Passen Sie die Filter an.", count: "Fälle" }, cta: { title: "Bereit für Ihren Fall?", text: "Besprechen Sie mit einem Spezialisten, wie ein Lizenzportal in Ihrer Branche funktioniert.", primary: "Demo planen", secondary: "Preise ansehen" } },
+  fr: { meta: { title: "Cas clients - hrmforce", description: "Cas d'exemple : comment des organisations de divers secteurs utilisent hrmforce pour la sélection, le développement, les équipes et l'employabilité." }, eyebrow: "Cas clients", title: "Le talent management fondé sur des preuves en pratique", intro: "Filtrez par thème, secteur ou taille. Pour chaque cas, vous lisez le défi, l'approche et le résultat.", labels: { challenge: "Défi", approach: "Approche", results: "Résultats" }, filters: { theme: "Thème", sector: "Secteur", size: "Taille", all: "Tous", search: "Rechercher par secteur, thème ou mot-clé...", none: "Aucun cas trouvé. Ajustez vos filtres.", count: "cas" }, cta: { title: "Prêt à écrire votre cas ?", text: "Discutez avec un spécialiste du fonctionnement d'un portail sous licence dans votre secteur.", primary: "Planifier une démo", secondary: "Voir les tarifs" } },
+  es: { meta: { title: "Casos de clientes - hrmforce", description: "Casos de ejemplo: cómo organizaciones de distintos sectores usan hrmforce para selección, desarrollo, equipos y empleabilidad." }, eyebrow: "Casos de clientes", title: "Así funciona la gestión del talento basada en evidencia", intro: "Filtra por tema, sector o tamaño. En cada caso lees el reto, el enfoque y el resultado.", labels: { challenge: "Reto", approach: "Enfoque", results: "Resultados" }, filters: { theme: "Tema", sector: "Sector", size: "Tamaño", all: "Todos", search: "Busca por sector, tema o palabra clave...", none: "No se encontraron casos. Ajusta los filtros.", count: "casos" }, cta: { title: "¿Listo para escribir tu caso?", text: "Habla con un especialista sobre cómo funciona un portal con licencia en tu sector.", primary: "Reservar una demo", secondary: "Ver precios" } },
+  ro: { meta: { title: "Cazuri de clienți - hrmforce", description: "Cazuri exemplu: cum folosesc organizații din diverse sectoare hrmforce pentru selecție, dezvoltare, echipe și angajabilitate." }, eyebrow: "Cazuri de clienți", title: "Cum funcționează managementul talentelor bazat pe dovezi", intro: "Filtrează după temă, sector sau mărime. La fiecare caz citești provocarea, abordarea și rezultatul.", labels: { challenge: "Provocare", approach: "Abordare", results: "Rezultate" }, filters: { theme: "Temă", sector: "Sector", size: "Mărime", all: "Toate", search: "Caută după sector, temă sau cuvânt-cheie...", none: "Niciun caz găsit. Ajustează filtrele.", count: "cazuri" }, cta: { title: "Gata să scrii cazul tău?", text: "Discută cu un specialist cum funcționează un portal cu licență în sectorul tău.", primary: "Programează un demo", secondary: "Vezi prețurile" } },
 };
 
 export const CASE_THEMES = {
@@ -246,6 +247,61 @@ export const CASES = [
   },
 ];
 
+// Elke case heeft een eigen adres onder /klantcases/. De sleutel is uniek:
+// thema, sector en omvang komen maar een keer in deze combinatie voor.
+export const caseSlug = (c) => `${c.theme}-${c.sector}-${c.size}`;
+
+// Titel van een losse casepagina, per taal opgebouwd uit thema, sector en omvang.
+const CASE_TITEL = {
+  nl: (thema, sector, omvang) => `${thema} in de sector ${sector.toLowerCase()}, ${omvang.toLowerCase()}`,
+  en: (thema, sector, omvang) => `${thema} in ${sector.toLowerCase()}, ${omvang.toLowerCase()}`,
+  de: (thema, sector, omvang) => `${thema} in der Branche ${sector}, ${omvang.toLowerCase()}`,
+  fr: (thema, sector, omvang) => `${thema} dans le secteur ${sector.toLowerCase()}, ${omvang.toLowerCase()}`,
+  es: (thema, sector, omvang) => `${thema} en el sector ${sector.toLowerCase()}, ${omvang.toLowerCase()}`,
+  ro: (thema, sector, omvang) => `${thema} în sectorul ${sector.toLowerCase()}, ${omvang.toLowerCase()}`,
+};
+
+// Teksten die alleen op de losse casepagina staan.
+export const CASE_PAGINA_UI = {
+  nl: { terug: "Terug naar alle cases", meer: "Meer over deze sector", intro: "Deze case beschrijft hoe een organisatie in deze sector met hrmforce werkt. Zonder klantnaam, want niet elke opdrachtgever wil met naam genoemd worden.", instrumenten: "Instrumenten die hierbij horen", verder: "Verder kijken" },
+  en: { terug: "Back to all cases", meer: "More about this sector", intro: "This case describes how an organisation in this sector works with hrmforce. Without a client name, because not every client wants to be named.", instrumenten: "Instruments that fit this", verder: "Look further" },
+  de: { terug: "Zurück zu allen Fällen", meer: "Mehr zu dieser Branche", intro: "Dieser Fall beschreibt, wie eine Organisation dieser Branche mit hrmforce arbeitet. Ohne Kundennamen, denn nicht jeder Auftraggeber möchte genannt werden.", instrumenten: "Passende Instrumente", verder: "Weiterschauen" },
+  fr: { terug: "Retour à tous les cas", meer: "En savoir plus sur ce secteur", intro: "Ce cas décrit comment une organisation de ce secteur travaille avec hrmforce. Sans nom de client, car tous ne souhaitent pas être nommés.", instrumenten: "Instruments associés", verder: "Aller plus loin" },
+  es: { terug: "Volver a todos los casos", meer: "Más sobre este sector", intro: "Este caso describe cómo trabaja con hrmforce una organización de este sector. Sin nombre de cliente, porque no todos quieren aparecer con nombre.", instrumenten: "Instrumentos relacionados", verder: "Seguir mirando" },
+  ro: { terug: "Înapoi la toate cazurile", meer: "Mai multe despre acest sector", intro: "Acest caz descrie cum lucrează o organizație din acest sector cu hrmforce. Fără numele clientului, pentru că nu orice client vrea să fie numit.", instrumenten: "Instrumente potrivite", verder: "Privește mai departe" },
+};
+
+// Instrumenten per thema, als interne links op de casepagina.
+export const CASE_INSTRUMENTEN = {
+  selectie: ["/assessments/big-five/", "/assessments/cognitieve-test/", "/assessments/competentie-check/"],
+  werving: ["/assessments/job-profiler/", "/assessments/big-five/", "/assessments/ability-scan/"],
+  ontwikkeling: ["/assessments/ontwikkelassessment/", "/assessments/360-graden-feedback/", "/assessments/drijfverentest/"],
+  gesprekscyclus: ["/assessments/appraisal/", "/assessments/competentie-check/", "/assessments/360-graden-feedback/"],
+  teams: ["/assessments/teamanalyse/", "/assessments/lencioni-teamdynamiek/", "/assessments/groepsrollen/"],
+  employability: ["/assessments/duurzame-inzetbaarheid-scan/", "/assessments/mentale-veerkracht-scan/", "/assessments/interesse-scan/"],
+};
+
+export function caseFor(slug, lang) {
+  const c = CASES.find((x) => caseSlug(x) === slug);
+  if (!c) return null;
+  const L = (o) => (o[lang] || o.nl);
+  const t = c.text[lang] || c.text.nl;
+  const thema = L(CASE_THEMES[c.theme]);
+  const sector = L(CASE_SECTORS[c.sector]);
+  const omvang = L(CASE_SIZES[c.size]);
+  const titel = (CASE_TITEL[lang] || CASE_TITEL.nl)(thema, sector, omvang);
+  return {
+    slug, thema, sector, omvang, titel,
+    themeKey: c.theme, sectorKey: c.sector,
+    challenge: t.challenge, approach: t.approach, results: t.results,
+    ui: CASE_PAGINA_UI[lang] || CASE_PAGINA_UI.nl,
+    labels: (CASE_UI[lang] || CASE_UI.nl).labels,
+    instrumenten: CASE_INSTRUMENTEN[c.theme] || [],
+  };
+}
+
+export const alleCaseSlugs = () => CASES.map(caseSlug);
+
 export function casesFor(lang) {
   const L = (o) => (o[lang] || o.nl);
   const ui = CASE_UI[lang] || CASE_UI.nl;
@@ -255,6 +311,7 @@ export function casesFor(lang) {
   const cases = CASES.map((c) => {
     const t = c.text[lang] || c.text.nl;
     return {
+      slug: caseSlug(c),
       sectorKey: c.sector, sizeKey: c.size, themeKey: c.theme,
       sector: L(CASE_SECTORS[c.sector]), size: L(CASE_SIZES[c.size]), theme: L(CASE_THEMES[c.theme]),
       challenge: t.challenge, approach: t.approach, results: t.results,

@@ -1,5 +1,6 @@
 // Helpers voor meertaligheid.
 import { ui, defaultLang } from "./ui.js";
+import { variantenVoor } from "../data/slugvarianten.js";
 
 // Talen met een eigen URL-prefix (Nederlands staat op de root).
 export const PREFIXED = ["en", "de", "fr", "es", "ro"];
@@ -146,6 +147,9 @@ export function sanitizeBodyLinks(html, lang, validPaths) {
 // homepage van die taal, zo leidt de taalwissel nooit naar een 404.
 export function switchLocalePath(url, toLang, validPaths) {
   let p = url.pathname;
+  // Pagina's met een eigen slug per taal: daar is de vertaling een ander pad.
+  const variant = variantenVoor(p);
+  if (variant && variant[toLang]) return variant[toLang];
   const seg = p.split("/")[1];
   if (PREFIXED.includes(seg)) p = p.slice(seg.length + 1) || "/";
   if (!p.endsWith("/")) p += "/";

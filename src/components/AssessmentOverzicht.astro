@@ -2,6 +2,8 @@
 import { localizePath, demoPath, navHref } from "../i18n/utils.js";
 import validPaths from "../data/valid-paths.js";
 import { shopMap } from "../data/assessment-shop.js";
+import { TESTHUBS } from "../data/testhubs.js";
+import { THEMAPAGINAS } from "../data/themapaginas.js";
 const { c, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
 const demoHref = demoPath(lang);
@@ -19,6 +21,27 @@ const items = c.items.map((a) => {
 const allCyclus = c.cyclus;
 const allSegments = [...new Set(items.flatMap((i) => i.segments))].sort();
 const allUitgevers = [...new Set(items.map((i) => i.uitgever).filter(Boolean))].sort();
+
+// Themapagina's per testsoort. Ze hebben per taal een eigen slug, dus de link
+// komt uit de datamodule en niet uit navHref.
+const HUB_UI = {
+  nl: { title: "Zoek je op testsoort?", intro: "Weet je nog niet welk instrument je nodig hebt? Deze pagina's leggen per soort uit wat er gemeten wordt en welke vragenlijst erbij hoort." },
+  en: { title: "Looking by type of test?", intro: "Not sure yet which instrument you need? These pages explain per type what is measured and which questionnaire belongs to it." },
+  de: { title: "Suchen Sie nach Testart?", intro: "Noch unklar, welches Instrument Sie brauchen? Diese Seiten erklären je Art, was gemessen wird und welcher Fragebogen dazugehört." },
+  fr: { title: "Vous cherchez par type de test ?", intro: "Vous ne savez pas encore quel instrument vous faut ? Ces pages expliquent par type ce qui est mesuré et quel questionnaire y correspond." },
+  es: { title: "¿Buscas por tipo de test?", intro: "¿Aún no sabes qué instrumento necesitas? Estas páginas explican por tipo qué se mide y qué cuestionario corresponde." },
+  ro: { title: "Cauți după tipul de test?", intro: "Încă nu știi ce instrument îți trebuie? Aceste pagini explică pe tipuri ce se măsoară și ce chestionar se potrivește." },
+};
+const hubUi = HUB_UI[lang] || HUB_UI.nl;
+const hubLinks = [...Object.values(TESTHUBS), ...Object.values(THEMAPAGINAS)].map((h) => {
+  const taal = h.i18n[lang] ? lang : "nl";
+  const slug = h.slug[taal];
+  return {
+    href: (taal === "nl" ? "/" : "/" + taal + "/") + slug + "/",
+    titel: h.i18n[taal].hero.title,
+    lead: h.i18n[taal].crumb,
+  };
+});
 ---
 <div class="crumb">
   <div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{c.crumb}</span></div>
@@ -84,7 +107,20 @@ const allUitgevers = [...new Set(items.map((i) => i.uitgever).filter(Boolean))].
   </div>
 </section>
 
+<section class="bg-soft"><div class="wrap" style="display:block">
+  <h2 class="section-title">{hubUi.title}</h2>
+  <p style="max-width:820px;color:var(--muted);margin:0 0 18px;font-size:15.5px;line-height:1.7">{hubUi.intro}</p>
+  <div class="hub-rij">
+    {hubLinks.map((h) => (
+      <a class="hub-knop" href={h.href}>{h.titel} &rarr;</a>
+    ))}
+  </div>
+</div></section>
+
 <style>
+  .hub-rij{display:flex;flex-wrap:wrap;gap:10px;max-width:960px}
+  .hub-knop{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:var(--radius-pill);padding:10px 18px;color:var(--navy);font-weight:700;font-size:14.5px;text-decoration:none}
+  .hub-knop:hover{border-color:var(--navy)}
   .filterbar { display: grid; gap: 14px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow:none; margin-bottom: 18px; }
   .fb-search input { width: 100%; padding: 12px 16px; border: 1px solid var(--line-strong); border-radius: var(--radius-pill); font-size: 15px; font-family: inherit; }
   .fb-search input:focus { outline: 2px solid var(--blue); border-color: var(--blue); }

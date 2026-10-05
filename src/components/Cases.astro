@@ -1,9 +1,12 @@
 ---
 import { getLangFromUrl, localizePath, demoPath } from "../i18n/utils.js";
 import { casesFor } from "../data/cases-content.js";
+import { localizeExisting } from "../i18n/utils.js";
+import validPaths from "../data/valid-paths.js";
 
 const lang = getLangFromUrl(Astro.url);
 const { ui, themeList, sectorList, sizeList, cases } = casesFor(lang);
+const caseHref = (slug) => localizeExisting("/klantcases/" + slug + "/", lang, validPaths);
 const contactHref = localizePath("/contact/", lang);
 const tarievenHref = localizePath("/tarieven/", lang);
 ---
@@ -40,7 +43,7 @@ const tarievenHref = localizePath("/tarieven/", lang);
           <span class="case-tag">{c.theme}</span>
           <span class="case-size">{c.size}</span>
         </div>
-        <h2 class="case-sector">{c.sector}</h2>
+        <h2 class="case-sector"><a class="case-link" href={caseHref(c.slug)}>{c.sector}</a></h2>
         <div class="case-block">
           <h3 class="case-label">{ui.labels.challenge}</h3>
           <p>{c.challenge}</p>
@@ -53,6 +56,7 @@ const tarievenHref = localizePath("/tarieven/", lang);
           <h3 class="case-label">{ui.labels.results}</h3>
           <ul class="case-results">{c.results.map((r) => <li>{r}</li>)}</ul>
         </div>
+        <a class="case-meer" href={caseHref(c.slug)}>{ui.labels.challenge ? "" : ""}{c.theme} &rarr;</a>
       </article>
     ))}
   </div>
@@ -77,6 +81,9 @@ const tarievenHref = localizePath("/tarieven/", lang);
   .case-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
   @media(max-width:980px){.case-grid{grid-template-columns:1fr 1fr}}
   @media(max-width:680px){.case-grid{grid-template-columns:1fr}.case-count{margin-left:0}}
+  .case-link{color:inherit;text-decoration:none}
+  .case-link:hover{color:var(--blue)}
+  .case-meer{margin-top:auto;padding-top:12px;color:var(--blue);font-weight:700;font-size:14px;text-decoration:none}
   .case-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
   .case-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
   .case-tag{background:var(--navy);color:#fff;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:4px 11px;border-radius:var(--radius-pill)}
