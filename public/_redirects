@@ -36,6 +36,15 @@
 /ro/toepassingen/zorg/ /ro/sectoren/zorg/ 301
 /ro/toepassingen/onderwijs/ /ro/sectoren/onderwijs/ 301
 /ro/toepassingen/industrie/ /ro/sectoren/industrie/ 301
+
+# Kennisartikelen die twee adressen hadden. Het tweede adres bevatte alleen
+# het woord Verplaatst. Deze regels staan hier bovenaan, want onderaan het
+# bestand paste Cloudflare ze niet toe en bleef de dubbele pagina in de lucht.
+/kenniscentrum/onderwijs/werkdruk-onderwijs/ /kenniscentrum/werkdruk-onderwijs/ 301
+/kenniscentrum/ontwikkeling/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/ /kenniscentrum/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/ 301
+/kenniscentrum/ontwikkeling/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/ /kenniscentrum/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/ 301
+/kenniscentrum/ontwikkeling/piramide-van-lencioni/ /assessments/lencioni-teamdynamiek/ 301
+
 /wp-content/* /media/wp-content/:splat 301
 /product-categorie/* /shop/ 301
 /news_category/* /kenniscentrum/ 301
@@ -240,10 +249,6 @@
 /demo-aanvragen/ /demo/ 301
 /aanvragen/ /demo/ 301
 /plan-een-demo/ /demo/ 301
-/kenniscentrum/onderwijs/werkdruk-onderwijs/ /kenniscentrum/werkdruk-onderwijs/ 301
-/kenniscentrum/ontwikkeling/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/ /kenniscentrum/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/ 301
-/kenniscentrum/ontwikkeling/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/ /kenniscentrum/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/ 301
-/kenniscentrum/ontwikkeling/piramide-van-lencioni/ /assessments/lencioni-teamdynamiek/ 301
 /hrm-software/ /hrm-oplossingen/ 301
 /hrmforce-scans/ /assessment-overzicht/ 301
 /instructievideos/ /kenniscentrum/ 301

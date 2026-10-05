@@ -8,6 +8,7 @@ import { shopInfo } from "../data/assessment-shop.js";
 import { localizePath, sanitizeBodyLinks } from "../i18n/utils.js";
 import LogoSlider from "../components/LogoSlider.astro";
 import validPaths from "../data/valid-paths.js";
+import { DUBBELE_PADEN } from "../data/kenniscentrum-duplicaten.js";
 
 // Gemigreerde kenniscentrum-artikelen uit WordPress. Elk artikel-document in
 // Sanity heeft een volledig 'path'; deze catch-all route rendert ze op dat pad.
@@ -19,6 +20,8 @@ export async function getStaticPaths() {
   // Statische routes hebben voorrang; sluit paden uit die we nu als eigen
   // pagina bouwen (bijv. de sectoren-index) om dubbele routes te voorkomen.
   const OWN = new Set(["sectoren", "en/sectoren", "de/sectoren", "fr/sectoren", "es/sectoren", "ro/sectoren", "sectoren/onderwijs"]);
+  // Artikelen die twee adressen hebben. Het lege "Verplaatst"-adres bouwen we
+  // niet meer; een terugvalpagina stuurt de bezoeker naar het echte artikel.
   // Migratieresten uit WordPress: paden als /?page_id=8355/. Het zijn dubbelen
   // van echte pagina's (templates, testpagina's, tweede versies van Support en
   // de algemene voorwaarden) met een URL zonder betekenis. Ze niet bouwen haalt
@@ -36,6 +39,7 @@ export async function getStaticPaths() {
     .map((a) => ({ ...a, gedeeldeIntro: telling[kop(a.body)] > 1 }))
     .map((a) => ({ p: a.path.replace(/^\/+|\/+$/g, ""), a }))
     .filter((x) => !OWN.has(x.p))
+    .filter((x) => !DUBBELE_PADEN.has(x.p))
     .map((x) => ({ params: { path: x.p }, props: { article: x.a } }));
 }
 
