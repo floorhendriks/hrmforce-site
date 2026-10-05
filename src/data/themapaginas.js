@@ -488,6 +488,7 @@ export const THEMAPAGINAS = {
           { t: "Wel: de opzet en de verantwoording", d: "Is het instrument gebouwd op een erkend model, is er onderzoek gedaan en is dat navolgbaar opgeschreven? Daar geeft een beoordeling antwoord op." },
           { t: "Niet: de normgroep van vandaag", d: "Een oordeel beschrijft de stand op het moment van beoordelen. Daarna kan er jaren overheen gaan zonder dat er opnieuw naar wordt gekeken." },
           { t: "Vrijwillig en op aanvraag", d: "Een uitgever vraagt een beoordeling zelf aan. Beoordelaars zijn vrijwilligers, dus hoeveel instrumenten er per jaar langskomen is beperkt." },
+          { t: "Een toets door vakgenoten", d: "Beoordelaars zijn vrijwilligers uit hetzelfde vakgebied, met een richtlijn die voorkomt dat iemand zijn eigen instrument beoordeelt. Dat is zorgvuldig geregeld. Het blijft een oordeel vanuit de eigen beroepsgroep, en dat is iets anders dan een onafhankelijke audit." },
           { t: "Geen uitspraak over jouw gebruik", d: "Of een instrument past bij jouw functie, jouw doelgroep en jouw procedure, staat los van het oordeel over het instrument zelf." },
         ] },
         tests: { title: "Verder lezen", intro: "De pagina's waar dit onderwerp aan raakt.", cta: "Bekijken", kaarten: [
