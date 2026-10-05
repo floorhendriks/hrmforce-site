@@ -7,7 +7,7 @@ export const THEMAPAGINAS = {
     kaarten: ["/oefentest/", "/voorbereiding/", "/assessment-overzicht/", "/trust/"],
     i18n: {
       nl: {
-        meta: { title: "Spieken, AI en fraude bij online assessments voorkomen | Hrmforce", description: "Waar het misgaat bij online assessments, wat ertegen helpt en hoe je een uitslag beoordeelt waar je twijfel over hebt." },
+        meta: { title: "Spieken, AI en fraude bij online assessments voorkomen | hrmforce", description: "Waar het misgaat bij online assessments, wat ertegen helpt en hoe je een uitslag beoordeelt waar je twijfel over hebt." },
         crumb: "Assessment-integriteit",
         hero: { eyebrow: "Integriteit", title: "Een online assessment eerlijk houden", lead: "Sinds kandidaten tijdens een test een taalmodel kunnen openzetten, is de vraag veranderd. Hieronder lees je wat er werkelijk misgaat, wat eraan helpt en hoe je een uitslag beoordeelt waar je twijfel over hebt." },
         intro: [
@@ -45,7 +45,7 @@ export const THEMAPAGINAS = {
         cta: { title: "De procedure doorlopen met iemand die ernaar kijkt?", text: "Een adviseur kijkt mee naar je selectieproces en waar de risico's zitten.", primary: "Plan een demo", secondary: "Bekijk de tarieven" },
       },
       en: {
-        meta: { title: "Preventing cheating, AI use and fraud in online assessments | Hrmforce", description: "Where online assessments go wrong, what helps against it and how to judge an outcome you have doubts about." },
+        meta: { title: "Preventing cheating, AI use and fraud in online assessments | hrmforce", description: "Where online assessments go wrong, what helps against it and how to judge an outcome you have doubts about." },
         crumb: "Assessment integrity",
         hero: { eyebrow: "Integrity", title: "Keeping an online assessment honest", lead: "Now that candidates can open a language model during a test, the question has changed. Below you read what actually goes wrong, what helps and how to judge an outcome you have doubts about." },
         intro: [
@@ -83,7 +83,7 @@ export const THEMAPAGINAS = {
         cta: { title: "Want someone to look at your procedure?", text: "An adviser reviews your selection process and where the risks sit.", primary: "Book a demo", secondary: "View pricing" },
       },
       de: {
-        meta: { title: "Täuschung, KI und Betrug bei Online-Assessments verhindern | Hrmforce", description: "Wo Online-Assessments schieflaufen, was dagegen hilft und wie Sie ein Ergebnis beurteilen, an dem Sie zweifeln." },
+        meta: { title: "Täuschung, KI und Betrug bei Online-Assessments verhindern | hrmforce", description: "Wo Online-Assessments schieflaufen, was dagegen hilft und wie Sie ein Ergebnis beurteilen, an dem Sie zweifeln." },
         crumb: "Assessment-Integrität",
         hero: { eyebrow: "Integrität", title: "Ein Online-Assessment fair halten", lead: "Seit Kandidaten während eines Tests ein Sprachmodell öffnen können, hat sich die Frage verändert. Unten lesen Sie, was wirklich schiefgeht, was hilft und wie Sie ein zweifelhaftes Ergebnis beurteilen." },
         intro: [
@@ -121,7 +121,7 @@ export const THEMAPAGINAS = {
         cta: { title: "Jemanden auf Ihr Verfahren schauen lassen?", text: "Eine Beraterin prüft Ihren Auswahlprozess und wo die Risiken liegen.", primary: "Demo planen", secondary: "Preise ansehen" },
       },
       fr: {
-        meta: { title: "Prévenir la triche, l'IA et la fraude dans les évaluations en ligne | Hrmforce", description: "Où les évaluations en ligne dérapent, ce qui aide et comment juger un résultat qui vous laisse un doute." },
+        meta: { title: "Prévenir la triche, l'IA et la fraude dans les évaluations en ligne | hrmforce", description: "Où les évaluations en ligne dérapent, ce qui aide et comment juger un résultat qui vous laisse un doute." },
         crumb: "Intégrité des évaluations",
         hero: { eyebrow: "Intégrité", title: "Garder une évaluation en ligne honnête", lead: "Depuis que les candidats peuvent ouvrir un modèle de langage pendant un test, la question a changé. Vous lisez ci-dessous ce qui dérape vraiment, ce qui aide et comment juger un résultat douteux." },
         intro: [
@@ -159,7 +159,7 @@ export const THEMAPAGINAS = {
         cta: { title: "Faire examiner votre procédure ?", text: "Un conseiller passe en revue votre processus de sélection et ses points de risque.", primary: "Planifier une démo", secondary: "Voir les tarifs" },
       },
       es: {
-        meta: { title: "Evitar copiar, el uso de IA y el fraude en evaluaciones online | Hrmforce", description: "Dónde fallan las evaluaciones online, qué ayuda y cómo valorar un resultado que te genera dudas." },
+        meta: { title: "Evitar copiar, el uso de IA y el fraude en evaluaciones online | hrmforce", description: "Dónde fallan las evaluaciones online, qué ayuda y cómo valorar un resultado que te genera dudas." },
         crumb: "Integridad de las evaluaciones",
         hero: { eyebrow: "Integridad", title: "Mantener honesta una evaluación online", lead: "Desde que los candidatos pueden abrir un modelo de lenguaje durante un test, la pregunta ha cambiado. Abajo lees qué falla de verdad, qué ayuda y cómo valorar un resultado dudoso." },
         intro: [
@@ -197,7 +197,7 @@ export const THEMAPAGINAS = {
         cta: { title: "¿Quieres que alguien revise tu procedimiento?", text: "Un asesor repasa tu proceso de selección y dónde están los riesgos.", primary: "Reservar una demo", secondary: "Ver precios" },
       },
       ro: {
-        meta: { title: "Prevenirea copiatului, a folosirii AI și a fraudei în evaluările online | Hrmforce", description: "Unde se strică lucrurile la evaluările online, ce ajută și cum judeci un rezultat de care te îndoiești." },
+        meta: { title: "Prevenirea copiatului, a folosirii AI și a fraudei în evaluările online | hrmforce", description: "Unde se strică lucrurile la evaluările online, ce ajută și cum judeci un rezultat de care te îndoiești." },
         crumb: "Integritatea evaluărilor",
         hero: { eyebrow: "Integritate", title: "Cum păstrezi corectă o evaluare online", lead: "De când candidații pot deschide un model de limbaj în timpul testului, întrebarea s-a schimbat. Mai jos citești ce se strică de fapt, ce ajută și cum judeci un rezultat îndoielnic." },
         intro: [
@@ -242,7 +242,7 @@ export const THEMAPAGINAS = {
     kaarten: ["/trust/", "/wetenschappelijke-verantwoording/", "/voor-kandidaten/", "/assessment-integriteit/"],
     i18n: {
       nl: {
-        meta: { title: "AI en assessments: wat de regels zeggen en waar je op let | Hrmforce", description: "Waar AI in werving zit, wat de AI-verordening vraagt, welke datums gelden en welke vragen je een leverancier stelt." },
+        meta: { title: "AI en assessments: wat de regels zeggen en waar je op let | hrmforce", description: "Waar AI in werving zit, wat de AI-verordening vraagt, welke datums gelden en welke vragen je een leverancier stelt." },
         crumb: "AI in assessments",
         hero: { eyebrow: "AI", title: "AI en assessments", lead: "AI zit inmiddels in werving: in het sorteren van cv's, in chatgesprekken en in het samenvatten van rapporten. Hieronder staat waar de wet op let, welke datums gelden en welke vragen je een leverancier stelt." },
         intro: [
@@ -280,7 +280,7 @@ export const THEMAPAGINAS = {
         cta: { title: "Vragen over AI in je selectieproces?", text: "Een adviseur loopt met je door waar AI zit en wat dat betekent voor je procedure.", primary: "Plan een demo", secondary: "Bekijk de tarieven" },
       },
       en: {
-        meta: { title: "AI and assessments: what the rules say and what to watch | Hrmforce", description: "Where AI sits in recruitment, what the AI Act asks, which dates apply and which questions to ask a supplier." },
+        meta: { title: "AI and assessments: what the rules say and what to watch | hrmforce", description: "Where AI sits in recruitment, what the AI Act asks, which dates apply and which questions to ask a supplier." },
         crumb: "AI in assessments",
         hero: { eyebrow: "AI", title: "AI and assessments", lead: "AI now sits inside recruitment: in sorting CVs, in chat conversations and in summarising reports. Below you read what the law watches, which dates apply and which questions to ask a supplier." },
         intro: [
@@ -318,7 +318,7 @@ export const THEMAPAGINAS = {
         cta: { title: "Questions about AI in your selection process?", text: "An adviser walks through where AI sits and what that means for your procedure.", primary: "Book a demo", secondary: "View pricing" },
       },
       de: {
-        meta: { title: "KI und Assessments: was die Regeln sagen und worauf Sie achten | Hrmforce", description: "Wo KI in der Rekrutierung steckt, was die KI-Verordnung verlangt, welche Daten gelten und welche Fragen Sie einem Anbieter stellen." },
+        meta: { title: "KI und Assessments: was die Regeln sagen und worauf Sie achten | hrmforce", description: "Wo KI in der Rekrutierung steckt, was die KI-Verordnung verlangt, welche Daten gelten und welche Fragen Sie einem Anbieter stellen." },
         crumb: "KI in Assessments",
         hero: { eyebrow: "KI", title: "KI und Assessments", lead: "KI steckt inzwischen in der Rekrutierung: im Sortieren von Lebensläufen, in Chatgesprächen und im Zusammenfassen von Berichten. Unten steht, worauf das Gesetz achtet, welche Daten gelten und welche Fragen Sie einem Anbieter stellen." },
         intro: [
@@ -356,7 +356,7 @@ export const THEMAPAGINAS = {
         cta: { title: "Fragen zu KI in Ihrem Auswahlprozess?", text: "Eine Beraterin geht mit Ihnen durch, wo KI sitzt und was das für Ihr Verfahren bedeutet.", primary: "Demo planen", secondary: "Preise ansehen" },
       },
       fr: {
-        meta: { title: "IA et évaluations : ce que disent les règles et ce qu'il faut surveiller | Hrmforce", description: "Où l'IA intervient en recrutement, ce que demande le règlement IA, quelles dates s'appliquent et quelles questions poser à un fournisseur." },
+        meta: { title: "IA et évaluations : ce que disent les règles et ce qu'il faut surveiller | hrmforce", description: "Où l'IA intervient en recrutement, ce que demande le règlement IA, quelles dates s'appliquent et quelles questions poser à un fournisseur." },
         crumb: "IA dans les évaluations",
         hero: { eyebrow: "IA", title: "IA et évaluations", lead: "L'IA est désormais présente en recrutement : dans le tri des CV, dans les conversations par chat et dans la synthèse des rapports. Vous lisez ci-dessous ce que surveille la loi, quelles dates s'appliquent et quelles questions poser à un fournisseur." },
         intro: [
@@ -394,7 +394,7 @@ export const THEMAPAGINAS = {
         cta: { title: "Des questions sur l'IA dans votre processus ?", text: "Un conseiller passe en revue avec vous où se trouve l'IA et ce que cela implique.", primary: "Planifier une démo", secondary: "Voir les tarifs" },
       },
       es: {
-        meta: { title: "IA y evaluaciones: qué dicen las normas y en qué fijarse | Hrmforce", description: "Dónde entra la IA en selección, qué exige el reglamento de IA, qué fechas rigen y qué preguntas hacer a un proveedor." },
+        meta: { title: "IA y evaluaciones: qué dicen las normas y en qué fijarse | hrmforce", description: "Dónde entra la IA en selección, qué exige el reglamento de IA, qué fechas rigen y qué preguntas hacer a un proveedor." },
         crumb: "IA en las evaluaciones",
         hero: { eyebrow: "IA", title: "IA y evaluaciones", lead: "La IA ya está dentro de la selección: en el cribado de currículums, en conversaciones por chat y en el resumen de informes. Abajo lees en qué se fija la ley, qué fechas rigen y qué preguntas hacer a un proveedor." },
         intro: [
@@ -432,7 +432,7 @@ export const THEMAPAGINAS = {
         cta: { title: "¿Dudas sobre la IA en tu proceso de selección?", text: "Un asesor repasa contigo dónde está la IA y qué significa para tu procedimiento.", primary: "Reservar una demo", secondary: "Ver precios" },
       },
       ro: {
-        meta: { title: "AI și evaluări: ce spun regulile și la ce te uiți | Hrmforce", description: "Unde intră AI în recrutare, ce cere regulamentul AI, ce date se aplică și ce întrebări pui unui furnizor." },
+        meta: { title: "AI și evaluări: ce spun regulile și la ce te uiți | hrmforce", description: "Unde intră AI în recrutare, ce cere regulamentul AI, ce date se aplică și ce întrebări pui unui furnizor." },
         crumb: "AI în evaluări",
         hero: { eyebrow: "AI", title: "AI și evaluări", lead: "AI se află deja în recrutare: în sortarea CV-urilor, în discuțiile pe chat și în rezumarea rapoartelor. Mai jos citești la ce se uită legea, ce date se aplică și ce întrebări pui unui furnizor." },
         intro: [
@@ -477,7 +477,7 @@ export const THEMAPAGINAS = {
     kaarten: ["/wetenschappelijke-verantwoording/", "/capaciteitentest/", "/persoonlijkheidstest/", "/trust/"],
     i18n: {
       nl: {
-        meta: { title: "Normgroepen: waar je bij een testaanbieder echt naar vraagt | Hrmforce", description: "Wat een testkeurmerk wel en niet zegt, waarom de ouderdom van een normgroep zwaarder weegt dan een oordeel uit het verleden, en welke vijf vragen je een aanbieder stelt." },
+        meta: { title: "Normgroepen: waar je bij een testaanbieder echt naar vraagt | hrmforce", description: "Wat een testkeurmerk wel en niet zegt, waarom de ouderdom van een normgroep zwaarder weegt dan een oordeel uit het verleden, en welke vijf vragen je een aanbieder stelt." },
         crumb: "Normgroepen",
         hero: { eyebrow: "Normgroepen", title: "Normgroepen: waar je echt naar vraagt", lead: "Een testscore betekent niets op zichzelf. Hij krijgt pas betekenis naast een normgroep. Toch gaat het gesprek met een aanbieder vaak over keurmerken en zelden over de vraag met wie jouw kandidaat eigenlijk wordt vergeleken." },
         intro: [
@@ -524,7 +524,7 @@ export const THEMAPAGINAS = {
     kaarten: ["/shop/", "/persoonlijkheidstest/", "/normgroepen/", "/capaciteitentest/"],
     i18n: {
       nl: {
-        meta: { title: "OPQ32: wat de vragenlijst meet en welke rapporten eruit komen | Hrmforce", description: "De OPQ32 brengt werkgedrag in kaart op 32 schalen. Wat de vragenlijst meet, welke rapporten er zijn en hoe je hem bestelt." },
+        meta: { title: "OPQ32: wat de vragenlijst meet en welke rapporten eruit komen | hrmforce", description: "De OPQ32 brengt werkgedrag in kaart op 32 schalen. Wat de vragenlijst meet, welke rapporten er zijn en hoe je hem bestelt." },
         crumb: "OPQ32",
         hero: { eyebrow: "OPQ32", title: "OPQ32", lead: "De OPQ32 is de werkgerelateerde persoonlijkheidsvragenlijst van SHL. Hieronder lees je wat hij meet, welke rapporten eruit komen en waar je hem bestelt." },
         intro: [
@@ -561,7 +561,7 @@ export const THEMAPAGINAS = {
         cta: { title: "Vragen over de OPQ32?", text: "Een adviseur bespreekt welk rapport past bij je vraag en welke normgroep daarbij hoort.", primary: "Plan een demo", secondary: "Bekijk de tarieven" },
       },
       en: {
-        meta: { title: "OPQ32: what the questionnaire measures and which reports it gives | Hrmforce", description: "The OPQ32 maps behaviour at work across 32 scales. What it measures, which reports exist and where to order it." },
+        meta: { title: "OPQ32: what the questionnaire measures and which reports it gives | hrmforce", description: "The OPQ32 maps behaviour at work across 32 scales. What it measures, which reports exist and where to order it." },
         crumb: "OPQ32",
         hero: { eyebrow: "OPQ32", title: "OPQ32", lead: "The OPQ32 is the work-related personality questionnaire from SHL. Below you read what it measures, which reports it gives and where to order it." },
         intro: [
@@ -605,7 +605,7 @@ export const THEMAPAGINAS = {
     kaarten: ["/shop/", "/persoonlijkheidstest/", "/normgroepen/", "/assessment-overzicht/"],
     i18n: {
       nl: {
-        meta: { title: "PAPI 3: wat de vragenlijst meet en welke varianten er zijn | Hrmforce", description: "PAPI 3 brengt werkgerelateerde voorkeuren in kaart via behoeften en rollen. Het verschil tussen 3-N en 3-I, waarvoor je hem inzet en waar je hem bestelt." },
+        meta: { title: "PAPI 3: wat de vragenlijst meet en welke varianten er zijn | hrmforce", description: "PAPI 3 brengt werkgerelateerde voorkeuren in kaart via behoeften en rollen. Het verschil tussen 3-N en 3-I, waarvoor je hem inzet en waar je hem bestelt." },
         crumb: "PAPI 3",
         hero: { eyebrow: "PAPI 3", title: "PAPI 3", lead: "PAPI 3 is de werkgerelateerde persoonlijkheidsvragenlijst van Cubiks. Hieronder lees je wat hij meet, wat het verschil is tussen de twee varianten en waar je hem bestelt." },
         intro: [
@@ -642,7 +642,7 @@ export const THEMAPAGINAS = {
         cta: { title: "Vragen over PAPI 3?", text: "Een adviseur bespreekt welke variant past bij je vraag.", primary: "Plan een demo", secondary: "Bekijk de tarieven" },
       },
       en: {
-        meta: { title: "PAPI 3: what the questionnaire measures and which versions exist | Hrmforce", description: "PAPI 3 maps work-related preferences through needs and roles. The difference between 3-N and 3-I, what you use it for and where to order it." },
+        meta: { title: "PAPI 3: what the questionnaire measures and which versions exist | hrmforce", description: "PAPI 3 maps work-related preferences through needs and roles. The difference between 3-N and 3-I, what you use it for and where to order it." },
         crumb: "PAPI 3",
         hero: { eyebrow: "PAPI 3", title: "PAPI 3", lead: "PAPI 3 is the work-related personality questionnaire from Cubiks. Below you read what it measures, the difference between the two versions and where to order it." },
         intro: [

@@ -15,8 +15,11 @@ const fam = familyById(fn.family_id);
 const mm = (meta as any).match_model;
 const title = titel(`${t('match.title')} ${fn.title[dl]}`);
 const desc = omschrijving(tf('seo.match-desc', { job: fn.title[dl], n: fn.counts.skills }));
+/* De rekenhulp per functie staat op noindex: het scherm rekent, het profiel
+   vertelt. De profielpagina is de pagina die mag ranken; deze 450 maal zes
+   schermen kostten alleen crawlbudget. De overzichtspagina blijft indexeerbaar. */
 ---
-<Base lang={lang} title={title} description={desc} active="match" alternates={alternates}>
+<Base lang={lang} title={title} description={desc} active="match" alternates={alternates} noindex={true}>
   <Crumbs items={[
     { label: t('nav.home'), href: path(lang) },
     { label: t('nav.match'), href: path(lang, 'match') },

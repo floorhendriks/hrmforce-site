@@ -22,7 +22,7 @@ import { consentContent } from "../data/consent-content.js";
 import { variantenVoor } from "../data/slugvarianten.js";
 
 const {
-  title = "Hrmforce",
+  title = "hrmforce",
   description = "Talentmanagement software en online assessments van hrmforce.",
   active = "",
   noindex = false,
@@ -62,8 +62,13 @@ const RUBRIEK = {
   voorbereiding: { nl: "Voorbereiding", en: "Preparation", de: "Vorbereitung", fr: "Préparation", es: "Preparación", ro: "Pregătire" },
   partner: { nl: "Partners", en: "Partners", de: "Partner", fr: "Partenaires", es: "Socios", ro: "Parteneri" },
 };
-const netjes = (seg) =>
-  decodeURIComponent(seg).replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase());
+// Een padsegment leesbaar maken voor het kruimelpad. De merknaam houdt zijn
+// kleine letter, ook als hij vooraan staat.
+const netjes = (seg) => {
+  const woord = decodeURIComponent(seg).replace(/-/g, " ");
+  if (/^hrmforce$/i.test(woord)) return "hrmforce";
+  return woord.replace(/^./, (c) => c.toUpperCase());
+};
 const _delen = Astro.url.pathname.split("/").filter(Boolean);
 if (["en", "de", "fr", "es", "ro"].includes(_delen[0])) _delen.shift();
 const _basis = Astro.site ? String(Astro.site).replace(/\/$/, "") : "https://hrmforce.com";

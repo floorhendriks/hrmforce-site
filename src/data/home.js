@@ -2,7 +2,7 @@
 // rebuild-trigger: Sanity-content bijgewerkt (HRMforce -> hrmforce in 424 artikelen)
 export const home = {
   nl: {
-    metaTitle: "Talentmanagement software | Assessment bureau | Hrmforce",
+    metaTitle: "Talentmanagement software | Assessment bureau | hrmforce",
     metaDescription: "De talentmanagement software van hrmforce helpt HR managers meer rendement halen uit medewerkers.",
     hero: {
       pre: "Laat personeel beter renderen met ", em: "talentmanagement", post: " software",
@@ -17,7 +17,7 @@ export const home = {
     },
     intro: {
       eyebrow: "Compleet talent management",
-      title: "Hrmforce helpt bij elk onderdeel van het HR-proces",
+      title: "hrmforce helpt bij elk onderdeel van het HR-proces",
       lead: "Online ontwikkelplatform voor talentmanagement. Wetenschappelijk onderbouwd, in je eigen huisstijl en met een vaste adviseur.",
     },
     cards: [
@@ -61,7 +61,7 @@ export const home = {
   },
 
   en: {
-    metaTitle: "Talent management software | Assessment agency | Hrmforce",
+    metaTitle: "Talent management software | Assessment agency | hrmforce",
     metaDescription: "hrmforce talent management software helps HR managers get more out of their people.",
     hero: {
       pre: "Make your people perform better with ", em: "talent management", post: " software",
@@ -76,7 +76,7 @@ export const home = {
     },
     intro: {
       eyebrow: "Complete talent management",
-      title: "Hrmforce supports every part of the HR process",
+      title: "hrmforce supports every part of the HR process",
       lead: "The fastest-growing online development platform for talent management. Always unique, scientifically grounded and with personal guidance.",
     },
     cards: [
@@ -120,7 +120,7 @@ export const home = {
   },
 
   de: {
-    metaTitle: "Talent Management Software | Assessments & Tests | Hrmforce",
+    metaTitle: "Talent Management Software | Assessments & Tests | hrmforce",
     metaDescription: "Holen Sie mit der Talentmanagement-Software von hrmforce das Beste aus Ihren Mitarbeitern heraus.",
     hero: {
       pre: "Holen Sie mit unserer Talentmanagement-Software das Beste aus Ihren Mitarbeitern heraus", em: "", post: "",
@@ -146,7 +146,7 @@ export const home = {
   },
 
   fr: {
-    metaTitle: "Logiciel de gestion des talents | Évaluations | Hrmforce",
+    metaTitle: "Logiciel de gestion des talents | Évaluations | hrmforce",
     metaDescription: "Améliorez les performances de vos employés grâce au logiciel de gestion des talents de hrmforce.",
     hero: {
       pre: "Améliorez les performances de vos employés grâce à notre logiciel de gestion des talents", em: "", post: "",
@@ -172,7 +172,7 @@ export const home = {
   },
 
   es: {
-    metaTitle: "Software de gestión del talento | Evaluaciones | Hrmforce",
+    metaTitle: "Software de gestión del talento | Evaluaciones | hrmforce",
     metaDescription: "Saque el máximo partido a sus empleados con el software de gestión del talento de hrmforce.",
     hero: {
       pre: "Saque el máximo partido a sus empleados con nuestro software de gestión del talento", em: "", post: "",
@@ -198,7 +198,7 @@ export const home = {
   },
 
   ro: {
-    metaTitle: "Software de management al talentelor | Evaluări | Hrmforce",
+    metaTitle: "Software de management al talentelor | Evaluări | hrmforce",
     metaDescription: "Profitați la maximum de angajații dvs. cu software-ul de management al talentelor de la hrmforce.",
     hero: {
       pre: "Profitați la maximum de angajații dvs. cu software-ul nostru de gestionare a talentelor", em: "", post: "",

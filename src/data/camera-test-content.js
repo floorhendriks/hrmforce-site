@@ -4,7 +4,7 @@
 export const cameraTestContent = {
   nl: {
     meta: {
-      title: "Camera en geluid testen voor je online assessment | Hrmforce",
+      title: "Camera en geluid testen voor je online assessment | hrmforce",
       description:
         "Test in je eigen browser of je camera, microfoon en speakers werken voor een gesprek via Google Meet of Microsoft Teams. Er wordt niets opgenomen of bewaard.",
     },
@@ -137,7 +137,7 @@ export const cameraTestContent = {
 
   en: {
     meta: {
-      title: "Test your camera and sound for your online assessment | Hrmforce",
+      title: "Test your camera and sound for your online assessment | hrmforce",
       description:
         "Check in your own browser whether your camera, microphone and speakers work for a meeting in Google Meet or Microsoft Teams. Nothing is recorded or stored.",
     },
@@ -270,7 +270,7 @@ export const cameraTestContent = {
 
   de: {
     meta: {
-      title: "Kamera und Ton testen für Ihr Online-Assessment | Hrmforce",
+      title: "Kamera und Ton testen für Ihr Online-Assessment | hrmforce",
       description:
         "Prüfen Sie im eigenen Browser, ob Kamera, Mikrofon und Lautsprecher für ein Gespräch über Google Meet oder Microsoft Teams funktionieren. Es wird nichts aufgezeichnet oder gespeichert.",
     },
@@ -403,7 +403,7 @@ export const cameraTestContent = {
 
   fr: {
     meta: {
-      title: "Tester votre caméra et votre son pour votre assessment en ligne | Hrmforce",
+      title: "Tester votre caméra et votre son pour votre assessment en ligne | hrmforce",
       description:
         "Vérifiez dans votre propre navigateur si votre caméra, votre micro et vos haut-parleurs fonctionnent pour un entretien sur Google Meet ou Microsoft Teams. Rien n'est enregistré ni conservé.",
     },
@@ -536,7 +536,7 @@ export const cameraTestContent = {
 
   es: {
     meta: {
-      title: "Prueba tu cámara y tu sonido para el assessment online | Hrmforce",
+      title: "Prueba tu cámara y tu sonido para el assessment online | hrmforce",
       description:
         "Comprueba en tu propio navegador si tu cámara, tu micrófono y tus altavoces funcionan para una entrevista por Google Meet o Microsoft Teams. No se graba ni se guarda nada.",
     },
@@ -669,7 +669,7 @@ export const cameraTestContent = {
 
   ro: {
     meta: {
-      title: "Testează camera și sunetul pentru assessment-ul online | Hrmforce",
+      title: "Testează camera și sunetul pentru assessment-ul online | hrmforce",
       description:
         "Verifică în propriul browser dacă funcționează camera, microfonul și boxele pentru o discuție pe Google Meet sau Microsoft Teams. Nu se înregistrează și nu se păstrează nimic.",
     },

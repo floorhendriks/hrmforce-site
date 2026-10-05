@@ -28,7 +28,7 @@ export const TESTHUBS = {
     i18n: {
       nl: {
         meta: {
-          title: "Persoonlijkheidstest voor werk: wat meet hij en welke past? | Hrmforce",
+          title: "Persoonlijkheidstest voor werk: wat meet hij en welke past? | hrmforce",
           description: "Wat meet een persoonlijkheidstest wel en niet, welke vragenlijsten zijn er en hoe lees je de uitkomst? Uitleg plus de instrumenten van hrmforce.",
         },
         crumb: "Persoonlijkheidstest",
@@ -96,7 +96,7 @@ export const TESTHUBS = {
         },
       },
       en: {
-        meta: { title: "Personality test for work: what it measures and which to pick | Hrmforce", description: "What a personality test does and does not measure, which questionnaires exist and how to read the outcome. Explanation plus the instruments from hrmforce." },
+        meta: { title: "Personality test for work: what it measures and which to pick | hrmforce", description: "What a personality test does and does not measure, which questionnaires exist and how to read the outcome. Explanation plus the instruments from hrmforce." },
         crumb: "Personality test",
         hero: { eyebrow: "Personality test", title: "Personality test for work", lead: "A personality test shows how someone works: how they collaborate, handle pressure and reach a decision. Below you read what such a test does and does not measure, which questionnaire fits your question and how to read the outcome." },
         intro: [
@@ -135,7 +135,7 @@ export const TESTHUBS = {
         cta: { title: "Want to discuss which test fits your question?", text: "An adviser thinks along about the choice and shows you the portal.", primary: "Book a demo", secondary: "View pricing" },
       },
       de: {
-        meta: { title: "Persönlichkeitstest für den Beruf: was er misst und welcher passt | Hrmforce", description: "Was ein Persönlichkeitstest misst und was nicht, welche Fragebögen es gibt und wie Sie das Ergebnis lesen. Erklärung plus die Instrumente von hrmforce." },
+        meta: { title: "Persönlichkeitstest für den Beruf: was er misst und welcher passt | hrmforce", description: "Was ein Persönlichkeitstest misst und was nicht, welche Fragebögen es gibt und wie Sie das Ergebnis lesen. Erklärung plus die Instrumente von hrmforce." },
         crumb: "Persönlichkeitstest",
         hero: { eyebrow: "Persönlichkeitstest", title: "Persönlichkeitstest für den Beruf", lead: "Ein Persönlichkeitstest zeigt, wie jemand arbeitet: wie diese Person zusammenarbeitet, mit Druck umgeht und zu einer Entscheidung kommt. Unten lesen Sie, was so ein Test misst und was nicht, welcher Fragebogen zu Ihrer Frage passt und wie Sie das Ergebnis lesen." },
         intro: [
@@ -174,7 +174,7 @@ export const TESTHUBS = {
         cta: { title: "Besprechen, welcher Test zu Ihrer Frage passt?", text: "Eine Beraterin denkt bei der Wahl mit und zeigt Ihnen das Portal.", primary: "Demo planen", secondary: "Preise ansehen" },
       },
       fr: {
-        meta: { title: "Test de personnalité au travail : ce qu'il mesure et lequel choisir | Hrmforce", description: "Ce qu'un test de personnalité mesure et ne mesure pas, quels questionnaires existent et comment lire le résultat. Explication et les instruments de hrmforce." },
+        meta: { title: "Test de personnalité au travail : ce qu'il mesure et lequel choisir | hrmforce", description: "Ce qu'un test de personnalité mesure et ne mesure pas, quels questionnaires existent et comment lire le résultat. Explication et les instruments de hrmforce." },
         crumb: "Test de personnalité",
         hero: { eyebrow: "Test de personnalité", title: "Test de personnalité au travail", lead: "Un test de personnalité montre comment une personne travaille : comment elle collabore, gère la pression et prend une décision. Vous lisez ci-dessous ce qu'un tel test mesure et ne mesure pas, quel questionnaire correspond à votre question et comment lire le résultat." },
         intro: [
@@ -213,7 +213,7 @@ export const TESTHUBS = {
         cta: { title: "Discuter du test adapté à votre question ?", text: "Un conseiller réfléchit avec vous au choix et vous montre le portail.", primary: "Planifier une démo", secondary: "Voir les tarifs" },
       },
       es: {
-        meta: { title: "Test de personalidad para el trabajo: qué mide y cuál elegir | Hrmforce", description: "Qué mide y qué no mide un test de personalidad, qué cuestionarios existen y cómo leer el resultado. Explicación y los instrumentos de hrmforce." },
+        meta: { title: "Test de personalidad para el trabajo: qué mide y cuál elegir | hrmforce", description: "Qué mide y qué no mide un test de personalidad, qué cuestionarios existen y cómo leer el resultado. Explicación y los instrumentos de hrmforce." },
         crumb: "Test de personalidad",
         hero: { eyebrow: "Test de personalidad", title: "Test de personalidad para el trabajo", lead: "Un test de personalidad muestra cómo trabaja una persona: cómo colabora, cómo gestiona la presión y cómo decide. Abajo lees qué mide y qué no mide, qué cuestionario encaja con tu pregunta y cómo se lee el resultado." },
         intro: [
@@ -252,7 +252,7 @@ export const TESTHUBS = {
         cta: { title: "¿Hablamos de qué test encaja con tu pregunta?", text: "Un asesor piensa contigo la elección y te enseña el portal.", primary: "Reservar una demo", secondary: "Ver precios" },
       },
       ro: {
-        meta: { title: "Test de personalitate pentru muncă: ce măsoară și care se potrivește | Hrmforce", description: "Ce măsoară și ce nu măsoară un test de personalitate, ce chestionare există și cum citești rezultatul. Explicații plus instrumentele hrmforce." },
+        meta: { title: "Test de personalitate pentru muncă: ce măsoară și care se potrivește | hrmforce", description: "Ce măsoară și ce nu măsoară un test de personalitate, ce chestionare există și cum citești rezultatul. Explicații plus instrumentele hrmforce." },
         crumb: "Test de personalitate",
         hero: { eyebrow: "Test de personalitate", title: "Test de personalitate pentru muncă", lead: "Un test de personalitate arată cum lucrează cineva: cum colaborează, cum face față presiunii și cum ia o decizie. Mai jos citești ce măsoară și ce nu, ce chestionar se potrivește întrebării tale și cum se citește rezultatul." },
         intro: [
@@ -298,7 +298,7 @@ export const TESTHUBS = {
     kaarten: ["/assessments/cognitieve-test/", "/assessments/ability-scan/", "/oefentest/"],
     i18n: {
       nl: {
-        meta: { title: "Capaciteitentest: wat meet hij en hoe oefen je ermee? | Hrmforce", description: "Uitleg over de capaciteitentest: welke onderdelen je kunt verwachten, wat een score betekent en waar je gratis mee oefent." },
+        meta: { title: "Capaciteitentest: wat meet hij en hoe oefen je ermee? | hrmforce", description: "Uitleg over de capaciteitentest: welke onderdelen je kunt verwachten, wat een score betekent en waar je gratis mee oefent." },
         crumb: "Capaciteitentest",
         hero: { eyebrow: "Capaciteitentest", title: "Capaciteitentest", lead: "Een capaciteitentest meet hoe snel iemand nieuwe informatie oppakt en problemen oplost. Hieronder lees je uit welke onderdelen zo'n test bestaat, wat een score betekent en waar je ermee oefent." },
         intro: [
@@ -335,7 +335,7 @@ export const TESTHUBS = {
         cta: { title: "Een capaciteitentest inzetten?", text: "Een adviseur laat zien welk niveau en welke normgroep bij je functie passen.", primary: "Plan een demo", secondary: "Bekijk de tarieven" },
       },
       en: {
-        meta: { title: "Aptitude test: what it measures and how to practise | Hrmforce", description: "Explanation of the aptitude test: which parts to expect, what a score means and where to practise for free." },
+        meta: { title: "Aptitude test: what it measures and how to practise | hrmforce", description: "Explanation of the aptitude test: which parts to expect, what a score means and where to practise for free." },
         crumb: "Aptitude test",
         hero: { eyebrow: "Aptitude test", title: "Aptitude test", lead: "An aptitude test measures how quickly someone takes in new information and solves problems. Below you read which parts such a test has, what a score means and where to practise." },
         intro: [
@@ -372,7 +372,7 @@ export const TESTHUBS = {
         cta: { title: "Thinking about using an aptitude test?", text: "An adviser shows which level and norm group fit your role.", primary: "Book a demo", secondary: "View pricing" },
       },
       de: {
-        meta: { title: "Leistungstest: was er misst und wie man übt | Hrmforce", description: "Erklärung zum Leistungstest: welche Teile Sie erwarten, was ein Wert bedeutet und wo Sie kostenlos üben." },
+        meta: { title: "Leistungstest: was er misst und wie man übt | hrmforce", description: "Erklärung zum Leistungstest: welche Teile Sie erwarten, was ein Wert bedeutet und wo Sie kostenlos üben." },
         crumb: "Leistungstest",
         hero: { eyebrow: "Leistungstest", title: "Leistungstest", lead: "Ein Leistungstest misst, wie schnell jemand neue Informationen aufnimmt und Probleme löst. Unten lesen Sie, aus welchen Teilen so ein Test besteht, was ein Wert bedeutet und wo Sie üben." },
         intro: [
@@ -409,7 +409,7 @@ export const TESTHUBS = {
         cta: { title: "Einen Leistungstest einsetzen?", text: "Eine Beraterin zeigt, welches Niveau und welche Normgruppe zu Ihrer Rolle passen.", primary: "Demo planen", secondary: "Preise ansehen" },
       },
       fr: {
-        meta: { title: "Test d'aptitude : ce qu'il mesure et comment s'entraîner | Hrmforce", description: "Explication du test d'aptitude : quelles parties attendre, ce que signifie un score et où s'entraîner gratuitement." },
+        meta: { title: "Test d'aptitude : ce qu'il mesure et comment s'entraîner | hrmforce", description: "Explication du test d'aptitude : quelles parties attendre, ce que signifie un score et où s'entraîner gratuitement." },
         crumb: "Test d'aptitude",
         hero: { eyebrow: "Test d'aptitude", title: "Test d'aptitude", lead: "Un test d'aptitude mesure la vitesse à laquelle une personne assimile de nouvelles informations et résout des problèmes. Vous lisez ci-dessous de quelles parties il se compose, ce que signifie un score et où vous entraîner." },
         intro: [
@@ -446,7 +446,7 @@ export const TESTHUBS = {
         cta: { title: "Mettre en place un test d'aptitude ?", text: "Un conseiller montre quel niveau et quel groupe de référence conviennent à votre poste.", primary: "Planifier une démo", secondary: "Voir les tarifs" },
       },
       es: {
-        meta: { title: "Test de aptitudes: qué mide y cómo practicar | Hrmforce", description: "Explicación del test de aptitudes: qué partes esperar, qué significa una puntuación y dónde practicar gratis." },
+        meta: { title: "Test de aptitudes: qué mide y cómo practicar | hrmforce", description: "Explicación del test de aptitudes: qué partes esperar, qué significa una puntuación y dónde practicar gratis." },
         crumb: "Test de aptitudes",
         hero: { eyebrow: "Test de aptitudes", title: "Test de aptitudes", lead: "Un test de aptitudes mide con qué rapidez alguien asimila información nueva y resuelve problemas. Abajo lees de qué partes consta, qué significa una puntuación y dónde practicar." },
         intro: [
@@ -483,7 +483,7 @@ export const TESTHUBS = {
         cta: { title: "¿Quieres usar un test de aptitudes?", text: "Un asesor muestra qué nivel y qué grupo normativo encajan con tu puesto.", primary: "Reservar una demo", secondary: "Ver precios" },
       },
       ro: {
-        meta: { title: "Test de aptitudini: ce măsoară și cum exersezi | Hrmforce", description: "Explicații despre testul de aptitudini: ce părți te așteaptă, ce înseamnă un scor și unde exersezi gratuit." },
+        meta: { title: "Test de aptitudini: ce măsoară și cum exersezi | hrmforce", description: "Explicații despre testul de aptitudini: ce părți te așteaptă, ce înseamnă un scor și unde exersezi gratuit." },
         crumb: "Test de aptitudini",
         hero: { eyebrow: "Test de aptitudini", title: "Test de aptitudini", lead: "Un test de aptitudini măsoară cât de repede preia cineva informații noi și rezolvă probleme. Mai jos citești din ce părți este alcătuit, ce înseamnă un scor și unde exersezi." },
         intro: [
@@ -527,7 +527,7 @@ export const TESTHUBS = {
     kaarten: ["/assessments/groepsrollen/", "/assessments/lencioni-teamdynamiek/", "/assessments/teamanalyse/", "/assessments/360-graden-feedback/"],
     i18n: {
       nl: {
-        meta: { title: "Teamrollentest: welke rol pakt iemand in een team? | Hrmforce", description: "Wat een teamrollentest meet, welke vragenlijsten er zijn en wat je met de uitkomst doet in een teamsessie. Uitleg plus de instrumenten van hrmforce." },
+        meta: { title: "Teamrollentest: welke rol pakt iemand in een team? | hrmforce", description: "Wat een teamrollentest meet, welke vragenlijsten er zijn en wat je met de uitkomst doet in een teamsessie. Uitleg plus de instrumenten van hrmforce." },
         crumb: "Teamrollentest",
         hero: { eyebrow: "Teamrollentest", title: "Teamrollentest", lead: "Een teamrollentest laat zien welke rol iemand vanzelf oppakt in een groep: wie het voortouw neemt, wie de details bewaakt en wie de sfeer bewaakt. Hieronder lees je wat zo'n test meet en wat je met de uitkomst doet." },
         intro: [
@@ -564,7 +564,7 @@ export const TESTHUBS = {
         cta: { title: "Een teamsessie voorbereiden?", text: "Een adviseur denkt mee over de opzet en laat de rapportage zien.", primary: "Plan een demo", secondary: "Bekijk de tarieven" },
       },
       en: {
-        meta: { title: "Team roles test: which role does someone take in a team? | Hrmforce", description: "What a team roles test measures, which questionnaires exist and what you do with the outcome in a team session. Explanation plus the instruments from hrmforce." },
+        meta: { title: "Team roles test: which role does someone take in a team? | hrmforce", description: "What a team roles test measures, which questionnaires exist and what you do with the outcome in a team session. Explanation plus the instruments from hrmforce." },
         crumb: "Team roles test",
         hero: { eyebrow: "Team roles test", title: "Team roles test", lead: "A team roles test shows which role someone naturally takes in a group: who takes the lead, who guards the detail and who watches the atmosphere. Below you read what such a test measures and what you do with the outcome." },
         intro: [
@@ -601,7 +601,7 @@ export const TESTHUBS = {
         cta: { title: "Preparing a team session?", text: "An adviser thinks along about the set-up and shows you the reporting.", primary: "Book a demo", secondary: "View pricing" },
       },
       de: {
-        meta: { title: "Teamrollen-Test: welche Rolle übernimmt jemand im Team? | Hrmforce", description: "Was ein Teamrollen-Test misst, welche Fragebögen es gibt und was Sie mit dem Ergebnis in einer Teamsitzung machen. Erklärung plus die Instrumente von hrmforce." },
+        meta: { title: "Teamrollen-Test: welche Rolle übernimmt jemand im Team? | hrmforce", description: "Was ein Teamrollen-Test misst, welche Fragebögen es gibt und was Sie mit dem Ergebnis in einer Teamsitzung machen. Erklärung plus die Instrumente von hrmforce." },
         crumb: "Teamrollen-Test",
         hero: { eyebrow: "Teamrollen-Test", title: "Teamrollen-Test", lead: "Ein Teamrollen-Test zeigt, welche Rolle jemand in einer Gruppe von selbst übernimmt: wer die Führung nimmt, wer auf Details achtet und wer die Stimmung im Blick hat. Unten lesen Sie, was so ein Test misst und was Sie mit dem Ergebnis machen." },
         intro: [
@@ -638,7 +638,7 @@ export const TESTHUBS = {
         cta: { title: "Eine Teamsitzung vorbereiten?", text: "Eine Beraterin denkt beim Aufbau mit und zeigt Ihnen die Berichte.", primary: "Demo planen", secondary: "Preise ansehen" },
       },
       fr: {
-        meta: { title: "Test de rôles en équipe : quel rôle prend chacun ? | Hrmforce", description: "Ce que mesure un test de rôles en équipe, quels questionnaires existent et ce que vous faites du résultat en séance d'équipe. Explication et les instruments de hrmforce." },
+        meta: { title: "Test de rôles en équipe : quel rôle prend chacun ? | hrmforce", description: "Ce que mesure un test de rôles en équipe, quels questionnaires existent et ce que vous faites du résultat en séance d'équipe. Explication et les instruments de hrmforce." },
         crumb: "Test de rôles en équipe",
         hero: { eyebrow: "Test de rôles en équipe", title: "Test de rôles en équipe", lead: "Un test de rôles en équipe montre quel rôle une personne prend spontanément dans un groupe : qui prend les devants, qui veille aux détails et qui veille à l'ambiance. Vous lisez ci-dessous ce qu'il mesure et ce que vous faites du résultat." },
         intro: [
@@ -675,7 +675,7 @@ export const TESTHUBS = {
         cta: { title: "Préparer une séance d'équipe ?", text: "Un conseiller réfléchit au format avec vous et vous montre les rapports.", primary: "Planifier une démo", secondary: "Voir les tarifs" },
       },
       es: {
-        meta: { title: "Test de roles de equipo: ¿qué rol asume cada uno? | Hrmforce", description: "Qué mide un test de roles de equipo, qué cuestionarios existen y qué haces con el resultado en una sesión de equipo. Explicación y los instrumentos de hrmforce." },
+        meta: { title: "Test de roles de equipo: ¿qué rol asume cada uno? | hrmforce", description: "Qué mide un test de roles de equipo, qué cuestionarios existen y qué haces con el resultado en una sesión de equipo. Explicación y los instrumentos de hrmforce." },
         crumb: "Test de roles de equipo",
         hero: { eyebrow: "Test de roles de equipo", title: "Test de roles de equipo", lead: "Un test de roles de equipo muestra qué papel asume alguien de forma natural en un grupo: quién toma la iniciativa, quién cuida el detalle y quién cuida el ambiente. Abajo lees qué mide y qué haces con el resultado." },
         intro: [
@@ -712,7 +712,7 @@ export const TESTHUBS = {
         cta: { title: "¿Preparando una sesión de equipo?", text: "Un asesor piensa contigo el formato y te enseña los informes.", primary: "Reservar una demo", secondary: "Ver precios" },
       },
       ro: {
-        meta: { title: "Test de roluri în echipă: ce rol își asumă cineva? | Hrmforce", description: "Ce măsoară un test de roluri în echipă, ce chestionare există și ce faci cu rezultatul într-o sesiune de echipă. Explicații plus instrumentele hrmforce." },
+        meta: { title: "Test de roluri în echipă: ce rol își asumă cineva? | hrmforce", description: "Ce măsoară un test de roluri în echipă, ce chestionare există și ce faci cu rezultatul într-o sesiune de echipă. Explicații plus instrumentele hrmforce." },
         crumb: "Test de roluri în echipă",
         hero: { eyebrow: "Test de roluri în echipă", title: "Test de roluri în echipă", lead: "Un test de roluri în echipă arată ce rol își asumă cineva firesc într-un grup: cine preia inițiativa, cine are grijă de detalii și cine are grijă de atmosferă. Mai jos citești ce măsoară și ce faci cu rezultatul." },
         intro: [
@@ -756,7 +756,7 @@ export const TESTHUBS = {
     kaarten: ["/online-assessments/", "/voorbereiding/", "/assessment-overzicht/", "/tarieven/"],
     i18n: {
       nl: {
-        meta: { title: "Psychologisch onderzoek: wat houdt het in en wat zijn je rechten? | Hrmforce", description: "Wat een psychologisch onderzoek inhoudt, uit welke onderdelen het bestaat, hoe je je voorbereidt en welke rechten je als kandidaat hebt." },
+        meta: { title: "Psychologisch onderzoek: wat houdt het in en wat zijn je rechten? | hrmforce", description: "Wat een psychologisch onderzoek inhoudt, uit welke onderdelen het bestaat, hoe je je voorbereidt en welke rechten je als kandidaat hebt." },
         crumb: "Psychologisch onderzoek",
         hero: { eyebrow: "Psychologisch onderzoek", title: "Psychologisch onderzoek", lead: "Psychologisch onderzoek is de Nederlandse term voor een assessment waarbij een psycholoog betrokken is. Hieronder lees je uit welke onderdelen het bestaat, hoe lang het duurt en welke rechten je als kandidaat hebt." },
         intro: [
@@ -794,7 +794,7 @@ export const TESTHUBS = {
         cta: { title: "Onderzoek laten uitvoeren?", text: "Een adviseur bespreekt welke onderdelen passen bij de functie en wat het oplevert.", primary: "Plan een demo", secondary: "Bekijk de tarieven" },
       },
       en: {
-        meta: { title: "Psychological assessment: what it involves and your rights | Hrmforce", description: "What a psychological assessment involves, which parts it consists of, how to prepare and which rights you have as a candidate." },
+        meta: { title: "Psychological assessment: what it involves and your rights | hrmforce", description: "What a psychological assessment involves, which parts it consists of, how to prepare and which rights you have as a candidate." },
         crumb: "Psychological assessment",
         hero: { eyebrow: "Psychological assessment", title: "Psychological assessment", lead: "A psychological assessment is an assessment in which a psychologist is involved. Below you read which parts it consists of, how long it takes and which rights you have as a candidate." },
         intro: [
@@ -832,7 +832,7 @@ export const TESTHUBS = {
         cta: { title: "Want an assessment carried out?", text: "An adviser discusses which parts fit the role and what it delivers.", primary: "Book a demo", secondary: "View pricing" },
       },
       de: {
-        meta: { title: "Psychologisches Gutachten: Inhalt und Ihre Rechte | Hrmforce", description: "Was ein psychologisches Gutachten umfasst, aus welchen Teilen es besteht, wie Sie sich vorbereiten und welche Rechte Sie als Kandidat haben." },
+        meta: { title: "Psychologisches Gutachten: Inhalt und Ihre Rechte | hrmforce", description: "Was ein psychologisches Gutachten umfasst, aus welchen Teilen es besteht, wie Sie sich vorbereiten und welche Rechte Sie als Kandidat haben." },
         crumb: "Psychologisches Gutachten",
         hero: { eyebrow: "Psychologisches Gutachten", title: "Psychologisches Gutachten", lead: "Ein psychologisches Gutachten ist ein Assessment, an dem eine Psychologin oder ein Psychologe beteiligt ist. Unten lesen Sie, aus welchen Teilen es besteht, wie lange es dauert und welche Rechte Sie als Kandidat haben." },
         intro: [
@@ -870,7 +870,7 @@ export const TESTHUBS = {
         cta: { title: "Ein Gutachten durchführen lassen?", text: "Eine Beraterin bespricht, welche Teile zur Rolle passen und was es bringt.", primary: "Demo planen", secondary: "Preise ansehen" },
       },
       fr: {
-        meta: { title: "Bilan psychologique : en quoi consiste-t-il et quels sont vos droits | Hrmforce", description: "En quoi consiste un bilan psychologique, de quelles parties il se compose, comment s'y préparer et quels droits vous avez comme candidat." },
+        meta: { title: "Bilan psychologique : en quoi consiste-t-il et quels sont vos droits | hrmforce", description: "En quoi consiste un bilan psychologique, de quelles parties il se compose, comment s'y préparer et quels droits vous avez comme candidat." },
         crumb: "Bilan psychologique",
         hero: { eyebrow: "Bilan psychologique", title: "Bilan psychologique", lead: "Un bilan psychologique est une évaluation à laquelle participe un psychologue. Vous lisez ci-dessous de quelles parties il se compose, combien de temps il dure et quels droits vous avez comme candidat." },
         intro: [
@@ -908,7 +908,7 @@ export const TESTHUBS = {
         cta: { title: "Faire réaliser un bilan ?", text: "Un conseiller discute des parties adaptées au poste et de ce qu'elles apportent.", primary: "Planifier une démo", secondary: "Voir les tarifs" },
       },
       es: {
-        meta: { title: "Evaluación psicológica: en qué consiste y cuáles son tus derechos | Hrmforce", description: "En qué consiste una evaluación psicológica, de qué partes consta, cómo prepararte y qué derechos tienes como candidato." },
+        meta: { title: "Evaluación psicológica: en qué consiste y cuáles son tus derechos | hrmforce", description: "En qué consiste una evaluación psicológica, de qué partes consta, cómo prepararte y qué derechos tienes como candidato." },
         crumb: "Evaluación psicológica",
         hero: { eyebrow: "Evaluación psicológica", title: "Evaluación psicológica", lead: "Una evaluación psicológica es un assessment en el que participa un psicólogo. Abajo lees de qué partes consta, cuánto dura y qué derechos tienes como candidato." },
         intro: [
@@ -946,7 +946,7 @@ export const TESTHUBS = {
         cta: { title: "¿Quieres encargar una evaluación?", text: "Un asesor comenta qué partes encajan con el puesto y qué aportan.", primary: "Reservar una demo", secondary: "Ver precios" },
       },
       ro: {
-        meta: { title: "Evaluare psihologică: ce presupune și care sunt drepturile tale | Hrmforce", description: "Ce presupune o evaluare psihologică, din ce părți este alcătuită, cum te pregătești și ce drepturi ai ca și candidat." },
+        meta: { title: "Evaluare psihologică: ce presupune și care sunt drepturile tale | hrmforce", description: "Ce presupune o evaluare psihologică, din ce părți este alcătuită, cum te pregătești și ce drepturi ai ca și candidat." },
         crumb: "Evaluare psihologică",
         hero: { eyebrow: "Evaluare psihologică", title: "Evaluare psihologică", lead: "O evaluare psihologică este un assessment la care participă un psiholog. Mai jos citești din ce părți este alcătuită, cât durează și ce drepturi ai ca și candidat." },
         intro: [

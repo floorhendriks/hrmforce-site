@@ -11,8 +11,8 @@ export const assessmentsI18n = {
   en: {
     "ontwikkelmatrix": {
       title: "Development Matrix",
-      metaTitle: "Development Matrix | Talent and behaviour in four quadrants | Hrmforce",
-      metaDescription: "The Development Matrix plots talent from the Big Fifty against behaviour from 360 degree feedback and places employees in four development quadrants with concrete development tips.",
+      metaTitle: "Development Matrix | Talent and behaviour in four quadrants",
+      metaDescription: "The Development Matrix plots talent from the Big Fifty against behaviour from 360 degree feedback and places employees in four development quadrants with.",
       phase: "Development",
       goal: "Placing talent and visible behaviour side by side to determine the right development direction.",
       benefit: "Puts talent and visible behaviour side by side in four quadrants, so it is immediately clear where development pays off most.",
@@ -28,7 +28,7 @@ export const assessmentsI18n = {
     },
     "big-five": {
       title: "Personality test: Big Five",
-      metaTitle: "Take a personality test? | BIG FIVE TEST | Valid | Hrmforce",
+      metaTitle: "Take a personality test? | BIG FIVE TEST | Valid | hrmforce",
       metaDescription: "The Big Fifty (5) personality test gives insight into the personality profile of the employee and translates it into work-related competencies.",
       phase: "Selection → development → performance → appraisal",
       goal: "Translating personality traits into skills and discovering where someone can grow.",
@@ -59,7 +59,7 @@ export const assessmentsI18n = {
     },
     "drijfverentest": {
       title: "Motivation test",
-      metaTitle: "Motivation test | What motivates your employees? | Hrmforce", metaDescription: "Map out the drives and motivation of employees as a basis for sustainable deployment.",
+      metaTitle: "Motivation test | What motivates your employees? | hrmforce", metaDescription: "Map out the drives and motivation of employees as a basis for sustainable deployment.",
       phase: "Development → performance", goal: "Discovering what motivates someone and gives them energy at work.",
       time: "10 minutes", form: "Questionnaire", feedback: "Report with the main drives and how they influence work.", extra: "Combines well with a personality test.",
       traits: ["Achievement", "Connection", "Autonomy", "Security", "Influence"],
@@ -70,7 +70,7 @@ export const assessmentsI18n = {
     },
     "cognitieve-test": {
       title: "Cognitive test (Ability Scan)",
-      metaTitle: "Cognitive ability test | Ability Scan | Hrmforce", metaDescription: "Measure cognitive ability and predict how quickly someone picks up new tasks.",
+      metaTitle: "Cognitive ability test | Ability Scan | hrmforce", metaDescription: "Measure cognitive ability and predict how quickly someone picks up new tasks.",
       phase: "Selection", goal: "Objectively mapping out the working and thinking level and learning ability.",
       time: "20-30 minutes", form: "Verbal, numerical and abstract", feedback: "Score per section with norm group comparison.", extra: "Strong predictor of job performance.",
       traits: ["Verbal", "Numerical", "Abstract"],
@@ -81,7 +81,7 @@ export const assessmentsI18n = {
     },
     "disc-test": {
       title: "DISC test",
-      metaTitle: "DISC personality test | Behaviour & communication | Hrmforce", metaDescription: "Map out communication and behavioural style with the DISC questionnaire.",
+      metaTitle: "DISC personality test | Behaviour & communication | hrmforce", metaDescription: "Map out communication and behavioural style with the DISC questionnaire.",
       phase: "Development", goal: "Insight into behavioural preferences and communication style for better collaboration.",
       time: "10 minutes", form: "Questionnaire", feedback: "Report with the DISC profiles and practical tips.", extra: "Popular for team development and coaching.",
       traits: ["Dominance", "Influence", "Steadiness", "Conscientiousness"],
@@ -92,7 +92,7 @@ export const assessmentsI18n = {
     },
     "studiekeuzetest": {
       title: "Study choice test",
-      metaTitle: "Study choice test | Well-founded study and career choice | Hrmforce", metaDescription: "Helps make a well-founded study or career choice.",
+      metaTitle: "Study choice test | Well-founded study and career choice", metaDescription: "Helps make a well-founded study or career choice.",
       phase: "Mobility", goal: "Linking interests, abilities and preferences to suitable studies or careers.",
       time: "20 minutes", form: "Questionnaire", feedback: "Overview of suitable directions.", extra: "Available in Basic, Extended and Complete.",
       traits: ["Interests", "Abilities", "Work values"],
@@ -103,7 +103,7 @@ export const assessmentsI18n = {
     },
     "mentale-veerkracht-scan": {
       title: "Mental resilience scan",
-      metaTitle: "Mental resilience scan | Sustainable employability | Hrmforce", metaDescription: "Measures mental resilience and helps promote sustainable employability.",
+      metaTitle: "Mental resilience scan | Sustainable employability", metaDescription: "Measures mental resilience and helps promote sustainable employability.",
       phase: "Employability", goal: "Insight into stress resistance and recovery capacity.",
       time: "10 minutes", form: "Questionnaire", feedback: "Report with points of attention for wellbeing and employability.", extra: "Part of sustainable employability programmes.",
       traits: ["Stress resistance", "Recovery", "Energy balance"],
@@ -114,7 +114,7 @@ export const assessmentsI18n = {
     },
     "lencioni-teamdynamiek": {
       title: "Lencioni Team Dynamics",
-      metaTitle: "Lencioni Team Dynamics | Team development | Hrmforce", metaDescription: "Measures the five dysfunctions of teamwork according to Patrick Lencioni's model.",
+      metaTitle: "Lencioni Team Dynamics | Team development | hrmforce", metaDescription: "Measures the five dysfunctions of teamwork according to Patrick Lencioni's model.",
       phase: "Development", goal: "Insight into the collaboration and pitfalls within a team.",
       time: "10 minutes", form: "Team questionnaire", feedback: "Team report with the five levels of teamwork.", extra: "A strong basis for a team session.",
       traits: ["Trust", "Conflict", "Commitment", "Accountability", "Results"],
@@ -125,7 +125,7 @@ export const assessmentsI18n = {
     },
     "leiderschapstest": {
       title: "Leadership test",
-      metaTitle: "Leadership test | Leadership style & development | Hrmforce", metaDescription: "Maps out the leadership style and development points of (prospective) managers.",
+      metaTitle: "Leadership test | Leadership style & development | hrmforce", metaDescription: "Maps out the leadership style and development points of (prospective) managers.",
       phase: "Development → selection", goal: "Making leadership behaviour and potential insightful.",
       time: "15 minutes", form: "Questionnaire", feedback: "Report with leadership styles and development advice.", extra: "Combines well with 360 degree feedback.",
       traits: ["Vision", "Directing", "Coaching", "Connecting"],
@@ -136,7 +136,7 @@ export const assessmentsI18n = {
     },
     "ontwikkelassessment": {
       title: "Development assessment",
-      metaTitle: "Development assessment | Growth and development | Hrmforce", metaDescription: "A systematic method to map out development potential and growth direction.",
+      metaTitle: "Development assessment | Growth and development | hrmforce", metaDescription: "A systematic method to map out development potential and growth direction.",
       phase: "Development", goal: "Determining strengths, development points and growth direction.",
       time: "Combination of instruments", form: "Multiple questionnaires", feedback: "Integral development report with concrete advice.", extra: "Often with a feedback conversation.",
       traits: ["Personality", "Abilities", "Drives"],
@@ -147,7 +147,7 @@ export const assessmentsI18n = {
     },
     "15pf": {
       title: "15PF",
-      metaTitle: "15PF | Personality questionnaire | Hrmforce",
+      metaTitle: "15PF | Personality questionnaire | hrmforce",
       metaDescription: "The 15PF test from hrmforce gives insight into the way an employee will behave or react in various situations.",
       phase: "(Pre)selection → development",
       goal: "Providing insight into the way an employee will behave or react in various situations.",
@@ -177,7 +177,7 @@ export const assessmentsI18n = {
     },
     "appraisal": {
       title: "Appraisal",
-      metaTitle: "Appraisal | 90 degree feedback | Hrmforce",
+      metaTitle: "Appraisal | 90 degree feedback | hrmforce",
       metaDescription: "Appraisal: the candidate receives structured feedback on how they see themselves, but also on how they come across to their manager.",
       phase: "Performance → appraisal",
       goal: "Providing feedback (90 degrees) from different perspectives, as input for the performance and appraisal cycle.",
@@ -193,7 +193,7 @@ export const assessmentsI18n = {
     "beroepskeuze-test": {
       title: "Career choice test",
       metaTitle: "Career choice test for career guidance | hrmforce",
-      metaDescription: "For career advisers and HR: well-founded advice on suitable professional groups, with an explanation per profession and a report you use in the conversation.",
+      metaDescription: "For career advisers and HR: well-founded advice on suitable professional groups, with an explanation per profession and a report you use in the.",
       phase: "Development → performance",
       goal: "Giving reliable advice on suitable and less suitable professional groups.",
       time: "25 minutes", form: "Forced choice questionnaire.",
@@ -207,7 +207,7 @@ export const assessmentsI18n = {
     },
     "canmeds": {
       title: "CanMeds",
-      metaTitle: "CanMeds | 360 degree feedback for healthcare | Hrmforce",
+      metaTitle: "CanMeds | 360 degree feedback for healthcare | hrmforce",
       metaDescription: "Gain insight into how easily an employee with a certain personality profile can show or develop CanMeds competencies.",
       phase: "(Pre)selection → development → performance → appraisal",
       goal: "Indicating how easily an employee with a certain personality profile can show or develop specific competencies, and scoring their performance in a role.",
@@ -222,7 +222,7 @@ export const assessmentsI18n = {
     },
     "coaching-screener-scan": {
       title: "Coaching Screener Scan",
-      metaTitle: "Coaching Screener Scan | Hrmforce",
+      metaTitle: "Coaching Screener Scan | hrmforce",
       metaDescription: "Gain insight into which complaints and problems a candidate experiences and how they deal with them, particularly useful in coaching.",
       phase: "Development",
       goal: "Gaining insight into which complaints and problems a candidate experiences and how they deal with them.",
@@ -237,7 +237,7 @@ export const assessmentsI18n = {
     },
     "communicatiestijlen-test": {
       title: "Communication style test",
-      metaTitle: "Take a communication style test? | Start with a free demo | Hrmforce",
+      metaTitle: "Take a communication style test? | Start with a free demo",
       metaDescription: "With the Communication Styles test, compare the presence of essential interaction factors and translate them into specific communication styles.",
       phase: "Development → performance → appraisal",
       goal: "Comparing the presence of essential interaction factors and translating them into specific communication styles.",
@@ -252,7 +252,7 @@ export const assessmentsI18n = {
     },
     "competentie-check": {
       title: "Competency test",
-      metaTitle: "Competency test | How does the employee see themselves? | Hrmforce",
+      metaTitle: "Competency test | How does the employee see themselves?",
       metaDescription: "The competency test provides feedback (0 degrees) on the employee's own behaviour. An answer to the question of how one sees oneself.",
       phase: "Development → performance → appraisal",
       goal: "Providing feedback (0 degrees) on the employee's own behaviour: how does one see oneself?",
@@ -267,7 +267,7 @@ export const assessmentsI18n = {
     },
     "conflictstijlen-test": {
       title: "Conflict styles test",
-      metaTitle: "Conflict styles test | Hrmforce",
+      metaTitle: "Conflict styles test | hrmforce",
       metaDescription: "Analyse individual behaviour in conflict situations. The Conflict Styles test indicates to what extent a certain conflict style can be useful to someone.",
       phase: "Development → performance → appraisal",
       goal: "Analysing individual behaviour in conflict situations and indicating which conflict style can be useful.",
@@ -282,7 +282,7 @@ export const assessmentsI18n = {
     },
     "duurzame-inzetbaarheid-scan": {
       title: "Sustainable Employability Scan",
-      metaTitle: "Sustainable Employability Scan | Hrmforce",
+      metaTitle: "Sustainable Employability Scan | hrmforce",
       metaDescription: "With the Sustainable Employability Scan you quickly gain insight into whether an employee and/or organisation is still sufficiently sustainably employable.",
       phase: "Development",
       goal: "Quickly gaining insight into whether an employee and/or organisation is still sufficiently sustainably employable.",
@@ -297,7 +297,7 @@ export const assessmentsI18n = {
     },
     "exit-assessment": {
       title: "Exit Assessment",
-      metaTitle: "Conducting an exit interview? Ensure an exit assessment | Hrmforce",
+      metaTitle: "Conducting an exit interview? Ensure an exit assessment",
       metaDescription: "An Exit Assessment provides insight into the reasons and causes for employees leaving. Honest, sincere and extremely useful.",
       phase: "Employability → outflow",
       goal: "Providing insight into the reasons and causes for employees leaving and receiving tips for improvement.",
@@ -312,7 +312,7 @@ export const assessmentsI18n = {
     },
     "groepsrollen": {
       title: "Team roles",
-      metaTitle: "Team roles | Hrmforce",
+      metaTitle: "Team roles | hrmforce",
       metaDescription: "With the Team Roles Assessment you get an overview of the team roles an employee will or will not adopt in certain situations.",
       phase: "Development → performance → appraisal",
       goal: "Providing an overview of the team roles an employee will or will not adopt in certain situations.",
@@ -327,7 +327,7 @@ export const assessmentsI18n = {
     },
     "intake-candidate": {
       title: "Intake Candidate",
-      metaTitle: "Candidate intake | Prepare your interview smartly | Hrmforce",
+      metaTitle: "Candidate intake | Prepare your interview smartly | hrmforce",
       metaDescription: "Have candidates fill in the standard questions in advance, so you have more time during the interview for soft skills, competencies and the match.",
       phase: "Selection",
       goal: "Asking online in advance the questions that would ideally come up in the first interview, so that the interview really gains substance.",
@@ -342,7 +342,7 @@ export const assessmentsI18n = {
     },
     "interesse-scan": {
       title: "Interest test",
-      metaTitle: "Take an interest test? | For pupils & staff | Hrmforce",
+      metaTitle: "Take an interest test? | For pupils & staff | hrmforce",
       metaDescription: "With the interest scan, a pupil or employee gains insight into which sectors they are most interested in.",
       phase: "Development",
       goal: "Giving insight into which sectors a pupil, student or employee is most interested in, linked to relevant studies and professions.",
@@ -357,7 +357,7 @@ export const assessmentsI18n = {
     },
     "job-profiler": {
       title: "Job Profiler",
-      metaTitle: "Job Profiler | Hrmforce",
+      metaTitle: "Job Profiler | hrmforce",
       metaDescription: "Gain insight into which competencies and behaviours respondent groups consider relevant for a role, as input for selection, development and appraisal.",
       phase: "Selection → development → performance → appraisal",
       goal: "Gaining insight into which competencies and behaviours different respondent groups consider relevant for a role.",
@@ -372,8 +372,8 @@ export const assessmentsI18n = {
     },
     "lean-scan": {
       title: "Lean Scan",
-      metaTitle: "Lean management scan: measure the gap in 10 minutes | Hrmforce",
-      metaDescription: "A lean management scan shows where the current way of working differs from the ideal situation. Scores on four factors, per team, department or whole organisation. Ten minutes per respondent.",
+      metaTitle: "Lean management scan: measure the gap in 10 minutes",
+      metaDescription: "A lean management scan shows where the current way of working differs from the ideal situation.",
       phase: "Development → performance → appraisal",
       goal: "Gaining insight into the gap between the current and ideal situation to demonstrate the need for Lean management.",
       time: "10 minutes", form: "Multiple choice on a 5-point scale.",
@@ -387,7 +387,7 @@ export const assessmentsI18n = {
     },
     "leerstijlen": {
       title: "Learning styles test",
-      metaTitle: "Take a learning styles test? | Free demo | Hrmforce",
+      metaTitle: "Take a learning styles test? | Free demo | hrmforce",
       metaDescription: "The Learning Styles test gives insight into the way an employee deals with learning activities and what their learning preference is.",
       phase: "Development",
       goal: "Giving insight into how an employee deals with learning activities and what their learning preference is.",
@@ -402,7 +402,7 @@ export const assessmentsI18n = {
     },
     "levensloop-scan": {
       title: "Life Course Scan",
-      metaTitle: "Life Course Scan | Hrmforce",
+      metaTitle: "Life Course Scan | hrmforce",
       metaDescription: "A Life Course Scan provides insight into a candidate's life course, to uncover starting points for coaching and development.",
       phase: "Development",
       goal: "Gaining insight into a candidate's life course to uncover starting points for coaching and development.",
@@ -417,7 +417,7 @@ export const assessmentsI18n = {
     },
     "loopbaanwaarden": {
       title: "Career values",
-      metaTitle: "Career values | Hrmforce",
+      metaTitle: "Career values | hrmforce",
       metaDescription: "Career values helps with the question of which roles or organisations suit the values someone considers important to realise in their career.",
       phase: "Development",
       goal: "Supporting the question of whether certain roles, functions or organisations suit the person's career values.",
@@ -432,7 +432,7 @@ export const assessmentsI18n = {
     },
     "pulse-survey": {
       title: "Pulse Survey",
-      metaTitle: "Pulse Survey | Create questionnaires for staff yourself | Hrmforce",
+      metaTitle: "Pulse Survey | Create questionnaires for staff yourself",
       metaDescription: "With the Pulse Survey, create your own questionnaires for your staff from 1000+ items and 40 example lists. From satisfaction to mental resilience.",
       phase: "(Pre)selection → development",
       goal: "Enabling organisations to design and send questionnaires themselves to applicants and employees, using standard questionnaires and a question database.",
@@ -447,7 +447,7 @@ export const assessmentsI18n = {
     },
     "referentie-check": {
       title: "Reference Check",
-      metaTitle: "Reference Check | Hrmforce",
+      metaTitle: "Reference Check | hrmforce",
       metaDescription: "The reference check helps you inquire about the applicant and check whether the person is competent and fits within your organisation.",
       phase: "(Pre)selection",
       goal: "Requesting references in an adequate way for the purpose of an application or selection procedure.",
@@ -462,7 +462,7 @@ export const assessmentsI18n = {
     },
     "teamanalyse": {
       title: "Team analysis",
-      metaTitle: "Make a team analysis? | Use a questionnaire | Hrmforce",
+      metaTitle: "Make a team analysis? | Use a questionnaire | hrmforce",
       metaDescription: "Team analysis: giving insight into which topics and themes within the team need (extra) attention.",
       phase: "Team development",
       goal: "Giving insight into which topics and themes within the team need extra attention, to include them in the team development plan.",
@@ -492,7 +492,7 @@ export const assessmentsI18n = {
     },
     "typology": {
       title: "Typology",
-      metaTitle: "Typology test | Discover your colour type in minutes | Hrmforce",
+      metaTitle: "Typology test | Discover your colour type in minutes",
       metaDescription: "Take the Jung-based Typology test and discover your behavioural style in about 10 minutes using four colour types.",
       phase: "Development → performance → appraisal",
       goal: "Giving insight into the type of employee, based on how someone deals with dominance (influence versus collaboration) and emotion (feeling versus reason).",
@@ -507,7 +507,7 @@ export const assessmentsI18n = {
     },
     "value-drives": {
       title: "Value Drives",
-      metaTitle: "Value Drives questionnaire | Hrmforce",
+      metaTitle: "Value Drives questionnaire | hrmforce",
       metaDescription: "With the Value Drives questionnaire, the personal values of employees are sorted by colour and mapped out.",
       phase: "Development",
       goal: "Sorting the personal values of employees by colour and mapping them out, as a basis for personal and organisational development.",
@@ -516,13 +516,13 @@ export const assessmentsI18n = {
       extra: "",
       traits: ["Value systems", "Colours", "Drives", "Change"],
       intro: ["For organisations, change is an important theme, and within those frameworks the values of people play an important role.", "According to the underlying model, ideas spread from person to person and determine how people think and what they believe in; these are the attracting and repelling forces behind the development of values."],
-      body: ["These value systems are indicated with colours, ascending from simple to increasingly complex, each with their own characteristic forms of expression. Hrmforce has translated this model into clear factors and colours for personal and organisational development."],
+      body: ["These value systems are indicated with colours, ascending from simple to increasingly complex, each with their own characteristic forms of expression. hrmforce has translated this model into clear factors and colours for personal and organisational development."],
       quote: qEN,
       faq: [ { q: "What does Value Drives map out?", a: "The personal values of employees, sorted by colour and value system." }, { q: "What do you use the outcome for?", a: "For personal development and for organisational development and change processes." } ],
     },
     "verkoopvaardigheden": {
       title: "Sales skills",
-      metaTitle: "Sales skills | Hrmforce",
+      metaTitle: "Sales skills | hrmforce",
       metaDescription: "The Sales Skills test gives a clear picture of the skills with which a top salesperson distinguishes themselves from the rest.",
       phase: "(Pre)selection → development",
       goal: "Giving insight into the sales skills of your top salesperson, and into the buying behaviour of the client and the communication style of your salespeople.",
@@ -539,8 +539,8 @@ export const assessmentsI18n = {
   de: {
     "ontwikkelmatrix": {
       title: "Entwicklungsmatrix",
-      metaTitle: "Entwicklungsmatrix | Talent und Verhalten in vier Quadranten | Hrmforce",
-      metaDescription: "Die Entwicklungsmatrix stellt Talent aus dem Big Fifty dem Verhalten aus dem 360-Grad-Feedback gegenüber und ordnet Mitarbeitende vier Entwicklungsquadranten mit konkreten Entwicklungstipps zu.",
+      metaTitle: "Entwicklungsmatrix | Talent und Verhalten in vier Quadranten",
+      metaDescription: "Die Entwicklungsmatrix stellt Talent aus dem Big Fifty dem Verhalten aus dem 360-Grad-Feedback gegenüber und ordnet Mitarbeitende vier.",
       phase: "Entwicklung",
       goal: "Talent und sichtbares Verhalten nebeneinanderstellen, um die richtige Entwicklungsrichtung zu bestimmen.",
       benefit: "Stellt Talent und sichtbares Verhalten in vier Quadranten nebeneinander, sodass sofort klar ist, wo Entwicklung am meisten bringt.",
@@ -556,7 +556,7 @@ export const assessmentsI18n = {
     },
     "big-five": {
       title: "Persönlichkeitstest: Big Five",
-      metaTitle: "Persönlichkeitstest machen? | BIG FIVE TEST | Valide | Hrmforce",
+      metaTitle: "Persönlichkeitstest machen? | BIG FIVE TEST | Valide",
       metaDescription: "Der Big Fifty (5) Persönlichkeitstest gibt Einblick in das Persönlichkeitsprofil des Mitarbeiters und übersetzt es in arbeitsbezogene Kompetenzen.",
       phase: "Auswahl → Entwicklung → Leistung → Beurteilung",
       goal: "Persönlichkeitsmerkmale in Fähigkeiten übersetzen und so entdecken, wo jemand wachsen kann.",
@@ -587,7 +587,7 @@ export const assessmentsI18n = {
     },
     "drijfverentest": {
       title: "Motivationstest",
-      metaTitle: "Motivationstest | Was motiviert Ihre Mitarbeiter? | Hrmforce", metaDescription: "Erfassen Sie die Antriebe und Motivation der Mitarbeiter als Basis für nachhaltigen Einsatz.",
+      metaTitle: "Motivationstest | Was motiviert Ihre Mitarbeiter? | hrmforce", metaDescription: "Erfassen Sie die Antriebe und Motivation der Mitarbeiter als Basis für nachhaltigen Einsatz.",
       phase: "Entwicklung → Leistung", goal: "Entdecken, was jemanden motiviert und ihm bei der Arbeit Energie gibt.",
       time: "10 Minuten", form: "Fragebogen", feedback: "Bericht mit den wichtigsten Antrieben und wie sie die Arbeit beeinflussen.", extra: "Lässt sich gut mit einem Persönlichkeitstest kombinieren.",
       traits: ["Leistung", "Verbindung", "Autonomie", "Sicherheit", "Einfluss"],
@@ -598,7 +598,7 @@ export const assessmentsI18n = {
     },
     "cognitieve-test": {
       title: "Kognitiver Test (Ability Scan)",
-      metaTitle: "Kognitiver Fähigkeitstest | Ability Scan | Hrmforce", metaDescription: "Messen Sie die kognitive Leistungsfähigkeit und sagen Sie voraus, wie schnell jemand neue Aufgaben aufnimmt.",
+      metaTitle: "Kognitiver Fähigkeitstest | Ability Scan | hrmforce", metaDescription: "Messen Sie die kognitive Leistungsfähigkeit und sagen Sie voraus, wie schnell jemand neue Aufgaben aufnimmt.",
       phase: "Auswahl", goal: "Das Arbeits- und Denkniveau und die Lernfähigkeit objektiv erfassen.",
       time: "20-30 Minuten", form: "Verbal, numerisch und abstrakt", feedback: "Score pro Bereich mit Normgruppenvergleich.", extra: "Starker Prädiktor für Arbeitsleistung.",
       traits: ["Verbal", "Numerisch", "Abstrakt"],
@@ -609,7 +609,7 @@ export const assessmentsI18n = {
     },
     "disc-test": {
       title: "DISC-Test",
-      metaTitle: "DISC-Persönlichkeitstest | Verhalten & Kommunikation | Hrmforce", metaDescription: "Erfassen Sie Kommunikations- und Verhaltensstil mit dem DISC-Fragebogen.",
+      metaTitle: "DISC-Persönlichkeitstest | Verhalten & Kommunikation", metaDescription: "Erfassen Sie Kommunikations- und Verhaltensstil mit dem DISC-Fragebogen.",
       phase: "Entwicklung", goal: "Einblick in Verhaltensvorlieben und Kommunikationsstil für bessere Zusammenarbeit.",
       time: "10 Minuten", form: "Fragebogen", feedback: "Bericht mit den DISC-Profilen und praktischen Tipps.", extra: "Beliebt für Teamentwicklung und Coaching.",
       traits: ["Dominanz", "Einfluss", "Stetigkeit", "Gewissenhaftigkeit"],
@@ -620,7 +620,7 @@ export const assessmentsI18n = {
     },
     "studiekeuzetest": {
       title: "Studienwahltest",
-      metaTitle: "Studienwahltest | Fundierte Studien- und Berufswahl | Hrmforce", metaDescription: "Hilft bei einer fundierten Studien- oder Berufswahl.",
+      metaTitle: "Studienwahltest | Fundierte Studien- und Berufswahl", metaDescription: "Hilft bei einer fundierten Studien- oder Berufswahl.",
       phase: "Mobilität", goal: "Interessen, Fähigkeiten und Vorlieben mit passenden Ausbildungen oder Laufbahnen verknüpfen.",
       time: "20 Minuten", form: "Fragebogen", feedback: "Übersicht passender Richtungen.", extra: "Verfügbar in Basis, Erweitert und Komplett.",
       traits: ["Interessen", "Fähigkeiten", "Arbeitswerte"],
@@ -631,7 +631,7 @@ export const assessmentsI18n = {
     },
     "mentale-veerkracht-scan": {
       title: "Scan der mentalen Belastbarkeit",
-      metaTitle: "Scan der mentalen Belastbarkeit | Nachhaltige Beschäftigungsfähigkeit | Hrmforce", metaDescription: "Misst die mentale Belastbarkeit und hilft, die nachhaltige Beschäftigungsfähigkeit zu fördern.",
+      metaTitle: "Scan der mentalen Belastbarkeit", metaDescription: "Misst die mentale Belastbarkeit und hilft, die nachhaltige Beschäftigungsfähigkeit zu fördern.",
       phase: "Beschäftigungsfähigkeit", goal: "Einblick in Stressresistenz und Erholungsvermögen.",
       time: "10 Minuten", form: "Fragebogen", feedback: "Bericht mit Aufmerksamkeitspunkten für Wohlbefinden und Beschäftigungsfähigkeit.", extra: "Teil von Programmen zur nachhaltigen Beschäftigungsfähigkeit.",
       traits: ["Stressresistenz", "Erholung", "Energiebalance"],
@@ -642,7 +642,7 @@ export const assessmentsI18n = {
     },
     "lencioni-teamdynamiek": {
       title: "Lencioni Teamdynamik",
-      metaTitle: "Lencioni Teamdynamik | Teamentwicklung | Hrmforce", metaDescription: "Misst die fünf Dysfunktionen von Teamwork nach dem Modell von Patrick Lencioni.",
+      metaTitle: "Lencioni Teamdynamik | Teamentwicklung | hrmforce", metaDescription: "Misst die fünf Dysfunktionen von Teamwork nach dem Modell von Patrick Lencioni.",
       phase: "Entwicklung", goal: "Einblick in die Zusammenarbeit und Fallstricke innerhalb eines Teams.",
       time: "10 Minuten", form: "Teamfragebogen", feedback: "Teambericht mit den fünf Ebenen von Teamwork.", extra: "Eine starke Basis für eine Teamsitzung.",
       traits: ["Vertrauen", "Konflikt", "Engagement", "Verantwortung", "Ergebnisse"],
@@ -653,7 +653,7 @@ export const assessmentsI18n = {
     },
     "leiderschapstest": {
       title: "Führungstest",
-      metaTitle: "Führungstest | Führungsstil & Entwicklung | Hrmforce", metaDescription: "Erfasst den Führungsstil und die Entwicklungspunkte (angehender) Führungskräfte.",
+      metaTitle: "Führungstest | Führungsstil & Entwicklung | hrmforce", metaDescription: "Erfasst den Führungsstil und die Entwicklungspunkte (angehender) Führungskräfte.",
       phase: "Entwicklung → Auswahl", goal: "Führungsverhalten und -potenzial sichtbar machen.",
       time: "15 Minuten", form: "Fragebogen", feedback: "Bericht mit Führungsstilen und Entwicklungsberatung.", extra: "Kombiniert gut mit 360-Grad-Feedback.",
       traits: ["Vision", "Steuern", "Coachen", "Verbinden"],
@@ -664,7 +664,7 @@ export const assessmentsI18n = {
     },
     "ontwikkelassessment": {
       title: "Entwicklungsassessment",
-      metaTitle: "Entwicklungsassessment | Wachstum und Entwicklung | Hrmforce", metaDescription: "Eine systematische Methode, um Entwicklungspotenzial und Wachstumsrichtung zu erfassen.",
+      metaTitle: "Entwicklungsassessment | Wachstum und Entwicklung | hrmforce", metaDescription: "Eine systematische Methode, um Entwicklungspotenzial und Wachstumsrichtung zu erfassen.",
       phase: "Entwicklung", goal: "Stärken, Entwicklungspunkte und Wachstumsrichtung bestimmen.",
       time: "Kombination von Instrumenten", form: "Mehrere Fragebögen", feedback: "Integraler Entwicklungsbericht mit konkreten Empfehlungen.", extra: "Oft mit Rückkopplungsgespräch.",
       traits: ["Persönlichkeit", "Fähigkeiten", "Antriebe"],
@@ -675,7 +675,7 @@ export const assessmentsI18n = {
     },
     "15pf": {
       title: "15PF",
-      metaTitle: "15PF | Persönlichkeitsfragebogen | Hrmforce",
+      metaTitle: "15PF | Persönlichkeitsfragebogen | hrmforce",
       metaDescription: "Der 15PF-Test von hrmforce gibt Einblick in die Art und Weise, wie sich ein Mitarbeiter in verschiedenen Situationen verhalten oder reagieren wird.",
       phase: "(Vor)auswahl → Entwicklung",
       goal: "Einblick geben, wie sich ein Mitarbeiter in verschiedenen Situationen verhalten oder reagieren wird.",
@@ -691,7 +691,7 @@ export const assessmentsI18n = {
     "ability-scan": {
       title: "Ability Scan | Kognitiver Fähigkeitstest",
       metaTitle: "Kognitiver Fähigkeitstest | 4,9 Sterne | Ability Scan",
-      metaDescription: "Messen Sie objektiv das Denk- und Lernvermögen von Kandidaten mit dem Ability Scan. Fähigkeitstest von der Berufsausbildung bis zum Master, bewertet mit 4,9 Sternen.",
+      metaDescription: "Messen Sie objektiv das Denk- und Lernvermögen von Kandidaten mit dem Ability Scan.",
       phase: "Auswahl → Entwicklung",
       goal: "Messen, wie schnell jemand Probleme versteht, sich eine Meinung bildet und Neues lernt, und daraus das Niveau ableiten: Berufsausbildung, Bachelor oder Master.",
       time: "30 Minuten", form: "Drei Teile mit Multiple-Choice-Fragen, jeweils innerhalb einer festen Zeit.",
@@ -705,7 +705,7 @@ export const assessmentsI18n = {
     },
     "appraisal": {
       title: "Appraisal",
-      metaTitle: "Appraisal | 90-Grad-Feedback | Hrmforce",
+      metaTitle: "Appraisal | 90-Grad-Feedback | hrmforce",
       metaDescription: "Appraisal: Der Kandidat erhält strukturiertes Feedback darüber, wie er sich selbst sieht, aber auch darüber, wie er auf seine Führungskraft wirkt.",
       phase: "Leistung → Beurteilung",
       goal: "Feedback (90 Grad) aus verschiedenen Perspektiven geben, als Input für den Leistungs- und Beurteilungszyklus.",
@@ -735,7 +735,7 @@ export const assessmentsI18n = {
     },
     "canmeds": {
       title: "CanMeds",
-      metaTitle: "CanMeds | 360-Grad-Feedback für das Gesundheitswesen | Hrmforce",
+      metaTitle: "CanMeds | 360-Grad-Feedback für das Gesundheitswesen",
       metaDescription: "Erhalten Sie Einblick, wie leicht ein Mitarbeiter mit einem bestimmten Persönlichkeitsprofil CanMeds-Kompetenzen zeigen oder entwickeln kann.",
       phase: "(Vor)auswahl → Entwicklung → Leistung → Beurteilung",
       goal: "Angeben, wie leicht ein Mitarbeiter mit einem bestimmten Persönlichkeitsprofil bestimmte Kompetenzen zeigen oder entwickeln kann, und die Leistung in einer Rolle bewerten.",
@@ -750,7 +750,7 @@ export const assessmentsI18n = {
     },
     "coaching-screener-scan": {
       title: "Coaching Screener Scan",
-      metaTitle: "Coaching Screener Scan | Hrmforce",
+      metaTitle: "Coaching Screener Scan | hrmforce",
       metaDescription: "Einblick gewinnen, welche Beschwerden und Probleme ein Kandidat erlebt und wie er damit umgeht, besonders nützlich beim Coaching.",
       phase: "Entwicklung",
       goal: "Einblick gewinnen, welche Beschwerden und Probleme ein Kandidat erlebt und wie er damit umgeht.",
@@ -765,7 +765,7 @@ export const assessmentsI18n = {
     },
     "communicatiestijlen-test": {
       title: "Kommunikationsstil-Test",
-      metaTitle: "Kommunikationsstil-Test machen? | Starten Sie mit einer kostenlosen Demo | Hrmforce",
+      metaTitle: "Kommunikationsstil-Test machen?",
       metaDescription: "Vergleichen Sie mit dem Kommunikationsstile-Test das Vorhandensein wesentlicher Umgangsfaktoren und übersetzen Sie sie in spezifische Kommunikationsstile.",
       phase: "Entwicklung → Leistung → Beurteilung",
       goal: "Das Vorhandensein wesentlicher Umgangsfaktoren vergleichen und in spezifische Kommunikationsstile übersetzen.",
@@ -780,7 +780,7 @@ export const assessmentsI18n = {
     },
     "competentie-check": {
       title: "Kompetenztest",
-      metaTitle: "Kompetenztest | Wie sieht sich der Mitarbeiter selbst? | Hrmforce",
+      metaTitle: "Kompetenztest | Wie sieht sich der Mitarbeiter selbst?",
       metaDescription: "Der Kompetenztest liefert Feedback (0 Grad) über das eigene Verhalten des Mitarbeiters. Eine Antwort auf die Frage, wie man sich selbst sieht.",
       phase: "Entwicklung → Leistung → Beurteilung",
       goal: "Feedback (0 Grad) über das eigene Verhalten des Mitarbeiters geben: Wie sieht man sich selbst?",
@@ -795,8 +795,8 @@ export const assessmentsI18n = {
     },
     "conflictstijlen-test": {
       title: "Konfliktstil-Test",
-      metaTitle: "Konfliktstil-Test | Hrmforce",
-      metaDescription: "Analysieren Sie das individuelle Verhalten in Konfliktsituationen. Der Konfliktstile-Test gibt an, inwieweit ein bestimmter Konfliktstil jemandem nützlich sein kann.",
+      metaTitle: "Konfliktstil-Test | hrmforce",
+      metaDescription: "Analysieren Sie das individuelle Verhalten in Konfliktsituationen. Der Konfliktstile-Test gibt an.",
       phase: "Entwicklung → Leistung → Beurteilung",
       goal: "Das individuelle Verhalten in Konfliktsituationen analysieren und angeben, welcher Konfliktstil nützlich sein kann.",
       time: "15 Minuten", form: "Kandidaten geben an, inwieweit sie Aussagen zustimmen.",
@@ -810,8 +810,8 @@ export const assessmentsI18n = {
     },
     "duurzame-inzetbaarheid-scan": {
       title: "Scan zur nachhaltigen Beschäftigungsfähigkeit",
-      metaTitle: "Scan zur nachhaltigen Beschäftigungsfähigkeit | Hrmforce",
-      metaDescription: "Mit dem Scan zur nachhaltigen Beschäftigungsfähigkeit gewinnen Sie schnell Einblick, ob ein Mitarbeiter und/oder eine Organisation noch ausreichend nachhaltig einsetzbar ist.",
+      metaTitle: "Scan zur nachhaltigen Beschäftigungsfähigkeit | hrmforce",
+      metaDescription: "Mit dem Scan zur nachhaltigen Beschäftigungsfähigkeit gewinnen Sie schnell Einblick.",
       phase: "Entwicklung",
       goal: "Schnell Einblick gewinnen, ob ein Mitarbeiter und/oder eine Organisation noch ausreichend nachhaltig einsetzbar ist.",
       time: "25 Minuten", form: "Multiple Choice auf einer 5-Punkte-Skala.",
@@ -825,7 +825,7 @@ export const assessmentsI18n = {
     },
     "exit-assessment": {
       title: "Exit Assessment",
-      metaTitle: "Ein Austrittsgespräch führen? Sorgen Sie für ein Exit Assessment | Hrmforce",
+      metaTitle: "Exit Assessment beim Austritt von Mitarbeitenden",
       metaDescription: "Ein Exit Assessment gibt Einblick in die Gründe und Ursachen für das Ausscheiden von Mitarbeitern. Ehrlich, aufrichtig und äußerst nützlich.",
       phase: "Beschäftigungsfähigkeit → Abgang",
       goal: "Einblick in die Gründe und Ursachen für das Ausscheiden von Mitarbeitern geben und Tipps zur Verbesserung erhalten.",
@@ -840,7 +840,7 @@ export const assessmentsI18n = {
     },
     "groepsrollen": {
       title: "Teamrollen",
-      metaTitle: "Teamrollen | Hrmforce",
+      metaTitle: "Teamrollen | hrmforce",
       metaDescription: "Mit dem Teamrollen-Assessment erhalten Sie eine Übersicht der Teamrollen, die ein Mitarbeiter in bestimmten Situationen einnimmt oder nicht.",
       phase: "Entwicklung → Leistung → Beurteilung",
       goal: "Eine Übersicht der Teamrollen geben, die ein Mitarbeiter in bestimmten Situationen einnimmt oder nicht.",
@@ -855,8 +855,8 @@ export const assessmentsI18n = {
     },
     "intake-candidate": {
       title: "Intake Candidate",
-      metaTitle: "Kandidaten-Intake | Bereiten Sie Ihr Interview klug vor | Hrmforce",
-      metaDescription: "Lassen Sie Kandidaten die Standardfragen im Voraus ausfüllen, sodass Sie während des Interviews mehr Zeit für Soft Skills, Kompetenzen und die Passung haben.",
+      metaTitle: "Kandidaten-Intake | Bereiten Sie Ihr Interview klug vor",
+      metaDescription: "Lassen Sie Kandidaten die Standardfragen im Voraus ausfüllen, sodass Sie während des Interviews mehr Zeit für Soft Skills.",
       phase: "Auswahl",
       goal: "Die Fragen, die idealerweise im ersten Interview vorkommen, vorab online stellen, sodass das Interview wirklich Substanz bekommt.",
       time: "20 Minuten", form: "Offene Fragen, ergänzt um einige Multiple-Choice-Fragen (ja/nein).",
@@ -870,7 +870,7 @@ export const assessmentsI18n = {
     },
     "interesse-scan": {
       title: "Interessentest",
-      metaTitle: "Interessentest machen? | Für Schüler & Personal | Hrmforce",
+      metaTitle: "Interessentest machen? | Für Schüler & Personal | hrmforce",
       metaDescription: "Mit dem Interessen-Scan erhält ein Schüler oder Mitarbeiter Einblick, für welche Sektoren er das größte Interesse hat.",
       phase: "Entwicklung",
       goal: "Einblick geben, für welche Sektoren ein Schüler, Student oder Mitarbeiter das größte Interesse hat, verknüpft mit relevanten Ausbildungen und Berufen.",
@@ -885,8 +885,8 @@ export const assessmentsI18n = {
     },
     "job-profiler": {
       title: "Job Profiler",
-      metaTitle: "Job Profiler | Hrmforce",
-      metaDescription: "Einblick gewinnen, welche Kompetenzen und Verhaltensweisen Befragtengruppen für eine Funktion relevant finden, als Input für Auswahl, Entwicklung und Beurteilung.",
+      metaTitle: "Job Profiler | hrmforce",
+      metaDescription: "Einblick gewinnen, welche Kompetenzen und Verhaltensweisen Befragtengruppen für eine Funktion relevant finden, als Input für Auswahl.",
       phase: "Auswahl → Entwicklung → Leistung → Beurteilung",
       goal: "Einblick gewinnen, welche Kompetenzen und Verhaltensweisen verschiedene Befragtengruppen für eine Funktion relevant finden.",
       time: "10 Minuten", form: "Multiple-Choice-Fragebogen, ergänzt um offene Fragen.",
@@ -900,8 +900,8 @@ export const assessmentsI18n = {
     },
     "lean-scan": {
       title: "Lean Scan",
-      metaTitle: "Lean Scan machen? | Lean-Methode | Entdecken Sie Hrmforce",
-      metaDescription: "Mit dem Lean Scan gewinnen Unternehmen Einblick in die Lücke zwischen der aktuellen und der idealen Situation, um den Bedarf an Lean Management aufzuzeigen.",
+      metaTitle: "Lean Scan machen? | Lean-Methode | Entdecken Sie hrmforce",
+      metaDescription: "Der Lean Scan zeigt die Lücke zwischen der aktuellen und der idealen Situation und damit den Bedarf an Lean Management.",
       phase: "Entwicklung → Leistung → Beurteilung",
       goal: "Einblick in die Lücke zwischen der aktuellen und der idealen Situation gewinnen, um den Bedarf an Lean Management aufzuzeigen.",
       time: "10 Minuten", form: "Multiple Choice auf einer 5-Punkte-Skala.",
@@ -915,7 +915,7 @@ export const assessmentsI18n = {
     },
     "leerstijlen": {
       title: "Lernstil-Test",
-      metaTitle: "Lernstil-Test machen? | Kostenlose Demo | Hrmforce",
+      metaTitle: "Lernstil-Test machen? | Kostenlose Demo | hrmforce",
       metaDescription: "Der Lernstil-Test gibt Einblick in die Art und Weise, wie ein Mitarbeiter mit Lernaktivitäten umgeht und was seine Lernvorliebe ist.",
       phase: "Entwicklung",
       goal: "Einblick geben, wie ein Mitarbeiter mit Lernaktivitäten umgeht und was seine Lernvorliebe ist.",
@@ -930,7 +930,7 @@ export const assessmentsI18n = {
     },
     "levensloop-scan": {
       title: "Lebenslauf-Scan",
-      metaTitle: "Lebenslauf-Scan | Hrmforce",
+      metaTitle: "Lebenslauf-Scan | hrmforce",
       metaDescription: "Ein Lebenslauf-Scan gibt Einblick in den Lebenslauf eines Kandidaten, um Ansatzpunkte für Coaching und Entwicklung aufzudecken.",
       phase: "Entwicklung",
       goal: "Einblick in den Lebenslauf eines Kandidaten gewinnen, um Ansatzpunkte für Coaching und Entwicklung aufzudecken.",
@@ -945,7 +945,7 @@ export const assessmentsI18n = {
     },
     "loopbaanwaarden": {
       title: "Laufbahnwerte",
-      metaTitle: "Laufbahnwerte | Hrmforce",
+      metaTitle: "Laufbahnwerte | hrmforce",
       metaDescription: "Laufbahnwerte hilft bei der Frage, welche Funktionen oder Organisationen zu den Werten passen, die jemand in seiner Laufbahn verwirklichen möchte.",
       phase: "Entwicklung",
       goal: "Bei der Frage unterstützen, ob bestimmte Funktionen, Rollen oder Organisationen zu den Laufbahnwerten der Person passen.",
@@ -960,7 +960,7 @@ export const assessmentsI18n = {
     },
     "pulse-survey": {
       title: "Pulse Survey",
-      metaTitle: "Pulse Survey | Fragebögen für Personal selbst erstellen | Hrmforce",
+      metaTitle: "Pulse Survey | Fragebögen für Personal selbst erstellen",
       metaDescription: "Erstellen Sie mit der Pulse Survey selbst Fragebögen für Ihr Personal aus 1000+ Items und 40 Beispiellisten. Von Zufriedenheit bis mentale Belastbarkeit.",
       phase: "(Vor)auswahl → Entwicklung",
       goal: "Organisationen in die Lage versetzen, mit Standardfragebögen und einer Fragendatenbank selbst Fragebögen zu gestalten und an Bewerber und Mitarbeiter zu versenden.",
@@ -975,7 +975,7 @@ export const assessmentsI18n = {
     },
     "referentie-check": {
       title: "Referenz-Check",
-      metaTitle: "Referenz-Check | Hrmforce",
+      metaTitle: "Referenz-Check | hrmforce",
       metaDescription: "Der Referenz-Check hilft Ihnen, sich über den Bewerber zu erkundigen und zu prüfen, ob die Person kompetent ist und in Ihre Organisation passt.",
       phase: "(Vor)auswahl",
       goal: "Auf angemessene Weise Referenzen für ein Bewerbungs- oder Auswahlverfahren einholen.",
@@ -990,7 +990,7 @@ export const assessmentsI18n = {
     },
     "teamanalyse": {
       title: "Teamanalyse",
-      metaTitle: "Eine Teamanalyse erstellen? | Nutzen Sie einen Fragebogen | Hrmforce",
+      metaTitle: "Eine Teamanalyse erstellen? | Nutzen Sie einen Fragebogen",
       metaDescription: "Teamanalyse: Einblick geben, welche Themen innerhalb des Teams (zusätzliche) Aufmerksamkeit benötigen.",
       phase: "Teamentwicklung",
       goal: "Einblick geben, welche Themen innerhalb des Teams zusätzliche Aufmerksamkeit benötigen, um sie in den Teamentwicklungsplan aufzunehmen.",
@@ -1005,7 +1005,7 @@ export const assessmentsI18n = {
     },
     "tevredenheidsonderzoek-medewerkers": {
       title: "Zufriedenheitsumfrage",
-      metaTitle: "Zufriedenheitsumfrage für Mitarbeiter | Starten Sie Ihre kostenlose Demo",
+      metaTitle: "Zufriedenheitsumfrage für Mitarbeiter",
       metaDescription: "Zufriedenheitsumfrage: Erhalten Sie eine Übersicht über die Zufriedenheit der Mitarbeiter zu Faktoren wie Arbeitsprozessen, Kultur und Management.",
       phase: "Entwicklung",
       goal: "Eine Übersicht über die Zufriedenheit der Mitarbeiter zu Faktoren wie Arbeitsprozessen, Kultur, Management, Arbeitsbedingungen, Laufbahnentwicklung und Loyalität erstellen.",
@@ -1020,7 +1020,7 @@ export const assessmentsI18n = {
     },
     "typology": {
       title: "Typology",
-      metaTitle: "Typology-Test | Entdecken Sie Ihren Farbtyp in wenigen Minuten | Hrmforce",
+      metaTitle: "Typology-Test",
       metaDescription: "Machen Sie den auf Jung basierenden Typology-Test und entdecken Sie in etwa 10 Minuten Ihren Verhaltensstil anhand von vier Farbtypen.",
       phase: "Entwicklung → Leistung → Beurteilung",
       goal: "Einblick in den Typ des Mitarbeiters geben, basierend darauf, wie jemand mit Dominanz (Einfluss versus Zusammenarbeit) und Emotion (Gefühl versus Ratio) umgeht.",
@@ -1035,7 +1035,7 @@ export const assessmentsI18n = {
     },
     "value-drives": {
       title: "Value Drives",
-      metaTitle: "Value Drives Fragebogen | Hrmforce",
+      metaTitle: "Value Drives Fragebogen | hrmforce",
       metaDescription: "Mit dem Value Drives Fragebogen werden die persönlichen Werte der Mitarbeiter nach Farbe sortiert und erfasst.",
       phase: "Entwicklung",
       goal: "Die persönlichen Werte der Mitarbeiter nach Farbe sortieren und erfassen, als Basis für persönliche und organisatorische Entwicklung.",
@@ -1044,13 +1044,13 @@ export const assessmentsI18n = {
       extra: "",
       traits: ["Wertesysteme", "Farben", "Antriebe", "Veränderung"],
       intro: ["Für Organisationen ist Veränderung ein wichtiges Thema, und innerhalb dieser Rahmen spielen die Werte der Menschen eine wichtige Rolle.", "Nach dem zugrunde liegenden Modell verbreiten sich Ideen von Mensch zu Mensch und bestimmen, wie Menschen denken und woran sie glauben; dies sind die anziehenden und abstoßenden Kräfte hinter der Entwicklung von Werten."],
-      body: ["Diese Wertesysteme werden mit Farben angegeben, aufsteigend von einfach bis zunehmend komplex, jedes mit eigenen charakteristischen Ausdrucksformen. Hrmforce hat dieses Modell in klare Faktoren und Farben für persönliche und organisatorische Entwicklung übersetzt."],
+      body: ["Diese Wertesysteme werden mit Farben angegeben, aufsteigend von einfach bis zunehmend komplex, jedes mit eigenen charakteristischen Ausdrucksformen. hrmforce hat dieses Modell in klare Faktoren und Farben für persönliche und organisatorische Entwicklung übersetzt."],
       quote: qDE,
       faq: [ { q: "Was erfasst Value Drives?", a: "Die persönlichen Werte der Mitarbeiter, sortiert nach Farbe und Wertesystem." }, { q: "Wofür verwenden Sie das Ergebnis?", a: "Für persönliche Entwicklung und für organisatorische Entwicklung und Veränderungsprozesse." } ],
     },
     "verkoopvaardigheden": {
       title: "Verkaufsfähigkeiten",
-      metaTitle: "Verkaufsfähigkeiten | Hrmforce",
+      metaTitle: "Verkaufsfähigkeiten | hrmforce",
       metaDescription: "Der Verkaufsfähigkeiten-Test gibt ein klares Bild der Fähigkeiten, mit denen sich ein Spitzenverkäufer vom Rest abhebt.",
       phase: "(Vor)auswahl → Entwicklung",
       goal: "Einblick in die Verkaufsfähigkeiten Ihres Spitzenverkäufers geben, und in das Kaufverhalten des Kunden und den Kommunikationsstil Ihrer Verkäufer.",
@@ -1067,8 +1067,8 @@ export const assessmentsI18n = {
   fr: {
     "ontwikkelmatrix": {
       title: "Matrice de développement",
-      metaTitle: "Matrice de développement | Talent et comportement en quatre quadrants | Hrmforce",
-      metaDescription: "La matrice de développement confronte le talent issu du Big Fifty au comportement issu du feedback 360 degrés et place les collaborateurs dans quatre quadrants de développement avec des conseils concrets.",
+      metaTitle: "Matrice de développement",
+      metaDescription: "La matrice de développement confronte le talent issu du Big Fifty au comportement issu du feedback 360 degrés et place les collaborateurs dans quatre.",
       phase: "Développement",
       goal: "Mettre côte à côte le talent et le comportement visible pour déterminer la bonne direction de développement.",
       benefit: "Met le talent et le comportement visible côte à côte en quatre quadrants, de sorte que l'on voit immédiatement où le développement rapporte le plus.",
@@ -1084,7 +1084,7 @@ export const assessmentsI18n = {
     },
     "big-five": {
       title: "Test de personnalité : Big Five",
-      metaTitle: "Faire un test de personnalité ? | TEST BIG FIVE | Valide | Hrmforce",
+      metaTitle: "Faire un test de personnalité ? | TEST BIG FIVE | Valide",
       metaDescription: "Le test de personnalité Big Fifty (5) donne un aperçu du profil de personnalité du collaborateur et le traduit en compétences liées au travail.",
       phase: "Sélection → développement → performance → évaluation",
       goal: "Traduire les traits de personnalité en compétences et ainsi découvrir où quelqu'un peut évoluer.",
@@ -1115,7 +1115,7 @@ export const assessmentsI18n = {
     },
     "drijfverentest": {
       title: "Test de motivations",
-      metaTitle: "Test de motivations | Qu'est-ce qui motive vos collaborateurs ? | Hrmforce", metaDescription: "Cartographiez les moteurs et la motivation des collaborateurs comme base d'un emploi durable.",
+      metaTitle: "Test de motivations", metaDescription: "Cartographiez les moteurs et la motivation des collaborateurs comme base d'un emploi durable.",
       phase: "Développement → performance", goal: "Découvrir ce qui motive quelqu'un et lui donne de l'énergie au travail.",
       time: "10 minutes", form: "Questionnaire", feedback: "Rapport avec les principaux moteurs et la façon dont ils influencent le travail.", extra: "Se combine bien avec un test de personnalité.",
       traits: ["Réussite", "Connexion", "Autonomie", "Sécurité", "Influence"],
@@ -1126,7 +1126,7 @@ export const assessmentsI18n = {
     },
     "cognitieve-test": {
       title: "Test cognitif (Ability Scan)",
-      metaTitle: "Test d'aptitudes cognitives | Ability Scan | Hrmforce", metaDescription: "Mesurez les capacités cognitives et prédisez la rapidité avec laquelle quelqu'un assimile de nouvelles tâches.",
+      metaTitle: "Test d'aptitudes cognitives | Ability Scan | hrmforce", metaDescription: "Mesurez les capacités cognitives et prédisez la rapidité avec laquelle quelqu'un assimile de nouvelles tâches.",
       phase: "Sélection", goal: "Cartographier objectivement le niveau de travail et de réflexion et la capacité d'apprentissage.",
       time: "20-30 minutes", form: "Verbal, numérique et abstrait", feedback: "Score par section avec comparaison au groupe de référence.", extra: "Fort prédicteur de la performance au travail.",
       traits: ["Verbal", "Numérique", "Abstrait"],
@@ -1137,7 +1137,7 @@ export const assessmentsI18n = {
     },
     "disc-test": {
       title: "Test DISC",
-      metaTitle: "Test de personnalité DISC | Comportement & communication | Hrmforce", metaDescription: "Cartographiez le style de communication et de comportement avec le questionnaire DISC.",
+      metaTitle: "Test de personnalité DISC | Comportement & communication", metaDescription: "Cartographiez le style de communication et de comportement avec le questionnaire DISC.",
       phase: "Développement", goal: "Aperçu des préférences comportementales et du style de communication pour une meilleure collaboration.",
       time: "10 minutes", form: "Questionnaire", feedback: "Rapport avec les profils DISC et des conseils pratiques.", extra: "Populaire pour le développement d'équipe et le coaching.",
       traits: ["Dominance", "Influence", "Stabilité", "Conformité"],
@@ -1148,7 +1148,7 @@ export const assessmentsI18n = {
     },
     "studiekeuzetest": {
       title: "Test d'orientation d'études",
-      metaTitle: "Test d'orientation d'études | Choix d'études et de carrière fondé | Hrmforce", metaDescription: "Aide à faire un choix d'études ou de carrière fondé.",
+      metaTitle: "Test d'orientation d'études", metaDescription: "Aide à faire un choix d'études ou de carrière fondé.",
       phase: "Mobilité", goal: "Relier les intérêts, les capacités et les préférences à des études ou des carrières appropriées.",
       time: "20 minutes", form: "Questionnaire", feedback: "Aperçu des directions appropriées.", extra: "Disponible en Basique, Étendu et Complet.",
       traits: ["Intérêts", "Capacités", "Valeurs de travail"],
@@ -1159,7 +1159,7 @@ export const assessmentsI18n = {
     },
     "mentale-veerkracht-scan": {
       title: "Scan de résilience mentale",
-      metaTitle: "Scan de résilience mentale | Employabilité durable | Hrmforce", metaDescription: "Mesure la résilience mentale et aide à promouvoir l'employabilité durable.",
+      metaTitle: "Scan de résilience mentale | Employabilité durable", metaDescription: "Mesure la résilience mentale et aide à promouvoir l'employabilité durable.",
       phase: "Employabilité", goal: "Aperçu de la résistance au stress et de la capacité de récupération.",
       time: "10 minutes", form: "Questionnaire", feedback: "Rapport avec des points d'attention pour le bien-être et l'employabilité.", extra: "Fait partie des programmes d'employabilité durable.",
       traits: ["Résistance au stress", "Récupération", "Équilibre énergétique"],
@@ -1170,7 +1170,7 @@ export const assessmentsI18n = {
     },
     "lencioni-teamdynamiek": {
       title: "Dynamique d'équipe Lencioni",
-      metaTitle: "Dynamique d'équipe Lencioni | Développement d'équipe | Hrmforce", metaDescription: "Mesure les cinq dysfonctionnements du travail d'équipe selon le modèle de Patrick Lencioni.",
+      metaTitle: "Dynamique d'équipe Lencioni | Développement d'équipe", metaDescription: "Mesure les cinq dysfonctionnements du travail d'équipe selon le modèle de Patrick Lencioni.",
       phase: "Développement", goal: "Aperçu de la collaboration et des pièges au sein d'une équipe.",
       time: "10 minutes", form: "Questionnaire d'équipe", feedback: "Rapport d'équipe avec les cinq niveaux du travail d'équipe.", extra: "Une base solide pour une session d'équipe.",
       traits: ["Confiance", "Conflit", "Engagement", "Responsabilité", "Résultats"],
@@ -1181,7 +1181,7 @@ export const assessmentsI18n = {
     },
     "leiderschapstest": {
       title: "Test de leadership",
-      metaTitle: "Test de leadership | Style de leadership & développement | Hrmforce", metaDescription: "Cartographie le style de leadership et les points de développement des managers (potentiels).",
+      metaTitle: "Test de leadership | Style de leadership & développement", metaDescription: "Cartographie le style de leadership et les points de développement des managers (potentiels).",
       phase: "Développement → sélection", goal: "Rendre le comportement et le potentiel de leadership visibles.",
       time: "15 minutes", form: "Questionnaire", feedback: "Rapport avec les styles de leadership et des conseils de développement.", extra: "Se combine bien avec le feedback à 360 degrés.",
       traits: ["Vision", "Diriger", "Coacher", "Connecter"],
@@ -1192,7 +1192,7 @@ export const assessmentsI18n = {
     },
     "ontwikkelassessment": {
       title: "Assessment de développement",
-      metaTitle: "Assessment de développement | Croissance et développement | Hrmforce", metaDescription: "Une méthode systématique pour cartographier le potentiel de développement et la direction de croissance.",
+      metaTitle: "Assessment de développement | Croissance et développement", metaDescription: "Une méthode systématique pour cartographier le potentiel de développement et la direction de croissance.",
       phase: "Développement", goal: "Déterminer les points forts, les points de développement et la direction de croissance.",
       time: "Combinaison d'instruments", form: "Plusieurs questionnaires", feedback: "Rapport de développement intégral avec des conseils concrets.", extra: "Souvent avec un entretien de restitution.",
       traits: ["Personnalité", "Capacités", "Motivations"],
@@ -1203,7 +1203,7 @@ export const assessmentsI18n = {
     },
     "15pf": {
       title: "15PF",
-      metaTitle: "15PF | Questionnaire de personnalité | Hrmforce",
+      metaTitle: "15PF | Questionnaire de personnalité | hrmforce",
       metaDescription: "Le test 15PF de hrmforce donne un aperçu de la façon dont un collaborateur se comportera ou réagira dans différentes situations.",
       phase: "(Pré)sélection → développement",
       goal: "Donner un aperçu de la façon dont un collaborateur se comportera ou réagira dans différentes situations.",
@@ -1219,7 +1219,7 @@ export const assessmentsI18n = {
     "ability-scan": {
       title: "Ability Scan | Test d'aptitudes cognitives",
       metaTitle: "Test d'aptitudes cognitives | 4,9 étoiles | Ability Scan",
-      metaDescription: "Mesurez objectivement la capacité de réflexion et d'apprentissage des candidats avec l'Ability Scan. Test d'aptitudes du niveau professionnel au master, noté 4,9 étoiles.",
+      metaDescription: "Mesurez objectivement la capacité de réflexion et d'apprentissage des candidats avec l'Ability Scan.",
       phase: "Sélection → développement",
       goal: "Mesurer la rapidité avec laquelle quelqu'un comprend les problèmes, se forge une opinion et apprend de nouvelles choses, et en déduire le niveau : professionnel, licence ou master.",
       time: "30 minutes", form: "Trois sections avec des questions à choix multiples, chacune dans un temps fixe.",
@@ -1233,7 +1233,7 @@ export const assessmentsI18n = {
     },
     "appraisal": {
       title: "Appraisal",
-      metaTitle: "Appraisal | Feedback à 90 degrés | Hrmforce",
+      metaTitle: "Appraisal | Feedback à 90 degrés | hrmforce",
       metaDescription: "Appraisal : le candidat reçoit un feedback structuré sur la façon dont il se voit, mais aussi sur la façon dont il est perçu par son manager.",
       phase: "Performance → évaluation",
       goal: "Fournir un feedback (90 degrés) sous différentes perspectives, comme entrée pour le cycle de performance et d'évaluation.",
@@ -1248,8 +1248,8 @@ export const assessmentsI18n = {
     },
     "beroepskeuze-test": {
       title: "Test d'orientation professionnelle",
-      metaTitle: "Test d'orientation pour l'accompagnement de carrière | hrmforce",
-      metaDescription: "Pour les conseillers en carrière et les RH : un avis fondé sur les groupes professionnels adaptés, avec une explication par métier et un rapport pour l'entretien.",
+      metaTitle: "Test d'orientation pour l'accompagnement de carrière",
+      metaDescription: "Pour les conseillers en carrière et les RH : un avis fondé sur les groupes professionnels adaptés.",
       phase: "Développement → performance",
       goal: "Donner des conseils fiables sur les groupes professionnels appropriés et moins appropriés.",
       time: "25 minutes", form: "Questionnaire à choix forcé.",
@@ -1263,8 +1263,8 @@ export const assessmentsI18n = {
     },
     "canmeds": {
       title: "CanMeds",
-      metaTitle: "CanMeds | Feedback à 360 degrés pour la santé | Hrmforce",
-      metaDescription: "Obtenez un aperçu de la facilité avec laquelle un collaborateur ayant un certain profil de personnalité peut démontrer ou développer les compétences CanMeds.",
+      metaTitle: "CanMeds | Feedback à 360 degrés pour la santé | hrmforce",
+      metaDescription: "Obtenez un aperçu de la facilité avec laquelle un collaborateur ayant un certain profil de personnalité peut démontrer ou développer les compétences.",
       phase: "(Pré)sélection → développement → performance → évaluation",
       goal: "Indiquer avec quelle facilité un collaborateur ayant un certain profil de personnalité peut démontrer ou développer des compétences spécifiques, et évaluer sa performance dans un rôle.",
       time: "20 minutes", form: "Selon la forme choisie : Personnalité ou feedback à 360.",
@@ -1278,7 +1278,7 @@ export const assessmentsI18n = {
     },
     "coaching-screener-scan": {
       title: "Coaching Screener Scan",
-      metaTitle: "Coaching Screener Scan | Hrmforce",
+      metaTitle: "Coaching Screener Scan | hrmforce",
       metaDescription: "Obtenez un aperçu des plaintes et des problèmes qu'un candidat rencontre et de la façon dont il les gère, particulièrement utile en coaching.",
       phase: "Développement",
       goal: "Obtenir un aperçu des plaintes et des problèmes qu'un candidat rencontre et de la façon dont il les gère.",
@@ -1293,7 +1293,7 @@ export const assessmentsI18n = {
     },
     "communicatiestijlen-test": {
       title: "Test de styles de communication",
-      metaTitle: "Faire un test de styles de communication ? | Commencez par une démo gratuite | Hrmforce",
+      metaTitle: "Faire un test de styles de communication ?",
       metaDescription: "Avec le test de styles de communication, comparez la présence de facteurs relationnels essentiels et traduisez-les en styles de communication spécifiques.",
       phase: "Développement → performance → évaluation",
       goal: "Comparer la présence de facteurs relationnels essentiels et les traduire en styles de communication spécifiques.",
@@ -1308,7 +1308,7 @@ export const assessmentsI18n = {
     },
     "competentie-check": {
       title: "Test de compétences",
-      metaTitle: "Test de compétences | Comment le collaborateur se voit-il ? | Hrmforce",
+      metaTitle: "Test de compétences | Comment le collaborateur se voit-il ?",
       metaDescription: "Le test de compétences fournit un feedback (0 degré) sur le comportement propre du collaborateur. Une réponse à la question de savoir comment on se voit.",
       phase: "Développement → performance → évaluation",
       goal: "Fournir un feedback (0 degré) sur le comportement propre du collaborateur : comment se voit-on ?",
@@ -1323,8 +1323,8 @@ export const assessmentsI18n = {
     },
     "conflictstijlen-test": {
       title: "Test de styles de conflit",
-      metaTitle: "Test de styles de conflit | Hrmforce",
-      metaDescription: "Analysez le comportement individuel en situation de conflit. Le test de styles de conflit indique dans quelle mesure un certain style de conflit peut être utile à quelqu'un.",
+      metaTitle: "Test de styles de conflit | hrmforce",
+      metaDescription: "Analysez le comportement individuel en situation de conflit. Le test de styles de conflit indique dans quelle mesure un certain style de conflit peut.",
       phase: "Développement → performance → évaluation",
       goal: "Analyser le comportement individuel en situation de conflit et indiquer quel style de conflit peut être utile.",
       time: "15 minutes", form: "Les candidats indiquent dans quelle mesure ils sont d'accord avec des affirmations.",
@@ -1338,8 +1338,8 @@ export const assessmentsI18n = {
     },
     "duurzame-inzetbaarheid-scan": {
       title: "Scan d'employabilité durable",
-      metaTitle: "Scan d'employabilité durable | Hrmforce",
-      metaDescription: "Avec le Scan d'employabilité durable, vous obtenez rapidement un aperçu de la question de savoir si un collaborateur et/ou une organisation sont encore suffisamment employables durablement.",
+      metaTitle: "Scan d'employabilité durable | hrmforce",
+      metaDescription: "Avec le Scan d'employabilité durable, vous obtenez rapidement un aperçu de la question de savoir si un collaborateur et/ou une organisation sont encore.",
       phase: "Développement",
       goal: "Obtenir rapidement un aperçu de la question de savoir si un collaborateur et/ou une organisation sont encore suffisamment employables durablement.",
       time: "25 minutes", form: "Choix multiple sur une échelle à 5 points.",
@@ -1353,7 +1353,7 @@ export const assessmentsI18n = {
     },
     "exit-assessment": {
       title: "Exit Assessment",
-      metaTitle: "Mener un entretien de départ ? Prévoyez un exit assessment | Hrmforce",
+      metaTitle: "Mener un entretien de départ ? Prévoyez un exit assessment",
       metaDescription: "Un Exit Assessment donne un aperçu des raisons et des causes du départ des collaborateurs. Honnête, sincère et extrêmement utile.",
       phase: "Employabilité → départ",
       goal: "Donner un aperçu des raisons et des causes du départ des collaborateurs et recevoir des conseils d'amélioration.",
@@ -1368,7 +1368,7 @@ export const assessmentsI18n = {
     },
     "groepsrollen": {
       title: "Rôles d'équipe",
-      metaTitle: "Rôles d'équipe | Hrmforce",
+      metaTitle: "Rôles d'équipe | hrmforce",
       metaDescription: "Avec l'assessment Rôles d'équipe, vous obtenez un aperçu des rôles d'équipe qu'un collaborateur adoptera ou non dans certaines situations.",
       phase: "Développement → performance → évaluation",
       goal: "Donner un aperçu des rôles d'équipe qu'un collaborateur adoptera ou non dans certaines situations.",
@@ -1383,8 +1383,8 @@ export const assessmentsI18n = {
     },
     "intake-candidate": {
       title: "Intake Candidate",
-      metaTitle: "Intake candidat | Préparez votre entretien intelligemment | Hrmforce",
-      metaDescription: "Faites remplir aux candidats les questions standard à l'avance, afin d'avoir plus de temps pendant l'entretien pour les soft skills, les compétences et l'adéquation.",
+      metaTitle: "Intake candidat | Préparez votre entretien intelligemment",
+      metaDescription: "Faites remplir aux candidats les questions standard à l'avance, afin d'avoir plus de temps pendant l'entretien pour les soft skills.",
       phase: "Sélection",
       goal: "Poser en ligne à l'avance les questions qui devraient idéalement figurer dans le premier entretien, afin que l'entretien gagne vraiment en substance.",
       time: "20 minutes", form: "Questions ouvertes complétées par plusieurs questions à choix multiples (oui/non).",
@@ -1398,7 +1398,7 @@ export const assessmentsI18n = {
     },
     "interesse-scan": {
       title: "Test d'intérêts",
-      metaTitle: "Faire un test d'intérêts ? | Pour élèves & personnel | Hrmforce",
+      metaTitle: "Faire un test d'intérêts ? | Pour élèves & personnel",
       metaDescription: "Avec le scan d'intérêts, un élève ou un collaborateur obtient un aperçu des secteurs qui l'intéressent le plus.",
       phase: "Développement",
       goal: "Donner un aperçu des secteurs qui intéressent le plus un élève, un étudiant ou un collaborateur, liés à des études et des métiers pertinents.",
@@ -1413,8 +1413,8 @@ export const assessmentsI18n = {
     },
     "job-profiler": {
       title: "Job Profiler",
-      metaTitle: "Job Profiler | Hrmforce",
-      metaDescription: "Obtenez un aperçu des compétences et des comportements que les groupes de répondants jugent pertinents pour une fonction, comme entrée pour la sélection, le développement et l'évaluation.",
+      metaTitle: "Job Profiler | hrmforce",
+      metaDescription: "Obtenez un aperçu des compétences et des comportements que les groupes de répondants jugent pertinents pour une fonction, comme entrée pour la sélection.",
       phase: "Sélection → développement → performance → évaluation",
       goal: "Obtenir un aperçu des compétences et des comportements que différents groupes de répondants jugent pertinents pour une fonction.",
       time: "10 minutes", form: "Questionnaire à choix multiples complété par des questions ouvertes.",
@@ -1428,7 +1428,7 @@ export const assessmentsI18n = {
     },
     "lean-scan": {
       title: "Lean Scan",
-      metaTitle: "Faire un Lean Scan ? | Méthode Lean | Découvrez Hrmforce",
+      metaTitle: "Faire un Lean Scan ? | Méthode Lean | Découvrez hrmforce",
       metaDescription: "Avec le Lean Scan, les entreprises obtiennent un aperçu de l'écart entre la situation actuelle et idéale afin de démontrer le besoin de management Lean.",
       phase: "Développement → performance → évaluation",
       goal: "Obtenir un aperçu de l'écart entre la situation actuelle et idéale afin de démontrer le besoin de management Lean.",
@@ -1443,8 +1443,8 @@ export const assessmentsI18n = {
     },
     "leerstijlen": {
       title: "Test de styles d'apprentissage",
-      metaTitle: "Faire un test de styles d'apprentissage ? | Démo gratuite | Hrmforce",
-      metaDescription: "Le test de styles d'apprentissage donne un aperçu de la façon dont un collaborateur gère les activités d'apprentissage et quelle est sa préférence d'apprentissage.",
+      metaTitle: "Faire un test de styles d'apprentissage ? | Démo gratuite",
+      metaDescription: "Le test de styles d'apprentissage donne un aperçu de la façon dont un collaborateur gère les activités d'apprentissage et quelle est sa préférence.",
       phase: "Développement",
       goal: "Donner un aperçu de la façon dont un collaborateur gère les activités d'apprentissage et quelle est sa préférence d'apprentissage.",
       time: "15 minutes", form: "Quelle forme d'apprentissage convient le mieux au candidat ?",
@@ -1458,7 +1458,7 @@ export const assessmentsI18n = {
     },
     "levensloop-scan": {
       title: "Scan de parcours de vie",
-      metaTitle: "Scan de parcours de vie | Hrmforce",
+      metaTitle: "Scan de parcours de vie | hrmforce",
       metaDescription: "Un Scan de parcours de vie donne un aperçu du parcours de vie d'un candidat, afin de révéler des points d'appui pour le coaching et le développement.",
       phase: "Développement",
       goal: "Obtenir un aperçu du parcours de vie d'un candidat afin de révéler des points d'appui pour le coaching et le développement.",
@@ -1473,8 +1473,8 @@ export const assessmentsI18n = {
     },
     "loopbaanwaarden": {
       title: "Valeurs de carrière",
-      metaTitle: "Valeurs de carrière | Hrmforce",
-      metaDescription: "Valeurs de carrière aide à répondre à la question de savoir quelles fonctions ou organisations correspondent aux valeurs qu'une personne juge importantes à réaliser dans sa carrière.",
+      metaTitle: "Valeurs de carrière | hrmforce",
+      metaDescription: "Valeurs de carrière aide à répondre à la question de savoir quelles fonctions ou organisations correspondent aux valeurs qu'une personne juge importantes.",
       phase: "Développement",
       goal: "Aider à répondre à la question de savoir si certaines fonctions, rôles ou organisations correspondent aux valeurs de carrière de la personne.",
       time: "15 minutes", form: "Questionnaire normatif.",
@@ -1488,8 +1488,8 @@ export const assessmentsI18n = {
     },
     "pulse-survey": {
       title: "Pulse Survey",
-      metaTitle: "Pulse Survey | Créez vous-même des questionnaires pour le personnel | Hrmforce",
-      metaDescription: "Avec la Pulse Survey, créez vous-même des questionnaires pour votre personnel parmi plus de 1000 items et 40 listes d'exemples. De la satisfaction à la résilience mentale.",
+      metaTitle: "Pulse Survey",
+      metaDescription: "Avec la Pulse Survey, créez vous-même des questionnaires pour votre personnel parmi plus de 1000 items et 40 listes d'exemples.",
       phase: "(Pré)sélection → développement",
       goal: "Permettre aux organisations de concevoir et d'envoyer elles-mêmes des questionnaires à des candidats et des collaborateurs, à l'aide de questionnaires standard et d'une base de données de questions.",
       time: "5 à 30 minutes", form: "À déterminer soi-même avec l'outil de questionnaire : questions ouvertes, fermées, à choix multiples et à échelle.",
@@ -1503,7 +1503,7 @@ export const assessmentsI18n = {
     },
     "referentie-check": {
       title: "Vérification de références",
-      metaTitle: "Vérification de références | Hrmforce",
+      metaTitle: "Vérification de références | hrmforce",
       metaDescription: "La vérification de références vous aide à vous renseigner sur le candidat et à vérifier s'il est compétent et s'il s'intègre dans votre organisation.",
       phase: "(Pré)sélection",
       goal: "Demander des références de manière adéquate dans le cadre d'une procédure de candidature ou de sélection.",
@@ -1518,7 +1518,7 @@ export const assessmentsI18n = {
     },
     "teamanalyse": {
       title: "Analyse d'équipe",
-      metaTitle: "Faire une analyse d'équipe ? | Utilisez un questionnaire | Hrmforce",
+      metaTitle: "Faire une analyse d'équipe ? | Utilisez un questionnaire",
       metaDescription: "Analyse d'équipe : donner un aperçu des sujets et thèmes au sein de l'équipe qui nécessitent (une) attention (supplémentaire).",
       phase: "Développement d'équipe",
       goal: "Donner un aperçu des sujets et thèmes au sein de l'équipe qui nécessitent une attention supplémentaire, afin de les inclure dans le plan de développement d'équipe.",
@@ -1533,8 +1533,8 @@ export const assessmentsI18n = {
     },
     "tevredenheidsonderzoek-medewerkers": {
       title: "Enquête de satisfaction",
-      metaTitle: "Enquête de satisfaction pour les collaborateurs | Commencez votre démo gratuite",
-      metaDescription: "Enquête de satisfaction : obtenez un aperçu de la satisfaction des collaborateurs sur des facteurs tels que les processus de travail, la culture et le management.",
+      metaTitle: "Enquête de satisfaction pour les collaborateurs",
+      metaDescription: "Enquête de satisfaction : obtenez un aperçu de la satisfaction des collaborateurs sur des facteurs tels que les processus de travail.",
       phase: "Développement",
       goal: "Créer un aperçu de la satisfaction des collaborateurs sur des facteurs tels que les processus de travail, la culture, le management, les conditions de travail, le développement de carrière et la loyauté.",
       time: "20 minutes", form: "Les collaborateurs indiquent leur degré de satisfaction sur 14 sujets.",
@@ -1548,7 +1548,7 @@ export const assessmentsI18n = {
     },
     "typology": {
       title: "Typology",
-      metaTitle: "Test Typology | Découvrez votre type de couleur en quelques minutes | Hrmforce",
+      metaTitle: "Test Typology",
       metaDescription: "Passez le test Typology basé sur Jung et découvrez en environ 10 minutes votre style comportemental à l'aide de quatre types de couleur.",
       phase: "Développement → performance → évaluation",
       goal: "Donner un aperçu du type de collaborateur, basé sur la façon dont quelqu'un gère la dominance (influence versus collaboration) et l'émotion (sentiment versus raison).",
@@ -1563,7 +1563,7 @@ export const assessmentsI18n = {
     },
     "value-drives": {
       title: "Value Drives",
-      metaTitle: "Questionnaire Value Drives | Hrmforce",
+      metaTitle: "Questionnaire Value Drives | hrmforce",
       metaDescription: "Avec le questionnaire Value Drives, les valeurs personnelles des collaborateurs sont triées par couleur et cartographiées.",
       phase: "Développement",
       goal: "Trier les valeurs personnelles des collaborateurs par couleur et les cartographier, comme base de développement personnel et organisationnel.",
@@ -1572,13 +1572,13 @@ export const assessmentsI18n = {
       extra: "",
       traits: ["Systèmes de valeurs", "Couleurs", "Motivations", "Changement"],
       intro: ["Pour les organisations, le changement est un thème important, et dans ces cadres les valeurs des personnes jouent un rôle important.", "Selon le modèle sous-jacent, les idées se propagent de personne à personne et déterminent la façon dont les gens pensent et ce en quoi ils croient ; ce sont les forces attractives et répulsives derrière le développement des valeurs."],
-      body: ["Ces systèmes de valeurs sont indiqués par des couleurs, du simple au de plus en plus complexe, chacun avec ses propres formes d'expression caractéristiques. Hrmforce a traduit ce modèle en facteurs et couleurs clairs pour le développement personnel et organisationnel."],
+      body: ["Ces systèmes de valeurs sont indiqués par des couleurs, du simple au de plus en plus complexe, chacun avec ses propres formes d'expression caractéristiques. hrmforce a traduit ce modèle en facteurs et couleurs clairs pour le développement personnel et organisationnel."],
       quote: qFR,
       faq: [ { q: "Que cartographie Value Drives ?", a: "Les valeurs personnelles des collaborateurs, triées par couleur et système de valeurs." }, { q: "À quoi utilisez-vous le résultat ?", a: "Pour le développement personnel et pour le développement organisationnel et les processus de changement." } ],
     },
     "verkoopvaardigheden": {
       title: "Compétences commerciales",
-      metaTitle: "Compétences commerciales | Hrmforce",
+      metaTitle: "Compétences commerciales | hrmforce",
       metaDescription: "Le test de compétences commerciales donne une image claire des compétences par lesquelles un top vendeur se distingue du reste.",
       phase: "(Pré)sélection → développement",
       goal: "Donner un aperçu des compétences commerciales de votre top vendeur, ainsi que du comportement d'achat du client et du style de communication de vos vendeurs.",
@@ -1595,8 +1595,8 @@ export const assessmentsI18n = {
   es: {
     "ontwikkelmatrix": {
       title: "Matriz de desarrollo",
-      metaTitle: "Matriz de desarrollo | Talento y conducta en cuatro cuadrantes | Hrmforce",
-      metaDescription: "La matriz de desarrollo contrasta el talento del Big Fifty con la conducta de la evaluación 360 grados y sitúa a los empleados en cuatro cuadrantes de desarrollo con consejos concretos.",
+      metaTitle: "Matriz de desarrollo",
+      metaDescription: "La matriz de desarrollo contrasta el talento del Big Fifty con la conducta de la evaluación 360 grados y sitúa a los empleados en cuatro cuadrantes de.",
       phase: "Desarrollo",
       goal: "Poner el talento y la conducta visible uno al lado del otro para determinar la dirección de desarrollo adecuada.",
       benefit: "Coloca el talento y la conducta visible en cuatro cuadrantes, de modo que se ve enseguida dónde el desarrollo rinde más.",
@@ -1612,7 +1612,7 @@ export const assessmentsI18n = {
     },
     "big-five": {
       title: "Test de personalidad: Big Five",
-      metaTitle: "¿Hacer un test de personalidad? | TEST BIG FIVE | Válido | Hrmforce",
+      metaTitle: "¿Hacer un test de personalidad? | TEST BIG FIVE | Válido",
       metaDescription: "El test de personalidad Big Fifty (5) ofrece una visión del perfil de personalidad del empleado y lo traduce en competencias relacionadas con el trabajo.",
       phase: "Selección → desarrollo → desempeño → evaluación",
       goal: "Traducir los rasgos de personalidad en habilidades y así descubrir dónde puede crecer alguien.",
@@ -1643,7 +1643,7 @@ export const assessmentsI18n = {
     },
     "drijfverentest": {
       title: "Test de motivaciones",
-      metaTitle: "Test de motivaciones | ¿Qué motiva a sus empleados? | Hrmforce", metaDescription: "Mapee los impulsos y la motivación de los empleados como base para un empleo sostenible.",
+      metaTitle: "Test de motivaciones | ¿Qué motiva a sus empleados?", metaDescription: "Mapee los impulsos y la motivación de los empleados como base para un empleo sostenible.",
       phase: "Desarrollo → desempeño", goal: "Descubrir qué motiva a alguien y le da energía en el trabajo.",
       time: "10 minutos", form: "Cuestionario", feedback: "Informe con los principales impulsos y cómo influyen en el trabajo.", extra: "Se combina bien con un test de personalidad.",
       traits: ["Logro", "Conexión", "Autonomía", "Seguridad", "Influencia"],
@@ -1654,7 +1654,7 @@ export const assessmentsI18n = {
     },
     "cognitieve-test": {
       title: "Test cognitivo (Ability Scan)",
-      metaTitle: "Test de capacidad cognitiva | Ability Scan | Hrmforce", metaDescription: "Mida la capacidad cognitiva y prediga la rapidez con la que alguien asimila nuevas tareas.",
+      metaTitle: "Test de capacidad cognitiva | Ability Scan | hrmforce", metaDescription: "Mida la capacidad cognitiva y prediga la rapidez con la que alguien asimila nuevas tareas.",
       phase: "Selección", goal: "Mapear objetivamente el nivel de trabajo y pensamiento y la capacidad de aprendizaje.",
       time: "20-30 minutos", form: "Verbal, numérico y abstracto", feedback: "Puntuación por sección con comparación con el grupo de referencia.", extra: "Fuerte predictor del desempeño laboral.",
       traits: ["Verbal", "Numérico", "Abstracto"],
@@ -1665,7 +1665,7 @@ export const assessmentsI18n = {
     },
     "disc-test": {
       title: "Test DISC",
-      metaTitle: "Test de personalidad DISC | Comportamiento y comunicación | Hrmforce", metaDescription: "Mapee el estilo de comunicación y comportamiento con el cuestionario DISC.",
+      metaTitle: "Test de personalidad DISC | Comportamiento y comunicación", metaDescription: "Mapee el estilo de comunicación y comportamiento con el cuestionario DISC.",
       phase: "Desarrollo", goal: "Visión de las preferencias de comportamiento y el estilo de comunicación para una mejor colaboración.",
       time: "10 minutos", form: "Cuestionario", feedback: "Informe con los perfiles DISC y consejos prácticos.", extra: "Popular para el desarrollo de equipos y el coaching.",
       traits: ["Dominancia", "Influencia", "Estabilidad", "Cumplimiento"],
@@ -1676,7 +1676,7 @@ export const assessmentsI18n = {
     },
     "studiekeuzetest": {
       title: "Test de orientación de estudios",
-      metaTitle: "Test de orientación de estudios | Elección de estudios y carrera fundamentada | Hrmforce", metaDescription: "Ayuda a tomar una decisión fundamentada de estudios o carrera.",
+      metaTitle: "Test de orientación de estudios", metaDescription: "Ayuda a tomar una decisión fundamentada de estudios o carrera.",
       phase: "Movilidad", goal: "Relacionar los intereses, las capacidades y las preferencias con estudios o carreras adecuados.",
       time: "20 minutos", form: "Cuestionario", feedback: "Resumen de las direcciones adecuadas.", extra: "Disponible en Básico, Ampliado y Completo.",
       traits: ["Intereses", "Capacidades", "Valores laborales"],
@@ -1687,7 +1687,7 @@ export const assessmentsI18n = {
     },
     "mentale-veerkracht-scan": {
       title: "Escáner de resiliencia mental",
-      metaTitle: "Escáner de resiliencia mental | Empleabilidad sostenible | Hrmforce", metaDescription: "Mide la resiliencia mental y ayuda a promover la empleabilidad sostenible.",
+      metaTitle: "Escáner de resiliencia mental | Empleabilidad sostenible", metaDescription: "Mide la resiliencia mental y ayuda a promover la empleabilidad sostenible.",
       phase: "Empleabilidad", goal: "Visión de la resistencia al estrés y la capacidad de recuperación.",
       time: "10 minutos", form: "Cuestionario", feedback: "Informe con puntos de atención para el bienestar y la empleabilidad.", extra: "Parte de programas de empleabilidad sostenible.",
       traits: ["Resistencia al estrés", "Recuperación", "Equilibrio energético"],
@@ -1698,7 +1698,7 @@ export const assessmentsI18n = {
     },
     "lencioni-teamdynamiek": {
       title: "Dinámica de equipo Lencioni",
-      metaTitle: "Dinámica de equipo Lencioni | Desarrollo de equipos | Hrmforce", metaDescription: "Mide las cinco disfunciones del trabajo en equipo según el modelo de Patrick Lencioni.",
+      metaTitle: "Dinámica de equipo Lencioni | Desarrollo de equipos", metaDescription: "Mide las cinco disfunciones del trabajo en equipo según el modelo de Patrick Lencioni.",
       phase: "Desarrollo", goal: "Visión de la colaboración y los escollos dentro de un equipo.",
       time: "10 minutos", form: "Cuestionario de equipo", feedback: "Informe de equipo con los cinco niveles del trabajo en equipo.", extra: "Una base sólida para una sesión de equipo.",
       traits: ["Confianza", "Conflicto", "Compromiso", "Responsabilidad", "Resultados"],
@@ -1709,7 +1709,7 @@ export const assessmentsI18n = {
     },
     "leiderschapstest": {
       title: "Test de liderazgo",
-      metaTitle: "Test de liderazgo | Estilo de liderazgo y desarrollo | Hrmforce", metaDescription: "Mapea el estilo de liderazgo y los puntos de desarrollo de los responsables (potenciales).",
+      metaTitle: "Test de liderazgo | Estilo de liderazgo y desarrollo", metaDescription: "Mapea el estilo de liderazgo y los puntos de desarrollo de los responsables (potenciales).",
       phase: "Desarrollo → selección", goal: "Hacer visible el comportamiento y el potencial de liderazgo.",
       time: "15 minutos", form: "Cuestionario", feedback: "Informe con estilos de liderazgo y asesoramiento de desarrollo.", extra: "Se combina bien con el feedback de 360 grados.",
       traits: ["Visión", "Dirigir", "Coaching", "Conectar"],
@@ -1720,7 +1720,7 @@ export const assessmentsI18n = {
     },
     "ontwikkelassessment": {
       title: "Assessment de desarrollo",
-      metaTitle: "Assessment de desarrollo | Crecimiento y desarrollo | Hrmforce", metaDescription: "Un método sistemático para mapear el potencial de desarrollo y la dirección de crecimiento.",
+      metaTitle: "Assessment de desarrollo | Crecimiento y desarrollo", metaDescription: "Un método sistemático para mapear el potencial de desarrollo y la dirección de crecimiento.",
       phase: "Desarrollo", goal: "Determinar las fortalezas, los puntos de desarrollo y la dirección de crecimiento.",
       time: "Combinación de instrumentos", form: "Varios cuestionarios", feedback: "Informe de desarrollo integral con consejos concretos.", extra: "A menudo con una entrevista de devolución.",
       traits: ["Personalidad", "Capacidades", "Motivaciones"],
@@ -1731,7 +1731,7 @@ export const assessmentsI18n = {
     },
     "15pf": {
       title: "15PF",
-      metaTitle: "15PF | Cuestionario de personalidad | Hrmforce",
+      metaTitle: "15PF | Cuestionario de personalidad | hrmforce",
       metaDescription: "El test 15PF de hrmforce da una visión de la manera en que un empleado se comportará o reaccionará en distintas situaciones.",
       phase: "(Pre)selección → desarrollo",
       goal: "Dar una visión de la manera en que un empleado se comportará o reaccionará en distintas situaciones.",
@@ -1747,7 +1747,7 @@ export const assessmentsI18n = {
     "ability-scan": {
       title: "Ability Scan | Test de capacidad cognitiva",
       metaTitle: "Test de capacidad cognitiva | 4,9 estrellas | Ability Scan",
-      metaDescription: "Mida objetivamente la capacidad de pensamiento y aprendizaje de los candidatos con el Ability Scan. Test de capacidad de nivel de formación profesional a máster, valorado con 4,9 estrellas.",
+      metaDescription: "Mida objetivamente la capacidad de pensamiento y aprendizaje de los candidatos con el Ability Scan.",
       phase: "Selección → desarrollo",
       goal: "Medir la rapidez con la que alguien entiende problemas, forma una opinión y aprende cosas nuevas, y de ahí deducir el nivel: formación profesional, grado o máster.",
       time: "30 minutos", form: "Tres secciones con preguntas de opción múltiple, cada una en un tiempo fijo.",
@@ -1761,7 +1761,7 @@ export const assessmentsI18n = {
     },
     "appraisal": {
       title: "Appraisal",
-      metaTitle: "Appraisal | Feedback de 90 grados | Hrmforce",
+      metaTitle: "Appraisal | Feedback de 90 grados | hrmforce",
       metaDescription: "Appraisal: el candidato recibe feedback estructurado sobre cómo se ve a sí mismo, pero también sobre cómo lo percibe su responsable.",
       phase: "Desempeño → evaluación",
       goal: "Proporcionar feedback (90 grados) desde distintas perspectivas, como entrada para el ciclo de desempeño y evaluación.",
@@ -1777,7 +1777,7 @@ export const assessmentsI18n = {
     "beroepskeuze-test": {
       title: "Test de orientación profesional",
       metaTitle: "Test de orientación profesional para asesores | hrmforce",
-      metaDescription: "Para asesores de carrera y RR. HH.: un asesoramiento fundado sobre grupos profesionales adecuados, con explicación por profesión y un informe para la conversación.",
+      metaDescription: "Para asesores de carrera y RR. HH.: un asesoramiento fundado sobre grupos profesionales adecuados.",
       phase: "Desarrollo → desempeño",
       goal: "Dar un asesoramiento fiable sobre grupos profesionales adecuados y menos adecuados.",
       time: "25 minutos", form: "Cuestionario de elección forzada.",
@@ -1791,7 +1791,7 @@ export const assessmentsI18n = {
     },
     "canmeds": {
       title: "CanMeds",
-      metaTitle: "CanMeds | Feedback de 360 grados para el sector sanitario | Hrmforce",
+      metaTitle: "CanMeds | Feedback de 360 grados para el sector sanitario",
       metaDescription: "Obtenga una visión de con qué facilidad un empleado con un determinado perfil de personalidad puede mostrar o desarrollar las competencias CanMeds.",
       phase: "(Pre)selección → desarrollo → desempeño → evaluación",
       goal: "Indicar con qué facilidad un empleado con un determinado perfil de personalidad puede mostrar o desarrollar competencias específicas, y puntuar su desempeño en un rol.",
@@ -1806,7 +1806,7 @@ export const assessmentsI18n = {
     },
     "coaching-screener-scan": {
       title: "Coaching Screener Scan",
-      metaTitle: "Coaching Screener Scan | Hrmforce",
+      metaTitle: "Coaching Screener Scan | hrmforce",
       metaDescription: "Obtenga una visión de qué quejas y problemas experimenta un candidato y cómo los gestiona, especialmente útil en el coaching.",
       phase: "Desarrollo",
       goal: "Obtener una visión de qué quejas y problemas experimenta un candidato y cómo los gestiona.",
@@ -1821,7 +1821,7 @@ export const assessmentsI18n = {
     },
     "communicatiestijlen-test": {
       title: "Test de estilos de comunicación",
-      metaTitle: "¿Hacer un test de estilos de comunicación? | Empiece con una demo gratis | Hrmforce",
+      metaTitle: "¿Hacer un test de estilos de comunicación?",
       metaDescription: "Con el test de estilos de comunicación, compare la presencia de factores relacionales esenciales y tradúzcalos en estilos de comunicación específicos.",
       phase: "Desarrollo → desempeño → evaluación",
       goal: "Comparar la presencia de factores relacionales esenciales y traducirlos en estilos de comunicación específicos.",
@@ -1836,8 +1836,8 @@ export const assessmentsI18n = {
     },
     "competentie-check": {
       title: "Test de competencias",
-      metaTitle: "Test de competencias | ¿Cómo se ve el empleado a sí mismo? | Hrmforce",
-      metaDescription: "El test de competencias proporciona feedback (0 grados) sobre el propio comportamiento del empleado. Una respuesta a la pregunta de cómo se ve uno a sí mismo.",
+      metaTitle: "Test de competencias | ¿Cómo se ve el empleado a sí mismo?",
+      metaDescription: "El test de competencias proporciona feedback (0 grados) sobre el propio comportamiento del empleado.",
       phase: "Desarrollo → desempeño → evaluación",
       goal: "Proporcionar feedback (0 grados) sobre el propio comportamiento del empleado: ¿cómo se ve uno a sí mismo?",
       time: "20 minutos", form: "El candidato se puntúa a sí mismo en comportamientos relacionados con competencias.",
@@ -1851,8 +1851,8 @@ export const assessmentsI18n = {
     },
     "conflictstijlen-test": {
       title: "Test de estilos de conflicto",
-      metaTitle: "Test de estilos de conflicto | Hrmforce",
-      metaDescription: "Analice el comportamiento individual en situaciones de conflicto. El test de estilos de conflicto indica en qué medida un determinado estilo de conflicto puede ser útil para alguien.",
+      metaTitle: "Test de estilos de conflicto | hrmforce",
+      metaDescription: "Analice el comportamiento individual en situaciones de conflicto. El test de estilos de conflicto indica en qué medida un determinado estilo de conflicto.",
       phase: "Desarrollo → desempeño → evaluación",
       goal: "Analizar el comportamiento individual en situaciones de conflicto e indicar qué estilo de conflicto puede ser útil.",
       time: "15 minutos", form: "Los candidatos indican en qué medida están de acuerdo con afirmaciones.",
@@ -1866,8 +1866,8 @@ export const assessmentsI18n = {
     },
     "duurzame-inzetbaarheid-scan": {
       title: "Escáner de empleabilidad sostenible",
-      metaTitle: "Escáner de empleabilidad sostenible | Hrmforce",
-      metaDescription: "Con el Escáner de empleabilidad sostenible obtiene rápidamente una visión de si un empleado y/o una organización siguen siendo suficientemente empleables de forma sostenible.",
+      metaTitle: "Escáner de empleabilidad sostenible | hrmforce",
+      metaDescription: "Con el Escáner de empleabilidad sostenible obtiene rápidamente una visión de si un empleado y/o una organización siguen siendo suficientemente empleables.",
       phase: "Desarrollo",
       goal: "Obtener rápidamente una visión de si un empleado y/o una organización siguen siendo suficientemente empleables de forma sostenible.",
       time: "25 minutos", form: "Opción múltiple en una escala de 5 puntos.",
@@ -1881,7 +1881,7 @@ export const assessmentsI18n = {
     },
     "exit-assessment": {
       title: "Exit Assessment",
-      metaTitle: "¿Realizar una entrevista de salida? Asegure un exit assessment | Hrmforce",
+      metaTitle: "Exit assessment al salir un empleado",
       metaDescription: "Un Exit Assessment da una visión de las razones y causas de la salida de los empleados. Honesto, sincero y extremadamente útil.",
       phase: "Empleabilidad → salida",
       goal: "Dar una visión de las razones y causas de la salida de los empleados y recibir consejos de mejora.",
@@ -1896,7 +1896,7 @@ export const assessmentsI18n = {
     },
     "groepsrollen": {
       title: "Roles de equipo",
-      metaTitle: "Roles de equipo | Hrmforce",
+      metaTitle: "Roles de equipo | hrmforce",
       metaDescription: "Con el assessment de Roles de equipo obtiene un resumen de los roles de equipo que un empleado adoptará o no en determinadas situaciones.",
       phase: "Desarrollo → desempeño → evaluación",
       goal: "Dar un resumen de los roles de equipo que un empleado adoptará o no en determinadas situaciones.",
@@ -1911,8 +1911,8 @@ export const assessmentsI18n = {
     },
     "intake-candidate": {
       title: "Intake Candidate",
-      metaTitle: "Intake de candidato | Prepare su entrevista de forma inteligente | Hrmforce",
-      metaDescription: "Haga que los candidatos rellenen de antemano las preguntas estándar, para tener más tiempo durante la entrevista para las soft skills, las competencias y la adecuación.",
+      metaTitle: "Intake de candidato",
+      metaDescription: "Haga que los candidatos rellenen de antemano las preguntas estándar, para tener más tiempo durante la entrevista para las soft skills.",
       phase: "Selección",
       goal: "Plantear en línea de antemano las preguntas que idealmente aparecerían en la primera entrevista, para que la entrevista gane realmente en contenido.",
       time: "20 minutos", form: "Preguntas abiertas complementadas con varias preguntas de opción múltiple (sí/no).",
@@ -1926,7 +1926,7 @@ export const assessmentsI18n = {
     },
     "interesse-scan": {
       title: "Test de intereses",
-      metaTitle: "¿Hacer un test de intereses? | Para alumnos y personal | Hrmforce",
+      metaTitle: "¿Hacer un test de intereses? | Para alumnos y personal",
       metaDescription: "Con el escáner de intereses, un alumno o empleado obtiene una visión de qué sectores le interesan más.",
       phase: "Desarrollo",
       goal: "Dar una visión de qué sectores interesan más a un alumno, estudiante o empleado, vinculados a estudios y profesiones relevantes.",
@@ -1941,8 +1941,8 @@ export const assessmentsI18n = {
     },
     "job-profiler": {
       title: "Job Profiler",
-      metaTitle: "Job Profiler | Hrmforce",
-      metaDescription: "Obtenga una visión de qué competencias y comportamientos consideran relevantes los grupos de encuestados para una función, como entrada para la selección, el desarrollo y la evaluación.",
+      metaTitle: "Job Profiler | hrmforce",
+      metaDescription: "Obtenga una visión de qué competencias y comportamientos consideran relevantes los grupos de encuestados para una función.",
       phase: "Selección → desarrollo → desempeño → evaluación",
       goal: "Obtener una visión de qué competencias y comportamientos consideran relevantes distintos grupos de encuestados para una función.",
       time: "10 minutos", form: "Cuestionario de opción múltiple complementado con preguntas abiertas.",
@@ -1956,7 +1956,7 @@ export const assessmentsI18n = {
     },
     "lean-scan": {
       title: "Lean Scan",
-      metaTitle: "¿Hacer un Lean Scan? | Método Lean | Descubra Hrmforce",
+      metaTitle: "¿Hacer un Lean Scan? | Método Lean | Descubra hrmforce",
       metaDescription: "Con el Lean Scan, las empresas obtienen una visión de la brecha entre la situación actual e ideal para demostrar la necesidad de gestión Lean.",
       phase: "Desarrollo → desempeño → evaluación",
       goal: "Obtener una visión de la brecha entre la situación actual e ideal para demostrar la necesidad de gestión Lean.",
@@ -1971,8 +1971,8 @@ export const assessmentsI18n = {
     },
     "leerstijlen": {
       title: "Test de estilos de aprendizaje",
-      metaTitle: "¿Hacer un test de estilos de aprendizaje? | Demo gratis | Hrmforce",
-      metaDescription: "El test de estilos de aprendizaje da una visión de la manera en que un empleado gestiona las actividades de aprendizaje y cuál es su preferencia de aprendizaje.",
+      metaTitle: "¿Hacer un test de estilos de aprendizaje? | Demo gratis",
+      metaDescription: "El test de estilos de aprendizaje da una visión de la manera en que un empleado gestiona las actividades de aprendizaje y cuál es su preferencia de.",
       phase: "Desarrollo",
       goal: "Dar una visión de cómo un empleado gestiona las actividades de aprendizaje y cuál es su preferencia de aprendizaje.",
       time: "15 minutos", form: "¿Qué forma de aprendizaje encaja mejor con el candidato?",
@@ -1986,7 +1986,7 @@ export const assessmentsI18n = {
     },
     "levensloop-scan": {
       title: "Escáner de trayectoria vital",
-      metaTitle: "Escáner de trayectoria vital | Hrmforce",
+      metaTitle: "Escáner de trayectoria vital | hrmforce",
       metaDescription: "Un Escáner de trayectoria vital da una visión de la trayectoria vital de un candidato, para descubrir puntos de apoyo para el coaching y el desarrollo.",
       phase: "Desarrollo",
       goal: "Obtener una visión de la trayectoria vital de un candidato para descubrir puntos de apoyo para el coaching y el desarrollo.",
@@ -2001,8 +2001,8 @@ export const assessmentsI18n = {
     },
     "loopbaanwaarden": {
       title: "Valores de carrera",
-      metaTitle: "Valores de carrera | Hrmforce",
-      metaDescription: "Valores de carrera ayuda con la pregunta de qué funciones u organizaciones encajan con los valores que alguien considera importantes de realizar en su carrera.",
+      metaTitle: "Valores de carrera | hrmforce",
+      metaDescription: "Valores de carrera ayuda con la pregunta de qué funciones u organizaciones encajan con los valores que alguien considera importantes de realizar en su.",
       phase: "Desarrollo",
       goal: "Apoyar la pregunta de si determinadas funciones, roles u organizaciones encajan con los valores de carrera de la persona.",
       time: "15 minutos", form: "Cuestionario normativo.",
@@ -2016,8 +2016,8 @@ export const assessmentsI18n = {
     },
     "pulse-survey": {
       title: "Pulse Survey",
-      metaTitle: "Pulse Survey | Cree usted mismo cuestionarios para el personal | Hrmforce",
-      metaDescription: "Con la Pulse Survey, cree usted mismo cuestionarios para su personal a partir de más de 1000 items y 40 listas de ejemplo. De la satisfacción a la resiliencia mental.",
+      metaTitle: "Pulse Survey",
+      metaDescription: "Con la Pulse Survey, cree usted mismo cuestionarios para su personal a partir de más de 1000 items y 40 listas de ejemplo.",
       phase: "(Pre)selección → desarrollo",
       goal: "Permitir a las organizaciones diseñar y enviar ellas mismas cuestionarios a candidatos y empleados, mediante cuestionarios estándar y una base de datos de preguntas.",
       time: "5 a 30 minutos", form: "A determinar uno mismo con la herramienta de cuestionarios: preguntas abiertas, cerradas, de opción múltiple y de escala.",
@@ -2031,7 +2031,7 @@ export const assessmentsI18n = {
     },
     "referentie-check": {
       title: "Verificación de referencias",
-      metaTitle: "Verificación de referencias | Hrmforce",
+      metaTitle: "Verificación de referencias | hrmforce",
       metaDescription: "La verificación de referencias le ayuda a preguntar sobre el candidato y comprobar si la persona es competente y encaja en su organización.",
       phase: "(Pre)selección",
       goal: "Solicitar referencias de forma adecuada para un procedimiento de candidatura o selección.",
@@ -2046,7 +2046,7 @@ export const assessmentsI18n = {
     },
     "teamanalyse": {
       title: "Análisis de equipo",
-      metaTitle: "¿Hacer un análisis de equipo? | Use un cuestionario | Hrmforce",
+      metaTitle: "¿Hacer un análisis de equipo? | Use un cuestionario",
       metaDescription: "Análisis de equipo: dar una visión de qué temas dentro del equipo necesitan atención (adicional).",
       phase: "Desarrollo de equipos",
       goal: "Dar una visión de qué temas dentro del equipo necesitan atención adicional, para incluirlos en el plan de desarrollo de equipo.",
@@ -2061,7 +2061,7 @@ export const assessmentsI18n = {
     },
     "tevredenheidsonderzoek-medewerkers": {
       title: "Encuesta de satisfacción",
-      metaTitle: "Encuesta de satisfacción para empleados | Empiece su demo gratis",
+      metaTitle: "Encuesta de satisfacción para empleados",
       metaDescription: "Encuesta de satisfacción: obtenga un resumen de la satisfacción de los empleados sobre factores como los procesos de trabajo, la cultura y la gestión.",
       phase: "Desarrollo",
       goal: "Crear un resumen de la satisfacción de los empleados sobre factores como los procesos de trabajo, la cultura, la gestión, las condiciones laborales, el desarrollo de carrera y la lealtad.",
@@ -2076,7 +2076,7 @@ export const assessmentsI18n = {
     },
     "typology": {
       title: "Typology",
-      metaTitle: "Test Typology | Descubra su tipo de color en minutos | Hrmforce",
+      metaTitle: "Test Typology | Descubra su tipo de color en minutos",
       metaDescription: "Haga el test Typology basado en Jung y descubra en unos 10 minutos su estilo de comportamiento mediante cuatro tipos de color.",
       phase: "Desarrollo → desempeño → evaluación",
       goal: "Dar una visión del tipo de empleado, basado en cómo alguien gestiona la dominancia (influencia versus colaboración) y la emoción (sentimiento versus razón).",
@@ -2091,7 +2091,7 @@ export const assessmentsI18n = {
     },
     "value-drives": {
       title: "Value Drives",
-      metaTitle: "Cuestionario Value Drives | Hrmforce",
+      metaTitle: "Cuestionario Value Drives | hrmforce",
       metaDescription: "Con el cuestionario Value Drives, los valores personales de los empleados se ordenan por color y se mapean.",
       phase: "Desarrollo",
       goal: "Ordenar los valores personales de los empleados por color y mapearlos, como base para el desarrollo personal y organizativo.",
@@ -2100,13 +2100,13 @@ export const assessmentsI18n = {
       extra: "",
       traits: ["Sistemas de valores", "Colores", "Motivaciones", "Cambio"],
       intro: ["Para las organizaciones, el cambio es un tema importante, y dentro de esos marcos los valores de las personas juegan un papel importante.", "Según el modelo subyacente, las ideas se propagan de persona a persona y determinan cómo piensan las personas y en qué creen; son las fuerzas de atracción y repulsión detrás del desarrollo de los valores."],
-      body: ["Estos sistemas de valores se indican con colores, ascendiendo de lo simple a lo cada vez más complejo, cada uno con sus propias formas de expresión características. Hrmforce ha traducido este modelo en factores y colores claros para el desarrollo personal y organizativo."],
+      body: ["Estos sistemas de valores se indican con colores, ascendiendo de lo simple a lo cada vez más complejo, cada uno con sus propias formas de expresión características. hrmforce ha traducido este modelo en factores y colores claros para el desarrollo personal y organizativo."],
       quote: qES,
       faq: [ { q: "¿Qué mapea Value Drives?", a: "Los valores personales de los empleados, ordenados por color y sistema de valores." }, { q: "¿Para qué usa el resultado?", a: "Para el desarrollo personal y para el desarrollo organizativo y los procesos de cambio." } ],
     },
     "verkoopvaardigheden": {
       title: "Habilidades de venta",
-      metaTitle: "Habilidades de venta | Hrmforce",
+      metaTitle: "Habilidades de venta | hrmforce",
       metaDescription: "El test de habilidades de venta da una imagen clara de las habilidades con las que un vendedor de primer nivel se distingue del resto.",
       phase: "(Pre)selección → desarrollo",
       goal: "Dar una visión de las habilidades de venta de su mejor vendedor, así como del comportamiento de compra del cliente y el estilo de comunicación de sus vendedores.",
@@ -2123,8 +2123,8 @@ export const assessmentsI18n = {
   ro: {
     "ontwikkelmatrix": {
       title: "Matricea de dezvoltare",
-      metaTitle: "Matricea de dezvoltare | Talent și comportament în patru cadrane | Hrmforce",
-      metaDescription: "Matricea de dezvoltare pune talentul din Big Fifty față în față cu comportamentul din feedbackul 360 de grade și plasează angajații în patru cadrane de dezvoltare, cu sfaturi concrete.",
+      metaTitle: "Matricea de dezvoltare",
+      metaDescription: "Matricea de dezvoltare pune talentul din Big Fifty față în față cu comportamentul din feedbackul 360 de grade și plasează angajații în patru cadrane de.",
       phase: "Dezvoltare",
       goal: "Așezarea talentului și a comportamentului vizibil unul lângă altul pentru a stabili direcția de dezvoltare potrivită.",
       benefit: "Așază talentul și comportamentul vizibil în patru cadrane, astfel încât se vede imediat unde dezvoltarea aduce cel mai mult.",
@@ -2140,7 +2140,7 @@ export const assessmentsI18n = {
     },
     "big-five": {
       title: "Test de personalitate: Big Five",
-      metaTitle: "Faci un test de personalitate? | TEST BIG FIVE | Valid | Hrmforce",
+      metaTitle: "Faci un test de personalitate? | TEST BIG FIVE | Valid",
       metaDescription: "Testul de personalitate Big Fifty (5) oferă o imagine a profilului de personalitate al angajatului și îl traduce în competențe legate de muncă.",
       phase: "Selecție → dezvoltare → performanță → evaluare",
       goal: "Traducerea trăsăturilor de personalitate în abilități și astfel descoperirea locului în care cineva poate crește.",
@@ -2171,7 +2171,7 @@ export const assessmentsI18n = {
     },
     "drijfverentest": {
       title: "Test de motivații",
-      metaTitle: "Test de motivații | Ce vă motivează angajații? | Hrmforce", metaDescription: "Cartografiați motoarele și motivația angajaților ca bază pentru o angajare durabilă.",
+      metaTitle: "Test de motivații | Ce vă motivează angajații? | hrmforce", metaDescription: "Cartografiați motoarele și motivația angajaților ca bază pentru o angajare durabilă.",
       phase: "Dezvoltare → performanță", goal: "Descoperirea a ceea ce motivează pe cineva și îi dă energie la muncă.",
       time: "10 minute", form: "Chestionar", feedback: "Raport cu principalele motoare și cum influențează munca.", extra: "Se combină bine cu un test de personalitate.",
       traits: ["Realizare", "Conexiune", "Autonomie", "Siguranță", "Influență"],
@@ -2182,7 +2182,7 @@ export const assessmentsI18n = {
     },
     "cognitieve-test": {
       title: "Test cognitiv (Ability Scan)",
-      metaTitle: "Test de capacitate cognitivă | Ability Scan | Hrmforce", metaDescription: "Măsurați capacitatea cognitivă și preziceți cât de repede preia cineva sarcini noi.",
+      metaTitle: "Test de capacitate cognitivă | Ability Scan | hrmforce", metaDescription: "Măsurați capacitatea cognitivă și preziceți cât de repede preia cineva sarcini noi.",
       phase: "Selecție", goal: "Cartografierea obiectivă a nivelului de muncă și de gândire și a capacității de învățare.",
       time: "20-30 de minute", form: "Verbal, numeric și abstract", feedback: "Scor per secțiune cu comparație cu grupul de referință.", extra: "Predictor puternic al performanței la muncă.",
       traits: ["Verbal", "Numeric", "Abstract"],
@@ -2193,7 +2193,7 @@ export const assessmentsI18n = {
     },
     "disc-test": {
       title: "Test DISC",
-      metaTitle: "Test de personalitate DISC | Comportament și comunicare | Hrmforce", metaDescription: "Cartografiați stilul de comunicare și de comportament cu chestionarul DISC.",
+      metaTitle: "Test de personalitate DISC | Comportament și comunicare", metaDescription: "Cartografiați stilul de comunicare și de comportament cu chestionarul DISC.",
       phase: "Dezvoltare", goal: "Perspectivă asupra preferințelor comportamentale și a stilului de comunicare pentru o colaborare mai bună.",
       time: "10 minute", form: "Chestionar", feedback: "Raport cu profilurile DISC și sfaturi practice.", extra: "Popular pentru dezvoltarea echipelor și coaching.",
       traits: ["Dominanță", "Influență", "Stabilitate", "Conformitate"],
@@ -2204,7 +2204,7 @@ export const assessmentsI18n = {
     },
     "studiekeuzetest": {
       title: "Test de orientare în studii",
-      metaTitle: "Test de orientare în studii | Alegere fundamentată de studii și carieră | Hrmforce", metaDescription: "Ajută la luarea unei decizii fundamentate privind studiile sau cariera.",
+      metaTitle: "Test de orientare în studii", metaDescription: "Ajută la luarea unei decizii fundamentate privind studiile sau cariera.",
       phase: "Mobilitate", goal: "Corelarea intereselor, capacităților și preferințelor cu studii sau cariere potrivite.",
       time: "20 de minute", form: "Chestionar", feedback: "Prezentare a direcțiilor potrivite.", extra: "Disponibil în Bază, Extins și Complet.",
       traits: ["Interese", "Capacități", "Valori de muncă"],
@@ -2215,7 +2215,7 @@ export const assessmentsI18n = {
     },
     "mentale-veerkracht-scan": {
       title: "Scanare a rezilienței mentale",
-      metaTitle: "Scanare a rezilienței mentale | Angajabilitate durabilă | Hrmforce", metaDescription: "Măsoară reziliența mentală și ajută la promovarea angajabilității durabile.",
+      metaTitle: "Scanare a rezilienței mentale | Angajabilitate durabilă", metaDescription: "Măsoară reziliența mentală și ajută la promovarea angajabilității durabile.",
       phase: "Angajabilitate", goal: "Perspectivă asupra rezistenței la stres și a capacității de recuperare.",
       time: "10 minute", form: "Chestionar", feedback: "Raport cu puncte de atenție pentru bunăstare și angajabilitate.", extra: "Parte a programelor de angajabilitate durabilă.",
       traits: ["Rezistență la stres", "Recuperare", "Echilibru energetic"],
@@ -2226,7 +2226,7 @@ export const assessmentsI18n = {
     },
     "lencioni-teamdynamiek": {
       title: "Dinamica echipei Lencioni",
-      metaTitle: "Dinamica echipei Lencioni | Dezvoltarea echipei | Hrmforce", metaDescription: "Măsoară cele cinci disfuncții ale muncii în echipă conform modelului lui Patrick Lencioni.",
+      metaTitle: "Dinamica echipei Lencioni | Dezvoltarea echipei | hrmforce", metaDescription: "Măsoară cele cinci disfuncții ale muncii în echipă conform modelului lui Patrick Lencioni.",
       phase: "Dezvoltare", goal: "Perspectivă asupra colaborării și a capcanelor din cadrul unei echipe.",
       time: "10 minute", form: "Chestionar de echipă", feedback: "Raport de echipă cu cele cinci niveluri ale muncii în echipă.", extra: "O bază solidă pentru o sesiune de echipă.",
       traits: ["Încredere", "Conflict", "Angajament", "Responsabilitate", "Rezultate"],
@@ -2237,7 +2237,7 @@ export const assessmentsI18n = {
     },
     "leiderschapstest": {
       title: "Test de leadership",
-      metaTitle: "Test de leadership | Stil de leadership și dezvoltare | Hrmforce", metaDescription: "Cartografiază stilul de leadership și punctele de dezvoltare ale managerilor (potențiali).",
+      metaTitle: "Test de leadership | Stil de leadership și dezvoltare", metaDescription: "Cartografiază stilul de leadership și punctele de dezvoltare ale managerilor (potențiali).",
       phase: "Dezvoltare → selecție", goal: "Vizualizarea comportamentului și a potenatialului de leadership.",
       time: "15 minute", form: "Chestionar", feedback: "Raport cu stiluri de leadership și recomandări de dezvoltare.", extra: "Se combină bine cu feedbackul la 360 de grade.",
       traits: ["Viziune", "Conducere", "Coaching", "Conectare"],
@@ -2248,7 +2248,7 @@ export const assessmentsI18n = {
     },
     "ontwikkelassessment": {
       title: "Assessment de dezvoltare",
-      metaTitle: "Assessment de dezvoltare | Creștere și dezvoltare | Hrmforce", metaDescription: "O metodă sistematică pentru a cartografia potențialul de dezvoltare și direcția de creștere.",
+      metaTitle: "Assessment de dezvoltare | Creștere și dezvoltare | hrmforce", metaDescription: "O metodă sistematică pentru a cartografia potențialul de dezvoltare și direcția de creștere.",
       phase: "Dezvoltare", goal: "Determinarea punctelor forte, a punctelor de dezvoltare și a direcției de creștere.",
       time: "Combinație de instrumente", form: "Mai multe chestionare", feedback: "Raport de dezvoltare integral cu recomandări concrete.", extra: "Deseori cu o discuție de feedback.",
       traits: ["Personalitate", "Capacități", "Motivații"],
@@ -2259,7 +2259,7 @@ export const assessmentsI18n = {
     },
     "15pf": {
       title: "15PF",
-      metaTitle: "15PF | Chestionar de personalitate | Hrmforce",
+      metaTitle: "15PF | Chestionar de personalitate | hrmforce",
       metaDescription: "Testul 15PF de la hrmforce oferă o perspectivă asupra modului în care un angajat se va comporta sau va reacționa în diverse situații.",
       phase: "(Pre)selecție → dezvoltare",
       goal: "Oferirea unei perspective asupra modului în care un angajat se va comporta sau va reacționa în diverse situații.",
@@ -2275,7 +2275,7 @@ export const assessmentsI18n = {
     "ability-scan": {
       title: "Ability Scan | Test de capacitate cognitivă",
       metaTitle: "Test de capacitate cognitivă | 4,9 stele | Ability Scan",
-      metaDescription: "Măsurați obiectiv capacitatea de gândire și de învățare a candidaților cu Ability Scan. Test de capacitate de la nivel profesional la master, evaluat cu 4,9 stele.",
+      metaDescription: "Măsurați obiectiv capacitatea de gândire și de învățare a candidaților cu Ability Scan.",
       phase: "Selecție → dezvoltare",
       goal: "Măsurarea rapidității cu care cineva înțelege problemele, își formează o opinie și învață lucruri noi, și deducerea nivelului din aceasta: profesional, licență sau master.",
       time: "30 de minute", form: "Trei secțiuni cu întrebări cu variante multiple, fiecare într-un timp fix.",
@@ -2289,7 +2289,7 @@ export const assessmentsI18n = {
     },
     "appraisal": {
       title: "Appraisal",
-      metaTitle: "Appraisal | Feedback la 90 de grade | Hrmforce",
+      metaTitle: "Appraisal | Feedback la 90 de grade | hrmforce",
       metaDescription: "Appraisal: candidatul primește feedback structurat despre cum se vede pe sine, dar și despre cum este perceput de managerul său.",
       phase: "Performanță → evaluare",
       goal: "Oferirea de feedback (90 de grade) din diferite perspective, ca intrare pentru ciclul de performanță și evaluare.",
@@ -2305,7 +2305,7 @@ export const assessmentsI18n = {
     "beroepskeuze-test": {
       title: "Test de orientare profesională",
       metaTitle: "Test de orientare profesională pentru consilieri | hrmforce",
-      metaDescription: "Pentru consilierii de carieră și HR: o recomandare fundamentată privind grupurile profesionale potrivite, cu explicație pe profesie și un raport pentru discuție.",
+      metaDescription: "Pentru consilierii de carieră și HR: o recomandare fundamentată privind grupurile profesionale potrivite.",
       phase: "Dezvoltare → performanță",
       goal: "Oferirea unei recomandări fiabile privind grupurile profesionale potrivite și mai puțin potrivite.",
       time: "25 de minute", form: "Chestionar cu alegere forțată.",
@@ -2319,7 +2319,7 @@ export const assessmentsI18n = {
     },
     "canmeds": {
       title: "CanMeds",
-      metaTitle: "CanMeds | Feedback la 360 de grade pentru domeniul sănătății | Hrmforce",
+      metaTitle: "CanMeds | Feedback la 360 de grade pentru domeniul sănătății",
       metaDescription: "Obțineți o perspectivă asupra ușurinței cu care un angajat cu un anumit profil de personalitate poate demonstra sau dezvolta competențele CanMeds.",
       phase: "(Pre)selecție → dezvoltare → performanță → evaluare",
       goal: "Indicarea ușurinței cu care un angajat cu un anumit profil de personalitate poate demonstra sau dezvolta competențe specifice și evaluarea performanței într-un rol.",
@@ -2334,8 +2334,8 @@ export const assessmentsI18n = {
     },
     "coaching-screener-scan": {
       title: "Coaching Screener Scan",
-      metaTitle: "Coaching Screener Scan | Hrmforce",
-      metaDescription: "Obțineți o perspectivă asupra plângerilor și problemelor pe care le trăiește un candidat și asupra modului în care le gestionează, deosebit de utilă în coaching.",
+      metaTitle: "Coaching Screener Scan | hrmforce",
+      metaDescription: "Obțineți o perspectivă asupra plângerilor și problemelor pe care le trăiește un candidat și asupra modului în care le gestionează.",
       phase: "Dezvoltare",
       goal: "Obținerea unei perspective asupra plângerilor și problemelor pe care le trăiește un candidat și asupra modului în care le gestionează.",
       time: "25 de minute", form: "Variante multiple pe o scală de 5 puncte.",
@@ -2349,7 +2349,7 @@ export const assessmentsI18n = {
     },
     "communicatiestijlen-test": {
       title: "Test de stiluri de comunicare",
-      metaTitle: "Faci un test de stiluri de comunicare? | Începe cu un demo gratuit | Hrmforce",
+      metaTitle: "Faci un test de stiluri de comunicare?",
       metaDescription: "Cu testul de stiluri de comunicare, comparați prezența factorilor relaționali esențiali și traduceți-i în stiluri de comunicare specifice.",
       phase: "Dezvoltare → performanță → evaluare",
       goal: "Compararea prezenței factorilor relaționali esențiali și traducerea lor în stiluri de comunicare specifice.",
@@ -2364,7 +2364,7 @@ export const assessmentsI18n = {
     },
     "competentie-check": {
       title: "Test de competențe",
-      metaTitle: "Test de competențe | Cum se vede angajatul pe sine? | Hrmforce",
+      metaTitle: "Test de competențe | Cum se vede angajatul pe sine?",
       metaDescription: "Testul de competențe oferă feedback (0 grade) despre comportamentul propriu al angajatului. Un răspuns la întrebarea cum se vede cineva pe sine.",
       phase: "Dezvoltare → performanță → evaluare",
       goal: "Oferirea de feedback (0 grade) despre comportamentul propriu al angajatului: cum se vede cineva pe sine?",
@@ -2379,8 +2379,8 @@ export const assessmentsI18n = {
     },
     "conflictstijlen-test": {
       title: "Test de stiluri de conflict",
-      metaTitle: "Test de stiluri de conflict | Hrmforce",
-      metaDescription: "Analizați comportamentul individual în situații de conflict. Testul de stiluri de conflict indică în ce măsură un anumit stil de conflict poate fi util cuiva.",
+      metaTitle: "Test de stiluri de conflict | hrmforce",
+      metaDescription: "Analizați comportamentul individual în situații de conflict. Testul de stiluri de conflict indică în ce măsură un anumit stil de conflict poate fi util.",
       phase: "Dezvoltare → performanță → evaluare",
       goal: "Analizarea comportamentului individual în situații de conflict și indicarea stilului de conflict care poate fi util.",
       time: "15 minute", form: "Candidații indică în ce măsură sunt de acord cu afirmații.",
@@ -2394,8 +2394,8 @@ export const assessmentsI18n = {
     },
     "duurzame-inzetbaarheid-scan": {
       title: "Scanare a angajabilității durabile",
-      metaTitle: "Scanare a angajabilității durabile | Hrmforce",
-      metaDescription: "Cu Scanarea angajabilității durabile obțineți rapid o perspectivă asupra faptului dacă un angajat și/sau o organizație sunt încă suficient de angajabili în mod durabil.",
+      metaTitle: "Scanare a angajabilității durabile | hrmforce",
+      metaDescription: "Cu Scanarea angajabilității durabile obțineți rapid o perspectivă asupra faptului dacă un angajat și/sau o organizație sunt încă suficient de angajabili.",
       phase: "Dezvoltare",
       goal: "Obținerea rapidă a unei perspective asupra faptului dacă un angajat și/sau o organizație sunt încă suficient de angajabili în mod durabil.",
       time: "25 de minute", form: "Variante multiple pe o scală de 5 puncte.",
@@ -2409,7 +2409,7 @@ export const assessmentsI18n = {
     },
     "exit-assessment": {
       title: "Exit Assessment",
-      metaTitle: "Susții un interviu de ieșire? Asigură un exit assessment | Hrmforce",
+      metaTitle: "Susții un interviu de ieșire? Asigură un exit assessment",
       metaDescription: "Un Exit Assessment oferă o perspectivă asupra motivelor și cauzelor plecării angajaților. Onest, sincer și extrem de util.",
       phase: "Angajabilitate → ieșire",
       goal: "Oferirea unei perspective asupra motivelor și cauzelor plecării angajaților și primirea de sfaturi pentru îmbunătățire.",
@@ -2424,7 +2424,7 @@ export const assessmentsI18n = {
     },
     "groepsrollen": {
       title: "Roluri de echipă",
-      metaTitle: "Roluri de echipă | Hrmforce",
+      metaTitle: "Roluri de echipă | hrmforce",
       metaDescription: "Cu assessmentul de Roluri de echipă obțineți o prezentare a rolurilor de echipă pe care un angajat le va adopta sau nu în anumite situații.",
       phase: "Dezvoltare → performanță → evaluare",
       goal: "Oferirea unei prezentări a rolurilor de echipă pe care un angajat le va adopta sau nu în anumite situații.",
@@ -2439,8 +2439,8 @@ export const assessmentsI18n = {
     },
     "intake-candidate": {
       title: "Intake Candidate",
-      metaTitle: "Intake candidat | Pregătește-ți interviul inteligent | Hrmforce",
-      metaDescription: "Puneți candidații să completeze dinainte întrebările standard, pentru a avea mai mult timp în timpul interviului pentru soft skills, competențe și potrivire.",
+      metaTitle: "Intake candidat | Pregătește-ți interviul inteligent",
+      metaDescription: "Puneți candidații să completeze dinainte întrebările standard, pentru a avea mai mult timp în timpul interviului pentru soft skills.",
       phase: "Selecție",
       goal: "Punerea online, în avans, a întrebărilor care ar apărea ideal în primul interviu, astfel încât interviul să capete cu adevărat substanță.",
       time: "20 de minute", form: "Întrebări deschise completate cu câteva întrebări cu variante multiple (da/nu).",
@@ -2454,7 +2454,7 @@ export const assessmentsI18n = {
     },
     "interesse-scan": {
       title: "Test de interese",
-      metaTitle: "Faci un test de interese? | Pentru elevi și personal | Hrmforce",
+      metaTitle: "Faci un test de interese? | Pentru elevi și personal",
       metaDescription: "Cu scanarea de interese, un elev sau un angajat obține o perspectivă asupra sectoarelor care îl interesează cel mai mult.",
       phase: "Dezvoltare",
       goal: "Oferirea unei perspective asupra sectoarelor care interesează cel mai mult un elev, student sau angajat, corelate cu studii și profesii relevante.",
@@ -2469,8 +2469,8 @@ export const assessmentsI18n = {
     },
     "job-profiler": {
       title: "Job Profiler",
-      metaTitle: "Job Profiler | Hrmforce",
-      metaDescription: "Obțineți o perspectivă asupra competențelor și comportamentelor pe care grupurile de respondenți le consideră relevante pentru o funcție, ca intrare pentru selecție, dezvoltare și evaluare.",
+      metaTitle: "Job Profiler | hrmforce",
+      metaDescription: "Obțineți o perspectivă asupra competențelor și comportamentelor pe care grupurile de respondenți le consideră relevante pentru o funcție.",
       phase: "Selecție → dezvoltare → performanță → evaluare",
       goal: "Obținerea unei perspective asupra competențelor și comportamentelor pe care diferite grupuri de respondenți le consideră relevante pentru o funcție.",
       time: "10 minute", form: "Chestionar cu variante multiple completat cu întrebări deschise.",
@@ -2484,7 +2484,7 @@ export const assessmentsI18n = {
     },
     "lean-scan": {
       title: "Lean Scan",
-      metaTitle: "Faci un Lean Scan? | Metoda Lean | Descoperă Hrmforce",
+      metaTitle: "Faci un Lean Scan? | Metoda Lean | Descoperă hrmforce",
       metaDescription: "Cu Lean Scan, companiile obțin o perspectivă asupra decalajului dintre situația actuală și cea ideală pentru a demonstra nevoia de management Lean.",
       phase: "Dezvoltare → performanță → evaluare",
       goal: "Obținerea unei perspective asupra decalajului dintre situația actuală și cea ideală pentru a demonstra nevoia de management Lean.",
@@ -2499,8 +2499,8 @@ export const assessmentsI18n = {
     },
     "leerstijlen": {
       title: "Test de stiluri de învățare",
-      metaTitle: "Faci un test de stiluri de învățare? | Demo gratuit | Hrmforce",
-      metaDescription: "Testul de stiluri de învățare oferă o perspectivă asupra modului în care un angajat gestionează activitățile de învățare și care este preferința sa de învățare.",
+      metaTitle: "Faci un test de stiluri de învățare? | Demo gratuit",
+      metaDescription: "Testul de stiluri de învățare oferă o perspectivă asupra modului în care un angajat gestionează activitățile de învățare și care este preferința sa de.",
       phase: "Dezvoltare",
       goal: "Oferirea unei perspective asupra modului în care un angajat gestionează activitățile de învățare și care este preferința sa de învățare.",
       time: "15 minute", form: "Ce formă de învățare i se potrivește cel mai bine candidatului?",
@@ -2514,8 +2514,8 @@ export const assessmentsI18n = {
     },
     "levensloop-scan": {
       title: "Scanare a parcursului de viață",
-      metaTitle: "Scanare a parcursului de viață | Hrmforce",
-      metaDescription: "O Scanare a parcursului de viață oferă o perspectivă asupra parcursului de viață al unui candidat, pentru a dezvălui puncte de sprijin pentru coaching și dezvoltare.",
+      metaTitle: "Scanare a parcursului de viață | hrmforce",
+      metaDescription: "O Scanare a parcursului de viață oferă o perspectivă asupra parcursului de viață al unui candidat.",
       phase: "Dezvoltare",
       goal: "Obținerea unei perspective asupra parcursului de viață al unui candidat pentru a dezvălui puncte de sprijin pentru coaching și dezvoltare.",
       time: "25 de minute", form: "Întrebări deschise.",
@@ -2529,7 +2529,7 @@ export const assessmentsI18n = {
     },
     "loopbaanwaarden": {
       title: "Valori de carieră",
-      metaTitle: "Valori de carieră | Hrmforce",
+      metaTitle: "Valori de carieră | hrmforce",
       metaDescription: "Valori de carieră ajută la întrebarea ce funcții sau organizații se potrivesc cu valorile pe care cineva le consideră importante de realizat în cariera sa.",
       phase: "Dezvoltare",
       goal: "Sprijinirea întrebării dacă anumite funcții, roluri sau organizații se potrivesc cu valorile de carieră ale persoanei.",
@@ -2544,8 +2544,8 @@ export const assessmentsI18n = {
     },
     "pulse-survey": {
       title: "Pulse Survey",
-      metaTitle: "Pulse Survey | Creează singur chestionare pentru personal | Hrmforce",
-      metaDescription: "Cu Pulse Survey, creați singuri chestionare pentru personalul dumneavoastră din peste 1000 de itemi și 40 de liste exemplu. De la satisfacție la reziliență mentală.",
+      metaTitle: "Pulse Survey | Creează singur chestionare pentru personal",
+      metaDescription: "Cu Pulse Survey, creați singuri chestionare pentru personalul dumneavoastră din peste 1000 de itemi și 40 de liste exemplu.",
       phase: "(Pre)selecție → dezvoltare",
       goal: "Abilitarea organizațiilor să proiecteze și să trimită singure chestionare candidaților și angajaților, folosind chestionare standard și o bază de date de întrebări.",
       time: "5 până la 30 de minute", form: "De stabilit singur cu instrumentul de chestionare: întrebări deschise, închise, cu variante multiple și pe scală.",
@@ -2559,8 +2559,8 @@ export const assessmentsI18n = {
     },
     "referentie-check": {
       title: "Verificare de referințe",
-      metaTitle: "Verificare de referințe | Hrmforce",
-      metaDescription: "Verificarea de referințe vă ajută să vă interesați despre candidat și să verificați dacă persoana este competentă și se potrivește în organizația dumneavoastră.",
+      metaTitle: "Verificare de referințe | hrmforce",
+      metaDescription: "Verificarea de referințe vă ajută să vă interesați despre candidat și să verificați dacă persoana este competentă și se potrivește în organizația.",
       phase: "(Pre)selecție",
       goal: "Solicitarea referințelor într-un mod adecvat în scopul unei proceduri de candidatură sau de selecție.",
       time: "15 minute", form: "Candidatul răspunde online la câteva întrebări și apoi invită el însuși referenți care completează un chestionar obiectiv printr-un link.",
@@ -2574,7 +2574,7 @@ export const assessmentsI18n = {
     },
     "teamanalyse": {
       title: "Analiză de echipă",
-      metaTitle: "Faci o analiză de echipă? | Folosește un chestionar | Hrmforce",
+      metaTitle: "Faci o analiză de echipă? | Folosește un chestionar",
       metaDescription: "Analiză de echipă: oferirea unei perspective asupra subiectelor din cadrul echipei care necesită atenție (suplimentară).",
       phase: "Dezvoltarea echipei",
       goal: "Oferirea unei perspective asupra subiectelor din cadrul echipei care necesită atenție suplimentară, pentru a le include în planul de dezvoltare a echipei.",
@@ -2589,7 +2589,7 @@ export const assessmentsI18n = {
     },
     "tevredenheidsonderzoek-medewerkers": {
       title: "Sondaj de satisfacție",
-      metaTitle: "Sondaj de satisfacție pentru angajați | Începe demo-ul gratuit",
+      metaTitle: "Sondaj de satisfacție pentru angajați",
       metaDescription: "Sondaj de satisfacție: obțineți o prezentare a satisfacției angajaților privind factori precum procesele de muncă, cultura și managementul.",
       phase: "Dezvoltare",
       goal: "Crearea unei prezentări a satisfacției angajaților privind factori precum procesele de muncă, cultura, managementul, condițiile de muncă, dezvoltarea carierei și loialitatea.",
@@ -2604,7 +2604,7 @@ export const assessmentsI18n = {
     },
     "typology": {
       title: "Typology",
-      metaTitle: "Test Typology | Descoperă-ți tipul de culoare în câteva minute | Hrmforce",
+      metaTitle: "Test Typology",
       metaDescription: "Fă testul Typology bazat pe Jung și descoperă în aproximativ 10 minute stilul tău comportamental cu ajutorul a patru tipuri de culoare.",
       phase: "Dezvoltare → performanță → evaluare",
       goal: "Oferirea unei perspective asupra tipului de angajat, pe baza modului în care cineva gestionează dominanța (influență versus colaborare) și emoția (sentiment versus rațiune).",
@@ -2619,7 +2619,7 @@ export const assessmentsI18n = {
     },
     "value-drives": {
       title: "Value Drives",
-      metaTitle: "Chestionar Value Drives | Hrmforce",
+      metaTitle: "Chestionar Value Drives | hrmforce",
       metaDescription: "Cu chestionarul Value Drives, valorile personale ale angajaților sunt sortate pe culoare și cartografiate.",
       phase: "Dezvoltare",
       goal: "Sortarea valorilor personale ale angajaților pe culoare și cartografierea lor, ca bază pentru dezvoltarea personală și organizațională.",
@@ -2628,13 +2628,13 @@ export const assessmentsI18n = {
       extra: "",
       traits: ["Sisteme de valori", "Culori", "Motivații", "Schimbare"],
       intro: ["Pentru organizații, schimbarea este o temă importantă, iar în cadrul acestor limite valorile oamenilor joacă un rol important.", "Conform modelului subiacent, ideile se răspândesc de la om la om și determină modul în care oamenii gândesc și în ce cred; acestea sunt forțele de atracție și de respingere din spatele dezvoltării valorilor."],
-      body: ["Aceste sisteme de valori sunt indicate cu culori, ascendent de la simplu la tot mai complex, fiecare cu propriile forme de exprimare caracteristice. Hrmforce a tradus acest model în factori și culori clare pentru dezvoltarea personală și organizațională."],
+      body: ["Aceste sisteme de valori sunt indicate cu culori, ascendent de la simplu la tot mai complex, fiecare cu propriile forme de exprimare caracteristice. hrmforce a tradus acest model în factori și culori clare pentru dezvoltarea personală și organizațională."],
       quote: qRO,
       faq: [ { q: "Ce cartografiază Value Drives?", a: "Valorile personale ale angajaților, sortate pe culoare și sistem de valori." }, { q: "Pentru ce folosiți rezultatul?", a: "Pentru dezvoltarea personală și pentru dezvoltarea organizațională și procesele de schimbare." } ],
     },
     "verkoopvaardigheden": {
       title: "Abilități de vânzare",
-      metaTitle: "Abilități de vânzare | Hrmforce",
+      metaTitle: "Abilități de vânzare | hrmforce",
       metaDescription: "Testul de abilități de vânzare oferă o imagine clară a abilităților prin care un vânzător de top se distinge de ceilalți.",
       phase: "(Pre)selecție → dezvoltare",
       goal: "Oferirea unei perspective asupra abilităților de vânzare ale celui mai bun vânzător, precum și asupra comportamentului de cumpărare al clientului și a stilului de comunicare al vânzătorilor.",

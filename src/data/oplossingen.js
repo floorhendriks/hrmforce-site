@@ -14,7 +14,7 @@ export const oplossingen = [
       nieuw: ["Matchprofiel op basis van het functieprofiel en je eigen topperformers", "Objectieve match-score van 0% tot 100% per kandidaat", "Alleen de vragenlijsten die relevant zijn voor die functie", "Iedereen beoordeelt op dezelfde competenties", "Risico's en aandachtspunten staan al in het rapport"],
     },
     title: "Matching & selectie",
-    metaTitle: "Matching & selectie | Automatisch de best passende kandidaten matchen | Hrmforce",
+    metaTitle: "Matching & selectie | Automatisch de best passende kandidaten matchen | hrmforce",
     metaDescription:
       "Met selectieassessments vind je sneller kandidaten die bij je organisatie passen. Zo wordt je selectieproces makkelijk en objectief.",
     intro: ["Vacatures blijven lang open en wie je aanneemt blijkt achteraf niet de juiste match. Voorselecteren op cv en onderbuik kost tijd en levert verkeerde aannames op.", "hrmforce matcht kandidaten data-gedreven op de competenties van de functie. Je krijgt een objectieve ranking en rapportages, zodat je sneller de juiste mensen selecteert."],
@@ -73,7 +73,7 @@ export const oplossingen = [
       nieuw: ["Jaarplanning met bila, ontwikkelgesprek en jaargesprek klaargezet", "Werkafspraken digitaal vastgelegd, met wie en wanneer", "Onderbouwde feedback uit een wetenschappelijke vragenlijst", "Alle gesprekken bewaard, je begint waar je gebleven was", "Organisatiebreed zicht op voortgang en knelpunten"],
     },
     title: "HR Gesprekscyclus",
-    metaTitle: "HR Gesprekscyclus | Structuur in je gesprekscycli | Hrmforce",
+    metaTitle: "HR Gesprekscyclus | Structuur in je gesprekscycli | hrmforce",
     metaDescription:
       "Breng systeem in de gesprekscycli van je organisatie. Personeel krijgt concrete feedback en de tool houdt automatisch de voortgang bij.",
     intro: [
@@ -136,7 +136,7 @@ export const oplossingen = [
       nieuw: ["Periodieke Pulse Survey laat vroeg zien waar de energie weglekt", "Meten per team en per periode, zodat je effect ziet", "Medewerkers verkennen zelf passende rollen en vacatures", "Ontwikkelen en doorstromen houdt kennis in huis"],
     },
     title: "Employability",
-    metaTitle: "HR Employability | Gezond en gemotiveerd personeel | Hrmforce",
+    metaTitle: "HR Employability | Gezond en gemotiveerd personeel | hrmforce",
     metaDescription:
       "HR Employability verhoogt de betrokkenheid van personeel en bevordert loopbaan en ontwikkeling. Wij ondersteunen met vragenlijsten.",
     intro: ["Ziekteverzuim, verloop en medewerkers die vastlopen in hun rol kosten veel geld en energie. Vaak zie je te laat dat iemand niet meer op zijn plek zit.", "hrmforce maakt duurzame inzetbaarheid meetbaar met wetenschappelijke vragenlijsten. Je ziet vroeg waar ontwikkeling of bijsturing nodig is, en houdt mensen gezond en gemotiveerd aan het werk."],
@@ -195,7 +195,7 @@ export const oplossingen = [
       nieuw: ["Alle uitkomsten in één omgeving, gekoppeld aan functies en teams", "Dashboards per team, afdeling en organisatie", "Trends zichtbaar voordat ze een probleem worden", "Overzichten die automatisch bijwerken bij nieuwe afnames"],
     },
     title: "HR Analytics",
-    metaTitle: "HR Analytics | 24/7 inzicht in personeelsdata | Hrmforce",
+    metaTitle: "HR Analytics | 24/7 inzicht in personeelsdata | hrmforce",
     metaDescription:
       "De HR-Analytics-oplossing van hrmforce geeft organisaties gedetailleerd inzicht in talenten, valkuilen en prestaties van medewerkers en teams.",
     intro: ["HR-beslissingen worden nog te vaak op gevoel genomen, terwijl de data verspreid en onbenut in systemen zit. Zonder inzicht blijft sturen op talent gissen.", "hrmforce brengt je HR-data samen in heldere dashboards en rapportages. Zo onderbouw je beslissingen over selectie, ontwikkeling en teams met feiten in plaats van aannames."],

@@ -3,7 +3,7 @@
 export const faqContent = {
   nl: {
     meta: {
-      title: "FAQ Hrmforce | Veel gestelde vragen | Hrmforce.nl",
+      title: "FAQ hrmforce | Veel gestelde vragen | hrmforce.nl",
       description: "Ontdek de veel gestelde vragen over onze talent management software. Staat je vraag er niet tussen? Mail of bel ons dan."
     },
     crumb: { support: "Support", faq: "FAQ" },
@@ -149,7 +149,7 @@ export const faqContent = {
 
   en: {
     meta: {
-      title: "FAQ Hrmforce | Frequently asked questions | Hrmforce.nl",
+      title: "FAQ hrmforce | Frequently asked questions | hrmforce.nl",
       description: "Discover the frequently asked questions about our talent management software. Cannot find your question? Then email or call us."
     },
     crumb: { support: "Support", faq: "FAQ" },
@@ -295,7 +295,7 @@ export const faqContent = {
 
   de: {
     meta: {
-      title: "FAQ Hrmforce | Haeufig gestellte Fragen | Hrmforce.nl",
+      title: "FAQ hrmforce | Haeufig gestellte Fragen | hrmforce.nl",
       description: "Entdecken Sie die haeufig gestellten Fragen zu unserer Talentmanagement-Software. Ihre Frage ist nicht dabei? Dann mailen oder rufen Sie uns an."
     },
     crumb: { support: "Support", faq: "FAQ" },
@@ -441,7 +441,7 @@ export const faqContent = {
 
   fr: {
     meta: {
-      title: "FAQ Hrmforce | Questions frequentes | Hrmforce.nl",
+      title: "FAQ hrmforce | Questions frequentes | hrmforce.nl",
       description: "Decouvrez les questions frequentes sur notre logiciel de gestion des talents. Votre question ne figure pas dans la liste ? Envoyez-nous un e-mail ou appelez-nous."
     },
     crumb: { support: "Support", faq: "FAQ" },
@@ -587,7 +587,7 @@ export const faqContent = {
 
   es: {
     meta: {
-      title: "FAQ Hrmforce | Preguntas frecuentes | Hrmforce.nl",
+      title: "FAQ hrmforce | Preguntas frecuentes | hrmforce.nl",
       description: "Descubre las preguntas frecuentes sobre nuestro software de gestion del talento. No encuentras tu pregunta? Entonces escribenos o llamanos."
     },
     crumb: { support: "Support", faq: "FAQ" },
@@ -733,7 +733,7 @@ export const faqContent = {
 
   ro: {
     meta: {
-      title: "FAQ Hrmforce | Intrebari frecvente | Hrmforce.nl",
+      title: "FAQ hrmforce | Intrebari frecvente | hrmforce.nl",
       description: "Descopera intrebarile frecvente despre software-ul nostru de management al talentelor. Nu gasesti intrebarea ta? Atunci scrie-ne sau suna-ne."
     },
     crumb: { support: "Support", faq: "FAQ" },

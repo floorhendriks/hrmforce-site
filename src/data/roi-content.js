@@ -5,7 +5,7 @@
 export const roiContent = {
   nl: {
     meta: {
-      title: "ROI-rekentool | Hrmforce",
+      title: "ROI-rekentool | hrmforce",
       description: "Bereken het indicatieve rendement van professionele selectie-instrumenten met de ROI-rekentool van hrmforce, gebaseerd op Utility Analysis.",
     },
     crumb: "ROI-rekentool",
@@ -69,7 +69,7 @@ const clone = (o) => JSON.parse(JSON.stringify(o));
 // ---- EN ----
 roiContent.en = clone(roiContent.nl);
 Object.assign(roiContent.en.meta, {
-  title: "ROI calculator | Hrmforce",
+  title: "ROI calculator | hrmforce",
   description: "Calculate the indicative return of professional selection instruments with the hrmforce ROI calculator, based on Utility Analysis.",
 });
 roiContent.en.crumb = "ROI calculator";
@@ -128,7 +128,7 @@ Object.assign(roiContent.en.explain, {
 // ---- DE ----
 roiContent.de = clone(roiContent.nl);
 Object.assign(roiContent.de.meta, {
-  title: "ROI-Rechner | Hrmforce",
+  title: "ROI-Rechner | hrmforce",
   description: "Berechnen Sie den indikativen Ertrag professioneller Auswahlinstrumente mit dem hrmforce ROI-Rechner, basierend auf Utility Analysis.",
 });
 roiContent.de.crumb = "ROI-Rechner";
@@ -187,7 +187,7 @@ Object.assign(roiContent.de.explain, {
 // ---- FR ----
 roiContent.fr = clone(roiContent.nl);
 Object.assign(roiContent.fr.meta, {
-  title: "Calculateur de ROI | Hrmforce",
+  title: "Calculateur de ROI | hrmforce",
   description: "Calculez le rendement indicatif des instruments de sélection professionnels avec le calculateur de ROI de hrmforce, basé sur l'Utility Analysis.",
 });
 roiContent.fr.crumb = "Calculateur de ROI";
@@ -246,7 +246,7 @@ Object.assign(roiContent.fr.explain, {
 // ---- ES ----
 roiContent.es = clone(roiContent.nl);
 Object.assign(roiContent.es.meta, {
-  title: "Calculadora de ROI | Hrmforce",
+  title: "Calculadora de ROI | hrmforce",
   description: "Calcule el rendimiento indicativo de los instrumentos de selección profesionales con la calculadora de ROI de hrmforce, basada en Utility Analysis.",
 });
 roiContent.es.crumb = "Calculadora de ROI";
@@ -305,7 +305,7 @@ Object.assign(roiContent.es.explain, {
 // ---- RO ----
 roiContent.ro = clone(roiContent.nl);
 Object.assign(roiContent.ro.meta, {
-  title: "Calculator ROI | Hrmforce",
+  title: "Calculator ROI | hrmforce",
   description: "Calculați randamentul indicativ al instrumentelor de selecție profesionale cu calculatorul ROI hrmforce, bazat pe Utility Analysis.",
 });
 roiContent.ro.crumb = "Calculator ROI";

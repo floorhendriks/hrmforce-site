@@ -3,7 +3,7 @@
 // De artikelen zelf komen uit Sanity; hier staat alleen de UI + de zoek-logica per taal.
 export const kenniscentrumContent = {
   nl: {
-    meta: { title: "Kenniscentrum | Hrmforce", description: "Artikelen over HR, assessments, capaciteiten en ontwikkeling. Filter op thema of zoek direct in ons kenniscentrum." },
+    meta: { title: "Kenniscentrum | hrmforce", description: "Artikelen over HR, assessments, capaciteiten en ontwikkeling. Filter op thema of zoek direct in ons kenniscentrum." },
     crumb: "Kenniscentrum",
     hero: { eyebrow: "Kenniscentrum", title: "Kennis & inzichten", intro: "Artikelen over talentmanagement, assessments, capaciteiten en ontwikkeling. Filter op thema of zoek direct." },
     search: "Zoek in het kenniscentrum…",
@@ -20,7 +20,7 @@ export const kenniscentrumContent = {
     empty: { title: "Binnenkort meer artikelen", lead: "We vertalen ons kenniscentrum stap voor stap. Ontdek in de tussentijd onze assessments of bekijk de mogelijkheden en tarieven.", ctaAssessments: "Bekijk de assessments", ctaTarieven: "Mogelijkheden & tarieven" },
   },
   en: {
-    meta: { title: "Knowledge centre | Hrmforce", description: "Articles on HR, assessments, abilities and development. Filter by theme or search directly in our knowledge centre." },
+    meta: { title: "Knowledge centre | hrmforce", description: "Articles on HR, assessments, abilities and development. Filter by theme or search directly in our knowledge centre." },
     crumb: "Knowledge centre",
     hero: { eyebrow: "Knowledge centre", title: "Knowledge & insights", intro: "Articles on talent management, assessments, abilities and development. Filter by theme or search directly." },
     search: "Search the knowledge centre…",
@@ -36,7 +36,7 @@ export const kenniscentrumContent = {
     empty: { title: "More articles coming soon", lead: "We are translating our knowledge centre step by step. In the meantime, explore our assessments or review the options and pricing.", ctaAssessments: "View the assessments", ctaTarieven: "Options & pricing" },
   },
   de: {
-    meta: { title: "Wissenszentrum | Hrmforce", description: "Artikel über HR, Assessments, Fähigkeiten und Entwicklung. Filtern Sie nach Thema oder suchen Sie direkt in unserem Wissenszentrum." },
+    meta: { title: "Wissenszentrum | hrmforce", description: "Artikel über HR, Assessments, Fähigkeiten und Entwicklung. Filtern Sie nach Thema oder suchen Sie direkt in unserem Wissenszentrum." },
     crumb: "Wissenszentrum",
     hero: { eyebrow: "Wissenszentrum", title: "Wissen & Einblicke", intro: "Artikel über Talentmanagement, Assessments, Fähigkeiten und Entwicklung. Filtern Sie nach Thema oder suchen Sie direkt." },
     search: "Im Wissenszentrum suchen…",
@@ -52,7 +52,7 @@ export const kenniscentrumContent = {
     empty: { title: "Bald weitere Artikel", lead: "Wir übersetzen unser Wissenszentrum Schritt für Schritt. Entdecken Sie in der Zwischenzeit unsere Assessments oder sehen Sie sich die Möglichkeiten und Preise an.", ctaAssessments: "Assessments ansehen", ctaTarieven: "Möglichkeiten & Preise" },
   },
   fr: {
-    meta: { title: "Centre de connaissances | Hrmforce", description: "Articles sur les RH, les évaluations, les aptitudes et le développement. Filtrez par thème ou recherchez directement dans notre centre de connaissances." },
+    meta: { title: "Centre de connaissances | hrmforce", description: "Articles sur les RH, les évaluations, les aptitudes et le développement. Filtrez par thème ou recherchez directement dans notre centre de connaissances." },
     crumb: "Centre de connaissances",
     hero: { eyebrow: "Centre de connaissances", title: "Connaissances & analyses", intro: "Articles sur la gestion des talents, les évaluations, les aptitudes et le développement. Filtrez par thème ou recherchez directement." },
     search: "Rechercher dans le centre de connaissances…",
@@ -68,7 +68,7 @@ export const kenniscentrumContent = {
     empty: { title: "Bientôt plus d'articles", lead: "Nous traduisons notre centre de connaissances étape par étape. En attendant, découvrez nos évaluations ou consultez les possibilités et les tarifs.", ctaAssessments: "Voir les évaluations", ctaTarieven: "Possibilités & tarifs" },
   },
   es: {
-    meta: { title: "Centro de conocimiento | Hrmforce", description: "Artículos sobre RR. HH., evaluaciones, aptitudes y desarrollo. Filtre por tema o busque directamente en nuestro centro de conocimiento." },
+    meta: { title: "Centro de conocimiento | hrmforce", description: "Artículos sobre RR. HH., evaluaciones, aptitudes y desarrollo. Filtre por tema o busque directamente en nuestro centro de conocimiento." },
     crumb: "Centro de conocimiento",
     hero: { eyebrow: "Centro de conocimiento", title: "Conocimiento e ideas", intro: "Artículos sobre gestión del talento, evaluaciones, aptitudes y desarrollo. Filtre por tema o busque directamente." },
     search: "Buscar en el centro de conocimiento…",
@@ -84,7 +84,7 @@ export const kenniscentrumContent = {
     empty: { title: "Pronto más artículos", lead: "Estamos traduciendo nuestro centro de conocimiento paso a paso. Mientras tanto, descubra nuestras evaluaciones o consulte las opciones y los precios.", ctaAssessments: "Ver las evaluaciones", ctaTarieven: "Opciones y precios" },
   },
   ro: {
-    meta: { title: "Centru de cunoștințe | Hrmforce", description: "Articole despre HR, evaluări, aptitudini și dezvoltare. Filtrați după temă sau căutați direct în centrul nostru de cunoștințe." },
+    meta: { title: "Centru de cunoștințe | hrmforce", description: "Articole despre HR, evaluări, aptitudini și dezvoltare. Filtrați după temă sau căutați direct în centrul nostru de cunoștințe." },
     crumb: "Centru de cunoștințe",
     hero: { eyebrow: "Centru de cunoștințe", title: "Cunoștințe & perspective", intro: "Articole despre managementul talentelor, evaluări, aptitudini și dezvoltare. Filtrați după temă sau căutați direct." },
     search: "Căutați în centrul de cunoștințe…",

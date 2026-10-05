@@ -4,7 +4,7 @@
 export const shopContent = {
   nl: {
     meta: {
-      title: "Shop | Online assessments direct afnemen | Hrmforce",
+      title: "Shop | Online assessments direct afnemen | hrmforce",
       description:
         "Bestel losse online assessments direct in de hrmforce-shop. Filter op HR-cyclus, segment en uitgever. Betaal veilig en start binnen een uur.",
     },
@@ -48,7 +48,7 @@ export const shopContent = {
 
   en: {
     meta: {
-      title: "Shop | Order online assessments directly | Hrmforce",
+      title: "Shop | Order online assessments directly | hrmforce",
       description:
         "Order individual online assessments directly in the hrmforce shop. Filter by HR cycle, segment and publisher. Pay securely and start within an hour.",
     },
@@ -92,7 +92,7 @@ export const shopContent = {
 
   de: {
     meta: {
-      title: "Shop | Online-Assessments direkt bestellen | Hrmforce",
+      title: "Shop | Online-Assessments direkt bestellen | hrmforce",
       description:
         "Bestellen Sie einzelne Online-Assessments direkt im hrmforce-Shop. Filtern Sie nach HR-Zyklus, Segment und Anbieter. Sicher bezahlen und innerhalb einer Stunde starten.",
     },
@@ -136,7 +136,7 @@ export const shopContent = {
 
   fr: {
     meta: {
-      title: "Boutique | Commandez des évaluations en ligne directement | Hrmforce",
+      title: "Boutique | Commandez des évaluations en ligne directement | hrmforce",
       description:
         "Commandez des évaluations en ligne à l'unité directement dans la boutique hrmforce. Filtrez par cycle RH, segment et éditeur. Payez en toute sécurité et démarrez en une heure.",
     },
@@ -180,7 +180,7 @@ export const shopContent = {
 
   es: {
     meta: {
-      title: "Tienda | Contrate evaluaciones en línea directamente | Hrmforce",
+      title: "Tienda | Contrate evaluaciones en línea directamente | hrmforce",
       description:
         "Contrate evaluaciones en línea sueltas directamente en la tienda de hrmforce. Filtre por ciclo de RR. HH., segmento y editor. Pague de forma segura y empiece en una hora.",
     },
@@ -224,7 +224,7 @@ export const shopContent = {
 
   ro: {
     meta: {
-      title: "Magazin | Comandați evaluări online direct | Hrmforce",
+      title: "Magazin | Comandați evaluări online direct | hrmforce",
       description:
         "Comandați evaluări online individuale direct în magazinul hrmforce. Filtrați după ciclul HR, segment și editor. Plătiți în siguranță și începeți într-o oră.",
     },

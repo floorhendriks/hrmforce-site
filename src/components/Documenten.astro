@@ -8,18 +8,20 @@
 // de lijst terug op het Engels, omdat de documenten zelf ook niet in die talen
 // bestaan. De taal van het document staat erbij, zodat niemand voor verrassingen
 // komt te staan.
+import { localizePath } from "../i18n/utils.js";
 const { docs = [], lang = "nl" } = Astro.props;
 
 const L = {
-  nl: { titel: "Documenten en voorbeeldrapporten", intro: "Direct te openen, zonder formulier. De uitgever van het instrument staat erbij.", open: "Openen" },
-  en: { titel: "Documents and sample reports", intro: "Open directly, no form required. The publisher of the instrument is listed with each file.", open: "Open" },
-  de: { titel: "Dokumente und Musterberichte", intro: "Direkt zu öffnen, ohne Formular. Der Herausgeber des Instruments ist jeweils angegeben.", open: "Öffnen" },
-  fr: { titel: "Documents et rapports types", intro: "À ouvrir directement, sans formulaire. L'éditeur de l'instrument est indiqué.", open: "Ouvrir" },
-  es: { titel: "Documentos e informes de ejemplo", intro: "Se abren directamente, sin formulario. Se indica el editor del instrumento.", open: "Abrir" },
-  ro: { titel: "Documente și rapoarte model", intro: "Se deschid direct, fără formular. Editorul instrumentului este menționat.", open: "Deschide" },
+  nl: { titel: "Documenten en voorbeeldrapporten", intro: "Direct te openen, zonder formulier. De uitgever van het instrument staat erbij.", open: "Openen", alle: "Alle documenten van de uitgevers" },
+  en: { titel: "Documents and sample reports", intro: "Open directly, no form required. The publisher of the instrument is listed with each file.", open: "Open", alle: "All documents from the publishers" },
+  de: { titel: "Dokumente und Musterberichte", intro: "Direkt zu öffnen, ohne Formular. Der Herausgeber des Instruments ist jeweils angegeben.", open: "Öffnen", alle: "Alle Dokumente der Herausgeber" },
+  fr: { titel: "Documents et rapports types", intro: "À ouvrir directement, sans formulaire. L'éditeur de l'instrument est indiqué.", open: "Ouvrir", alle: "Tous les documents des éditeurs" },
+  es: { titel: "Documentos e informes de ejemplo", intro: "Se abren directamente, sin formulario. Se indica el editor del instrumento.", open: "Abrir", alle: "Todos los documentos de las editoriales" },
+  ro: { titel: "Documente și rapoarte model", intro: "Se deschid direct, fără formular. Editorul instrumentului este menționat.", open: "Deschide", alle: "Toate documentele de la editori" },
 };
 const l = L[lang] || L.nl;
 const titelVan = (d) => d.titel[lang] || d.titel.en || d.titel.nl;
+const alleHref = localizePath("/documenten/", lang);
 ---
 {docs.length > 0 && (
 <section class="doc-sec">
@@ -40,6 +42,7 @@ const titelVan = (d) => d.titel[lang] || d.titel.en || d.titel.nl;
         </li>
       ))}
     </ul>
+    <p class="doc-alle"><a href={alleHref}>{l.alle} &rarr;</a></p>
   </div>
 </section>
 )}
@@ -54,6 +57,8 @@ const titelVan = (d) => d.titel[lang] || d.titel.en || d.titel.nl;
   .doc-tekst { display: block; flex: 1; min-width: 0; }
   .doc-titel { display: block; font-weight: 700; color: var(--navy); font-size: 15px; }
   .doc-meta { display: block; color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+  .doc-alle { margin: 16px 0 0; }
+  .doc-alle a { color: var(--navy); font-weight: 700; font-size: 14.5px; }
   .doc-open { flex: none; color: var(--accent); font-weight: 700; font-size: 13.5px; }
   @media (max-width: 560px) { .doc-open { display: none; } }
 </style>

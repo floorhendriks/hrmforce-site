@@ -63,12 +63,12 @@ export const OT_UI = {
 };
 
 export const ONDERZOEK_UI = {
-  nl: { eyebrow: "Oefenen", title: "Oefentesten", lead: "Vijf onderdelen, elk met een bank van 250 oefenvragen. Je krijgt er per ronde 25 willekeurig uit, met na afloop per vraag het juiste antwoord en de toelichting.", cta: "Start de oefentest" },
-  en: { eyebrow: "Practise", title: "Practice tests", lead: "Five components, each with a bank of 250 practice questions. You get 25 at random per round, with the correct answer and an explanation per question afterwards.", cta: "Start the practice test" },
-  de: { eyebrow: "Üben", title: "Übungstests", lead: "Fünf Teile mit je 250 Übungsfragen. Pro Runde erhalten Sie 25 davon zufällig, danach je Frage die richtige Antwort und die Erläuterung.", cta: "Übungstest starten" },
-  fr: { eyebrow: "S'entraîner", title: "Tests d'entraînement", lead: "Cinq parties, chacune avec 250 questions d'entraînement. Vous en recevez 25 au hasard par série, puis la bonne réponse et l'explication pour chaque question.", cta: "Démarrer le test" },
-  es: { eyebrow: "Practicar", title: "Tests de práctica", lead: "Cinco partes, cada una con 250 preguntas de práctica. Recibes 25 al azar por ronda y, al final, la respuesta correcta y la explicación de cada pregunta.", cta: "Empezar el test" },
-  ro: { eyebrow: "Exersează", title: "Teste de exersare", lead: "Cinci părți, fiecare cu 250 de întrebări de exersare. Primești 25 alese aleatoriu pe rundă, iar la final răspunsul corect și explicația pentru fiecare întrebare.", cta: "Începe testul" },
+  nl: { eyebrow: "Gratis tests", title: "Gratis tests en oefentesten", metaD: "Twaalf gratis tests: capaciteiten oefenen met uitleg per vraag, zes vragenlijsten met een profielschets en de kleurentest. Uitslag direct op je scherm.", lead: "Twaalf tests die je gratis maakt: vijf capaciteitenonderdelen met elk 250 oefenvragen, zes vragenlijsten met een profielschets en de kleurentest. De uitslag staat direct op je scherm.", cta: "Start de oefentest" },
+  en: { eyebrow: "Free tests", title: "Free tests and practice tests", metaD: "Twelve free tests: aptitude practice with an explanation per question, six questionnaires with a profile sketch and the colour test. Instant result.", lead: "Twelve tests you can take for free: five aptitude components with 250 practice questions each, six questionnaires with a profile sketch and the colour test. The result is on your screen right away.", cta: "Start the practice test" },
+  de: { eyebrow: "Kostenlose Tests", title: "Kostenlose Tests und Übungstests", metaD: "Zwölf kostenlose Tests: Fähigkeiten üben mit Erläuterung je Frage, sechs Fragebögen mit Profilskizze und der Farbtest. Ergebnis sofort am Bildschirm.", lead: "Zwölf Tests, die Sie kostenlos machen: fünf Fähigkeitsteile mit je 250 Übungsfragen, sechs Fragebögen mit Profilskizze und der Farbtest. Das Ergebnis steht sofort auf Ihrem Bildschirm.", cta: "Übungstest starten" },
+  fr: { eyebrow: "Tests gratuits", title: "Tests gratuits et d'entraînement", metaD: "Douze tests gratuits : aptitudes avec explication par question, six questionnaires avec esquisse de profil et le test des couleurs. Résultat immédiat.", lead: "Douze tests gratuits : cinq parties d'aptitude de 250 questions chacune, six questionnaires avec esquisse de profil et le test des couleurs. Le résultat s'affiche immédiatement.", cta: "Démarrer le test" },
+  es: { eyebrow: "Tests gratuitos", title: "Tests gratuitos y de práctica", metaD: "Doce tests gratuitos: aptitudes con explicación por pregunta, seis cuestionarios con esbozo de perfil y el test de colores. Resultado al instante.", lead: "Doce tests que haces gratis: cinco partes de aptitud con 250 preguntas cada una, seis cuestionarios con esbozo de perfil y el test de colores. El resultado aparece al instante en tu pantalla.", cta: "Empezar el test" },
+  ro: { eyebrow: "Teste gratuite", title: "Teste gratuite și de exersare", metaD: "Douăsprezece teste gratuite: aptitudini cu explicație la fiecare întrebare, șase chestionare cu schiță de profil și testul de culori. Rezultat imediat.", lead: "Douăsprezece teste pe care le faci gratuit: cinci părți de aptitudini cu câte 250 de întrebări, șase chestionare cu schiță de profil și testul de culori. Rezultatul apare imediat pe ecran.", cta: "Începe testul" },
 };
 
 export const ONDERDELEN = {
@@ -132,4 +132,51 @@ export const ONDERDELEN = {
       ro: "Vezi o figură și o cauți pe aceeași, doar rotită. Imaginile în oglindă seamănă mult și nu contează.",
     },
   },
+};
+
+/* Titels en omschrijvingen van de oefenonderdelen. De zoekvraag is "gratis
+   oefentest <onderdeel>", dus dat woord staat vooraan in plaats van de merknaam.
+   Titel blijft onder de 60 tekens, omschrijving onder de 155. */
+export const OT_META = {
+  nl: {
+    titel: (n) => `${n} oefenen, gratis oefentest | hrmforce`,
+    omschrijving: (n) =>
+      `Oefen gratis met ${n.toLowerCase()}. Je krijgt 25 vragen uit een bank van 250 en na afloop per vraag het juiste antwoord met toelichting.`,
+  },
+  en: {
+    titel: (n) => `Practise ${n.toLowerCase()}, free test | hrmforce`,
+    omschrijving: (n) =>
+      `Practise ${n.toLowerCase()} for free. You get 25 questions from a bank of 250 and afterwards the correct answer with an explanation per question.`,
+  },
+  de: {
+    titel: (n) => `${n} üben, kostenloser Übungstest | hrmforce`,
+    omschrijving: (n) =>
+      `Üben Sie kostenlos ${n}. Sie erhalten 25 Fragen aus einem Pool von 250 und danach je Frage die richtige Antwort mit Erläuterung.`,
+  },
+  fr: {
+    titel: (n) => `${n}, entraînement gratuit | hrmforce`,
+    omschrijving: (n) =>
+      `Entraînez-vous gratuitement : ${n.toLowerCase()}. 25 questions tirées d'une banque de 250, puis la bonne réponse et son explication pour chacune.`,
+  },
+  es: {
+    titel: (n) => `${n}, test de práctica gratuito | hrmforce`,
+    omschrijving: (n) =>
+      `Practica gratis ${n.toLowerCase()}. Recibes 25 preguntas de un banco de 250 y después la respuesta correcta con su explicación en cada una.`,
+  },
+  ro: {
+    titel: (n) => `${n}, test de exercițiu gratuit | hrmforce`,
+    omschrijving: (n) =>
+      `Exersează gratuit ${n.toLowerCase()}. Primești 25 de întrebări dintr-o bancă de 250 și apoi, la fiecare, răspunsul corect cu explicație.`,
+  },
+};
+
+/* Na de uitslag wil een deel van de bezoekers weten wat er beroepsmatig
+   achter zit. Eén regel plus een link naar het bijbehorende assessment. */
+export const VERDER_UI = {
+  nl: { tekst: "Hetzelfde onderwerp, maar dan genormeerd en met een rapportage:", link: "Bekijk het assessment" },
+  en: { tekst: "The same topic, but norm-referenced and with a report:", link: "View the assessment" },
+  de: { tekst: "Dasselbe Thema, aber normiert und mit Bericht:", link: "Assessment ansehen" },
+  fr: { tekst: "Le même sujet, mais étalonné et avec un rapport :", link: "Voir l'assessment" },
+  es: { tekst: "El mismo tema, pero baremado y con informe:", link: "Ver la evaluación" },
+  ro: { tekst: "Același subiect, dar normat și cu raport:", link: "Vezi evaluarea" },
 };

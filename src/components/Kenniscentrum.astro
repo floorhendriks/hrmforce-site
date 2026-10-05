@@ -4,6 +4,7 @@ import { createClient } from "@sanity/client";
 import { localizePath, localizeExisting, eigenMedia } from "../i18n/utils.js";
 import validPaths from "../data/valid-paths.js";
 import { omslagUrl } from "../lib/kc-omslag.js";
+import { merknaam } from "../lib/merknaam.js";
 import { DUBBELE_ARTIKELEN } from "../data/kenniscentrum-duplicaten.js";
 
 const { t, lang } = Astro.props;
@@ -22,7 +23,8 @@ const _raw = await client.fetch(
 // Artikelen die onder twee adressen stonden komen hier maar een keer in het
 // overzicht: het adres dat blijft. Zie kenniscentrum-duplicaten.js.
 const _vervallen = new Set(Object.keys(DUBBELE_ARTIKELEN));
-const raw = _raw.filter((a) => {
+// De merknaam wordt klein geschreven, ook in titels die uit Sanity komen.
+const raw = _raw.map((a) => ({ ...a, title: merknaam(a.title || "") })).filter((a) => {
   const pad = String(a.path || "");
   return !_vervallen.has(pad) && !_vervallen.has(pad + "/");
 });
@@ -55,7 +57,8 @@ function firstImage(body) {
   const m = eigenMedia(body || "").match(/<img[^>]+src=["']([^"']+)["']/i);
   return m ? m[1] : null;
 }
-function excerpt(body) {
+function excerpt(bron) {
+  const body = merknaam(bron || "");
   const text = (body || "")
     .replace(/<[^>]+>/g, " ")
     .replace(/&nbsp;/g, " ")

@@ -30,6 +30,17 @@ const KOPPEN = {
   ro: { test: "Aptitudini", testLead: "Cinci părți cu răspunsuri corecte și greșite. 25 de întrebări alese aleatoriu pe rundă, apoi explicația fiecăreia.", lijst: "Chestionare", lijstLead: "Șase chestionare de autoevaluare. Aici nu există răspunsuri corecte sau greșite; primești o schiță de profil în loc de un scor." },
 };
 const koppen = KOPPEN[lang] || KOPPEN.nl;
+const KLEUREN = {
+  nl: { kop: "Gratis kleurentest", lead: "Vier kleuren, een eerste beeld van je persoonlijkheid in een paar minuten. Je krijgt de uitslag direct te zien.", cta: "Doe de kleurentest" },
+  en: { kop: "Free colour test", lead: "Four colours, a first picture of your personality in a few minutes. You see the result straight away.", cta: "Take the colour test" },
+  de: { kop: "Kostenloser Farbtest", lead: "Vier Farben, ein erstes Bild Ihrer Persönlichkeit in wenigen Minuten. Das Ergebnis sehen Sie sofort.", cta: "Farbtest machen" },
+  fr: { kop: "Test des couleurs gratuit", lead: "Quatre couleurs, un premier aperçu de votre personnalité en quelques minutes. Le résultat s'affiche aussitôt.", cta: "Faire le test des couleurs" },
+  es: { kop: "Test de colores gratuito", lead: "Cuatro colores, una primera imagen de tu personalidad en pocos minutos. Ves el resultado al momento.", cta: "Hacer el test de colores" },
+  ro: { kop: "Test de culori gratuit", lead: "Patru culori, o primă imagine a personalității tale în câteva minute. Vezi rezultatul pe loc.", cta: "Fă testul de culori" },
+};
+const kleuren = KLEUREN[lang] || KLEUREN.nl;
+const kleurenHref = localizePath("/gratis-kleurentest/", lang);
+
 const MEER = {
   nl: { kop: "Meer voorbereiding", link: "Naar de voorbereidingspagina" },
   en: { kop: "More preparation", link: "To the preparation page" },
@@ -77,6 +88,15 @@ const meer = MEER[lang] || MEER.nl;
         <span class="oo-cta">{vl.start} &rarr;</span>
       </a>
     ))}
+  </div>
+</div></section>
+
+<section><div class="wrap" style="display:block">
+  <div class="eyebrow">{kleuren.kop}</div>
+  <h2 class="section-title">{kleuren.kop}</h2>
+  <p style="max-width:820px;color:var(--muted);margin-bottom:18px">{kleuren.lead}</p>
+  <div class="btns">
+    <a href={kleurenHref} class="btn btn-primary">{kleuren.cta}</a>
   </div>
 </div></section>
 

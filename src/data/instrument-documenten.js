@@ -321,3 +321,81 @@ export function documentenVoor(pathname) {
   const sleutel = PAD_NAAR_SLEUTEL[pad];
   return (sleutel && PER_PAGINA[sleutel]) || [];
 }
+
+// Groepen voor de overzichtspagina /documenten/. De volgorde is die van de
+// pagina zelf: eerst de instrumenten met de meeste documenten.
+export const GROEPEN = [
+  { sleutel: "opq32", bron: "SHL", ref: { thema: "opq32" },
+    naam: { nl: "OPQ32", en: "OPQ32" },
+    lead: { nl: "Persoonlijkheidsvragenlijst van SHL, met per rapportsoort een voorbeeld.", en: "SHL personality questionnaire, with a sample for each report type." } },
+  { sleutel: "verify", bron: "SHL", ref: { hub: "capaciteiten" },
+    naam: { nl: "Verify", en: "Verify" },
+    lead: { nl: "Capaciteitentests van SHL: inductief, verbaal, numeriek, checking en calculation.", en: "SHL ability tests: inductive, verbal, numerical, checking and calculation." } },
+  { sleutel: "dsi", bron: "SHL", ref: { hub: "persoonlijkheid" },
+    naam: { nl: "DSI", en: "DSI" },
+    lead: { nl: "Dependability and Safety Instrument, gericht op betrouwbaar en veilig werken.", en: "Dependability and Safety Instrument, aimed at dependable and safe working." } },
+  { sleutel: "connector", bron: "GITP", ref: { hub: "capaciteiten" },
+    naam: { nl: "Connector Ability", en: "Connector Ability" },
+    lead: { nl: "Capaciteitentest van vmbo tot master, met voorbeeldrapporten per niveau.", en: "Ability test from vocational to master level, with a sample report per level." } },
+  { sleutel: "reflector360", bron: "GITP", ref: { assessment: "360-graden-feedback" },
+    naam: { nl: "Reflector 360", en: "Reflector 360" },
+    lead: { nl: "360 graden feedback van GITP, voorheen PiCompany.", en: "360 degree feedback from GITP, formerly PiCompany." } },
+  { sleutel: "reflector", bron: "GITP", ref: { hub: "persoonlijkheid" },
+    naam: { nl: "Reflector Big Five Personality", en: "Reflector Big Five Personality" },
+    lead: { nl: "Persoonlijkheidsvragenlijst op basis van het Workplace Big Five model.", en: "Personality questionnaire based on the Workplace Big Five model." } },
+  { sleutel: "logiks", bron: "Cubiks", ref: { hub: "capaciteiten" },
+    naam: { nl: "Logiks", en: "Logiks" },
+    lead: { nl: "Korte capaciteitentests, los of als samengestelde batterij.", en: "Short ability tests, separately or as a combined battery." } },
+  { sleutel: "papi3", bron: "Cubiks", ref: { thema: "papi3" },
+    naam: { nl: "PAPI 3", en: "PAPI 3" },
+    lead: { nl: "Persoonlijkheidsvragenlijst van Cubiks, in een normatieve en een ipsatieve vorm.", en: "Cubiks personality questionnaire, in a normative and an ipsative form." } },
+  { sleutel: "talogy360", bron: "Cubiks", ref: { assessment: "360-graden-feedback" },
+    naam: { nl: "Talogy 360", en: "Talogy 360" },
+    lead: { nl: "360 graden feedback van Cubiks, met een variant voor leiderschap.", en: "360 degree feedback from Cubiks, with a leadership variant." } },
+  { sleutel: "teamrollen", bron: "Cubiks", ref: { hub: "teamrollen" },
+    naam: { nl: "Teamrollenvragenlijst", en: "Team roles questionnaire" },
+    lead: { nl: "Welke rol iemand in een team pakt en welke rollen in het team ontbreken.", en: "Which role someone takes in a team and which roles the team lacks." } },
+  { sleutel: "normgroepen", bron: "", ref: { thema: "normgroepen" },
+    naam: { nl: "Normgroepen en scores", en: "Norm groups and scores" },
+    lead: { nl: "Hoe je een normgroep kiest en hoe je een T-score of stanine leest.", en: "How to choose a norm group and how to read a T-score or stanine." } },
+];
+
+// Alle documenten, gegroepeerd, voor de overzichtspagina.
+const IN_GROEP = {
+  normgroepen: ["normgroepen-niveaus", "tscores"],
+};
+export function documentenPerGroep(lang = "nl") {
+  const gebruikt = new Set(Object.values(IN_GROEP).flat());
+  return GROEPEN.map((g) => {
+    const ids = IN_GROEP[g.sleutel]
+      ? IN_GROEP[g.sleutel]
+      : Object.keys(DOCS).filter((id) => id.startsWith(g.sleutel + "-") && !gebruikt.has(id));
+    return {
+      ...g,
+      naamTaal: g.naam[lang] || g.naam.en || g.naam.nl,
+      leadTaal: g.lead[lang] || g.lead.en || g.lead.nl,
+      href: groepHref(g.ref, lang),
+      docs: ids.map((id) => DOCS[id]).filter(Boolean).map((d) => ({
+        href: d.href,
+        titel: d.titel[lang] || d.titel.en || d.titel.nl,
+        meta: `${d.bron} · ${d.taal}` + (d.mb ? ` · ${d.mb} MB` : ""),
+      })),
+    };
+  }).filter((g) => g.docs.length);
+}
+
+// Waar de bezoeker heen kan voor het instrument zelf. Een themapagina of
+// testhub die in deze taal niet bestaat, valt terug op de Nederlandse versie,
+// zodat er nooit een dood adres in de lijst staat.
+function groepHref(ref, lang) {
+  if (!ref) return "";
+  if (ref.assessment) {
+    const pad = `/assessments/${ref.assessment}/`;
+    return lang === "nl" ? pad : `/${lang}${pad}`;
+  }
+  const bron = ref.thema ? THEMAPAGINAS[ref.thema] : TESTHUBS[ref.hub];
+  if (!bron) return "";
+  const slug = (bron.slug || {})[lang];
+  if (!slug) return `/${(bron.slug || {}).nl}/`;
+  return lang === "nl" ? `/${slug}/` : `/${lang}/${slug}/`;
+}

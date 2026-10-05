@@ -1,11 +1,18 @@
 ---
 import { localizePath, demoPath } from "../i18n/utils.js";
+import GratisTests from "./GratisTests.astro";
 const { t, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
 const _canon = new URL(Astro.url.pathname, "https://hrmforce.com").href;
 const _faqLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: t.faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) };
-// Alleen /voorbereiding/ is meertalig; oefen-assessment en kleurentest zijn NL.
-const cardHref = (h) => (h === "/voorbereiding/" ? localizePath(h, lang) : h);
+// Voorbereiding, kleurentest en oefentest bestaan in alle zes talen. Het
+// oefen-assessment staat alleen in het Nederlands; andere talen gaan daarom
+// naar de oefentesten in plaats van naar een Nederlandse pagina.
+const MEERTALIG = new Set(["/voorbereiding/", "/gratis-kleurentest/", "/oefentest/"]);
+const cardHref = (h) => {
+  if (h === "/oefen-assessment-maken/" && lang !== "nl") return localizePath("/oefentest/", lang);
+  return MEERTALIG.has(h) ? localizePath(h, lang) : h;
+};
 ---
 <script type="application/ld+json" is:inline set:html={JSON.stringify(_faqLd)}></script>
 
@@ -40,6 +47,8 @@ const cardHref = (h) => (h === "/voorbereiding/" ? localizePath(h, lang) : h);
     <div class="faq-item"><div class="faq-q">{f.q}<span class="pl">+</span></div><div class="faq-a"><p>{f.a}</p></div></div>
   ))}
 </div></section>
+
+<GratisTests lang={lang} huidig="kleuren" />
 
 <section class="cta"><div class="wrap" style="padding:56px 0;text-align:center">
   <h2 style="color:#fff">{t.cta.title}</h2>

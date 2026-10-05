@@ -14,17 +14,17 @@ export const tarievenContent = {
     plans: [
       { name: "Pay-as-you-go", tagline: "Betaal per kandidaat per rapportage. Geen vaste kosten, maar koop in naar behoefte.", price: "€19,-", priceFrom: true, priceNote: "per test", featured: false, cta: "Plan een demo", groups: [
         { title: "Vragenlijsten", items: ["37 vragenlijsten", "Onbeperkt competentieprofielen", "50 competenties", "Big50 Personality", "360 Feedback"] },
-        { title: "Hrmforce portal", items: ["Standaard Look & Feel", "Volledig online", "Kandidatenbeheer", "Management reporting"] },
+        { title: "hrmforce portal", items: ["Standaard Look & Feel", "Volledig online", "Kandidatenbeheer", "Management reporting"] },
         { title: "Support", items: ["Online kennisbank", "Training open inschrijving"] } ] },
       { name: "Advanced", tagline: "Onbeperkt gebruik van vragenlijsten. Jaarlijkse licentie op basis van het aantal medewerkers of consultants.", price: "€1,-", priceFrom: true, priceNote: "per medewerker per maand", featured: true, cta: "Plan een demo", groups: [
         { title: "Vragenlijsten", items: ["37 vragenlijsten", "Maatwerk vragenlijst Onderwijs", "Maatwerk vragenlijst Zorg", "CanMeds vragenlijst", "Onderwijs competentietaal", "Onbeperkt competentieprofielen", "Big50 Personality", "360 Feedback + Extra open vragen"] },
         { title: "HRM Tools", items: ["Analytics", "Recruitment", "BiLa"] },
-        { title: "Hrmforce portal", items: ["Dashboard", "Eigen bedrijfslogo", "Management Reporting", "Kandidatenbeheer", "Mass upload & Edit"] },
+        { title: "hrmforce portal", items: ["Dashboard", "Eigen bedrijfslogo", "Management Reporting", "Kandidatenbeheer", "Mass upload & Edit"] },
         { title: "Support", items: ["Telefonische helpdesk", "Nieuwe talen", "Certificatietraining voor 1 deelnemer", "API (bestaande koppelingen)"] } ] },
       { name: "Pro", tagline: "Onbeperkt gebruik van vragenlijsten en alle hrmforce functionaliteiten. Jaarlijkse licentie op basis van het aantal medewerkers of consultants.", price: "€1,-", priceFrom: true, priceNote: "per medewerker per maand", featured: false, cta: "Plan een demo", groups: [
         { title: "Vragenlijsten", items: ["Alle vragenlijsten", "Vragenlijsten op maat", "Extra open vragen", "Onbeperkt competentieprofielen", "Maatwerk competenties"] },
         { title: "HRM Tools", items: ["Recruitment", "Development", "Employability", "Teamview", "Analytics", "Ontwikkelflow op maat"] },
-        { title: "Hrmforce portal", items: ["Dashboard+", "Eigen huisstijl in portal en rapportages", "Management Reporting", "Kandidatenbeheer", "Mass upload & Edit"] },
+        { title: "hrmforce portal", items: ["Dashboard+", "Eigen huisstijl in portal en rapportages", "Management Reporting", "Kandidatenbeheer", "Mass upload & Edit"] },
         { title: "Support", items: ["Eigen accountmanager", "Direct toegang tot nieuwe functionaliteiten", "Maatwerk API", "Autosync", "Certificatietraining tot 8 deelnemers"] } ] },
     ],
     featuredBadge: "Meest gekozen",

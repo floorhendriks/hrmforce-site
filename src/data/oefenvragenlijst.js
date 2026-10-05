@@ -275,3 +275,50 @@ export const VRAGENLIJSTEN = {
     ],
   },
 };
+
+/* Titel en omschrijving per vragenlijst. Mensen zoeken op "gratis <test>",
+   dus dat woord staat vooraan. Titel onder de 60 tekens, omschrijving onder
+   de 155. */
+export const VL_META = {
+  nl: {
+    titel: (n) => `${n}: gratis online test | hrmforce`,
+    omschrijving: (n) =>
+      `Doe gratis de online test ${n}. 25 stellingen, geen goede of foute antwoorden, en direct na afloop een profielschets op je scherm.`,
+  },
+  en: {
+    titel: (n) => `${n}: free online test | hrmforce`,
+    omschrijving: (n) =>
+      `Take the free online ${n} test. 25 statements, no right or wrong answers, and a profile sketch on screen as soon as you finish.`,
+  },
+  de: {
+    titel: (n) => `${n}: kostenloser Test | hrmforce`,
+    omschrijving: (n) =>
+      `Kostenloser Test ${n} online. 25 Aussagen, keine richtigen oder falschen Antworten, danach sofort eine Profilskizze.`,
+  },
+  fr: {
+    titel: (n) => `${n} : test gratuit | hrmforce`,
+    omschrijving: (n) =>
+      `Passez gratuitement le test ${n} en ligne. 25 affirmations, ni bonne ni mauvaise réponse, et une esquisse de profil dès la fin.`,
+  },
+  es: {
+    titel: (n) => `${n}: test online gratuito | hrmforce`,
+    omschrijving: (n) =>
+      `Haz gratis el test ${n} online. 25 afirmaciones, sin respuestas correctas ni incorrectas, y un esbozo de perfil nada más terminar.`,
+  },
+  ro: {
+    titel: (n) => `${n}: test online gratuit | hrmforce`,
+    omschrijving: (n) =>
+      `Fă gratuit testul ${n} online. 25 de afirmații, fără răspunsuri corecte sau greșite, și o schiță de profil imediat după ce termini.`,
+  },
+};
+
+/* Na de profielschets wil een deel van de bezoekers verder. Per vragenlijst
+   het assessment dat er inhoudelijk bij hoort. */
+export const VL_ASSESSMENT = {
+  bigfive: "/assessments/big-five/",
+  disc: "/assessments/disc-test/",
+  drijfveren: "/assessments/drijfverentest/",
+  leiderschap: "/assessments/leiderschapstest/",
+  competenties: "/assessments/competentie-check/",
+  studiekeuze: "/assessments/studiekeuzetest/",
+};

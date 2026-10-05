@@ -1,9 +1,10 @@
 ---
 import Base from "../../layouts/Base.astro";
 import Oefentest from "../../components/Oefentest.astro";
+import GratisTests from "../../components/GratisTests.astro";
 import Oefenvragenlijst from "../../components/Oefenvragenlijst.astro";
-import { ONDERDELEN, OT_UI } from "../../data/oefentest-ui.js";
-import { VRAGENLIJSTEN, VL_UI } from "../../data/oefenvragenlijst.js";
+import { ONDERDELEN, OT_UI, OT_META } from "../../data/oefentest-ui.js";
+import { VRAGENLIJSTEN, VL_UI, VL_META } from "../../data/oefenvragenlijst.js";
 import numeriek from "../../data/oefenbank/numeriek.nl.json";
 import verbaal from "../../data/oefenbank/verbaal.nl.json";
 import calculation from "../../data/oefenbank/calculation.nl.json";
@@ -29,9 +30,11 @@ export function getStaticPaths() {
 const { sleutel, o, vragenlijst } = Astro.props;
 const t = vragenlijst ? VL_UI["nl"] : OT_UI["nl"];
 const naam = o.naam["nl"];
+const meta = vragenlijst ? VL_META["nl"] : OT_META["nl"];
 ---
-<Base lang="nl" title={`${naam} | ${t.eyebrow} | hrmforce`} description={o.lead["nl"]} active="">
+<Base lang="nl" title={meta.titel(naam)} description={meta.omschrijving(naam)} active="">
   {vragenlijst
     ? <Oefenvragenlijst onderdeel={sleutel} lang="nl" bank={BANKEN_VL[sleutel]} />
     : <Oefentest onderdeel={sleutel} lang="nl" bank={BANKEN[sleutel]} />}
+  <GratisTests lang="nl" huidig={sleutel} />
 </Base>

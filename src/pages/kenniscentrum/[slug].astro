@@ -5,6 +5,7 @@ import { getLangFromUrl, localizePath, navHref } from "../../i18n/utils.js";
 import { assessments } from "../../data/assessments.js";
 import { posts as allPosts } from "../../data/blog.js";
 import validPaths from "../../data/valid-paths.js";
+import { merknaam, merknaamInHtml } from "../../lib/merknaam.js";
 import { DUBBELE_SLUGS } from "../../data/kenniscentrum-duplicaten.js";
 
 export async function getStaticPaths() {
@@ -31,6 +32,10 @@ if (!p) {
         excerpt: pick(r.excerpt, lang), body: (r.body || []).map((b) => pick(b, lang)),
         metaDescription: pick(r.metaDescription, lang) };
 }
+// Merknaam kleinschrijven in alles wat uit Sanity komt.
+p = { ...p, title: merknaam(p.title || ""), excerpt: merknaam(p.excerpt || ""),
+      metaDescription: merknaam(p.metaDescription || ""),
+      body: (p.body || []).map((b) => (typeof b === "string" ? merknaamInHtml(b) : b)) };
 const fmt = (d) => new Date(d).toLocaleDateString("nl-NL");
 // Pillar-cluster: gerelateerde assessments + verwante artikelen (interne links).
 const _hay = `${p.title||""} ${p.category||""} ${p.excerpt||""} ${(p.body||[]).join(" ")}`.toLowerCase();
@@ -75,7 +80,7 @@ const _articleLd = {
   },
 };
 ---
-<Base title={`${p.title} | Hrmforce`} description={p.metaDescription || p.excerpt} active="">
+<Base title={`${p.title} | hrmforce`} description={p.metaDescription || p.excerpt} active="">
   <script type="application/ld+json" is:inline set:html={JSON.stringify(_articleLd)}></script>
   <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={localizePath("/kenniscentrum/", lang)}>Kenniscentrum</a> › <span>{p.title}</span></div></div>
   <section class="ahero"><div class="wrap" style="display:block">

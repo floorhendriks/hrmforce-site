@@ -2,11 +2,13 @@
 import { webpHtml } from "../lib/beeld.js";
 import { titel, omschrijving, kortZin } from "../lib/meta.js";
 import { herstelLinks } from "../data/link-onderhoud.js";
+import { merknaam, merknaamInHtml } from "../lib/merknaam.js";
 import Base from "../layouts/Base.astro";
 import { createClient } from "@sanity/client";
 import { shopInfo } from "../data/assessment-shop.js";
 import { localizePath, sanitizeBodyLinks } from "../i18n/utils.js";
 import LogoSlider from "../components/LogoSlider.astro";
+import GratisTests from "../components/GratisTests.astro";
 import validPaths from "../data/valid-paths.js";
 import { DUBBELE_PADEN } from "../data/kenniscentrum-duplicaten.js";
 
@@ -43,12 +45,18 @@ export async function getStaticPaths() {
     .map((x) => ({ params: { path: x.p }, props: { article: x.a } }));
 }
 
-const { article } = Astro.props;
+const { article: _artikel } = Astro.props;
+// Merknaam kleinschrijven in alles wat uit Sanity komt.
+const article = { ..._artikel, title: merknaam(_artikel.title || ""), excerpt: merknaam(_artikel.excerpt || "") };
 const fmt = (d) => (d ? new Date(d).toLocaleDateString("nl-NL") : "");
 
 // Taal afleiden uit het pad (bv. /en/kenniscentrum/...).
 const seg = (article.path || "").split("/").filter(Boolean)[0];
 const lang = ["en", "de", "fr", "es", "ro"].includes(seg) ? seg : "nl";
+
+// De kleurentest is de drukstbezochte gratis test. Wie hem doet, krijgt
+// daaronder de elf andere gratis tests te zien in plaats van een doodlopend eind.
+const toonGratisTests = /(^|\/)gratis-kleurentest\/?$/.test("/" + (article.path || "").replace(/^\/+/, ""));
 
 // Meest relevante assessment kiezen op basis van de titel (themabuckets).
 const RECI18N = {
@@ -60,6 +68,8 @@ const RECI18N = {
     "leiderschapstest": { label: "Leiderschapstest", blurb: "Inzicht in leiderschapsstijlen en managementrollen." },
     "360-graden-feedback": { label: "360 graden feedback", blurb: "Feedback van collega's, leidinggevenden en klanten." },
     "studiekeuzetest": { label: "Studiekeuzetest", blurb: "Passende opleidingen en beroepen op basis van interesses." },
+    "competentie-check": { label: "Competentiecheck", blurb: "Gedrag per competentie, vergeleken met de eisen van de functie." },
+    "duurzame-inzetbaarheid-scan": { label: "Duurzame inzetbaarheid scan", blurb: "Werkvermogen, energie en betrokkenheid in beeld." },
   },
   en: {
     "disc-test": { label: "DISC test", blurb: "Map behaviour, communication and collaboration." },
@@ -69,6 +79,8 @@ const RECI18N = {
     "leiderschapstest": { label: "Leadership test", blurb: "Insight into leadership styles and management roles." },
     "360-graden-feedback": { label: "360-degree feedback", blurb: "Feedback from colleagues, managers and clients." },
     "studiekeuzetest": { label: "Study choice test", blurb: "Suitable studies and professions based on interests." },
+    "competentie-check": { label: "Competency check", blurb: "Behaviour per competency, compared with what the role asks." },
+    "duurzame-inzetbaarheid-scan": { label: "Employability scan", blurb: "Work ability, energy and engagement in one picture." },
   },
   de: {
     "disc-test": { label: "DISC-Test", blurb: "Verhalten, Kommunikation und Zusammenarbeit erfassen." },
@@ -78,6 +90,8 @@ const RECI18N = {
     "leiderschapstest": { label: "Führungstest", blurb: "Einblick in Führungsstile und Managementrollen." },
     "360-graden-feedback": { label: "360-Grad-Feedback", blurb: "Feedback von Kollegen, Führungskräften und Kunden." },
     "studiekeuzetest": { label: "Studienwahltest", blurb: "Passende Studiengänge und Berufe auf Basis von Interessen." },
+    "competentie-check": { label: "Kompetenz-Check", blurb: "Verhalten je Kompetenz, verglichen mit den Anforderungen der Stelle." },
+    "duurzame-inzetbaarheid-scan": { label: "Employability-Scan", blurb: "Arbeitsfähigkeit, Energie und Engagement auf einen Blick." },
   },
   fr: {
     "disc-test": { label: "Test DISC", blurb: "Cartographie le comportement, la communication et la collaboration." },
@@ -87,6 +101,8 @@ const RECI18N = {
     "leiderschapstest": { label: "Test de leadership", blurb: "Aperçu des styles de leadership et des rôles managériaux." },
      "360-graden-feedback": { label: "Feedback à 360 degrés", blurb: "Retours de collègues, managers et clients." },
     "studiekeuzetest": { label: "Test d'orientation", blurb: "Formations et métiers adaptés selon les intérêts." },
+    "competentie-check": { label: "Bilan de compétences", blurb: "Le comportement par compétence, comparé aux exigences du poste." },
+    "duurzame-inzetbaarheid-scan": { label: "Scan d'employabilité", blurb: "Capacité de travail, énergie et engagement en un coup d'œil." },
   },
   es: {
     "disc-test": { label: "Test DISC", blurb: "Mapea el comportamiento, la comunicación y la colaboración." },
@@ -96,6 +112,8 @@ const RECI18N = {
     "leiderschapstest": { label: "Test de liderazgo", blurb: "Información sobre estilos de liderazgo y roles directivos." },
     "360-graden-feedback": { label: "Feedback de 360 grados", blurb: "Comentarios de compañeros, responsables y clientes." },
     "studiekeuzetest": { label: "Test de orientación académica", blurb: "Estudios y profesiones adecuados según los intereses." },
+    "competentie-check": { label: "Chequeo de competencias", blurb: "Conducta por competencia, comparada con lo que pide el puesto." },
+    "duurzame-inzetbaarheid-scan": { label: "Escáner de empleabilidad", blurb: "Capacidad de trabajo, energía y compromiso de un vistazo." },
   },
   ro: {
     "disc-test": { label: "Test DISC", blurb: "Cartografiază comportamentul, comunicarea și colaborarea." },
@@ -105,31 +123,46 @@ const RECI18N = {
     "leiderschapstest": { label: "Test de leadership", blurb: "Perspectivă asupra stilurilor de leadership și rolurilor de management." },
     "360-graden-feedback": { label: "Feedback 360 de grade", blurb: "Feedback de la colegi, manageri și clienți." },
     "studiekeuzetest": { label: "Test de orientare în studii", blurb: "Studii și profesii potrivite în funcție de interese." },
+    "competentie-check": { label: "Verificare de competențe", blurb: "Comportamentul pe fiecare competență, față de cerințele rolului." },
+    "duurzame-inzetbaarheid-scan": { label: "Scanare de angajabilitate", blurb: "Capacitatea de muncă, energia și implicarea dintr-o privire." },
   },
 };
 const REC = RECI18N[lang] || RECI18N.nl;
-function pickAssessment(title) {
+
+// Zoekwoorden per assessment, in de zes talen van de site. Een treffer in de
+// titel weegt zwaarder dan een treffer in de tekst: de titel zegt waar het
+// artikel over gaat, de tekst noemt een onderwerp soms terloops.
+const TREFWOORDEN = {
+  "disc-test": ["disc", "gedragsstijl", "behavioural style", "verhaltensstil"],
+  "big-five": ["big five", "big 5", "big fifty", "persoonlijkheid", "persoonlijk", "personality", "persönlichkeit", "personnalité", "personalidad", "personalitate", "karakter", "trek", "introvert", "extravert"],
+  "cognitieve-test": ["capacite", "capacit", "cognit", "intelligent", "iq", "abstract", "matrigma", "ability", "aptitude", "leervermogen", "denkniveau", "werk- en denkniveau", "redeneer", "numeriek", "verbaal"],
+  "drijfverentest": ["drijfver", "motivat", "drives", "antrieb", "bevlogen", "energie", "zingeving", "waarden"],
+  "leiderschapstest": ["leider", "leadership", "management", "manager", "führung", "leidinggev", "directie", "coachend"],
+  "360-graden-feedback": ["360", "feedback", "team", "samenwerk", "collega", "teamrol", "groepsrol", "retrospective"],
+  "studiekeuzetest": ["studiekeuze", "beroepskeuze", "loopbaan", "career", "study", "orientat", "schoolverlat", "starter", "stage", "jong talent"],
+  "competentie-check": ["competentie", "competency", "kompetenz", "compétence", "competencia", "vaardighe", "skill", "gedragsindicator", "functieprofiel"],
+  "duurzame-inzetbaarheid-scan": ["inzetbaarheid", "employability", "vitalit", "werkplezier", "verzuim", "burn-out", "burnout", "werkdruk", "stress", "veerkracht", "welzijn", "retentie", "verloop"],
+};
+const TITELGEWICHT = 10;
+function pickAssessment(title, tekst) {
   const t = (title || "").toLowerCase();
-  const has = (...kw) => kw.some((k) => t.includes(k));
-  if (has("disc")) return "disc-test";
-  if (has("big five", "big 5", "big fifty", "persoonlijk", "personality")) return "big-five";
-  if (has("capacit", "cognit", "intelligent", "iq", "abstract", "matrigma", "ability")) return "cognitieve-test";
-  if (has("drijfver", "motivat", "drives")) return "drijfverentest";
-  if (has("leider", "leadership", "management", "manager")) return "leiderschapstest";
-  if (has("team", "360", "feedback", "samenwerk")) return "360-graden-feedback";
-  if (has("studiekeuze", "beroepskeuze", "loopbaan", "career", "study")) return "studiekeuzetest";
-  return null;
+  const b = (tekst || "").slice(0, 2500).toLowerCase();
+  let beste = null;
+  let hoogste = 0;
+  for (const [slug, woorden] of Object.entries(TREFWOORDEN)) {
+    let score = 0;
+    for (const w of woorden) {
+      if (t.includes(w)) score += TITELGEWICHT;
+      else if (b.includes(w)) score += 1;
+    }
+    if (score > hoogste) { hoogste = score; beste = slug; }
+  }
+  return hoogste >= 2 ? beste : null;
 }
-const recSlug = pickAssessment(article.title);
-const rec = recSlug ? REC[recSlug] : null;
-const recShop = recSlug ? shopInfo(recSlug) : null;
-const recHref = recSlug ? localizePath(`/assessments/${recSlug}/`, lang) : localizePath("/online-assessments/", lang);
 const contactHref = localizePath("/contact/", lang);
 const allHref = localizePath("/online-assessments/", lang);
 
 // Gerelateerde assessments voor de eindband (max 3, exclusief de aanbevolen).
-const relatedPool = ["big-five", "drijfverentest", "360-graden-feedback", "disc-test", "cognitieve-test"];
-const related = relatedPool.filter((s) => s !== recSlug).slice(0, 3).map((s) => ({ slug: s, label: REC[s].label }));
 
 // UI-teksten (nl volledig; de/fr/es/ro vallen terug op en).
 const T = {
@@ -158,7 +191,7 @@ const _articleLd = {
 };
 
 // Body splitsen: contextuele kaart na de eerste </h2> (anders vóór de eindband).
-let body = sanitizeBodyLinks(article.body || "", lang, validPaths);
+let body = merknaamInHtml(sanitizeBodyLinks(article.body || "", lang, validPaths));
 // Afbeeldingen stonden nog op de oude WordPress-site. Ze staan nu in /media/,
 // zodat de pagina niet afhankelijk is van een domein dat vervangen wordt.
 body = body.replace(/https:\/\/(?:www\.)?hrmforce\.com\/wp-content\//g, "/media/wp-content/");
@@ -229,6 +262,13 @@ const _plain = body
   .trim();
 // De eerste hele zinnen van het artikel, zonder beletselteken: een
 // omschrijving die midden in een zin ophoudt kost kliks in de zoekresultaten.
+const recSlug = pickAssessment(article.title, _plain);
+const rec = recSlug ? REC[recSlug] : null;
+const recShop = recSlug ? shopInfo(recSlug) : null;
+const recHref = recSlug ? localizePath(`/assessments/${recSlug}/`, lang) : allHref;
+const relatedPool = ["big-five", "drijfverentest", "360-graden-feedback", "disc-test", "cognitieve-test"];
+const related = relatedPool.filter((x) => x !== recSlug).slice(0, 3).map((x) => ({ slug: x, label: REC[x].label }));
+
 let metaDesc = kortZin(_plain, 160);
 const _descFallback = {
   nl: "Lees meer over assessments, selectie en talentontwikkeling bij hrmforce.",
@@ -390,6 +430,7 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
       </div>
     </div>
   </article>
+  {toonGratisTests && <GratisTests lang={lang} huidig="kleuren" />}
   {showAdviesSlider && <LogoSlider heading={null} />}
 </Base>
 

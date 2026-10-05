@@ -2,8 +2,8 @@
 /* Oefenvragenlijst: registratie, 25 willekeurige stellingen op een vijfpunts-
    schaal, daarna een profielschets. Geen goede of foute antwoorden, dus ook
    geen score. De stellingen staan in src/data/oefenbank/vl-*.json. */
-import { VL_UI, VRAGENLIJSTEN } from "../data/oefenvragenlijst.js";
-import { OT_UI } from "../data/oefentest-ui.js";
+import { VL_UI, VRAGENLIJSTEN, VL_ASSESSMENT } from "../data/oefenvragenlijst.js";
+import { OT_UI, VERDER_UI } from "../data/oefentest-ui.js";
 import { localizePath } from "../i18n/utils.js";
 const { onderdeel, lang = "nl", bank } = Astro.props;
 const t = VL_UI[lang] || VL_UI.nl;
@@ -13,6 +13,8 @@ const v = VRAGENLIJSTEN[onderdeel];
 const naam = v.naam[lang] || v.naam.nl;
 const oefenHref = localizePath("/oefentest/", lang);
 const privacyHref = localizePath("/support/privacy-statement/", lang);
+const verder = VERDER_UI[lang] || VERDER_UI.nl;
+const assessmentHref = VL_ASSESSMENT[onderdeel] ? localizePath(VL_ASSESSMENT[onderdeel], lang) : "";
 /* alleen wat de pagina nodig heeft, in de taal van de pagina */
 const dims = v.dimensies.map((d) => ({ naam: d.naam[lang] || d.naam.nl, hoog: d.hoog[lang] || d.hoog.nl, laag: d.laag[lang] || d.laag.nl }));
 /* de drie zinnen zijn functies; ze gaan als sjabloon met %s naar de pagina */
@@ -59,10 +61,15 @@ const sjabloon = {
       <button type="button" class="btn btn-primary" id="vlOpnieuw">{t.herkansing}</button>
       <a class="btn btn-ghost" href={oefenHref}>{t.terug}</a>
     </div>
+    {assessmentHref && (
+      <p class="ot-verder">{verder.tekst} <a href={assessmentHref}>{verder.link} &rarr;</a></p>
+    )}
   </div>
 </section>
 
 <style is:global>
+  .ot-verder { margin:18px 0 0; font-size:14.5px; color:var(--muted); line-height:1.6; }
+  .ot-verder a { color:var(--blue); font-weight:700; }
   .vl-schets { list-style:none; margin:22px 0 26px; padding:0; display:grid; gap:14px; }
   .vl-schets li { border:1px solid var(--line); padding:15px 17px; background:#fff; }
   .vl-schets .vd { color:var(--navy); font-weight:800; font-size:15.5px; margin:0 0 5px; }

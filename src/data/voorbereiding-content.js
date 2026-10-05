@@ -2,7 +2,7 @@
 export const voorbereidingContent = {
   nl: {
     meta: {
-      title: "Voorbereiden op een assessment | Hrmforce",
+      title: "Voorbereiden op een assessment | hrmforce",
       description: "Wat kun je verwachten voorafgaand, tijdens en na afloop van een assessment bij hrmforce?",
     },
     crumb: "Voorbereiding",
@@ -18,7 +18,7 @@ export const voorbereidingContent = {
 <h3>Wat levert een assessment op?</h3>
 <p>Na het maken van een assessment krijg je inzicht in je talenten, wat je drijfveren zijn in je werk en waar jouw ontwikkelpotentieel ligt. Een assessment geeft je een genuanceerd inzicht in je kwaliteiten. Assessments kunnen bestaan uit online testen en vragenlijsten.</p>
 <p>Een assessment geeft meer zekerheid over de kwaliteiten en het ontwikkelpotentieel van de kandidaat door middel van een genuanceerd inzicht. Opdrachtgevers krijgen op deze wijze een overzichtelijke beschrijving van de deelnemer. Assessments kunnen ingezet worden in verschillende fases en afdelingen binnen organisaties, voor onder andere selectie, onboarding en doorstroming.</p>
-<p>Hrmforce biedt diverse soorten assessments. Zo kun je bij ons terecht voor een <a href="/online-assessments/">selectie-, ontwikkel- en loopbaanassessment</a>, maar ook voor een team assessment/groepsanalyse waarbij talenten en ontwikkelpunten van een team inzichtelijk worden gemaakt.</p>
+<p>hrmforce biedt diverse soorten assessments. Zo kun je bij ons terecht voor een <a href="/online-assessments/">selectie-, ontwikkel- en loopbaanassessment</a>, maar ook voor een team assessment/groepsanalyse waarbij talenten en ontwikkelpunten van een team inzichtelijk worden gemaakt.</p>
 <h3>Waar en hoe maak je een assessment?</h3>
 <p>Het voordeel van een online assessment is dat het vrijwel altijd en overal afgenomen kan worden. Assessments kunnen zowel thuis of op locatie worden doorlopen; dit kan op wens van de opdrachtgever worden aangepast.</p>
 <p>Allereerst ontvangt de kandidaat een e-mail met een uitnodiging voor het maken van het assessment. Hierin staat zowel praktische informatie als persoonlijke inloggegevens. In de mail staat tevens een link waarmee je doorgeleid wordt naar een beveiligde online omgeving. Hier kun je het assessment maken.</p>
@@ -79,7 +79,7 @@ export const voorbereidingContent = {
   },
   en: {
     meta: {
-      title: "Preparing for an assessment | Hrmforce",
+      title: "Preparing for an assessment | hrmforce",
       description: "What can you expect before, during and after an assessment at hrmforce?",
     },
     crumb: "Preparation",
@@ -95,7 +95,7 @@ export const voorbereidingContent = {
 <h3>What does an assessment deliver?</h3>
 <p>After completing an assessment you gain insight into your talents, what drives you in your work and where your development potential lies. An assessment gives you a nuanced insight into your qualities. Assessments can consist of online tests and questionnaires.</p>
 <p>An assessment provides more certainty about the qualities and development potential of the candidate through a nuanced insight. In this way, clients receive a clear description of the participant. Assessments can be used in various phases and departments within organisations, for selection, onboarding and internal mobility, among other things.</p>
-<p>Hrmforce offers various types of assessments. For example, you can come to us for a <a href="/online-assessments/">selection, development and career assessment</a>, but also for a team assessment/group analysis in which the talents and development points of a team are made visible.</p>
+<p>hrmforce offers various types of assessments. For example, you can come to us for a <a href="/online-assessments/">selection, development and career assessment</a>, but also for a team assessment/group analysis in which the talents and development points of a team are made visible.</p>
 <h3>Where and how do you take an assessment?</h3>
 <p>The advantage of an online assessment is that it can be taken almost anytime and anywhere. Assessments can be completed either at home or on location; this can be adjusted at the client's request.</p>
 <p>First, the candidate receives an email with an invitation to take the assessment. This contains both practical information and personal login details. The email also contains a link that directs you to a secure online environment. Here you can take the assessment.</p>
@@ -156,7 +156,7 @@ export const voorbereidingContent = {
   },
   de: {
     meta: {
-      title: "Vorbereitung auf ein Assessment | Hrmforce",
+      title: "Vorbereitung auf ein Assessment | hrmforce",
       description: "Was können Sie vor, während und nach einem Assessment bei hrmforce erwarten?",
     },
     crumb: "Vorbereitung",
@@ -172,7 +172,7 @@ export const voorbereidingContent = {
 <h3>Was bringt ein Assessment?</h3>
 <p>Nach dem Absolvieren eines Assessments erhalten Sie Einblick in Ihre Talente, was Sie in Ihrer Arbeit antreibt und wo Ihr Entwicklungspotenzial liegt. Ein Assessment gibt Ihnen einen differenzierten Einblick in Ihre Qualitäten. Assessments können aus Online-Tests und Fragebögen bestehen.</p>
 <p>Ein Assessment gibt durch einen differenzierten Einblick mehr Sicherheit über die Qualitäten und das Entwicklungspotenzial des Kandidaten. Auftraggeber erhalten auf diese Weise eine übersichtliche Beschreibung des Teilnehmers. Assessments können in verschiedenen Phasen und Abteilungen innerhalb von Organisationen eingesetzt werden, unter anderem für Auswahl, Onboarding und interne Mobilität.</p>
-<p>Hrmforce bietet verschiedene Arten von Assessments an. So können Sie bei uns ein <a href="/online-assessments/">Auswahl-, Entwicklungs- und Laufbahn-Assessment</a> erhalten, aber auch ein Team-Assessment/eine Gruppenanalyse, bei der Talente und Entwicklungspunkte eines Teams sichtbar gemacht werden.</p>
+<p>hrmforce bietet verschiedene Arten von Assessments an. So können Sie bei uns ein <a href="/online-assessments/">Auswahl-, Entwicklungs- und Laufbahn-Assessment</a> erhalten, aber auch ein Team-Assessment/eine Gruppenanalyse, bei der Talente und Entwicklungspunkte eines Teams sichtbar gemacht werden.</p>
 <h3>Wo und wie absolvieren Sie ein Assessment?</h3>
 <p>Der Vorteil eines Online-Assessments besteht darin, dass es nahezu jederzeit und überall abgelegt werden kann. Assessments können sowohl zu Hause als auch vor Ort durchlaufen werden; dies kann auf Wunsch des Auftraggebers angepasst werden.</p>
 <p>Zunächst erhält der Kandidat eine E-Mail mit einer Einladung zum Absolvieren des Assessments. Darin stehen sowohl praktische Informationen als auch persönliche Zugangsdaten. In der E-Mail befindet sich außerdem ein Link, über den Sie zu einer sicheren Online-Umgebung weitergeleitet werden. Hier können Sie das Assessment absolvieren.</p>
@@ -233,7 +233,7 @@ export const voorbereidingContent = {
   },
   fr: {
     meta: {
-      title: "Se préparer à un assessment | Hrmforce",
+      title: "Se préparer à un assessment | hrmforce",
       description: "À quoi pouvez-vous vous attendre avant, pendant et après un assessment chez hrmforce ?",
     },
     crumb: "Préparation",
@@ -249,7 +249,7 @@ export const voorbereidingContent = {
 <h3>Que rapporte un assessment ?</h3>
 <p>Après avoir passé un assessment, vous obtenez un aperçu de vos talents, de ce qui vous motive dans votre travail et de l'endroit où se situe votre potentiel de développement. Un assessment vous donne un aperçu nuancé de vos qualités. Les assessments peuvent se composer de tests en ligne et de questionnaires.</p>
 <p>Un assessment offre plus de certitude sur les qualités et le potentiel de développement du candidat grâce à un aperçu nuancé. Les donneurs d'ordre reçoivent ainsi une description claire du participant. Les assessments peuvent être utilisés à différentes phases et dans différents services au sein des organisations, notamment pour la sélection, l'intégration et la mobilité interne.</p>
-<p>Hrmforce propose divers types d'assessments. Vous pouvez ainsi vous adresser à nous pour un <a href="/online-assessments/">assessment de sélection, de développement et de carrière</a>, mais aussi pour un assessment d'équipe/une analyse de groupe qui met en lumière les talents et les points de développement d'une équipe.</p>
+<p>hrmforce propose divers types d'assessments. Vous pouvez ainsi vous adresser à nous pour un <a href="/online-assessments/">assessment de sélection, de développement et de carrière</a>, mais aussi pour un assessment d'équipe/une analyse de groupe qui met en lumière les talents et les points de développement d'une équipe.</p>
 <h3>Où et comment passer un assessment ?</h3>
 <p>L'avantage d'un assessment en ligne est qu'il peut être passé presque à tout moment et n'importe où. Les assessments peuvent être réalisés aussi bien à domicile que sur site ; cela peut être adapté à la demande du donneur d'ordre.</p>
 <p>Tout d'abord, le candidat reçoit un e-mail contenant une invitation à passer l'assessment. Celui-ci contient à la fois des informations pratiques et des identifiants de connexion personnels. L'e-mail contient également un lien qui vous dirige vers un environnement en ligne sécurisé. Vous pouvez y passer l'assessment.</p>
@@ -310,7 +310,7 @@ export const voorbereidingContent = {
   },
   es: {
     meta: {
-      title: "Prepararse para un assessment | Hrmforce",
+      title: "Prepararse para un assessment | hrmforce",
       description: "¿Qué puede esperar antes, durante y después de un assessment en hrmforce?",
     },
     crumb: "Preparación",
@@ -326,7 +326,7 @@ export const voorbereidingContent = {
 <h3>¿Qué aporta un assessment?</h3>
 <p>Después de realizar un assessment obtiene información sobre sus talentos, qué le motiva en su trabajo y dónde se encuentra su potencial de desarrollo. Un assessment le ofrece una visión matizada de sus cualidades. Los assessments pueden constar de pruebas en línea y cuestionarios.</p>
 <p>Un assessment ofrece más certeza sobre las cualidades y el potencial de desarrollo del candidato mediante una visión matizada. De este modo, los clientes reciben una descripción clara del participante. Los assessments pueden utilizarse en distintas fases y departamentos dentro de las organizaciones, entre otras cosas para la selección, la incorporación y la movilidad interna.</p>
-<p>Hrmforce ofrece diversos tipos de assessments. Así, puede acudir a nosotros para un <a href="/online-assessments/">assessment de selección, de desarrollo y de carrera</a>, pero también para un assessment de equipo/análisis de grupo en el que se hacen visibles los talentos y los puntos de desarrollo de un equipo.</p>
+<p>hrmforce ofrece diversos tipos de assessments. Así, puede acudir a nosotros para un <a href="/online-assessments/">assessment de selección, de desarrollo y de carrera</a>, pero también para un assessment de equipo/análisis de grupo en el que se hacen visibles los talentos y los puntos de desarrollo de un equipo.</p>
 <h3>¿Dónde y cómo se hace un assessment?</h3>
 <p>La ventaja de un assessment en línea es que puede realizarse prácticamente en cualquier momento y lugar. Los assessments pueden realizarse tanto en casa como en las instalaciones; esto puede adaptarse a petición del cliente.</p>
 <p>En primer lugar, el candidato recibe un correo electrónico con una invitación para hacer el assessment. En él figuran tanto información práctica como datos de acceso personales. En el correo también hay un enlace que le dirige a un entorno en línea seguro. Aquí puede hacer el assessment.</p>
@@ -387,7 +387,7 @@ export const voorbereidingContent = {
   },
   ro: {
     meta: {
-      title: "Pregătirea pentru un assessment | Hrmforce",
+      title: "Pregătirea pentru un assessment | hrmforce",
       description: "La ce vă puteți aștepta înainte, în timpul și după un assessment la hrmforce?",
     },
     crumb: "Pregătire",
@@ -403,7 +403,7 @@ export const voorbereidingContent = {
 <h3>Ce oferă un assessment?</h3>
 <p>După susținerea unui assessment obțineți o perspectivă asupra talentelor dumneavoastră, asupra a ceea ce vă motivează în muncă și asupra locului în care se află potențialul dumneavoastră de dezvoltare. Un assessment vă oferă o perspectivă nuanțată asupra calităților dumneavoastră. Assessment-urile pot consta din teste online și chestionare.</p>
 <p>Un assessment oferă mai multă certitudine cu privire la calitățile și potențialul de dezvoltare al candidatului, printr-o perspectivă nuanțată. În acest fel, clienții primesc o descriere clară a participantului. Assessment-urile pot fi utilizate în diferite faze și departamente din cadrul organizațiilor, printre altele pentru selecție, integrare și mobilitate internă.</p>
-<p>Hrmforce oferă diverse tipuri de assessment-uri. Astfel, vă puteți adresa nouă pentru un <a href="/online-assessments/">assessment de selecție, de dezvoltare și de carieră</a>, dar și pentru un assessment de echipă/o analiză de grup în care talentele și punctele de dezvoltare ale unei echipe sunt evidențiate.</p>
+<p>hrmforce oferă diverse tipuri de assessment-uri. Astfel, vă puteți adresa nouă pentru un <a href="/online-assessments/">assessment de selecție, de dezvoltare și de carieră</a>, dar și pentru un assessment de echipă/o analiză de grup în care talentele și punctele de dezvoltare ale unei echipe sunt evidențiate.</p>
 <h3>Unde și cum susțineți un assessment?</h3>
 <p>Avantajul unui assessment online este că poate fi susținut aproape oricând și oriunde. Assessment-urile pot fi parcurse atât acasă, cât și la fața locului; acest lucru poate fi adaptat la cererea clientului.</p>
 <p>Mai întâi, candidatul primește un e-mail cu o invitație de a susține assessmentul. Acesta conține atât informații practice, cât și date de conectare personale. În e-mail se află de asemenea un link prin care sunteți redirecționat către un mediu online securizat. Aici puteți susține assessmentul.</p>
