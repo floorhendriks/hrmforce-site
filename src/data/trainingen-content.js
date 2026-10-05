@@ -8,6 +8,10 @@
 export const TR_KALENDER = [
   { iso: "2026-09-24", datum: "24 sep 2026", tijd: "09:30 - 16:30", start: "2026-09-24T09:30:00+02:00", eind: "2026-09-24T16:30:00+02:00", soort: "Certificatietraining", max: "Max. 12", deelnemers: 12, locatie: "Hoeve Rijlaarsdam, Nieuwveenseweg 59, 2421 LB Nieuwkoop", prijs: "€ 595,-", bedrag: "595" },
   { iso: "2026-11-19", datum: "19 nov 2026", tijd: "09:30 - 16:30", start: "2026-11-19T09:30:00+01:00", eind: "2026-11-19T16:30:00+01:00", soort: "Certificatietraining", max: "Max. 12", deelnemers: 12, locatie: "Hoeve Rijlaarsdam, Nieuwveenseweg 59, 2421 LB Nieuwkoop", prijs: "€ 595,-", bedrag: "595" },
+  { iso: "2027-03-18", datum: "18 mrt 2027", tijd: "09:30 - 16:30", start: "2027-03-18T09:30:00+01:00", eind: "2027-03-18T16:30:00+01:00", soort: "Certificatietraining", max: "Max. 12", deelnemers: 12, locatie: "Hoeve Rijlaarsdam, Nieuwveenseweg 59, 2421 LB Nieuwkoop", prijs: "€ 595,-", bedrag: "595" },
+  { iso: "2027-06-24", datum: "24 jun 2027", tijd: "09:30 - 16:30", start: "2027-06-24T09:30:00+02:00", eind: "2027-06-24T16:30:00+02:00", soort: "Certificatietraining", max: "Max. 12", deelnemers: 12, locatie: "Hoeve Rijlaarsdam, Nieuwveenseweg 59, 2421 LB Nieuwkoop", prijs: "€ 595,-", bedrag: "595" },
+  { iso: "2027-09-23", datum: "23 sep 2027", tijd: "09:30 - 16:30", start: "2027-09-23T09:30:00+02:00", eind: "2027-09-23T16:30:00+02:00", soort: "Certificatietraining", max: "Max. 12", deelnemers: 12, locatie: "Hoeve Rijlaarsdam, Nieuwveenseweg 59, 2421 LB Nieuwkoop", prijs: "€ 595,-", bedrag: "595" },
+  { iso: "2027-11-18", datum: "18 nov 2027", tijd: "09:30 - 16:30", start: "2027-11-18T09:30:00+01:00", eind: "2027-11-18T16:30:00+01:00", soort: "Certificatietraining", max: "Max. 12", deelnemers: 12, locatie: "Hoeve Rijlaarsdam, Nieuwveenseweg 59, 2421 LB Nieuwkoop", prijs: "€ 595,-", bedrag: "595" },
 ];
 
 // De locatie uit elkaar getrokken, zodat het Event-schema een echt adres krijgt.
