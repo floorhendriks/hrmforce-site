@@ -77,6 +77,19 @@ export function omschrijving(kop, staart = "") {
 }
 
 /**
+ * Een naam met drie of meer delen tussen schuine strepen inkorten door de
+ * middelste delen te laten vallen. Het eerste deel zegt wat de rol is, het
+ * laatste draagt vaak het land of de plaats. Zonder deze stap valt het laatste
+ * deel eraf en krijgen zes vacatures in zes landen dezelfde titel.
+ */
+function korterOpStrepen(naam, max) {
+  const delen = naam.split(" / ");
+  if (delen.length < 3) return null;
+  const kort2 = `${delen[0]} / ${delen[delen.length - 1]}`;
+  return kort2.length <= max ? kort2 : null;
+}
+
+/**
  * Titel uit een naam, een omschrijvend deel en het merk. Past het geheel niet,
  * dan valt eerst het merk weg en daarna het omschrijvende deel in zijn geheel.
  * Alleen een naam die op zichzelf te lang is wordt ingekort.
@@ -90,5 +103,9 @@ export function titel(naam, deel = "", merk = "hrmforce") {
   if (zonderMerk.length <= TITEL_MAX) return zonderMerk;
   const metMerk = [n, merk].filter(Boolean).join(" | ");
   if (metMerk.length <= TITEL_MAX) return metMerk;
+  if (n.length > TITEL_MAX) {
+    const opStrepen = korterOpStrepen(n, TITEL_MAX);
+    if (opStrepen) return opStrepen;
+  }
   return kort(n, TITEL_MAX);
 }

@@ -48,7 +48,7 @@ export const assessmentsI18n = {
     },
     "360-graden-feedback": {
       title: "360 degree feedback",
-      metaTitle: "360 degree feedback | Hrmforce", metaDescription: "Collect structured feedback from colleagues, managers and clients around competencies and behaviour.",
+      metaTitle: "360 degree feedback questionnaire and report | hrmforce", metaDescription: "Collect structured feedback from colleagues, managers and clients. A report with scores per competency, 15 minutes per assessor.",
       phase: "Development → performance", goal: "Providing insight into how someone is experienced by their environment, as a basis for development.",
       time: "15 minutes", form: "Questionnaire per assessor", feedback: "Clear report with scores per competency and feedback from several sources.", extra: "Suitable for teams and individual development paths.",
       traits: ["Collaboration", "Communication", "Leadership", "Results orientation"],
@@ -192,8 +192,8 @@ export const assessmentsI18n = {
     },
     "beroepskeuze-test": {
       title: "Career choice test",
-      metaTitle: "Take a career choice test? This profession suits you | Free demo",
-      metaDescription: "Receive reliable advice on suitable and less suitable professional groups. Including clear explanation and reporting.",
+      metaTitle: "Career choice test for career guidance | hrmforce",
+      metaDescription: "For career advisers and HR: well-founded advice on suitable professional groups, with an explanation per profession and a report you use in the conversation.",
       phase: "Development → performance",
       goal: "Giving reliable advice on suitable and less suitable professional groups.",
       time: "25 minutes", form: "Forced choice questionnaire.",
@@ -576,7 +576,7 @@ export const assessmentsI18n = {
     },
     "360-graden-feedback": {
       title: "360-Grad-Feedback",
-      metaTitle: "360-Grad-Feedback | Hrmforce", metaDescription: "Sammeln Sie strukturiertes Feedback von Kollegen, Führungskräften und Kunden rund um Kompetenzen und Verhalten.",
+      metaTitle: "360-Grad-Feedback: Fragebogen und Bericht | hrmforce", metaDescription: "Sammeln Sie strukturiertes Feedback von Kollegen, Führungskräften und Kunden. Ein Bericht mit Werten je Kompetenz, 15 Minuten pro Beurteiler.",
       phase: "Entwicklung → Leistung", goal: "Einblick geben, wie jemand von seinem Umfeld wahrgenommen wird, als Basis für Entwicklung.",
       time: "15 Minuten", form: "Fragebogen pro Beurteiler", feedback: "Übersichtlicher Bericht mit Scores pro Kompetenz und Feedback aus mehreren Quellen.", extra: "Geeignet für Teams und individuelle Entwicklungswege.",
       traits: ["Zusammenarbeit", "Kommunikation", "Führung", "Ergebnisorientierung"],
@@ -720,8 +720,8 @@ export const assessmentsI18n = {
     },
     "beroepskeuze-test": {
       title: "Berufswahltest",
-      metaTitle: "Berufswahltest machen? Dieser Beruf passt zu Ihnen | Kostenlose Demo",
-      metaDescription: "Erhalten Sie zuverlässige Beratung zu passenden und weniger passenden Berufsgruppen. Inklusive klarer Erklärung und Berichterstattung.",
+      metaTitle: "Berufswahltest in der Laufbahnberatung | hrmforce",
+      metaDescription: "Für Laufbahnberater und HR: eine fundierte Beratung zu passenden Berufsgruppen, mit Erklärung je Beruf und einem Bericht für das Gespräch.",
       phase: "Entwicklung → Leistung",
       goal: "Zuverlässige Beratung zu passenden und weniger passenden Berufsgruppen geben.",
       time: "25 Minuten", form: "Fragebogen mit erzwungener Wahl.",
@@ -1104,7 +1104,7 @@ export const assessmentsI18n = {
     },
     "360-graden-feedback": {
       title: "Feedback à 360 degrés",
-      metaTitle: "Feedback à 360 degrés | Hrmforce", metaDescription: "Recueillez un feedback structuré de collègues, de managers et de clients sur les compétences et les comportements.",
+      metaTitle: "Feedback 360 degrés : questionnaire et rapport | hrmforce", metaDescription: "Recueillez un retour structuré de collègues, responsables et clients. Un rapport avec des scores par compétence, 15 minutes par évaluateur.",
       phase: "Développement → performance", goal: "Donner un aperçu de la façon dont quelqu'un est perçu par son entourage, comme base de développement.",
       time: "15 minutes", form: "Questionnaire par évaluateur", feedback: "Rapport clair avec des scores par compétence et un feedback de plusieurs sources.", extra: "Adapté aux équipes et aux parcours de développement individuels.",
       traits: ["Collaboration", "Communication", "Leadership", "Orientation résultats"],
@@ -1248,8 +1248,8 @@ export const assessmentsI18n = {
     },
     "beroepskeuze-test": {
       title: "Test d'orientation professionnelle",
-      metaTitle: "Faire un test d'orientation professionnelle ? Ce métier vous correspond | Démo gratuite",
-      metaDescription: "Recevez des conseils fiables sur les groupes professionnels appropriés et moins appropriés. Y compris une explication et un rapport clairs.",
+      metaTitle: "Test d'orientation pour l'accompagnement de carrière | hrmforce",
+      metaDescription: "Pour les conseillers en carrière et les RH : un avis fondé sur les groupes professionnels adaptés, avec une explication par métier et un rapport pour l'entretien.",
       phase: "Développement → performance",
       goal: "Donner des conseils fiables sur les groupes professionnels appropriés et moins appropriés.",
       time: "25 minutes", form: "Questionnaire à choix forcé.",
@@ -1632,7 +1632,7 @@ export const assessmentsI18n = {
     },
     "360-graden-feedback": {
       title: "Feedback de 360 grados",
-      metaTitle: "Feedback de 360 grados | Hrmforce", metaDescription: "Recopile feedback estructurado de colegas, responsables y clientes sobre competencias y comportamiento.",
+      metaTitle: "Feedback 360 grados: cuestionario e informe | hrmforce", metaDescription: "Recoge feedback estructurado de compañeros, responsables y clientes. Un informe con puntuaciones por competencia, 15 minutos por evaluador.",
       phase: "Desarrollo → desempeño", goal: "Dar una visión de cómo es percibida una persona por su entorno, como base para el desarrollo.",
       time: "15 minutos", form: "Cuestionario por evaluador", feedback: "Informe claro con puntuaciones por competencia y feedback de varias fuentes.", extra: "Adecuado para equipos y trayectorias de desarrollo individuales.",
       traits: ["Colaboración", "Comunicación", "Liderazgo", "Orientación a resultados"],
@@ -1776,8 +1776,8 @@ export const assessmentsI18n = {
     },
     "beroepskeuze-test": {
       title: "Test de orientación profesional",
-      metaTitle: "¿Hacer un test de orientación profesional? Esta profesión encaja contigo | Demo gratis",
-      metaDescription: "Reciba un asesoramiento fiable sobre grupos profesionales adecuados y menos adecuados. Incluye una explicación e informe claros.",
+      metaTitle: "Test de orientación profesional para asesores | hrmforce",
+      metaDescription: "Para asesores de carrera y RR. HH.: un asesoramiento fundado sobre grupos profesionales adecuados, con explicación por profesión y un informe para la conversación.",
       phase: "Desarrollo → desempeño",
       goal: "Dar un asesoramiento fiable sobre grupos profesionales adecuados y menos adecuados.",
       time: "25 minutos", form: "Cuestionario de elección forzada.",
@@ -2160,7 +2160,7 @@ export const assessmentsI18n = {
     },
     "360-graden-feedback": {
       title: "Feedback la 360 de grade",
-      metaTitle: "Feedback la 360 de grade | Hrmforce", metaDescription: "Colectați feedback structurat de la colegi, manageri și clienți despre competențe și comportament.",
+      metaTitle: "Feedback 360 de grade: chestionar și raport | hrmforce", metaDescription: "Colectează feedback structurat de la colegi, manageri și clienți. Un raport cu scoruri pe competență, 15 minute pentru fiecare evaluator.",
       phase: "Dezvoltare → performanță", goal: "Oferirea unei perspective asupra modului în care cineva este perceput de mediul său, ca bază pentru dezvoltare.",
       time: "15 minute", form: "Chestionar per evaluator", feedback: "Raport clar cu scoruri per competență și feedback din mai multe surse.", extra: "Potrivit pentru echipe și parcursuri de dezvoltare individuale.",
       traits: ["Colaborare", "Comunicare", "Leadership", "Orientare spre rezultate"],
@@ -2304,8 +2304,8 @@ export const assessmentsI18n = {
     },
     "beroepskeuze-test": {
       title: "Test de orientare profesională",
-      metaTitle: "Faci un test de orientare profesională? Această profesie ți se potrivește | Demo gratuit",
-      metaDescription: "Primiți o recomandare fiabilă privind grupurile profesionale potrivite și mai puțin potrivite. Inclusiv explicație și raport clare.",
+      metaTitle: "Test de orientare profesională pentru consilieri | hrmforce",
+      metaDescription: "Pentru consilierii de carieră și HR: o recomandare fundamentată privind grupurile profesionale potrivite, cu explicație pe profesie și un raport pentru discuție.",
       phase: "Dezvoltare → performanță",
       goal: "Oferirea unei recomandări fiabile privind grupurile profesionale potrivite și mai puțin potrivite.",
       time: "25 de minute", form: "Chestionar cu alegere forțată.",
