@@ -2,7 +2,7 @@
 import LogoSlider from "./LogoSlider.astro";
 import Img from "./Img.astro";
 import { getLangFromUrl, localizePath, demoPath } from "../i18n/utils.js";
-import { trainingenFor } from "../data/trainingen-content.js";
+import { trainingenFor, TR_LOCATIE } from "../data/trainingen-content.js";
 
 const lang = getLangFromUrl(Astro.url);
 const t = trainingenFor(lang);
@@ -11,6 +11,42 @@ const adviesHref = localizePath("/advies/", lang);
 const contactHref = localizePath("/contact/", lang);
 const signupHref = lang === "nl" ? "/inschrijfformulier-trainingen/" : contactHref;
 const cardHref = (nlHref) => (lang === "nl" ? nlHref : contactHref);
+
+// Event-schema voor de certificatietrainingen die nog komen. Zonder data staat
+// er niets in de broncode, want een lege lijst evenementen helpt niemand.
+const kalenderUrl = new URL(localizePath("/advies/trainingen/", lang) + "#kalender", Astro.site || "https://hrmforce.com").href;
+const eventLd = t.kalender.map((r) => ({
+  "@context": "https://schema.org",
+  "@type": "EducationEvent",
+  name: `${r.soort} hrmforce`,
+  description: t.certP,
+  startDate: r.start,
+  endDate: r.eind,
+  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+  eventStatus: "https://schema.org/EventScheduled",
+  inLanguage: "nl",
+  maximumAttendeeCapacity: r.deelnemers,
+  location: {
+    "@type": "Place",
+    name: TR_LOCATIE.naam,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: TR_LOCATIE.straat,
+      postalCode: TR_LOCATIE.postcode,
+      addressLocality: TR_LOCATIE.plaats,
+      addressCountry: TR_LOCATIE.land,
+    },
+  },
+  organizer: { "@type": "Organization", name: "hrmforce", url: "https://hrmforce.com/" },
+  offers: {
+    "@type": "Offer",
+    price: r.bedrag,
+    priceCurrency: "EUR",
+    availability: "https://schema.org/InStock",
+    url: kalenderUrl,
+    validFrom: "2026-01-01",
+  },
+}));
 ---
 <div class="crumb">
   <div class="wrap"><a href={homeHref}>Home</a> &rsaquo; <a href={adviesHref}>{t.eyebrow}</a> &rsaquo; <span>{t.h1}</span></div>
@@ -54,6 +90,8 @@ const cardHref = (nlHref) => (lang === "nl" ? nlHref : contactHref);
     <div class="eyebrow">{t.certEyebrow}</div>
     <h2 class="section-title">{t.kalTitle}</h2>
     <p class="lead" style="margin-bottom:20px">{t.kalLead}</p>
+    {t.kalender.length === 0 && (<p class="lead">{t.kalLeeg}</p>)}
+    {t.kalender.length > 0 && (
     <div class="kal-wrap">
       <table class="kal">
         <thead><tr><th>{t.kalH.datum}</th><th>{t.kalH.training}</th><th>{t.kalH.deelnemers}</th><th>{t.kalH.locatie}</th><th>{t.kalH.prijs}</th></tr></thead>
@@ -70,7 +108,9 @@ const cardHref = (nlHref) => (lang === "nl" ? nlHref : contactHref);
         </tbody>
       </table>
     </div>
+    )}
     <div class="btns" style="margin-top:22px"><a href={signupHref} class="btn btn-primary">{t.kalBtn}</a></div>
+    {eventLd.map((ld) => (<script type="application/ld+json" set:html={JSON.stringify(ld)} />))}
   </div>
 </section>
 

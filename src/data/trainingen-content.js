@@ -1,10 +1,30 @@
 // Trainingen & certificatietraining, per taal. Kalenderdata is taalneutraal.
 // Overgenomen van hrmforce.com/advies/trainingen/ en /trainingskalender/.
 
+// Trainingsdata. Het veld iso is de datum waarop de site rekent: een training
+// die voorbij is verdwijnt bij de eerstvolgende bouw vanzelf uit de tabel en
+// uit het Event-schema. start en eind zijn de begin- en eindtijd in ISO-vorm,
+// die Google nodig heeft om een training als evenement te tonen.
 export const TR_KALENDER = [
-  { datum: "24 sep 2026", tijd: "09:30 - 16:30", soort: "Certificatietraining", max: "Max. 12", locatie: "Hoeve Rijlaarsdam, Nieuwveenseweg 59, 2421 LB Nieuwkoop", prijs: "€ 595,-" },
-  { datum: "19 nov 2026", tijd: "09:30 - 16:30", soort: "Certificatietraining", max: "Max. 12", locatie: "Hoeve Rijlaarsdam, Nieuwveenseweg 59, 2421 LB Nieuwkoop", prijs: "€ 595,-" },
+  { iso: "2026-09-24", datum: "24 sep 2026", tijd: "09:30 - 16:30", start: "2026-09-24T09:30:00+02:00", eind: "2026-09-24T16:30:00+02:00", soort: "Certificatietraining", max: "Max. 12", deelnemers: 12, locatie: "Hoeve Rijlaarsdam, Nieuwveenseweg 59, 2421 LB Nieuwkoop", prijs: "€ 595,-", bedrag: "595" },
+  { iso: "2026-11-19", datum: "19 nov 2026", tijd: "09:30 - 16:30", start: "2026-11-19T09:30:00+01:00", eind: "2026-11-19T16:30:00+01:00", soort: "Certificatietraining", max: "Max. 12", deelnemers: 12, locatie: "Hoeve Rijlaarsdam, Nieuwveenseweg 59, 2421 LB Nieuwkoop", prijs: "€ 595,-", bedrag: "595" },
 ];
+
+// De locatie uit elkaar getrokken, zodat het Event-schema een echt adres krijgt.
+export const TR_LOCATIE = {
+  naam: "Hoeve Rijlaarsdam",
+  straat: "Nieuwveenseweg 59",
+  postcode: "2421 LB",
+  plaats: "Nieuwkoop",
+  land: "NL",
+};
+
+// Alleen de data die nog komen. De vergelijking gaat op de dag zelf nog goed:
+// een training van vandaag blijft tot morgen staan.
+export function komendeTrainingen(vandaag = new Date()) {
+  const grens = vandaag.toISOString().slice(0, 10);
+  return TR_KALENDER.filter((r) => r.iso >= grens);
+}
 
 const T = {
   nl: {
@@ -19,6 +39,7 @@ const T = {
     kalTitle: "Komende trainingsdata", kalLead: "Een overzicht van de eerstvolgende trainingen, met locatie en prijs. Inschrijven kan direct online; gedurende het jaar komen er nieuwe data bij.",
     kalH: { datum: "Datum + tijd", training: "Training", deelnemers: "Deelnemers", locatie: "Locatie", prijs: "Prijs p.p." },
     kalBtn: "Inschrijven voor een training",
+    kalLeeg: "De data voor de volgende ronde staan nog niet vast. Laat je gegevens achter, dan krijg je bericht zodra de nieuwe data bekend zijn.",
     aanbodEyebrow: "Aanbod", aanbodTitle: "Onze trainingen",
     aanbodNote: "Trainingen zijn voor groepen vanaf 6 personen op maat af te nemen. Doe altijd eerst een nulmeting, zodat je na afloop kunt vaststellen of de investering rendeert.",
     contactWord: "Neem contact op", forMoreInfo: "Lees meer",
@@ -42,6 +63,7 @@ const T = {
     kalTitle: "Upcoming training dates", kalLead: "An overview of the next trainings, with location and price. You can register directly online; new dates are added throughout the year.",
     kalH: { datum: "Date + time", training: "Training", deelnemers: "Participants", locatie: "Location", prijs: "Price p.p." },
     kalBtn: "Register for a training",
+    kalLeeg: "The dates for the next round are not fixed yet. Leave your details and we will let you know as soon as the new dates are known.",
     aanbodEyebrow: "Offering", aanbodTitle: "Our trainings",
     aanbodNote: "Trainings can be delivered tailor-made for groups of 6 or more. Always do a baseline measurement first, so you can determine afterwards whether the investment pays off.",
     contactWord: "Get in touch", forMoreInfo: "Read more",
@@ -65,6 +87,7 @@ const T = {
     kalTitle: "Kommende Schulungstermine", kalLead: "Eine Übersicht der nächsten Schulungen mit Ort und Preis. Die Anmeldung ist direkt online möglich; im Laufe des Jahres kommen neue Termine hinzu.",
     kalH: { datum: "Datum + Zeit", training: "Schulung", deelnemers: "Teilnehmer", locatie: "Ort", prijs: "Preis p.P." },
     kalBtn: "Für eine Schulung anmelden",
+    kalLeeg: "Die Termine für die nächste Runde stehen noch nicht fest. Hinterlassen Sie Ihre Daten, dann melden wir uns, sobald die neuen Termine bekannt sind.",
     aanbodEyebrow: "Angebot", aanbodTitle: "Unsere Schulungen",
     aanbodNote: "Schulungen sind für Gruppen ab 6 Personen maßgeschneidert buchbar. Führen Sie immer zuerst eine Nullmessung durch, damit Sie danach feststellen können, ob sich die Investition lohnt.",
     contactWord: "Kontakt aufnehmen", forMoreInfo: "Mehr lesen",
@@ -88,6 +111,7 @@ const T = {
     kalTitle: "Prochaines dates de formation", kalLead: "Un aperçu des prochaines formations, avec lieu et prix. L'inscription se fait directement en ligne ; de nouvelles dates s'ajoutent tout au long de l'année.",
     kalH: { datum: "Date + heure", training: "Formation", deelnemers: "Participants", locatie: "Lieu", prijs: "Prix p.p." },
     kalBtn: "S'inscrire à une formation",
+    kalLeeg: "Les dates de la prochaine session ne sont pas encore fixées. Laissez vos coordonnées et nous vous préviendrons dès que les nouvelles dates seront connues.",
     aanbodEyebrow: "Offre", aanbodTitle: "Nos formations",
     aanbodNote: "Les formations sont proposées sur mesure pour des groupes de 6 personnes ou plus. Faites toujours d'abord une mesure de référence, afin de déterminer ensuite si l'investissement est rentable.",
     contactWord: "Nous contacter", forMoreInfo: "En savoir plus",
@@ -111,6 +135,7 @@ const T = {
     kalTitle: "Próximas fechas de formación", kalLead: "Un resumen de las próximas formaciones, con ubicación y precio. La inscripción es directa en línea; se añaden nuevas fechas a lo largo del año.",
     kalH: { datum: "Fecha + hora", training: "Formación", deelnemers: "Participantes", locatie: "Ubicación", prijs: "Precio p.p." },
     kalBtn: "Inscribirse en una formación",
+    kalLeeg: "Las fechas de la próxima convocatoria aún no están fijadas. Deja tus datos y te avisamos en cuanto se conozcan las nuevas fechas.",
     aanbodEyebrow: "Oferta", aanbodTitle: "Nuestras formaciones",
     aanbodNote: "Las formaciones se ofrecen a medida para grupos de 6 personas o más. Haz siempre primero una medición de referencia, para poder determinar después si la inversión es rentable.",
     contactWord: "Contáctanos", forMoreInfo: "Leer más",
@@ -134,6 +159,7 @@ const T = {
     kalTitle: "Următoarele date de training", kalLead: "O prezentare a următoarelor cursuri, cu locație și preț. Înscrierea se face direct online; pe parcursul anului se adaugă date noi.",
     kalH: { datum: "Data + ora", training: "Training", deelnemers: "Participanți", locatie: "Locație", prijs: "Preț pe pers." },
     kalBtn: "Înscrie-te la un training",
+    kalLeeg: "Datele pentru următoarea serie nu sunt încă stabilite. Lasă-ne datele tale și te anunțăm imediat ce se cunosc datele noi.",
     aanbodEyebrow: "Ofertă", aanbodTitle: "Cursurile noastre",
     aanbodNote: "Cursurile pot fi organizate personalizat pentru grupuri de minimum 6 persoane. Fă întotdeauna mai întâi o măsurare de referință, ca să poți stabili apoi dacă investiția este rentabilă.",
     contactWord: "Contactează-ne", forMoreInfo: "Află mai mult",
@@ -148,5 +174,5 @@ const T = {
 };
 
 export function trainingenFor(lang) {
-  return { ...(T[lang] || T.nl), kalender: TR_KALENDER };
+  return { ...(T[lang] || T.nl), kalender: komendeTrainingen() };
 }

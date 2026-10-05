@@ -51,6 +51,19 @@ for (const taal of ["", "/en", "/de", "/fr", "/es", "/ro"]) {
   }
 }
 
+// Niet uit het kenniscentrum, wel dezelfde kwestie: /trainingskalender/ is een
+// oud artikel uit Sanity met dezelfde trainingsdata als /advies/trainingen/.
+// Dat tweede adres wordt bijgehouden, het eerste niet, en stond deels op data
+// die al voorbij waren. Het verdwijnt in alle zes talen.
+const LOSSE_DUBBELEN = {
+  "/trainingskalender/": "/advies/trainingen/",
+};
+for (const taal of ["", "/en", "/de", "/fr", "/es", "/ro"]) {
+  for (const [weg, blijft] of Object.entries(LOSSE_DUBBELEN)) {
+    DUBBELE_ARTIKELEN[taal + weg] = taal + blijft;
+  }
+}
+
 // De paden zoals de catch-all route ze kent: zonder schuine streep ervoor en erachter.
 export const DUBBELE_PADEN = new Set(
   Object.keys(DUBBELE_ARTIKELEN).map((p) => p.replace(/^\/+|\/+$/g, ""))

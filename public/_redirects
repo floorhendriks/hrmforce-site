@@ -68,6 +68,12 @@
 # wildcard eronder stuurde bezoekers naar een 404. Samen zijn het 239 klikken
 # en 11.662 vertoningen per kwartaal. Ze gaan nu naar de pagina die het
 # dichtst bij het onderwerp van het document ligt.
+/trainingskalender/ /advies/trainingen/ 301
+/en/trainingskalender/ /en/advies/trainingen/ 301
+/de/trainingskalender/ /de/advies/trainingen/ 301
+/fr/trainingskalender/ /fr/advies/trainingen/ 301
+/es/trainingskalender/ /es/advies/trainingen/ 301
+/ro/trainingskalender/ /ro/advies/trainingen/ 301
 /wp-content/uploads/2021/03/OPQ32-BPS-Review-2007.pdf /opq32/ 301
 /wp-content/uploads/2021/03/COTAN-Handleiding-OPQ32i.pdf /opq32/ 301
 /wp-content/uploads/2021/03/Best-Practice-Gebruik-T-scores.pdf /normgroepen/ 301
