@@ -44,6 +44,14 @@
 /kenniscentrum/ontwikkeling/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/ /kenniscentrum/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/ 301
 /kenniscentrum/ontwikkeling/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/ /kenniscentrum/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/ 301
 /kenniscentrum/ontwikkeling/piramide-van-lencioni/ /assessments/lencioni-teamdynamiek/ 301
+# Artikelen die opnieuw zijn geschreven onder een kort adres. Het oude adres
+# houdt de vertoningen en de posities, dus daar blijft het artikel staan.
+/kenniscentrum/intelligentietest-volwassenen/ /kenniscentrum/capaciteiten/intelligentietest-volwassenen/ 301
+/kenniscentrum/ontwikkelassessment-belangrijk/ /kenniscentrum/ontwikkeling/ontwikkelassessment-belangrijk/ 301
+/kenniscentrum/matrigma-capaciteitentest/ /kenniscentrum/ontwikkeling/matrigma/ 301
+/kenniscentrum/leiderschapsontwikkeling-data/ /kenniscentrum/ontwikkeling/leiderschapsontwikkeling/ 301
+/kenniscentrum/hrmforce-bundelt-krachten-met-pearson/ /kenniscentrum/nieuws/hrmforce-bundelt-krachten-met-pearson-2/ 301
+/kenniscentrum/7-tips-om-leren-en-ontwikkelen-bij-medewerkers-te-stimuleren/ /kenniscentrum/7-tips-leren-ontwikkelen-medewerkers-stimuleren/ 301
 
 /wp-content/* /media/wp-content/:splat 301
 /product-categorie/* /shop/ 301
@@ -266,3 +274,16 @@
 /about-us-new-translations/ /over-ons/ 301
 /expertsessie-jho/ / 301
 /winkel* https://shop.hrmforce.com/shop/ 301
+
+
+# Dezelfde twee artikelen in de vertaalde versies.
+/en/kenniscentrum/hrmforce-bundelt-krachten-met-pearson/ /en/kenniscentrum/nieuws/hrmforce-bundelt-krachten-met-pearson-2/ 301
+/en/kenniscentrum/7-tips-om-leren-en-ontwikkelen-bij-medewerkers-te-stimuleren/ /en/kenniscentrum/7-tips-leren-ontwikkelen-medewerkers-stimuleren/ 301
+/de/kenniscentrum/hrmforce-bundelt-krachten-met-pearson/ /de/kenniscentrum/nieuws/hrmforce-bundelt-krachten-met-pearson-2/ 301
+/de/kenniscentrum/7-tips-om-leren-en-ontwikkelen-bij-medewerkers-te-stimuleren/ /de/kenniscentrum/7-tips-leren-ontwikkelen-medewerkers-stimuleren/ 301
+/fr/kenniscentrum/hrmforce-bundelt-krachten-met-pearson/ /fr/kenniscentrum/nieuws/hrmforce-bundelt-krachten-met-pearson-2/ 301
+/fr/kenniscentrum/7-tips-om-leren-en-ontwikkelen-bij-medewerkers-te-stimuleren/ /fr/kenniscentrum/7-tips-leren-ontwikkelen-medewerkers-stimuleren/ 301
+/es/kenniscentrum/hrmforce-bundelt-krachten-met-pearson/ /es/kenniscentrum/nieuws/hrmforce-bundelt-krachten-met-pearson-2/ 301
+/es/kenniscentrum/7-tips-om-leren-en-ontwikkelen-bij-medewerkers-te-stimuleren/ /es/kenniscentrum/7-tips-leren-ontwikkelen-medewerkers-stimuleren/ 301
+/ro/kenniscentrum/hrmforce-bundelt-krachten-met-pearson/ /ro/kenniscentrum/nieuws/hrmforce-bundelt-krachten-met-pearson-2/ 301
+/ro/kenniscentrum/7-tips-om-leren-en-ontwikkelen-bij-medewerkers-te-stimuleren/ /ro/kenniscentrum/7-tips-leren-ontwikkelen-medewerkers-stimuleren/ 301

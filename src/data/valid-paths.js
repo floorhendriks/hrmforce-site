@@ -31,6 +31,7 @@ const EXTRA = ["/afrekenen/","/en/afrekenen/","/de/afrekenen/","/fr/afrekenen/",
 // De oefentest: het overzicht en de vijf onderdelen, per taal.
 import { ONDERDELEN } from "./oefentest-ui.js";
 import { VRAGENLIJSTEN } from "./oefenvragenlijst.js";
+import { DUBBELE_ARTIKELEN } from "./kenniscentrum-duplicaten.js";
 const OEFEN = ["nl", "en", "de", "fr", "es", "ro"].flatMap((t) => {
   const basis = t === "nl" ? "/oefentest/" : `/${t}/oefentest/`;
   return [basis,
@@ -38,4 +39,11 @@ const OEFEN = ["nl", "en", "de", "fr", "es", "ro"].flatMap((t) => {
     ...Object.values(VRAGENLIJSTEN).map((o) => `${basis}${o.slug[t]}/`)];
 });
 
-export default Array.from(new Set([...STATIC, ...EXTRA, ...OEFEN, ...sanityPaths]));
+// Adressen van artikelen die onder twee URL's stonden horen hier niet meer in:
+// de site bouwt ze niet meer en de zoekfunctie en de taalwisselaar moeten er
+// niet naar verwijzen. Zie kenniscentrum-duplicaten.js.
+const VERVALLEN = new Set(Object.keys(DUBBELE_ARTIKELEN));
+
+export default Array.from(
+  new Set([...STATIC, ...EXTRA, ...OEFEN, ...sanityPaths])
+).filter((p) => !VERVALLEN.has(p));

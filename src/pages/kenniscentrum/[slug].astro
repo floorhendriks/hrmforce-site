@@ -5,15 +5,20 @@ import { getLangFromUrl, localizePath, navHref } from "../../i18n/utils.js";
 import { assessments } from "../../data/assessments.js";
 import { posts as allPosts } from "../../data/blog.js";
 import validPaths from "../../data/valid-paths.js";
+import { DUBBELE_SLUGS } from "../../data/kenniscentrum-duplicaten.js";
 
 export async function getStaticPaths() {
   if (import.meta.env.SANITY_PROJECT_ID) {
     const { sanity } = await import("../../lib/sanity.js");
     const { allPostSlugs } = await import("../../lib/queries.js");
     const slugs = await sanity.fetch(allPostSlugs);
-    return slugs.map((slug) => ({ params: { slug } }));
+    // Artikelen die ook onder een ouder adres staan bouwen we hier niet; dat
+    // oudere adres houdt de posities. Zie kenniscentrum-duplicaten.js.
+    return slugs.filter((slug) => !DUBBELE_SLUGS.has(slug)).map((slug) => ({ params: { slug } }));
   }
-  return localPosts.map((p) => ({ params: { slug: p.slug }, props: { p } }));
+  return localPosts
+    .filter((p) => !DUBBELE_SLUGS.has(p.slug))
+    .map((p) => ({ params: { slug: p.slug }, props: { p } }));
 }
 
 const lang = getLangFromUrl(Astro.url);
