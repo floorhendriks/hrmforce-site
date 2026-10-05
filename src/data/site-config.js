@@ -37,6 +37,12 @@ export const MARKETING = {
   GOOGLE_ADS_ID: "AW-1017809287",
   GOOGLE_ADS_DEMO_LABEL: "AW-1017809287/Od-yCOT3kLMaEIeTquUD",
   GOOGLE_ADS_ASSESSMENT_LABEL: "AW-1017809287/siOSCM6QipscEIeTquUD",
+  //   AANKOOP = conversieactie "Aankoop" (primair, waarde uit de bestelling).
+  // Die actie bestaat nog niet in Google Ads. Zolang dit leeg is stuurt de
+  // bedankpagina wel een purchase naar Analytics, maar niets naar Ads. Vul hier
+  // het gebeurtenisfragment in zodra de conversieactie is aangemaakt, en lever
+  // aankopen dan niet ook nog via de import uit Analytics: dat telt dubbel.
+  GOOGLE_ADS_PURCHASE_LABEL: "",
 };
 
 // Verificatie-meta-tags. Leeg = geen tag in de <head>.

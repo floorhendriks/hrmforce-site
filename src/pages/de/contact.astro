@@ -340,6 +340,7 @@ import Mensencheck from "../../components/Mensencheck.astro";
           .then(function (uit) {
             if (knop) { knop.disabled = false; knop.textContent = oud; }
             if (uit && uit.ok) {
+              if (window.hrmAanvraagGelukt) window.hrmAanvraagGelukt(form);
               form.reset();
               msg.className = "form-msg success";
               msg.textContent = uit.doorverwezen ? "Danke. Wir haben Ihnen die Möglichkeiten für Privatpersonen per E-Mail geschickt." : "Danke für Ihre Nachricht. Wir melden uns so schnell wie möglich.";

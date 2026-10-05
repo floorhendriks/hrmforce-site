@@ -278,7 +278,7 @@ import Mensencheck from "../../components/Mensencheck.astro";
       btn.disabled = true; btn.textContent = "Versturen…";
       fetch(f.getAttribute("action"), { method: "POST", headers: { Accept: "application/json" }, body: new FormData(f) })
         .then(function (r) {
-          if (r.ok) { Array.prototype.forEach.call(f.querySelectorAll("input, button"), function (el) { el.style.display = "none"; }); document.getElementById("gvzDone").hidden = false; }
+          if (r.ok) { if (window.hrmAanvraagGelukt) window.hrmAanvraagGelukt(f); Array.prototype.forEach.call(f.querySelectorAll("input, button"), function (el) { el.style.display = "none"; }); document.getElementById("gvzDone").hidden = false; }
           else { btn.disabled = false; btn.textContent = "Vraag de gratis demo aan"; }
         })
         .catch(function () { btn.disabled = false; btn.textContent = "Vraag de gratis demo aan"; });

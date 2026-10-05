@@ -128,6 +128,7 @@ const mensfout = (MENS_UI[lang] || MENS_UI.nl).fout;
           throw new Error('endpoint ' + res.status);
         }
         try { localStorage.setItem(key, '1'); } catch (e) {}
+        if (window.hrmAanvraagGelukt) window.hrmAanvraagGelukt(form, 'profiel');
         done(); start();
       } catch (e) {
         err.hidden = false;

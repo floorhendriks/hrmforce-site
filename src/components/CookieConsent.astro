@@ -5,7 +5,7 @@
 //   2) de bezoeker de categorie "Statistieken" heeft geaccepteerd.
 // Keuze wordt opgeslagen in localStorage (met versienummer). Herzien via
 // window.openCookiePrefs().
-const { lang = "nl", ga4Id = "", gtmId = "", linkedinId = "", clarityId = "", adsId = "", adsDemoLabel = "", adsAssessmentLabel = "", t = {} } = Astro.props;
+const { lang = "nl", ga4Id = "", gtmId = "", linkedinId = "", clarityId = "", adsId = "", adsDemoLabel = "", adsAssessmentLabel = "", adsPurchaseLabel = "", t = {} } = Astro.props;
 const cat = t.categories ?? {};
 const nec = cat.necessary ?? {};
 const stat = cat.statistics ?? {};
@@ -73,7 +73,7 @@ const mkt = cat.marketing ?? {};
   </div>
 </div>
 
-<script is:inline define:vars={{ ga4Id, gtmId, linkedinId, clarityId, adsId, adsDemoLabel, adsAssessmentLabel, lang }}>
+<script is:inline define:vars={{ ga4Id, gtmId, linkedinId, clarityId, adsId, adsDemoLabel, adsAssessmentLabel, adsPurchaseLabel, lang }}>
   (function () {
     var STORAGE_KEY = "hrmforce_cookie_consent";
     var VERSION = 1;
@@ -131,7 +131,7 @@ const mkt = cat.marketing ?? {};
         gtag("js", new Date());
       }
       gtag("config", adsId);
-      window.hrmAds = { demo: adsDemoLabel || "", assessment: adsAssessmentLabel || "" };
+      window.hrmAds = { demo: adsDemoLabel || "", assessment: adsAssessmentLabel || "", purchase: adsPurchaseLabel || "" };
     }
     function loadClarity() {
       if (clarityLoaded || !clarityId) return;

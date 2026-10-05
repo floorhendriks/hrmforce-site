@@ -37,6 +37,33 @@ const S = { h1: s.h1, lead: s.lead, h1Wacht: s.h1Wacht, leadWacht: s.leadWacht, 
 <script is:inline define:vars={{ S }}>
   (function () {
     try { localStorage.removeItem("hrmforce_cart_v2"); } catch (e) {}
+
+    /* Een betaalde bestelling melden als purchase, een keer per bestelling.
+       Iemand die de bedankpagina ververst of de link later opnieuw opent mag
+       geen tweede aankoop opleveren, dus het bestelnummer gaat in localStorage.
+       Naar Google Ads gaat het alleen als er een conversieactie Aankoop is
+       ingevuld in site-config; anders zou de import uit Analytics dubbel tellen. */
+    function aankoopMelden(id, uit) {
+      if (!window.gtag) return;
+      var sleutel = "hrm_purchase_" + id;
+      try { if (localStorage.getItem(sleutel)) return; localStorage.setItem(sleutel, "1"); } catch (e) {}
+      var bedrag = uit && typeof uit.bedrag === "number" ? uit.bedrag : undefined;
+      var valuta = (uit && uit.valuta) || "EUR";
+      window.gtag("event", "purchase", {
+        transaction_id: id,
+        value: bedrag,
+        currency: valuta,
+      });
+      var a = window.hrmAds;
+      if (a && a.purchase) {
+        window.gtag("event", "conversion", {
+          send_to: a.purchase,
+          transaction_id: id,
+          value: bedrag,
+          currency: valuta,
+        });
+      }
+    }
     var id = new URLSearchParams(location.search).get("order");
     if (id) {
       var o = document.getElementById("bdOrder"); var oi = document.getElementById("bdOrderId");
@@ -56,6 +83,7 @@ const S = { h1: s.h1, lead: s.lead, h1Wacht: s.h1Wacht, leadWacht: s.leadWacht, 
             if (kop) kop.textContent = S.h1;
             if (lead) lead.textContent = S.lead;
             if (inv) { inv.href = "/api/invoice?order=" + encodeURIComponent(id); inv.hidden = false; }
+            aankoopMelden(id, uit);
             return;
           }
           if (st === "pending" || st === "open" || !st || st === "onbekend") {

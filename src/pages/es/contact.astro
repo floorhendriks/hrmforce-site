@@ -328,6 +328,7 @@ import Mensencheck from "../../components/Mensencheck.astro";
           .then(function (uit) {
             if (knop) { knop.disabled = false; knop.textContent = oud; }
             if (uit && uit.ok) {
+              if (window.hrmAanvraagGelukt) window.hrmAanvraagGelukt(form);
               form.reset();
               msg.className = "form-msg success";
               msg.textContent = uit.doorverwezen ? "Gracias. Te hemos enviado por correo las opciones para particulares." : "Gracias por tu mensaje. Nos pondremos en contacto lo antes posible.";

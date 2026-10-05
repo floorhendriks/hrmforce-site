@@ -90,7 +90,12 @@ import Mensencheck from "./Mensencheck.astro";
         melding.textContent = gelukt ? form.dataset.ok : (uit && uit.error === "geen_mens" ? form.dataset.mensfout : form.dataset.fout);
         melding.className = "oa-melding " + (gelukt ? "ok" : "fout");
         melding.hidden = false;
-        if (gelukt) form.reset();
+        if (gelukt) {
+          /* Het opvragen van voorbeeldvragen is een zachte lead: wel een eigen
+             gebeurtenis in Analytics, geen conversie in Google Ads. */
+          if (window.hrmAanvraagGelukt) window.hrmAanvraagGelukt(form, "voorbeeldvragen");
+          form.reset();
+        }
       })
       .catch(function () {
         if (knop) { knop.disabled = false; knop.textContent = oudeTekst; }

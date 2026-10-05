@@ -2,4 +2,3 @@ User-agent: *
 Allow: /
 
 Sitemap: https://hrmforce.com/sitemap-index.xml
-Sitemap: https://hrmforce.com/sitemap-skills-framework.xml

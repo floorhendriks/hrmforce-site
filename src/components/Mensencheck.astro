@@ -137,6 +137,11 @@ const TAAL = { nl: "nl", en: "en", de: "de", fr: "fr", es: "es", ro: "ro" };
         .then(function (uit) {
           if (knop) { knop.disabled = false; knop.textContent = oud; }
           if (uit && uit.ok) {
+            /* Pas nu is het een aanvraag. De meting in Base.astro luistert
+               hierop, zodat een verzending die de controle of de server afkeurt
+               geen conversie oplevert. form.reset() wist de velden, dus de
+               gegevens gaan eerst mee. */
+            if (window.hrmAanvraagGelukt) window.hrmAanvraagGelukt(form);
             form.reset();
             stempel();
             melding.className = "mc-melding ok";
