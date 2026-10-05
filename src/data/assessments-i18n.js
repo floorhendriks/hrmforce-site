@@ -372,8 +372,8 @@ export const assessmentsI18n = {
     },
     "lean-scan": {
       title: "Lean Scan",
-      metaTitle: "Take a Lean Scan? | Lean Method | Discover Hrmforce",
-      metaDescription: "With the Lean Scan, companies gain insight into the gap between the current and ideal situation to demonstrate the need for Lean management.",
+      metaTitle: "Lean management scan: measure the gap in 10 minutes | Hrmforce",
+      metaDescription: "A lean management scan shows where the current way of working differs from the ideal situation. Scores on four factors, per team, department or whole organisation. Ten minutes per respondent.",
       phase: "Development → performance → appraisal",
       goal: "Gaining insight into the gap between the current and ideal situation to demonstrate the need for Lean management.",
       time: "10 minutes", form: "Multiple choice on a 5-point scale.",
