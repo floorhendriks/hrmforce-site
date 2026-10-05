@@ -518,4 +518,166 @@ export const THEMAPAGINAS = {
       },
     },
   },
+  opq32: {
+    key: "opq32",
+    slug: { nl: "opq32", en: "opq32" },
+    kaarten: ["/shop/", "/persoonlijkheidstest/", "/normgroepen/", "/capaciteitentest/"],
+    i18n: {
+      nl: {
+        meta: { title: "OPQ32: wat de vragenlijst meet en welke rapporten eruit komen | Hrmforce", description: "De OPQ32 brengt werkgedrag in kaart op 32 schalen. Wat de vragenlijst meet, welke rapporten er zijn en hoe je hem bestelt." },
+        crumb: "OPQ32",
+        hero: { eyebrow: "OPQ32", title: "OPQ32", lead: "De OPQ32 is de werkgerelateerde persoonlijkheidsvragenlijst van SHL. Hieronder lees je wat hij meet, welke rapporten eruit komen en waar je hem bestelt." },
+        intro: [
+          "De OPQ32 brengt werkgedrag in kaart langs 32 schalen, verdeeld over drie gebieden: hoe iemand met mensen omgaat, hoe iemand denkt en hoe iemand omgaat met gevoelens en druk. Het is een van de meest onderzochte vragenlijsten in zijn soort en wordt wereldwijd gebruikt voor selectie en ontwikkeling.",
+          "De waarde zit in de rapportage. Dezelfde ingevulde lijst levert een profiel, een competentierapport of een leiderschapsrapport op, afhankelijk van de vraag die je hebt. Je kiest het rapport dus bij het doel, niet bij de test.",
+        ],
+        meet: { title: "Wat de OPQ32 meet", items: [
+          { t: "Omgaan met mensen", d: "Beïnvloeden, samenwerken, leiding nemen en hoe iemand zich tussen anderen beweegt." },
+          { t: "Denkstijl", d: "Analyseren, structureren, bedenken van nieuwe oplossingen en omgaan met details." },
+          { t: "Gevoel en druk", d: "Omgaan met spanning, veerkracht na tegenslag en de mate waarin iemand gevoelens laat zien." },
+          { t: "Wat hij niet meet", d: "Capaciteiten. Voor werk- en denkniveau zet je een capaciteitentest in, naast de OPQ32." },
+        ] },
+        tests: { title: "Bestellen en verder lezen", intro: "De OPQ32 en de bijbehorende rapporten bestel je in de shop. Daarnaast de pagina's waar dit onderwerp aan raakt.", cta: "Bekijken", kaarten: [
+          { t: "Naar de shop", d: "Daar staan het OPQ Profiel, het OPQ Persoonlijk Rapport en het Universal Competency Rapport, met de actuele prijzen." },
+          { t: "Persoonlijkheidstest", d: "Wat een persoonlijkheidstest meet en welke vragenlijsten er verder zijn." },
+          { t: "Normgroepen", d: "Waarom een score pas betekenis krijgt naast een vergelijkingsgroep." },
+          { t: "Capaciteitentest", d: "De test die je naast een persoonlijkheidsvragenlijst inzet." },
+        ] },
+        stappen: { title: "Hoe het werkt", items: [
+          { t: "Rapport kiezen", d: "Je kiest in de shop welk rapport je nodig hebt. Het rapport bepaalt wat je uit de ingevulde lijst terugkrijgt." },
+          { t: "Kandidaat uitnodigen", d: "De kandidaat vult de vragenlijst online in, op een moment dat uitkomt. Er is geen tijdslimiet." },
+          { t: "Rapport bespreken", d: "Het rapport is bedoeld voor het gesprek. Loop de uitkomsten langs met voorbeelden uit het werk." },
+        ] },
+        onderbouwing: { title: "Waar de uitkomst op rust", tekst: [
+          "De scores worden afgezet tegen een normgroep. Welke groep dat is, bepaalt of een score hoog of gemiddeld uitvalt, dus vraag bij de bestelling welke normgroep bij jouw doelgroep hoort.",
+          "De OPQ32 is uitgebreid onderzocht en beoordeeld, onder meer door beroepsverenigingen in binnen- en buitenland. Wil je de onderbouwing van de instrumenten die hrmforce zelf uitgeeft, dan staat die op de pagina wetenschappelijke verantwoording.",
+        ], link: { label: "Lees meer over normgroepen", href: "/normgroepen/" } },
+        faq: { title: "Veelgestelde vragen", items: [
+          { q: "Hoe lang duurt het invullen van de OPQ32?", a: "Reken op ongeveer een half uur. Er is geen tijdslimiet, dus een kandidaat kan rustig doorlezen." },
+          { q: "Welke rapporten zijn er?", a: "Onder meer het OPQ Profiel, het OPQ Persoonlijk Rapport en het Universal Competency Rapport. In de shop staat het volledige aanbod met de actuele prijzen." },
+          { q: "Wat is het verschil met een Big Five-vragenlijst?", a: "Beide meten werkgerelateerde persoonlijkheid. De OPQ32 werkt met 32 fijnmazige schalen, een Big Five-lijst met vijf hoofdfactoren en onderliggende facetten. Welke past, hangt af van hoeveel detail je in het gesprek wilt." },
+          { q: "Kan ik de OPQ32 los bestellen?", a: "Ja, je bestelt per rapport in de shop. Voor grotere aantallen of een eigen portal kun je contact opnemen." },
+        ] },
+        cta: { title: "Vragen over de OPQ32?", text: "Een adviseur bespreekt welk rapport past bij je vraag en welke normgroep daarbij hoort.", primary: "Plan een demo", secondary: "Bekijk de tarieven" },
+      },
+      en: {
+        meta: { title: "OPQ32: what the questionnaire measures and which reports it gives | Hrmforce", description: "The OPQ32 maps behaviour at work across 32 scales. What it measures, which reports exist and where to order it." },
+        crumb: "OPQ32",
+        hero: { eyebrow: "OPQ32", title: "OPQ32", lead: "The OPQ32 is the work-related personality questionnaire from SHL. Below you read what it measures, which reports it gives and where to order it." },
+        intro: [
+          "The OPQ32 maps behaviour at work across 32 scales in three areas: how someone deals with people, how someone thinks, and how someone handles feelings and pressure. It is one of the most researched questionnaires of its kind and is used worldwide for selection and development.",
+          "The value sits in the reporting. The same completed questionnaire gives a profile, a competency report or a leadership report, depending on your question. So you choose the report by the purpose, not by the test.",
+        ],
+        meet: { title: "What the OPQ32 measures", items: [
+          { t: "Dealing with people", d: "Influencing, collaborating, taking the lead and how someone moves among others." },
+          { t: "Thinking style", d: "Analysing, structuring, coming up with new solutions and handling detail." },
+          { t: "Feelings and pressure", d: "Handling tension, resilience after setbacks and how much someone shows of their feelings." },
+          { t: "What it does not measure", d: "Aptitude. For working and thinking level you use an aptitude test alongside the OPQ32." },
+        ] },
+        tests: { title: "Ordering and reading on", intro: "The OPQ32 and its reports are ordered in the shop. Alongside that, the pages this subject touches.", cta: "View", kaarten: [
+          { t: "To the shop", d: "There you find the OPQ Profile, the OPQ Personal Report and the Universal Competency Report, with current prices." },
+          { t: "Personality test", d: "What a personality test measures and which other questionnaires exist." },
+          { t: "Norm groups", d: "Why a score only means something next to a comparison group." },
+          { t: "Aptitude test", d: "The test you use alongside a personality questionnaire." },
+        ] },
+        stappen: { title: "How it works", items: [
+          { t: "Choose the report", d: "You pick the report you need in the shop. The report decides what you get back from the completed questionnaire." },
+          { t: "Invite the candidate", d: "The candidate fills in the questionnaire online, at a convenient moment. There is no time limit." },
+          { t: "Discuss the report", d: "The report is meant for the conversation. Go through the outcomes with examples from the work." },
+        ] },
+        onderbouwing: { title: "What the outcome rests on", tekst: [
+          "Scores are set against a norm group. Which group that is decides whether a score comes out high or average, so ask at the point of ordering which norm group matches your target group.",
+          "The OPQ32 has been researched and reviewed extensively, among others by professional bodies in several countries. For the underpinning of the instruments hrmforce publishes itself, see the scientific accountability page.",
+        ], link: { label: "Read more about norm groups", href: "/normgroepen/" } },
+        faq: { title: "Frequently asked questions", items: [
+          { q: "How long does the OPQ32 take?", a: "Count on about half an hour. There is no time limit, so a candidate can read calmly." },
+          { q: "Which reports are available?", a: "Among others the OPQ Profile, the OPQ Personal Report and the Universal Competency Report. The shop lists the full range with current prices." },
+          { q: "What is the difference with a Big Five questionnaire?", a: "Both measure work-related personality. The OPQ32 works with 32 fine-grained scales, a Big Five questionnaire with five main factors and underlying facets. Which one fits depends on how much detail you want in the conversation." },
+          { q: "Can I order the OPQ32 separately?", a: "Yes, you order per report in the shop. For larger volumes or your own portal, get in touch." },
+        ] },
+        cta: { title: "Questions about the OPQ32?", text: "An adviser discusses which report fits your question and which norm group goes with it.", primary: "Book a demo", secondary: "View pricing" },
+      },
+    },
+  },
+  papi3: {
+    key: "papi3",
+    slug: { nl: "papi-3", en: "papi-3" },
+    kaarten: ["/shop/", "/persoonlijkheidstest/", "/normgroepen/", "/assessment-overzicht/"],
+    i18n: {
+      nl: {
+        meta: { title: "PAPI 3: wat de vragenlijst meet en welke varianten er zijn | Hrmforce", description: "PAPI 3 brengt werkgerelateerde voorkeuren in kaart via behoeften en rollen. Het verschil tussen 3-N en 3-I, waarvoor je hem inzet en waar je hem bestelt." },
+        crumb: "PAPI 3",
+        hero: { eyebrow: "PAPI 3", title: "PAPI 3", lead: "PAPI 3 is de werkgerelateerde persoonlijkheidsvragenlijst van Cubiks. Hieronder lees je wat hij meet, wat het verschil is tussen de twee varianten en waar je hem bestelt." },
+        intro: [
+          "PAPI kijkt naar wat iemand in het werk nodig heeft en welke rol diegene daarin oppakt. Dat levert een beeld op van werkstijl: hoe iemand taken aanpakt, hoe diegene zich tot anderen verhoudt en waar diegene energie uit haalt.",
+          "De vragenlijst wordt gebruikt voor selectie, ontwikkeling en coaching. Het rapport is opgezet als gespreksdocument, dus de uitkomsten zijn bedoeld om samen door te nemen.",
+        ],
+        meet: { title: "Wat PAPI 3 meet", items: [
+          { t: "Behoeften", d: "Waar iemand in het werk naar zoekt: regie, structuur, contact of erkenning." },
+          { t: "Rollen", d: "Welk gedrag iemand vanzelf oppakt in een functie en in een team." },
+          { t: "Werkstijl", d: "Hoe iemand taken aanpakt, plant en afrondt." },
+          { t: "Wat hij niet meet", d: "Capaciteiten en kennis. Daarvoor zet je een capaciteitentest en een interview in." },
+        ] },
+        tests: { title: "Bestellen en verder lezen", intro: "PAPI 3 bestel je in de shop. Daarnaast de pagina's waar dit onderwerp aan raakt.", cta: "Bekijken", kaarten: [
+          { t: "Naar de shop", d: "Daar staan PAPI 3-i, PAPI 3-n en PAPI Factors, met de actuele prijzen." },
+          { t: "Persoonlijkheidstest", d: "Wat een persoonlijkheidstest meet en welke vragenlijsten er verder zijn." },
+          { t: "Normgroepen", d: "Waarom een score pas betekenis krijgt naast een vergelijkingsgroep." },
+          { t: "Assessment-overzicht", d: "Alle instrumenten op een rij, per fase van de loopbaan." },
+        ] },
+        stappen: { title: "Hoe het werkt", items: [
+          { t: "Variant kiezen", d: "Je kiest tussen de normatieve en de ipsatieve vorm. Welke past, hangt af van het doel." },
+          { t: "Kandidaat uitnodigen", d: "De kandidaat vult de vragenlijst online in. Er is geen tijdslimiet." },
+          { t: "Rapport bespreken", d: "Loop de uitkomsten langs met voorbeelden uit het werk, zodat het beeld herkenbaar wordt." },
+        ] },
+        onderbouwing: { title: "Waar de uitkomst op rust", tekst: [
+          "Ook bij PAPI geldt dat een score pas iets zegt naast een normgroep. Vraag bij de bestelling welke vergelijkingsgroep wordt gebruikt en hoe actueel die is.",
+          "PAPI wordt uitgegeven door Cubiks, onderdeel van Talogy. hrmforce levert de vragenlijst en de rapportage via de shop.",
+        ], link: { label: "Lees meer over normgroepen", href: "/normgroepen/" } },
+        faq: { title: "Veelgestelde vragen", items: [
+          { q: "Wat is het verschil tussen PAPI 3-N en PAPI 3-I?", a: "De normatieve vorm laat je per uitspraak aangeven in hoeverre die op je van toepassing is. De ipsatieve vorm laat je kiezen tussen uitspraken die allebei kunnen kloppen. De normatieve vorm leent zich voor vergelijking tussen kandidaten, de ipsatieve vorm legt meer nadruk op de onderlinge verhouding binnen een persoon." },
+          { q: "Waarvoor zet je PAPI in?", a: "Voor selectie, ontwikkeling en coaching. Het rapport werkt als gespreksdocument, dus het komt het beste tot zijn recht in een gesprek met de kandidaat of medewerker." },
+          { q: "Hoe lang duurt het invullen?", a: "Reken op ongeveer een half uur. Er is geen tijdslimiet." },
+          { q: "Waar bestel ik PAPI 3?", a: "In de shop, per rapport. Voor grotere aantallen of een eigen portal kun je contact opnemen." },
+        ] },
+        cta: { title: "Vragen over PAPI 3?", text: "Een adviseur bespreekt welke variant past bij je vraag.", primary: "Plan een demo", secondary: "Bekijk de tarieven" },
+      },
+      en: {
+        meta: { title: "PAPI 3: what the questionnaire measures and which versions exist | Hrmforce", description: "PAPI 3 maps work-related preferences through needs and roles. The difference between 3-N and 3-I, what you use it for and where to order it." },
+        crumb: "PAPI 3",
+        hero: { eyebrow: "PAPI 3", title: "PAPI 3", lead: "PAPI 3 is the work-related personality questionnaire from Cubiks. Below you read what it measures, the difference between the two versions and where to order it." },
+        intro: [
+          "PAPI looks at what someone needs in their work and which role they take in it. That gives a picture of working style: how someone approaches tasks, how they relate to others and where they get their energy.",
+          "The questionnaire is used for selection, development and coaching. The report is set up as a conversation document, so the outcomes are meant to be gone through together.",
+        ],
+        meet: { title: "What PAPI 3 measures", items: [
+          { t: "Needs", d: "What someone looks for at work: control, structure, contact or recognition." },
+          { t: "Roles", d: "Which behaviour someone naturally takes on in a role and in a team." },
+          { t: "Working style", d: "How someone approaches, plans and finishes tasks." },
+          { t: "What it does not measure", d: "Aptitude and knowledge. For those you use an aptitude test and an interview." },
+        ] },
+        tests: { title: "Ordering and reading on", intro: "PAPI 3 is ordered in the shop. Alongside that, the pages this subject touches.", cta: "View", kaarten: [
+          { t: "To the shop", d: "There you find PAPI 3-i, PAPI 3-n and PAPI Factors, with current prices." },
+          { t: "Personality test", d: "What a personality test measures and which other questionnaires exist." },
+          { t: "Norm groups", d: "Why a score only means something next to a comparison group." },
+          { t: "Assessment overview", d: "All instruments in a row, per career stage." },
+        ] },
+        stappen: { title: "How it works", items: [
+          { t: "Choose the version", d: "You choose between the normative and the ipsative form. Which one fits depends on the purpose." },
+          { t: "Invite the candidate", d: "The candidate fills in the questionnaire online. There is no time limit." },
+          { t: "Discuss the report", d: "Go through the outcomes with examples from the work, so the picture becomes recognisable." },
+        ] },
+        onderbouwing: { title: "What the outcome rests on", tekst: [
+          "With PAPI too, a score only says something next to a norm group. Ask at the point of ordering which comparison group is used and how current it is.",
+          "PAPI is published by Cubiks, part of Talogy. hrmforce supplies the questionnaire and the reporting through the shop.",
+        ], link: { label: "Read more about norm groups", href: "/normgroepen/" } },
+        faq: { title: "Frequently asked questions", items: [
+          { q: "What is the difference between PAPI 3-N and PAPI 3-I?", a: "The normative form asks you to indicate per statement how far it applies to you. The ipsative form asks you to choose between statements that could both be true. The normative form lends itself to comparison between candidates, the ipsative form puts more emphasis on the balance within one person." },
+          { q: "What do you use PAPI for?", a: "For selection, development and coaching. The report works as a conversation document, so it comes into its own in a conversation with the candidate or employee." },
+          { q: "How long does it take to fill in?", a: "Count on about half an hour. There is no time limit." },
+          { q: "Where do I order PAPI 3?", a: "In the shop, per report. For larger volumes or your own portal, get in touch." },
+        ] },
+        cta: { title: "Questions about PAPI 3?", text: "An adviser discusses which version fits your question.", primary: "Book a demo", secondary: "View pricing" },
+      },
+    },
+  },
 };
