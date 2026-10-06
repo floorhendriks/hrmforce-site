@@ -19,7 +19,13 @@ export const SHOP = {
 // andere tags in die container staan), vul dan GTM_ID in. Zodra GTM_ID is
 // gevuld, laadt deze site GA4 en Ads NIET meer zelf, want dan zou je dubbel
 // meten: die tags horen dan in de container te staan.
-export const ANALYTICS = { GA4_ID: "G-L4WHLCQ1WY", GTM_ID: "" };
+// G-7EZ2R7NG4J is de property van hrmforce.com, met de hele geschiedenis.
+// De site stuurde sinds de overstap naar G-L4WHLCQ1WY, en dat is de property
+// van sein.hrmforce.com. Daar hangt sinds 24 september ook het Ads-account
+// Geschikt voor de Zorg (121-950-2974) aan, waardoor AW-18428504939 via die
+// koppeling meeliep op de hoofdsite. Met deze wissel verdwijnt dat vanzelf;
+// beide blijven in gebruik voor sein.hrmforce.com.
+export const ANALYTICS = { GA4_ID: "G-7EZ2R7NG4J", GTM_ID: "" };
 
 // Marketing- en analytics-tags. Laden uitsluitend na cookie-toestemming
 // (LinkedIn = categorie 'marketing', Clarity = categorie 'statistieken').
@@ -38,11 +44,11 @@ export const MARKETING = {
   GOOGLE_ADS_DEMO_LABEL: "AW-1017809287/Od-yCOT3kLMaEIeTquUD",
   GOOGLE_ADS_ASSESSMENT_LABEL: "AW-1017809287/siOSCM6QipscEIeTquUD",
   //   AANKOOP = conversieactie "Aankoop" (primair, waarde uit de bestelling).
-  // Die actie bestaat nog niet in Google Ads. Zolang dit leeg is stuurt de
-  // bedankpagina wel een purchase naar Analytics, maar niets naar Ads. Vul hier
-  // het gebeurtenisfragment in zodra de conversieactie is aangemaakt, en lever
-  // aankopen dan niet ook nog via de import uit Analytics: dat telt dubbel.
-  GOOGLE_ADS_PURCHASE_LABEL: "",
+  // De bedankpagina stuurt het bestelbedrag als value, EUR als currency en het
+  // bestelnummer als transaction_id, een keer per bestelling. Dit loopt via de
+  // tag; lever aankopen niet ook nog via de import uit Analytics, want dan telt
+  // elke bestelling dubbel.
+  GOOGLE_ADS_PURCHASE_LABEL: "AW-1017809287/QaZmCP_m65IdEIeTquUD",
 };
 
 // Verificatie-meta-tags. Leeg = geen tag in de <head>.
