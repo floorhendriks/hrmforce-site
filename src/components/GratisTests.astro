@@ -5,53 +5,11 @@
 import { ONDERDELEN } from "../data/oefentest-ui.js";
 import { VRAGENLIJSTEN } from "../data/oefenvragenlijst.js";
 import { localizePath } from "../i18n/utils.js";
+import { GRATIS_TEKST } from "../data/component-teksten.js";
 
 const { lang = "nl", huidig = "" } = Astro.props;
 
-const TEKST = {
-  nl: {
-    kop: "Meer gratis tests",
-    lead: "Elke test hieronder is gratis en geeft je direct na afloop een uitslag op je scherm.",
-    kleurNaam: "Gratis kleurentest",
-    kleurLead: "Vier kleuren, een eerste beeld van je persoonlijkheid in een paar minuten.",
-    start: "Start de test",
-  },
-  en: {
-    kop: "More free tests",
-    lead: "Every test below is free and shows you a result on screen as soon as you finish.",
-    kleurNaam: "Free colour test",
-    kleurLead: "Four colours, a first picture of your personality in a few minutes.",
-    start: "Start the test",
-  },
-  de: {
-    kop: "Weitere kostenlose Tests",
-    lead: "Jeder Test unten ist kostenlos und zeigt Ihnen direkt nach Abschluss ein Ergebnis am Bildschirm.",
-    kleurNaam: "Kostenloser Farbtest",
-    kleurLead: "Vier Farben, ein erstes Bild Ihrer Persönlichkeit in wenigen Minuten.",
-    start: "Test starten",
-  },
-  fr: {
-    kop: "Plus de tests gratuits",
-    lead: "Chaque test ci-dessous est gratuit et affiche un résultat à l'écran dès que vous avez terminé.",
-    kleurNaam: "Test des couleurs gratuit",
-    kleurLead: "Quatre couleurs, un premier aperçu de votre personnalité en quelques minutes.",
-    start: "Commencer le test",
-  },
-  es: {
-    kop: "Más tests gratuitos",
-    lead: "Cada test de abajo es gratuito y te muestra un resultado en pantalla nada más terminar.",
-    kleurNaam: "Test de colores gratuito",
-    kleurLead: "Cuatro colores, una primera imagen de tu personalidad en pocos minutos.",
-    start: "Empezar el test",
-  },
-  ro: {
-    kop: "Mai multe teste gratuite",
-    lead: "Fiecare test de mai jos este gratuit și îți arată un rezultat pe ecran imediat ce termini.",
-    kleurNaam: "Test de culori gratuit",
-    kleurLead: "Patru culori, o primă imagine a personalității tale în câteva minute.",
-    start: "Începe testul",
-  },
-};
+const TEKST = GRATIS_TEKST;
 
 const tk = TEKST[lang] || TEKST.nl;
 const basis = localizePath("/oefentest/", lang);

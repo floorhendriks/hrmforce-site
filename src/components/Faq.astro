@@ -1,17 +1,11 @@
 ---
 import { localizePath, sanitizeBodyLinks, demoPath } from "../i18n/utils.js";
 import validPaths from "../data/valid-paths.js";
+import { FAQC_UI } from "../data/component-teksten.js";
 const { t, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
 
-const UI = {
-  nl: { search: "Zoek een vraag...", all: "Alle", count: "vragen", none: "Geen vragen gevonden. Probeer een andere zoekterm of tag.", themes: "Thema's" },
-  en: { search: "Search a question...", all: "All", count: "questions", none: "No questions found. Try another term or tag.", themes: "Themes" },
-  de: { search: "Frage suchen...", all: "Alle", count: "Fragen", none: "Keine Fragen gefunden. Versuchen Sie einen anderen Begriff oder Tag.", themes: "Themen" },
-  fr: { search: "Rechercher une question...", all: "Toutes", count: "questions", none: "Aucune question trouvée. Essayez un autre terme ou tag.", themes: "Thèmes" },
-  es: { search: "Busca una pregunta...", all: "Todas", count: "preguntas", none: "No se encontraron preguntas. Prueba otro término o etiqueta.", themes: "Temas" },
-  ro: { search: "Caută o întrebare...", all: "Toate", count: "întrebări", none: "Nicio întrebare găsită. Încearcă alt termen sau etichetă.", themes: "Teme" },
-};
+const UI = FAQC_UI;
 const ui = UI[lang] || UI.nl;
 
 // Alle items platslaan met hun categorie als tag.

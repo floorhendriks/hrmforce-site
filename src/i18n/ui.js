@@ -1,4 +1,5 @@
 // Vertaalbare UI-teksten (menu, footer, knoppen) + routes.
+import { vulAan } from "../data/vertaal-inhoud.js";
 export const defaultLang = "nl";
 // De enige plek waar de talen van de site staan. Alles leidt hiervan af: de
 // routes, de taalwisselaar, de hreflang-regels en de lijst met geldige paden.
@@ -7,6 +8,26 @@ export const languages = { nl: "NL", en: "EN", de: "DE", fr: "FR", es: "ES", ro:
 // Talen waarvan de teksten met de hand in de bronbestanden staan. De overige
 // talen komen uit de vertaalbestanden, zie src/data/vertaal-inhoud.js.
 export const BRONTALEN = ["nl", "en", "de", "fr", "es", "ro"];
+
+/**
+ * Vlag en eigen naam per taal, voor de taalwisselaar.
+ *
+ * De naam staat in de taal zelf: een Poolse bezoeker herkent "Polski" sneller
+ * dan "Pools". De vlag is een hulpmiddel, geen land: Engels krijgt de Britse
+ * vlag en Spaans de Spaanse, terwijl die talen in veel meer landen worden
+ * gesproken. Daarom staat de naam er altijd bij en nooit de vlag alleen.
+ */
+export const taalInfo = {
+  nl: { vlag: "\u{1F1F3}\u{1F1F1}", naam: "Nederlands" },
+  en: { vlag: "\u{1F1EC}\u{1F1E7}", naam: "English" },
+  de: { vlag: "\u{1F1E9}\u{1F1EA}", naam: "Deutsch" },
+  fr: { vlag: "\u{1F1EB}\u{1F1F7}", naam: "Fran\u00e7ais" },
+  es: { vlag: "\u{1F1EA}\u{1F1F8}", naam: "Espa\u00f1ol" },
+  ro: { vlag: "\u{1F1F7}\u{1F1F4}", naam: "Rom\u00e2n\u0103" },
+  pl: { vlag: "\u{1F1F5}\u{1F1F1}", naam: "Polski" },
+  da: { vlag: "\u{1F1E9}\u{1F1F0}", naam: "Dansk" },
+  sv: { vlag: "\u{1F1F8}\u{1F1EA}", naam: "Svenska" },
+};
 
 export const routes = {
   shop: "/shop/",
@@ -98,3 +119,8 @@ export const ui = {
     "footer.cases": "Studii de caz", "footer.integrations": "Integrări", "footer.trust": "Trust & security", "footer.science": "Fundament științific", "footer.glossary": "Glosar", "footer.cookieprefs": "Preferințe cookie-uri",
   },
 };
+
+// Talen zonder eigen tekst hierboven worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js. Zonder dit
+// viel elke nieuwe taal voor menu, voettekst en knoppen terug op Nederlands.
+Object.assign(ui, vulAan(ui));

@@ -10,6 +10,7 @@ import validPaths from "../data/valid-paths.js";
 import LogoSlider from "./LogoSlider.astro";
 import ReviewSlider from "./ReviewSlider.astro";
 import { REVIEWS_EXTERNAL } from "../data/site-config.js";
+import { HOME_GOOG_ALLE, HOME_ITC_ALLE, HOME_MATCH_ALLE, HOME_TESTI } from "../data/component-teksten.js";
 
 const { c, lang } = Astro.props;
 const lp = (p) => localizePath(p, lang);
@@ -31,66 +32,14 @@ const vpIcons = {
 };
 
 const reviews = c.reviews;
-const MATCH_ALLE = {
-  nl:{ eyebrow:"Onze matchingsformule", title:"Match kandidaten op basis van je eigen topperformers", lead:"Bouw een ideaalprofiel op basis van je huidige topperformers. hrmforce vergelijkt kandidaten objectief met dat profiel en geeft een heldere match-score, zodat je selecteert op wat echt voorspelt.", b:["Ideaalprofiel uit je eigen succesvolle medewerkers","Objectieve match-score per kandidaat","Onderbouwd met wetenschappelijk gevalideerde tests"], cta:"Bekijk matchprofielen", meet:"Plan een gratis kennismaking" },
-  en:{ eyebrow:"Objective matching", title:"Match against a success profile built from your own top performers", lead:"Build a success profile based on the people who already excel. hrmforce compares candidates objectively against that profile and gives a clear match score, so you select on what truly predicts performance.", b:["Success profile from your own high performers","Objective match score per candidate","Backed by scientifically validated tests"], cta:"View match profiles", meet:"Book a free intro call" },
-  de:{ eyebrow:"Objektives Matching", title:"Abgleich mit einem Erfolgsprofil aus Ihren eigenen Top-Performern", lead:"Erstellen Sie ein Erfolgsprofil auf Basis der Menschen, die bereits herausragen. hrmforce vergleicht Kandidaten objektiv mit diesem Profil und liefert einen klaren Match-Score, damit Sie nach dem auswählen, was Leistung wirklich vorhersagt.", b:["Erfolgsprofil aus Ihren eigenen Leistungsträgern","Objektiver Match-Score je Kandidat","Fundiert mit wissenschaftlich validierten Tests"], cta:"Match-Profile ansehen", meet:"Kostenloses Kennenlerngespräch" },
-  fr:{ eyebrow:"Matching objectif", title:"Comparez à un profil de réussite bâti sur vos propres meilleurs éléments", lead:"Construisez un profil de réussite à partir des personnes qui excellent déjà. hrmforce compare objectivement les candidats à ce profil et fournit un score de correspondance clair, pour sélectionner sur ce qui prédit vraiment la performance.", b:["Profil de réussite issu de vos meilleurs collaborateurs","Score de correspondance objectif par candidat","Appuyé par des tests validés scientifiquement"], cta:"Voir les profils de correspondance", meet:"Planifier un échange gratuit" },
-  es:{ eyebrow:"Matching objetivo", title:"Compara con un perfil de éxito creado a partir de tus propios top performers", lead:"Crea un perfil de éxito basado en las personas que ya destacan. hrmforce compara a los candidatos de forma objetiva con ese perfil y ofrece una puntuación de coincidencia clara, para seleccionar por lo que de verdad predice el rendimiento.", b:["Perfil de éxito a partir de tus mejores empleados","Puntuación de coincidencia objetiva por candidato","Respaldado por tests validados científicamente"], cta:"Ver perfiles de coincidencia", meet:"Reserva una toma de contacto gratuita" },
-  ro:{ eyebrow:"Potrivire obiectivă", title:"Compară cu un profil de succes construit din propriii tăi top performeri", lead:"Construiește un profil de succes pe baza oamenilor care deja excelează. hrmforce compară candidații obiectiv cu acel profil și oferă un scor de potrivire clar, ca să selectezi după ceea ce prezice cu adevărat performanța.", b:["Profil de succes din proprii angajați performanți","Scor de potrivire obiectiv per candidat","Susținut de teste validate științific"], cta:"Vezi profilurile de potrivire", meet:"Programează o discuție gratuită" },
-};
+const MATCH_ALLE = HOME_MATCH_ALLE;
 const MATCH = MATCH_ALLE[lang] ?? MATCH_ALLE.nl;
-const TESTI = {
-  nl: { eyebrow: "Wat klanten zeggen", title: "Vertrouwd door HR-teams en adviseurs", items: [
-    { q: "De rapporten zijn meteen bruikbaar in ons selectiegesprek, geen vertaalslag meer nodig.", who: "HR-manager", org: "Zorgorganisatie, 300+ medewerkers" },
-    { q: "Wetenschappelijk onderbouwd én praktisch. Onze recruiters werken er dagelijks mee.", who: "Recruitmentlead", org: "Technische dienstverlener" },
-    { q: "Snel opgezet, meertalig en stabiel. De ondersteuning denkt echt mee.", who: "L&D-adviseur", org: "Financiële sector" } ],
-    itc: "hrmforce is lid van de International Test Commission (ITC) en werkt volgens de internationale richtlijnen voor verantwoord testgebruik." },
-  en: { eyebrow: "What clients say", title: "Trusted by HR teams and consultants", items: [
-    { q: "The reports are usable straight away in our selection interview, no translation needed.", who: "HR manager", org: "Healthcare organisation, 300+ staff" },
-    { q: "Scientifically grounded and practical. Our recruiters use it every day.", who: "Recruitment lead", org: "Technical services provider" },
-    { q: "Quick to set up, multilingual and reliable. Support really thinks along.", who: "L&D advisor", org: "Financial sector" } ],
-    itc: "hrmforce is a member of the International Test Commission (ITC) and works to the international guidelines for responsible test use." },
-  de: { eyebrow: "Was Kunden sagen", title: "Vertraut von HR-Teams und Beratern", items: [
-    { q: "Die Berichte sind sofort im Auswahlgespräch nutzbar, ohne Übersetzung.", who: "HR-Managerin", org: "Gesundheitsorganisation, 300+ Mitarbeitende" },
-    { q: "Wissenschaftlich fundiert und praktisch. Unsere Recruiter arbeiten täglich damit.", who: "Recruiting-Leiter", org: "Technischer Dienstleister" },
-    { q: "Schnell eingerichtet, mehrsprachig und zuverlässig. Der Support denkt wirklich mit.", who: "L&D-Beraterin", org: "Finanzsektor" } ],
-    itc: "hrmforce ist Mitglied der International Test Commission (ITC) und arbeitet nach den internationalen Richtlinien für verantwortungsvollen Testeinsatz." },
-  fr: { eyebrow: "Ce que disent nos clients", title: "La confiance des équipes RH et consultants", items: [
-    { q: "Les rapports sont directement exploitables lors de l'entretien, sans traduction.", who: "Responsable RH", org: "Organisation de santé, 300+ salariés" },
-    { q: "Scientifique et pratique. Nos recruteurs l'utilisent chaque jour.", who: "Responsable recrutement", org: "Prestataire technique" },
-    { q: "Mise en place rapide, multilingue et fiable. Le support est à l'écoute.", who: "Conseillère L&D", org: "Secteur financier" } ],
-    itc: "hrmforce est membre de l'International Test Commission (ITC) et applique les directives internationales pour un usage responsable des tests." },
-  es: { eyebrow: "Lo que dicen los clientes", title: "La confianza de equipos de RR. HH. y consultores", items: [
-    { q: "Los informes se usan de inmediato en la entrevista, sin traducción.", who: "Responsable de RR. HH.", org: "Organización sanitaria, 300+ empleados" },
-    { q: "Con base científica y práctica. Nuestros reclutadores lo usan a diario.", who: "Responsable de selección", org: "Proveedor técnico" },
-    { q: "Rápido de configurar, multilingüe y fiable. El soporte se implica de verdad.", who: "Asesora de L&D", org: "Sector financiero" } ],
-    itc: "hrmforce es miembro de la International Test Commission (ITC) y trabaja según las directrices internacionales para un uso responsable de los tests." },
-  ro: { eyebrow: "Ce spun clienții", title: "De încredere pentru echipe HR și consultanți", items: [
-    { q: "Rapoartele sunt utilizabile imediat în interviu, fără traducere.", who: "Manager HR", org: "Organizație medicală, 300+ angajați" },
-    { q: "Fundamentat științific și practic. Recrutorii noștri îl folosesc zilnic.", who: "Lead recrutare", org: "Furnizor de servicii tehnice" },
-    { q: "Rapid de configurat, multilingv și fiabil. Suportul chiar te ajută.", who: "Consultant L&D", org: "Sector financiar" } ],
-    itc: "hrmforce este membru al International Test Commission (ITC) și lucrează conform ghidurilor internaționale pentru utilizarea responsabilă a testelor." },
-};
+const TESTI = HOME_TESTI;
 const ti = TESTI[lang] || TESTI.nl;
 const googleUrl = REVIEWS_EXTERNAL?.google || "";
-const GOOG_ALLE = {
-  nl: { score: "4,9", label: "op Google", sub: "op basis van klantreviews" },
-  en: { score: "4.9", label: "on Google", sub: "based on customer reviews" },
-  de: { score: "4,9", label: "auf Google", sub: "auf Basis von Kundenbewertungen" },
-  fr: { score: "4,9", label: "sur Google", sub: "sur la base d'avis clients" },
-  es: { score: "4,9", label: "en Google", sub: "según las reseñas de clientes" },
-  ro: { score: "4,9", label: "pe Google", sub: "pe baza recenziilor clienților" },
-};
+const GOOG_ALLE = HOME_GOOG_ALLE;
 const GOOG = GOOG_ALLE[lang] ?? GOOG_ALLE.nl;
-const ITC_ALLE = {
-  nl: { title: "Lid van de International Test Commission", body: "hrmforce toetst zijn assessments aan de internationale ITC-richtlijnen voor verantwoord testgebruik. Dat betekent: transparante onderbouwing, eerlijke normgroepen en zorgvuldige rapportage.", cta: "Bekijk onze verantwoording" },
-  en: { title: "Member of the International Test Commission", body: "hrmforce holds its assessments to the international ITC guidelines for responsible test use: transparent grounding, fair norm groups and careful reporting.", cta: "See our accountability" },
-  de: { title: "Mitglied der International Test Commission", body: "hrmforce prüft seine Assessments an den internationalen ITC-Richtlinien für verantwortungsvollen Testeinsatz: transparente Fundierung, faire Normgruppen und sorgfältige Berichte.", cta: "Unsere Rechenschaft ansehen" },
-  fr: { title: "Membre de l'International Test Commission", body: "hrmforce évalue ses tests selon les directives internationales ITC pour un usage responsable : base transparente, groupes de référence équitables et rapports soignés.", cta: "Voir notre transparence" },
-  es: { title: "Miembro de la International Test Commission", body: "hrmforce somete sus evaluaciones a las directrices internacionales ITC para un uso responsable de los tests: base transparente, grupos normativos justos e informes cuidadosos.", cta: "Ver nuestra transparencia" },
-  ro: { title: "Membru al International Test Commission", body: "hrmforce își evaluează instrumentele conform ghidurilor internaționale ITC pentru utilizarea responsabilă a testelor: fundamentare transparentă, grupuri normative corecte și raportare atentă.", cta: "Vezi transparența noastră" },
-};
+const ITC_ALLE = HOME_ITC_ALLE;
 const ITC = ITC_ALLE[lang] ?? ITC_ALLE.nl;
 const trustHref = lp("/trust/");
 const faqLd = {

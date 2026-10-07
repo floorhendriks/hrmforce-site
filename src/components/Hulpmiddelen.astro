@@ -6,22 +6,10 @@
  */
 import Ico from "./Ico.astro";
 import { localizePath } from "../i18n/utils.js";
+import { HULPM_T_ALLE } from "../data/component-teksten.js";
 const { lang = "nl" } = Astro.props;
 
-const T_ALLE = {
-  nl: { lbl1: "Testkiezer", k1: "Welke test past bij jouw vraag?", t1: "Beantwoord vier vragen en je krijgt een onderbouwd voorstel.", c1: "Open de testkiezer",
-        lbl2: "Rekentool", k2: "Wat levert objectief selecteren op?", t2: "Reken je besparing door met je eigen aantallen en verloopcijfers.", c2: "Open de ROI-rekentool" },
-  en: { lbl1: "Test selector", k1: "Which assessment fits your question?", t1: "Answer four questions and get a grounded suggestion.", c1: "Open the test selector",
-        lbl2: "Calculator", k2: "What does objective selection deliver?", t2: "Work out your saving with your own headcount and turnover figures.", c2: "Open the ROI calculator" },
-  de: { lbl1: "Testauswahl", k1: "Welcher Test passt zu Ihrer Frage?", t1: "Vier Fragen beantworten und Sie erhalten einen fundierten Vorschlag.", c1: "Zur Testauswahl",
-        lbl2: "Rechner", k2: "Was bringt objektive Auswahl?", t2: "Rechnen Sie Ihre Ersparnis mit eigenen Zahlen durch.", c2: "Zum ROI-Rechner" },
-  fr: { lbl1: "Sélecteur", k1: "Quel test correspond à votre question ?", t1: "Répondez à quatre questions et recevez une proposition argumentée.", c1: "Ouvrir le sélecteur",
-        lbl2: "Calculateur", k2: "Que rapporte une sélection objective ?", t2: "Calculez votre gain avec vos propres effectifs et taux de rotation.", c2: "Ouvrir le calculateur ROI" },
-  es: { lbl1: "Selector", k1: "¿Qué test encaja con tu pregunta?", t1: "Responde cuatro preguntas y recibe una propuesta fundamentada.", c1: "Abrir el selector de tests",
-        lbl2: "Calculadora", k2: "¿Qué aporta una selección objetiva?", t2: "Calcula tu ahorro con tus propias cifras de plantilla y rotación.", c2: "Abrir la calculadora ROI" },
-  ro: { lbl1: "Selector", k1: "Ce test se potrivește întrebării tale?", t1: "Răspunde la patru întrebări și primești o propunere argumentată.", c1: "Deschide selectorul de teste",
-        lbl2: "Calculator", k2: "Ce aduce o selecție obiectivă?", t2: "Calculează economia cu propriile cifre de personal și fluctuație.", c2: "Deschide calculatorul ROI" },
-};
+const T_ALLE = HULPM_T_ALLE;
 const T = T_ALLE[lang] ?? T_ALLE.nl;
 
 const testHref = localizePath("/testkiezer/", lang);

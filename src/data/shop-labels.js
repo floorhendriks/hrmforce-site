@@ -3,6 +3,8 @@
    code op. Alleen wat de bezoeker leest wordt vertaald. Staat een waarde hier
    niet, dan blijft de oorspronkelijke tekst staan. */
 
+import { vulAan } from "./vertaal-inhoud.js";
+
 const l = (nl, en, de, fr, es, ro) => ({ nl, en, de, fr, es, ro });
 
 // Segmenten: het producttype uit Shopify.
@@ -32,6 +34,13 @@ const CYCLUS = {
   "Selectie": l("Selectie", "Selection", "Auswahl", "Sélection", "Selección", "Selecție"),
   "Voorselectie": SEGMENT["Voorselectie"],
 };
+
+// Talen zonder eigen tekst hierboven worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+export const SHOP_SEGMENT = SEGMENT;
+export const SHOP_CYCLUS = CYCLUS;
+Object.assign(SEGMENT, vulAan(SEGMENT));
+Object.assign(CYCLUS, vulAan(CYCLUS));
 
 /* Alle labels voor een taal, als platte tabel {waarde: tekst}. Segment en
    cyclus gebruiken dezelfde tabel, want Voorselectie komt in allebei voor met

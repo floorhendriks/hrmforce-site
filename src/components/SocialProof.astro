@@ -4,17 +4,11 @@ import Sterren from "./Sterren.astro";
 // Herbruikbaar op assessment-, oplossingen- en adviespagina's.
 import { REVIEWS_EXTERNAL } from "../data/site-config.js";
 import { getLangFromUrl, localizePath } from "../i18n/utils.js";
+import { SOCIAL_T_ALLE } from "../data/component-teksten.js";
 
 const lang = Astro.props.lang || getLangFromUrl(Astro.url);
 const tone = Astro.props.tone || "light"; // light | soft
-const T_ALLE = {
-  nl: { score: "4,9", google: "op Google", googleSub: "klantbeoordelingen", itc: "Lid International Test Commission", itcSub: "internationale richtlijnen voor testgebruik", react: "Binnen 24 uur reactie", reactSub: "werkdagen, van een specialist" },
-  en: { score: "4.9", google: "on Google", googleSub: "customer reviews", itc: "Member International Test Commission", itcSub: "international guidelines for test use", react: "Reply within 24 hours", reactSub: "working days, from a specialist" },
-  de: { score: "4,9", google: "auf Google", googleSub: "Kundenbewertungen", itc: "Mitglied International Test Commission", itcSub: "internationale Richtlinien für Testeinsatz", react: "Antwort innerhalb von 24 Stunden", reactSub: "werktags, von einem Spezialisten" },
-  fr: { score: "4,9", google: "sur Google", googleSub: "avis clients", itc: "Membre International Test Commission", itcSub: "directives internationales sur les tests", react: "Réponse sous 24 heures", reactSub: "jours ouvrés, par un spécialiste" },
-  es: { score: "4,9", google: "en Google", googleSub: "reseñas de clientes", itc: "Miembro International Test Commission", itcSub: "directrices internacionales sobre tests", react: "Respuesta en 24 horas", reactSub: "días laborables, de un especialista" },
-  ro: { score: "4,9", google: "pe Google", googleSub: "recenzii ale clienților", itc: "Membru International Test Commission", itcSub: "ghiduri internaționale pentru teste", react: "Răspuns în 24 de ore", reactSub: "zile lucrătoare, de la un specialist" },
-};
+const T_ALLE = SOCIAL_T_ALLE;
 const T = T_ALLE[lang] ?? T_ALLE.nl;
 const googleUrl = REVIEWS_EXTERNAL?.google || "";
 const trustHref = localizePath("/trust/", lang);

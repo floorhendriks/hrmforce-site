@@ -8,25 +8,12 @@ const NAAM_LABEL = {
   nl: "Je naam", en: "Your name", de: "Ihr Name", fr: "Votre nom", es: "Tu nombre", ro: "Numele t\u0103u",
 };
 const naamLabel = NAAM_LABEL[lang] || NAAM_LABEL.nl;
-const MENSFOUT = {
-  nl: "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.",
-  en: "We could not confirm that you are human. Tick the box and try again.",
-  de: "Wir konnten nicht feststellen, dass Sie ein Mensch sind. Bitte das Kästchen anklicken und erneut versuchen.",
-  fr: "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez.",
-  es: "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo.",
-  ro: "Nu am putut confirma că ești o persoană. Bifează căsuța și încearcă din nou.",
-};
-const BEVESTIGING = {
-  nl: { ok: "Gelukt. Je oefenvragen zijn onderweg naar je mailbox.", fout: "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar oefenen@hrmforce.com.", bezig: "Bezig…" },
-  en: { ok: "Done. Your practice questions are on their way to your inbox.", fout: "Something went wrong while sending. Please try again or email oefenen@hrmforce.com.", bezig: "Working…" },
-  de: { ok: "Geschafft. Ihre Übungsfragen sind auf dem Weg in Ihr Postfach.", fout: "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an oefenen@hrmforce.com mailen.", bezig: "Läuft…" },
-  fr: { ok: "C'est fait. Vos questions d'entraînement arrivent dans votre boîte mail.", fout: "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à oefenen@hrmforce.com.", bezig: "En cours…" },
-  es: { ok: "Listo. Tus preguntas de práctica van camino a tu correo.", fout: "Algo salió mal al enviar. Inténtalo de nuevo o escribe a oefenen@hrmforce.com.", bezig: "Enviando…" },
-  ro: { ok: "Gata. Întrebările tale de exersare sunt pe drum spre inbox.", fout: "A apărut o eroare la trimitere. Încearcă din nou sau scrie la oefenen@hrmforce.com.", bezig: "Se trimite…" },
-};
+const MENSFOUT = OEFAANVR_MENSFOUT;
+const BEVESTIGING = OEFAANVR_BEVESTIGING;
 const b = BEVESTIGING[lang] || BEVESTIGING.nl;
 const mensfout = MENSFOUT[lang] || MENSFOUT.nl;
 import Mensencheck from "./Mensencheck.astro";
+import { OEFAANVR_BEVESTIGING, OEFAANVR_MENSFOUT } from "../data/component-teksten.js";
 ---
 <form class={`oa-form ${klasse}`} method="POST" action="/api/oefenmateriaal"
       data-oefenaanvraag data-ok={b.ok} data-fout={b.fout} data-bezig={b.bezig} data-mensfout={mensfout}>

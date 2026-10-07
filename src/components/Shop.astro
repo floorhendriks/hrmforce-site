@@ -17,24 +17,10 @@ const tarievenHref = localizePath("/tarieven/", lang);
 const afrekenenHref = localizePath("/afrekenen/", lang);
 
 // Winkelwagen-/detail-teksten per taal (in de component; geen extra databron nodig).
-const CART_I18N = {
-  nl: { add: "In winkelmand", added: "Toegevoegd ✓", inCart: "In mand", cartTitle: "Winkelmand", empty: "Je winkelmand is nog leeg.", checkout: "Afrekenen", remove: "Verwijderen", subtotal: "Subtotaal", close: "Sluiten", secure: "Veilig betalen via iDEAL, Bancontact en creditcard", details: "Details bekijken", each: "per stuk", continue: "Verder winkelen" },
-  en: { add: "Add to cart", added: "Added ✓", inCart: "In cart", cartTitle: "Cart", empty: "Your cart is empty.", checkout: "Checkout", remove: "Remove", subtotal: "Subtotal", close: "Close", secure: "Secure payment via iDEAL, cards and more", details: "View details", each: "each", continue: "Continue shopping" },
-  de: { add: "In den Warenkorb", added: "Hinzugefügt ✓", inCart: "Im Korb", cartTitle: "Warenkorb", empty: "Ihr Warenkorb ist leer.", checkout: "Zur Kasse", remove: "Entfernen", subtotal: "Zwischensumme", close: "Schließen", secure: "Sichere Zahlung per iDEAL, Kreditkarte u. a.", details: "Details ansehen", each: "pro Stück", continue: "Weiter einkaufen" },
-  fr: { add: "Ajouter au panier", added: "Ajouté ✓", inCart: "Au panier", cartTitle: "Panier", empty: "Votre panier est vide.", checkout: "Commander", remove: "Retirer", subtotal: "Sous-total", close: "Fermer", secure: "Paiement sécurisé via iDEAL, carte et plus", details: "Voir les détails", each: "l'unité", continue: "Continuer les achats" },
-  es: { add: "Añadir al carrito", added: "Añadido ✓", inCart: "En carrito", cartTitle: "Carrito", empty: "Tu carrito está vacío.", checkout: "Pagar", remove: "Eliminar", subtotal: "Subtotal", close: "Cerrar", secure: "Pago seguro con iDEAL, tarjeta y más", details: "Ver detalles", each: "por unidad", continue: "Seguir comprando" },
-  ro: { add: "Adaugă în coș", added: "Adăugat ✓", inCart: "În coș", cartTitle: "Coș", empty: "Coșul tău este gol.", checkout: "Finalizează comanda", remove: "Elimină", subtotal: "Subtotal", close: "Închide", secure: "Plată securizată prin iDEAL, card și altele", details: "Vezi detaliile", each: "bucata", continue: "Continuă cumpărăturile" },
-};
+const CART_I18N = SHOP_CART_I18N;
 const ct = CART_I18N[lang] || CART_I18N.nl;
 
-const CAND_I18N = {
-  nl: { heading: "Kandidaat", name: "Naam kandidaat", email: "E-mail kandidaat", lang: "Taal kandidaat", level: "Niveau", pick: "Kies…", langs: [["nl","Nederlands"],["en","Engels"],["de","Duits"],["fr","Frans"],["es","Spaans"],["ro","Roemeens"]], levels: [["operational","Operational"],["bachelor","Bachelor"],["master","Master"]] },
-  en: { heading: "Candidate", name: "Candidate name", email: "Candidate email", lang: "Candidate language", level: "Level", pick: "Choose…", langs: [["nl","Dutch"],["en","English"],["de","German"],["fr","French"],["es","Spanish"],["ro","Romanian"]], levels: [["operational","Operational"],["bachelor","Bachelor"],["master","Master"]] },
-  de: { heading: "Kandidat", name: "Name des Kandidaten", email: "E-Mail des Kandidaten", lang: "Sprache", level: "Niveau", pick: "Wählen…", langs: [["nl","Niederländisch"],["en","Englisch"],["de","Deutsch"],["fr","Französisch"],["es","Spanisch"],["ro","Rumänisch"]], levels: [["operational","Operational"],["bachelor","Bachelor"],["master","Master"]] },
-  fr: { heading: "Candidat", name: "Nom du candidat", email: "E-mail du candidat", lang: "Langue", level: "Niveau", pick: "Choisir…", langs: [["nl","Néerlandais"],["en","Anglais"],["de","Allemand"],["fr","Français"],["es","Espagnol"],["ro","Roumain"]], levels: [["operational","Opérationnel"],["bachelor","Bachelor"],["master","Master"]] },
-  es: { heading: "Candidato", name: "Nombre del candidato", email: "Correo del candidato", lang: "Idioma", level: "Nivel", pick: "Elegir…", langs: [["nl","Neerlandés"],["en","Inglés"],["de","Alemán"],["fr","Francés"],["es","Español"],["ro","Rumano"]], levels: [["operational","Operacional"],["bachelor","Bachelor"],["master","Máster"]] },
-  ro: { heading: "Candidat", name: "Numele candidatului", email: "E-mailul candidatului", lang: "Limbă", level: "Nivel", pick: "Alege…", langs: [["nl","Neerlandeză"],["en","Engleză"],["de","Germană"],["fr","Franceză"],["es","Spaniolă"],["ro","Română"]], levels: [["operational","Operațional"],["bachelor","Bachelor"],["master","Master"]] },
-};
+const CAND_I18N = SHOP_CAND_I18N;
 
 // Website-verrijking (Optie A): relevante foto per segment + uitgebreidere,
 // vertaalde beschrijving per product. Wordt op de site getoond bovenop de
@@ -127,14 +113,7 @@ const VENDOR_LOGO = {
 };
 
 // "Voorbeeldrapport aanvragen"-formulier (lead capture). Naam + e-mail verplicht, telefoon optioneel.
-const REQ_I18N = {
-  nl: { title: "Voorbeeldrapport aanvragen", intro: "Vul je gegevens in; we sturen een voorbeeldrapport per e-mail.", name: "Naam", email: "E-mailadres", phone: "Telefoon (optioneel)", submit: "Aanvragen", sending: "Versturen…", thanks: "Bedankt! We sturen het voorbeeldrapport zo snel mogelijk per e-mail." },
-  en: { title: "Request a sample report", intro: "Leave your details and we'll email you a sample report.", name: "Name", email: "Email address", phone: "Phone (optional)", submit: "Request", sending: "Sending…", thanks: "Thank you! We'll email the sample report as soon as possible." },
-  de: { title: "Musterbericht anfordern", intro: "Hinterlassen Sie Ihre Daten; wir senden Ihnen einen Musterbericht per E-Mail.", name: "Name", email: "E-Mail-Adresse", phone: "Telefon (optional)", submit: "Anfordern", sending: "Senden…", thanks: "Danke! Wir senden den Musterbericht so schnell wie möglich per E-Mail." },
-  fr: { title: "Demander un rapport exemple", intro: "Laissez vos coordonnées ; nous vous enverrons un rapport exemple par e-mail.", name: "Nom", email: "Adresse e-mail", phone: "Téléphone (facultatif)", submit: "Demander", sending: "Envoi…", thanks: "Merci ! Nous enverrons le rapport exemple par e-mail dès que possible." },
-  es: { title: "Solicitar un informe de ejemplo", intro: "Deja tus datos y te enviaremos un informe de ejemplo por correo.", name: "Nombre", email: "Correo electrónico", phone: "Teléfono (opcional)", submit: "Solicitar", sending: "Enviando…", thanks: "¡Gracias! Enviaremos el informe de ejemplo por correo lo antes posible." },
-  ro: { title: "Solicită un raport exemplu", intro: "Lasă-ne datele tale; îți trimitem un raport exemplu pe e-mail.", name: "Nume", email: "Adresă de e-mail", phone: "Telefon (opțional)", submit: "Solicită", sending: "Se trimite…", thanks: "Mulțumim! Îți trimitem raportul exemplu pe e-mail cât mai curând." },
-};
+const REQ_I18N = SHOP_REQ_I18N;
 const rq = REQ_I18N[lang] || REQ_I18N.nl;
 
 // FAQ per segment (segment-specifiek + algemeen, ≥10) voor de huidige taal,
@@ -145,14 +124,7 @@ Object.keys(BY_SEGMENT).forEach((s) => { FAQ_SEG[s] = faqFor(s, lang); });
 // Documenten van de uitgever bij de instrumenten die hrmforce niet zelf uitgeeft.
 // Per producttitel, zodat het paneel ze zonder extra verzoek kan tonen.
 const DOCS = documentenPerProduct(lang);
-const DOCS_T = {
-  nl: "Documenten bij dit instrument",
-  en: "Documents for this instrument",
-  de: "Dokumente zu diesem Instrument",
-  fr: "Documents relatifs \u00e0 cet instrument",
-  es: "Documentos de este instrumento",
-  ro: "Documente pentru acest instrument",
-};
+const DOCS_T = SHOP_DOCS_T;
 const docsTitel = DOCS_T[lang] || DOCS_T.nl;
 
 // Trainingen: eigen segment, eigen kenmerken en eigen vragen.
@@ -165,6 +137,7 @@ const TRAIN = {
 };
 const FAQ_DEFAULT = generalFaq(lang);
 import Mensencheck from "./Mensencheck.astro";
+import { SHOP_CAND_I18N, SHOP_CART_I18N, SHOP_DOCS_T, SHOP_REQ_I18N } from "../data/component-teksten.js";
 const MC_OK = { nl: "Bedankt. We nemen zo snel mogelijk contact met je op.", en: "Thank you. We will get in touch as soon as we can.", de: "Danke. Wir melden uns so schnell wie möglich.", fr: "Merci. Nous vous recontactons au plus vite.", es: "Gracias. Nos pondremos en contacto lo antes posible.", ro: "Mulțumim. Revenim cât de repede putem." };
 const MC_FOUT = { nl: "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.", en: "Something went wrong while sending. Please try again or email service@hrmforce.com.", de: "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.", fr: "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.", es: "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.", ro: "A apărut o eroare la trimitere. Încearcă din nou sau scrie la service@hrmforce.com." };
 const MC_MENS = { nl: "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.", en: "We could not confirm that you are human. Tick the box and try again.", de: "Wir konnten nicht feststellen, dass Sie ein Mensch sind. Bitte das Kästchen anklicken und erneut versuchen.", fr: "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez.", es: "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo.", ro: "Nu am putut confirma că ești o persoană. Bifează căsuța și încearcă din nou." };

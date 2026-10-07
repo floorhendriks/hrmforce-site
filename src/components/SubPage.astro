@@ -6,18 +6,12 @@ import { getLangFromUrl, localizePath, demoPath } from "../i18n/utils.js";
 import Mensencheck from "./Mensencheck.astro";
 import { FORM_UI } from "../data/formulier-tekst.js";
 import { MENS_UI } from "../data/mensencheck-tekst.js";
+import { SUBPAG_CTA } from "../data/component-teksten.js";
 
 const { page, active = "" } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 
-const CTA = {
-  nl: { title: "Ontdek welke aanpak past bij jouw HR-vraagstuk", text: "Bespreek je situatie met een hrmforce-specialist. In 30 minuten krijg je concreet advies.", primary: "Plan een demo", secondary: "Bekijk de assessments" },
-  en: { title: "Discover the approach that fits your HR challenge", text: "Discuss your situation with an hrmforce specialist. In 30 minutes you get concrete advice.", primary: "Book a demo", secondary: "View the assessments" },
-  de: { title: "Entdecken Sie den passenden Ansatz für Ihre HR-Frage", text: "Besprechen Sie Ihre Situation mit einem hrmforce-Spezialisten. In 30 Minuten erhalten Sie konkrete Beratung.", primary: "Demo planen", secondary: "Assessments ansehen" },
-  fr: { title: "Découvrez l'approche adaptée à votre enjeu RH", text: "Discutez de votre situation avec un spécialiste hrmforce. En 30 minutes, vous obtenez des conseils concrets.", primary: "Planifier une démo", secondary: "Voir les évaluations" },
-  es: { title: "Descubra el enfoque que se ajusta a su reto de RR. HH.", text: "Comente su situación con un especialista de hrmforce. En 30 minutos obtiene asesoramiento concreto.", primary: "Reservar una demo", secondary: "Ver las evaluaciones" },
-  ro: { title: "Descoperiți abordarea potrivită pentru provocarea dvs. HR", text: "Discutați situația cu un specialist hrmforce. În 30 de minute primiți sfaturi concrete.", primary: "Programați o demonstrație", secondary: "Vedeți evaluările" },
-};
+const CTA = SUBPAG_CTA;
 const cta = CTA[lang] || CTA.en;
 const homeHref = localizePath("/", lang);
 const contactHref = localizePath(routes.contact, lang);

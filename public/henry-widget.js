@@ -1028,9 +1028,11 @@
     });
     langBtn.addEventListener("change", function(e) { setLanguage(e.target.value); });
 
+    // Spreekt de bot de taal van de pagina niet, dan Engels. Een Poolse of
+    // Deense bezoeker heeft meer aan Engels dan aan Nederlands.
     var htmlLang = (document.documentElement.getAttribute("lang") || "nl").toLowerCase().split("-")[0];
     if (UI[htmlLang]) setLanguage(htmlLang);
-    else setLanguage("nl");
+    else setLanguage("en");
   }
 
   if (document.readyState === "loading") {
@@ -1064,7 +1066,7 @@
     if (!root || !bubble) { return setTimeout(start, 1000); }
 
     var lang = (document.documentElement.getAttribute("lang") || "nl").toLowerCase().split("-")[0];
-    var m = MSG[lang] || MSG.nl;
+    var m = MSG[lang] || MSG.en || MSG.nl;
 
     if (!document.getElementById("hf-teaser-css")) {
       var st = document.createElement("style"); st.id = "hf-teaser-css";

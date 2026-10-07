@@ -4,6 +4,7 @@ import validPaths from "../data/valid-paths.js";
 import { shopMap } from "../data/assessment-shop.js";
 import { TESTHUBS } from "../data/testhubs.js";
 import { THEMAPAGINAS } from "../data/themapaginas.js";
+import { ASSOVER_HUB_UI } from "../data/component-teksten.js";
 const { c, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
 const demoHref = demoPath(lang);
@@ -24,14 +25,7 @@ const allUitgevers = [...new Set(items.map((i) => i.uitgever).filter(Boolean))].
 
 // Themapagina's per testsoort. Ze hebben per taal een eigen slug, dus de link
 // komt uit de datamodule en niet uit navHref.
-const HUB_UI = {
-  nl: { title: "Zoek je op testsoort?", intro: "Weet je nog niet welk instrument je nodig hebt? Deze pagina's leggen per soort uit wat er gemeten wordt en welke vragenlijst erbij hoort." },
-  en: { title: "Looking by type of test?", intro: "Not sure yet which instrument you need? These pages explain per type what is measured and which questionnaire belongs to it." },
-  de: { title: "Suchen Sie nach Testart?", intro: "Noch unklar, welches Instrument Sie brauchen? Diese Seiten erklären je Art, was gemessen wird und welcher Fragebogen dazugehört." },
-  fr: { title: "Vous cherchez par type de test ?", intro: "Vous ne savez pas encore quel instrument vous faut ? Ces pages expliquent par type ce qui est mesuré et quel questionnaire y correspond." },
-  es: { title: "¿Buscas por tipo de test?", intro: "¿Aún no sabes qué instrumento necesitas? Estas páginas explican por tipo qué se mide y qué cuestionario corresponde." },
-  ro: { title: "Cauți după tipul de test?", intro: "Încă nu știi ce instrument îți trebuie? Aceste pagini explică pe tipuri ce se măsoară și ce chestionar se potrivește." },
-};
+const HUB_UI = ASSOVER_HUB_UI;
 const hubUi = HUB_UI[lang] || HUB_UI.nl;
 const hubLinks = [...Object.values(TESTHUBS), ...Object.values(THEMAPAGINAS)].map((h) => {
   const taal = h.i18n[lang] ? lang : "nl";

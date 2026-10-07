@@ -11,6 +11,7 @@ import LogoSlider from "../components/LogoSlider.astro";
 import GratisTests from "../components/GratisTests.astro";
 import validPaths from "../data/valid-paths.js";
 import { DUBBELE_PADEN } from "../data/kenniscentrum-duplicaten.js";
+import { SANITY_INTEG, SANITY_KC, SANITY_RECI18N, SANITY_T, SANITY__descFallback } from "../data/component-teksten.js";
 
 // Gemigreerde kenniscentrum-artikelen uit WordPress. Elk artikel-document in
 // Sanity heeft een volledig 'path'; deze catch-all route rendert ze op dat pad.
@@ -59,74 +60,7 @@ const lang = PREFIXED.includes(seg) ? seg : "nl";
 const toonGratisTests = /(^|\/)gratis-kleurentest\/?$/.test("/" + (article.path || "").replace(/^\/+/, ""));
 
 // Meest relevante assessment kiezen op basis van de titel (themabuckets).
-const RECI18N = {
-  nl: {
-    "disc-test": { label: "DISC Test", blurb: "Breng gedrag, communicatie en samenwerking in kaart." },
-    "big-five": { label: "Persoonlijkheidstest: Big Five", blurb: "Persoonlijkheid vertaald naar werkgerelateerde competenties." },
-    "cognitieve-test": { label: "Cognitieve capaciteitentest", blurb: "Meet werk- en denkniveau en leervermogen objectief." },
-    "drijfverentest": { label: "Drijfverentest", blurb: "Ontdek wat iemand motiveert en energie geeft." },
-    "leiderschapstest": { label: "Leiderschapstest", blurb: "Inzicht in leiderschapsstijlen en managementrollen." },
-    "360-graden-feedback": { label: "360 graden feedback", blurb: "Feedback van collega's, leidinggevenden en klanten." },
-    "studiekeuzetest": { label: "Studiekeuzetest", blurb: "Passende opleidingen en beroepen op basis van interesses." },
-    "competentie-check": { label: "Competentiecheck", blurb: "Gedrag per competentie, vergeleken met de eisen van de functie." },
-    "duurzame-inzetbaarheid-scan": { label: "Duurzame inzetbaarheid scan", blurb: "Werkvermogen, energie en betrokkenheid in beeld." },
-  },
-  en: {
-    "disc-test": { label: "DISC test", blurb: "Map behaviour, communication and collaboration." },
-    "big-five": { label: "Personality test: Big Five", blurb: "Personality translated into work-related competencies." },
-    "cognitieve-test": { label: "Cognitive ability test", blurb: "Objectively measures working and thinking level and learning ability." },
-    "drijfverentest": { label: "Motivational drivers test", blurb: "Discover what motivates someone and gives energy." },
-    "leiderschapstest": { label: "Leadership test", blurb: "Insight into leadership styles and management roles." },
-    "360-graden-feedback": { label: "360-degree feedback", blurb: "Feedback from colleagues, managers and clients." },
-    "studiekeuzetest": { label: "Study choice test", blurb: "Suitable studies and professions based on interests." },
-    "competentie-check": { label: "Competency check", blurb: "Behaviour per competency, compared with what the role asks." },
-    "duurzame-inzetbaarheid-scan": { label: "Employability scan", blurb: "Work ability, energy and engagement in one picture." },
-  },
-  de: {
-    "disc-test": { label: "DISC-Test", blurb: "Verhalten, Kommunikation und Zusammenarbeit erfassen." },
-    "big-five": { label: "Persönlichkeitstest: Big Five", blurb: "Persönlichkeit übersetzt in arbeitsbezogene Kompetenzen." },
-    "cognitieve-test": { label: "Kognitiver Fähigkeitstest", blurb: "Misst Arbeits- und Denkniveau sowie Lernfähigkeit objektiv." },
-    "drijfverentest": { label: "Motivationstest", blurb: "Entdecken Sie, was jemanden motiviert und Energie gibt." },
-    "leiderschapstest": { label: "Führungstest", blurb: "Einblick in Führungsstile und Managementrollen." },
-    "360-graden-feedback": { label: "360-Grad-Feedback", blurb: "Feedback von Kollegen, Führungskräften und Kunden." },
-    "studiekeuzetest": { label: "Studienwahltest", blurb: "Passende Studiengänge und Berufe auf Basis von Interessen." },
-    "competentie-check": { label: "Kompetenz-Check", blurb: "Verhalten je Kompetenz, verglichen mit den Anforderungen der Stelle." },
-    "duurzame-inzetbaarheid-scan": { label: "Employability-Scan", blurb: "Arbeitsfähigkeit, Energie und Engagement auf einen Blick." },
-  },
-  fr: {
-    "disc-test": { label: "Test DISC", blurb: "Cartographie le comportement, la communication et la collaboration." },
-    "big-five": { label: "Test de personnalité : Big Five", blurb: "La personnalité traduite en compétences professionnelles." },
-    "cognitieve-test": { label: "Test d'aptitude cognitive", blurb: "Mesure objectivement le niveau de travail, de réflexion et d'apprentissage." },
-    "drijfverentest": { label: "Test des motivations", blurb: "Découvrez ce qui motive une personne et lui donne de l'énergie." },
-    "leiderschapstest": { label: "Test de leadership", blurb: "Aperçu des styles de leadership et des rôles managériaux." },
-     "360-graden-feedback": { label: "Feedback à 360 degrés", blurb: "Retours de collègues, managers et clients." },
-    "studiekeuzetest": { label: "Test d'orientation", blurb: "Formations et métiers adaptés selon les intérêts." },
-    "competentie-check": { label: "Bilan de compétences", blurb: "Le comportement par compétence, comparé aux exigences du poste." },
-    "duurzame-inzetbaarheid-scan": { label: "Scan d'employabilité", blurb: "Capacité de travail, énergie et engagement en un coup d'œil." },
-  },
-  es: {
-    "disc-test": { label: "Test DISC", blurb: "Mapea el comportamiento, la comunicación y la colaboración." },
-    "big-five": { label: "Test de personalidad: Big Five", blurb: "La personalidad traducida en competencias laborales." },
-    "cognitieve-test": { label: "Test de capacidad cognitiva", blurb: "Mide objetivamente el nivel de trabajo, pensamiento y aprendizaje." },
-    "drijfverentest": { label: "Test de motivaciones", blurb: "Descubre qué motiva a alguien y le da energía." },
-    "leiderschapstest": { label: "Test de liderazgo", blurb: "Información sobre estilos de liderazgo y roles directivos." },
-    "360-graden-feedback": { label: "Feedback de 360 grados", blurb: "Comentarios de compañeros, responsables y clientes." },
-    "studiekeuzetest": { label: "Test de orientación académica", blurb: "Estudios y profesiones adecuados según los intereses." },
-    "competentie-check": { label: "Chequeo de competencias", blurb: "Conducta por competencia, comparada con lo que pide el puesto." },
-    "duurzame-inzetbaarheid-scan": { label: "Escáner de empleabilidad", blurb: "Capacidad de trabajo, energía y compromiso de un vistazo." },
-  },
-  ro: {
-    "disc-test": { label: "Test DISC", blurb: "Cartografiază comportamentul, comunicarea și colaborarea." },
-    "big-five": { label: "Test de personalitate: Big Five", blurb: "Personalitatea tradusă în competențe legate de muncă." },
-    "cognitieve-test": { label: "Test de aptitudini cognitive", blurb: "Măsoară obiectiv nivelul de lucru, gândire și capacitatea de învățare." },
-    "drijfverentest": { label: "Test al motivațiilor", blurb: "Descoperiți ce motivează o persoană și îi dă energie." },
-    "leiderschapstest": { label: "Test de leadership", blurb: "Perspectivă asupra stilurilor de leadership și rolurilor de management." },
-    "360-graden-feedback": { label: "Feedback 360 de grade", blurb: "Feedback de la colegi, manageri și clienți." },
-    "studiekeuzetest": { label: "Test de orientare în studii", blurb: "Studii și profesii potrivite în funcție de interese." },
-    "competentie-check": { label: "Verificare de competențe", blurb: "Comportamentul pe fiecare competență, față de cerințele rolului." },
-    "duurzame-inzetbaarheid-scan": { label: "Scanare de angajabilitate", blurb: "Capacitatea de muncă, energia și implicarea dintr-o privire." },
-  },
-};
+const RECI18N = SANITY_RECI18N;
 const REC = RECI18N[lang] || RECI18N.nl;
 
 // Zoekwoorden per assessment, in de zes talen van de site. Een treffer in de
@@ -165,14 +99,7 @@ const allHref = localizePath("/online-assessments/", lang);
 // Gerelateerde assessments voor de eindband (max 3, exclusief de aanbevolen).
 
 // UI-teksten (nl volledig; de/fr/es/ro vallen terug op en).
-const T = {
-  nl: { tag: "Direct toepassen", from: "vanaf", card: "Bekijk", endTitle: "Zet dit inzicht in de praktijk", endText: "Neem het assessment direct af, of bespreek met een specialist welke aanpak past.", primary: "Bekijk assessments", demo: "Plan een gratis demo", also: "Ook interessant:" },
-  en: { tag: "Put it into practice", from: "from", card: "View", endTitle: "Put this insight into practice", endText: "Take the assessment directly, or discuss the right approach with a specialist.", primary: "View assessments", demo: "Book a free demo", also: "Also interesting:" },
-  de: { tag: "Direkt anwenden", from: "ab", card: "Ansehen:", endTitle: "Setzen Sie diese Erkenntnis in die Praxis um", endText: "Nutzen Sie das Assessment direkt oder besprechen Sie mit einem Spezialisten, welcher Ansatz passt.", primary: "Assessments ansehen", demo: "Kostenlose Demo anfragen", also: "Auch interessant:" },
-  fr: { tag: "À mettre en pratique", from: "à partir de", card: "Voir :", endTitle: "Mettez cet insight en pratique", endText: "Utilisez l'évaluation directement ou discutez avec un spécialiste de l'approche adaptée.", primary: "Voir les évaluations", demo: "Demander une démo gratuite", also: "Également intéressant :" },
-  es: { tag: "Aplíquelo ya", from: "desde", card: "Ver:", endTitle: "Lleve este insight a la práctica", endText: "Realice la evaluación directamente o consulte con un especialista qué enfoque encaja.", primary: "Ver evaluaciones", demo: "Solicitar una demo gratuita", also: "También interesante:" },
-  ro: { tag: "Aplicați acum", from: "de la", card: "Vezi:", endTitle: "Puneți acest insight în practică", endText: "Folosiți evaluarea direct sau discutați cu un specialist ce abordare se potrivește.", primary: "Vezi evaluările", demo: "Solicitați o demonstrație gratuită", also: "De asemenea interesant:" },
-};
+const T = SANITY_T;
 const L = T[lang] || T.en;
 
 // Article + auteur/uitgever-schema (E-E-A-T). Auteur = redactie hrmforce,
@@ -211,14 +138,7 @@ const isPartners = _pathClean === "partners" || _pathClean.endsWith("/partners")
 const _sliderH = { nl: "Organisaties die u voorgingen", en: "Organisations that went before you", de: "Organisationen, die vor Ihnen kamen", fr: "Les organisations qui vous ont précédé", es: "Organizaciones que te precedieron", ro: "Organizații care te-au precedat" };
 const showAdviesSlider = /^(en\/|de\/|fr\/|es\/|ro\/)?advies\//.test(_pathClean + "/") || _pathClean.indexOf("advies/") > -1;
 const integHref = localizePath("/integraties/", lang);
-const INTEG = {
-  nl: { title: "Koppel hrmforce aan je systemen", text: "hrmforce integreert met je ATS, HR- en salarissystemen zoals AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix en OTYS.", btn: "Bekijk de integraties" },
-  en: { title: "Connect hrmforce to your systems", text: "hrmforce integrates with your ATS, HR and payroll systems such as AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix and OTYS.", btn: "View the integrations" },
-  de: { title: "Verbinden Sie hrmforce mit Ihren Systemen", text: "hrmforce integriert sich mit Ihren ATS-, HR- und Lohnsystemen wie AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix und OTYS.", btn: "Integrationen ansehen" },
-  fr: { title: "Connectez hrmforce à vos systèmes", text: "hrmforce s'intègre à vos systèmes ATS, RH et paie comme AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix et OTYS.", btn: "Voir les intégrations" },
-  es: { title: "Conecta hrmforce con tus sistemas", text: "hrmforce se integra con tus sistemas ATS, RR. HH. y nómina como AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix y OTYS.", btn: "Ver las integraciones" },
-  ro: { title: "Conectează hrmforce la sistemele tale", text: "hrmforce se integrează cu sistemele tale ATS, HR și payroll precum AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix și OTYS.", btn: "Vezi integrările" },
-};
+const INTEG = SANITY_INTEG;
 const INT = INTEG[lang] || INTEG.nl;
 // Sommige gemigreerde artikelen brengen hun eigen paginaopmaak mee: een
 // <article> eromheen en een <section> met max-width en margin:0 auto. Die
@@ -270,14 +190,8 @@ const relatedPool = ["big-five", "drijfverentest", "360-graden-feedback", "disc-
 const related = relatedPool.filter((x) => x !== recSlug).slice(0, 3).map((x) => ({ slug: x, label: REC[x].label }));
 
 let metaDesc = kortZin(_plain, 160);
-const _descFallback = {
-  nl: "Lees meer over assessments, selectie en talentontwikkeling bij hrmforce.",
-  en: "Read more about assessments, selection and talent development at hrmforce.",
-  de: "Mehr über Assessments, Auswahl und Talententwicklung bei hrmforce.",
-  fr: "En savoir plus sur les évaluations, la sélection et le développement des talents chez hrmforce.",
-  es: "Más sobre evaluaciones, selección y desarrollo del talento en hrmforce.",
-  ro: "Mai multe despre evaluări, selecție și dezvoltarea talentelor la hrmforce.",
-}[lang] || "Lees meer over assessments, selectie en talentontwikkeling bij hrmforce.";
+const _descFallback = SANITY__descFallback;
+[lang] || "Lees meer over assessments, selectie en talentontwikkeling bij hrmforce.";
 if (metaDesc.length < 60) metaDesc = `${article.title}. ${_descFallback}`;
 // Deelt dit artikel zijn openingszin met andere delen uit dezelfde serie, dan
 // zet de titel ervoor. Anders krijgen meerdere pagina's dezelfde beschrijving.
@@ -332,14 +246,7 @@ body = body.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>/gi, (m, attrs, inner) => {
 const _words = body.replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
 const readMin = Math.max(2, Math.round(_words / 200));
 
-const KC = {
-  nl: { crumbHome: "Home", crumb: "Kenniscentrum", eyebrow: "Kenniscentrum", toc: "In dit artikel", read: "min leestijd", authorRole: "Managing Partner bij hrmforce", authorBio: "Schrijft over assessments, selectie en talentontwikkeling. Al meer dan 20 jaar betrokken bij psychometrie in de praktijk.", authorCta: "Meer over hrmforce", published: "Gepubliceerd op" },
-  en: { crumbHome: "Home", crumb: "Knowledge centre", eyebrow: "Knowledge centre", toc: "In this article", read: "min read", authorRole: "Managing Partner at hrmforce", authorBio: "Writes about assessments, selection and talent development. Involved in applied psychometrics for over 20 years.", authorCta: "More about hrmforce", published: "Published on" },
-  de: { crumbHome: "Home", crumb: "Wissenszentrum", eyebrow: "Wissenszentrum", toc: "In diesem Artikel", read: "Min. Lesezeit", authorRole: "Managing Partner bei hrmforce", authorBio: "Schreibt über Assessments, Auswahl und Talententwicklung. Seit über 20 Jahren in der angewandten Psychometrie tätig.", authorCta: "Mehr über hrmforce", published: "Veröffentlicht am" },
-  fr: { crumbHome: "Accueil", crumb: "Centre de connaissances", eyebrow: "Centre de connaissances", toc: "Dans cet article", read: "min de lecture", authorRole: "Managing Partner chez hrmforce", authorBio: "Écrit sur les évaluations, la sélection et le développement des talents. Plus de 20 ans de psychométrie appliquée.", authorCta: "En savoir plus sur hrmforce", published: "Publié le" },
-  es: { crumbHome: "Inicio", crumb: "Centro de conocimiento", eyebrow: "Centro de conocimiento", toc: "En este artículo", read: "min de lectura", authorRole: "Managing Partner en hrmforce", authorBio: "Escribe sobre evaluaciones, selección y desarrollo del talento. Más de 20 años de psicometría aplicada.", authorCta: "Más sobre hrmforce", published: "Publicado el" },
-  ro: { crumbHome: "Acasă", crumb: "Centru de cunoștințe", eyebrow: "Centru de cunoștințe", toc: "În acest articol", read: "min de citit", authorRole: "Managing Partner la hrmforce", authorBio: "Scrie despre evaluări, selecție și dezvoltarea talentelor. Peste 20 de ani de psihometrie aplicată.", authorCta: "Mai multe despre hrmforce", published: "Publicat pe" },
-};
+const KC = SANITY_KC;
 const K = KC[lang] || KC.nl;
 const kcHref = localizePath("/kenniscentrum/", lang);
 const overHref = localizePath("/over-ons/", lang);

@@ -4,17 +4,11 @@
 // per taal. Logo via externe referentie (mag binnen inline SVG in de DOM).
 const { screen = "intro", lang = "nl", testName = "", question = "", scaleNote = "", answer = "scale", options = [] } = Astro.props;
 import { LOGO_INNER } from "../data/hrmforce-logo-inner.js";
+import { QMOCK_L_ALLE } from "../data/component-teksten.js";
 const _uid = Math.random().toString(36).slice(2, 8) + (screen === "vraag" ? "v" : "i");
 const logoSvg = `<g transform="translate(48,19) scale(0.55)">${LOGO_INNER.replaceAll("{UID}", _uid + "_")}</g>`;
 
-const L_ALLE = {
-  nl: { qn:"VRAGENLIJST", welcome:"Welkom bij", intro:"Je krijgt een reeks vragen. Geef per vraag aan wat het best bij je past.", b1:"Duurt enkele minuten", b2:"Er zijn geen goede of foute antwoorden", b3:"Antwoord spontaan, dat geeft het beste beeld", start:"Start de vragenlijst", own:"In je eigen taal en tempo", right:"Vragenlijst", sample:"VOORBEELDVRAAG", note:"Kies wat het best bij je past.", prev:"Vorige", next:"Volgende", chip:"Voorbeeld" },
-  en: { qn:"QUESTIONNAIRE", welcome:"Welcome to", intro:"You'll get a series of questions. For each, indicate what fits you best.", b1:"Takes a few minutes", b2:"There are no right or wrong answers", b3:"Answer spontaneously, that gives the best picture", start:"Start the questionnaire", own:"In your own language and pace", right:"Questionnaire", sample:"SAMPLE QUESTION", note:"Choose what fits you best.", prev:"Previous", next:"Next", chip:"Example" },
-  de: { qn:"FRAGEBOGEN", welcome:"Willkommen beim", intro:"Sie erhalten eine Reihe von Fragen. Geben Sie jeweils an, was am besten zu Ihnen passt.", b1:"Dauert einige Minuten", b2:"Es gibt keine richtigen oder falschen Antworten", b3:"Antworten Sie spontan, das ergibt das beste Bild", start:"Fragebogen starten", own:"In Ihrer Sprache und Ihrem Tempo", right:"Fragebogen", sample:"BEISPIELFRAGE", note:"Wählen Sie, was am besten zu Ihnen passt.", prev:"Zurück", next:"Weiter", chip:"Beispiel" },
-  fr: { qn:"QUESTIONNAIRE", welcome:"Bienvenue au", intro:"Vous recevrez une série de questions. Pour chacune, indiquez ce qui vous correspond le mieux.", b1:"Dure quelques minutes", b2:"Il n'y a pas de bonnes ou mauvaises réponses", b3:"Répondez spontanément, cela donne le meilleur aperçu", start:"Démarrer le questionnaire", own:"Dans votre langue et à votre rythme", right:"Questionnaire", sample:"EXEMPLE DE QUESTION", note:"Choisissez ce qui vous correspond le mieux.", prev:"Précédent", next:"Suivant", chip:"Exemple" },
-  es: { qn:"CUESTIONARIO", welcome:"Bienvenido a", intro:"Recibirás una serie de preguntas. En cada una, indica lo que mejor encaja contigo.", b1:"Dura unos minutos", b2:"No hay respuestas correctas o incorrectas", b3:"Responde de forma espontánea, así se obtiene la mejor imagen", start:"Iniciar el cuestionario", own:"En tu idioma y a tu ritmo", right:"Cuestionario", sample:"PREGUNTA DE EJEMPLO", note:"Elige lo que mejor encaja contigo.", prev:"Anterior", next:"Siguiente", chip:"Ejemplo" },
-  ro: { qn:"CHESTIONAR", welcome:"Bine ai venit la", intro:"Primești o serie de întrebări. La fiecare, indică ce ți se potrivește cel mai bine.", b1:"Durează câteva minute", b2:"Nu există răspunsuri corecte sau greșite", b3:"Răspunde spontan, așa obții cea mai bună imagine", start:"Începe chestionarul", own:"În limba și ritmul tău", right:"Chestionar", sample:"ÎNTREBARE EXEMPLU", note:"Alege ce ți se potrivește cel mai bine.", prev:"Înapoi", next:"Înainte", chip:"Exemplu" },
-};
+const L_ALLE = QMOCK_L_ALLE;
 const L = L_ALLE[lang] ?? L_ALLE.nl;
 
 function wrap(txt, max) {

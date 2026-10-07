@@ -4,6 +4,7 @@
 import { ONDERZOEK_UI, ONDERDELEN } from "../data/oefentest-ui.js";
 import { VRAGENLIJSTEN, VL_UI } from "../data/oefenvragenlijst.js";
 import { localizePath } from "../i18n/utils.js";
+import { OTOVER_KLEUREN, OTOVER_KOPPEN, OTOVER_MEER } from "../data/component-teksten.js";
 const { lang = "nl" } = Astro.props;
 const u = ONDERZOEK_UI[lang] || ONDERZOEK_UI.nl;
 const basis = localizePath("/oefentest/", lang);
@@ -21,34 +22,13 @@ const lijsten = Object.entries(VRAGENLIJSTEN).map(([sleutel, o]) => ({
   lead: o.lead[lang] || o.lead.nl,
 }));
 const vl = VL_UI[lang] || VL_UI.nl;
-const KOPPEN = {
-  nl: { test: "Capaciteiten", testLead: "Vijf onderdelen met goede en foute antwoorden. Je krijgt per ronde 25 willekeurige vragen en daarna per vraag de toelichting.", lijst: "Vragenlijsten", lijstLead: "Zes zelfrapportagelijsten. Hier zijn geen goede of foute antwoorden; je krijgt een profielschets in plaats van een score." },
-  en: { test: "Aptitude", testLead: "Five components with right and wrong answers. You get 25 random questions per round and an explanation per question afterwards.", lijst: "Questionnaires", lijstLead: "Six self-report questionnaires. There are no right or wrong answers here; you get a profile sketch instead of a score." },
-  de: { test: "Fähigkeiten", testLead: "Fünf Teile mit richtigen und falschen Antworten. Pro Runde 25 zufällige Fragen, danach je Frage die Erläuterung.", lijst: "Fragebögen", lijstLead: "Sechs Selbsteinschätzungen. Hier gibt es keine richtigen oder falschen Antworten; statt einer Punktzahl erhalten Sie eine Profilskizze." },
-  fr: { test: "Aptitudes", testLead: "Cinq parties avec de bonnes et de mauvaises réponses. 25 questions au hasard par série, puis l'explication de chacune.", lijst: "Questionnaires", lijstLead: "Six questionnaires d'auto-évaluation. Ici il n'y a ni bonne ni mauvaise réponse ; vous obtenez une esquisse de profil plutôt qu'un score." },
-  es: { test: "Capacidades", testLead: "Cinco partes con respuestas correctas e incorrectas. 25 preguntas al azar por ronda y después la explicación de cada una.", lijst: "Cuestionarios", lijstLead: "Seis cuestionarios de autoinforme. Aquí no hay respuestas correctas ni incorrectas; recibes un esbozo de perfil en vez de una puntuación." },
-  ro: { test: "Aptitudini", testLead: "Cinci părți cu răspunsuri corecte și greșite. 25 de întrebări alese aleatoriu pe rundă, apoi explicația fiecăreia.", lijst: "Chestionare", lijstLead: "Șase chestionare de autoevaluare. Aici nu există răspunsuri corecte sau greșite; primești o schiță de profil în loc de un scor." },
-};
+const KOPPEN = OTOVER_KOPPEN;
 const koppen = KOPPEN[lang] || KOPPEN.nl;
-const KLEUREN = {
-  nl: { kop: "Gratis kleurentest", lead: "Vier kleuren, een eerste beeld van je persoonlijkheid in een paar minuten. Je krijgt de uitslag direct te zien.", cta: "Doe de kleurentest" },
-  en: { kop: "Free colour test", lead: "Four colours, a first picture of your personality in a few minutes. You see the result straight away.", cta: "Take the colour test" },
-  de: { kop: "Kostenloser Farbtest", lead: "Vier Farben, ein erstes Bild Ihrer Persönlichkeit in wenigen Minuten. Das Ergebnis sehen Sie sofort.", cta: "Farbtest machen" },
-  fr: { kop: "Test des couleurs gratuit", lead: "Quatre couleurs, un premier aperçu de votre personnalité en quelques minutes. Le résultat s'affiche aussitôt.", cta: "Faire le test des couleurs" },
-  es: { kop: "Test de colores gratuito", lead: "Cuatro colores, una primera imagen de tu personalidad en pocos minutos. Ves el resultado al momento.", cta: "Hacer el test de colores" },
-  ro: { kop: "Test de culori gratuit", lead: "Patru culori, o primă imagine a personalității tale în câteva minute. Vezi rezultatul pe loc.", cta: "Fă testul de culori" },
-};
+const KLEUREN = OTOVER_KLEUREN;
 const kleuren = KLEUREN[lang] || KLEUREN.nl;
 const kleurenHref = localizePath("/gratis-kleurentest/", lang);
 
-const MEER = {
-  nl: { kop: "Meer voorbereiding", link: "Naar de voorbereidingspagina" },
-  en: { kop: "More preparation", link: "To the preparation page" },
-  de: { kop: "Mehr Vorbereitung", link: "Zur Vorbereitungsseite" },
-  fr: { kop: "Plus de préparation", link: "Vers la page de préparation" },
-  es: { kop: "Más preparación", link: "Ir a la página de preparación" },
-  ro: { kop: "Mai multă pregătire", link: "Spre pagina de pregătire" },
-};
+const MEER = OTOVER_MEER;
 const meer = MEER[lang] || MEER.nl;
 ---
 <div class="crumb"><div class="wrap">

@@ -23,13 +23,13 @@ src/
   pages/assessments/[slug].astro  ← één template → één pagina per assessment
 ```
 
-## Talen (NL / EN)
+## Talen
 
 - **Nederlands** staat op de root: `/`, `/advies/`, `/contact/` …
-- **Engels** staat onder `/en/`: `/en/`, `/en/advies/`, `/en/contact/` …
-- De **taalwissel** (NL/EN) staat rechtsboven in de balk en verwijst automatisch naar dezelfde pagina in de andere taal.
-- Een taal toevoegen: voeg een blok toe in `src/i18n/ui.js`, `src/data/home.js` en `src/data/pages.js`, en zet de taalcode in `astro.config.mjs`.
-- De assessment-pagina's zijn voorlopig alleen in het Nederlands; de EN-vertaling daarvan is een latere stap.
+- Elke andere taal staat onder een eigen voorvoegsel: `/en/`, `/de/`, `/pl/` …
+- De **taalwissel** staat rechtsboven in de balk en verwijst naar dezelfde pagina in de gekozen taal, of naar de dichtstbijzijnde pagina die wel bestaat.
+- De talenlijst staat op één plek: `languages` in `src/i18n/ui.js`. De routes, de taalwisselaar, de hreflang-regels, de zoekindex en de sitemap leiden zich daarvan af.
+- **Een taal toevoegen: zie [TAAL-TOEVOEGEN.md](TAAL-TOEVOEGEN.md).** Daar staan de drie vertaalrondes, de controles en de bestandslimiet van Cloudflare.
 
 ## Het snelst online zetten (aanbevolen, geen technische stappen)
 

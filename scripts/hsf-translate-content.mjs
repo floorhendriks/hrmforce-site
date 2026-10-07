@@ -56,8 +56,13 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const esc = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const GUARD = new RegExp([...BESCHERMD].sort((a, b) => b.length - a.length).map(esc).join('|'), 'g');
 
-/** Merknamen in x-tags, zodat DeepL ze laat staan. HTML in de tekst blijft gewoon HTML. */
-const bescherm = (s) => s.replace(GUARD, (m) => `<x>${m}</x>`);
+/**
+ * Merknamen en plaatshouders in x-tags, zodat DeepL ze laat staan. HTML in de
+ * tekst blijft gewoon HTML. Een plaatshouder is {n}, {aantal} en dergelijke:
+ * die wordt bij het renderen vervangen door een getal of een naam.
+ */
+const PLAATSHOUDER = /\{[a-zA-Z][a-zA-Z0-9_]*\}/g;
+const bescherm = (s) => s.replace(GUARD, (m) => `<x>${m}</x>`).replace(PLAATSHOUDER, (m) => `<x>${m}</x>`);
 const ontdoe = (s) => s.replace(/<\/?x>/g, '');
 /** DeepL zet soms aanhalingstekens om een beschermd stuk. Die halen we eraf. */
 function ontquote(s) {
@@ -162,9 +167,12 @@ for (const taal of TARGETS) {
   // Teksten waarin een merknaam verdween, blijven Nederlands staan: beter geen
   // vertaling dan een pagina waarin hrmforce ineens anders heet.
   let gewist = 0;
+  const ph = (t) => (String(t).match(PLAATSHOUDER) || []).sort().join('|');
   for (const bron of todo) {
     const kwijt = BESCHERMD.some((b) => bron.includes(b) && !uit[bron].includes(b));
-    if (kwijt) { delete uit[bron]; gewist++; }
+    // Een vertaling waarin een plaatshouder wegviel zou {aantal} als los woord
+    // tonen of helemaal weglaten. Die laten we Nederlands staan.
+    if (kwijt || ph(bron) !== ph(uit[bron])) { delete uit[bron]; gewist++; }
   }
   await writeFile(pad, JSON.stringify(uit, null, 1) + '\n', 'utf8');
   console.log(`\n[${taal}] geschreven naar src/data/translations-content/${taal}.json` + (gewist ? `, ${gewist} overgeslagen omdat een merknaam wegviel` : ''));

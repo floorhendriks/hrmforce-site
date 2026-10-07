@@ -15,7 +15,7 @@ import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { getLangFromUrl, localizePath, demoPath, PREFIXED } from "../i18n/utils.js";
-import { languages } from "../i18n/ui.js";
+import { languages, BRONTALEN } from "../i18n/ui.js";
 import validPaths from "../data/valid-paths.js";
 import CookieConsent from "../components/CookieConsent.astro";
 import { ANALYTICS, MARKETING, VERIFICATION } from "../data/site-config.js";
@@ -25,6 +25,7 @@ const ALLE_TALEN = Object.keys(languages);
 import { consentContent } from "../data/consent-content.js";
 import { variantenVoor } from "../data/slugvarianten.js";
 import { kortZin } from "../lib/meta.js";
+import { BASE_EXIT_INTENT, BASE_STICKY_DEMO } from "../data/component-teksten.js";
 
 const {
   title = "hrmforce",
@@ -104,15 +105,12 @@ const kruimelLd = crumbs && _delen.length
   : null;
 const LOCALE_MAP = { nl: "nl_NL", en: "en_US", de: "de_DE", fr: "fr_FR", es: "es_ES", ro: "ro_RO" };
 const ogLocale = LOCALE_MAP[lang] || "nl_NL";
-const STICKY_DEMO = {
-  nl: { aria: "Plan een gratis demo", label: "Gratis demo" },
-  en: { aria: "Book a free demo", label: "Free demo" },
-  de: { aria: "Kostenlose Demo buchen", label: "Gratis-Demo" },
-  fr: { aria: "Réserver une démo gratuite", label: "Démo gratuite" },
-  es: { aria: "Reservar una demo gratuita", label: "Demo gratis" },
-  ro: { aria: "Rezervă o demonstrație gratuită", label: "Demo gratuit" },
-};
+const STICKY_DEMO = BASE_STICKY_DEMO;
 const stickyDemo = STICKY_DEMO[lang] || STICKY_DEMO.nl;
+// De exit-intent met de kleurentest verschijnt alleen in de brontalen, want
+// alleen daar bestaat die test (zie src/i18n/alleen-brontaal.js). Een pop-up
+// die een Poolse bezoeker naar een Nederlandse pagina stuurt helpt niemand.
+const exitIntent = BRONTALEN.includes(lang) ? BASE_EXIT_INTENT[lang] : null;
 
 // hreflang: alternatieve taalversies. Niet meer uit een handmatige lijst, maar
 // uit de paden die de build echt oplevert. Zo krijgt elke pagina die in meerdere
@@ -223,7 +221,7 @@ const orgLd = {
     <script src="/henry-widget.js" is:inline defer></script>
     <!-- Conversie-tracking (GA4-events) + exit-intent lead magnet. Events sturen
          alleen als GA4 is geladen (na statistieken-toestemming). -->
-    <script is:inline define:vars={{ lang }}>
+    <script is:inline define:vars={{ lang, exitIntent }}>
       (function () {
         function ev(name, params) {
           if (window.gtag) window.gtag("event", name, params || {});
@@ -301,15 +299,8 @@ const orgLd = {
         }, true);
 
         // Exit-intent lead magnet: eenmaal per sessie, alleen desktop, dismissbaar.
-        var LM = {
-          nl:{t:"Voordat je gaat:",b:"Probeer gratis onze kleurentest en ontdek in 3 minuten je persoonlijkheidskleuren.",c:"Doe de gratis kleurentest",x:"Nee, bedankt",u:"/gratis-kleurentest/"},
-          en:{t:"Before you go:",b:"Try our free colour test and discover your personality colours in 3 minutes.",c:"Take the free colour test",x:"No thanks",u:"/en/gratis-kleurentest/"},
-          de:{t:"Bevor Sie gehen:",b:"Testen Sie kostenlos unseren Farbtest und entdecken Sie in 3 Minuten Ihre Persönlichkeitsfarben.",c:"Kostenlosen Farbtest machen",x:"Nein, danke",u:"/de/gratis-kleurentest/"},
-          fr:{t:"Avant de partir :",b:"Essayez gratuitement notre test des couleurs et découvrez vos couleurs de personnalité en 3 minutes.",c:"Faire le test gratuit",x:"Non merci",u:"/fr/gratis-kleurentest/"},
-          es:{t:"Antes de irte:",b:"Prueba gratis nuestro test de colores y descubre tus colores de personalidad en 3 minutos.",c:"Hacer el test gratis",x:"No, gracias",u:"/es/gratis-kleurentest/"},
-          ro:{t:"Înainte să pleci:",b:"Încearcă gratuit testul nostru de culori și descoperă-ți culorile personalității în 3 minute.",c:"Fă testul gratuit",x:"Nu, mulțumesc",u:"/ro/gratis-kleurentest/"}
-        };
-        var t = LM[lang] || LM.nl;
+        var t = exitIntent;
+        if (!t) return;
         var KEY = "hf_exitintent_shown";
         function shown(){ try { return sessionStorage.getItem(KEY) === "1"; } catch(e){ return false; } }
         function mark(){ try { sessionStorage.setItem(KEY, "1"); } catch(e){} }
