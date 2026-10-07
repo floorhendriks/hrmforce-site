@@ -1,5 +1,7 @@
 // Themapagina's buiten de testsoorten om: assessment-integriteit en AI.
 // Zelfde opbouw als testhubs.js, zodat ze dezelfde component gebruiken.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const THEMAPAGINAS = {
   integriteit: {
     key: "integriteit",
@@ -681,3 +683,7 @@ export const THEMAPAGINAS = {
     },
   },
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(THEMAPAGINAS, vulAan(THEMAPAGINAS));

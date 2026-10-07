@@ -2,6 +2,8 @@
 // elke taal dezelfde componenten, alleen de meta verschilt, dus die staat hier
 // in plaats van in zes losse paginabestanden.
 
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const ADVIES_ASSESSMENTS = {
   nl: {
     title: "Live Assessments | Door assessoren begeleid | hrmforce",
@@ -55,3 +57,8 @@ export const ADVIES_TRAININGEN = {
     description: "Devino utilizator certificat hrmforce cu cursul nostru de certificare. Vezi calendarul si inscrie-te direct.",
   },
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(ADVIES_ASSESSMENTS, vulAan(ADVIES_ASSESSMENTS));
+Object.assign(ADVIES_TRAININGEN, vulAan(ADVIES_TRAININGEN));

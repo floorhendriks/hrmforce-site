@@ -2,6 +2,8 @@
 // geen score. De uitslag is een profielschets die laat zien naar welke kant de
 // antwoorden neigen, met de uitdrukkelijke kanttekening dat 25 stellingen niets
 // meten. De stellingen zelf staan in src/data/oefenbank/vl-*.json.
+import { vulAan } from "./vertaal-inhoud.js";
+
 const w = (nl, en, de, fr, es, ro) => ({ nl, en, de, fr, es, ro });
 
 export const VL_UI = {
@@ -322,3 +324,9 @@ export const VL_ASSESSMENT = {
   competenties: "/assessments/competentie-check/",
   studiekeuze: "/assessments/studiekeuzetest/",
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(VL_META, vulAan(VL_META));
+Object.assign(VL_UI, vulAan(VL_UI));
+Object.assign(VRAGENLIJSTEN, vulAan(VRAGENLIJSTEN));

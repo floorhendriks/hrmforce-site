@@ -1,6 +1,8 @@
 // Content voor de online-assessments-pagina per taal, gebruikt door
 // src/components/OnlineAssessments.astro.
 // NL = leidend. DE/FR/ES/RO eerste vertaalslag, native review aanbevolen.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const oaContent = {
   nl: {
     meta: { title: "Online assessments | 10.000+ deelnemers, 4,9 sterren", description: "Gevalideerde online assessments voor selectie en ontwikkeling. Beoordeeld met 4,9 sterren door 10.000+ deelnemers. Bekijk het volledige aanbod." },
@@ -197,3 +199,7 @@ applyFeatured(oaContent.ro, ["(Pre)Selecție", "Evaluare", "Dezvoltare", "Orient
   ["Pulse Survey", "Oferă organizațiilor posibilitatea de a-și crea propriile chestionare folosind chestionarele noastre standard și baza de întrebări, și de a le trimite candidaților și angajaților."],
   ["Scanare a rezilienței mentale", "Înțelegerea măsurii în care o persoană rămâne eficientă sub presiune ridicată și/sau în fața dificultăților."],
 ]);
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(oaContent, vulAan(oaContent));

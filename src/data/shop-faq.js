@@ -1,4 +1,6 @@
 // FAQ voor shop + assessmentpagina's: 10 algemene + segment-specifieke vragen, in 6 talen.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const GENERAL = {
   nl: [
     { q:"Hoe lang duurt een online assessment?", a:"De meeste assessments duren 15 tot 45 minuten. De exacte tijd hangt af van het type test en het aantal onderdelen; je kunt in je eigen tempo werken en ziet vooraf een indicatie van de duur." },
@@ -487,3 +489,8 @@ export function faqFor(segment, lang){
 }
 // Alleen de 10 algemene vragen (voor assessmentpagina's).
 export function generalFaq(lang){ return GENERAL[lang] || GENERAL.nl; }
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(BY_SEGMENT, vulAan(BY_SEGMENT));
+Object.assign(GENERAL, vulAan(GENERAL));

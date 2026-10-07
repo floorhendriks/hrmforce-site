@@ -334,6 +334,7 @@ export function documentenPerProduct(lang = "nl") {
 // aangepast hoeft te worden.
 import { THEMAPAGINAS } from "./themapaginas.js";
 import { TESTHUBS } from "./testhubs.js";
+import { vulAan } from "./vertaal-inhoud.js";
 
 const PAD_NAAR_SLEUTEL = {};
 for (const bron of [THEMAPAGINAS, TESTHUBS]) {
@@ -428,3 +429,10 @@ function groepHref(ref, lang) {
   if (!slug) return `/${(bron.slug || {}).nl}/`;
   return lang === "nl" ? `/${slug}/` : `/${lang}/${slug}/`;
 }
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(DOCS, vulAan(DOCS));
+Object.assign(DOC_META, vulAan(DOC_META));
+Object.assign(GROEPEN, vulAan(GROEPEN));
+Object.assign(PER_PAGINA, vulAan(PER_PAGINA));

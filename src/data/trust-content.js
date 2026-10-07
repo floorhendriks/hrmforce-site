@@ -1,5 +1,7 @@
 // Trust/security-content per taal, gebruikt door src/components/Trust.astro.
 // NL = leidend. EN/DE/FR/ES/RO zijn een eerste vertaalslag, native review aanbevolen.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const trustContent = {
   nl: {
     meta: { title: "Trust & security - hrmforce", description: "Hoe hrmforce omgaat met data, privacy en toegang: verwerking binnen de EU, AVG, versleutelde verbindingen, rolgebaseerd toegangsbeheer en wetenschappelijk gevalideerde assessments." },
@@ -114,3 +116,7 @@ trustContent.ro.themes.items = [
   { icon: "uitwisseling", title: "Transparență față de candidați", text: "Candidații știu pentru ce este folosită o evaluare și înțeleg ce se întâmplă cu datele lor." },
 ];
 Object.assign(trustContent.ro.ctaBand, { title: "Întrebări despre date, confidențialitate sau acces?", text: "Analizăm cu plăcere cerințele organizației dvs. Contactați-ne și discutăm cum abordăm acest lucru în proiectul dvs.", primary: "Contactați-ne", secondary: "Mai multe despre hrmforce" });
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(trustContent, vulAan(trustContent));

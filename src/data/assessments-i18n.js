@@ -1,6 +1,8 @@
 // Vertaalde teksten per assessment, per taal. NL (src/data/assessments.js) is leidend.
 // en/de/fr/es/ro eerste vertaalslag, native review aanbevolen.
 // Beeld/slug/quote.author/quote.initials worden NIET vertaald; die komen uit assessments.js.
+import { vulAan } from "./vertaal-inhoud.js";
+
 const qEN = { heading: "Reliable insight", text: "Our instruments are scientifically validated and give organisations a reliable compass for selection and development.", role: "HR specialist" };
 const qDE = { heading: "Verlässliche Erkenntnisse", text: "Unsere Instrumente sind wissenschaftlich validiert und geben Organisationen einen verlässlichen Kompass für Auswahl und Entwicklung.", role: "HR-Spezialist" };
 const qFR = { heading: "Un aperçu fiable", text: "Nos instruments sont scientifiquement validés et offrent aux organisations une boussole fiable pour la sélection et le développement.", role: "Spécialiste RH" };
@@ -2649,3 +2651,7 @@ export const assessmentsI18n = {
     },
   },
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(assessmentsI18n, vulAan(assessmentsI18n));

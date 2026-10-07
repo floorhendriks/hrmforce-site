@@ -3,6 +3,8 @@
    segment, eigen kenmerken en een eigen vragenlijst, en blijft het blok voor
    het aanvragen van een voorbeeldrapport bij deze producten weg. */
 
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const TRAINING_HANDLES = ["online-certificatietraining"];
 export const TRAINING_SEGMENT = "Training";
 
@@ -68,3 +70,8 @@ export const TRAINING_FAQ = {
     { q: "Cui se adresează trainingul?", a: "Celor care vor lucra cu chestionarele hrmforce în propria organizație. Nu este nevoie de experiență anterioară cu teste." },
   ],
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(TRAINING_BULLETS, vulAan(TRAINING_BULLETS));
+Object.assign(TRAINING_FAQ, vulAan(TRAINING_FAQ));

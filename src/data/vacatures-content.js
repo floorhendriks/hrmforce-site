@@ -1,4 +1,6 @@
 // Vacatures-content per taal (nl/en/de/fr/es/ro). Bron: hrmforce.com/vacatures.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const REGIONS = ["Peru", "Argentina", "Colombia", "Ecuador", "Mexico", "Spain"];
 export const VAC = {
  "nl": {
@@ -170,3 +172,7 @@ export const VAC = {
   ]
  }
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(VAC, vulAan(VAC));

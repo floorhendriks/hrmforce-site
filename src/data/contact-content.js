@@ -2,6 +2,8 @@
 // alleen de tekst verschilt. De veldnamen in het formulier blijven overal
 // hetzelfde, zodat functions/api/aanvraag.js altijd dezelfde sleutels krijgt.
 
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const HOOFDKANTOOR = {
   stad: "Amsterdam",
   regels: ["Solitudolaan 396", "1096 DS Amsterdam", "The Netherlands"],
@@ -435,3 +437,7 @@ export const contactContent = {
     },
   },
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(contactContent, vulAan(contactContent));

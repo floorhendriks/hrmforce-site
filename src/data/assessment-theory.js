@@ -2,6 +2,8 @@
 // een aantal onderbouwende bronnen (tekst-only, geen links). Feitelijke,
 // algemeen erkende referenties. Gekoppeld via slug -> theorie-sleutel.
 
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const theoryUI = {
   nl: { title: "Wetenschappelijke onderbouwing", modelLabel: "Theoretisch kader", refLabel: "Onderbouwende literatuur", note: "Referenties ter illustratie van het theoretische kader; hrmforce ontwikkelt en valideert de vragenlijsten in eigen beheer." },
   en: { title: "Scientific foundation", modelLabel: "Theoretical framework", refLabel: "Supporting literature", note: "References illustrate the theoretical framework; hrmforce develops and validates the questionnaires in-house." },
@@ -149,3 +151,8 @@ export function theoryFor(slug, lang) {
   const L = (o) => (o ? (o[lang] || o.nl) : "");
   return { title: ui.title, modelLabel: ui.modelLabel, refLabel: ui.refLabel, note: ui.note, name: L(th.name), desc: L(th.desc), refs: th.refs };
 }
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(THEORIES, vulAan(THEORIES));
+Object.assign(theoryUI, vulAan(theoryUI));

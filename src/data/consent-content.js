@@ -3,6 +3,8 @@
 // De privacyverklaring-link wordt in CookieConsent.astro opgebouwd met
 // localizePath("/support/privacy-statement/", lang); bestaat die per taal (nog) niet,
 // dan valt de site terug op de NL-URL.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const consentContent = {
   nl: {
     title: "We respecteren je privacy",
@@ -101,3 +103,7 @@ export const consentContent = {
     },
   },
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(consentContent, vulAan(consentContent));

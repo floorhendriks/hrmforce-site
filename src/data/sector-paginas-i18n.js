@@ -2,6 +2,8 @@
 // sector-paginas.js. Velden die niet vertaald worden (thema, omslag en de
 // assessment-slugs) komen uit de Nederlandse versie.
 
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const SECTORPAGINAS_I18N = {
   "en": {
     "zorg": {
@@ -5594,3 +5596,7 @@ export const SECTORPAGINAS_I18N = {
     }
   }
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(SECTORPAGINAS_I18N, vulAan(SECTORPAGINAS_I18N));

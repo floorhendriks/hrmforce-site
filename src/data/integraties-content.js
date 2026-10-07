@@ -1,5 +1,7 @@
 // Integraties-content per taal, gebruikt door src/components/Integraties.astro.
 // NL = leidend. EN/DE/FR/ES/RO zijn een eerste vertaalslag, native review aanbevolen.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const integratiesContent = {
   nl: {
     meta: { title: "Integraties - hrmforce", description: "Koppel hrmforce aan je bestaande HR-stack via API of SSO: ATS, HRIS, payroll en identity. Tijdens de intake bepalen we samen welke koppelingen waarde toevoegen." },
@@ -154,3 +156,7 @@ integratiesContent.ro.how.steps = [
 ];
 integratiesContent.ro.how.note = "Nu orice integrare are sens pentru orice organizație. Recomandăm doar ceea ce economisește timp sau previne erori în mod demonstrabil.";
 Object.assign(integratiesContent.ro.ctaBand, { title: "Curioși ce este posibil în situația dvs.?", text: "Programați o demonstrație sau contactați-ne. Analizăm împreună stiva HR și ce integrări aduc valoare.", primary: "Contactați-ne", secondary: "Vedeți tarifele" });
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(integratiesContent, vulAan(integratiesContent));

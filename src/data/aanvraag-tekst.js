@@ -1,5 +1,7 @@
 // Teksten rond de vraag of iemand zakelijk of als particulier aanvraagt, en de
 // mail die een particulier automatisch terugkrijgt. In zes talen.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const SOORT_UI = {
   nl: { vraag: "Je vraagt aan", zakelijk: "Voor een team of organisatie", particulier: "Voor mezelf, als particulier" },
   en: { vraag: "You are asking", zakelijk: "For a team or organisation", particulier: "For myself, as an individual" },
@@ -156,3 +158,8 @@ export const PARTICULIER_MAIL = {
     ].join("\n"),
   }),
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(PARTICULIER_MAIL, vulAan(PARTICULIER_MAIL));
+Object.assign(SOORT_UI, vulAan(SOORT_UI));

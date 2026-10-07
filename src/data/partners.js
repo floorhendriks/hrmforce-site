@@ -2,6 +2,8 @@
 // Bron: https://hrmforce.com/partners/ (logo's, websites, categorie).
 // Taal-onafhankelijk; alleen de UI-labels en categorie-namen verschillen per taal.
 
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const PARTNERS = [
   { name: "Flowpeople",            url: "https://www.flowpeople.nl/",            logo: "/media/wp-content/uploads/2026/07/Flowpeople-logo-partner.webp",   city: "Almelo",            cat: "consultancy" },
   { name: "Loket.nl",              url: "https://loket.nl/",                     logo: "/media/wp-content/uploads/2026/06/loket-logo-card-800x500-1.webp",   city: "Nederland",         cat: "integration" },
@@ -59,3 +61,8 @@ export const PARTNER_UI = {
   es: { eyebrow: "Socios e integraciones", title: "Socios certificados de hrmforce", intro: "Desde nuestra fundación construimos la calidad de nuestros productos y soporte junto a socios e integradores de todo el mundo. Filtra por categoría o haz clic en un logo para visitar al socio." },
   ro: { eyebrow: "Parteneri și integrări", title: "Parteneri certificați hrmforce", intro: "De la înființare construim calitatea produselor și a suportului împreună cu parteneri și integratori din întreaga lume. Filtrați după categorie sau faceți clic pe un logo pentru a vizita partenerul." },
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(PARTNER_CATS, vulAan(PARTNER_CATS));
+Object.assign(PARTNER_UI, vulAan(PARTNER_UI));

@@ -1,5 +1,7 @@
 // Homepage-content per taal, gebruikt door src/components/Home.astro.
 // NL = leidend. DE/FR/ES/RO zijn een eerste vertaalslag, laat nakijken door een native speaker.
+import { vulAan } from "./vertaal-inhoud.js";
+
 const IMG = {
   "big-five": "/media/wp-content/uploads/2021/01/big-fifty.svg",
   "cognitieve-test": "/media/wp-content/uploads/2021/01/abilityscan-1.svg",
@@ -328,3 +330,7 @@ export const homepageContent = {
     ctaBand: { eyebrow: "Check gratuit de evaluare", title: "Fă checkul gratuit de evaluare pentru organizația ta", text: "În 30 de minute analizăm împreună întrebarea ta de HR și ce evaluări sau instrumente aduc valoare.", primary: "Solicită checkul gratuit", ghost: "Vezi evaluările", trust: ["Răspuns în 24 de ore", "Fără obligații, fără presiune comercială", "1.200+ organizații v-au precedat"] },
   },
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(homepageContent, vulAan(homepageContent));

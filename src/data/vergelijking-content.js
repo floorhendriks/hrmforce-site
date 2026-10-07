@@ -3,6 +3,8 @@
 
 // Omschrijving van de detailpagina /vergelijking/<slug>/. {naam} wordt
 // vervangen door de naam van de aanbieder.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const VERG_DETAIL_D = {
   nl: "hrmforce naast {naam}: wat de instrumenten meten, in welke talen ze beschikbaar zijn en wat een licentie kost. Zonder verkooppraat.",
   en: "hrmforce next to {naam}: what the instruments measure, which languages they cover and what a licence costs. No sales talk.",
@@ -459,3 +461,9 @@ export const COMPETITORS = {
   }
  }
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(COMPETITORS, vulAan(COMPETITORS));
+Object.assign(VERG_DETAIL_D, vulAan(VERG_DETAIL_D));
+Object.assign(VERG_UI, vulAan(VERG_UI));

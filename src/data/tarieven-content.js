@@ -1,5 +1,7 @@
 // Tarieven-content per taal, gebruikt door src/components/Tarieven.astro.
 // NL = leidend. DE/FR/ES/RO zijn een eerste vertaalslag, laat nakijken door een native speaker.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const tarievenContent = {
   nl: {
     meta: { title: "Tarieven - hrmforce", description: "Bekijk de mogelijkheden en tarieven van hrmforce: eigen portal op licentiebasis of losse afname per assessment." },
@@ -214,3 +216,7 @@ tarievenContent.ro.faqs = [
   { q: "Cât costă?", a: "Costurile variază în funcție de nevoi și amploare. Oferim modele flexibile: plată per evaluare sau licență anuală în funcție de numărul de angajați." },
 ];
 tarievenContent.ro.ctaBand = { title: "Aveți altă întrebare?", text: "Echipa noastră vă stă la dispoziție. Solicitați o ofertă sau o demonstrație și adaptăm soluția la situația dvs.", primary: "Contactați-ne", secondary: "Mai multe despre hrmforce", hours: "Consilierii noștri sunt disponibili de luni până vineri, între 08:00 și 18:00." };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(tarievenContent, vulAan(tarievenContent));

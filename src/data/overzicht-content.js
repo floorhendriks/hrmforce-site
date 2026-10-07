@@ -2,6 +2,8 @@
 // src/components/AssessmentOverzicht.astro.
 // NL = leidend. DE/FR/ES/RO eerste vertaalslag, native review aanbevolen.
 // Segment- en uitgever-labels komen uit assessment-shop.js en blijven Nederlands.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const ovContent = {
   nl: {
     meta: { title: "Assessment Overzicht - hrmforce", description: "Bekijk het assessment overzicht met meer dan 35 online assessments. Filter op HR-cyclus, segment en uitgever en vind direct het juiste instrument." },
@@ -289,3 +291,7 @@ applyLang(ovContent.ro, ["(Pre)Selecție", "Evaluare", "Dezvoltare", "Orientare"
   ["Roluri de grup", "Imagine asupra rolurilor de grup pe care un angajat le va adopta sau nu în anumite situații."],
   ["Tipologie", "Înțelegerea tipului de angajați, în funcție de modul în care gestionăm dominanța (influență versus cooperare) și emoția (sentiment versus rațiune)."],
 ]);
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(ovContent, vulAan(ovContent));

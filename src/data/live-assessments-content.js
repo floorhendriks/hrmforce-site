@@ -2,6 +2,8 @@
 // Overgenomen van hrmforce.com/advies/assessments/ ("De 5 verschillende
 // assessment opties"). Per taal, met gelokaliseerde doel-links.
 
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const LA_UI = {
   nl: { eyebrow: "Advies", h1: "Live Assessments", lead: "Een assessment is een belangrijk hulpmiddel voor de juiste beslissing bij selectie en ontwikkeling. Onze assessoren begeleiden je live: van praktijksimulaties en capaciteitentests tot persoonlijkheidsvragenlijsten. Zo krijg je inzicht dat anders verborgen blijft.", secTitle: "De assessment-opties", secLead: "Kies de assessmentvorm die past bij je vraagstuk. Klik door voor de uitleg.", more: "Meer informatie", slider: "Organisaties die u voorgingen", ctaTitle: "Niet zeker welk assessment past?", ctaText: "Onze assessoren denken met je mee en stellen het traject samen op basis van jouw doel en functie.", ctaBtn1: "Plan een gratis demo", ctaBtn2: "Naar het volledige overzicht" },
   en: { eyebrow: "Advice", h1: "Live Assessments", lead: "An assessment is a key tool for making the right decision in selection and development. Our assessors guide you live: from practical simulations and ability tests to personality questionnaires. This reveals insight that would otherwise stay hidden.", secTitle: "The assessment options", secLead: "Choose the assessment format that fits your challenge. Click through for details.", more: "More information", slider: "Organisations that went before you", ctaTitle: "Not sure which assessment fits?", ctaText: "Our assessors think along with you and compose the track based on your goal and role.", ctaBtn1: "Book a free demo", ctaBtn2: "See the full overview" },
@@ -92,3 +94,8 @@ export function liveAssessmentsFor(lang) {
   const L = (o) => o[lang] || o.nl;
   return { ui, options: LA_OPTIONS.map((o) => ({ key: o.key, href: o.href, nlOnly: !!o.nlOnly, title: L(o.title), desc: L(o.desc) })) };
 }
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(LA_OPTIONS, vulAan(LA_OPTIONS));
+Object.assign(LA_UI, vulAan(LA_UI));

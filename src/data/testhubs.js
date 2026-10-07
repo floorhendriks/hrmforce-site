@@ -7,6 +7,8 @@
 // onderbouwing, faq en cta. De kaarten onder "tests" verwijzen naar bestaande
 // pagina's; de href wordt in de component per taal gelokaliseerd.
 
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const TESTHUBS = {
   persoonlijkheid: {
     key: "persoonlijkheid",
@@ -986,3 +988,7 @@ export const TESTHUBS = {
     },
   },
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(TESTHUBS, vulAan(TESTHUBS));

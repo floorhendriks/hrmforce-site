@@ -1,5 +1,7 @@
 // Sectoren-index: UI + sectoren met korte toelichting (6 talen).
 
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const SEC_UI = {
   nl: { meta: { title: "Sectoren | Assessments per sector | hrmforce", description: "Ontdek hoe hrmforce-assessments per sector werken: van zorg en onderwijs tot industrie, ICT, retail en meer. Selecteer je sector bovenin." }, eyebrow: "Sectoren", title: "Assessments toegespitst op jouw sector", intro: "Selecteer bovenin je sector. Per sector laten we zien hoe onderbouwde assessments helpen bij selectie, ontwikkeling en behoud, met normgroepen en een aanpak die past bij de praktijk.", select: "Selecteer je sector", all: "Alle sectoren", search: "Zoek een sector...", none: "Geen sector gevonden.", view: "Bekijk sector", ask: "Bespreek jouw sector", cta: { title: "Jouw sector niet gevonden of vragen?", text: "We werken in vrijwel elke sector. Bespreek met een specialist welke aanpak en normgroepen bij jouw organisatie passen.", primary: "Plan een demo", secondary: "Bekijk de assessments" } },
   en: { meta: { title: "Sectors | Assessments by sector | hrmforce", description: "Discover how hrmforce assessments work per sector: from healthcare and education to manufacturing, IT, retail and more. Select your sector at the top." }, eyebrow: "Sectors", title: "Assessments tailored to your sector", intro: "Select your sector at the top. Per sector we show how evidence-based assessments help with selection, development and retention, with norm groups and an approach that fits practice.", select: "Select your sector", all: "All sectors", search: "Search a sector...", none: "No sector found.", view: "View sector", ask: "Discuss your sector", cta: { title: "Sector not listed or questions?", text: "We work in almost every sector. Discuss with a specialist which approach and norm groups fit your organisation.", primary: "Book a demo", secondary: "View the assessments" } },
@@ -58,3 +60,9 @@ export function sectorsFor(lang) {
   const sectors = SECTORS.map((s) => ({ key: s.key, landing: s.landing, label: L(s.label), blurb: L(s.blurb), casus: (SECTOR_CASUS[s.key] ? (SECTOR_CASUS[s.key][lang] || SECTOR_CASUS[s.key].nl) : "") }));
   return { ui, sectors };
 }
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(SECTORS, vulAan(SECTORS));
+Object.assign(SECTOR_CASUS, vulAan(SECTOR_CASUS));
+Object.assign(SEC_UI, vulAan(SEC_UI));

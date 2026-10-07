@@ -3,6 +3,8 @@
 // btw-verlegd (0%); buiten de EU 0%. De server (Cloudflare Function) herberekent
 // dit gezaghebbend; hier alleen voor weergave.
 
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const EU_COUNTRIES = {
   AT: "Austria", BE: "België / Belgique", BG: "Bulgaria", HR: "Croatia",
   CY: "Cyprus", CZ: "Czechia", DK: "Denmark", EE: "Estonia", FI: "Finland",
@@ -137,3 +139,8 @@ export const SUCCESS_I18N = {
   es: { title: "¡Gracias por tu pedido! | hrmforce", h1: "Gracias por tu pedido", lead: "Hemos recibido tu pago. Recibirás una confirmación por correo; preparamos las evaluaciones manualmente y enviamos los enlaces del candidato poco después.", order: "Número de pedido", invoice: "Descargar tu factura (PDF)", toShop: "Seguir en la tienda", note: "¿No recibiste el correo? Revisa el spam o escribe a service@hrmforce.com.", h1Wacht: "Gracias por tu pedido", leadWacht: "Hemos recibido tu pedido. Tu pago todavía no nos ha llegado. Una transferencia suele tardar de uno a tres días laborables. En cuanto llegue recibirás la confirmación con la factura y prepararemos las evaluaciones.", h1Mis: "Tu pedido está registrado, el pago no", leadMis: "El pago no se completó. Tu pedido está registrado. Escribe a service@hrmforce.com con tu número de pedido y te enviaremos un nuevo enlace de pago o una factura." },
   ro: { title: "Îți mulțumim pentru comandă! | hrmforce", h1: "Îți mulțumim pentru comandă", lead: "Am primit plata ta. Vei primi o confirmare pe e-mail; pregătim evaluările manual și trimitem linkurile candidatului la scurt timp după.", order: "Număr comandă", invoice: "Descarcă factura (PDF)", toShop: "Continuă în magazin", note: "Nu ai primit e-mailul? Verifică spam-ul sau scrie la service@hrmforce.com.", h1Wacht: "Mulțumim pentru comandă", leadWacht: "Am primit comanda ta. Plata nu a ajuns încă la noi. Un transfer bancar durează de obicei una până la trei zile lucrătoare. Imediat ce ajunge primești confirmarea cu factura și pregătim evaluările.", h1Mis: "Comanda este înregistrată, plata nu", leadMis: "Plata nu a fost finalizată. Comanda ta este înregistrată la noi. Scrie la service@hrmforce.com cu numărul comenzii și îți trimitem un nou link de plată sau o factură." },
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(CHECKOUT_I18N, vulAan(CHECKOUT_I18N));
+Object.assign(SUCCESS_I18N, vulAan(SUCCESS_I18N));

@@ -1,6 +1,8 @@
 // UI-labels (chrome) voor de assessment-detailpagina, per taal.
 // NL = bron. en/de/fr/es/ro eerste vertaalslag, native review aanbevolen.
 // {t} = plek waar de assessment-titel wordt ingevoegd (in de template vervangen).
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const detailUi = {
   nl: {
     eyebrowAssessments: "Online assessments", crumbAssessments: "Online assessments",
@@ -153,3 +155,7 @@ export const detailUi = {
     practiceLink: "Exersează cu mai multe întrebări exemplu", vvTitle: "Primești toate întrebările exemplu?", vvText: "Lasă-ne e-mailul și îți trimitem un set de întrebări exemplu pentru {t}, plus o explicație a raportului.", vvPlaceholder: "tu@emailserviciu.ro", vvButton: "Trimite-mi întrebările", kcEyebrow: "Lectură suplimentară", kcTitle: "Mai mult din centrul nostru de cunoștințe", kcRead: "Citește articolul", teamCta: "Cunoaște echipa",
   },
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(detailUi, vulAan(detailUi));

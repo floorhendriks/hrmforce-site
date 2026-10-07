@@ -1,4 +1,6 @@
 // Begrippenlijst (glossary), content per taal. NL leidend.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const glossaryContent = {
   nl: { meta: { title: "Begrippenlijst assessments - hrmforce", description: "Uitleg van veelgebruikte assessment- en HR-begrippen: validiteit, betrouwbaarheid, Big Five, DISC, normgroep en meer." }, crumb: "Begrippenlijst", hero: { title: "Assessmentbegrippen helder uitgelegd", intro: "Van validiteit tot Big Five: de belangrijkste termen rond assessments en talentmanagement, kort uitgelegd." }, terms: [
     { id: "assessment", term: "Assessment", def: "Een gestructureerde meting van capaciteiten, persoonlijkheid of gedrag om objectiever te selecteren of te ontwikkelen.", link: null },
@@ -103,3 +105,7 @@ export const glossaryContent = {
     { id: "pre-employment", term: "Evaluare pre-angajare", def: "O măsurare înainte de angajare pentru a evalua dacă un candidat se potrivește postului.", link: null }
   ] },
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(glossaryContent, vulAan(glossaryContent));

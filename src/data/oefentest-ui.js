@@ -1,4 +1,6 @@
 // Teksten voor de oefentest, per taal. De vragen zelf komen uit src/data/oefenbank.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const OT_UI = {
   nl: { eyebrow:"Oefentest", start:"Start de oefentest", naam:"Je naam", email:"Je e-mailadres",
     lead:"Vul je naam en e-mailadres in en je krijgt 25 willekeurige oefenvragen. Elke keer een andere set.",
@@ -180,3 +182,11 @@ export const VERDER_UI = {
   es: { tekst: "El mismo tema, pero baremado y con informe:", link: "Ver la evaluación" },
   ro: { tekst: "Același subiect, dar normat și cu raport:", link: "Vezi evaluarea" },
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(ONDERDELEN, vulAan(ONDERDELEN));
+Object.assign(ONDERZOEK_UI, vulAan(ONDERZOEK_UI));
+Object.assign(OT_META, vulAan(OT_META));
+Object.assign(OT_UI, vulAan(OT_UI));
+Object.assign(VERDER_UI, vulAan(VERDER_UI));

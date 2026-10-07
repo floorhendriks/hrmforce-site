@@ -8,7 +8,7 @@ import Ico from "./Ico.astro";
 import { localizePath } from "../i18n/utils.js";
 const { lang = "nl" } = Astro.props;
 
-const T = {
+const T_ALLE = {
   nl: { lbl1: "Testkiezer", k1: "Welke test past bij jouw vraag?", t1: "Beantwoord vier vragen en je krijgt een onderbouwd voorstel.", c1: "Open de testkiezer",
         lbl2: "Rekentool", k2: "Wat levert objectief selecteren op?", t2: "Reken je besparing door met je eigen aantallen en verloopcijfers.", c2: "Open de ROI-rekentool" },
   en: { lbl1: "Test selector", k1: "Which assessment fits your question?", t1: "Answer four questions and get a grounded suggestion.", c1: "Open the test selector",
@@ -21,7 +21,8 @@ const T = {
         lbl2: "Calculadora", k2: "¿Qué aporta una selección objetiva?", t2: "Calcula tu ahorro con tus propias cifras de plantilla y rotación.", c2: "Abrir la calculadora ROI" },
   ro: { lbl1: "Selector", k1: "Ce test se potrivește întrebării tale?", t1: "Răspunde la patru întrebări și primești o propunere argumentată.", c1: "Deschide selectorul de teste",
         lbl2: "Calculator", k2: "Ce aduce o selecție obiectivă?", t2: "Calculează economia cu propriile cifre de personal și fluctuație.", c2: "Deschide calculatorul ROI" },
-}[lang] || {};
+};
+const T = T_ALLE[lang] ?? T_ALLE.nl;
 
 const testHref = localizePath("/testkiezer/", lang);
 const roiHref = localizePath("/roi-rekentool/", lang);

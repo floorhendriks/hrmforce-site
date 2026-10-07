@@ -2,6 +2,8 @@
 // NL = leidend. EN/DE/FR/ES/RO zijn een eerste vertaalslag, laat nakijken door een native speaker.
 // LET OP: de rekenlogica en de <option>-waarden (basis/compleet/premium) blijven ongewijzigd;
 // alleen labels/teksten komen uit dit bestand.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const roiContent = {
   nl: {
     meta: {
@@ -360,3 +362,7 @@ Object.assign(roiContent.ro.explain, {
   ],
   costsNote: "Costuri = numărul de candidați × costul per evaluare. Cu 3 candidați per post și 50 de angajări, rezultă 150 de evaluări.",
 });
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(roiContent, vulAan(roiContent));

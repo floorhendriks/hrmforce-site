@@ -1,6 +1,8 @@
 // Toepassings- en sectorlandingspagina's, meertalig (nl/en/de/fr/es/ro). Generiek
 // geschreven: geen verzonnen cijfers of klantnamen. Elke pagina linkt naar bestaande
 // assessment-detailpagina's. Gegenereerd; niet handmatig los bewerken.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const landings = [
   {
     slug: "werving-en-selectie", kind: "usecase",
@@ -642,3 +644,8 @@ export const LAND_UI = {
     "ctaBtn": "Rezervă o demonstrație gratuită"
   }
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(LAND_UI, vulAan(LAND_UI));
+Object.assign(landings, vulAan(landings));

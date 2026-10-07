@@ -1,4 +1,6 @@
 // Interactieve productrondleiding, 6 talen. Beelden gedeeld (mockups).
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const TOUR_IMGS = ["intro", "vraag", "afgerond"];
 export const TOUR_UI = {
  "nl": {
@@ -194,3 +196,7 @@ export const TOUR_UI = {
   ]
  }
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(TOUR_UI, vulAan(TOUR_UI));

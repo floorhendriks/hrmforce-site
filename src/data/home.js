@@ -1,5 +1,7 @@
 // Inhoud van de homepage, per taal.
 // rebuild-trigger: Sanity-content bijgewerkt (HRMforce -> hrmforce in 424 artikelen)
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const home = {
   nl: {
     metaTitle: "Talentmanagement software | Assessment bureau | hrmforce",
@@ -238,3 +240,7 @@ export const clients = [
   { name: "Wageningen Univ.", logo: "/media/wp-content/uploads/2025/07/logo-Wageningen-University.webp" },
   { name: "City of Amsterdam", logo: "/media/wp-content/uploads/2025/06/logo-cityofamsterdam.webp" },
 ];
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(home, vulAan(home));

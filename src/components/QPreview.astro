@@ -4,7 +4,7 @@
 // voorbeeldvragen met de echte antwoordschaal.
 const { lang = "nl", testName = "", ex = {} } = Astro.props;
 
-const T = {
+const T_ALLE = {
   nl: { chip: "Vragenlijst", welcome: "Welkom bij", intro: "Je krijgt een reeks vragen. Geef per vraag aan wat het best bij je past.",
         b1: "Duurt enkele minuten", b2: "Er zijn geen goede of foute antwoorden", b3: "Antwoord spontaan, dat geeft het beste beeld",
         start: "Start de vragenlijst", own: "In je eigen taal en tempo", sample: "Voorbeeldvragen", of: "van", vraag: "Vraag",
@@ -29,7 +29,8 @@ const T = {
         b1: "Durează câteva minute", b2: "Nu există răspunsuri corecte sau greșite", b3: "Răspunde spontan, așa iese cea mai bună imagine",
         start: "Începe chestionarul", own: "În limba și ritmul tău", sample: "Întrebări exemplu", of: "din", vraag: "Întrebarea",
         note: "Alege ce ți se potrivește cel mai bine.", prev: "Înapoi", next: "Înainte", demo: "Previzualizare, întrebările nu pot fi apăsate", mark: "EXEMPLU" },
-}[lang] || {};
+};
+const T = T_ALLE[lang] ?? T_ALLE.nl;
 
 const vragen = (ex.items || []).slice(0, 6);
 const punten = String(ex.scale || "").split(" - ").map((x) => x.trim()).filter(Boolean);

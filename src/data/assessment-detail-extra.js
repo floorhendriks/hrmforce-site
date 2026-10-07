@@ -2,6 +2,8 @@
 // blokken zoals rapportagemogelijkheden, beheersingsniveaus en maatwerkmodel.
 // Alleen feitelijke, door hrmforce aangeleverde informatie.
 
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const detailExtra = {
   "big-five": {
     alias: { nl: "Big Fifty Personality", en: "Big Fifty Personality", de: "Big Fifty Personality", fr: "Big Fifty Personality", es: "Big Fifty Personality", ro: "Big Fifty Personality" },
@@ -150,3 +152,7 @@ export function extraFor(slug, lang) {
     })),
   };
 }
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(detailExtra, vulAan(detailExtra));

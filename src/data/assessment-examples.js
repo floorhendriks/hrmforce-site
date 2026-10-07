@@ -1,6 +1,8 @@
 // Voorbeeldvragen per assessment-TYPE, in 6 talen. Ter illustratie op de
 // detailpagina's - het zijn representatieve voorbeelden, niet de echte items.
 
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const EX_UI = {
   nl: { title: "Voorbeeldvragen", intro: "Zo ziet dit assessment er in de praktijk uit. Onderstaande vragen zijn ter illustratie - de echte vragenlijst is uitgebreider.", scaleLabel: "Antwoordschaal", tag: "Voorbeeld" },
   en: { title: "Example questions", intro: "A preview of what this assessment looks like in practice. The questions below are illustrative - the actual questionnaire is more extensive.", scaleLabel: "Answer scale", tag: "Example" },
@@ -174,3 +176,8 @@ export function examplesFor(slug, lang) {
   const mockOptions = set.mock ? L(set.mock.options) : null;
   return { title: ui.title, intro: ui.intro, scaleLabel: ui.scaleLabel, tag: ui.tag, scale: L(set.scale), items: L(set.items), answer, mockQuestion, mockOptions };
 }
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(EXAMPLES, vulAan(EXAMPLES));
+Object.assign(EX_UI, vulAan(EX_UI));

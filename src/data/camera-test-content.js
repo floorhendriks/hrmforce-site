@@ -1,6 +1,8 @@
 // Teksten voor de pagina "Camera en geluid testen" onder /voorbereiding/.
 // De test draait volledig in de browser van de kandidaat: er wordt niets
 // opgenomen, verstuurd of bewaard. en/de/fr/es/ro zijn een eerste vertaalslag.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const cameraTestContent = {
   nl: {
     meta: {
@@ -800,3 +802,7 @@ export const cameraTestContent = {
     terug: "Înapoi la pregătire",
   },
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(cameraTestContent, vulAan(cameraTestContent));

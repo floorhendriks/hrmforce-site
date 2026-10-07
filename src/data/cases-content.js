@@ -3,6 +3,8 @@
 // toe wat niet te staven is: een naam, een percentage of een citaat vraagt om
 // toestemming van de klant.
 
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const CASE_UI = {
   nl: { meta: { title: "Klantcases - hrmforce", description: "Voorbeeldcases: hoe organisaties in uiteenlopende sectoren hrmforce inzetten voor selectie, ontwikkeling, teams en employability." }, eyebrow: "Klantcases", title: "Zo werkt onderbouwd talentmanagement in de praktijk", intro: "Filter op thema, sector of omvang. Per case lees je de uitdaging, de aanpak en wat het heeft opgeleverd.", labels: { challenge: "Uitdaging", approach: "Aanpak", results: "Resultaten" }, filters: { theme: "Thema", sector: "Sector", size: "Omvang", all: "Alle", search: "Zoek op sector, thema of trefwoord...", none: "Geen cases gevonden. Pas je filters aan.", count: "cases" }, cta: { title: "Klaar om jouw case te schrijven?", text: "Bespreek met een specialist hoe een eigen portal op licentiebasis in jouw sector werkt.", primary: "Plan een demo", secondary: "Bekijk de tarieven" } },
   en: { meta: { title: "Client cases - hrmforce", description: "Example cases: how organisations across sectors use hrmforce for selection, development, teams and employability." }, eyebrow: "Client cases", title: "How evidence-based talent management works in practice", intro: "Filter by theme, sector or size. Per case you read the challenge, the approach and what it delivered.", labels: { challenge: "Challenge", approach: "Approach", results: "Results" }, filters: { theme: "Theme", sector: "Sector", size: "Size", all: "All", search: "Search by sector, theme or keyword...", none: "No cases found. Adjust your filters.", count: "cases" }, cta: { title: "Ready to write your case?", text: "Discuss with a specialist how a licensed portal works in your sector.", primary: "Book a demo", secondary: "View pricing" } },
@@ -345,3 +347,12 @@ export function caseOmschrijving(c, max = 155) {
   }
   return uit;
 }
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(CASES, vulAan(CASES));
+Object.assign(CASE_PAGINA_UI, vulAan(CASE_PAGINA_UI));
+Object.assign(CASE_SECTORS, vulAan(CASE_SECTORS));
+Object.assign(CASE_SIZES, vulAan(CASE_SIZES));
+Object.assign(CASE_THEMES, vulAan(CASE_THEMES));
+Object.assign(CASE_UI, vulAan(CASE_UI));

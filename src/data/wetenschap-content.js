@@ -1,4 +1,6 @@
 // Wetenschappelijke verantwoording, content per taal. NL leidend; vertalingen eerste slag.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const wetenschapContent = {
   nl: {
     meta: { title: "Wetenschappelijke verantwoording - hrmforce", description: "Hoe hrmforce de psychometrische deugdelijkheid van assessments borgt: validiteit, betrouwbaarheid, normgroepen en verantwoord testgebruik volgens internationale richtlijnen." },
@@ -67,3 +69,7 @@ export const wetenschapContent = {
     ctaBand: { title: "Vreți să aflați mai multe despre fundament?", text: "Arătăm cu plăcere pe ce se bazează un anumit instrument și cum asigurăm calitatea.", primary: "Programați o discuție", secondary: "Vedeți evaluările" },
   },
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(wetenschapContent, vulAan(wetenschapContent));

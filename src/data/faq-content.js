@@ -1,5 +1,7 @@
 // en/de/fr/es/ro eerste vertaalslag, native review aanbevolen.
 
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const faqContent = {
   nl: {
     meta: {
@@ -877,3 +879,7 @@ export const faqContent = {
     }
   }
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(faqContent, vulAan(faqContent));

@@ -1,6 +1,8 @@
 // Kenniscentrum-UI-teksten per taal, gebruikt door src/components/Kenniscentrum.astro.
 // en/de/fr/es/ro eerste vertaalslag, native review aanbevolen.
 // De artikelen zelf komen uit Sanity; hier staat alleen de UI + de zoek-logica per taal.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const kenniscentrumContent = {
   nl: {
     meta: { title: "Kenniscentrum | hrmforce", description: "Artikelen over HR, assessments, capaciteiten en ontwikkeling. Filter op thema of zoek direct in ons kenniscentrum." },
@@ -100,3 +102,7 @@ export const kenniscentrumContent = {
     empty: { title: "În curând mai multe articole", lead: "Traducem centrul nostru de cunoștințe pas cu pas. Între timp, descoperiți evaluările noastre sau consultați opțiunile și prețurile.", ctaAssessments: "Vezi evaluările", ctaTarieven: "Opțiuni & prețuri" },
   },
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(kenniscentrumContent, vulAan(kenniscentrumContent));

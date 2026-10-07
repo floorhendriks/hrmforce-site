@@ -1,5 +1,7 @@
 // Inhoud van de hoofdpagina's, per taal (6 talen).
 // DE/FR/ES/RO zijn een eerste vertaalslag - laat ze nakijken door een native speaker.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const pages = {
   nl: {
     "hrm-oplossingen": { metaTitle: "HRM Oplossingen | hrmforce", metaDescription: "Van matching en selectie tot HR-analytics: de HRM-oplossingen van hrmforce ondersteunen elke stap van de HR-cyclus.", eyebrow: "HRM Oplossingen", title: "Tooling voor elke stap van de HR-cyclus", lead: "Recruitment, development, employability en analytics, gebundeld in een platform, gekoppeld aan je bestaande HR-systemen.", intro: ["De HRM-oplossingen van hrmforce helpen je bij selectie, ontwikkeling en uitstroom. Onze modules werken samen met de meest gebruikte ATS-, HR- en payroll-systemen via API of SSO."], cards: [ {h:"Matching & selectie", p:"Vind de best passende match op functie en team met bewezen vragenlijsten en capaciteitentesten.", href:"/hrm-oplossingen/matching/"}, {h:"HR Gesprekscyclus", p:"Digitale ontwikkelcyclus voor functionerings- en beoordelingsgesprekken.", href:"/hrm-oplossingen/development/"}, {h:"Employability", p:"Houd medewerkers duurzaam inzetbaar met scans en ontwikkelpaden.", href:"/hrm-oplossingen/employability/"}, {h:"HR Analytics", p:"Stuur op data: heldere dashboards over talent, teams en ontwikkeling.", href:"/hrm-oplossingen/hr-analytics/"}, {h:"Sectoren", p:"Aanpak en normgroepen toegespitst op jouw sector.", href:"/hrm-oplossingen/"} ] },
@@ -49,3 +51,7 @@ export const pages = {
     contact: { metaTitle: "Contact | hrmforce", metaDescription: "Contactați hrmforce sau solicitați o demonstrație fără angajament.", eyebrow: "Contact", title: "Contactați-ne", lead: "Întrebări sau o demonstrație fără angajament? Lăsați datele dvs. și vă contactăm rapid.", isContact: true, form: {name:"Nume", company:"Companie", email:"E-mail de serviciu", phone:"Număr de telefon", message:"Întrebarea sau mesajul dvs.", submit:"Trimite"} },
   },
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(pages, vulAan(pages));

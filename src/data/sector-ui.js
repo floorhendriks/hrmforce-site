@@ -1,5 +1,7 @@
 // Vaste teksten op de sectorpagina's, per taal. De inhoud per sector staat in
 // sector-paginas.js (nl) en sector-paginas-i18n.js (en/de/fr/es/ro).
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const SECTOR_UI = {
   nl: { eyebrow: "Sectoren", home: "Home", demo: "Plan een gratis demo", alle: "Bekijk alle assessments",
         rollenCta: "Bespreek je functies met ons", metenCta: "Zo meten we dat",
@@ -56,3 +58,7 @@ export const SECTOR_UI = {
         ctaTekst: "Într-o demonstrație de o jumătate de oră arătăm cum arată măsurarea pentru rolurile tale și ce îți spune un raport.",
         contact: "Ia legătura" },
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(SECTOR_UI, vulAan(SECTOR_UI));

@@ -2,6 +2,8 @@
 // Een sectie die voor een taal ontbreekt (oprichter, stappen, werken bij) wordt
 // overgeslagen tot de vertaling er is.
 
+import { vulAan } from "./vertaal-inhoud.js";
+
 const WERELDBEELD = "/media/wp-content/uploads/2017/02/World_Supportteam-500x9999.webp";
 
 export const overOnsContent = {
@@ -377,3 +379,7 @@ export const overOnsContent = {
     },
   },
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(overOnsContent, vulAan(overOnsContent));

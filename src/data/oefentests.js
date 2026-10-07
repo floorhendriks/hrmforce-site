@@ -2,6 +2,8 @@
 
 // Omschrijving van de detailpagina /oefenen/<slug>/. {naam} wordt vervangen
 // door de naam van de test. Stond eerder per taal in de paginabestanden zelf.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const OEFEN_DETAIL_D = {
   nl: "Oefen met {naam}. Voorbeeldvragen, uitleg over de antwoordschaal en tips waarmee je rustiger en scherper aan de echte afname begint.",
   en: "Practise with {naam}. Example questions, an explanation of the answer scale and tips to start the real test calmer and sharper.",
@@ -82,3 +84,9 @@ export const oefentests = [
     ro:{ name:"Test de orientare", hero:"Exersează cu testul de orientare", intro:"Vezi cum funcționează un test de orientare și exersează cu întrebări exemplu despre interese și preferințe potrivite studiilor.", tips:["Nu există răspunsuri greșite: alege ce ți se potrivește cu adevărat.","Gândește-te la ce îți place, nu la ce pare practic.","Răspunde spontan pentru cea mai sinceră imagine."] }
   }},
 ];
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(OEFEN_DETAIL_D, vulAan(OEFEN_DETAIL_D));
+Object.assign(OEFEN_UI, vulAan(OEFEN_UI));
+Object.assign(oefentests, vulAan(oefentests));

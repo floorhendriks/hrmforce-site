@@ -1,6 +1,8 @@
 // Shop-UI-teksten per taal, gebruikt door src/components/Shop.astro.
 // en/de/fr/es/ro eerste vertaalslag, native review aanbevolen.
 // De productbeschrijvingen zelf komen uit Shopify en blijven ongewijzigd.
+import { vulAan } from "./vertaal-inhoud.js";
+
 export const shopContent = {
   nl: {
     meta: {
@@ -266,3 +268,7 @@ export const shopContent = {
     ],
   },
 };
+
+// Talen zonder eigen tekst in dit bestand worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(shopContent, vulAan(shopContent));
