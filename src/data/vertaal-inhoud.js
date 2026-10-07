@@ -21,7 +21,16 @@
 // Dit bestand importeert met opzet niets uit de andere datafiles. Die
 // importeren het namelijk zelf, en een kring van imports breekt de build.
 
-const VERTALINGEN = import.meta.glob("./translations-content/*.json", { eager: true });
+// Vite zet deze aanroep tijdens de bouw om in een vaste lijst. Buiten Vite,
+// zoals in scripts/hsf-translate-content.mjs dat de datafiles met kaal node
+// inleest, bestaat import.meta.glob niet. Vandaar de try: daar blijft de lijst
+// leeg en geeft vulAan de data onveranderd terug.
+let VERTALINGEN = {};
+try {
+  VERTALINGEN = import.meta.glob("./translations-content/*.json", { eager: true });
+} catch {
+  VERTALINGEN = {};
+}
 
 // Paden die door de [lang]-routes in elke taal worden gebouwd. Zelfde lijst als
 // LOCALIZED_PAGES in src/i18n/utils.js, hier herhaald om een importkring te
