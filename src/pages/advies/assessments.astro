@@ -1,7 +1,9 @@
 ---
 import Base from "../../layouts/Base.astro";
 import LiveAssessments from "../../components/LiveAssessments.astro";
+import { ADVIES_ASSESSMENTS } from "../../data/advies-meta.js";
+const m = ADVIES_ASSESSMENTS.nl;
 ---
-<Base title="Live Assessments | Door assessoren begeleid | hrmforce" description="Onze assessoren begeleiden live assessments: selectie, ontwikkeling, loopbaan, executive en teamanalyse. Bekijk alle opties." active="advice">
+<Base title={m.title} description={m.description} active="advice">
   <LiveAssessments />
 </Base>

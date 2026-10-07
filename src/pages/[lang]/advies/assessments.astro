@@ -1,0 +1,12 @@
+---
+import Base from "../../../layouts/Base.astro";
+import LiveAssessments from "../../../components/LiveAssessments.astro";
+import { ADVIES_ASSESSMENTS } from "../../../data/advies-meta.js";
+import { perTaal } from "../../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const m = ADVIES_ASSESSMENTS[lang];
+---
+<Base title={m.title} description={m.description} active="advice">
+  <LiveAssessments />
+</Base>

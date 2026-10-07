@@ -1,7 +1,9 @@
 ---
 import Base from "../../layouts/Base.astro";
 import Trainingen from "../../components/Trainingen.astro";
+import { ADVIES_TRAININGEN } from "../../data/advies-meta.js";
+const m = ADVIES_TRAININGEN.nl;
 ---
-<Base title="Trainingen & certificatietraining | hrmforce" description="Word met de certificatietraining van hrmforce een gecertificeerd gebruiker. Bekijk de trainingskalender en schrijf je direct in." active="advice">
+<Base title={m.title} description={m.description} active="advice">
   <Trainingen />
 </Base>
