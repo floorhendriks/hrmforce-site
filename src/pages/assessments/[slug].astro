@@ -316,12 +316,15 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
             <div class="faq-a"><p>{f.a}</p></div>
           </div>
         ))}
+        {/* Deze twee knoppen stonden buiten de wrap, dus zonder de marge van de
+            pagina. Op een breed scherm plakten ze tegen de linkerrand in plaats
+            van onder de vragen. Ze staan nu in dezelfde kolom als de vragen. */}
+        <div class="faq-knoppen">
+          <a href="#request" class="btn btn-primary">{a.title} aanvragen</a>
+          <a href={localizePath("/contact/", lang)} class="btn btn-ghost">Staat je vraag er niet bij? Neem contact op</a>
+        </div>
       </div>
     </div>
-      <div class="center" style="margin-top:24px">
-        <a href="#request" class="btn btn-primary">{a.title} aanvragen</a>
-        <a href={localizePath("/contact/", lang)} class="btn btn-ghost" style="margin-left:8px">Staat je vraag er niet bij? Neem contact op</a>
-      </div>
   </section>
 
   <section class="formsec" id="request">

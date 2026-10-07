@@ -294,6 +294,9 @@ h2.section-title{font-size:clamp(1.6rem,1.25rem + 1.6vw,2.25rem);font-weight:800
 .faq-q:hover{background:#fafcff}
 .faq-a{padding:0 24px;max-height:0;overflow:hidden;color:var(--muted);transition:max-height .3s ease,padding .3s ease;font-size:15px;line-height:1.65}
 .faq-item.open .faq-a{max-height:600px;padding:0 24px 22px}
+/* De twee knoppen onder de veelgestelde vragen. Naast elkaar waar het past,
+   onder elkaar op een smal scherm, zodat de tweede knop niet half wegvalt. */
+.faq-knoppen{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
 .faq-item.open .pl{transform:rotate(45deg)}
 .pl{font-size:26px;color:var(--blue);transition:transform .2s ease;font-weight:300;line-height:1;flex:0 0 auto}
 
