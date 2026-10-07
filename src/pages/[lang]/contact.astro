@@ -1,0 +1,12 @@
+---
+import Base from "../../layouts/Base.astro";
+import Contact from "../../components/Contact.astro";
+import { contactContent } from "../../data/contact-content.js";
+import { perTaal } from "../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const t = contactContent[lang];
+---
+<Base title={t.meta.title} description={t.meta.description} active="contact">
+  <Contact t={t} lang={lang} />
+</Base>
