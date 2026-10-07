@@ -10,10 +10,13 @@ import { PREFIXED } from "../../../i18n/utils.js";
 // De vragenbanken staan per onderdeel en per taal in een eigen json. Omdat de
 // taal pas tijdens het bouwen bekend is, komen ze binnen via een glob in plaats
 // van een import per bestand. De sleutel is "<onderdeel>.<taal>".
+//
+// Is er voor een taal nog geen bank, dan komen de vragen in het Engels. Zo is
+// de oefentest in elke taal te maken; alleen de vragen lezen dan in het Engels.
 const BRONNEN = import.meta.glob("../../../data/oefenbank/*.json", { eager: true });
 function bank(naam, lang) {
-  const pad = `../../../data/oefenbank/${naam}.${lang}.json`;
-  const mod = BRONNEN[pad];
+  const map = (t) => BRONNEN[`../../../data/oefenbank/${naam}.${t}.json`];
+  const mod = map(lang) ?? map("en");
   return mod?.default ?? mod;
 }
 

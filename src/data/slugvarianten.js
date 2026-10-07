@@ -8,8 +8,9 @@ import { TESTHUBS } from "./testhubs.js";
 import { THEMAPAGINAS } from "./themapaginas.js";
 import { ONDERDELEN } from "./oefentest-ui.js";
 import { VRAGENLIJSTEN } from "./oefenvragenlijst.js";
+import { languages } from "../i18n/ui.js";
 
-const TALEN = ["nl", "en", "de", "fr", "es", "ro"];
+const TALEN = Object.keys(languages);
 
 const groepen = [...Object.values(TESTHUBS), ...Object.values(THEMAPAGINAS)]
   .filter((h) => Object.keys(h.slug).length > 1)

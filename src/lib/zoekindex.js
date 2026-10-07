@@ -1,10 +1,13 @@
 // De zoekindex van de header, op een plek waar zowel het JSON-bestand als de
 // component hem kan opbouwen. De opbouw stond eerder in Header.astro.
 import { routes } from "../i18n/ui.js";
+import { PREFIXED } from "../i18n/utils.js";
 import { navFor } from "../data/menu-content.js";
 
+// Volgt de talenlijst, zodat de zoekindex van een nieuwe taal meteen klopt.
+const PREFIX = new RegExp("^/(" + PREFIXED.join("|") + ")(/|$)");
 const stripLang = (p) => {
-  const m = p.match(/^\/(en|de|fr|es|ro)(\/|$)/);
+  const m = p.match(PREFIX);
   return m ? p.slice(m[1].length + 1) : p;
 };
 
@@ -26,7 +29,7 @@ export function zoekindexVoor(lang, validPaths) {
 
   const voorTaal = validPaths.filter((p) => {
     if (p.includes("%3F")) return false;
-    const isPrefixed = /^\/(en|de|fr|es|ro)\//.test(p);
+    const isPrefixed = PREFIX.test(p);
     return lang === "nl" ? !isPrefixed : p.startsWith("/" + lang + "/");
   });
 

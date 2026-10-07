@@ -32,18 +32,47 @@ const EXTRA = ["/afrekenen/","/en/afrekenen/","/de/afrekenen/","/fr/afrekenen/",
 import { ONDERDELEN } from "./oefentest-ui.js";
 import { VRAGENLIJSTEN } from "./oefenvragenlijst.js";
 import { DUBBELE_ARTIKELEN } from "./kenniscentrum-duplicaten.js";
-const OEFEN = ["nl", "en", "de", "fr", "es", "ro"].flatMap((t) => {
+import { languages, BRONTALEN } from "../i18n/ui.js";
+import { ALLEEN_BRONTAAL } from "../i18n/alleen-brontaal.js";
+const OEFEN = Object.keys(languages).flatMap((t) => {
   const basis = t === "nl" ? "/oefentest/" : `/${t}/oefentest/`;
   return [basis,
-    ...Object.values(ONDERDELEN).map((o) => `${basis}${o.slug[t]}/`),
-    ...Object.values(VRAGENLIJSTEN).map((o) => `${basis}${o.slug[t]}/`)];
+    ...Object.values(ONDERDELEN).filter((o) => o.slug[t]).map((o) => `${basis}${o.slug[t]}/`),
+    ...Object.values(VRAGENLIJSTEN).filter((o) => o.slug[t]).map((o) => `${basis}${o.slug[t]}/`)];
 });
+
+// Talen zonder eigen tekst in de repo (pl, da, sv, ...) worden door de
+// [lang]-routes gebouwd uit dezelfde data als de brontalen. Hun paden leiden we
+// daarom af van de Engelse lijst: wat in alle brontalen bestaat, bestaat ook in
+// de nieuwe talen. Een pad dat hier niet in komt, houdt gewoon de Nederlandse
+// link; een pad dat er ten onrechte wel in komt, levert een 404 op. Daarom de
+// uitzonderingen hieronder.
+const NIEUWE_TALEN = Object.keys(languages).filter((t) => !BRONTALEN.includes(t));
+
+
+function afgeleidePaden(bestaand) {
+  if (!NIEUWE_TALEN.length) return [];
+  const aanwezig = new Set(bestaand);
+  const basis = bestaand
+    .filter((p) => p.startsWith("/en/"))
+    .map((p) => p.slice(3))
+    .filter((b) => !/[?]|%3F/i.test(b))
+    // Artikelen staan in Sanity en bestaan alleen in de brontalen; het
+    // overzicht /kenniscentrum/ wordt wel in elke taal gebouwd.
+    .filter((b) => b === "/kenniscentrum/" || !b.startsWith("/kenniscentrum/"))
+    .filter((b) => !ALLEEN_BRONTAAL.has(b))
+    .filter((b) => !b.startsWith("/vacatures/") || b === "/vacatures/")
+    .filter((b) => BRONTALEN.filter((t) => t !== "nl").every((t) => aanwezig.has("/" + t + b)));
+  return NIEUWE_TALEN.flatMap((t) => basis.map((b) => "/" + t + b));
+}
 
 // Adressen van artikelen die onder twee URL's stonden horen hier niet meer in:
 // de site bouwt ze niet meer en de zoekfunctie en de taalwisselaar moeten er
 // niet naar verwijzen. Zie kenniscentrum-duplicaten.js.
 const VERVALLEN = new Set(Object.keys(DUBBELE_ARTIKELEN));
 
-export default Array.from(
+const BRON = Array.from(
   new Set([...STATIC, ...EXTRA, ...OEFEN, ...sanityPaths])
 ).filter((p) => !VERVALLEN.has(p));
+
+export default Array.from(new Set([...BRON, ...afgeleidePaden(BRON)]));

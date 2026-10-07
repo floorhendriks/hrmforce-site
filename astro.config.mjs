@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import { languages } from './src/i18n/ui.js';
 
 export default defineConfig({
   site: 'https://hrmforce.com',
@@ -25,7 +26,8 @@ export default defineConfig({
   ],
   i18n: {
     defaultLocale: 'nl',
-    locales: ['nl', 'en', 'de', 'fr', 'es', 'ro'],
+    // Volgt languages in src/i18n/ui.js.
+    locales: Object.keys(languages),
     routing: { prefixDefaultLocale: false },
   },
 });

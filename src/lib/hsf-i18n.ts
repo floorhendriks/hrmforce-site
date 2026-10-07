@@ -6,13 +6,19 @@
  * vertaling, gemaakt door scripts/hsf-translate-data.mjs.
  *
  * Op buildtijd hydrateert `hydrate()` de ingelezen data: elk vertaalbaar veld
- * ({ nl, en }) krijgt er per beschikbare taal een sleutel bij. Zo blijven alle
- * views gewoon `veld[dl]` gebruiken en groeit de repo niet mee met het aantal
- * talen. Wat niet vertaald is valt terug op Engels; `slug` houdt altijd de
- * Engelse slug, zodat de url's van de andere talen niet veranderen.
+ * ({ nl, en }) krijgt er per sitetaal een sleutel bij. Zo blijven alle views
+ * gewoon `veld[taal]` gebruiken en groeit de repo niet mee met het aantal talen.
+ *
+ * Een taal zonder eigen vertaalbestand krijgt de Engelse tekst. De rubriek is
+ * dan wel bereikbaar en de pagina's zijn compleet, alleen de dataset leest in
+ * het Engels. Dat is een bewuste keuze: de rest van de pagina staat wel in de
+ * taal van de bezoeker. `slug` houdt in elke taal de Engelse slug, zodat de
+ * url's van de bestaande talen niet veranderen.
  */
 
 // Vite/Astro leest de vertaalbestanden op buildtijd in. Zonder bestanden blijft dit leeg.
+import { languages } from '../i18n/ui.js';
+
 const modules = import.meta.glob('../data/translations/*.json', { eager: true, import: 'default' }) as Record<string, Record<string, string>>;
 
 const MAPS: Record<string, Record<string, string>> = {};
@@ -21,13 +27,13 @@ for (const [path, map] of Object.entries(modules)) {
   if (map && Object.keys(map).length) MAPS[code] = map;
 }
 
-/** Talen waarvoor de data beschikbaar is: nl en en altijd, plus de vertaalde talen. */
-export const DATA_LANGS: string[] = ['nl', 'en', ...Object.keys(MAPS).sort()];
+/** Elke sitetaal krijgt een sleutel; zonder vertaalbestand is dat de Engelse tekst. */
+export const DATA_LANGS: string[] = Object.keys(languages);
 
-/**
- * De taal waarin de datavelden gelezen moeten worden. Bestaat er voor deze taal
- * geen vertaling, dan is dat Engels, precies zoals voorheen.
- */
+/** Talen die de dataset in de eigen taal hebben. De rest leest hem in het Engels. */
+export const VERTAALD: string[] = ['nl', 'en', ...Object.keys(MAPS).sort()];
+
+/** De taal waarin de datavelden gelezen moeten worden. */
 export const dlang = (lang: string): string => (DATA_LANGS.includes(lang) ? lang : 'en');
 
 /** Velden die niet vertaald worden maar wel een sleutel per taal nodig hebben. */
@@ -42,8 +48,10 @@ const seen = new WeakSet<object>();
  * Vult de vertaalde sleutels aan in een datastructuur. Muteert ter plaatse, want
  * dit gebeurt eenmalig op buildtijd op de geïmporteerde json-modules.
  */
+const EXTRA_LANGS = DATA_LANGS.filter((l) => l !== 'nl' && l !== 'en');
+
 export function hydrate<T>(node: T, key: string | null = null): T {
-  const langs = Object.keys(MAPS);
+  const langs = EXTRA_LANGS;
   if (!langs.length) return node;
   if (Array.isArray(node)) {
     for (const v of node) hydrate(v, null);
@@ -57,10 +65,11 @@ export function hydrate<T>(node: T, key: string | null = null): T {
       const copyOnly = key !== null && COPY_KEYS.has(key);
       for (const lang of langs) {
         if (obj[lang] !== undefined) continue;
+        const map = MAPS[lang];
         if (Array.isArray(obj.en)) {
-          obj[lang] = copyOnly ? obj.en.slice() : obj.en.map((v: any) => (typeof v === 'string' ? (MAPS[lang][v] ?? v) : v));
+          obj[lang] = copyOnly || !map ? obj.en.slice() : obj.en.map((v: any) => (typeof v === 'string' ? (map[v] ?? v) : v));
         } else {
-          obj[lang] = copyOnly ? obj.en : (MAPS[lang][obj.en] ?? obj.en);
+          obj[lang] = copyOnly || !map ? obj.en : (map[obj.en] ?? obj.en);
         }
       }
       return node;

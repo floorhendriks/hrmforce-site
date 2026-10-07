@@ -1,6 +1,12 @@
 // Vertaalbare UI-teksten (menu, footer, knoppen) + routes.
 export const defaultLang = "nl";
-export const languages = { nl: "NL", en: "EN", de: "DE", fr: "FR", es: "ES", ro: "RO" };
+// De enige plek waar de talen van de site staan. Alles leidt hiervan af: de
+// routes, de taalwisselaar, de hreflang-regels en de lijst met geldige paden.
+export const languages = { nl: "NL", en: "EN", de: "DE", fr: "FR", es: "ES", ro: "RO", pl: "PL", da: "DA", sv: "SV" };
+
+// Talen waarvan de teksten met de hand in de bronbestanden staan. De overige
+// talen komen uit de vertaalbestanden, zie src/data/vertaal-inhoud.js.
+export const BRONTALEN = ["nl", "en", "de", "fr", "es", "ro"];
 
 export const routes = {
   shop: "/shop/",

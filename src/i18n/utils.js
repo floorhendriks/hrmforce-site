@@ -1,9 +1,11 @@
 // Helpers voor meertaligheid.
-import { ui, defaultLang } from "./ui.js";
+import { ui, defaultLang, languages, BRONTALEN } from "./ui.js";
 import { variantenVoor } from "../data/slugvarianten.js";
+import { ALLEEN_BRONTAAL } from "./alleen-brontaal.js";
 
-// Talen met een eigen URL-prefix (Nederlands staat op de root).
-export const PREFIXED = ["en", "de", "fr", "es", "ro"];
+// Talen met een eigen URL-prefix (Nederlands staat op de root). Volgt
+// languages in ui.js, zodat een nieuwe taal maar op een plek wordt gezet.
+export const PREFIXED = Object.keys(languages).filter((l) => l !== defaultLang);
 
 // Bepaal de taal uit de URL: /de/... = de, /fr/... = fr, anders nl.
 export function getLangFromUrl(url) {
@@ -29,7 +31,11 @@ export function demoPath(lang) {
 }
 
 export function localizePath(path, lang) {
-  return lang === "nl" ? path : "/" + lang + path;
+  if (lang === "nl" || !lang) return path;
+  // Bestaat de pagina alleen in de brontalen, dan houdt een nieuwe taal de
+  // Nederlandse link. Zie src/i18n/alleen-brontaal.js.
+  if (!BRONTALEN.includes(lang) && ALLEEN_BRONTAAL.has(path)) return path;
+  return "/" + lang + path;
 }
 
 // Paden die in ALLE 5 prefixtalen (en/de/fr/es/ro) bestaan. Alleen deze mogen
@@ -51,7 +57,10 @@ function isLocalizedAssessment(path) {
 // anders NL-fallback. Voorkomt 404's bij nog niet vertaalde pagina's.
 export function navHref(path, lang, validPaths) {
   if (lang === "nl") return path;
-  const target = "/" + lang + path;
+  // localizePath houdt pagina's die alleen in de brontalen bestaan op het
+  // Nederlandse pad. Dan is er niets te localiseren en valt de link daarop terug.
+  const target = localizePath(path, lang);
+  if (target === path) return path;
   if (validPaths) {
     const valid = validPaths instanceof Set ? validPaths : new Set(validPaths);
     return valid.has(target) ? target : path; // localiseer als vertaling bestaat, anders NL
@@ -126,7 +135,7 @@ export function sanitizeBodyLinks(html, lang, validPaths) {
     if (!path.endsWith("/")) path += "/";
     if (valid.has(path)) return `href="${loc(path)}${hash}"`; // geldig -> naar juiste taal
     // remap: /assessment/ (enkelvoud) => /assessments/
-    let cand = path.replace(/^(\/(?:en|de|fr|es|ro))?\/assessment\//, "$1/assessments/");
+    let cand = path.replace(new RegExp("^(/(?:" + PREFIXED.join("|") + "))?/assessment/"), "$1/assessments/");
     cand = cand.replace(/\/assessments\/preselectie\//, "/assessments/");
     cand = cand.replace(/\/assessments\/([^/]+)\//, (mm, slug) =>
       `/assessments/${ASSESS_SLUG_MAP[slug] || slug}/`);

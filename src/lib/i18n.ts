@@ -3,40 +3,45 @@
  *
  * Een taal toevoegen kost drie stappen:
  *  1. vertaal src/i18n/<code>.json (de sleutels blijven ongewijzigd)
- *  2. voeg de code toe aan LOCALES hieronder en aan ROUTE_PREFIX
- *  3. voeg de code toe aan i18n.locales in astro.config.mjs
+ *  2. zet de code in languages in src/i18n/ui.js; LOCALES, ROUTE_PREFIX en
+ *     SEG volgen die lijst vanzelf
  * De datavelden zelf (namen, definities, gedragsankers) zijn tweetalig NL en EN.
  * Voor een derde taal vult de fallback het Engels in totdat de data is uitgebreid.
  */
-import nl from '../i18n/nl.json';
 import en from '../i18n/en.json';
-import de from '../i18n/de.json';
-import fr from '../i18n/fr.json';
-import es from '../i18n/es.json';
-import ro from '../i18n/ro.json';
+import { languages, defaultLang } from '../i18n/ui.js';
 
-export const LOCALES = ['nl', 'en', 'de', 'fr', 'es', 'ro'] as const;
-export type Locale = (typeof LOCALES)[number];
-export const DEFAULT_LOCALE: Locale = 'nl';
+// De woordenlijsten worden op buildtijd ingelezen. Een nieuw bestand
+// src/i18n/<taal>.json doet vanzelf mee; wat er niet in staat valt terug op en.
+const WOORDEN = import.meta.glob('../i18n/*.json', { eager: true, import: 'default' }) as Record<string, Record<string, string>>;
+
+export const LOCALES = Object.keys(languages);
+export type Locale = string;
+export const DEFAULT_LOCALE: string = defaultLang;
 
 /** Datavelden bestaan in nl en en. Andere talen vallen terug op en. */
 export type DataLang = 'nl' | 'en';
 export const dataLang = (l: string): DataLang => (l === 'nl' ? 'nl' : 'en');
 
-const DICT: Record<string, Record<string, string>> = { nl, en, de, fr, es, ro };
+const DICT: Record<string, Record<string, string>> = Object.fromEntries(
+  Object.entries(WOORDEN).map(([pad, woorden]) => [pad.split('/').pop()!.replace(/\.json$/, ''), woorden])
+);
+DICT.en = DICT.en ?? en;
 
 /** Url-prefix per taal. De standaardtaal heeft geen prefix. */
-export const ROUTE_PREFIX: Record<string, string> = { nl: '', en: '/en', de: '/de', fr: '/fr', es: '/es', ro: '/ro' };
+export const ROUTE_PREFIX: Record<string, string> = Object.fromEntries(
+  LOCALES.map((l) => [l, l === DEFAULT_LOCALE ? '' : '/' + l])
+);
 
 /** Padsegmenten per taal, zodat de url's in elke taal natuurlijk lezen. */
-export const SEG: Record<string, Record<string, string>> = {
-  nl: { root: 'skills-framework', functions: 'functies', skills: 'skills', families: 'functiefamilies', match: 'matchcalculator', method: 'verantwoording', full: 'volledig' },
-  en: { root: 'skills-framework', functions: 'jobs', skills: 'skills', families: 'job-families', match: 'match-calculator', method: 'methodology', full: 'full' },
-  de: { root: 'skills-framework', functions: 'jobs', skills: 'skills', families: 'job-families', match: 'match-calculator', method: 'methodology', full: 'full' },
-  fr: { root: 'skills-framework', functions: 'jobs', skills: 'skills', families: 'job-families', match: 'match-calculator', method: 'methodology', full: 'full' },
-  es: { root: 'skills-framework', functions: 'jobs', skills: 'skills', families: 'job-families', match: 'match-calculator', method: 'methodology', full: 'full' },
-  ro: { root: 'skills-framework', functions: 'jobs', skills: 'skills', families: 'job-families', match: 'match-calculator', method: 'methodology', full: 'full' },
-};
+const SEG_NL = { root: 'skills-framework', functions: 'functies', skills: 'skills', families: 'functiefamilies', match: 'matchcalculator', method: 'verantwoording', full: 'volledig' };
+const SEG_EN = { root: 'skills-framework', functions: 'jobs', skills: 'skills', families: 'job-families', match: 'match-calculator', method: 'methodology', full: 'full' };
+// Alleen het Nederlands heeft eigen padsegmenten; elke andere taal gebruikt de
+// Engelse, zodat de url's van bestaande talen niet veranderen en een nieuwe taal
+// meteen werkt.
+export const SEG: Record<string, Record<string, string>> = Object.fromEntries(
+  LOCALES.map((l) => [l, l === 'nl' ? SEG_NL : SEG_EN])
+);
 
 export function useT(locale: string) {
   const primary = DICT[locale] ?? DICT[DEFAULT_LOCALE];

@@ -1,9 +1,13 @@
-/** Bouwt de hreflang-alternates voor een pagina, per taal (alle 6 sitetalen). */
+/** Bouwt de hreflang-alternates voor een pagina van het skills framework. */
 import { path, LOCALES, dataLang } from './i18n';
 type Slug = { nl: string; en: string };
-const obj = (fn: (l: string) => string) => Object.fromEntries(LOCALES.map((l) => [l, fn(l)]));
-export const altHome = () => obj((l) => path(l));
+const obj = (talen: readonly string[], fn: (l: string) => string) =>
+  Object.fromEntries(talen.map((l) => [l, fn(l)]));
+// De overzichtspagina's bestaan in elke sitetaal.
+export const altHome = () => obj(LOCALES, (l) => path(l));
 export const altSection = (section: 'functions' | 'skills' | 'families' | 'match' | 'method') =>
-  obj((l) => path(l, section));
+  obj(LOCALES, (l) => path(l, section));
+// De detailpagina's bestaan in elke sitetaal; de slug is overal de Engelse,
+// behalve in het Nederlands.
 export const altItem = (section: 'functions' | 'skills' | 'families' | 'match', slug: Slug) =>
-  obj((l) => path(l, section, (slug as any)[dataLang(l)]));
+  obj(LOCALES, (l) => path(l, section, (slug as any)[dataLang(l)]));

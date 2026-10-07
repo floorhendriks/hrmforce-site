@@ -1,3 +1,4 @@
+import { vulAan } from "./vertaal-inhoud.js";
 // Trainingen & certificatietraining, per taal. Kalenderdata is taalneutraal.
 // Overgenomen van hrmforce.com/advies/trainingen/ en /trainingskalender/.
 
@@ -30,7 +31,7 @@ export function komendeTrainingen(vandaag = new Date()) {
   return TR_KALENDER.filter((r) => r.iso >= grens);
 }
 
-const T = {
+export const TR_TEKST = {
   nl: {
     eyebrow: "Advies", h1: "Trainingen & cursussen",
     lead: "Met een <strong>certificatietraining</strong> van hrmforce leer je werken met onze vragenlijsten en oplossingen: je leert resultaten correct te interpreteren en zorgvuldig terug te koppelen. Op verzoek bieden we, vaak samen met onze partners, aanvullende trainingen op maat.",
@@ -177,6 +178,10 @@ const T = {
   },
 };
 
+// Talen zonder eigen tekst hierboven worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
+Object.assign(TR_TEKST, vulAan(TR_TEKST));
+
 export function trainingenFor(lang) {
-  return { ...(T[lang] || T.nl), kalender: komendeTrainingen() };
+  return { ...(TR_TEKST[lang] || TR_TEKST.nl), kalender: komendeTrainingen() };
 }

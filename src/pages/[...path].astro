@@ -6,7 +6,7 @@ import { merknaam, merknaamInHtml } from "../lib/merknaam.js";
 import Base from "../layouts/Base.astro";
 import { createClient } from "@sanity/client";
 import { shopInfo } from "../data/assessment-shop.js";
-import { localizePath, sanitizeBodyLinks } from "../i18n/utils.js";
+import { localizePath, sanitizeBodyLinks, PREFIXED } from "../i18n/utils.js";
 import LogoSlider from "../components/LogoSlider.astro";
 import GratisTests from "../components/GratisTests.astro";
 import validPaths from "../data/valid-paths.js";
@@ -52,7 +52,7 @@ const fmt = (d) => (d ? new Date(d).toLocaleDateString("nl-NL") : "");
 
 // Taal afleiden uit het pad (bv. /en/kenniscentrum/...).
 const seg = (article.path || "").split("/").filter(Boolean)[0];
-const lang = ["en", "de", "fr", "es", "ro"].includes(seg) ? seg : "nl";
+const lang = PREFIXED.includes(seg) ? seg : "nl";
 
 // De kleurentest is de drukstbezochte gratis test. Wie hem doet, krijgt
 // daaronder de elf andere gratis tests te zien in plaats van een doodlopend eind.

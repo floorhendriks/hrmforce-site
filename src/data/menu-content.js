@@ -1,3 +1,5 @@
+import { vulAan } from "./vertaal-inhoud.js";
+
 // Meertalige navigatie. 5 hoofdmenu-items: Assessments, Oplossingen, Tarieven,
 // Kennisbank, Over ons. Paden zijn taal-onafhankelijk (navHref zet de taalprefix
 // erop of valt terug op NL). Alleen de labels verschillen per taal.
@@ -24,7 +26,7 @@ const A = {
   about: ["/over-ons/", "/trust/", "/partners/", "/vacatures/", "/contact/"],
 };
 
-const LABELS = {
+export const MENU_LABELS = {
   nl: {
     nav: { assessments: "Assessments", solutions: "Oplossingen", tarieven: "Tarieven", kennisbank: "Kennisbank", about: "Over ons" },
     demo: "Gratis demo", contact: "Contact",
@@ -93,9 +95,14 @@ const LABELS = {
   },
 };
 
+// Talen zonder eigen labels hierboven worden aangevuld uit
+// src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js. MENU_LABELS
+// is geexporteerd zodat het vertaalscript de teksten ook ziet.
+Object.assign(MENU_LABELS, vulAan(MENU_LABELS));
+
 // Bouwt de volledige navigatiestructuur voor de gekozen taal.
 export function navFor(lang) {
-  const L = LABELS[lang] || LABELS.nl;
+  const L = MENU_LABELS[lang] || MENU_LABELS.nl;
   const zip = (paths, labels) => paths.map((p, i) => ({ path: p.p || p, label: labels[i] }));
   return {
     labels: L.nav,

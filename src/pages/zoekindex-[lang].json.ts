@@ -11,8 +11,9 @@
 import type { APIRoute } from "astro";
 import validPaths from "../data/valid-paths.js";
 import { zoekindexVoor } from "../lib/zoekindex.js";
+import { languages } from "../i18n/ui.js";
 
-const TALEN = ["nl", "en", "de", "fr", "es", "ro"];
+const TALEN = Object.keys(languages);
 
 export function getStaticPaths() {
   return TALEN.map((lang) => ({ params: { lang } }));
