@@ -1,4 +1,5 @@
 ---
+import { LOGOSLIDER_T } from "../data/component-teksten.js";
 import Img from "./Img.astro";
 // Herbruikbare klantlogo-slider (grijstint, kleur bij hover; marquee). Gebruik op homepage, oplossingen en training.
 const LOGOS = [
@@ -25,8 +26,10 @@ const LOGOS = [
   { name: "De Key", file: "2025/06/logo-dekey.jpg" },
   { name: "Ministerie", file: "2025/06/logo-ministery.jpg" },
 ];
-const heading = Astro.props.heading ?? "Vertrouwd door 1.200+ organisaties";
-const note = Astro.props.note ?? "Van overheid en banken tot zorg, onderwijs en industrie, 1.200+ organisaties kiezen hrmforce.";
+// De taal komt van de aanroeper; zonder taal valt alles terug op Nederlands.
+const t = LOGOSLIDER_T[Astro.props.lang] || LOGOSLIDER_T.nl;
+const heading = Astro.props.heading ?? t.kop;
+const note = Astro.props.note ?? t.noot;
 const logos = Astro.props.logos ?? LOGOS;
 const showNote = Astro.props.note !== null;
 const base = "/media/wp-content/uploads/";
@@ -35,7 +38,7 @@ const track = logos.concat(logos);
 <section class="logoslider">
   <div class="wrap">
     { heading && <p class="ls-h">{heading}</p> }
-    <div class="ls-viewport" aria-label="Klantlogo's">
+    <div class="ls-viewport" aria-label={t.alt}>
       <div class="ls-track">
         { track.map((l) => (
           <span class="ls-item"><Img src={base + l.file} alt={l.name} loading="eager" decoding="async" fetchpriority="low" /></span>

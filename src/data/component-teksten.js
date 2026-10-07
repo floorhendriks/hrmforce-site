@@ -464,6 +464,41 @@ export const DOCOVER_T = {
     naar: "Spre pagina testului", cta: "Preferi un sfat despre ce ți se potrivește?", ctaLink: "Contactează-ne",
   },
 };
+// Standaardteksten van de logobalk. Stonden eerder als Nederlandse tekst in
+// LogoSlider.astro en bleven daardoor in elke taal Nederlands.
+export const LOGOSLIDER_T = {
+  nl: {
+    kop: "Vertrouwd door 1.200+ organisaties",
+    noot: "Van overheid en banken tot zorg, onderwijs en industrie, 1.200+ organisaties kiezen hrmforce.",
+    alt: "Klantlogo's",
+    sector: "Organisaties die u voorgingen",
+  },
+  en: {
+    kop: "Trusted by 1,200+ organisations",
+    noot: "From government and banking to healthcare, education and industry, 1,200+ organisations choose hrmforce.",
+    alt: "Client logos",
+    sector: "Organisations that went before you",
+  },
+};
+export const TOEP_MC_OK = { nl: "Bedankt. We nemen zo snel mogelijk contact met je op.", en: "Thank you. We will get in touch as soon as we can.", de: "Danke. Wir melden uns so schnell wie möglich.", fr: "Merci. Nous vous recontactons au plus vite.", es: "Gracias. Nos pondremos en contacto lo antes posible.", ro: "Mulțumim. Revenim cât de repede putem." };
+export const TOEP_MC_FOUT = { nl: "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.", en: "Something went wrong while sending. Please try again or email service@hrmforce.com.", de: "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.", fr: "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.", es: "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.", ro: "A apărut o eroare la trimitere. Încearcă din nou sau scrie la service@hrmforce.com." };
+export const TOEP_MC_MENS = { nl: "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.", en: "We could not confirm that you are human. Tick the box and try again.", de: "Wir konnten nicht feststellen, dass Sie ein Mensch sind. Bitte das Kästchen anklicken und erneut versuchen.", fr: "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez.", es: "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo.", ro: "Nu am putut confirma că ești o persoană. Bifează căsuța și încearcă din nou." };
+export const TOEP_MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…", fr: "Envoi…", es: "Enviando…", ro: "Se trimite…" };
+export const MENSCHK_TAAL = { nl: "nl", en: "en", de: "de", fr: "fr", es: "es", ro: "ro" };
+export const WPDET_MC_OK = { nl: "Bedankt. We nemen zo snel mogelijk contact met je op.", en: "Thank you. We will get in touch as soon as we can.", de: "Danke. Wir melden uns so schnell wie möglich.", fr: "Merci. Nous vous recontactons au plus vite.", es: "Gracias. Nos pondremos en contacto lo antes posible.", ro: "Mulțumim. Revenim cât de repede putem." };
+export const WPDET_MC_FOUT = { nl: "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.", en: "Something went wrong while sending. Please try again or email service@hrmforce.com.", de: "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.", fr: "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.", es: "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.", ro: "A apărut o eroare la trimitere. Încearcă din nou sau scrie la service@hrmforce.com." };
+export const WPDET_MC_MENS = { nl: "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.", en: "We could not confirm that you are human. Tick the box and try again.", de: "Wir konnten nicht feststellen, dass Sie ein Mensch sind. Bitte das Kästchen anklicken und erneut versuchen.", fr: "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez.", es: "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo.", ro: "Nu am putut confirma că ești o persoană. Bifează căsuța și încearcă din nou." };
+export const WPDET_MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…", fr: "Envoi…", es: "Enviando…", ro: "Se trimite…" };
+export const SHOP_MC_OK = { nl: "Bedankt. We nemen zo snel mogelijk contact met je op.", en: "Thank you. We will get in touch as soon as we can.", de: "Danke. Wir melden uns so schnell wie möglich.", fr: "Merci. Nous vous recontactons au plus vite.", es: "Gracias. Nos pondremos en contacto lo antes posible.", ro: "Mulțumim. Revenim cât de repede putem." };
+export const SHOP_MC_FOUT = { nl: "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.", en: "Something went wrong while sending. Please try again or email service@hrmforce.com.", de: "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.", fr: "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.", es: "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.", ro: "A apărut o eroare la trimitere. Încearcă din nou sau scrie la service@hrmforce.com." };
+export const SHOP_MC_MENS = { nl: "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.", en: "We could not confirm that you are human. Tick the box and try again.", de: "Wir konnten nicht feststellen, dass Sie ein Mensch sind. Bitte das Kästchen anklicken und erneut versuchen.", fr: "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez.", es: "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo.", ro: "Nu am putut confirma că ești o persoană. Bifează căsuța și încearcă din nou." };
+export const SHOP_MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…", fr: "Envoi…", es: "Enviando…", ro: "Se trimite…" };
+export const SANITY__sliderH = { nl: "Organisaties die u voorgingen", en: "Organisations that went before you", de: "Organisationen, die vor Ihnen kamen", fr: "Les organisations qui vous ont précédé", es: "Organizaciones que te precedieron", ro: "Organizații care te-au precedat" };
+export const ASSESSL_MC_OK = { nl: "Bedankt. We nemen zo snel mogelijk contact met je op.", en: "Thank you. We will get in touch as soon as we can.", de: "Danke. Wir melden uns so schnell wie möglich.", fr: "Merci. Nous vous recontactons au plus vite.", es: "Gracias. Nos pondremos en contacto lo antes posible.", ro: "Mulțumim. Revenim cât de repede putem." };
+export const ASSESSL_MC_FOUT = { nl: "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.", en: "Something went wrong while sending. Please try again or email service@hrmforce.com.", de: "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.", fr: "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.", es: "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.", ro: "A apărut o eroare la trimitere. Încearcă din nou sau scrie la service@hrmforce.com." };
+export const ASSESSL_MC_MENS = { nl: "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.", en: "We could not confirm that you are human. Tick the box and try again.", de: "Wir konnten nicht feststellen, dass Sie ein Mensch sind. Bitte das Kästchen anklicken und erneut versuchen.", fr: "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez.", es: "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo.", ro: "Nu am putut confirma că ești o persoană. Bifează căsuța și încearcă din nou." };
+export const ASSESSL_MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…", fr: "Envoi…", es: "Enviando…", ro: "Se trimite…" };
+export const BASE_LOCALE_MAP = { nl: "nl_NL", en: "en_US", de: "de_DE", fr: "fr_FR", es: "es_ES", ro: "ro_RO" };
 
 // Talen zonder eigen tekst hierboven worden aangevuld uit
 // src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
@@ -502,3 +537,23 @@ Object.assign(SANITY_T, vulAan(SANITY_T));
 Object.assign(SANITY_RECI18N, vulAan(SANITY_RECI18N));
 Object.assign(KCSLUG_KC_ALLE, vulAan(KCSLUG_KC_ALLE));
 Object.assign(DOCOVER_T, vulAan(DOCOVER_T));
+Object.assign(LOGOSLIDER_T, vulAan(LOGOSLIDER_T));
+Object.assign(TOEP_MC_OK, vulAan(TOEP_MC_OK));
+Object.assign(TOEP_MC_FOUT, vulAan(TOEP_MC_FOUT));
+Object.assign(TOEP_MC_MENS, vulAan(TOEP_MC_MENS));
+Object.assign(TOEP_MC_BEZIG, vulAan(TOEP_MC_BEZIG));
+Object.assign(MENSCHK_TAAL, vulAan(MENSCHK_TAAL));
+Object.assign(WPDET_MC_OK, vulAan(WPDET_MC_OK));
+Object.assign(WPDET_MC_FOUT, vulAan(WPDET_MC_FOUT));
+Object.assign(WPDET_MC_MENS, vulAan(WPDET_MC_MENS));
+Object.assign(WPDET_MC_BEZIG, vulAan(WPDET_MC_BEZIG));
+Object.assign(SHOP_MC_OK, vulAan(SHOP_MC_OK));
+Object.assign(SHOP_MC_FOUT, vulAan(SHOP_MC_FOUT));
+Object.assign(SHOP_MC_MENS, vulAan(SHOP_MC_MENS));
+Object.assign(SHOP_MC_BEZIG, vulAan(SHOP_MC_BEZIG));
+Object.assign(SANITY__sliderH, vulAan(SANITY__sliderH));
+Object.assign(ASSESSL_MC_OK, vulAan(ASSESSL_MC_OK));
+Object.assign(ASSESSL_MC_FOUT, vulAan(ASSESSL_MC_FOUT));
+Object.assign(ASSESSL_MC_MENS, vulAan(ASSESSL_MC_MENS));
+Object.assign(ASSESSL_MC_BEZIG, vulAan(ASSESSL_MC_BEZIG));
+Object.assign(BASE_LOCALE_MAP, vulAan(BASE_LOCALE_MAP));

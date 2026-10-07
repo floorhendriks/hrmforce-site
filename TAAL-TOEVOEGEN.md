@@ -106,5 +106,35 @@ Dat vult elke taal aan vanuit `src/data/translations-content/<taal>.json`. Zie
 plaatshouders.
 
 Een pagina die niet in elke taal bestaat, hoort in `src/i18n/alleen-brontaal.js`.
-Dan houdt een nieuwe taal daar de Nederlandse link in plaats van naar een 404
-te wijzen.
+Een taal buiten de brontalen krijgt daar de **Engelse** versie, niet de
+Nederlandse: een Zweedse bezoeker heeft daar meer aan, en Engels bestaat voor
+al die pagina's. Dezelfde regel geldt voor het skills framework, de
+oefenbanken en het kenniscentrum.
+
+## Drie dingen die er telkens doorheen glippen
+
+Deze zijn stuk voor stuk een keer live gegaan en moeten bij elke taal opnieuw
+gecontroleerd worden.
+
+**Een vertaald label mag nooit naar een Nederlandse pagina leiden.** Het label
+komt uit de vertaallaag, de link uit `localizePath`. Als die twee niet dezelfde
+regel volgen, staat er een Zweeds menu-item dat op een Nederlandse pagina
+uitkomt.
+
+**Een hardgecodeerde Nederlandse standaardtekst is onzichtbaar voor het
+vertaalscript.** Dus geen `Astro.props.x ?? "Vertrouwd door 1.200+
+organisaties"` in een component. Zet de tekst in `src/data/` en geef de
+component de taal mee.
+
+**Het kenniscentrum vult zich met de Engelse artikelen** zolang een taal geen
+eigen artikelen in Sanity heeft. De links moeten dan naar `/en/kenniscentrum/`
+blijven wijzen; `localizeExisting` zou ze anders naar het Nederlands
+herschrijven.
+
+## Controleren of er nog Nederlands doorheen staat
+
+Dit is de controle die de bovenstaande drie vangt. Loop na de bouw elke pagina
+van de nieuwe taal langs en tel de links die naar een pad zonder taalvoorvoegsel
+wijzen. Laat de taalwisselaar buiten beschouwing, die hoort naar elke taal te
+verwijzen. Wat overblijft is een link die de bezoeker in het Nederlands laat
+belanden.

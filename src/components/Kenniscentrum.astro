@@ -2,6 +2,7 @@
 import { webpPad } from "../lib/beeld.js";
 import { createClient } from "@sanity/client";
 import { localizePath, localizeExisting, eigenMedia } from "../i18n/utils.js";
+import { BRONTALEN } from "../i18n/ui.js";
 import validPaths from "../data/valid-paths.js";
 import { omslagUrl } from "../lib/kc-omslag.js";
 import { merknaam } from "../lib/merknaam.js";
@@ -17,6 +18,11 @@ const client = createClient({
   useCdn: false,
 });
 // Per taal wordt de juiste set artikelen opgehaald (t.sanityMatch is de match-clausule).
+// Talen zonder eigen artikelen krijgen de Engelse set (zie vertaal-inhoud.js).
+// Die links moeten naar /en/ blijven wijzen: localizeExisting zou er anders de
+// Nederlandse versie van maken, en dan leest een Zweedse bezoeker Nederlands.
+const eigenArtikelen = BRONTALEN.includes(lang);
+const artikelHref = (pad) => (eigenArtikelen ? localizeExisting(pad, lang, validPaths) : pad);
 const _raw = await client.fetch(
   `*[_type == "article" && defined(path) && defined(body) && (${t.sanityMatch})] | order(date desc){title, path, date, body}`
 );
@@ -113,7 +119,7 @@ const isEmpty = list.length === 0;
   <>
     {featured && (
       <section><div class="wrap">
-        <a class="feature" href={localizeExisting(featured.path, lang, validPaths)}>
+        <a class="feature" href={artikelHref(featured.path)}>
           <div class="feature-img">{featured.img && <img src={featured.img} alt={featured.title} width="720" height="405" decoding="async" fetchpriority="high" />}</div>
           <div class="feature-body">
             <span class="eyebrow">{t.featured} · {featured.catLabel}</span>
@@ -138,7 +144,7 @@ const isEmpty = list.length === 0;
 
         <div class="posts" id="kcgrid">
           {rest.map((p) => (
-            <a class="post" href={localizeExisting(p.path, lang, validPaths)} data-cat={p.cat} data-title={p.title.toLowerCase()}>
+            <a class="post" href={artikelHref(p.path)} data-cat={p.cat} data-title={p.title.toLowerCase()}>
               <div class="img">{p.img && <img src={p.img} alt={p.title} width="400" height="160" loading="lazy" decoding="async" />}</div>
               <div class="body">
                 <span class="post-cat">{p.catLabel}</span>

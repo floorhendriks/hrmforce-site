@@ -25,7 +25,7 @@ const ALLE_TALEN = Object.keys(languages);
 import { consentContent } from "../data/consent-content.js";
 import { variantenVoor } from "../data/slugvarianten.js";
 import { kortZin } from "../lib/meta.js";
-import { BASE_EXIT_INTENT, BASE_STICKY_DEMO } from "../data/component-teksten.js";
+import { BASE_EXIT_INTENT, BASE_LOCALE_MAP, BASE_STICKY_DEMO } from "../data/component-teksten.js";
 
 const {
   title = "hrmforce",
@@ -103,7 +103,7 @@ const kruimelLd = crumbs && _delen.length
       ],
     }
   : null;
-const LOCALE_MAP = { nl: "nl_NL", en: "en_US", de: "de_DE", fr: "fr_FR", es: "es_ES", ro: "ro_RO" };
+const LOCALE_MAP = BASE_LOCALE_MAP;
 const ogLocale = LOCALE_MAP[lang] || "nl_NL";
 const STICKY_DEMO = BASE_STICKY_DEMO;
 const stickyDemo = STICKY_DEMO[lang] || STICKY_DEMO.nl;

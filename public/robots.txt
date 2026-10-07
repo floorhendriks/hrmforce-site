@@ -1,4 +1,12 @@
 User-agent: *
 Allow: /
 
+# Deze adressen nemen alleen POST aan. Google haalde ze met GET op en meldde
+# ze daarna als 404 in Search Console.
+Disallow: /api/
+Disallow: /lead
+
+# Interne adressen van Cloudflare, geen pagina's van de site.
+Disallow: /cdn-cgi/
+
 Sitemap: https://hrmforce.com/sitemap-index.xml

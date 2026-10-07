@@ -11,7 +11,7 @@ import LogoSlider from "../components/LogoSlider.astro";
 import GratisTests from "../components/GratisTests.astro";
 import validPaths from "../data/valid-paths.js";
 import { DUBBELE_PADEN } from "../data/kenniscentrum-duplicaten.js";
-import { SANITY_INTEG, SANITY_KC, SANITY_RECI18N, SANITY_T, SANITY__descFallback } from "../data/component-teksten.js";
+import { SANITY_INTEG, SANITY_KC, SANITY_RECI18N, SANITY_T, SANITY__descFallback, SANITY__sliderH } from "../data/component-teksten.js";
 
 // Gemigreerde kenniscentrum-artikelen uit WordPress. Elk artikel-document in
 // Sanity heeft een volledig 'path'; deze catch-all route rendert ze op dat pad.
@@ -135,7 +135,7 @@ body = body
 // Partners-pagina: extra doorlink naar de integraties (alleen echte koppelingen).
 const _pathClean = (article.path || "").replace(/^\/+|\/+$/g, "");
 const isPartners = _pathClean === "partners" || _pathClean.endsWith("/partners");
-const _sliderH = { nl: "Organisaties die u voorgingen", en: "Organisations that went before you", de: "Organisationen, die vor Ihnen kamen", fr: "Les organisations qui vous ont précédé", es: "Organizaciones que te precedieron", ro: "Organizații care te-au precedat" };
+const _sliderH = SANITY__sliderH;
 const showAdviesSlider = /^(en\/|de\/|fr\/|es\/|ro\/)?advies\//.test(_pathClean + "/") || _pathClean.indexOf("advies/") > -1;
 const integHref = localizePath("/integraties/", lang);
 const INTEG = SANITY_INTEG;

@@ -32,9 +32,11 @@ export function demoPath(lang) {
 
 export function localizePath(path, lang) {
   if (lang === "nl" || !lang) return path;
-  // Bestaat de pagina alleen in de brontalen, dan houdt een nieuwe taal de
-  // Nederlandse link. Zie src/i18n/alleen-brontaal.js.
-  if (!BRONTALEN.includes(lang) && ALLEEN_BRONTAAL.has(path)) return path;
+  // Bestaat de pagina alleen in de brontalen, dan krijgt een taal daarbuiten de
+  // Engelse versie. Een Zweedse bezoeker heeft daar meer aan dan aan de
+  // Nederlandse, en Engels bestaat voor al die pagina's. Zie
+  // src/i18n/alleen-brontaal.js.
+  if (!BRONTALEN.includes(lang) && ALLEEN_BRONTAAL.has(path)) return "/en" + path;
   return "/" + lang + path;
 }
 
@@ -46,6 +48,8 @@ export const LOCALIZED_PAGES = new Set([
   "/contact/", "/shop/", "/assessment-overzicht/", "/tarieven/", "/roi-rekentool/",
   "/klantcases/", "/kenniscentrum/", "/trust/", "/integraties/", "/voorbereiding/",
   "/support/", "/support/f-a-q/", "/wetenschappelijke-verantwoording/", "/begrippenlijst/", "/voor-kandidaten/", "/testkiezer/", "/whitepapers/", "/toepassingen/", "/vacatures/", "/vergelijking/", "/rondleiding/", "/afrekenen/", "/bestelling-gelukt/", "/documenten/",
+  // Deze twee adviespagina's worden wel in elke taal gebouwd.
+  "/advies/assessments/", "/advies/trainingen/",
 ]);
 
 // Assessment-detailpagina's (/assessments/<slug>/) zijn in alle talen gelokaliseerd.
@@ -57,10 +61,10 @@ function isLocalizedAssessment(path) {
 // anders NL-fallback. Voorkomt 404's bij nog niet vertaalde pagina's.
 export function navHref(path, lang, validPaths) {
   if (lang === "nl") return path;
-  // localizePath houdt pagina's die alleen in de brontalen bestaan op het
-  // Nederlandse pad. Dan is er niets te localiseren en valt de link daarop terug.
+  // localizePath stuurt pagina's die alleen in de brontalen bestaan naar de
+  // Engelse versie. Die bestaat zeker, dus daar is verder niets te controleren.
   const target = localizePath(path, lang);
-  if (target === path) return path;
+  if (target === "/en" + path) return target;
   if (validPaths) {
     const valid = validPaths instanceof Set ? validPaths : new Set(validPaths);
     return valid.has(target) ? target : path; // localiseer als vertaling bestaat, anders NL
@@ -76,8 +80,17 @@ export function localizeExisting(path, lang, validPaths) {
   const valid = validPaths instanceof Set ? validPaths : new Set(validPaths);
   const seg = path.split("/")[1];
   const base = PREFIXED.includes(seg) ? path.slice(seg.length + 1) || "/" : path;
+  // Pagina's met een eigen slug per taal: /persoonlijkheidstest/ heet in het
+  // Zweeds /sv/personality-test/. Zonder deze stap viel die link terug op het
+  // Nederlands, terwijl de vertaling gewoon bestaat.
+  const variant = variantenVoor(base);
+  if (variant && variant[lang] && valid.has(variant[lang])) return variant[lang];
   const localized = "/" + lang + base;
-  return valid.has(localized) ? localized : base;
+  if (valid.has(localized)) return localized;
+  // Bestaat de pagina alleen in de brontalen, dan het Engels in plaats van het
+  // Nederlands, net als in localizePath.
+  const engels = "/en" + base;
+  return !BRONTALEN.includes(lang) && valid.has(engels) ? engels : base;
 }
 
 // Hernoemde assessment-slugs (oude WordPress-slug -> nieuwe slug).

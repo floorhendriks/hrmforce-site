@@ -10,23 +10,22 @@ export const languages = { nl: "NL", en: "EN", de: "DE", fr: "FR", es: "ES", ro:
 export const BRONTALEN = ["nl", "en", "de", "fr", "es", "ro"];
 
 /**
- * Vlag en eigen naam per taal, voor de taalwisselaar.
+ * De naam van elke taal in die taal zelf, voor de taalwisselaar.
  *
- * De naam staat in de taal zelf: een Poolse bezoeker herkent "Polski" sneller
- * dan "Pools". De vlag is een hulpmiddel, geen land: Engels krijgt de Britse
- * vlag en Spaans de Spaanse, terwijl die talen in veel meer landen worden
- * gesproken. Daarom staat de naam er altijd bij en nooit de vlag alleen.
+ * Bewust geen vlaggen: een vlag is een land en geen taal, en op Windows vallen
+ * ze terug op twee letters. "Polski" is voor een Poolse bezoeker duidelijker
+ * dan welk symbool ook.
  */
 export const taalInfo = {
-  nl: { vlag: "\u{1F1F3}\u{1F1F1}", naam: "Nederlands" },
-  en: { vlag: "\u{1F1EC}\u{1F1E7}", naam: "English" },
-  de: { vlag: "\u{1F1E9}\u{1F1EA}", naam: "Deutsch" },
-  fr: { vlag: "\u{1F1EB}\u{1F1F7}", naam: "Fran\u00e7ais" },
-  es: { vlag: "\u{1F1EA}\u{1F1F8}", naam: "Espa\u00f1ol" },
-  ro: { vlag: "\u{1F1F7}\u{1F1F4}", naam: "Rom\u00e2n\u0103" },
-  pl: { vlag: "\u{1F1F5}\u{1F1F1}", naam: "Polski" },
-  da: { vlag: "\u{1F1E9}\u{1F1F0}", naam: "Dansk" },
-  sv: { vlag: "\u{1F1F8}\u{1F1EA}", naam: "Svenska" },
+  nl: { naam: "Nederlands" },
+  en: { naam: "English" },
+  de: { naam: "Deutsch" },
+  fr: { naam: "Fran\u00e7ais" },
+  es: { naam: "Espa\u00f1ol" },
+  ro: { naam: "Rom\u00e2n\u0103" },
+  pl: { naam: "Polski" },
+  da: { naam: "Dansk" },
+  sv: { naam: "Svenska" },
 };
 
 export const routes = {

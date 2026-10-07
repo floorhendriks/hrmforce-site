@@ -53,7 +53,15 @@ const GEEN_TEKST = new Set(["slug", "href", "url", "src", "icon", "key", "id", "
 // Sleutels die een zoekopdracht of een technische waarde bevatten. Die mogen
 // niet mee en moeten per taal opnieuw worden gezet, anders bouwt de pagina een
 // zoekopdracht die naar de Nederlandse artikelen wijst of helemaal stukgaat.
-const PER_TAAL_ZELF = { sanityMatch: (taal) => `string::startsWith(path, "/${taal}/kenniscentrum/")` };
+//
+// Het kenniscentrum staat in Sanity en bestaat alleen in de brontalen. Een taal
+// daarbuiten krijgt daarom de Engelse artikelen te zien in plaats van een lege
+// pagina. De links wijzen dan naar /en/kenniscentrum/, waar de artikelen echt
+// staan; zo komt er geen dubbele inhoud onder een tweede adres.
+const EN_ARTIKELEN = [
+  "/en/kenniscentrum/", "/en/knowledge-center/", "/en/knowledge-centre/",
+].map((p) => `string::startsWith(path, "${p}")`).join(" || ");
+const PER_TAAL_ZELF = { sanityMatch: () => EN_ARTIKELEN };
 
 const BRONTALEN = new Set(["nl", "en", "de", "fr", "es", "ro"]);
 
@@ -65,9 +73,10 @@ function kaart(taal) {
   return mod ? (mod.default ?? mod) : null;
 }
 
-/** /shop/ wordt /hr/shop/, maar /advies/certificatietraining/ blijft Nederlands. */
+/** /shop/ wordt /hr/shop/. Pagina's die alleen in de brontalen bestaan gaan
+ *  naar de Engelse versie, net als in src/i18n/utils.js. */
 function linkVoorTaal(pad, taal) {
-  if (ALLEEN_BRONTAAL.has(pad)) return pad;
+  if (ALLEEN_BRONTAAL.has(pad)) return "/en" + pad;
   return LOKALISEERBAAR.has(pad) || /^\/assessments\/[^/]+\/$/.test(pad)
     ? "/" + taal + pad
     : pad;

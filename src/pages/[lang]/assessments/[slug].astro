@@ -22,6 +22,7 @@ import LogoSlider from "../../../components/LogoSlider.astro";
 import { oefentests } from "../../../data/oefentests.js";
 import { createClient } from "@sanity/client";
 import { kenniscentrumContent } from "../../../data/kenniscentrum-content.js";
+import { ASSESSL_MC_BEZIG, ASSESSL_MC_FOUT, ASSESSL_MC_MENS, ASSESSL_MC_OK } from "../../../data/component-teksten.js";
 
 
 // (lang ∈ en,de,fr,es,ro) × (36 slugs). Data = merge van assessments.js
@@ -147,11 +148,10 @@ const dvNorm = /capacit|cognit|abstract|numer|verbaal|redeneer|ability|iq|intell
   .test(`${a.slug} ${a.title} ${(a.traits || []).join(" ")}`);
 const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentieprofiel";
 
-const MC_OK = { nl: "Bedankt. We nemen zo snel mogelijk contact met je op.", en: "Thank you. We will get in touch as soon as we can.", de: "Danke. Wir melden uns so schnell wie möglich.", fr: "Merci. Nous vous recontactons au plus vite.", es: "Gracias. Nos pondremos en contacto lo antes posible.", ro: "Mulțumim. Revenim cât de repede putem." };
-const MC_FOUT = { nl: "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.", en: "Something went wrong while sending. Please try again or email service@hrmforce.com.", de: "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.", fr: "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.", es: "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.", ro: "A apărut o eroare la trimitere. Încearcă din nou sau scrie la service@hrmforce.com." };
-const MC_MENS = { nl: "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.", en: "We could not confirm that you are human. Tick the box and try again.", de: "Wir konnten nicht feststellen, dass Sie ein Mensch sind. Bitte das Kästchen anklicken und erneut versuchen.", fr: "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez.", es: "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo.", ro: "Nu am putut confirma că ești o persoană. Bifează căsuța și încearcă din nou." };
-const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…", fr: "Envoi…", es: "Enviando…", ro: "Se trimite…" };
-
+const MC_OK = ASSESSL_MC_OK;
+const MC_FOUT = ASSESSL_MC_FOUT;
+const MC_MENS = ASSESSL_MC_MENS;
+const MC_BEZIG = ASSESSL_MC_BEZIG;
 ---
 <Base title={a.metaTitle} description={a.metaDescription} active="assessments">
   <script type="application/ld+json" is:inline set:html={JSON.stringify(_offerLd)}></script>

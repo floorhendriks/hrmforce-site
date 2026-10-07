@@ -3,6 +3,7 @@ import LogoSlider from "./LogoSlider.astro";
 import { getLangFromUrl, localizePath, demoPath } from "../i18n/utils.js";
 import { sectorsFor } from "../data/sectoren-content.js";
 import { SECTORPAGINAS } from "../data/sector-paginas.js";
+import { LOGOSLIDER_T } from "../data/component-teksten.js";
 
 const lang = getLangFromUrl(Astro.url);
 const { ui, sectors } = sectorsFor(lang);
@@ -42,7 +43,7 @@ const assessHref = localizePath("/assessment-overzicht/", lang);
   <p class="sec-none" id="secNone" hidden>{ui.none}</p>
 </div></section>
 
-<LogoSlider heading="Organisaties die u voorgingen" />
+<LogoSlider lang={lang} heading={LOGOSLIDER_T[lang]?.sector ?? LOGOSLIDER_T.nl.sector} />
 
 <section class="cta"><div class="wrap" style="padding:56px 0;text-align:center">
   <h2 style="color:#fff">{ui.cta.title}</h2>

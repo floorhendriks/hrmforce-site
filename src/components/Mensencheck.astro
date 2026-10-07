@@ -8,10 +8,11 @@
    nodig heeft. */
 import { MENS_UI } from "../data/mensencheck-tekst.js";
 import { TURNSTILE_SITE_KEY } from "../data/turnstile.js";
+import { MENSCHK_TAAL } from "../data/component-teksten.js";
 const { lang = "nl" } = Astro.props;
 const u = MENS_UI[lang] || MENS_UI.nl;
 const siteKey = TURNSTILE_SITE_KEY;
-const TAAL = { nl: "nl", en: "en", de: "de", fr: "fr", es: "es", ro: "ro" };
+const TAAL = MENSCHK_TAAL;
 ---
 <div class="mc-val" aria-hidden="true">
   <label for={`mc-web-${lang}`}>{u.val}</label>

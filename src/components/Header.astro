@@ -1,5 +1,6 @@
 ---
 import { routes, languages, taalInfo } from "../i18n/ui.js";
+import { vlagSvg } from "../i18n/vlaggen.js";
 import { getLangFromUrl, useTranslations, navHref, switchLocalePath, demoPath } from "../i18n/utils.js";
 import { navFor } from "../data/menu-content.js";
 import validPaths from "../data/valid-paths.js";
@@ -33,11 +34,11 @@ const zoekindexUrl = `/zoekindex-${lang}.json`;
       <a class="tb-link" href={H(routes.contact)}>{nav.contact}</a>
       <a class="login-btn" href="https://assessment.hrmforce.com/Login.aspx?LanguageCode=nl-NL">{t("topbar.login")}</a>
       <details class="langdd">
-        <summary><span class="vlag" aria-hidden="true">{taalInfo[lang]?.vlag}</span>{languages[lang]}<span class="caret">&#9662;</span></summary>
+        <summary><span class="vlag" set:html={vlagSvg(lang)} />{languages[lang]}<span class="caret">&#9662;</span></summary>
         <div class="langdd-menu">
           {otherLangs.map((code) => (
             <a href={switchLocalePath(Astro.url, code, validPaths)} lang={code} hreflang={code}>
-              <span class="vlag" aria-hidden="true">{taalInfo[code]?.vlag}</span>{taalInfo[code]?.naam ?? languages[code]}
+              <span class="vlag" set:html={vlagSvg(code)} />{taalInfo[code]?.naam ?? languages[code]}
             </a>
           ))}
         </div>
@@ -116,8 +117,9 @@ const zoekindexUrl = `/zoekindex-${lang}.json`;
   .langdd[open] > summary { opacity: 1; }
   .langdd-menu { position: absolute; top: 130%; right: 0; z-index: 60; background: #fff; border: 1px solid #e2e2e2; border-radius: var(--radius-sm); box-shadow: 0 8px 24px rgba(0,0,0,.12); min-width: 170px; padding: 4px; max-height: 70vh; overflow-y: auto; }
   .langdd-menu a { display: flex; align-items: center; gap: 9px; padding: 7px 14px; color: #343434; text-decoration: none; font-weight: 600; border-radius: var(--radius-sm); white-space: nowrap; }
-  /* De vlag is een hulpmiddel naast de naam, niet de drager van de betekenis. */
-  .langdd .vlag { font-size: 15px; line-height: 1; font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; }
+  /* De vlag staat naast de naam van de taal, nooit in plaats daarvan. */
+  .langdd .vlag { display: inline-flex; flex: 0 0 auto; line-height: 0; }
+  .langdd .vlag svg { display: block; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.14); }
   .langdd-menu a:hover { background: #f1f5fb; color: var(--navy, #0E468C); }
 
   .menu { display: flex; align-items: center; gap: 4px; }
