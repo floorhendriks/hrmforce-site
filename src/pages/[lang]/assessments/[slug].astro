@@ -10,7 +10,7 @@ import { shopInfo, prijs } from "../../../data/assessment-shop.js";
 import { CONTACT_EMAIL } from "../../../data/site-config.js";
 import OefenAanvraagForm from "../../../components/OefenAanvraagForm.astro";
 import Mensencheck from "../../../components/Mensencheck.astro";
-import { localizePath, demoPath } from "../../../i18n/utils.js";
+import { localizePath, demoPath, PREFIXED } from "../../../i18n/utils.js";
 import { examplesFor } from "../../../data/assessment-examples.js";
 import { extraFor } from "../../../data/assessment-detail-extra.js";
 import { theoryFor } from "../../../data/assessment-theory.js";
@@ -27,7 +27,7 @@ import { kenniscentrumContent } from "../../../data/kenniscentrum-content.js";
 // (lang ∈ en,de,fr,es,ro) × (36 slugs). Data = merge van assessments.js
 // (beeld/slug/quote.author/quote.initials) + assessmentsI18n[lang][slug] (teksten).
 export async function getStaticPaths() {
-  const langs = ["en", "de", "fr", "es", "ro"];
+  const langs = PREFIXED;
   const stripHtml = (h) => (h || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
   const excerpt = (h) => { const t = stripHtml(h); return t.length > 140 ? t.slice(0, 140).trim() + "\u2026" : t; };
   const kw = (t) => (t || "").toLowerCase().split(/[^a-z0-9\u00e0-\u00ff]+/).filter((w) => w.length > 4);

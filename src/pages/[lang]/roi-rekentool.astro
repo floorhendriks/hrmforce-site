@@ -1,0 +1,12 @@
+---
+import Base from "../../layouts/Base.astro";
+import RoiRekentool from "../../components/RoiRekentool.astro";
+import { roiContent } from "../../data/roi-content.js";
+import { perTaal } from "../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const t = roiContent[lang];
+---
+<Base title={t.meta.title} description={t.meta.description} active="">
+  <RoiRekentool t={t} lang={lang} />
+</Base>

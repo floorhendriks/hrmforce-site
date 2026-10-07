@@ -1,0 +1,481 @@
+From e8dcaa4c8f909cff50dc40a8b56d0afe6e25b7f3 Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Thu, 10 Sep 2026 18:34:06 +0000
+Subject: [PATCH] Contactpagina, ITC-blok, 20 jaar ervaring en GTM-slot
+
+Contactpagina (alle talen): het blok over Floor Hendriks staat nu onder het
+contactformulier in plaats van erboven, en vermeldt oprichter plus al meer dan
+20 jaar ervaring.
+
+Homepage: het ITC-blok staat weer lager op de pagina, tussen de drie stappen en
+de veelgestelde vragen, met behoud van de duidelijkere opmaak en de nette
+mobiele weergave.
+
+Auteursbio in het kenniscentrum: 15 jaar wordt 20 jaar (alle talen).
+
+Search Console: de verificatietag van de huidige verifieerde eigenaar, die op de
+oude site stond, staat er nu naast. Zo verliest niemand zijn verificatie bij de
+overstap.
+
+Google Tag Manager: ANALYTICS.GTM_ID toegevoegd als schakelaar. Leeg betekent
+GA4 en Ads rechtstreeks via gtag, zoals nu. Vul je de container in, dan laadt de
+site GA4 en Ads niet meer zelf, zodat er niet dubbel gemeten wordt.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ src/components/CookieConsent.astro   | 23 +++++++++++++++----
+ src/components/Home.astro            | 33 ++++++++++++++--------------
+ src/data/homepage-content.js         | 12 +++++-----
+ src/data/site-config.js              | 12 +++++++++-
+ src/layouts/Base.astro               |  3 ++-
+ src/pages/[...path].astro            | 12 +++++-----
+ src/pages/contact.astro              |  4 ++--
+ src/pages/de/contact.astro           |  4 ++--
+ src/pages/en/contact.astro           |  4 ++--
+ src/pages/es/contact.astro           |  4 ++--
+ src/pages/fr/contact.astro           |  4 ++--
+ src/pages/kenniscentrum/[slug].astro | 12 +++++-----
+ src/pages/ro/contact.astro           |  4 ++--
+ 13 files changed, 78 insertions(+), 53 deletions(-)
+
+diff --git a/src/components/CookieConsent.astro b/src/components/CookieConsent.astro
+index e5a64b3..b530a7d 100644
+--- a/src/components/CookieConsent.astro
++++ b/src/components/CookieConsent.astro
+@@ -5,7 +5,7 @@
+ //   2) de bezoeker de categorie "Statistieken" heeft geaccepteerd.
+ // Keuze wordt opgeslagen in localStorage (met versienummer). Herzien via
+ // window.openCookiePrefs().
+-const { lang = "nl", ga4Id = "", linkedinId = "", clarityId = "", adsId = "", adsDemoLabel = "", adsAssessmentLabel = "", t = {} } = Astro.props;
++const { lang = "nl", ga4Id = "", gtmId = "", linkedinId = "", clarityId = "", adsId = "", adsDemoLabel = "", adsAssessmentLabel = "", t = {} } = Astro.props;
+ const cat = t.categories ?? {};
+ const nec = cat.necessary ?? {};
+ const stat = cat.statistics ?? {};
+@@ -73,7 +73,7 @@ const mkt = cat.marketing ?? {};
+   </div>
+ </div>
+ 
+-<script is:inline define:vars={{ ga4Id, linkedinId, clarityId, adsId, adsDemoLabel, adsAssessmentLabel, lang }}>
++<script is:inline define:vars={{ ga4Id, gtmId, linkedinId, clarityId, adsId, adsDemoLabel, adsAssessmentLabel, lang }}>
+   (function () {
+     var STORAGE_KEY = "hrmforce_cookie_consent";
+     var VERSION = 1;
+@@ -103,6 +103,20 @@ const mkt = cat.marketing ?? {};
+       gtag("config", ga4Id, { anonymize_ip: true });
+     }
+ 
++    // Google Tag Manager. Alleen als GTM_ID is ingevuld; dan laden we GA4 en Ads
++    // niet ook zelf, want die horen dan in de container te staan (anders dubbel
++    // meten). Laadt pas na toestemming voor statistieken.
++    var gtmLoaded = false;
++    function loadGTM() {
++      if (gtmLoaded || !gtmId) return;
++      gtmLoaded = true;
++      var s = document.createElement("script");
++      s.async = true;
++      s.src = "https://www.googletagmanager.com/gtm.js?id=" + encodeURIComponent(gtmId);
++      document.head.appendChild(s);
++      window.dataLayer.push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
++    }
++
+     var clarityLoaded = false, linkedinLoaded = false, adsLoaded = false;
+     // Google Ads. Laadt alleen na toestemming voor 'marketing'. De conversielabels
+     // worden door de conversie-tracking in Base.astro gebruikt (window.hrmAds).
+@@ -160,10 +174,11 @@ const mkt = cat.marketing ?? {};
+         ad_user_data: c.marketing ? "granted" : "denied",
+         ad_personalization: c.marketing ? "granted" : "denied",
+       });
+-      if (c.statistics && ga4Id) loadGA4();
++      if (c.statistics && gtmId) loadGTM();
++      if (c.statistics && ga4Id && !gtmId) loadGA4();
+       if (c.statistics && clarityId) loadClarity();
+       if (c.marketing && linkedinId) loadLinkedIn();
+-      if (c.marketing && adsId) loadAds();
++      if (c.marketing && adsId && !gtmId) loadAds();
+     }
+ 
+     function onReady(fn) {
+diff --git a/src/components/Home.astro b/src/components/Home.astro
+index fd45272..94beb89 100644
+--- a/src/components/Home.astro
++++ b/src/components/Home.astro
+@@ -142,23 +142,6 @@ const faqLd = {
+ 
+ <LogoSlider />
+ 
+-<section class="itc-sec">
+-  <div class="wrap" style="display:block">
+-    <div class="itc-bar">
+-      <span class="itc-badge">
+-        <Img src="https://images.weserv.nl/?url=www.intestcom.org/images/logo.png&output=webp&w=200&we" alt="Logo International Test Commission" loading="lazy" onerror="this.parentNode.classList.add('is-txt');this.remove();" />
+-        <em>ITC</em>
+-      </span>
+-      <div class="itc-copy">
+-        <h2 class="itc-title">{ITC.title}</h2>
+-        <p>{ITC.body}</p>
+-        <a class="itc-link" href={trustHref}>{ITC.cta} &rarr;</a>
+-      </div>
+-    </div>
+-  </div>
+-</section>
+-
+-
+ <section class="bg-soft">
+   <div class="wrap" style="display:block">
+     {c.compare.eyebrow && <span class="eyebrow center">{c.compare.eyebrow}</span>}
+@@ -289,6 +272,22 @@ const faqLd = {
+   </div>
+ </section>
+ 
++<section class="itc-sec">
++  <div class="wrap" style="display:block">
++    <div class="itc-bar">
++      <span class="itc-badge">
++        <Img src="https://images.weserv.nl/?url=www.intestcom.org/images/logo.png&output=webp&w=200&we" alt="Logo International Test Commission" loading="lazy" onerror="this.parentNode.classList.add('is-txt');this.remove();" />
++        <em>ITC</em>
++      </span>
++      <div class="itc-copy">
++        <h2 class="itc-title">{ITC.title}</h2>
++        <p>{ITC.body}</p>
++        <a class="itc-link" href={trustHref}>{ITC.cta} &rarr;</a>
++      </div>
++    </div>
++  </div>
++</section>
++
+ <section class="blog">
+   <div class="wrap" style="display:block;max-width:900px">
+     <div class="eyebrow center">{c.faqSection.eyebrow}</div>
+diff --git a/src/data/homepage-content.js b/src/data/homepage-content.js
+index 3159804..5583b92 100644
+--- a/src/data/homepage-content.js
++++ b/src/data/homepage-content.js
+@@ -21,7 +21,7 @@ export const homepageContent = {
+     sticky: { text: "ontdek vrijblijvend welke aanpak past bij jouw HR-vraag.", ghost: "Bekijk assessments", primary: "Plan een gratis demo" },
+     hero: { eyebrow: "Talentmanagement software", h1pre: "Neem betere beslissingen over ", h1em: "mensen", h1post: "", sub: "Onderbouwd, snel en objectief. Wetenschappelijk gevalideerde assessments voor selectie, ontwikkeling en teams.", ctaPrimary: "Plan een gratis demo", ctaGhost: "Bekijk alle assessments", micro: "Binnen 24 uur reactie", chooseLabel: "Waar ben je naar op zoek?", chooseSelect: "Ik wil selecteren", chooseDevelop: "Ik wil ontwikkelen", badges: ["Gevalideerd", "NIP-psychologen", "AVG-proof (EU)"], trustlink: "Zo borgen we kwaliteit & AVG" },
+     glass: { head: "Competentieprofiel", live: "live data", stats: [{ b: "242.000", label: "tests afgelopen jaar" }, { b: "1.200+", label: "organisaties" }, { b: "4,9★", label: "beoordeling" }], bars: [{ label: "Persoonlijkheid", w: "86%" }, { label: "Drijfveren", w: "72%" }, { label: "Cognitief", w: "64%" }, { label: "Potentieel", w: "91%" }], foot: "↑ Ontwikkeltrend · match met functie <b>88%</b>" },
+-    metrics: [{ big: "242.000", label: "tests afgelopen jaar" }, { big: "1.200+", label: "organisaties" }, { big: "4,9/5", label: "klantbeoordeling" }, { big: "15+ jaar", label: "ervaring" }],
++    metrics: [{ big: "242.000", label: "tests afgelopen jaar" }, { big: "1.200+", label: "organisaties" }, { big: "4,9/5", label: "klantbeoordeling" }, { big: "20+ jaar", label: "ervaring" }],
+     proof: { trustedBy: "Vertrouwd door 1.200+ organisaties", sectorLine: "Van overheid en banken tot zorg, onderwijs en industrie, 1.200+ organisaties kiezen hrmforce." },
+     spotlight: { caption: "Tevreden klant · Google-review" },
+     reviews: [
+@@ -73,7 +73,7 @@ export const homepageContent = {
+     sticky: { text: "discover which approach fits your HR question, no strings attached.", ghost: "View assessments", primary: "Book a free demo" },
+     hero: { eyebrow: "Talent management software", h1pre: "Make better decisions about ", h1em: "people", h1post: "", sub: "Grounded, fast and objective. Scientifically validated assessments for selection, development and teams.", ctaPrimary: "Book a free demo", ctaGhost: "View all assessments", micro: "Reply within 24 hours", chooseLabel: "What are you looking for?", chooseSelect: "I want to select", chooseDevelop: "I want to develop", badges: ["Validated", "NIP psychologists", "GDPR-proof (EU)"], trustlink: "How we safeguard quality & GDPR" },
+     glass: { head: "Competency profile", live: "live data", stats: [{ b: "242,000", label: "tests last year" }, { b: "1,200+", label: "organisations" }, { b: "4.9★", label: "rating" }], bars: [{ label: "Personality", w: "86%" }, { label: "Drives", w: "72%" }, { label: "Cognitive", w: "64%" }, { label: "Potential", w: "91%" }], foot: "↑ Development trend · job match <b>88%</b>" },
+-    metrics: [{ big: "242,000", label: "tests last year" }, { big: "1,200+", label: "organisations" }, { big: "4.9/5", label: "customer rating" }, { big: "15+ yrs", label: "experience" }],
++    metrics: [{ big: "242,000", label: "tests last year" }, { big: "1,200+", label: "organisations" }, { big: "4.9/5", label: "customer rating" }, { big: "20+ yrs", label: "experience" }],
+     proof: { trustedBy: "Trusted by 1,200+ organisations", sectorLine: "From government and banks to healthcare, education and industry, 1,200+ organisations choose hrmforce." },
+     spotlight: { caption: "Satisfied customer · Google review" },
+     reviews: [
+@@ -125,7 +125,7 @@ export const homepageContent = {
+     sticky: { text: "finden Sie unverbindlich heraus, welcher Ansatz zu Ihrer HR-Frage passt.", ghost: "Assessments ansehen", primary: "Kostenlose Demo" },
+     hero: { eyebrow: "Talentmanagement-Software", h1pre: "Bessere Entscheidungen über ", h1em: "Menschen", h1post: "", sub: "Fundiert, schnell und objektiv. Wissenschaftlich validierte Assessments für Auswahl, Entwicklung und Teams.", ctaPrimary: "Kostenlose Demo anfragen", ctaGhost: "Alle Assessments ansehen", micro: "Antwort binnen 24 Stunden", chooseLabel: "Wonach suchen Sie?", chooseSelect: "Ich möchte auswählen", chooseDevelop: "Ich möchte entwickeln", badges: ["Validiert", "NIP-Psychologen", "DSGVO-konform (EU)"], trustlink: "So sichern wir Qualität & DSGVO" },
+     glass: { head: "Kompetenzprofil", live: "Live-Daten", stats: [{ b: "242.000", label: "Tests letztes Jahr" }, { b: "1.200+", label: "Organisationen" }, { b: "4,9★", label: "Bewertung" }], bars: [{ label: "Persönlichkeit", w: "86%" }, { label: "Antriebe", w: "72%" }, { label: "Kognitiv", w: "64%" }, { label: "Potenzial", w: "91%" }], foot: "↑ Entwicklungstrend · Passung <b>88%</b>" },
+-    metrics: [{ big: "242.000", label: "Tests letztes Jahr" }, { big: "1.200+", label: "Organisationen" }, { big: "4,9/5", label: "Kundenbewertung" }, { big: "15+ Jahre", label: "Erfahrung" }],
++    metrics: [{ big: "242.000", label: "Tests letztes Jahr" }, { big: "1.200+", label: "Organisationen" }, { big: "4,9/5", label: "Kundenbewertung" }, { big: "20+ Jahre", label: "Erfahrung" }],
+     proof: { trustedBy: "Vertraut von 1.200+ Organisationen", sectorLine: "Von Behörden und Banken bis zu Gesundheit, Bildung und Industrie, 1.200+ Organisationen wählen hrmforce." },
+     spotlight: { caption: "Zufriedener Kunde · Google-Bewertung" },
+     reviews: [
+@@ -177,7 +177,7 @@ export const homepageContent = {
+     sticky: { text: "découvrez sans engagement l'approche adaptée à votre besoin RH.", ghost: "Voir les évaluations", primary: "Démo gratuite" },
+     hero: { eyebrow: "Logiciel de gestion des talents", h1pre: "Prenez de meilleures décisions sur les ", h1em: "personnes", h1post: "", sub: "Fondé, rapide et objectif. Des évaluations scientifiquement validées pour la sélection, le développement et les équipes.", ctaPrimary: "Demander une démo gratuite", ctaGhost: "Voir toutes les évaluations", micro: "Réponse sous 24 heures", chooseLabel: "Que recherchez-vous ?", chooseSelect: "Je veux sélectionner", chooseDevelop: "Je veux développer", badges: ["Validé", "Psychologues NIP", "Conforme RGPD (UE)"], trustlink: "Comment nous garantissons qualité & RGPD" },
+     glass: { head: "Profil de compétences", live: "données en direct", stats: [{ b: "242 000", label: "tests l\u2019an dernier" }, { b: "1 200+", label: "organisations" }, { b: "4,9★", label: "note" }], bars: [{ label: "Personnalité", w: "86%" }, { label: "Motivations", w: "72%" }, { label: "Cognitif", w: "64%" }, { label: "Potentiel", w: "91%" }], foot: "↑ Tendance de développement · adéquation <b>88%</b>" },
+-    metrics: [{ big: "242 000", label: "tests l\u2019an dernier" }, { big: "1 200+", label: "organisations" }, { big: "4,9/5", label: "note clients" }, { big: "15+ ans", label: "d'expérience" }],
++    metrics: [{ big: "242 000", label: "tests l\u2019an dernier" }, { big: "1 200+", label: "organisations" }, { big: "4,9/5", label: "note clients" }, { big: "20+ ans", label: "d'expérience" }],
+     proof: { trustedBy: "La confiance de 1 200+ organisations", sectorLine: "Du secteur public et bancaire à la santé, l'éducation et l'industrie, 1 200+ organisations choisissent hrmforce." },
+     spotlight: { caption: "Client satisfait · avis Google" },
+     reviews: [
+@@ -229,7 +229,7 @@ export const homepageContent = {
+     sticky: { text: "descubra sin compromiso qué enfoque encaja con su reto de RR. HH.", ghost: "Ver evaluaciones", primary: "Solicitar una demo" },
+     hero: { eyebrow: "Software de gestión del talento", h1pre: "Tome mejores decisiones sobre las ", h1em: "personas", h1post: "", sub: "Fundamentado, rápido y objetivo. Evaluaciones validadas científicamente para selección, desarrollo y equipos.", ctaPrimary: "Solicitar una demo gratuita", ctaGhost: "Ver todas las evaluaciones", micro: "Respuesta en 24 horas", chooseLabel: "¿Qué está buscando?", chooseSelect: "Quiero seleccionar", chooseDevelop: "Quiero desarrollar", badges: ["Validado", "Psicólogos NIP", "Cumple el RGPD (UE)"], trustlink: "Cómo garantizamos calidad y RGPD" },
+     glass: { head: "Perfil de competencias", live: "datos en directo", stats: [{ b: "242.000", label: "tests el año pasado" }, { b: "1.200+", label: "organizaciones" }, { b: "4,9★", label: "valoración" }], bars: [{ label: "Personalidad", w: "86%" }, { label: "Motivaciones", w: "72%" }, { label: "Cognitivo", w: "64%" }, { label: "Potencial", w: "91%" }], foot: "↑ Tendencia de desarrollo · ajuste <b>88%</b>" },
+-    metrics: [{ big: "242.000", label: "tests el año pasado" }, { big: "1.200+", label: "organizaciones" }, { big: "4,9/5", label: "valoración de clientes" }, { big: "15+ años", label: "de experiencia" }],
++    metrics: [{ big: "242.000", label: "tests el año pasado" }, { big: "1.200+", label: "organizaciones" }, { big: "4,9/5", label: "valoración de clientes" }, { big: "20+ años", label: "de experiencia" }],
+     proof: { trustedBy: "La confianza de 1.200+ organizaciones", sectorLine: "Desde la administración y la banca hasta la sanidad, la educación y la industria, 1.200+ organizaciones eligen hrmforce." },
+     spotlight: { caption: "Cliente satisfecho · reseña de Google" },
+     reviews: [
+@@ -281,7 +281,7 @@ export const homepageContent = {
+     sticky: { text: "descoperiți fără obligații ce abordare se potrivește nevoii dvs. de HR.", ghost: "Vezi evaluările", primary: "Demo gratuit" },
+     hero: { eyebrow: "Software de management al talentelor", h1pre: "Luați decizii mai bune despre ", h1em: "oameni", h1post: "", sub: "Fundamentat, rapid și obiectiv. Evaluări validate științific pentru selecție, dezvoltare și echipe.", ctaPrimary: "Solicită o demonstrație gratuită", ctaGhost: "Vezi toate evaluările", micro: "Răspuns în 24 de ore", chooseLabel: "Ce căutați?", chooseSelect: "Vreau să selectez", chooseDevelop: "Vreau să dezvolt", badges: ["Validat", "Psihologi NIP", "Conform GDPR (UE)"], trustlink: "Cum asigurăm calitatea și GDPR" },
+     glass: { head: "Profil de competențe", live: "date live", stats: [{ b: "242.000", label: "teste anul trecut" }, { b: "1.200+", label: "organizații" }, { b: "4,9★", label: "evaluare" }], bars: [{ label: "Personalitate", w: "86%" }, { label: "Motivații", w: "72%" }, { label: "Cognitiv", w: "64%" }, { label: "Potențial", w: "91%" }], foot: "↑ Tendință de dezvoltare · potrivire <b>88%</b>" },
+-    metrics: [{ big: "242.000", label: "teste anul trecut" }, { big: "1.200+", label: "organizații" }, { big: "4,9/5", label: "evaluare clienți" }, { big: "15+ ani", label: "experiență" }],
++    metrics: [{ big: "242.000", label: "teste anul trecut" }, { big: "1.200+", label: "organizații" }, { big: "4,9/5", label: "evaluare clienți" }, { big: "20+ ani", label: "experiență" }],
+     proof: { trustedBy: "De încredere pentru 1.200+ organizații", sectorLine: "De la administrație și bănci la sănătate, educație și industrie, 1.200+ organizații aleg hrmforce." },
+     spotlight: { caption: "Client mulțumit · recenzie Google" },
+     reviews: [
+diff --git a/src/data/site-config.js b/src/data/site-config.js
+index 1ca4de7..517f0eb 100644
+--- a/src/data/site-config.js
++++ b/src/data/site-config.js
+@@ -16,7 +16,13 @@ export const SHOPIFY = {
+ };
+ 
+ // Vul je GA4 Measurement-ID in (G-XXXXXXXXXX). Leeg = geen tracking.
+-export const ANALYTICS = { GA4_ID: "G-L4WHLCQ1WY" };
++// GTM_ID: de oude site laadde alles via Google Tag Manager (GTM-M6BLWR4). Deze
++// site stuurt GA4 en Google Ads rechtstreeks via gtag aan, dat is lichter en
++// beter te controleren. Wil je tóch via GTM werken (bijvoorbeeld omdat er nog
++// andere tags in die container staan), vul dan GTM_ID in. Zodra GTM_ID is
++// gevuld, laadt deze site GA4 en Ads NIET meer zelf, want dan zou je dubbel
++// meten: die tags horen dan in de container te staan.
++export const ANALYTICS = { GA4_ID: "G-L4WHLCQ1WY", GTM_ID: "" };
+ 
+ // Marketing- en analytics-tags. Laden uitsluitend na cookie-toestemming
+ // (LinkedIn = categorie 'marketing', Clarity = categorie 'statistieken').
+@@ -42,6 +48,10 @@ export const MARKETING = {
+ // hrmforce de eigen verificatie van de property zodra de oude site verdwijnt.
+ export const VERIFICATION = {
+   GOOGLE_SITE_VERIFICATION: "By4w3ybUKYoJWT-hw7g8LGQTQ0Ge6j3Q3uf4s8yU5QM",
++  // De tag die op de oude site stond, van de huidige verifieerde eigenaar van de
++  // Search Console-property. Laat deze staan: als hij verdwijnt verliest die
++  // eigenaar zijn verificatie en kan er toegang tot de property wegvallen.
++  GOOGLE_SITE_VERIFICATION_LEGACY: "ts39hmlPA9OTiFPdPDmFUjfKh5Bt1wL2sQA9w-S01pA",
+ };
+ 
+ // Externe reviewprofielen. Vul een URL in om de badge te tonen (leeg = verborgen).
+diff --git a/src/layouts/Base.astro b/src/layouts/Base.astro
+index f750d07..d6ac0a3 100644
+--- a/src/layouts/Base.astro
++++ b/src/layouts/Base.astro
+@@ -87,6 +87,7 @@ const orgLd = {
+     <meta name="description" content={description} />
+     {noindex && <meta name="robots" content="noindex,follow" />}
+     {VERIFICATION?.GOOGLE_SITE_VERIFICATION && <meta name="google-site-verification" content={VERIFICATION.GOOGLE_SITE_VERIFICATION} />}
++    {VERIFICATION?.GOOGLE_SITE_VERIFICATION_LEGACY && <meta name="google-site-verification" content={VERIFICATION.GOOGLE_SITE_VERIFICATION_LEGACY} />}
+     <meta property="og:type" content="website" />
+     <meta property="og:site_name" content="hrmforce" />
+     <meta property="og:locale" content={ogLocale} />
+@@ -125,7 +126,7 @@ const orgLd = {
+         q.addEventListener("click", () => q.parentElement.classList.toggle("open"));
+       });
+     </script>
+-    <CookieConsent lang={lang} ga4Id={ANALYTICS.GA4_ID} linkedinId={MARKETING.LINKEDIN_PARTNER_ID} clarityId={MARKETING.CLARITY_ID} adsId={MARKETING.GOOGLE_ADS_ID} adsDemoLabel={MARKETING.GOOGLE_ADS_DEMO_LABEL} adsAssessmentLabel={MARKETING.GOOGLE_ADS_ASSESSMENT_LABEL} t={consentT} />
++    <CookieConsent lang={lang} ga4Id={ANALYTICS.GA4_ID} gtmId={ANALYTICS.GTM_ID} linkedinId={MARKETING.LINKEDIN_PARTNER_ID} clarityId={MARKETING.CLARITY_ID} adsId={MARKETING.GOOGLE_ADS_ID} adsDemoLabel={MARKETING.GOOGLE_ADS_DEMO_LABEL} adsAssessmentLabel={MARKETING.GOOGLE_ADS_ASSESSMENT_LABEL} t={consentT} />
+     <!-- Henry chatbot -->
+     <script src="/henry-widget.js" is:inline defer></script>
+     <!-- Conversie-tracking (GA4-events) + exit-intent lead magnet. Events sturen
+diff --git a/src/pages/[...path].astro b/src/pages/[...path].astro
+index 3670200..b9238d3 100644
+--- a/src/pages/[...path].astro
++++ b/src/pages/[...path].astro
+@@ -226,12 +226,12 @@ const _words = body.replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length
+ const readMin = Math.max(2, Math.round(_words / 200));
+ 
+ const KC = {
+-  nl: { crumbHome: "Home", crumb: "Kenniscentrum", eyebrow: "Kenniscentrum", toc: "In dit artikel", read: "min leestijd", authorRole: "Managing Partner bij hrmforce", authorBio: "Schrijft over assessments, selectie en talentontwikkeling. Al meer dan 15 jaar betrokken bij psychometrie in de praktijk.", authorCta: "Meer over hrmforce", published: "Gepubliceerd op" },
+-  en: { crumbHome: "Home", crumb: "Knowledge centre", eyebrow: "Knowledge centre", toc: "In this article", read: "min read", authorRole: "Managing Partner at hrmforce", authorBio: "Writes about assessments, selection and talent development. Involved in applied psychometrics for over 15 years.", authorCta: "More about hrmforce", published: "Published on" },
+-  de: { crumbHome: "Home", crumb: "Wissenszentrum", eyebrow: "Wissenszentrum", toc: "In diesem Artikel", read: "Min. Lesezeit", authorRole: "Managing Partner bei hrmforce", authorBio: "Schreibt über Assessments, Auswahl und Talententwicklung. Seit über 15 Jahren in der angewandten Psychometrie tätig.", authorCta: "Mehr über hrmforce", published: "Veröffentlicht am" },
+-  fr: { crumbHome: "Accueil", crumb: "Centre de connaissances", eyebrow: "Centre de connaissances", toc: "Dans cet article", read: "min de lecture", authorRole: "Managing Partner chez hrmforce", authorBio: "Écrit sur les évaluations, la sélection et le développement des talents. Plus de 15 ans de psychométrie appliquée.", authorCta: "En savoir plus sur hrmforce", published: "Publié le" },
+-  es: { crumbHome: "Inicio", crumb: "Centro de conocimiento", eyebrow: "Centro de conocimiento", toc: "En este artículo", read: "min de lectura", authorRole: "Managing Partner en hrmforce", authorBio: "Escribe sobre evaluaciones, selección y desarrollo del talento. Más de 15 años de psicometría aplicada.", authorCta: "Más sobre hrmforce", published: "Publicado el" },
+-  ro: { crumbHome: "Acasă", crumb: "Centru de cunoștințe", eyebrow: "Centru de cunoștințe", toc: "În acest articol", read: "min de citit", authorRole: "Managing Partner la hrmforce", authorBio: "Scrie despre evaluări, selecție și dezvoltarea talentelor. Peste 15 ani de psihometrie aplicată.", authorCta: "Mai multe despre hrmforce", published: "Publicat pe" },
++  nl: { crumbHome: "Home", crumb: "Kenniscentrum", eyebrow: "Kenniscentrum", toc: "In dit artikel", read: "min leestijd", authorRole: "Managing Partner bij hrmforce", authorBio: "Schrijft over assessments, selectie en talentontwikkeling. Al meer dan 20 jaar betrokken bij psychometrie in de praktijk.", authorCta: "Meer over hrmforce", published: "Gepubliceerd op" },
++  en: { crumbHome: "Home", crumb: "Knowledge centre", eyebrow: "Knowledge centre", toc: "In this article", read: "min read", authorRole: "Managing Partner at hrmforce", authorBio: "Writes about assessments, selection and talent development. Involved in applied psychometrics for over 20 years.", authorCta: "More about hrmforce", published: "Published on" },
++  de: { crumbHome: "Home", crumb: "Wissenszentrum", eyebrow: "Wissenszentrum", toc: "In diesem Artikel", read: "Min. Lesezeit", authorRole: "Managing Partner bei hrmforce", authorBio: "Schreibt über Assessments, Auswahl und Talententwicklung. Seit über 20 Jahren in der angewandten Psychometrie tätig.", authorCta: "Mehr über hrmforce", published: "Veröffentlicht am" },
++  fr: { crumbHome: "Accueil", crumb: "Centre de connaissances", eyebrow: "Centre de connaissances", toc: "Dans cet article", read: "min de lecture", authorRole: "Managing Partner chez hrmforce", authorBio: "Écrit sur les évaluations, la sélection et le développement des talents. Plus de 20 ans de psychométrie appliquée.", authorCta: "En savoir plus sur hrmforce", published: "Publié le" },
++  es: { crumbHome: "Inicio", crumb: "Centro de conocimiento", eyebrow: "Centro de conocimiento", toc: "En este artículo", read: "min de lectura", authorRole: "Managing Partner en hrmforce", authorBio: "Escribe sobre evaluaciones, selección y desarrollo del talento. Más de 20 años de psicometría aplicada.", authorCta: "Más sobre hrmforce", published: "Publicado el" },
++  ro: { crumbHome: "Acasă", crumb: "Centru de cunoștințe", eyebrow: "Centru de cunoștințe", toc: "În acest articol", read: "min de citit", authorRole: "Managing Partner la hrmforce", authorBio: "Scrie despre evaluări, selecție și dezvoltarea talentelor. Peste 20 de ani de psihometrie aplicată.", authorCta: "Mai multe despre hrmforce", published: "Publicat pe" },
+ };
+ const K = KC[lang] || KC.nl;
+ const kcHref = localizePath("/kenniscentrum/", lang);
+diff --git a/src/pages/contact.astro b/src/pages/contact.astro
+index f510860..a40c865 100644
+--- a/src/pages/contact.astro
++++ b/src/pages/contact.astro
+@@ -97,7 +97,6 @@ const offices = [
+       <div>
+         <div class="eyebrow">Contactformulier</div>
+         <h2 class="section-title" style="font-size:26px">Stuur ons een bericht</h2>
+-        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>Liever persoonlijk contact?</strong><span>We helpen je graag verder. Bel of mail gerust, we reageren snel.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
+         <form
+           id="contactForm"
+           class="formcard"
+@@ -137,6 +136,7 @@ const offices = [
+             <a href="/support/privacy-statement/">privacyverklaring</a>.
+           </p>
+         </form>
++        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, oprichter van hrmforce" width="72" height="72" loading="lazy" /><div><strong>Liever persoonlijk contact?</strong><span>Bel of mail gerust, we reageren snel. Floor denkt graag met je mee over de aanpak die bij jouw vraag past.</span><span class="person-name">Floor Hendriks &middot; oprichter hrmforce &middot; al meer dan 20 jaar ervaring</span></div></div>
+       </div>
+     </div>
+   </section>
+@@ -291,7 +291,7 @@ const offices = [
+   .ns-proof{color:var(--muted);font-size:13px;padding-top:8px;border-top:1px solid var(--line)}
+   .ns-stars{color:var(--gold);letter-spacing:1px}
+ 
+-  .person-card{display:flex;gap:16px;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 20px}
++  .person-card{display:flex;gap:16px;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:22px 0 0}
+   .person-card img{width:72px;height:72px;border-radius:50%;object-fit:cover;flex:none;border:2px solid #fff;box-shadow:var(--shadow-xs)}
+   .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
+   .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
+diff --git a/src/pages/de/contact.astro b/src/pages/de/contact.astro
+index 9ce0c9f..761e89e 100644
+--- a/src/pages/de/contact.astro
++++ b/src/pages/de/contact.astro
+@@ -116,7 +116,6 @@ const offices = [
+       <div>
+         <div class="eyebrow">Kontakt-Formular</div>
+         <h2 class="section-title" style="font-size:26px">Senden Sie uns eine Nachricht</h2>
+-        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>Lieber persönlicher Kontakt?</strong><span>Wir helfen Ihnen gern weiter. Rufen Sie an oder mailen Sie, wir antworten schnell.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
+         <form
+           id="contactForm"
+           class="formcard"
+@@ -155,6 +154,7 @@ const offices = [
+             <a href="/de/datenshutzpagina/">Datenschutzerklärung</a> zu.
+           </p>
+         </form>
++        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, Gründerin von hrmforce" width="72" height="72" loading="lazy" /><div><strong>Lieber persönlicher Kontakt?</strong><span>Wir helfen Ihnen gern weiter. Rufen Sie an oder mailen Sie, wir antworten schnell.</span><span class="person-name">Floor Hendriks &middot; Gründerin von hrmforce &middot; über 20 Jahre Erfahrung</span></div></div>
+       </div>
+     </div>
+   </section>
+@@ -297,7 +297,7 @@ const offices = [
+   .ns-proof{color:var(--muted);font-size:13px;padding-top:8px;border-top:1px solid var(--line)}
+   .ns-stars{color:var(--gold);letter-spacing:1px}
+ 
+-  .person-card{display:flex;gap:16px;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 20px}
++  .person-card{display:flex;gap:16px;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:22px 0 0}
+   .person-card img{width:72px;height:72px;border-radius:50%;object-fit:cover;flex:none;border:2px solid #fff;box-shadow:var(--shadow-xs)}
+   .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
+   .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
+diff --git a/src/pages/en/contact.astro b/src/pages/en/contact.astro
+index 77b8266..0245cc0 100644
+--- a/src/pages/en/contact.astro
++++ b/src/pages/en/contact.astro
+@@ -106,7 +106,6 @@ const offices = [
+       <div>
+         <div class="eyebrow">Contact form</div>
+         <h2 class="section-title" style="font-size:26px">Send us a message</h2>
+-        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>Prefer personal contact?</strong><span>We're happy to help. Call or email us, we respond quickly.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
+         <form
+           id="contactForm"
+           class="formcard"
+@@ -155,6 +154,7 @@ const offices = [
+             <a href="/en/support/">privacy statement</a>.
+           </p>
+         </form>
++        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, founder of hrmforce" width="72" height="72" loading="lazy" /><div><strong>Prefer personal contact?</strong><span>We're happy to help. Call or email us, we respond quickly.</span><span class="person-name">Floor Hendriks &middot; founder of hrmforce &middot; over 20 years of experience</span></div></div>
+       </div>
+     </div>
+   </section>
+@@ -295,7 +295,7 @@ const offices = [
+   .ns-proof{color:var(--muted);font-size:13px;padding-top:8px;border-top:1px solid var(--line)}
+   .ns-stars{color:var(--gold);letter-spacing:1px}
+ 
+-  .person-card{display:flex;gap:16px;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 20px}
++  .person-card{display:flex;gap:16px;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:22px 0 0}
+   .person-card img{width:72px;height:72px;border-radius:50%;object-fit:cover;flex:none;border:2px solid #fff;box-shadow:var(--shadow-xs)}
+   .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
+   .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
+diff --git a/src/pages/es/contact.astro b/src/pages/es/contact.astro
+index daa45c1..194fd9b 100644
+--- a/src/pages/es/contact.astro
++++ b/src/pages/es/contact.astro
+@@ -107,7 +107,6 @@ const offices = [
+       <div>
+         <div class="eyebrow">Formulario de contacto</div>
+         <h2 class="section-title" style="font-size:26px">Envíenos un mensaje</h2>
+-        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>¿Prefieres el contacto personal?</strong><span>Estaremos encantados de ayudarte. Llama o escríbenos, respondemos rápido.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
+         <form
+           id="contactForm"
+           class="formcard"
+@@ -152,6 +151,7 @@ const offices = [
+           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
+           <button type="submit" class="btn btn-primary">Enviar</button>
+         </form>
++        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, fundadora de hrmforce" width="72" height="72" loading="lazy" /><div><strong>¿Prefieres el contacto personal?</strong><span>Estaremos encantados de ayudarte. Llama o escríbenos, respondemos rápido.</span><span class="person-name">Floor Hendriks &middot; fundadora de hrmforce &middot; más de 20 años de experiencia</span></div></div>
+       </div>
+     </div>
+   </section>
+@@ -285,7 +285,7 @@ const offices = [
+   .ns-proof{color:var(--muted);font-size:13px;padding-top:8px;border-top:1px solid var(--line)}
+   .ns-stars{color:var(--gold);letter-spacing:1px}
+ 
+-  .person-card{display:flex;gap:16px;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 20px}
++  .person-card{display:flex;gap:16px;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:22px 0 0}
+   .person-card img{width:72px;height:72px;border-radius:50%;object-fit:cover;flex:none;border:2px solid #fff;box-shadow:var(--shadow-xs)}
+   .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
+   .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
+diff --git a/src/pages/fr/contact.astro b/src/pages/fr/contact.astro
+index eb1a6fd..6750903 100644
+--- a/src/pages/fr/contact.astro
++++ b/src/pages/fr/contact.astro
+@@ -106,7 +106,6 @@ const offices = [
+       <div>
+         <div class="eyebrow">Formulaire de contact</div>
+         <h2 class="section-title" style="font-size:26px">Envoyez-nous un message</h2>
+-        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>Vous preferez un contact personnel ?</strong><span>Nous vous aidons volontiers. Appelez ou ecrivez-nous, nous repondons vite.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
+         <form
+           id="contactForm"
+           class="formcard"
+@@ -155,6 +154,7 @@ const offices = [
+             <a href="/fr/support/">declaration de confidentialite</a>.
+           </p>
+         </form>
++        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, fondatrice de hrmforce" width="72" height="72" loading="lazy" /><div><strong>Vous preferez un contact personnel ?</strong><span>Nous vous aidons volontiers. Appelez ou ecrivez-nous, nous repondons vite.</span><span class="person-name">Floor Hendriks &middot; fondatrice de hrmforce &middot; plus de 20 ans d'expérience</span></div></div>
+       </div>
+     </div>
+   </section>
+@@ -295,7 +295,7 @@ const offices = [
+   .ns-proof{color:var(--muted);font-size:13px;padding-top:8px;border-top:1px solid var(--line)}
+   .ns-stars{color:var(--gold);letter-spacing:1px}
+ 
+-  .person-card{display:flex;gap:16px;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 20px}
++  .person-card{display:flex;gap:16px;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:22px 0 0}
+   .person-card img{width:72px;height:72px;border-radius:50%;object-fit:cover;flex:none;border:2px solid #fff;box-shadow:var(--shadow-xs)}
+   .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
+   .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
+diff --git a/src/pages/kenniscentrum/[slug].astro b/src/pages/kenniscentrum/[slug].astro
+index 215d7e3..a41ce90 100644
+--- a/src/pages/kenniscentrum/[slug].astro
++++ b/src/pages/kenniscentrum/[slug].astro
+@@ -39,12 +39,12 @@ const relArticles = (allPosts||[])
+   .sort((x,y)=>y.sc-x.sc).slice(0,3).filter((x)=>x.sc>0).map((x)=>x.q);
+ const RL = {nl:{a:"Gerelateerde assessments",art:"Verder lezen",view:"Bekijk assessment",read:"Lees artikel"},en:{a:"Related assessments",art:"Read more",view:"View assessment",read:"Read article"},de:{a:"Verwandte Assessments",art:"Weiterlesen",view:"Assessment ansehen",read:"Artikel lesen"},fr:{a:"Assessments liés",art:"Lire plus",view:"Voir l'assessment",read:"Lire l'article"},es:{a:"Evaluaciones relacionadas",art:"Leer más",view:"Ver evaluación",read:"Leer artículo"},ro:{a:"Evaluări conexe",art:"Citește mai mult",view:"Vezi evaluarea",read:"Citește articolul"}}[lang] || {a:"Gerelateerde assessments",art:"Verder lezen",view:"Bekijk assessment",read:"Lees artikel"};
+ const KC = {
+-  nl: { read: "min leestijd", published: "Gepubliceerd op", authorRole: "Managing Partner bij hrmforce", authorBio: "Schrijft over assessments, selectie en talentontwikkeling. Al meer dan 15 jaar betrokken bij psychometrie in de praktijk.", authorCta: "Meer over hrmforce", back: "Naar het kenniscentrum" },
+-  en: { read: "min read", published: "Published on", authorRole: "Managing Partner at hrmforce", authorBio: "Writes about assessments, selection and talent development. Involved in applied psychometrics for over 15 years.", authorCta: "More about hrmforce", back: "Back to the knowledge centre" },
+-  de: { read: "Min. Lesezeit", published: "Veröffentlicht am", authorRole: "Managing Partner bei hrmforce", authorBio: "Schreibt über Assessments, Auswahl und Talententwicklung. Seit über 15 Jahren in der angewandten Psychometrie tätig.", authorCta: "Mehr über hrmforce", back: "Zum Wissenszentrum" },
+-  fr: { read: "min de lecture", published: "Publié le", authorRole: "Managing Partner chez hrmforce", authorBio: "Écrit sur les évaluations, la sélection et le développement des talents. Plus de 15 ans de psychométrie appliquée.", authorCta: "En savoir plus sur hrmforce", back: "Vers le centre de connaissances" },
+-  es: { read: "min de lectura", published: "Publicado el", authorRole: "Managing Partner en hrmforce", authorBio: "Escribe sobre evaluaciones, selección y desarrollo del talento. Más de 15 años de psicometría aplicada.", authorCta: "Más sobre hrmforce", back: "Al centro de conocimiento" },
+-  ro: { read: "min de citit", published: "Publicat pe", authorRole: "Managing Partner la hrmforce", authorBio: "Scrie despre evaluări, selecție și dezvoltarea talentelor. Peste 15 ani de psihometrie aplicată.", authorCta: "Mai multe despre hrmforce", back: "Spre centrul de cunoștințe" },
++  nl: { read: "min leestijd", published: "Gepubliceerd op", authorRole: "Managing Partner bij hrmforce", authorBio: "Schrijft over assessments, selectie en talentontwikkeling. Al meer dan 20 jaar betrokken bij psychometrie in de praktijk.", authorCta: "Meer over hrmforce", back: "Naar het kenniscentrum" },
++  en: { read: "min read", published: "Published on", authorRole: "Managing Partner at hrmforce", authorBio: "Writes about assessments, selection and talent development. Involved in applied psychometrics for over 20 years.", authorCta: "More about hrmforce", back: "Back to the knowledge centre" },
++  de: { read: "Min. Lesezeit", published: "Veröffentlicht am", authorRole: "Managing Partner bei hrmforce", authorBio: "Schreibt über Assessments, Auswahl und Talententwicklung. Seit über 20 Jahren in der angewandten Psychometrie tätig.", authorCta: "Mehr über hrmforce", back: "Zum Wissenszentrum" },
++  fr: { read: "min de lecture", published: "Publié le", authorRole: "Managing Partner chez hrmforce", authorBio: "Écrit sur les évaluations, la sélection et le développement des talents. Plus de 20 ans de psychométrie appliquée.", authorCta: "En savoir plus sur hrmforce", back: "Vers le centre de connaissances" },
++  es: { read: "min de lectura", published: "Publicado el", authorRole: "Managing Partner en hrmforce", authorBio: "Escribe sobre evaluaciones, selección y desarrollo del talento. Más de 20 años de psicometría aplicada.", authorCta: "Más sobre hrmforce", back: "Al centro de conocimiento" },
++  ro: { read: "min de citit", published: "Publicat pe", authorRole: "Managing Partner la hrmforce", authorBio: "Scrie despre evaluări, selecție și dezvoltarea talentelor. Peste 20 de ani de psihometrie aplicată.", authorCta: "Mai multe despre hrmforce", back: "Spre centrul de cunoștințe" },
+ }[lang] || {};
+ const LOC = { nl: "nl-NL", en: "en-GB", de: "de-DE", fr: "fr-FR", es: "es-ES", ro: "ro-RO" }[lang] || "nl-NL";
+ const dateLabel = p.date ? new Date(p.date).toLocaleDateString(LOC, { day: "numeric", month: "long", year: "numeric" }) : "";
+diff --git a/src/pages/ro/contact.astro b/src/pages/ro/contact.astro
+index 3ae3b99..2b834b6 100644
+--- a/src/pages/ro/contact.astro
++++ b/src/pages/ro/contact.astro
+@@ -107,7 +107,6 @@ const offices = [
+       <div>
+         <div class="eyebrow">Formular de contact</div>
+         <h2 class="section-title" style="font-size:26px">Trimiteți-ne un mesaj</h2>
+-        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="72" height="72" loading="lazy" /><div><strong>Preferi contactul personal?</strong><span>Te ajutăm cu plăcere. Sună sau scrie-ne, răspundem rapid.</span><span class="person-name">Floor Hendriks &middot; hrmforce</span></div></div>
+         <form
+           id="contactForm"
+           class="formcard"
+@@ -152,6 +151,7 @@ const offices = [
+           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
+           <button type="submit" class="btn btn-primary">Submit</button>
+         </form>
++        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, fondatoarea hrmforce" width="72" height="72" loading="lazy" /><div><strong>Preferi contactul personal?</strong><span>Te ajutăm cu plăcere. Sună sau scrie-ne, răspundem rapid.</span><span class="person-name">Floor Hendriks &middot; fondatoarea hrmforce &middot; peste 20 de ani de experiență</span></div></div>
+       </div>
+     </div>
+   </section>
+@@ -208,7 +208,7 @@ const offices = [
+   .ns-proof{color:var(--muted);font-size:13px;padding-top:8px;border-top:1px solid var(--line)}
+   .ns-stars{color:var(--gold);letter-spacing:1px}
+ 
+-  .person-card{display:flex;gap:16px;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 20px}
++  .person-card{display:flex;gap:16px;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:22px 0 0}
+   .person-card img{width:72px;height:72px;border-radius:50%;object-fit:cover;flex:none;border:2px solid #fff;box-shadow:var(--shadow-xs)}
+   .person-card strong{display:block;color:var(--navy);font-size:15.5px;margin-bottom:2px}
+   .person-card span{display:block;color:var(--muted);font-size:14px;line-height:1.45}
+-- 
+2.43.0
+

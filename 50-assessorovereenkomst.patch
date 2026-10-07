@@ -1,0 +1,2963 @@
+From 6859a28a3fe57e4ae03322316872876cbb6cb77b Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Fri, 2 Oct 2026 11:28:28 +0000
+Subject: [PATCH] Assessorovereenkomst digitaal ondertekenen op de site
+
+Een verborgen pagina waarop een nieuwe assessor de overeenkomst leest,
+Bijlage A invult, digitaal tekent en de getekende PDF per mail krijgt.
+Dezelfde mail gaat naar service@ en f.hendriks@. Daarmee vervalt het
+rondsturen van het Word-document.
+
+De tekst staat in src/data/assessor-overeenkomst.js en is de bron voor de
+pagina en voor de PDF, dus wat iemand leest is letterlijk wat hij tekent.
+De versie van de tekst wordt per ondertekening vastgelegd.
+
+De PDF wordt server-side gebouwd zonder externe pakketten: pdf-basis.js is
+een kleine bouwer voor meerdere pagina's met Helvetica en JPEG, pdf-assessor.js
+doet de opmaak. De handtekening komt als beeld uit de browser, getypt in een
+handschriftletter of met muis of vinger getekend, en de parafen staan in de
+voettekst van iedere pagina.
+
+Het bewijs van ondertekening gaat in D1: tijdstip in UTC en Amsterdamse tijd,
+IP-adres, land, stad, browser, de wijze van tekenen, een documentnummer en
+twee controlegetallen. De PDF zelf wordt niet apart bewaard; uit het record is
+hij opnieuw te maken.
+
+De pagina staat op noindex en nofollow, niet in de sitemap, met de bestaande
+spamcontrole eronder.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ astro.config.mjs                              |   6 +-
+ functions/_lib/assessor-beelden.js            |   7 +
+ functions/_lib/pdf-assessor.js                | 260 ++++++++++
+ functions/_lib/pdf-basis.js                   | 223 +++++++++
+ functions/api/assessor-ondertekenen.js        | 216 +++++++++
+ public/media/assessor/handtekening-floor.jpg  | Bin 0 -> 6632 bytes
+ public/media/fonts/LEESMIJ-caveat.txt         |   5 +
+ public/media/fonts/caveat-latin.woff2         | Bin 0 -> 51220 bytes
+ scripts/assessor-beheer.md                    |  74 +++
+ scripts/assessor-tabel.sql                    |  35 ++
+ src/components/AssessorOvereenkomst.astro     | 410 ++++++++++++++++
+ src/data/assessor-overeenkomst.js             | 458 ++++++++++++++++++
+ .../assessor/overeenkomst-q4n8xr2m.astro      |  16 +
+ 13 files changed, 1708 insertions(+), 2 deletions(-)
+ create mode 100644 functions/_lib/assessor-beelden.js
+ create mode 100644 functions/_lib/pdf-assessor.js
+ create mode 100644 functions/_lib/pdf-basis.js
+ create mode 100644 functions/api/assessor-ondertekenen.js
+ create mode 100644 public/media/assessor/handtekening-floor.jpg
+ create mode 100644 public/media/fonts/LEESMIJ-caveat.txt
+ create mode 100644 public/media/fonts/caveat-latin.woff2
+ create mode 100644 scripts/assessor-beheer.md
+ create mode 100644 scripts/assessor-tabel.sql
+ create mode 100644 src/components/AssessorOvereenkomst.astro
+ create mode 100644 src/data/assessor-overeenkomst.js
+ create mode 100644 src/pages/assessor/overeenkomst-q4n8xr2m.astro
+
+diff --git a/astro.config.mjs b/astro.config.mjs
+index 11bf43a..f5a7d94 100644
+--- a/astro.config.mjs
++++ b/astro.config.mjs
+@@ -8,10 +8,12 @@ export default defineConfig({
+     sitemap({
+       // Pagina's met noindex horen niet in de sitemap. Anders meldt Search Console
+       // ze als "verzonden URL met noindex". Het gaat om de volledige profielen van
+-      // het skills framework en de bevestigingspagina's na een bestelling.
++      // het skills framework, de bevestigingspagina's na een bestelling en de
++      // verborgen ondertekenpagina voor assessoren.
+       filter: (page) =>
+         !/\/skills-framework\/jobs\/[^/]+\/full\/?$/.test(page) &&
+-        !/\/(bestelling-gelukt|afrekenen)\/?$/.test(page),
++        !/\/(bestelling-gelukt|afrekenen)\/?$/.test(page) &&
++        !/\/assessor\//.test(page),
+     }),
+   ],
+   i18n: {
+diff --git a/functions/_lib/assessor-beelden.js b/functions/_lib/assessor-beelden.js
+new file mode 100644
+index 0000000..15d5262
+--- /dev/null
++++ b/functions/_lib/assessor-beelden.js
+@@ -0,0 +1,7 @@
++// Beelden voor de assessorovereenkomst, als JPEG ingebed zodat de Function
++// niets hoeft op te halen. Het logo is hetzelfde bestand als op de factuur.
++export const LOGO = { w: 300, h: 75, b64: "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" };
++// Handtekening van Floor Hendriks, uit het Word-origineel.
++export const HANDTEKENING = { w: 278, h: 139, b64: "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" };
++// Paraaf van Floor Hendriks voor de voettekst.
++export const PARAAF = { w: 118, h: 232, b64: "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" };
+diff --git a/functions/_lib/pdf-assessor.js b/functions/_lib/pdf-assessor.js
+new file mode 100644
+index 0000000..0922ee7
+--- /dev/null
++++ b/functions/_lib/pdf-assessor.js
+@@ -0,0 +1,260 @@
++// Bouwt de getekende assessorovereenkomst als PDF. De tekst komt uit
++// src/data/assessor-overeenkomst.js, zodat de webpagina en de PDF dezelfde
++// bron hebben.
++import { Pdf, breekAf, tekstbreedte, b64NaarBytes } from "./pdf-basis.js";
++import { TEKST, BIJLAGE_B, VERSIE } from "../../src/data/assessor-overeenkomst.js";
++import { LOGO, HANDTEKENING, PARAAF } from "./assessor-beelden.js";
++
++const NAVY = [0.055, 0.275, 0.549];   // #0E468C
++const BLAUW = [0.039, 0.439, 0.718];  // #0A70B7
++const INKT = [0.180, 0.227, 0.275];   // #2E3A46
++const GRIJS = [0.42, 0.47, 0.52];
++const LIJN = [0.796, 0.851, 0.910];   // #CBD9E8
++const TINT = [0.933, 0.957, 0.980];   // #EEF4FA
++const ROOD = [0.639, 0.231, 0.165];   // #A33B2A
++
++const BLAD_B = 595.28, BLAD_H = 841.89;
++const MARGE = 56, RECHTS = BLAD_B - MARGE;
++const KOLOM = RECHTS - MARGE;
++const ONDER = 86;          // ruimte voor de voettekst
++const REGEL = 12.6;        // regelafstand lopende tekst
++const GROOTTE = 9.3;
++
++export function assessorPdf(g) {
++  const doc = new Pdf({ breedte: BLAD_B, hoogte: BLAD_H });
++  const logo = doc.beeld(b64NaarBytes(LOGO.b64));
++  const htFloor = doc.beeld(b64NaarBytes(HANDTEKENING.b64));
++  const paraafFloor = doc.beeld(b64NaarBytes(PARAAF.b64));
++  const htAssessor = g.handtekeningJpg ? doc.beeld(g.handtekeningJpg) : null;
++  const paraafAssessor = g.initialenJpg ? doc.beeld(g.initialenJpg) : null;
++
++  const staat = { pagina: null, y: 0, nr: 0 };
++  const paginas = [];
++
++  function nieuwePagina(eerste) {
++    staat.pagina = doc.nieuwePagina();
++    staat.nr += 1;
++    paginas.push(staat.pagina);
++    if (eerste) {
++      staat.pagina.beeld(logo, MARGE, BLAD_H - 92, 34);
++      staat.pagina.tekst(RECHTS, BLAD_H - 70, "VERTROUWELIJK", { grootte: 8, stijl: "b", kleur: ROOD, rechts: true });
++      staat.pagina.tekst(RECHTS, BLAD_H - 82, g.nummer, { grootte: 8, kleur: GRIJS, rechts: true });
++      staat.y = BLAD_H - 126;
++    } else {
++      staat.pagina.tekst(MARGE, BLAD_H - 46, "Assessorovereenkomst hrmforce", { grootte: 8, kleur: GRIJS });
++      staat.pagina.tekst(RECHTS, BLAD_H - 46, g.nummer, { grootte: 8, kleur: GRIJS, rechts: true });
++      staat.pagina.lijn(MARGE, BLAD_H - 54, RECHTS, BLAD_H - 54, LIJN, 0.6);
++      staat.y = BLAD_H - 76;
++    }
++  }
++
++  function ruimte(nodig) {
++    if (staat.y - nodig < ONDER) nieuwePagina(false);
++  }
++
++  function alinea(tekst, opt) {
++    const o = opt || {};
++    const grootte = o.grootte || GROOTTE;
++    const stijl = o.stijl || "n";
++    const x = o.x == null ? MARGE : o.x;
++    const breedte = o.breedte == null ? KOLOM : o.breedte;
++    const regels = breekAf(tekst, grootte, stijl, breedte);
++    for (const r of regels) {
++      ruimte(REGEL);
++      staat.pagina.tekst(x, staat.y, r, { grootte, stijl, kleur: o.kleur || INKT });
++      staat.y -= o.regel || REGEL;
++    }
++    staat.y -= o.na == null ? 5 : o.na;
++  }
++
++  function kop(tekst, grootte, kleur, na) {
++    ruimte((grootte || 12) + 14);
++    staat.pagina.tekst(MARGE, staat.y, tekst, { grootte: grootte || 12, stijl: "b", kleur: kleur || NAVY });
++    staat.y -= (grootte || 12) + (na == null ? 8 : na);
++  }
++
++  // Tabel met twee kolommen: links een vette term, rechts de uitleg.
++  function deftabel(rijen, opt) {
++    const o = opt || {};
++    const linksB = o.links || 118;
++    const rechtsB = KOLOM - linksB - 12;
++    for (const rij of rijen) {
++      const links = breekAf(rij[0] || "", GROOTTE, "b", linksB);
++      const rechts = [];
++      String(rij[1] || "").split("\n").forEach((deel, i) => {
++        if (i > 0) rechts.push("");
++        breekAf(deel, GROOTTE, "n", rechtsB).forEach((r) => rechts.push(r));
++      });
++      const hoogte = Math.max(links.length, rechts.length) * REGEL + 8;
++      ruimte(hoogte);
++      const top = staat.y + REGEL - 3;
++      if (o.tint !== false) staat.pagina.vlak(MARGE, top - hoogte, KOLOM, hoogte, TINT);
++      let y = staat.y;
++      for (const r of links) { staat.pagina.tekst(MARGE + 6, y, r, { grootte: GROOTTE, stijl: "b", kleur: NAVY }); y -= REGEL; }
++      y = staat.y;
++      for (const r of rechts) { staat.pagina.tekst(MARGE + linksB + 6, y, r, { grootte: GROOTTE, kleur: INKT }); y -= REGEL; }
++      staat.y = top - hoogte - 5;
++    }
++    staat.y -= 4;
++  }
++
++  function lijst(items, genummerd) {
++    items.forEach((it, i) => {
++      const merk = genummerd ? i + 1 + "." : "-";
++      ruimte(REGEL);
++      staat.pagina.tekst(MARGE + 4, staat.y, merk, { grootte: GROOTTE, kleur: BLAUW });
++      const regels = breekAf(it, GROOTTE, "n", KOLOM - 24);
++      regels.forEach((r, n) => {
++        if (n > 0) ruimte(REGEL);
++        staat.pagina.tekst(MARGE + 22, staat.y, r, { grootte: GROOTTE, kleur: INKT });
++        staat.y -= REGEL;
++      });
++      staat.y -= 2;
++    });
++    staat.y -= 4;
++  }
++
++  function kader(titel, tekst) {
++    const regels = breekAf(tekst, GROOTTE, "n", KOLOM - 24);
++    const hoogte = regels.length * REGEL + 34;
++    ruimte(hoogte);
++    const top = staat.y + REGEL;
++    staat.pagina.vlak(MARGE, top - hoogte, KOLOM, hoogte, TINT);
++    staat.pagina.vlak(MARGE, top - hoogte, 3, hoogte, BLAUW);
++    staat.pagina.tekst(MARGE + 14, staat.y, titel, { grootte: GROOTTE + 0.7, stijl: "b", kleur: NAVY });
++    staat.y -= REGEL + 3;
++    for (const r of regels) {
++      staat.pagina.tekst(MARGE + 14, staat.y, r, { grootte: GROOTTE, kleur: INKT });
++      staat.y -= REGEL;
++    }
++    staat.y = top - hoogte - 10;
++  }
++
++  function blokken(lijstBlokken) {
++    for (const b of lijstBlokken) {
++      if (b.t === "titel") { kop(b.tekst, 17, NAVY, 4); continue; }
++      if (b.t === "ondertitel") { kop(b.tekst, 12.5, BLAUW, 8); continue; }
++      if (b.t === "lead") { alinea(b.tekst, { kleur: GRIJS, na: 12 }); continue; }
++      if (b.t === "kop") { kop(b.tekst, 12, NAVY); continue; }
++      if (b.t === "artikel") { kop(b.nr + ". " + b.titel, 11, NAVY, 7); continue; }
++      if (b.t === "lid") {
++        ruimte(REGEL);
++        staat.pagina.tekst(MARGE, staat.y, b.nr, { grootte: GROOTTE, stijl: "b", kleur: BLAUW });
++        const inspring = 30;
++        const regels = breekAf(b.tekst, GROOTTE, "n", KOLOM - inspring);
++        regels.forEach((r, n) => {
++          if (n > 0) ruimte(REGEL);
++          staat.pagina.tekst(MARGE + inspring, staat.y, r, { grootte: GROOTTE, kleur: INKT });
++          staat.y -= REGEL;
++        });
++        staat.y -= 3;
++        continue;
++      }
++      if (b.t === "lijst") { lijst(b.items, true); continue; }
++      if (b.t === "deftabel") { deftabel(b.rijen); continue; }
++      if (b.t === "cursief") { alinea(b.tekst, { stijl: "i", kleur: GRIJS }); continue; }
++      if (b.t === "kader") { kader(b.titel, b.tekst); continue; }
++      if (b.t === "alinea") { alinea(b.tekst); continue; }
++    }
++  }
++
++  // ---------- opbouw ----------
++  nieuwePagina(true);
++  blokken(TEKST);
++
++  // Ondertekening
++  staat.y -= 6;
++  ruimte(190);
++  kop("Ondertekening", 12, NAVY);
++  alinea("Door ondertekening verklaart de Assessor deze overeenkomst, inclusief de bijlagen, te hebben gelezen en te aanvaarden, en de gegevens in Bijlage A naar waarheid te hebben ingevuld.", { na: 10 });
++
++  ruimte(170);
++  const kolomB = (KOLOM - 18) / 2;
++  const linkerX = MARGE, rechterX = MARGE + kolomB + 18;
++  const topY = staat.y;
++  const veld = (x, y, label, waarde) => {
++    staat.pagina.tekst(x, y, label, { grootte: 8, stijl: "b", kleur: GRIJS });
++    staat.pagina.tekst(x, y - 13, waarde, { grootte: GROOTTE, kleur: INKT });
++    return y - 30;
++  };
++  staat.pagina.tekst(linkerX, topY, "hrmforce B.V.", { grootte: 10.5, stijl: "b", kleur: NAVY });
++  staat.pagina.tekst(rechterX, topY, "De Assessor", { grootte: 10.5, stijl: "b", kleur: NAVY });
++  staat.pagina.lijn(linkerX, topY - 7, linkerX + kolomB, topY - 7, LIJN, 0.8);
++  staat.pagina.lijn(rechterX, topY - 7, rechterX + kolomB, topY - 7, LIJN, 0.8);
++
++  let ly = topY - 22, ry = topY - 22;
++  ly = veld(linkerX, ly, "Naam", "Floor Hendriks");
++  ly = veld(linkerX, ly, "Functie", "Managing Partner");
++  ly = veld(linkerX, ly, "Plaats en datum", "Amsterdam, " + g.datumNl);
++  staat.pagina.tekst(linkerX, ly, "Handtekening", { grootte: 8, stijl: "b", kleur: GRIJS });
++  staat.pagina.beeld(htFloor, linkerX, ly - 40, 32);
++
++  ry = veld(rechterX, ry, "Naam", g.naam);
++  ry = veld(rechterX, ry, "Functie", g.handelsnaam || "Assessor");
++  ry = veld(rechterX, ry, "Plaats en datum", g.plaats + ", " + g.datumNl);
++  staat.pagina.tekst(rechterX, ry, "Handtekening", { grootte: 8, stijl: "b", kleur: GRIJS });
++  if (htAssessor) staat.pagina.beeld(htAssessor, rechterX, ry - 40, 32);
++  staat.y = Math.min(ly, ry) - 52;
++
++  // Bijlage A, ingevuld
++  staat.y -= 6;
++  kop("Bijlage A. Gegevens van de Assessor", 12, NAVY);
++  alinea("In te vullen door de Assessor. hrmforce gebruikt deze gegevens voor de uitvoering van de overeenkomst, de toegang tot de hrmforce-omgeving en de verantwoording richting Opdrachtgevers.", { kleur: GRIJS, na: 8 });
++  deftabel([
++    ["Volledige naam", g.naam],
++    ["Handelsnaam en rechtsvorm", g.handelsnaam || "-"],
++    ["Adres", [g.straat, g.postcodePlaats].filter(Boolean).join(", ")],
++    ["KvK-nummer", g.kvk || "-"],
++    ["E-mailadres", g.email],
++    ["Telefoonnummer", g.telefoon],
++    ["Beroepsregistratie(s)", g.registratie || "-"],
++  ], { links: 142 });
++  alinea("De Assessor verklaart dat de hierboven ingevulde gegevens juist en volledig zijn en meldt wijzigingen binnen twee weken aan hrmforce.", { stijl: "i", kleur: GRIJS });
++
++  // Bijlage B, letterlijk
++  blokken(BIJLAGE_B);
++
++  // Verklaring van elektronische ondertekening
++  nieuwePagina(false);
++  kop("Verklaring van elektronische ondertekening", 12.5, NAVY);
++  alinea("Deze pagina legt vast hoe en wanneer deze overeenkomst elektronisch is ondertekend. hrmforce bewaart dezelfde gegevens in haar administratie.", { kleur: GRIJS, na: 10 });
++  deftabel([
++    ["Documentnummer", g.nummer],
++    ["Versie van de tekst", VERSIE],
++    ["Ondertekend door", g.naam + (g.handelsnaam ? " (" + g.handelsnaam + ")" : "")],
++    ["E-mailadres", g.email],
++    ["Plaats", g.plaats],
++    ["Tijdstip (Europe/Amsterdam)", g.tijdNl],
++    ["Tijdstip (UTC)", g.tijdUtc],
++    ["Wijze van ondertekenen", g.wijze],
++    ["IP-adres", g.ip || "onbekend"],
++    ["Land en plaats (netwerk)", [g.land, g.stad].filter(Boolean).join(", ") || "onbekend"],
++    ["Browser", g.browser || "onbekend"],
++    ["Akkoord met de overeenkomst", "ja, inclusief bijlagen A en B"],
++    ["Gegevens juist en volledig", "ja"],
++  ], { links: 170 });
++
++  staat.y -= 4;
++  alinea("Controlegetal (SHA-256) over de ondertekende gegevens en de tekstversie:", { grootte: 8.5, kleur: GRIJS, na: 2 });
++  alinea(g.hash, { grootte: 8, stijl: "b", kleur: INKT, na: 10 });
++  alinea("Het controlegetal is berekend over alle gegevens in deze verklaring samen met de volledige tekst van de overeenkomst. Wijzigt er later iets aan die gegevens of aan de tekst, dan levert dezelfde berekening een ander getal op.", { grootte: 8.5, kleur: GRIJS });
++
++  // ---------- voetteksten ----------
++  const totaal = paginas.length;
++  paginas.forEach((p, i) => {
++    p.lijn(MARGE, 66, RECHTS, 66, LIJN, 0.6);
++    p.tekst(MARGE, 55, "VERTROUWELIJK", { grootte: 7, stijl: "b", kleur: ROOD });
++    p.tekst(MARGE + 64, 55, "Assessorovereenkomst geheimhouding en gegevensverwerking", { grootte: 7, kleur: GRIJS });
++    p.tekst(MARGE, 44, "hrmforce B.V. | " + VERSIE + " | " + g.nummer, { grootte: 7, kleur: GRIJS });
++    p.tekst(RECHTS, 44, "pagina " + (i + 1) + " van " + totaal, { grootte: 7, kleur: GRIJS, rechts: true });
++
++    // parafen rechtsboven in de voettekst: eerst hrmforce, dan de assessor
++    const px = RECHTS - 152;
++    p.tekst(px, 55, "paraaf hrmforce", { grootte: 6.5, kleur: GRIJS });
++    p.beeld(paraafFloor, px + 50, 49, 13);
++    p.tekst(px + 76, 55, "paraaf assessor", { grootte: 6.5, kleur: GRIJS });
++    if (paraafAssessor) p.beeld(paraafAssessor, px + 128, 49, 13);
++  });
++
++  return doc.bytes();
++}
+diff --git a/functions/_lib/pdf-basis.js b/functions/_lib/pdf-basis.js
+new file mode 100644
+index 0000000..97a7081
+--- /dev/null
++++ b/functions/_lib/pdf-basis.js
+@@ -0,0 +1,223 @@
++// Afhankelijkheidsvrije PDF-bouwer voor meerdere pagina's, Helvetica en JPEG's.
++// Draait in Cloudflare Workers: geen Node-API's, geen npm-pakketten.
++//
++// De factuur gebruikt de oudere generator in pdf.js. Deze module staat er los
++// van, zodat een wijziging hier de facturen niet raakt.
++
++// Breedtes van de standaardfonts (WinAnsi, 1000 eenheden per em). Hiermee loopt
++// het afbreken van regels gelijk met wat de lezer straks ziet.
++const BREEDTE = {
++  n: "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,278,278,584,584,584,556,1015,667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,722,667,611,722,667,944,667,667,611,278,278,278,469,556,333,556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,333,500,278,556,500,722,500,500,500,334,260,334,584,0,556,0,222,556,333,1000,556,556,333,1000,667,333,1000,0,611,0,0,222,222,333,333,350,556,1000,333,1000,500,333,944,0,500,667,0,333,556,556,556,556,260,556,333,737,370,556,584,0,737,333,400,584,333,333,333,556,537,278,333,333,365,556,834,834,834,611,667,667,667,667,667,667,1000,722,667,667,667,667,278,278,278,278,722,722,778,778,778,778,778,584,778,722,722,722,722,667,667,611,556,556,556,556,556,556,889,500,556,556,556,556,278,278,278,278,556,556,556,556,556,556,556,584,611,556,556,556,556,500,556,500",
++  b: "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,333,333,584,584,584,611,975,722,722,722,722,667,611,778,722,278,556,722,611,833,722,778,667,778,722,667,611,722,667,944,667,667,611,333,278,333,584,556,333,556,611,556,611,556,333,611,611,278,278,556,278,889,611,611,611,611,389,556,333,611,556,778,556,556,500,389,280,389,584,0,556,0,278,556,500,1000,556,556,333,1000,667,333,1000,0,611,0,0,278,278,500,500,350,556,1000,333,1000,556,333,944,0,500,667,0,333,556,556,556,556,280,556,333,737,370,556,584,0,737,333,400,584,333,333,333,611,556,278,333,333,365,556,834,834,834,611,722,722,722,722,722,722,1000,722,667,667,667,667,278,278,278,278,722,722,778,778,778,778,778,584,778,722,722,722,722,667,667,611,556,556,556,556,556,556,889,556,556,556,556,556,278,278,278,278,611,611,611,611,611,611,611,584,611,611,611,611,611,556,611,556",
++  i: "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,278,278,584,584,584,556,1015,667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,722,667,611,722,667,944,667,667,611,278,278,278,469,556,333,556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,333,500,278,556,500,722,500,500,500,334,260,334,584,0,556,0,222,556,333,1000,556,556,333,1000,667,333,1000,0,611,0,0,222,222,333,333,350,556,1000,333,1000,500,333,944,0,500,667,0,333,556,556,556,556,260,556,333,737,370,556,584,0,737,333,400,584,333,333,333,556,537,278,333,333,365,556,834,834,834,611,667,667,667,667,667,667,1000,722,667,667,667,667,278,278,278,278,722,722,778,778,778,778,778,584,778,722,722,722,722,667,667,611,556,556,556,556,556,556,889,500,556,556,556,556,278,278,278,278,556,556,556,556,556,556,556,584,611,556,556,556,556,500,556,500",
++};
++const TABEL = { n: null, b: null, i: null };
++function breedtes(stijl) {
++  const s = TABEL[stijl] ? stijl : "n";
++  if (!TABEL[s]) TABEL[s] = BREEDTE[s].split(",").map(Number);
++  return TABEL[s];
++}
++
++// WinAnsi kent geen tekens buiten 0-255. Wat er niet in past vervangen we door
++// een leesbaar alternatief, zodat er nooit rare blokjes in de PDF staan.
++const VERVANG = {
++  "‘": "'", "’": "'", "‚": ",", "“": '"', "”": '"',
++  "–": "-", "—": "-", "…": "...", " ": " ", "•": "-",
++  "€": "EUR ", "™": "(TM)", "→": "->",
++};
++export function winansi(s) {
++  let uit = "";
++  for (const teken of String(s == null ? "" : s)) {
++    if (VERVANG[teken] != null) { uit += VERVANG[teken]; continue; }
++    const c = teken.codePointAt(0);
++    uit += c <= 255 ? teken : "?";
++  }
++  return uit;
++}
++
++export function tekstbreedte(tekst, grootte, stijl) {
++  const w = breedtes(stijl);
++  let som = 0;
++  const s = winansi(tekst);
++  for (let i = 0; i < s.length; i++) som += w[s.charCodeAt(i)] || 500;
++  return (som * grootte) / 1000;
++}
++
++// Breekt tekst af op woordgrenzen binnen de gegeven breedte.
++export function breekAf(tekst, grootte, stijl, maxBreedte) {
++  const woorden = winansi(tekst).split(/\s+/).filter(Boolean);
++  const regels = [];
++  let huidig = "";
++  for (const woord of woorden) {
++    const kandidaat = huidig ? huidig + " " + woord : woord;
++    if (tekstbreedte(kandidaat, grootte, stijl) <= maxBreedte || !huidig) huidig = kandidaat;
++    else { regels.push(huidig); huidig = woord; }
++  }
++  if (huidig) regels.push(huidig);
++  return regels.length ? regels : [""];
++}
++
++function ontsnap(s) {
++  return winansi(s).replace(/\\/g, "\\\\").replace(/\(/g, "\\(").replace(/\)/g, "\\)");
++}
++
++export function b64NaarBytes(b64) {
++  const bin = atob(b64);
++  const uit = new Uint8Array(bin.length);
++  for (let i = 0; i < bin.length; i++) uit[i] = bin.charCodeAt(i);
++  return uit;
++}
++
++// Breedte en hoogte uit de JPEG-header lezen, zodat we niet afgaan op wat de
++// browser meestuurt.
++export function jpegMaat(bytes) {
++  let i = 2;
++  while (i < bytes.length) {
++    if (bytes[i] !== 0xff) { i++; continue; }
++    const marker = bytes[i + 1];
++    if (marker === 0xd8 || marker === 0x01 || (marker >= 0xd0 && marker <= 0xd7)) { i += 2; continue; }
++    const lengte = (bytes[i + 2] << 8) | bytes[i + 3];
++    if (marker >= 0xc0 && marker <= 0xcf && marker !== 0xc4 && marker !== 0xc8 && marker !== 0xcc) {
++      return { h: (bytes[i + 5] << 8) | bytes[i + 6], w: (bytes[i + 7] << 8) | bytes[i + 8] };
++    }
++    i += 2 + lengte;
++  }
++  return null;
++}
++
++/* De bouwer. Gebruik:
++     const doc = new Pdf();
++     const p = doc.nieuwePagina();
++     p.tekst(56, 700, "Hallo", { grootte: 11, stijl: "b" });
++     const bytes = doc.bytes();
++*/
++export class Pdf {
++  constructor(opties) {
++    const o = opties || {};
++    this.breedte = o.breedte || 595.28;
++    this.hoogte = o.hoogte || 841.89;
++    this.paginas = [];
++    this.beelden = [];   // { naam, bytes, w, h }
++  }
++
++  // Een JPEG toevoegen; geeft de naam terug waarmee je hem tekent.
++  beeld(bytes) {
++    const maat = jpegMaat(bytes) || { w: 1, h: 1 };
++    const naam = "Im" + this.beelden.length;
++    this.beelden.push({ naam, bytes, w: maat.w, h: maat.h });
++    return { naam, w: maat.w, h: maat.h };
++  }
++
++  nieuwePagina() {
++    const stukken = [];
++    const pagina = {
++      stukken,
++      tekst(x, y, tekst, opt) {
++        const o = opt || {};
++        const grootte = o.grootte || 9.5;
++        const stijl = o.stijl || "n";
++        const kleur = o.kleur || [0, 0, 0];
++        const font = stijl === "b" ? "F2" : stijl === "i" ? "F3" : "F1";
++        let xx = x;
++        if (o.rechts) xx = x - tekstbreedte(tekst, grootte, stijl);
++        else if (o.midden) xx = x - tekstbreedte(tekst, grootte, stijl) / 2;
++        stukken.push(kleur[0] + " " + kleur[1] + " " + kleur[2] + " rg BT /" + font + " " +
++          grootte + " Tf " + xx.toFixed(2) + " " + y.toFixed(2) + " Td (" + ontsnap(tekst) + ") Tj ET\n");
++      },
++      vlak(x, y, w, h, kleur) {
++        const c = kleur || [0.95, 0.96, 0.98];
++        stukken.push(c[0] + " " + c[1] + " " + c[2] + " rg " +
++          x.toFixed(2) + " " + y.toFixed(2) + " " + w.toFixed(2) + " " + h.toFixed(2) + " re f\n");
++      },
++      lijn(x1, y1, x2, y2, kleur, dikte) {
++        const c = kleur || [0.8, 0.84, 0.9];
++        stukken.push(c[0] + " " + c[1] + " " + c[2] + " RG " + (dikte || 0.8) + " w " +
++          x1.toFixed(2) + " " + y1.toFixed(2) + " m " + x2.toFixed(2) + " " + y2.toFixed(2) + " l S\n");
++      },
++      // Tekent een eerder toegevoegd beeld op hoogte h, breedte naar rato.
++      beeld(ref, x, y, h) {
++        const w = (ref.w / ref.h) * h;
++        stukken.push("q " + w.toFixed(2) + " 0 0 " + h.toFixed(2) + " " +
++          x.toFixed(2) + " " + y.toFixed(2) + " cm /" + ref.naam + " Do Q\n");
++        return w;
++      },
++    };
++    this.paginas.push(pagina);
++    return pagina;
++  }
++
++  bytes() {
++    // Alles in de PDF is byte-voor-byte latin-1. Zou je hier UTF-8 gebruiken,
++    // dan worden tekens als e-trema twee bytes en leest de viewer er twee
++    // vreemde letters van.
++    const latin1 = (s) => {
++      const uit = new Uint8Array(s.length);
++      for (let i = 0; i < s.length; i++) uit[i] = s.charCodeAt(i) & 0xff;
++      return uit;
++    };
++    const delen = [];
++    let pos = 0;
++    const objecten = [];
++    const schrijf = (s) => { const b = typeof s === "string" ? latin1(s) : s; delen.push(b); pos += b.length; };
++    const obj = (nr, inhoud, ruwe) => {
++      objecten[nr] = pos;
++      schrijf(nr + " 0 obj\n");
++      schrijf(inhoud);
++      if (ruwe) { schrijf("stream\n"); schrijf(ruwe); schrijf("\nendstream\n"); }
++      schrijf("endobj\n");
++    };
++
++    const aantal = this.paginas.length;
++    const nBeeldStart = 6;
++    const nInhoudStart = nBeeldStart + this.beelden.length;
++    const nPaginaStart = nInhoudStart + aantal;
++    const laatste = nPaginaStart + aantal - 1;
++
++    schrijf("%PDF-1.4\n%\xE2\xE3\xCF\xD3\n");
++
++    const kinderen = [];
++    for (let i = 0; i < aantal; i++) kinderen.push(nPaginaStart + i + " 0 R");
++
++    obj(1, "<< /Type /Catalog /Pages 2 0 R >>\n");
++    obj(2, "<< /Type /Pages /Count " + aantal + " /Kids [" + kinderen.join(" ") + "] >>\n");
++    obj(3, "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>\n");
++    obj(4, "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>\n");
++    obj(5, "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Oblique /Encoding /WinAnsiEncoding >>\n");
++
++    this.beelden.forEach((b, i) => {
++      obj(nBeeldStart + i,
++        "<< /Type /XObject /Subtype /Image /Width " + b.w + " /Height " + b.h +
++        " /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length " + b.bytes.length + " >>\n",
++        b.bytes);
++    });
++
++    this.paginas.forEach((p, i) => {
++      const inhoud = p.stukken.join("");
++      obj(nInhoudStart + i, "<< /Length " + inhoud.length + " >>\n", inhoud);
++    });
++
++    const beeldLijst = this.beelden.map((b, i) => "/" + b.naam + " " + (nBeeldStart + i) + " 0 R").join(" ");
++    this.paginas.forEach((p, i) => {
++      obj(nPaginaStart + i,
++        "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " + this.breedte.toFixed(2) + " " + this.hoogte.toFixed(2) + "] " +
++        "/Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >>" +
++        (beeldLijst ? " /XObject << " + beeldLijst + " >>" : "") + " >> " +
++        "/Contents " + (nInhoudStart + i) + " 0 R >>\n");
++    });
++
++    const xref = pos;
++    let tabel = "xref\n0 " + (laatste + 1) + "\n0000000000 65535 f \n";
++    for (let n = 1; n <= laatste; n++) {
++      tabel += String(objecten[n] || 0).padStart(10, "0") + " 00000 n \n";
++    }
++    schrijf(tabel);
++    schrijf("trailer\n<< /Size " + (laatste + 1) + " /Root 1 0 R >>\nstartxref\n" + xref + "\n%%EOF\n");
++
++    let lengte = 0;
++    for (const d of delen) lengte += d.length;
++    const uit = new Uint8Array(lengte);
++    let o = 0;
++    for (const d of delen) { uit.set(d, o); o += d.length; }
++    return uit;
++  }
++}
+diff --git a/functions/api/assessor-ondertekenen.js b/functions/api/assessor-ondertekenen.js
+new file mode 100644
+index 0000000..4995a7e
+--- /dev/null
++++ b/functions/api/assessor-ondertekenen.js
+@@ -0,0 +1,216 @@
++// POST /api/assessor-ondertekenen — de assessorovereenkomst digitaal tekenen.
++//
++// De Function bouwt de PDF, legt het bewijs van ondertekening vast in D1 en
++// stuurt de getekende overeenkomst naar de assessor, service@ en Floor. De
++// browser krijgt het document terug als base64, zodat de bevestigingspagina een
++// downloadknop kan tonen zonder dat er ergens een publieke link ontstaat.
++//
++// De tabel maak je eenmalig aan, zie scripts/assessor-tabel.sql.
++import { assessorPdf } from "../_lib/pdf-assessor.js";
++import { VERSIE, TEKST, BIJLAGE_B } from "../../src/data/assessor-overeenkomst.js";
++import { sendMail } from "../_lib/mail.js";
++import { controleerMens } from "../_lib/mens.js";
++
++const json = (obj, status = 200) =>
++  new Response(JSON.stringify(obj), {
++    status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
++  });
++
++const schoon = (s, max) => String(s == null ? "" : s).replace(/[\r\n\t]+/g, " ").trim().slice(0, max);
++const mailOk = (s) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s);
++
++function b64NaarBytes(b64) {
++  const bin = atob(b64);
++  const uit = new Uint8Array(bin.length);
++  for (let i = 0; i < bin.length; i++) uit[i] = bin.charCodeAt(i);
++  return uit;
++}
++function bytesNaarB64(bytes) {
++  let bin = "";
++  const stap = 0x8000;
++  for (let i = 0; i < bytes.length; i += stap) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + stap));
++  return btoa(bin);
++}
++
++// Een data-URL met een JPEG uit de browser omzetten naar bytes. Alles wat geen
++// JPEG is wordt geweigerd: de PDF-bouwer kan niets anders.
++function jpegUitDataUrl(s, maxBytes) {
++  const m = /^data:image\/jpe?g;base64,([A-Za-z0-9+/=]+)$/.exec(String(s || ""));
++  if (!m) return null;
++  const bytes = b64NaarBytes(m[1]);
++  if (!bytes.length || bytes.length > (maxBytes || 400000)) return null;
++  if (bytes[0] !== 0xff || bytes[1] !== 0xd8) return null;
++  return bytes;
++}
++
++async function sha256Hex(tekst) {
++  const data = new TextEncoder().encode(tekst);
++  const digest = await crypto.subtle.digest("SHA-256", data);
++  return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
++}
++async function sha256HexBytes(bytes) {
++  const digest = await crypto.subtle.digest("SHA-256", bytes);
++  return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
++}
++
++// Datum en tijd in Amsterdam, zonder afhankelijkheden.
++function amsterdam(d) {
++  const opts = { timeZone: "Europe/Amsterdam", year: "numeric", month: "long", day: "numeric" };
++  const datum = new Intl.DateTimeFormat("nl-NL", opts).format(d);
++  const tijd = new Intl.DateTimeFormat("nl-NL", {
++    timeZone: "Europe/Amsterdam", hour: "2-digit", minute: "2-digit", second: "2-digit",
++  }).format(d);
++  return { datum, tijd };
++}
++
++async function volgnummer(env, jaar) {
++  const prefix = "HRMF-ASS-" + jaar + "-";
++  let hoogste = 0;
++  try {
++    const r = await env.DB.prepare(
++      "SELECT nummer FROM assessor_overeenkomsten WHERE nummer LIKE ? ORDER BY nummer DESC LIMIT 1"
++    ).bind(prefix + "%").first();
++    if (r && r.nummer) hoogste = parseInt(String(r.nummer).slice(prefix.length), 10) || 0;
++  } catch (e) { /* tabel bestaat nog niet; dan begint de telling bij 1 */ }
++  return prefix + String(hoogste + 1).padStart(4, "0");
++}
++
++export async function onRequestPost(context) {
++  const { request, env } = context;
++  let body;
++  try { body = await request.json(); } catch (e) { return json({ error: "bad_json" }, 400); }
++
++  const mens = await controleerMens(env, body, request);
++  if (!mens.ok) return json({ error: "geen_mens", reden: mens.reden }, 422);
++
++  const g = {
++    naam: schoon(body.naam, 120),
++    handelsnaam: schoon(body.handelsnaam, 160),
++    straat: schoon(body.straat, 160),
++    postcodePlaats: schoon(body.postcodePlaats, 160),
++    kvk: schoon(body.kvk, 20),
++    email: schoon(body.email, 160).toLowerCase(),
++    telefoon: schoon(body.telefoon, 40),
++    registratie: schoon(body.registratie, 300),
++    plaats: schoon(body.plaats, 80),
++  };
++
++  const ontbreekt = [];
++  if (g.naam.split(/\s+/).filter(Boolean).length < 2) ontbreekt.push("naam");
++  for (const veld of ["straat", "postcodePlaats", "telefoon", "plaats"]) if (!g[veld]) ontbreekt.push(veld);
++  if (!mailOk(g.email)) ontbreekt.push("email");
++  if (g.kvk && !/^\d{8}$/.test(g.kvk)) ontbreekt.push("kvk");
++  if (body.akkoordOvereenkomst !== true) ontbreekt.push("akkoordOvereenkomst");
++  if (body.akkoordGegevens !== true) ontbreekt.push("akkoordGegevens");
++  if (ontbreekt.length) return json({ error: "onvolledig", velden: ontbreekt }, 400);
++
++  const handtekening = jpegUitDataUrl(body.handtekening, 400000);
++  const initialen = jpegUitDataUrl(body.initialen, 120000);
++  if (!handtekening) return json({ error: "geen_handtekening" }, 400);
++
++  const nu = new Date();
++  const { datum, tijd } = amsterdam(nu);
++  const kop = (naam) => request.headers.get(naam) || "";
++  const bewijs = {
++    ip: kop("CF-Connecting-IP"),
++    land: kop("CF-IPCountry"),
++    stad: (request.cf && request.cf.city) || "",
++    browser: schoon(kop("User-Agent"), 300),
++  };
++  const wijze = body.getekend === true
++    ? "met de muis of vinger getekende handtekening"
++    : "getypte naam in handschriftletter";
++
++  // Controlegetal over alles wat is ondertekend: de ingevulde gegevens, het
++  // bewijs en de volledige tekst van de overeenkomst.
++  const tekstHash = await sha256Hex(JSON.stringify([TEKST, BIJLAGE_B, VERSIE]));
++  const basis = JSON.stringify({
++    g, wijze, versie: VERSIE, tekstHash, tijd: nu.toISOString(), bewijs,
++  });
++  const hash = await sha256Hex(basis);
++
++  if (!env.DB) return json({ error: "opslag_onbeschikbaar" }, 503);
++  const jaar = new Intl.DateTimeFormat("nl-NL", { timeZone: "Europe/Amsterdam", year: "numeric" }).format(nu);
++  const nummer = await volgnummer(env, jaar);
++
++  let pdf;
++  try {
++    pdf = assessorPdf({
++      ...g,
++      nummer,
++      datumNl: datum,
++      tijdNl: datum + " om " + tijd,
++      tijdUtc: nu.toISOString(),
++      wijze,
++      hash,
++      ip: bewijs.ip, land: bewijs.land, stad: bewijs.stad, browser: bewijs.browser,
++      handtekeningJpg: handtekening,
++      initialenJpg: initialen,
++    });
++  } catch (e) {
++    console.log("assessor_pdf_failed", String(e.message || e));
++    return json({ error: "pdf_mislukt" }, 500);
++  }
++  const pdfHash = await sha256HexBytes(pdf);
++  const achternaam = (g.naam.split(/\s+/).pop() || "assessor").replace(/[^A-Za-zÀ-ÿ'-]/g, "");
++  const bestandsnaam = "Assessorovereenkomst_hrmforce_" + achternaam + "_" + nu.toISOString().slice(0, 10) + ".pdf";
++
++  try {
++    await env.DB.prepare(
++      "INSERT INTO assessor_overeenkomsten (nummer, created, versie, naam, handelsnaam, straat, postcode_plaats, kvk, email, telefoon, registratie, plaats, wijze, ip, land, stad, browser, hash, pdf_hash, handtekening_b64, initialen_b64, mail_status) " +
++      "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
++    ).bind(
++      nummer, nu.toISOString(), VERSIE, g.naam, g.handelsnaam, g.straat, g.postcodePlaats, g.kvk,
++      g.email, g.telefoon, g.registratie, g.plaats, wijze,
++      bewijs.ip, bewijs.land, bewijs.stad, bewijs.browser, hash, pdfHash,
++      bytesNaarB64(handtekening), initialen ? bytesNaarB64(initialen) : null, "bezig"
++    ).run();
++  } catch (e) {
++    console.log("assessor_opslag_mislukt", String(e.message || e));
++    return json({ error: "opslag_mislukt" }, 500);
++  }
++
++  const voornaam = g.naam.split(/\s+/)[0];
++  const van = (env && env.REQUEST_EMAIL_FROM) || "service@hrmforce.com";
++  const tekst = [
++    "Beste " + voornaam + ",",
++    "",
++    "Bedankt voor het ondertekenen van de assessorovereenkomst met hrmforce. In de bijlage vind je het",
++    "getekende exemplaar, inclusief de verklaring van elektronische ondertekening met datum, tijd en",
++    "documentnummer.",
++    "",
++    "Bewaar dit document goed. Heb je vragen over de inhoud, neem dan contact op met Floor Hendriks via",
++    "f.hendriks@hrmforce.com of +31 (0)88 88 321 88.",
++    "",
++    "Hartelijke groet,",
++    "hrmforce",
++    "",
++    "Documentnummer: " + nummer,
++    "Versie van de tekst: " + VERSIE,
++  ].join("\n");
++
++  let mailStatus = "verstuurd";
++  try {
++    await sendMail(env, {
++      from: van,
++      to: [g.email, "service@hrmforce.com", "f.hendriks@hrmforce.com"],
++      subject: "Bevestiging: getekende assessorovereenkomst hrmforce, " + g.naam,
++      text: tekst,
++      attachments: [{ filename: bestandsnaam, content: pdf }],
++    });
++  } catch (e) {
++    mailStatus = "mislukt: " + String(e.message || e).slice(0, 180);
++    console.log("assessor_mail_mislukt", mailStatus);
++  }
++  try {
++    await env.DB.prepare("UPDATE assessor_overeenkomsten SET mail_status=? WHERE nummer=?").bind(mailStatus, nummer).run();
++  } catch (e) { /* de ondertekening staat al vast; dit is alleen de status */ }
++
++  return json({
++    ok: true,
++    nummer,
++    bestandsnaam,
++    mail: mailStatus === "verstuurd",
++    pdf: bytesNaarB64(pdf),
++  });
++}
+diff --git a/public/media/assessor/handtekening-floor.jpg b/public/media/assessor/handtekening-floor.jpg
+new file mode 100644
+index 0000000000000000000000000000000000000000..57efeec25800ef7619eb1e1a053043f9cf28af71
+GIT binary patch
+literal 6632
+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
+Z|4N%YaQSY%xP_OCJh1;i6Fwg4e*hK|W4-_Y
+
+literal 0
+HcmV?d00001
+
+diff --git a/public/media/fonts/LEESMIJ-caveat.txt b/public/media/fonts/LEESMIJ-caveat.txt
+new file mode 100644
+index 0000000..66a6671
+--- /dev/null
++++ b/public/media/fonts/LEESMIJ-caveat.txt
+@@ -0,0 +1,5 @@
++Caveat (latin subset), ontworpen door Pablo Impallari.
++Licentie: SIL Open Font License 1.1, https://openfontlicense.org
++Bron: Google Fonts, https://fonts.google.com/specimen/Caveat
++
++Zelf gehost zodat de ondertekenpagina geen extern verzoek hoeft te doen.
+diff --git a/public/media/fonts/caveat-latin.woff2 b/public/media/fonts/caveat-latin.woff2
+new file mode 100644
+index 0000000000000000000000000000000000000000..36e42dcc27ef3652aa8f210827f57154511766a9
+GIT binary patch
+literal 51220
+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
+Z|BDc|l&n&Dt6G!e_j~`Z9WMX?004Ad42A#z
+
+literal 0
+HcmV?d00001
+
+diff --git a/scripts/assessor-beheer.md b/scripts/assessor-beheer.md
+new file mode 100644
+index 0000000..0feac1b
+--- /dev/null
++++ b/scripts/assessor-beheer.md
+@@ -0,0 +1,74 @@
++# Assessorovereenkomst: beheer
++
++## De link
++
++De ondertekenpagina staat op `https://hrmforce.com/assessor/overeenkomst-q4n8xr2m/`.
++De pagina staat op noindex en nofollow, staat niet in de sitemap en er linkt
++niets naartoe. Deel de link zelf met een nieuwe assessor.
++
++Wil je een nieuw pad, hernoem dan `src/pages/assessor/overeenkomst-q4n8xr2m.astro`
++naar een ander willekeurig pad. De oude link werkt dan niet meer.
++
++## Eenmalig instellen
++
++De tabel in D1 aanmaken met `scripts/assessor-tabel.sql`, in de console van de
++database hrmforce-orders. Zonder die tabel geeft de pagina een foutmelding bij
++het ondertekenen.
++
++## Wat er gebeurt bij een ondertekening
++
++1. De assessor leest de overeenkomst, vult Bijlage A in en tekent.
++2. De server bouwt de PDF, inclusief Bijlage A met de ingevulde gegevens en een
++   laatste pagina "Verklaring van elektronische ondertekening".
++3. Het bewijs gaat in de tabel `assessor_overeenkomsten`.
++4. Eén mail met de PDF gaat naar de assessor, service@hrmforce.com en
++   f.hendriks@hrmforce.com.
++5. De assessor kan zijn exemplaar direct downloaden zolang de pagina openstaat.
++
++De PDF zelf wordt niet apart bewaard. Alles wat nodig is om hem opnieuw te maken
++staat in de tabel, inclusief de handtekening.
++
++## De lijst bekijken
++
++In de D1-console van hrmforce-orders:
++
++```sql
++SELECT nummer, created, naam, handelsnaam, email, plaats, mail_status
++FROM assessor_overeenkomsten
++ORDER BY created DESC;
++```
++
++Alles van één ondertekening, inclusief het bewijs:
++
++```sql
++SELECT * FROM assessor_overeenkomsten WHERE nummer = 'HRMF-ASS-2026-0001';
++```
++
++Controleren of een PDF die je toegestuurd krijgt nog origineel is: bereken de
++SHA-256 van het bestand en vergelijk die met de kolom `pdf_hash`. Op een Mac of
++in de Codespace:
++
++```
++shasum -a 256 Assessorovereenkomst_hrmforce_Jansen_2026-10-07.pdf
++```
++
++Het controlegetal dat in de PDF zelf staat is iets anders: dat gaat over de
++ondertekende gegevens plus de tekstversie, niet over het bestand.
++
++## Een exemplaar opnieuw opsturen
++
++De gegevens staan in de tabel, dus de PDF is opnieuw te maken. Vraag dat even
++aan, dan wordt hij uit het record opgebouwd en opnieuw verstuurd.
++
++## De tekst van de overeenkomst wijzigen
++
++De tekst staat in `src/data/assessor-overeenkomst.js` en is de bron voor zowel
++de webpagina als de PDF. Pas je er iets aan, hoog dan `VERSIE` op, bijvoorbeeld
++naar "versie 1.1, januari 2027". Die versie wordt per ondertekening vastgelegd,
++zodat later aantoonbaar is welke tekst iemand heeft getekend.
++
++## Mail
++
++De mail gaat via Resend, afzender service@hrmforce.com. Mislukt het versturen,
++dan staat dat in de kolom `mail_status` en ziet de assessor op het scherm dat
++hij zijn exemplaar moet downloaden en zich moet melden bij service@.
+diff --git a/scripts/assessor-tabel.sql b/scripts/assessor-tabel.sql
+new file mode 100644
+index 0000000..4fc95e5
+--- /dev/null
++++ b/scripts/assessor-tabel.sql
+@@ -0,0 +1,35 @@
++-- Tabel voor de digitaal getekende assessorovereenkomsten.
++-- Eenmalig uitvoeren in de D1-console van hrmforce-orders.
++--
++-- De PDF zelf wordt niet bewaard: hij gaat per mail naar de assessor,
++-- service@hrmforce.com en f.hendriks@hrmforce.com. Alles wat nodig is om
++-- hem opnieuw te maken staat hieronder, inclusief de handtekening, zodat
++-- een verloren exemplaar altijd opnieuw op te bouwen is.
++
++CREATE TABLE IF NOT EXISTS assessor_overeenkomsten (
++  nummer            TEXT PRIMARY KEY,
++  created           TEXT NOT NULL,
++  versie            TEXT NOT NULL,
++  naam              TEXT NOT NULL,
++  handelsnaam       TEXT,
++  straat            TEXT,
++  postcode_plaats   TEXT,
++  kvk               TEXT,
++  email             TEXT NOT NULL,
++  telefoon          TEXT,
++  registratie       TEXT,
++  plaats            TEXT,
++  wijze             TEXT,
++  ip                TEXT,
++  land              TEXT,
++  stad              TEXT,
++  browser           TEXT,
++  hash              TEXT,
++  pdf_hash          TEXT,
++  handtekening_b64  TEXT,
++  initialen_b64     TEXT,
++  mail_status       TEXT
++);
++
++CREATE INDEX IF NOT EXISTS idx_assessor_email ON assessor_overeenkomsten (email);
++CREATE INDEX IF NOT EXISTS idx_assessor_created ON assessor_overeenkomsten (created);
+diff --git a/src/components/AssessorOvereenkomst.astro b/src/components/AssessorOvereenkomst.astro
+new file mode 100644
+index 0000000..ff98697
+--- /dev/null
++++ b/src/components/AssessorOvereenkomst.astro
+@@ -0,0 +1,410 @@
++---
++/* De ondertekenpagina voor nieuwe assessoren. De tekst van de overeenkomst
++   komt uit dezelfde bron als de PDF, dus wat de assessor leest is letterlijk
++   wat hij tekent. De pagina staat niet in het menu en niet in de sitemap. */
++import { TEKST, BIJLAGE_B, VERSIE } from "../data/assessor-overeenkomst.js";
++import Mensencheck from "./Mensencheck.astro";
++
++const velden = [
++  { id: "naam", label: "Volledige naam", type: "text", verplicht: true, hint: "Voornaam en achternaam", auto: "name" },
++  { id: "handelsnaam", label: "Handelsnaam en rechtsvorm", type: "text", verplicht: false, hint: "Laat leeg als je als particulier tekent", auto: "organization" },
++  { id: "straat", label: "Straat en huisnummer", type: "text", verplicht: true, auto: "street-address" },
++  { id: "postcodePlaats", label: "Postcode en plaats", type: "text", verplicht: true, auto: "postal-code" },
++  { id: "kvk", label: "KvK-nummer", type: "text", verplicht: false, hint: "Acht cijfers, als je die hebt" },
++  { id: "email", label: "E-mailadres", type: "email", verplicht: true, hint: "Hierheen sturen we de getekende overeenkomst", auto: "email" },
++  { id: "telefoon", label: "Telefoonnummer", type: "tel", verplicht: true, auto: "tel" },
++  { id: "registratie", label: "Beroepsregistratie(s)", type: "text", verplicht: false, hint: "Bijvoorbeeld NIP, NVO of registerpsycholoog, met registratienummer" },
++];
++---
++
++<section class="ao">
++  <div class="wrap ao-wrap">
++    <p class="ao-vertrouwelijk">Vertrouwelijk</p>
++
++    <div class="ao-tekst" id="aoTekst">
++      {TEKST.map((b) => (
++        b.t === "titel" ? <h1 class="ao-h1">{b.tekst}</h1> :
++        b.t === "ondertitel" ? <p class="ao-h2">{b.tekst}</p> :
++        b.t === "lead" ? <p class="ao-lead">{b.tekst}</p> :
++        b.t === "kop" ? <h2 class="ao-kop">{b.tekst}</h2> :
++        b.t === "artikel" ? <h3 class="ao-artikel">{b.nr}. {b.titel}</h3> :
++        b.t === "lid" ? <p class="ao-lid"><span class="ao-nr">{b.nr}</span>{b.tekst}</p> :
++        b.t === "lijst" ? <ol class="ao-lijst">{b.items.map((i) => <li>{i}</li>)}</ol> :
++        b.t === "cursief" ? <p class="ao-cursief">{b.tekst}</p> :
++        b.t === "deftabel" ? (
++          <dl class="ao-def">
++            {b.rijen.map((r) => (
++              <div class="ao-defrij">
++                <dt>{r[0]}</dt>
++                <dd>{String(r[1] || "").split("\n").map((p) => <p>{p}</p>)}</dd>
++              </div>
++            ))}
++          </dl>
++        ) : <p class="ao-alinea">{b.tekst}</p>
++      ))}
++    </div>
++
++    <form id="aoForm" novalidate>
++      <h2 class="ao-kop">Bijlage A. Gegevens van de Assessor</h2>
++      <p class="ao-alinea">In te vullen door jou. hrmforce gebruikt deze gegevens voor de uitvoering van de overeenkomst, de toegang tot de hrmforce-omgeving en de verantwoording richting opdrachtgevers.</p>
++
++      <div class="ao-velden">
++        {velden.map((v) => (
++          <div class={"ao-veld" + (v.id === "registratie" || v.id === "straat" ? " ao-breed" : "")}>
++            <label for={"ao-" + v.id}>
++              {v.label}{v.verplicht && <span class="ao-ster">*</span>}
++            </label>
++            <input
++              id={"ao-" + v.id}
++              name={v.id}
++              type={v.type}
++              required={v.verplicht}
++              autocomplete={v.auto || "off"}
++              inputmode={v.id === "kvk" ? "numeric" : undefined}
++            />
++            {v.hint && <p class="ao-hint">{v.hint}</p>}
++          </div>
++        ))}
++      </div>
++
++      <h2 class="ao-kop">Ondertekening</h2>
++      <p class="ao-alinea">Door te ondertekenen verklaar je deze overeenkomst, inclusief de bijlagen A en B, te hebben gelezen en te aanvaarden, en de gegevens in Bijlage A naar waarheid te hebben ingevuld.</p>
++
++      <div class="ao-tekenblok">
++        <div class="ao-kolom">
++          <p class="ao-kolomkop">hrmforce B.V.</p>
++          <p class="ao-regel"><span>Naam</span>Floor Hendriks</p>
++          <p class="ao-regel"><span>Functie</span>Managing Partner</p>
++          <p class="ao-regel"><span>Plaats en datum</span>Amsterdam, <span id="aoDatum">vandaag</span></p>
++          <p class="ao-regel"><span>Handtekening</span></p>
++          <img class="ao-htfloor" src="/media/assessor/handtekening-floor.jpg" alt="Handtekening Floor Hendriks" width="278" height="139" />
++        </div>
++
++        <div class="ao-kolom">
++          <p class="ao-kolomkop">De Assessor</p>
++          <div class="ao-veld">
++            <label for="ao-tekennaam">Naam<span class="ao-ster">*</span></label>
++            <input id="ao-tekennaam" name="tekennaam" type="text" required autocomplete="name" />
++          </div>
++          <div class="ao-veld">
++            <label for="ao-plaats">Plaats<span class="ao-ster">*</span></label>
++            <input id="ao-plaats" name="plaats" type="text" required autocomplete="address-level2" />
++            <p class="ao-hint">De datum vullen we zelf in op het moment van ondertekenen.</p>
++          </div>
++
++          <p class="ao-label">Handtekening<span class="ao-ster">*</span></p>
++          <div class="ao-krabbel" id="aoKrabbel" aria-live="polite">
++            <span id="aoKrabbelTekst"></span>
++            <canvas id="aoCanvas" width="640" height="220" hidden aria-label="Tekenvlak voor je handtekening"></canvas>
++          </div>
++          <div class="ao-tekenknoppen">
++            <button type="button" class="ao-knopje" id="aoTekenen">Liever zelf tekenen</button>
++            <button type="button" class="ao-knopje" id="aoWissen" hidden>Opnieuw</button>
++          </div>
++          <p class="ao-hint">Je getypte naam verschijnt hierboven als handtekening. Wil je met de muis of je vinger tekenen, kies dan voor zelf tekenen.</p>
++        </div>
++      </div>
++
++      <label class="ao-vink">
++        <input type="checkbox" id="aoAkkoord1" />
++        <span>Ik heb de overeenkomst inclusief bijlagen A en B gelezen en ga ermee akkoord</span>
++      </label>
++      <label class="ao-vink">
++        <input type="checkbox" id="aoAkkoord2" />
++        <span>Ik verklaar dat de ingevulde gegevens juist en volledig zijn</span>
++      </label>
++
++      <Mensencheck lang="nl" />
++
++      <p class="ao-bewijs">Door op Ondertekenen en verzenden te klikken plaats je een elektronische handtekening. Wij registreren daarbij datum, tijd en IP-adres als bewijs van ondertekening.</p>
++
++      <button type="submit" class="btn btn-primary ao-verzend" id="aoVerzend" disabled>Ondertekenen en verzenden</button>
++      <p class="ao-melding" id="aoMelding" hidden></p>
++    </form>
++
++    <div class="ao-tekst">
++      {BIJLAGE_B.map((b) => (
++        b.t === "kop" ? <h2 class="ao-kop">{b.tekst}</h2> :
++        b.t === "kader" ? (
++          <div class="ao-kader"><p class="ao-kaderkop">{b.titel}</p><p>{b.tekst}</p></div>
++        ) :
++        b.t === "deftabel" ? (
++          <dl class="ao-def">
++            {b.rijen.map((r) => (
++              <div class="ao-defrij"><dt>{r[0]}</dt><dd>{String(r[1] || "").split("\n").map((p) => <p>{p}</p>)}</dd></div>
++            ))}
++          </dl>
++        ) : <p class="ao-alinea">{b.tekst}</p>
++      ))}
++    </div>
++
++    <p class="ao-privacy">hrmforce verwerkt de gegevens in dit formulier uitsluitend voor het vastleggen van deze overeenkomst. Zie ons <a href="/support/privacy-statement/">privacy statement</a>. Tekstversie: {VERSIE}.</p>
++  </div>
++
++  <div class="ao-klaar" id="aoKlaar" hidden>
++    <div class="ao-klaarkaart">
++      <div class="ao-vink-rond" aria-hidden="true">
++        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
++      </div>
++      <h2>Getekend en verstuurd</h2>
++      <p id="aoKlaarTekst">Je ontvangt de getekende overeenkomst per e-mail.</p>
++      <p class="ao-nummer">Documentnummer: <strong id="aoNummer"></strong></p>
++      <a class="btn btn-primary" id="aoDownload" href="#" download>Download de getekende PDF</a>
++      <p class="ao-hint">De downloadknop werkt zolang deze pagina openstaat. Daarna heb je de e-mail.</p>
++    </div>
++  </div>
++</section>
++
++<style is:global>
++  @font-face {
++    font-family: "Caveat hrmforce";
++    src: url("/media/fonts/caveat-latin.woff2") format("woff2");
++    font-weight: 600;
++    font-display: swap;
++  }
++  .ao { padding: 36px 0 80px; }
++  .ao-wrap { max-width: 820px; }
++  .ao-vertrouwelijk { color: #A33B2A; font-weight: 800; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; margin: 0 0 18px; }
++  .ao-h1 { font-size: 1.9rem; color: #0E468C; margin: 0 0 6px; }
++  .ao-h2 { color: #0A70B7; font-weight: 700; font-size: 1.05rem; margin: 0 0 10px; }
++  .ao-lead { color: var(--muted); font-size: 15px; margin: 0 0 26px; }
++  .ao-kop { color: #0E468C; font-size: 1.25rem; margin: 30px 0 10px; }
++  .ao-artikel { color: #0E468C; font-size: 1rem; margin: 24px 0 8px; }
++  .ao-alinea, .ao-lid { font-size: 15px; line-height: 1.62; margin: 0 0 10px; color: var(--text); }
++  .ao-lid { padding-left: 42px; position: relative; }
++  .ao-nr { position: absolute; left: 0; color: #0A70B7; font-weight: 700; }
++  .ao-cursief { font-style: italic; color: var(--muted); font-size: 14.5px; margin: 0 0 10px; }
++  .ao-lijst { margin: 0 0 12px; padding-left: 22px; }
++  .ao-lijst li { font-size: 15px; line-height: 1.62; margin-bottom: 8px; }
++  .ao-def { margin: 0 0 16px; }
++  .ao-defrij { display: grid; grid-template-columns: 180px 1fr; gap: 14px; padding: 10px 12px; background: #EEF4FA; border-bottom: 1px solid #fff; }
++  .ao-defrij dt { font-weight: 700; color: #0E468C; font-size: 14.5px; }
++  .ao-defrij dd { margin: 0; font-size: 14.5px; line-height: 1.55; }
++  .ao-defrij dd p { margin: 0 0 6px; }
++  .ao-defrij dd p:last-child { margin: 0; }
++  .ao-kader { background: #EEF4FA; border-left: 3px solid #0A70B7; padding: 14px 16px; margin: 6px 0 16px; }
++  .ao-kaderkop { font-weight: 800; color: #0E468C; margin: 0 0 6px; }
++  .ao-kader p { font-size: 14.5px; line-height: 1.55; margin: 0; }
++
++  #aoForm { margin: 10px 0 0; }
++  .ao-velden { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 8px; }
++  .ao-veld.ao-breed { grid-column: 1 / -1; }
++  .ao-veld label, .ao-label { display: block; font-size: 13px; font-weight: 700; color: #0E468C; margin-bottom: 5px; }
++  .ao-ster { color: #A33B2A; margin-left: 3px; }
++  .ao-veld input { width: 100%; padding: 10px 12px; border: 1px solid #CBD9E8; border-radius: var(--radius-sm); font-family: inherit; font-size: 15px; background: #fff; }
++  .ao-veld input:focus { outline: 2px solid #0A70B7; border-color: #0A70B7; }
++  .ao-veld input.ao-fout { border-color: #A33B2A; background: #fdf4f2; }
++  .ao-hint { color: var(--muted); font-size: 12.5px; margin: 5px 0 0; line-height: 1.45; }
++
++  .ao-tekenblok { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin: 14px 0 20px; }
++  .ao-kolom { border-top: 2px solid #CBD9E8; padding-top: 12px; }
++  .ao-kolomkop { font-weight: 800; color: #0E468C; margin: 0 0 12px; font-size: 1.02rem; }
++  .ao-regel { margin: 0 0 10px; font-size: 15px; }
++  .ao-regel > span:first-child { display: block; font-size: 12px; font-weight: 700; color: var(--muted); }
++  .ao-htfloor { height: 54px; width: auto; display: block; margin-top: 2px; }
++  .ao-krabbel { border: 1px dashed #CBD9E8; border-radius: var(--radius-sm); background: #fff; min-height: 86px; display: flex; align-items: center; justify-content: center; padding: 8px; overflow: hidden; }
++  .ao-krabbel span { font-family: "Caveat hrmforce", "Segoe Script", cursive; font-size: 40px; line-height: 1.1; color: #111; }
++  .ao-krabbel canvas { width: 100%; height: 110px; touch-action: none; cursor: crosshair; }
++  .ao-tekenknoppen { display: flex; gap: 10px; margin: 8px 0 0; }
++  .ao-knopje { background: none; border: 0; padding: 0; color: #0A70B7; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: underline; }
++
++  .ao-vink { display: flex; gap: 10px; align-items: flex-start; margin: 10px 0; font-size: 14.5px; line-height: 1.5; }
++  .ao-vink input { margin-top: 3px; flex: 0 0 auto; width: 17px; height: 17px; }
++  .ao-bewijs { color: var(--muted); font-size: 12.5px; line-height: 1.5; margin: 14px 0 16px; }
++  .ao-verzend { width: 100%; }
++  .ao-verzend:disabled { opacity: .5; cursor: not-allowed; }
++  .ao-melding { margin: 12px 0 0; font-size: 14.5px; font-weight: 600; }
++  .ao-melding.fout { color: #A33B2A; }
++  .ao-privacy { color: var(--muted); font-size: 12.5px; margin: 26px 0 0; }
++
++  .ao-klaar { padding: 60px 0 90px; }
++  .ao-klaarkaart { max-width: 560px; margin: 0 auto; text-align: center; background: #fff; border: 1px solid #CBD9E8; border-radius: var(--radius); padding: 38px 32px; }
++  .ao-vink-rond { width: 58px; height: 58px; border-radius: var(--radius-sm); background: #1a8a55; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
++  .ao-klaarkaart h2 { color: #0E468C; margin: 0 0 10px; }
++  .ao-nummer { color: #0E468C; font-size: 14.5px; margin: 14px 0 18px; }
++  @media (max-width: 760px) {
++    .ao-velden, .ao-tekenblok { grid-template-columns: 1fr; }
++  }
++</style>
++
++<script>
++  (function () {
++    var form = document.getElementById("aoForm");
++    if (!form) return;
++    var krabbelTekst = document.getElementById("aoKrabbelTekst");
++    var canvas = document.getElementById("aoCanvas");
++    var knopTekenen = document.getElementById("aoTekenen");
++    var knopWissen = document.getElementById("aoWissen");
++    var verzend = document.getElementById("aoVerzend");
++    var melding = document.getElementById("aoMelding");
++    var naamVeld = document.getElementById("ao-naam");
++    var tekenNaam = document.getElementById("ao-tekennaam");
++    var akkoord1 = document.getElementById("aoAkkoord1");
++    var akkoord2 = document.getElementById("aoAkkoord2");
++    var tekenModus = false, getekend = false;
++
++    var datum = document.getElementById("aoDatum");
++    if (datum) {
++      datum.textContent = new Intl.DateTimeFormat("nl-NL", {
++        timeZone: "Europe/Amsterdam", day: "numeric", month: "long", year: "numeric",
++      }).format(new Date());
++    }
++
++    // De naam uit Bijlage A vult het handtekeningveld voor, zolang de assessor
++    // dat veld zelf nog niet heeft aangepast.
++    var naamAangeraakt = false;
++    tekenNaam.addEventListener("input", function () { naamAangeraakt = true; toonKrabbel(); kijkNa(); });
++    naamVeld.addEventListener("input", function () {
++      if (!naamAangeraakt) { tekenNaam.value = naamVeld.value; toonKrabbel(); }
++      kijkNa();
++    });
++
++    function toonKrabbel() {
++      krabbelTekst.textContent = tekenModus ? "" : tekenNaam.value.trim();
++    }
++
++    // ---------- tekenvlak ----------
++    var ctx = canvas.getContext("2d");
++    function wisCanvas() {
++      ctx.fillStyle = "#fff";
++      ctx.fillRect(0, 0, canvas.width, canvas.height);
++      ctx.lineWidth = 3.2; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.strokeStyle = "#111";
++      getekend = false;
++    }
++    wisCanvas();
++    var tekent = false;
++    function punt(e) {
++      var r = canvas.getBoundingClientRect();
++      var t = e.touches ? e.touches[0] : e;
++      return { x: (t.clientX - r.left) * (canvas.width / r.width), y: (t.clientY - r.top) * (canvas.height / r.height) };
++    }
++    function start(e) { e.preventDefault(); tekent = true; var p = punt(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
++    function beweeg(e) { if (!tekent) return; e.preventDefault(); var p = punt(e); ctx.lineTo(p.x, p.y); ctx.stroke(); getekend = true; kijkNa(); }
++    function stop() { tekent = false; }
++    ["mousedown", "touchstart"].forEach(function (n) { canvas.addEventListener(n, start, { passive: false }); });
++    ["mousemove", "touchmove"].forEach(function (n) { canvas.addEventListener(n, beweeg, { passive: false }); });
++    ["mouseup", "mouseleave", "touchend", "touchcancel"].forEach(function (n) { canvas.addEventListener(n, stop); });
++
++    knopTekenen.addEventListener("click", function () {
++      tekenModus = !tekenModus;
++      canvas.hidden = !tekenModus;
++      knopWissen.hidden = !tekenModus;
++      knopTekenen.textContent = tekenModus ? "Toch mijn getypte naam gebruiken" : "Liever zelf tekenen";
++      if (tekenModus) wisCanvas();
++      toonKrabbel();
++      kijkNa();
++    });
++    knopWissen.addEventListener("click", function () { wisCanvas(); kijkNa(); });
++
++    // ---------- knop pas aan als alles er staat ----------
++    function compleet() {
++      var nodig = ["naam", "straat", "postcodePlaats", "email", "telefoon"];
++      for (var i = 0; i < nodig.length; i++) {
++        var el = form.elements[nodig[i]];
++        if (!el || !el.value.trim()) return false;
++      }
++      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.elements.email.value.trim())) return false;
++      if (form.elements.naam.value.trim().split(/\s+/).length < 2) return false;
++      var kvk = form.elements.kvk.value.trim();
++      if (kvk && !/^\d{8}$/.test(kvk)) return false;
++      if (!form.elements.plaats.value.trim()) return false;
++      if (!tekenNaam.value.trim()) return false;
++      if (tekenModus && !getekend) return false;
++      return akkoord1.checked && akkoord2.checked;
++    }
++    function kijkNa() { verzend.disabled = !compleet(); }
++    form.addEventListener("input", kijkNa);
++    form.addEventListener("change", kijkNa);
++    kijkNa();
++
++    // ---------- handtekening als beeld ----------
++    function naarJpeg(c) { return c.toDataURL("image/jpeg", 0.92); }
++
++    async function tekstAlsBeeld(tekst, hoogte) {
++      var c = document.createElement("canvas");
++      var g = c.getContext("2d");
++      var font = "600 " + hoogte + "px 'Caveat hrmforce', cursive";
++      try { if (document.fonts && document.fonts.load) await document.fonts.load(font); } catch (e) {}
++      g.font = font;
++      var breedte = Math.ceil(g.measureText(tekst).width) + 40;
++      c.width = Math.max(breedte, 120); c.height = Math.round(hoogte * 1.9);
++      g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height);
++      g.font = font; g.fillStyle = "#111"; g.textBaseline = "middle";
++      g.fillText(tekst, 20, c.height / 2);
++      return naarJpeg(c);
++    }
++
++    function initialenVan(naam) {
++      return naam.trim().split(/\s+/).map(function (w) { return w.charAt(0).toUpperCase(); }).join("").slice(0, 3);
++    }
++
++    // ---------- verzenden ----------
++    form.addEventListener("submit", async function (e) {
++      e.preventDefault();
++      if (!compleet()) return;
++      verzend.disabled = true;
++      var oud = verzend.textContent;
++      verzend.textContent = "Bezig met ondertekenen…";
++      melding.hidden = true; melding.className = "ao-melding";
++
++      try {
++        var naam = tekenNaam.value.trim();
++        var handtekening = tekenModus ? naarJpeg(canvas) : await tekstAlsBeeld(naam, 64);
++        var initialen = await tekstAlsBeeld(initialenVan(naam), 44);
++        var lading = {
++          naam: form.elements.naam.value.trim(),
++          handelsnaam: form.elements.handelsnaam.value.trim(),
++          straat: form.elements.straat.value.trim(),
++          postcodePlaats: form.elements.postcodePlaats.value.trim(),
++          kvk: form.elements.kvk.value.trim(),
++          email: form.elements.email.value.trim(),
++          telefoon: form.elements.telefoon.value.trim(),
++          registratie: form.elements.registratie.value.trim(),
++          plaats: form.elements.plaats.value.trim(),
++          tekennaam: naam,
++          getekend: tekenModus && getekend,
++          handtekening: handtekening,
++          initialen: initialen,
++          akkoordOvereenkomst: akkoord1.checked,
++          akkoordGegevens: akkoord2.checked,
++          website: (form.querySelector('input[name="website"]') || {}).value || "",
++          gestart: (form.querySelector('input[name="gestart"]') || {}).value || "",
++          "cf-turnstile-response": (form.querySelector('[name="cf-turnstile-response"]') || {}).value || "",
++        };
++
++        var r = await fetch("/api/assessor-ondertekenen", {
++          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(lading),
++        });
++        var uit = await r.json().catch(function () { return {}; });
++
++        if (!uit || !uit.ok) {
++          var tekst = "Er ging iets mis bij het ondertekenen. Probeer het nog eens of mail naar service@hrmforce.com.";
++          if (uit && uit.error === "geen_mens") tekst = "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.";
++          if (uit && uit.error === "onvolledig") tekst = "Niet alle gegevens zijn ingevuld. Controleer de velden met een sterretje.";
++          melding.textContent = tekst; melding.className = "ao-melding fout"; melding.hidden = false;
++          verzend.disabled = false; verzend.textContent = oud;
++          return;
++        }
++
++        document.getElementById("aoNummer").textContent = uit.nummer;
++        var link = document.getElementById("aoDownload");
++        var bin = atob(uit.pdf);
++        var bytes = new Uint8Array(bin.length);
++        for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
++        link.href = URL.createObjectURL(new Blob([bytes], { type: "application/pdf" }));
++        link.setAttribute("download", uit.bestandsnaam || "assessorovereenkomst.pdf");
++        if (!uit.mail) {
++          document.getElementById("aoKlaarTekst").textContent =
++            "De overeenkomst is vastgelegd. Het versturen van de e-mail lukte nog niet; download hieronder je exemplaar en meld dit even bij service@hrmforce.com.";
++        }
++        document.querySelector(".ao-wrap").hidden = true;
++        document.getElementById("aoKlaar").hidden = false;
++        window.scrollTo({ top: 0, behavior: "smooth" });
++      } catch (fout) {
++        melding.textContent = "Er ging iets mis bij het ondertekenen. Probeer het nog eens of mail naar service@hrmforce.com.";
++        melding.className = "ao-melding fout"; melding.hidden = false;
++        verzend.disabled = false; verzend.textContent = oud;
++      }
++    });
++  })();
++</script>
+diff --git a/src/data/assessor-overeenkomst.js b/src/data/assessor-overeenkomst.js
+new file mode 100644
+index 0000000..08878f8
+--- /dev/null
++++ b/src/data/assessor-overeenkomst.js
+@@ -0,0 +1,458 @@
++/* De tekst van de assessorovereenkomst, letterlijk uit het Word-origineel.
++   Een bron voor de webpagina en voor de PDF, zodat beide altijd hetzelfde
++   zeggen. Wijzig de tekst niet zonder de versie hieronder op te hogen: de
++   versie wordt per ondertekening vastgelegd, zodat later aantoonbaar is welke
++   tekst iemand heeft getekend.
++
++   Bloktypen: titel, ondertitel, lead, kop, alinea, cursief, lijst (items),
++   artikel (nr, titel), lid (nr, tekst), deftabel (rijen van twee kolommen,
++   waarbij \n in een cel een nieuwe alinea is), kader (titel, tekst). */
++
++export const VERSIE = "versie 1.0, oktober 2026";
++
++export const TEKST = [
++  {
++    "t": "titel",
++    "tekst": "OVEREENKOMST VOOR ASSESSOREN"
++  },
++  {
++    "t": "ondertitel",
++    "tekst": "Geheimhouding en gegevensverwerking"
++  },
++  {
++    "t": "lead",
++    "tekst": "Afspraken over vertrouwelijkheid, de omgang met persoonsgegevens en professioneel handelen bij opdrachten die de Assessor voor hrmforce uitvoert"
++  },
++  {
++    "t": "kop",
++    "tekst": "Partijen"
++  },
++  {
++    "t": "deftabel",
++    "rijen": [
++      [
++        "hrmforce",
++        "hrmforce B.V., gevestigd aan de Solitudolaan 396, 1096 DS Amsterdam, KvK-nummer 34369982, btw-nummer NL821671480B01\nrechtsgeldig vertegenwoordigd door Floor Hendriks, Managing Partner\nhierna: hrmforce"
++      ],
++      [
++        "Assessor",
++        "de natuurlijke persoon of onderneming van wie de gegevens zijn ingevuld in Bijlage A\nhierna: de Assessor"
++      ]
++    ]
++  },
++  {
++    "t": "kop",
++    "tekst": "Overwegingen"
++  },
++  {
++    "t": "lijst",
++    "items": [
++      "hrmforce voert voor haar opdrachtgevers assessments, psychometrisch onderzoek, 360 graden feedback, medewerkersonderzoek en aanverwante dienstverlening uit. Daarbij worden persoonsgegevens van kandidaten en medewerkers van opdrachtgevers verwerkt, waaronder testuitslagen en rapportages.",
++      "hrmforce zet voor de uitvoering van opdrachten gekwalificeerde assessoren in. De Assessor krijgt daarbij toegang tot vertrouwelijke informatie van hrmforce en van haar opdrachtgevers, en tot persoonsgegevens van kandidaten.",
++      "hrmforce is tegenover haar opdrachtgevers verantwoordelijk voor een zorgvuldige, vertrouwelijke en rechtmatige uitvoering en moet die ook kunnen aantonen. Daarvoor is nodig dat iedere assessor dezelfde afspraken onderschrijft.",
++      "Partijen leggen deze afspraken hieronder vast. De overeenkomst geldt voor alle opdrachten die de Assessor voor hrmforce uitvoert, nu en in de toekomst, zonder dat zij per opdracht opnieuw hoeft te worden getekend."
++    ]
++  },
++  {
++    "t": "artikel",
++    "nr": "1",
++    "titel": "Definities"
++  },
++  {
++    "t": "deftabel",
++    "rijen": [
++      [
++        "Opdracht",
++        "Iedere werkzaamheid die de Assessor op verzoek van hrmforce uitvoert, zoals het afnemen van assessments, het voeren van interviews en terugkoppelgesprekken, het spelen van een rol, het observeren, het beoordelen en het opstellen of aanscherpen van rapportages."
++      ],
++      [
++        "Opdrachtgever",
++        "De klant van hrmforce ten behoeve van wie een Opdracht wordt uitgevoerd."
++      ],
++      [
++        "Kandidaat",
++        "De persoon die deelneemt aan een assessment, onderzoek of gesprek in het kader van een Opdracht."
++      ],
++      [
++        "Persoonsgegevens",
++        "Alle gegevens over een geïdentificeerde of identificeerbare natuurlijke persoon, zoals bedoeld in de Algemene verordening gegevensbescherming (AVG)."
++      ],
++      [
++        "Vertrouwelijke informatie",
++        "Alle informatie die de Assessor in verband met een Opdracht ontvangt of waarneemt, in welke vorm dan ook, waaronder Persoonsgegevens, testuitslagen, rapportages, briefings, cases, rolinstructies, informatie over Opdrachtgevers en hun organisatie, en de instrumenten, methodiek, formats en tarieven van hrmforce."
++      ],
++      [
++        "hrmforce-omgeving",
++        "De door hrmforce beschikbaar gestelde systemen, waaronder het assessmentportal en de daaraan gekoppelde rapportage- en samenwerkingsomgeving."
++      ]
++    ]
++  },
++  {
++    "t": "artikel",
++    "nr": "2",
++    "titel": "Reikwijdte"
++  },
++  {
++    "t": "lid",
++    "nr": "2.1",
++    "tekst": "Deze overeenkomst is van toepassing op iedere Opdracht die de Assessor voor hrmforce uitvoert, ongeacht de Opdrachtgever, de duur of de vorm van de Opdracht."
++  },
++  {
++    "t": "lid",
++    "nr": "2.2",
++    "tekst": "Per Opdracht ontvangt de Assessor een briefing met de inhoudelijke instructies. De briefing vult deze overeenkomst aan en wijkt er niet van af. Bij strijdigheid gaat deze overeenkomst voor, tenzij de briefing uitdrukkelijk strengere afspraken bevat; dan gelden die strengere afspraken."
++  },
++  {
++    "t": "lid",
++    "nr": "2.3",
++    "tekst": "Afspraken over tarief, planning en facturering worden per Opdracht of in een afzonderlijke opdrachtbevestiging vastgelegd en maken geen deel uit van deze overeenkomst."
++  },
++  {
++    "t": "artikel",
++    "nr": "3",
++    "titel": "Positie van de Assessor en instructies"
++  },
++  {
++    "t": "lid",
++    "nr": "3.1",
++    "tekst": "De Assessor voert Opdrachten uit namens hrmforce. hrmforce bepaalt het doel en de middelen van de verwerking van Persoonsgegevens, al dan niet in opdracht van de Opdrachtgever. De Assessor verwerkt Persoonsgegevens uitsluitend ten behoeve van de Opdracht en op instructie van hrmforce, en gebruikt deze nooit voor eigen doeleinden."
++  },
++  {
++    "t": "lid",
++    "nr": "3.2",
++    "tekst": "De Assessor handelt onder het gezag van hrmforce in de zin van artikel 29 AVG. Voor zover de Assessor desondanks als verwerker of subverwerker moet worden aangemerkt, bevat deze overeenkomst de afspraken die artikel 28 AVG voorschrijft."
++  },
++  {
++    "t": "lid",
++    "nr": "3.3",
++    "tekst": "De Assessor schakelt geen derden in bij de uitvoering van een Opdracht en deelt geen Vertrouwelijke informatie met derden, tenzij hrmforce daar vooraf schriftelijk mee heeft ingestemd."
++  },
++  {
++    "t": "lid",
++    "nr": "3.4",
++    "tekst": "Wanneer de Assessor meent dat een instructie van hrmforce in strijd is met de AVG, de beroepscode of andere wetgeving, meldt de Assessor dit direct aan hrmforce en wacht met uitvoering tot hrmforce heeft gereageerd."
++  },
++  {
++    "t": "artikel",
++    "nr": "4",
++    "titel": "Geheimhouding"
++  },
++  {
++    "t": "lid",
++    "nr": "4.1",
++    "tekst": "De Assessor houdt alle Vertrouwelijke informatie strikt geheim, zowel tijdens als na afloop van de Opdracht en na het einde van deze overeenkomst. Deze verplichting is niet in tijd beperkt."
++  },
++  {
++    "t": "lid",
++    "nr": "4.2",
++    "tekst": "De Assessor gebruikt Vertrouwelijke informatie uitsluitend voor de uitvoering van de Opdracht en deelt deze niet met anderen dan de door hrmforce aangewezen personen, ook niet met collega-assessoren die niet bij dezelfde Opdracht betrokken zijn."
++  },
++  {
++    "t": "lid",
++    "nr": "4.3",
++    "tekst": "De Assessor doet buiten de rapportage en de door hrmforce georganiseerde kalibratie geen uitspraken over Kandidaten, uitkomsten of indrukken. Dat geldt ook tegenover de Opdrachtgever, leidinggevenden of collega's van een Kandidaat en andere Kandidaten. Vragen daarover verwijst de Assessor naar de opdrachtverantwoordelijke van hrmforce."
++  },
++  {
++    "t": "lid",
++    "nr": "4.4",
++    "tekst": "De Assessor bespreekt Opdrachten, Opdrachtgevers en Kandidaten niet in het openbaar, op sociale media of in publicaties, ook niet geanonimiseerd, zonder voorafgaande schriftelijke toestemming van hrmforce."
++  },
++  {
++    "t": "lid",
++    "nr": "4.5",
++    "tekst": "De geheimhouding geldt niet voor informatie die aantoonbaar al openbaar was, of die de Assessor op grond van een wettelijke plicht of rechterlijk bevel moet verstrekken. In dat laatste geval informeert de Assessor hrmforce vooraf, voor zover dat wettelijk is toegestaan."
++  },
++  {
++    "t": "artikel",
++    "nr": "5",
++    "titel": "Verwerking van Persoonsgegevens"
++  },
++  {
++    "t": "lid",
++    "nr": "5.1",
++    "tekst": "De Assessor werkt uitsluitend in de hrmforce-omgeving. Rapportages, aantekeningen met Persoonsgegevens en testuitslagen worden daar opgesteld, bewerkt en opgeleverd."
++  },
++  {
++    "t": "lid",
++    "nr": "5.2",
++    "tekst": "De Assessor slaat geen Persoonsgegevens lokaal op, niet op eigen apparatuur, niet in eigen cloudopslag en niet in eigen e-mail. Tijdelijke aantekeningen op papier of in een lokaal bestand worden direct na verwerking in de hrmforce-omgeving vernietigd of verwijderd."
++  },
++  {
++    "t": "lid",
++    "nr": "5.3",
++    "tekst": "De Assessor voert geen Persoonsgegevens, rapportteksten of testuitslagen in in AI-toepassingen, vertaaltools, transcriptiediensten of andere online hulpmiddelen, tenzij hrmforce de toepassing uitdrukkelijk heeft goedgekeurd en beschikbaar heeft gesteld."
++  },
++  {
++    "t": "lid",
++    "nr": "5.4",
++    "tekst": "De Assessor verwerkt geen Persoonsgegevens buiten de Europese Economische Ruimte en benadert de hrmforce-omgeving niet vanuit landen buiten de EER zonder voorafgaande toestemming van hrmforce."
++  },
++  {
++    "t": "lid",
++    "nr": "5.5",
++    "tekst": "De Assessor verwerkt niet meer Persoonsgegevens dan voor de Opdracht nodig is en legt geen gegevens vast die niet relevant zijn voor de vraagstelling, waaronder bijzondere persoonsgegevens, tenzij de Opdracht dat uitdrukkelijk vereist."
++  },
++  {
++    "t": "lid",
++    "nr": "5.6",
++    "tekst": "De Assessor respecteert de rechten van Kandidaten. De Kandidaat heeft recht op inzage in de rapportage voordat deze met de Opdrachtgever wordt gedeeld, op correctie van feitelijke onjuistheden en op het blokkeren van de rapportage, overeenkomstig de beroepscode van het NIP en het beleid van hrmforce. Verzoeken van Kandidaten op grond van de AVG geeft de Assessor direct door aan hrmforce en handelt de Assessor niet zelf af."
++  },
++  {
++    "t": "lid",
++    "nr": "5.7",
++    "tekst": "Na oplevering van een Opdracht of op eerste verzoek van hrmforce verwijdert de Assessor alle Persoonsgegevens en Vertrouwelijke informatie die zich buiten de hrmforce-omgeving bevinden, en bevestigt dit desgevraagd schriftelijk."
++  },
++  {
++    "t": "artikel",
++    "nr": "6",
++    "titel": "Beveiliging"
++  },
++  {
++    "t": "lid",
++    "nr": "6.1",
++    "tekst": "De Assessor neemt passende technische en organisatorische maatregelen om Persoonsgegevens en Vertrouwelijke informatie te beschermen, en voldoet ten minste aan de volgende eisen."
++  },
++  {
++    "t": "lijst",
++    "items": [
++      "Toegang tot de hrmforce-omgeving met persoonlijke inloggegevens en tweefactorauthenticatie. Inloggegevens worden niet gedeeld en niet opgeslagen in onbeveiligde vorm.",
++      "Apparatuur waarmee de Assessor werkt is beveiligd met een wachtwoord of biometrie, heeft een versleutelde schijf, een actuele virusscanner en wordt tijdig voorzien van beveiligingsupdates.",
++      "Het scherm wordt vergrendeld bij het verlaten van de werkplek. Gesprekken en werkzaamheden met Persoonsgegevens vinden plaats in een ruimte waar anderen niet kunnen meekijken of meeluisteren.",
++      "Online gesprekken met Kandidaten worden gevoerd via de door hrmforce aangewezen toepassing en worden niet opgenomen, tenzij hrmforce daar per Opdracht schriftelijk opdracht toe geeft en de Kandidaat vooraf heeft ingestemd.",
++      "Persoonsgegevens en rapportages worden niet geprint en niet per e-mail of berichtendienst verzonden. Communicatie over Kandidaten verloopt via de hrmforce-omgeving of met de door hrmforce aangewezen contactpersonen, zonder vermelding van herleidbare gegevens in onderwerpregels of berichten."
++    ]
++  },
++  {
++    "t": "lid",
++    "nr": "6.2",
++    "tekst": "hrmforce kan aanvullende beveiligingseisen stellen wanneer een Opdrachtgever dat verlangt. De Assessor volgt die eisen op na kennisgeving door hrmforce."
++  },
++  {
++    "t": "artikel",
++    "nr": "7",
++    "titel": "Incidenten en datalekken"
++  },
++  {
++    "t": "lid",
++    "nr": "7.1",
++    "tekst": "De Assessor meldt ieder incident waarbij Persoonsgegevens of Vertrouwelijke informatie verloren zijn gegaan, onbedoeld zijn gedeeld of mogelijk door onbevoegden zijn ingezien, direct en uiterlijk binnen 24 uur na ontdekking aan hrmforce via de opdrachtverantwoordelijke. Dat geldt ook bij twijfel en ook bij een vermoeden."
++  },
++  {
++    "t": "lid",
++    "nr": "7.2",
++    "tekst": "De melding bevat ten minste: wat er is gebeurd, welke gegevens en welke personen het betreft, wanneer het is ontdekt en welke maatregelen de Assessor al heeft genomen."
++  },
++  {
++    "t": "lid",
++    "nr": "7.3",
++    "tekst": "hrmforce beoordeelt het incident en bepaalt of en hoe de Opdrachtgever, de Autoriteit Persoonsgegevens of de betrokkenen worden geïnformeerd. De Assessor doet dat niet zelf en communiceert niet over het incident met anderen dan hrmforce."
++  },
++  {
++    "t": "lid",
++    "nr": "7.4",
++    "tekst": "De Assessor verleent alle medewerking die nodig is om het incident te onderzoeken, de gevolgen te beperken en herhaling te voorkomen."
++  },
++  {
++    "t": "artikel",
++    "nr": "8",
++    "titel": "Professioneel handelen en onafhankelijkheid"
++  },
++  {
++    "t": "lid",
++    "nr": "8.1",
++    "tekst": "De Assessor handelt volgens de beroepscode van het Nederlands Instituut van Psychologen (NIP), ook wanneer de Assessor zelf geen lid is, en volgens de richtlijnen van hrmforce voor het gebruik van haar instrumenten."
++  },
++  {
++    "t": "lid",
++    "nr": "8.2",
++    "tekst": "De Assessor beoordeelt iedere Kandidaat tegen het door hrmforce vastgestelde toetsingskader, op dezelfde wijze en zonder aanzien des persoons. De Assessor laat zich niet leiden door verwachtingen van de Opdrachtgever en doet alleen uitspraken die door waargenomen gedrag of testuitslagen worden onderbouwd."
++  },
++  {
++    "t": "lid",
++    "nr": "8.3",
++    "tekst": "De Assessor meldt direct aan hrmforce wanneer de Assessor een Kandidaat kent, eerder heeft beoordeeld of begeleid, of een ander belang heeft dat de onafhankelijkheid kan raken. hrmforce beslist dan over de inzet."
++  },
++  {
++    "t": "lid",
++    "nr": "8.4",
++    "tekst": "De Assessor onthoudt zich van uitspraken over de organisatie, het beleid of de keuzes van de Opdrachtgever, zowel tegenover Kandidaten als tegenover medewerkers van de Opdrachtgever."
++  },
++  {
++    "t": "lid",
++    "nr": "8.5",
++    "tekst": "Alle contact met de Opdrachtgever over een Opdracht verloopt via hrmforce, tenzij hrmforce de Assessor uitdrukkelijk vraagt rechtstreeks contact te onderhouden."
++  },
++  {
++    "t": "artikel",
++    "nr": "9",
++    "titel": "Intellectueel eigendom"
++  },
++  {
++    "t": "lid",
++    "nr": "9.1",
++    "tekst": "Alle rechten op de instrumenten, vragenlijsten, normgroepen, cases, rolinstructies, rapportageformats, briefings en overige materialen van hrmforce berusten bij hrmforce of haar licentiegevers. De Assessor krijgt daarop uitsluitend een gebruiksrecht voor de duur en ten behoeve van de Opdracht."
++  },
++  {
++    "t": "lid",
++    "nr": "9.2",
++    "tekst": "Rapportages en andere resultaten die de Assessor in het kader van een Opdracht opstelt, komen toe aan hrmforce. Voor zover nodig draagt de Assessor de rechten daarop bij deze over aan hrmforce."
++  },
++  {
++    "t": "lid",
++    "nr": "9.3",
++    "tekst": "De Assessor gebruikt materialen van hrmforce niet voor eigen opdrachten of voor derden en bewaart er geen kopieën van buiten de hrmforce-omgeving."
++  },
++  {
++    "t": "artikel",
++    "nr": "10",
++    "titel": "Relaties van hrmforce"
++  },
++  {
++    "t": "lid",
++    "nr": "10.1",
++    "tekst": "De Assessor verricht gedurende de looptijd van deze overeenkomst en tot twaalf maanden na de laatste Opdracht geen assessment- of aanverwante werkzaamheden rechtstreeks of via derden voor een Opdrachtgever met wie de Assessor via hrmforce in contact is gekomen, zonder voorafgaande schriftelijke toestemming van hrmforce."
++  },
++  {
++    "t": "lid",
++    "nr": "10.2",
++    "tekst": "Benadert een Opdrachtgever of Kandidaat de Assessor rechtstreeks met een verzoek om werkzaamheden, dan verwijst de Assessor naar hrmforce en informeert de Assessor hrmforce daarover."
++  },
++  {
++    "t": "artikel",
++    "nr": "11",
++    "titel": "Controle en medewerking"
++  },
++  {
++    "t": "lid",
++    "nr": "11.1",
++    "tekst": "hrmforce mag de naleving van deze overeenkomst toetsen, bijvoorbeeld door vragen te stellen over de werkwijze en de gebruikte apparatuur. De Assessor verleent daaraan medewerking."
++  },
++  {
++    "t": "lid",
++    "nr": "11.2",
++    "tekst": "Wanneer een Opdrachtgever, een toezichthouder of een Kandidaat vragen stelt over de verwerking van Persoonsgegevens, verleent de Assessor hrmforce de medewerking die nodig is om die vragen te beantwoorden en om verplichtingen uit de AVG na te komen."
++  },
++  {
++    "t": "artikel",
++    "nr": "12",
++    "titel": "Duur, einde en teruggave"
++  },
++  {
++    "t": "lid",
++    "nr": "12.1",
++    "tekst": "Deze overeenkomst gaat in op de datum van ondertekening en geldt voor onbepaalde tijd, zolang de Assessor Opdrachten voor hrmforce uitvoert of toegang heeft tot de hrmforce-omgeving."
++  },
++  {
++    "t": "lid",
++    "nr": "12.2",
++    "tekst": "Ieder van partijen kan de overeenkomst schriftelijk opzeggen met een opzegtermijn van een maand. Lopende Opdrachten worden afgerond volgens deze overeenkomst, tenzij hrmforce anders bepaalt."
++  },
++  {
++    "t": "lid",
++    "nr": "12.3",
++    "tekst": "Bij het einde van de overeenkomst, en op ieder eerder verzoek van hrmforce, levert de Assessor alle Vertrouwelijke informatie in of verwijdert deze, trekt hrmforce de toegang tot de hrmforce-omgeving in en bevestigt de Assessor schriftelijk dat er geen Persoonsgegevens of materialen van hrmforce meer in zijn of haar bezit zijn."
++  },
++  {
++    "t": "lid",
++    "nr": "12.4",
++    "tekst": "De artikelen 4, 5.7, 9, 10, 13 en 14 blijven na het einde van de overeenkomst van kracht."
++  },
++  {
++    "t": "artikel",
++    "nr": "13",
++    "titel": "Niet-nakoming en aansprakelijkheid"
++  },
++  {
++    "t": "lid",
++    "nr": "13.1",
++    "tekst": "De Assessor is aansprakelijk voor schade die hrmforce of haar Opdrachtgevers lijden als gevolg van een toerekenbare schending van deze overeenkomst, waaronder boetes van toezichthouders en claims van Opdrachtgevers of Kandidaten die aan die schending zijn toe te rekenen."
++  },
++  {
++    "t": "lid",
++    "nr": "13.2",
++    "tekst": "Bij een schending van artikel 4, 5 of 10 mag hrmforce de samenwerking met onmiddellijke ingang beëindigen en de toegang tot de hrmforce-omgeving intrekken, onverminderd haar overige rechten."
++  },
++  {
++    "t": "lid",
++    "nr": "13.3",
++    "tekst": "De Assessor beschikt over een passende beroeps- of bedrijfsaansprakelijkheidsverzekering en toont deze op verzoek van hrmforce aan."
++  },
++  {
++    "t": "artikel",
++    "nr": "14",
++    "titel": "Slotbepalingen"
++  },
++  {
++    "t": "lid",
++    "nr": "14.1",
++    "tekst": "Wijzigingen van deze overeenkomst zijn alleen geldig wanneer zij schriftelijk zijn vastgelegd en door beide partijen zijn ondertekend. hrmforce mag de bijlagen aanpassen aan gewijzigde wetgeving of eisen van Opdrachtgevers; zij informeert de Assessor daarover schriftelijk, waarna de aangepaste bijlage geldt voor nieuwe Opdrachten."
++  },
++  {
++    "t": "lid",
++    "nr": "14.2",
++    "tekst": "Wanneer een bepaling van deze overeenkomst nietig blijkt, blijven de overige bepalingen van kracht en vervangen partijen de nietige bepaling door een geldige bepaling die de bedoeling zo dicht mogelijk benadert."
++  },
++  {
++    "t": "lid",
++    "nr": "14.3",
++    "tekst": "Op deze overeenkomst is Nederlands recht van toepassing. Geschillen worden voorgelegd aan de bevoegde rechter te Amsterdam, nadat partijen hebben geprobeerd het geschil in overleg op te lossen."
++  },
++  {
++    "t": "lid",
++    "nr": "14.4",
++    "tekst": "Deze overeenkomst is in tweevoud opgemaakt en ondertekend, of digitaal ondertekend met gelijke rechtskracht. De bijlagen A en B maken er deel van uit."
++  }
++];
++
++export const BIJLAGE_B = [
++  {
++    "t": "kop",
++    "tekst": "Bijlage B. Overzicht van de verwerking"
++  },
++  {
++    "t": "alinea",
++    "tekst": "Dit overzicht beschrijft de verwerking van Persoonsgegevens waarbij de Assessor betrokken kan zijn. Per Opdracht kan hrmforce in de briefing afwijkingen of aanvullingen aangeven."
++  },
++  {
++    "t": "deftabel",
++    "rijen": [
++      [
++        "Doel",
++        "Uitvoeren van assessments, psychometrisch onderzoek, feedbackonderzoek en terugkoppelgesprekken ten behoeve van selectie-, ontwikkel- en loopbaanvragen van Opdrachtgevers, en het opstellen van rapportages daarover."
++      ],
++      [
++        "Betrokkenen",
++        "Kandidaten: sollicitanten, medewerkers en leidinggevenden van Opdrachtgevers. Incidenteel contactpersonen van Opdrachtgevers."
++      ],
++      [
++        "Categorieën gegevens",
++        "Naam, contactgegevens, functie en organisatie; uitkomsten van capaciteiten-, persoonlijkheids- en drijfverenvragenlijsten; antwoorden op intakevragenlijsten; observaties en beoordelingen uit interviews, oefeningen en rollenspellen; rapportages en adviezen."
++      ],
++      [
++        "Bijzondere gegevens",
++        "Worden niet doelbewust verzameld. Deelt een Kandidaat ongevraagd bijzondere gegevens, dan legt de Assessor die alleen vast wanneer zij voor de vraagstelling noodzakelijk zijn, en in neutrale bewoordingen."
++      ],
++      [
++        "Verwerkingen door de Assessor",
++        "Inzien van uitslagen en conceptrapportages, voeren van gesprekken, observeren en beoordelen, opstellen en aanscherpen van rapportteksten, deelnemen aan kalibratie."
++      ],
++      [
++        "Locatie en systemen",
++        "Uitsluitend in de hrmforce-omgeving, gehost binnen de Europese Economische Ruimte. Geen opslag buiten die omgeving."
++      ],
++      [
++        "Bewaartermijn",
++        "hrmforce bewaart rapportages en uitslagen conform haar bewaarbeleid en de afspraken met de Opdrachtgever. De Assessor bewaart zelf niets na oplevering."
++      ],
++      [
++        "Rechten van Kandidaten",
++        "Inzage vooraf, correctie van feitelijke onjuistheden en blokkering van de rapportage richting Opdrachtgever. AVG-verzoeken lopen via hrmforce."
++      ]
++    ]
++  },
++  {
++    "t": "kader",
++    "titel": "Bij twijfel",
++    "tekst": "Weet je niet zeker of iets mag worden vastgelegd, gedeeld of bewaard: leg het voor aan de opdrachtverantwoordelijke van hrmforce voordat je handelt. Floor Hendriks, f.hendriks@hrmforce.com, +31 (0)88 88 321 88."
++  }
++];
+diff --git a/src/pages/assessor/overeenkomst-q4n8xr2m.astro b/src/pages/assessor/overeenkomst-q4n8xr2m.astro
+new file mode 100644
+index 0000000..a3d8a04
+--- /dev/null
++++ b/src/pages/assessor/overeenkomst-q4n8xr2m.astro
+@@ -0,0 +1,16 @@
++---
++/* Verborgen ondertekenpagina voor nieuwe assessoren.
++   Het pad bevat een willekeurig deel, staat op noindex, niet in de sitemap en
++   nergens in de navigatie. Floor deelt de link zelf. Wil je het pad vervangen,
++   hernoem dan dit bestand; de pagina zelf hoeft niet te veranderen. */
++import Base from "../../layouts/Base.astro";
++import AssessorOvereenkomst from "../../components/AssessorOvereenkomst.astro";
++---
++<Base
++  title="Assessorovereenkomst ondertekenen | hrmforce"
++  description="Overeenkomst voor assessoren, geheimhouding en gegevensverwerking."
++  active=""
++>
++  <meta slot="head" name="robots" content="noindex, nofollow" />
++  <AssessorOvereenkomst />
++</Base>
+-- 
+2.43.0
+

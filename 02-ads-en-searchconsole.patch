@@ -1,0 +1,157 @@
+From dfcbef2b030b0b11b7dc4896931b760c759f64c1 Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Thu, 10 Sep 2026 18:01:38 +0000
+Subject: [PATCH 2/2] Google Ads-conversies en Search Console-verificatie
+ aansluiten
+
+Google Ads-account 679-053-3640 (AW-1017809287): de bestaande conversieacties
+"Demo Aangevraagd" en "Assessment Aangevraagd" worden nu vanuit de site
+aangestuurd. De tag laadt uitsluitend na toestemming voor marketing-cookies.
+Demo- en contactformulieren vuren de demo-conversie, het aanvraagformulier op een
+assessmentpagina de assessment-conversie (waarde EUR 1). Het opvragen van
+voorbeeldvragen blijft een zachte lead en telt niet als Ads-conversie.
+
+Search Console: de HTML-verificatietag van de property https://hrmforce.com/
+staat nu in de head. Zonder deze tag verliest hrmforce de eigen verificatie
+zodra de oude site verdwijnt, want dit account is er nu alleen gedelegeerd
+eigenaar.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ src/components/CookieConsent.astro | 10 +++++-----
+ src/data/site-config.js            | 21 +++++++++++++--------
+ src/layouts/Base.astro             | 27 ++++++++++++++++++++-------
+ 3 files changed, 38 insertions(+), 20 deletions(-)
+
+diff --git a/src/components/CookieConsent.astro b/src/components/CookieConsent.astro
+index bcd5da8..e5a64b3 100644
+--- a/src/components/CookieConsent.astro
++++ b/src/components/CookieConsent.astro
+@@ -5,7 +5,7 @@
+ //   2) de bezoeker de categorie "Statistieken" heeft geaccepteerd.
+ // Keuze wordt opgeslagen in localStorage (met versienummer). Herzien via
+ // window.openCookiePrefs().
+-const { lang = "nl", ga4Id = "", linkedinId = "", clarityId = "", adsId = "", adsLeadLabel = "", t = {} } = Astro.props;
++const { lang = "nl", ga4Id = "", linkedinId = "", clarityId = "", adsId = "", adsDemoLabel = "", adsAssessmentLabel = "", t = {} } = Astro.props;
+ const cat = t.categories ?? {};
+ const nec = cat.necessary ?? {};
+ const stat = cat.statistics ?? {};
+@@ -73,7 +73,7 @@ const mkt = cat.marketing ?? {};
+   </div>
+ </div>
+ 
+-<script is:inline define:vars={{ ga4Id, linkedinId, clarityId, adsId, adsLeadLabel, lang }}>
++<script is:inline define:vars={{ ga4Id, linkedinId, clarityId, adsId, adsDemoLabel, adsAssessmentLabel, lang }}>
+   (function () {
+     var STORAGE_KEY = "hrmforce_cookie_consent";
+     var VERSION = 1;
+@@ -104,8 +104,8 @@ const mkt = cat.marketing ?? {};
+     }
+ 
+     var clarityLoaded = false, linkedinLoaded = false, adsLoaded = false;
+-    // Google Ads. Laadt alleen na toestemming voor 'marketing'. Het conversielabel
+-    // wordt door de conversie-tracking in Base.astro gebruikt (window.hrmAdsLead).
++    // Google Ads. Laadt alleen na toestemming voor 'marketing'. De conversielabels
++    // worden door de conversie-tracking in Base.astro gebruikt (window.hrmAds).
+     function loadAds() {
+       if (adsLoaded || !adsId) return;
+       adsLoaded = true;
+@@ -117,7 +117,7 @@ const mkt = cat.marketing ?? {};
+         gtag("js", new Date());
+       }
+       gtag("config", adsId);
+-      window.hrmAdsLead = adsLeadLabel || "";
++      window.hrmAds = { demo: adsDemoLabel || "", assessment: adsAssessmentLabel || "" };
+     }
+     function loadClarity() {
+       if (clarityLoaded || !clarityId) return;
+diff --git a/src/data/site-config.js b/src/data/site-config.js
+index 1f8ed21..1ca4de7 100644
+--- a/src/data/site-config.js
++++ b/src/data/site-config.js
+@@ -25,18 +25,23 @@ export const ANALYTICS = { GA4_ID: "G-L4WHLCQ1WY" };
+ export const MARKETING = {
+   LINKEDIN_PARTNER_ID: "8219026",
+   CLARITY_ID: "yezxhal0q8", // Clarity-project "hrmforce"
+-  // Google Ads: vul het conversie-ID in (formaat "AW-123456789"). De tag laadt
+-  // uitsluitend na toestemming voor de categorie 'marketing'. Vul daarnaast het
+-  // conversielabel in (formaat "AW-123456789/AbC-D_efG") om een lead-conversie
+-  // te sturen zodra iemand een formulier verstuurt. Leeg = geen Ads-tracking.
+-  GOOGLE_ADS_ID: "",
+-  GOOGLE_ADS_LEAD_LABEL: "",
++  // Google Ads (account 679-053-3640 HrmForce). De tag laadt uitsluitend na
++  // toestemming voor de categorie 'marketing'. De labels komen uit de
++  // gebeurtenisfragmenten van de conversieacties in Google Ads:
++  //   DEMO       = conversieactie "Demo Aangevraagd" (primair)
++  //   ASSESSMENT = conversieactie "Assessment Aangevraagd" (primair, waarde EUR 1)
++  // Leeg laten = geen Ads-tracking.
++  GOOGLE_ADS_ID: "AW-1017809287",
++  GOOGLE_ADS_DEMO_LABEL: "AW-1017809287/Od-yCOT3kLMaEIeTquUD",
++  GOOGLE_ADS_ASSESSMENT_LABEL: "AW-1017809287/siOSCM6QipscEIeTquUD",
+ };
+ 
+ // Verificatie-meta-tags. Leeg = geen tag in de <head>.
+-// GOOGLE_SITE_VERIFICATION = de content-waarde van de HTML-tag uit Search Console.
++// GOOGLE_SITE_VERIFICATION = content-waarde van de HTML-tag uit Search Console
++// (property https://hrmforce.com/). Laat deze staan: zonder de tag verliest
++// hrmforce de eigen verificatie van de property zodra de oude site verdwijnt.
+ export const VERIFICATION = {
+-  GOOGLE_SITE_VERIFICATION: "",
++  GOOGLE_SITE_VERIFICATION: "By4w3ybUKYoJWT-hw7g8LGQTQ0Ge6j3Q3uf4s8yU5QM",
+ };
+ 
+ // Externe reviewprofielen. Vul een URL in om de badge te tonen (leeg = verborgen).
+diff --git a/src/layouts/Base.astro b/src/layouts/Base.astro
+index 377e1f2..f750d07 100644
+--- a/src/layouts/Base.astro
++++ b/src/layouts/Base.astro
+@@ -125,7 +125,7 @@ const orgLd = {
+         q.addEventListener("click", () => q.parentElement.classList.toggle("open"));
+       });
+     </script>
+-    <CookieConsent lang={lang} ga4Id={ANALYTICS.GA4_ID} linkedinId={MARKETING.LINKEDIN_PARTNER_ID} clarityId={MARKETING.CLARITY_ID} adsId={MARKETING.GOOGLE_ADS_ID} adsLeadLabel={MARKETING.GOOGLE_ADS_LEAD_LABEL} t={consentT} />
++    <CookieConsent lang={lang} ga4Id={ANALYTICS.GA4_ID} linkedinId={MARKETING.LINKEDIN_PARTNER_ID} clarityId={MARKETING.CLARITY_ID} adsId={MARKETING.GOOGLE_ADS_ID} adsDemoLabel={MARKETING.GOOGLE_ADS_DEMO_LABEL} adsAssessmentLabel={MARKETING.GOOGLE_ADS_ASSESSMENT_LABEL} t={consentT} />
+     <!-- Henry chatbot -->
+     <script src="/henry-widget.js" is:inline defer></script>
+     <!-- Conversie-tracking (GA4-events) + exit-intent lead magnet. Events sturen
+@@ -135,17 +135,30 @@ const orgLd = {
+         function ev(name, params) {
+           if (window.gtag) window.gtag("event", name, params || {});
+           if (window.lintrk) try { window.lintrk("track", {}); } catch(e){}
+-          // Google Ads-conversie bij een lead (alleen als het label is ingevuld
+-          // en de bezoeker marketing-cookies heeft toegestaan).
+-          if (name === "generate_lead" && window.gtag && window.hrmAdsLead) {
+-            window.gtag("event", "conversion", { send_to: window.hrmAdsLead });
+-          }
++        }
++        // Google Ads-conversie. Vuurt alleen als de bezoeker marketing-cookies
++        // heeft toegestaan (dan staat window.hrmAds klaar) en alleen bij een
++        // echte aanvraag: "Demo Aangevraagd" voor demo- en contactformulieren,
++        // "Assessment Aangevraagd" voor een assessmentaanvraag. Het opvragen van
++        // voorbeeldvragen is een zachte lead en telt niet als Ads-conversie.
++        function adsConversion(kind) {
++          var a = window.hrmAds; if (!a || !window.gtag) return;
++          var label = kind === "assessment" ? a.assessment : a.demo;
++          if (!label) return;
++          var payload = { send_to: label };
++          if (kind === "assessment") { payload.value = 1.0; payload.currency = "EUR"; }
++          window.gtag("event", "conversion", payload);
+         }
+         document.addEventListener("submit", function (e) {
+           var f = e.target; if (!f || f.tagName !== "FORM") return;
+           var subj = (f.querySelector('[name=onderwerp]') || {}).value || "";
+-          var isLead = /voorbeeldvragen/i.test(subj) ? "sample_questions" : (f.id === "request" || f.className.indexOf("formcard") > -1 || f.className.indexOf("vv-form") > -1) ? "lead" : "form";
++          var isLead = /voorbeeldvragen/i.test(subj) ? "sample_questions" : (f.id === "request" || f.className.indexOf("formcard") > -1 || f.className.indexOf("dm-form") > -1 || f.className.indexOf("vv-form") > -1) ? "lead" : "form";
+           ev("generate_lead", { form: f.id || f.className || "form", subject: subj, type: isLead });
++          if (isLead === "lead") {
++            var isAssessment = /assessment/i.test(subj) || !!f.querySelector('[name=assessment]') || /^\/(en|de|fr|es|ro)?\/?assessments\//.test(location.pathname);
++            var isDemo = /demo/i.test(subj) || location.pathname.indexOf("/demo/") > -1 || f.id === "contactForm";
++            adsConversion(isDemo ? "demo" : (isAssessment ? "assessment" : "demo"));
++          }
+         }, true);
+         document.addEventListener("click", function (e) {
+           var a = e.target.closest && e.target.closest("a"); if (!a) return;
+-- 
+2.43.0
+

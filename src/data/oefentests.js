@@ -1,4 +1,20 @@
 // Oefentests i18n (per test, per taal) + UI-labels. Voorbeeldvragen komen uit assessment-examples.js.
+
+// Omschrijving van de detailpagina /oefenen/<slug>/. {naam} wordt vervangen
+// door de naam van de test. Stond eerder per taal in de paginabestanden zelf.
+export const OEFEN_DETAIL_D = {
+  nl: "Oefen met {naam}. Voorbeeldvragen, uitleg over de antwoordschaal en tips waarmee je rustiger en scherper aan de echte afname begint.",
+  en: "Practise with {naam}. Example questions, an explanation of the answer scale and tips to start the real test calmer and sharper.",
+  de: "Üben Sie mit {naam}. Beispielfragen, Erklärung der Antwortskala und Tipps, damit Sie ruhiger in den echten Test starten.",
+  fr: "Entraînez-vous avec {naam}. Questions d'exemple, explication de l'échelle de réponse et conseils pour aborder le vrai test plus sereinement.",
+  es: "Practica con {naam}. Preguntas de ejemplo, explicación de la escala de respuesta y consejos para afrontar el test real con más calma.",
+  ro: "Exersează cu {naam}. Întrebări exemplu, explicarea scalei de răspuns și sfaturi ca să începi testul real mai calm.",
+};
+
+export function oefenDetailD(lang, naam) {
+  return (OEFEN_DETAIL_D[lang] || OEFEN_DETAIL_D.nl).replace("{naam}", naam);
+}
+
 export const OEFEN_UI = {
   nl: { prep:"Voorbereiding", viewQ:"Bekijk voorbeeldvragen", moreTest:"Meer over deze test", tipsTitle:"Tips om te oefenen", tipsEyebrow:"Zo bereid je je voor", moreQ:"Meer oefenen?", formTitle:"Ontvang extra voorbeeldvragen per e-mail", formLead:"Laat je e-mail achter, dan sturen we je meer voorbeeldvragen en oefentips voor de", email:"Werk e-mail", submit:"Stuur mij oefenmateriaal", full:"Liever een compleet oefen-assessment maken?", metaT:"oefenen: voorbeeldvragen | hrmforce", metaD:"Oefen met voorbeeldvragen en uitleg. Zo weet je wat je kunt verwachten en start je voorbereid." },
   en: { prep:"Preparation", viewQ:"View sample questions", moreTest:"More about this test", tipsTitle:"Tips for practising", tipsEyebrow:"How to prepare", moreQ:"More practice?", formTitle:"Receive extra sample questions by email", formLead:"Leave your email and we'll send you more sample questions and practice tips for the", email:"Work email", submit:"Send me practice material", full:"Prefer a complete practice assessment?", metaT:"practice: sample questions | hrmforce", metaD:"Practise with sample questions and explanation. Know what to expect and be well prepared." },

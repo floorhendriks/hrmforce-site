@@ -1,0 +1,12 @@
+---
+import Base from "../../../layouts/Base.astro";
+import OefentestOverzicht from "../../../components/OefentestOverzicht.astro";
+import { ONDERZOEK_UI } from "../../../data/oefentest-ui.js";
+import { perTaal } from "../../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const u = ONDERZOEK_UI[lang];
+---
+<Base lang={lang} title={`${u.title} | hrmforce`} description={u.metaD} active="">
+  <OefentestOverzicht lang={lang} />
+</Base>

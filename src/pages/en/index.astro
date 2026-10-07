@@ -1,9 +1,0 @@
----
-import Base from "../../layouts/Base.astro";
-import Home from "../../components/Home.astro";
-import { homepageContent } from "../../data/homepage-content.js";
-const c = homepageContent.en;
----
-<Base title={c.meta.title} description={c.meta.description} active="">
-  <Home c={c} lang="en" />
-</Base>

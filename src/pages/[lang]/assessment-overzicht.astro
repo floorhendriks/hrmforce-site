@@ -1,0 +1,12 @@
+---
+import Base from "../../layouts/Base.astro";
+import AssessmentOverzicht from "../../components/AssessmentOverzicht.astro";
+import { ovContent } from "../../data/overzicht-content.js";
+import { perTaal } from "../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const c = ovContent[lang];
+---
+<Base title={c.meta.title} description={c.meta.description} active="assessments">
+  <AssessmentOverzicht c={c} lang={lang} />
+</Base>

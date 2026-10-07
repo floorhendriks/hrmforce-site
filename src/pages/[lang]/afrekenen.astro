@@ -1,0 +1,12 @@
+---
+import Base from "../../layouts/Base.astro";
+import Checkout from "../../components/Checkout.astro";
+import { CHECKOUT_I18N } from "../../data/checkout-i18n.js";
+import { perTaal } from "../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const t = CHECKOUT_I18N[lang];
+---
+<Base title={t.meta.title} description={t.meta.description} noindex active="shop">
+  <Checkout lang={lang} />
+</Base>

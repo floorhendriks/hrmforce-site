@@ -1,0 +1,12 @@
+---
+import Base from "../../../layouts/Base.astro";
+import DocumentenOverzicht from "../../../components/DocumentenOverzicht.astro";
+import { DOC_META } from "../../../data/instrument-documenten.js";
+import { perTaal } from "../../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const m = DOC_META[lang];
+---
+<Base lang={lang} title={m.title} description={m.description} active="">
+  <DocumentenOverzicht lang={lang} />
+</Base>

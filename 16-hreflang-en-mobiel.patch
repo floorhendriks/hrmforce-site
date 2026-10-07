@@ -1,0 +1,167 @@
+From a2cff28e15e21ec01eca0b4fe93ecb3936b61b9e Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Mon, 14 Sep 2026 21:02:09 +0000
+Subject: [PATCH] Hreflang op basis van de echte paden, en de mobiele ronde
+
+Hreflang (punt 5)
+- De taalverwijzingen kwamen uit een handmatige lijst van zeventien paden.
+  Ze komen nu uit valid-paths.js, de lijst die de build zelf oplevert, dus een
+  pagina verwijst alleen naar talen waarin hij echt bestaat. Van 319 pagina's
+  met hreflang naar 2.802 van de 2.940.
+
+Mobiele weergave op 390 pixels (punt 17)
+- Tweeentwintig belangrijke pagina's nagelopen in een echte browser.
+- /roi-rekentool/ schoof 179 pixels zijwaarts. Oorzaak: grid-template-columns
+  stond als inline stijl op .explain en .info-grid, en een inline stijl wint van
+  de mediaquery die de kolommen op een telefoon onder elkaar zet. Diezelfde fout
+  stond ook in SubPage en op de Geschikt voor de Zorg-pagina. Nu een klasse
+  .grid-2 die wel netjes stapelt onder 720 pixels.
+- Filterchips en de kleine bedieningsknoppen waren op sommige pagina's lager dan
+  38 pixels. Op aanraakschermen zijn ze nu minstens 40 pixels hoog. Kenniscentrum
+  ging van zeventien te kleine knoppen naar nul, integraties van tien naar nul,
+  het assessmentoverzicht van acht naar nul.
+- Geen javascriptfouten en geen horizontale schuifbalk meer op de gecontroleerde
+  pagina's.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ src/components/RoiRekentool.astro      |  4 ++--
+ src/components/SubPage.astro           |  2 +-
+ src/layouts/Base.astro                 | 30 ++++++++++++--------------
+ src/pages/geschiktvoorzorg/index.astro |  2 +-
+ src/styles/global.css                  |  9 ++++++++
+ 5 files changed, 27 insertions(+), 20 deletions(-)
+
+diff --git a/src/components/RoiRekentool.astro b/src/components/RoiRekentool.astro
+index ca644c7..1a36b6b 100644
+--- a/src/components/RoiRekentool.astro
++++ b/src/components/RoiRekentool.astro
+@@ -15,7 +15,7 @@ const demoHref = demoPath(lang);
+ </div></section>
+ 
+ <section><div class="wrap">
+-  <div class="explain" style="grid-template-columns:1fr 1fr">
++  <div class="explain grid-2">
+     <div class="formcard" style="max-width:none;margin:0">
+       <div class="eyebrow">{t.form.orgHeading}</div>
+       <div class="fg"><label for="wervingen">{t.form.wervingen}</label><input type="number" id="wervingen" value="50" min="0" /></div>
+@@ -45,7 +45,7 @@ const demoHref = demoPath(lang);
+         <div class="eyebrow">{t.result.eyebrow}</div>
+         <div style="font-size:40px;font-weight:800;color:var(--navy)" id="netto">€ 0</div>
+         <p style="color:var(--muted);font-size:14px;margin:0 0 18px">{t.result.nettoLabel}</p>
+-        <div class="info-grid" style="grid-template-columns:1fr 1fr;padding:0;gap:14px">
++        <div class="info-grid grid-2" style="padding:0;gap:14px">
+           <div><div class="lbl">{t.result.bruto}</div><div class="v" id="bruto">€ 0</div></div>
+           <div><div class="lbl">{t.result.investering}</div><div class="v" id="investering">€ 0</div></div>
+           <div><div class="lbl">{t.result.aantal}</div><div class="v" id="aantal">0</div></div>
+diff --git a/src/components/SubPage.astro b/src/components/SubPage.astro
+index d703eb2..76afbf8 100644
+--- a/src/components/SubPage.astro
++++ b/src/components/SubPage.astro
+@@ -36,7 +36,7 @@ const assessHref = localizePath(routes.assessments, lang);
+ 
+   {page.isContact ? (
+     <section class="formsec">
+-      <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start">
++      <div class="wrap grid-2" style="display:grid;gap:40px;align-items:start">
+         <div>
+           <h2 class="section-title" style="font-size:24px">Hrmforce</h2>
+           <p style="color:var(--muted)">Solitudolaan 396<br />1096 DS Amsterdam<br />The Netherlands</p>
+diff --git a/src/layouts/Base.astro b/src/layouts/Base.astro
+index ade9b21..bcc244b 100644
+--- a/src/layouts/Base.astro
++++ b/src/layouts/Base.astro
+@@ -15,6 +15,7 @@ import "../styles/global.css";
+ import Header from "../components/Header.astro";
+ import Footer from "../components/Footer.astro";
+ import { getLangFromUrl, localizePath, demoPath } from "../i18n/utils.js";
++import validPaths from "../data/valid-paths.js";
+ import CookieConsent from "../components/CookieConsent.astro";
+ import { ANALYTICS, MARKETING, VERIFICATION } from "../data/site-config.js";
+ import { consentContent } from "../data/consent-content.js";
+@@ -95,28 +96,25 @@ const STICKY_DEMO = {
+ };
+ const stickyDemo = STICKY_DEMO[lang] || STICKY_DEMO.nl;
+ 
+-// hreflang: alternatieve taalversies voor pagina's die in alle 6 talen bestaan.
++// hreflang: alternatieve taalversies. Niet meer uit een handmatige lijst, maar
++// uit de paden die de build echt oplevert. Zo krijgt elke pagina die in meerdere
++// talen bestaat de juiste verwijzingen, en de rest geen.
+ const SITE = "https://hrmforce.com";
+ const OTHER_LANGS = ["en", "de", "fr", "es", "ro"];
+-const LOCALIZED_PATHS = new Set([
+-  "/", "/tarieven/", "/online-assessments/", "/assessment-overzicht/", "/over-ons/",
+-  "/advies/", "/contact/", "/hrm-oplossingen/", "/support/", "/shop/",
+-  "/kenniscentrum/", "/voorbereiding/", "/support/f-a-q/", "/klantcases/", "/integraties/",
+-  "/trust/", "/roi-rekentool/",
+-]);
++const _alle = validPaths instanceof Set ? validPaths : new Set(validPaths);
+ const _segs = Astro.url.pathname.split("/").filter(Boolean);
+ const _hasLang = _segs.length > 0 && OTHER_LANGS.includes(_segs[0]);
+ let basePath = "/" + (_hasLang ? _segs.slice(1) : _segs).join("/");
+ if (!basePath.endsWith("/")) basePath += "/";
+-const _isAssessmentDetail = /^\/assessments\/[^/]+\/$/.test(basePath);
+-const _localized = LOCALIZED_PATHS.has(basePath) || _isAssessmentDetail;
+-const hreflangs = _localized
+-  ? [
+-      { lang: "nl", href: SITE + basePath },
+-      ...OTHER_LANGS.map((l) => ({ lang: l, href: SITE + "/" + l + basePath })),
+-      { lang: "x-default", href: SITE + basePath },
+-    ]
+-  : [];
++const _talen = OTHER_LANGS.filter((l) => _alle.has("/" + l + basePath));
++const hreflangs =
++  _alle.has(basePath) && _talen.length
++    ? [
++        { lang: "nl", href: SITE + basePath },
++        ..._talen.map((l) => ({ lang: l, href: SITE + "/" + l + basePath })),
++        { lang: "x-default", href: SITE + basePath },
++      ]
++    : [];
+ 
+ // Organisatie-structured-data (voor Google + AI-samenvattingen)
+ const orgLd = {
+diff --git a/src/pages/geschiktvoorzorg/index.astro b/src/pages/geschiktvoorzorg/index.astro
+index 2ba0cd6..f75b0f0 100644
+--- a/src/pages/geschiktvoorzorg/index.astro
++++ b/src/pages/geschiktvoorzorg/index.astro
+@@ -159,7 +159,7 @@ const gvzSchema = [
+       <div class="eyebrow">Twee opties</div>
+       <h2 class="section-title">Zet de Geschikt voor Zorg-test in voor jouw organisatie</h2>
+     </div>
+-    <div class="cards" style="grid-template-columns:repeat(2,1fr)">
++    <div class="cards grid-2">
+       <div class="card">
+         <h3>Standaard</h3>
+         <p>Voor regionale organisaties (tot 1500 werknemers)</p>
+diff --git a/src/styles/global.css b/src/styles/global.css
+index 86d4f78..5ca33fa 100644
+--- a/src/styles/global.css
++++ b/src/styles/global.css
+@@ -207,6 +207,11 @@ h2.section-title{font-size:clamp(1.6rem,1.25rem + 1.6vw,2.25rem);font-weight:800
+ .center .lead,.center .sub{margin-left:0;margin-right:0;max-width:64ch}
+ .num{font-weight:800;color:var(--navy)}
+ .note{background:#fff8f3;border:1px dashed var(--accent);color:#8a4a25;font-size:13px;text-align:center;padding:12px;border-radius:var(--radius-sm)}
++/* Raakvlakken op een telefoon minstens 40 pixels hoog */
++@media(hover:none){
++  .chip,.pt-chip,.cc-btn,.tb-search,.cookie-prefs-btn{min-height:40px}
++  .chip,.pt-chip{display:inline-flex;align-items:center}
++}
+ .tag{display:inline-block;font-family:var(--font-mono);font-size:11.5px;color:var(--navy);font-weight:500;text-transform:uppercase;letter-spacing:.12em}
+ .date{color:var(--muted);font-size:13px}
+ 
+@@ -359,6 +364,10 @@ footer a:hover{color:#fff;opacity:1}
+ .pentagon .ring{width:200px;height:200px;margin:0 auto 18px;border-radius:var(--radius-sm);position:relative;display:flex;align-items:center;justify-content:center}
+ .pentagon .ring .ring-label{position:absolute;inset:50px;background:#fff;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--navy);text-align:center;padding:8px;font-size:13.5px;line-height:1.2}
+ @media(max-width:880px){.explain{grid-template-columns:1fr}}
++/* Twee kolommen als klasse in plaats van als inline stijl, anders kan de
++   mediaquery ze op telefoonbreedte niet meer onder elkaar zetten. */
++.grid-2{grid-template-columns:1fr 1fr}
++@media(max-width:720px){.grid-2{grid-template-columns:1fr}}
+ 
+ /* Quote / social proof */
+ .quote{background:var(--navy)}
+-- 
+2.43.0
+

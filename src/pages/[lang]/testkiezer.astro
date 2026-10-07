@@ -1,0 +1,12 @@
+---
+import Base from "../../layouts/Base.astro";
+import Testkiezer from "../../components/Testkiezer.astro";
+import { testkiezerContent } from "../../data/testkiezer-content.js";
+import { perTaal } from "../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const t = testkiezerContent[lang];
+---
+<Base title={t.meta.title} description={t.meta.description} active="assessments">
+  <Testkiezer lang={lang} />
+</Base>

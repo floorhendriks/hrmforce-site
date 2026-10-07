@@ -1,0 +1,8 @@
+---
+import Home from '../../../views/Home.astro';
+import { altHome } from '../../../lib/alt';
+import { perTaal } from "../../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+---
+<Home lang={lang} alternates={altHome()} />

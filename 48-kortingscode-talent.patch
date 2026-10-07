@@ -1,0 +1,459 @@
+From 962dbb16d2c6abece0a7a0aa89e24e0d1b213b13 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Tue, 29 Sep 2026 10:21:10 +0000
+Subject: [PATCH] Kortingscode TALENT in de webshop
+
+Op de afrekenpagina staat nu een veld voor een kortingscode. De server
+bepaalt de korting, de browser stuurt alleen de code mee, dus een bedrag
+uit de browser telt nergens. TALENT geeft 10 procent op het
+Competentieboek en loopt tot en met 31 december 2027.
+
+De korting gaat van het subtotaal af voordat de btw wordt berekend en
+staat als eigen regel op het overzicht, op de factuur-PDF, in de
+bevestigingsmail en in de teammelding, in alle zes talen.
+
+Verder liep de prijslijst van de server achter op de shop: de
+Certificatietraining stond op 600 terwijl de shop 595 toont. De lijst is
+opnieuw gegenereerd uit shop-catalog.json, zodat de klant betaalt wat er
+staat.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ functions/_lib/catalog.js        |  2 +-
+ functions/_lib/email-template.js |  1 +
+ functions/_lib/invoice.js        |  3 ++
+ functions/_lib/kortingen.js      | 39 ++++++++++++++++
+ functions/_lib/pdf.js            |  1 +
+ functions/_lib/vat.js            | 11 +++--
+ functions/api/checkout.js        | 12 ++++-
+ functions/api/invoice.js         |  6 +--
+ functions/api/korting.js         | 26 +++++++++++
+ functions/api/mollie-webhook.js  |  5 ++-
+ src/components/Checkout.astro    | 76 +++++++++++++++++++++++++++++++-
+ src/data/checkout-i18n.js        |  6 +++
+ 12 files changed, 175 insertions(+), 13 deletions(-)
+ create mode 100644 functions/_lib/kortingen.js
+ create mode 100644 functions/api/korting.js
+
+diff --git a/functions/_lib/catalog.js b/functions/_lib/catalog.js
+index f59e9d0..8ffb01e 100644
+--- a/functions/_lib/catalog.js
++++ b/functions/_lib/catalog.js
+@@ -1,3 +1,3 @@
+ // AUTOGEGENEREERD uit src/data/shop-catalog.json — server-side prijsbron.
+ // Nooit vertrouwen op door de client meegestuurde prijzen.
+-export const PRICES = {"15pf":{"title":"15PF","price":94},"360-graden-feedback":{"title":"360 graden feedback","price":114},"ability-analysis-capaciteitentest":{"title":"Ability Analysis (capaciteitentest)","price":74},"ability-scan":{"title":"Ability Scan","price":74},"appraisal":{"title":"Appraisal","price":84},"assessment-support-rapport":{"title":"Assessment Support Rapport","price":291},"big-5-test-big-fifty-personality":{"title":"Big 5 Test | Big Fifty Personality","price":104},"career-interest":{"title":"Career Interest","price":84},"career-orientations":{"title":"Career Orientations","price":74},"coaching-screener-scan":{"title":"Coaching Screener Scan","price":34},"communicatie-stijlen":{"title":"Communicatie stijlen","price":74},"competentieboek":{"title":"Competentieboek","price":49},"competentietest":{"title":"Competentietest","price":74},"conflict-styles":{"title":"Conflict Styles","price":74},"connector-ability":{"title":"Connector Ability","price":253.55},"corona-scans":{"title":"Corona Scans","price":34},"development-action-planner":{"title":"Development Action Planner","price":253},"disc-persoonlijkheidstest":{"title":"DISC persoonlijkheidstest","price":194},"disc-vragenlijst":{"title":"DISC vragenlijst","price":94},"dsi":{"title":"DSI","price":85},"duurzame-inzetbaarheid-scan":{"title":"Duurzame Inzetbaarheid Scan","price":34},"e-assessment":{"title":"E-Assessment","price":855},"effectiever-leren":{"title":"Effectiever Leren","price":131},"emotionele-intelligentie":{"title":"Emotionele Intelligentie","price":146},"employee-satisfaction":{"title":"Employee Satisfaction","price":34},"executive-assessment":{"title":"Executive Assessment","price":2805},"exit-assessment":{"title":"Exit Assessment","price":54},"facet5":{"title":"Facet5","price":290},"feedback-interpretatie":{"title":"Feedback & Interpretatie","price":0},"goii":{"title":"GOII","price":85},"hrmforce-competentiespel":{"title":"hrmforce competentiespel","price":48},"intake-candidate":{"title":"Intake Candidate","price":34},"interesse-scan":{"title":"Interesse Scan","price":34},"job-profiler":{"title":"Job Profiler","price":59},"leadership-test":{"title":"Leadership test","price":74},"lean-scan":{"title":"Lean Scan","price":34},"leerstijlen-test":{"title":"Leerstijlen test","price":74},"leiderschapsrapport":{"title":"Leiderschapsrapport","price":785},"lencioni-teamdynamiek":{"title":"Lencioni Teamdynamiek","price":39},"levensloop-scan":{"title":"Levensloop Scan","price":34},"logiks-abstract":{"title":"Logiks Abstract","price":84},"logiks-general-advanced":{"title":"Logiks General Advanced","price":84},"logiks-general-intermediate":{"title":"Logiks General Intermediate","price":84},"logiks-numerical":{"title":"Logiks Numerical","price":84},"logiks-verbal":{"title":"Logiks Verbal","price":84},"management-assessment":{"title":"Management Assessment","price":1955},"management-competentie-rapport":{"title":"Management Competentie Rapport","price":179},"manager-plus-rapport":{"title":"Manager Plus Rapport","price":279},"mentale-veerkracht-scan":{"title":"Mentale Veerkracht Scan","price":34},"motivation":{"title":"Motivation","price":74},"mq-rapport-motivational-questionnaire":{"title":"MQ Rapport (Motivational Questionnaire)","price":140},"online-certificatietraining":{"title":"Online Certificatietraining","price":600},"ontwikkelmatrix":{"title":"Ontwikkelmatrix","price":208},"opq-persoonlijk-rapport":{"title":"OPQ Persoonlijk Rapport","price":169},"opq-profiel":{"title":"OPQ Profiel","price":137},"opq-universal-competency-rapport":{"title":"OPQ Universal Competency Rapport","price":217},"papi-3-i":{"title":"PAPI 3-i","price":153},"papi-3-n":{"title":"PAPI 3-n","price":153},"papi-factors":{"title":"PAPI Factors","price":84},"personality-for-professionals-inventory-pfpi":{"title":"Personality for Professionals Inventory (PfPI)","price":238},"professional-assessment":{"title":"Professional Assessment","price":1855},"pulse-survey":{"title":"Pulse Survey","price":34},"referentie-check":{"title":"Referentie Check","price":34},"reflector-360":{"title":"Reflector 360","price":313},"reflector-big-five-leadership":{"title":"Reflector Big Five Leadership","price":423},"reflector-big-five-personality":{"title":"Reflector Big Five Personality","price":267},"rollen-rapport":{"title":"Rollen Rapport","price":160},"sales-rapport":{"title":"Sales Rapport","price":232},"sosie-2nd-generation":{"title":"SOSIE 2nd Generation","price":238},"studiekeuzetest-basis":{"title":"Studiekeuzetest Basis","price":49},"studiekeuzetest-compleet":{"title":"Studiekeuzetest Compleet","price":249},"studiekeuzetest-uitgebreid":{"title":"Studiekeuzetest Uitgebreid","price":149},"talogy-360":{"title":"Talogy 360","price":242},"td-12-persoonlijkheidsvragenlijst":{"title":"TD-12 persoonlijkheidsvragenlijst","price":92},"team-analyse":{"title":"Team Analyse","price":59},"team-impact-ontwikkeling":{"title":"Team Impact Ontwikkeling","price":175},"team-impact-selectie":{"title":"Team Impact Selectie","price":175},"team-roles":{"title":"Team Roles","price":74},"teamflow-mat":{"title":"TeamFlow Mat","price":204},"typology":{"title":"Typology","price":34},"value-drives":{"title":"Value Drives","price":79},"verify-checking":{"title":"Verify Checking","price":89},"verify-inductief":{"title":"Verify Inductief","price":86},"verify-numeriek":{"title":"Verify Numeriek","price":89},"verify-verbaal":{"title":"Verify Verbaal","price":89},"verkoopvaardigheden":{"title":"Verkoopvaardigheden","price":104},"watson-glaser-test":{"title":"Watson Glaser test","price":118}};
++export const PRICES = {"15pf":{"title":"15PF","price":94},"360-graden-feedback":{"title":"360 graden feedback","price":114},"ability-analysis-capaciteitentest":{"title":"Ability Analysis (capaciteitentest)","price":74},"ability-scan":{"title":"Ability Scan","price":74},"appraisal":{"title":"Appraisal","price":84},"assessment-support-rapport":{"title":"Assessment Support Rapport","price":291},"big-5-test-big-fifty-personality":{"title":"Big 5 Test | Big Fifty Personality","price":104},"career-interest":{"title":"Career Interest","price":84},"career-orientations":{"title":"Career Orientations","price":74},"coaching-screener-scan":{"title":"Coaching Screener Scan","price":34},"communicatie-stijlen":{"title":"Communicatie stijlen","price":74},"competentieboek":{"title":"Competentieboek","price":49},"competentietest":{"title":"Competentietest","price":74},"conflict-styles":{"title":"Conflict Styles","price":74},"connector-ability":{"title":"Connector Ability","price":253.55},"corona-scans":{"title":"Corona Scans","price":34},"development-action-planner":{"title":"Development Action Planner","price":253},"disc-persoonlijkheidstest":{"title":"DISC persoonlijkheidstest","price":194},"disc-vragenlijst":{"title":"DISC vragenlijst","price":94},"dsi":{"title":"DSI","price":85},"duurzame-inzetbaarheid-scan":{"title":"Duurzame Inzetbaarheid Scan","price":34},"e-assessment":{"title":"E-Assessment","price":855},"effectiever-leren":{"title":"Effectiever Leren","price":131},"emotionele-intelligentie":{"title":"Emotionele Intelligentie","price":146},"employee-satisfaction":{"title":"Employee Satisfaction","price":34},"executive-assessment":{"title":"Executive Assessment","price":2805},"exit-assessment":{"title":"Exit Assessment","price":54},"facet5":{"title":"Facet5","price":290},"feedback-interpretatie":{"title":"Feedback & Interpretatie","price":0},"goii":{"title":"GOII","price":85},"hrmforce-competentiespel":{"title":"hrmforce competentiespel","price":48},"intake-candidate":{"title":"Intake Candidate","price":34},"interesse-scan":{"title":"Interesse Scan","price":34},"job-profiler":{"title":"Job Profiler","price":59},"leadership-test":{"title":"Leadership test","price":74},"lean-scan":{"title":"Lean Scan","price":34},"leerstijlen-test":{"title":"Leerstijlen test","price":74},"leiderschapsrapport":{"title":"Leiderschapsrapport","price":785},"lencioni-teamdynamiek":{"title":"Lencioni Teamdynamiek","price":39},"levensloop-scan":{"title":"Levensloop Scan","price":34},"logiks-abstract":{"title":"Logiks Abstract","price":84},"logiks-general-advanced":{"title":"Logiks General Advanced","price":84},"logiks-general-intermediate":{"title":"Logiks General Intermediate","price":84},"logiks-numerical":{"title":"Logiks Numerical","price":84},"logiks-verbal":{"title":"Logiks Verbal","price":84},"management-assessment":{"title":"Management Assessment","price":1955},"management-competentie-rapport":{"title":"Management Competentie Rapport","price":179},"manager-plus-rapport":{"title":"Manager Plus Rapport","price":279},"mentale-veerkracht-scan":{"title":"Mentale Veerkracht Scan","price":34},"motivation":{"title":"Motivation","price":74},"mq-rapport-motivational-questionnaire":{"title":"MQ Rapport (Motivational Questionnaire)","price":140},"online-certificatietraining":{"title":"Certificatietraining","price":595},"ontwikkelmatrix":{"title":"Ontwikkelmatrix","price":208},"opq-persoonlijk-rapport":{"title":"OPQ Persoonlijk Rapport","price":169},"opq-profiel":{"title":"OPQ Profiel","price":137},"opq-universal-competency-rapport":{"title":"OPQ Universal Competency Rapport","price":217},"papi-3-i":{"title":"PAPI 3-i","price":153},"papi-3-n":{"title":"PAPI 3-n","price":153},"papi-factors":{"title":"PAPI Factors","price":84},"personality-for-professionals-inventory-pfpi":{"title":"Personality for Professionals Inventory (PfPI)","price":238},"professional-assessment":{"title":"Professional Assessment","price":1855},"pulse-survey":{"title":"Pulse Survey","price":34},"referentie-check":{"title":"Referentie Check","price":34},"reflector-360":{"title":"Reflector 360","price":313},"reflector-big-five-leadership":{"title":"Reflector Big Five Leadership","price":423},"reflector-big-five-personality":{"title":"Reflector Big Five Personality","price":267},"rollen-rapport":{"title":"Rollen Rapport","price":160},"sales-rapport":{"title":"Sales Rapport","price":232},"sosie-2nd-generation":{"title":"SOSIE 2nd Generation","price":238},"studiekeuzetest-basis":{"title":"Studiekeuzetest Basis","price":49},"studiekeuzetest-compleet":{"title":"Studiekeuzetest Compleet","price":249},"studiekeuzetest-uitgebreid":{"title":"Studiekeuzetest Uitgebreid","price":149},"talogy-360":{"title":"Talogy 360","price":242},"td-12-persoonlijkheidsvragenlijst":{"title":"TD-12 persoonlijkheidsvragenlijst","price":92},"team-analyse":{"title":"Team Analyse","price":59},"team-impact-ontwikkeling":{"title":"Team Impact Ontwikkeling","price":175},"team-impact-selectie":{"title":"Team Impact Selectie","price":175},"team-roles":{"title":"Team Roles","price":74},"teamflow-mat":{"title":"TeamFlow Mat","price":204},"typology":{"title":"Typology","price":34},"value-drives":{"title":"Value Drives","price":79},"verify-checking":{"title":"Verify Checking","price":89},"verify-inductief":{"title":"Verify Inductief","price":86},"verify-numeriek":{"title":"Verify Numeriek","price":89},"verify-verbaal":{"title":"Verify Verbaal","price":89},"verkoopvaardigheden":{"title":"Verkoopvaardigheden","price":104},"watson-glaser-test":{"title":"Watson Glaser test","price":118}};
+diff --git a/functions/_lib/email-template.js b/functions/_lib/email-template.js
+index 3cf2d7d..826303c 100644
+--- a/functions/_lib/email-template.js
++++ b/functions/_lib/email-template.js
+@@ -88,6 +88,7 @@ export function orderEmailHtml(inv, opts) {
+     // totalen
+     '<tr><td style="padding:12px 32px 0"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-radius:10px;overflow:hidden">' +
+     totalsRow("Subtotaal (excl. btw)", inv.subtotal, false, false) +
++    (inv.korting ? totalsRow(inv.kortingLabel, inv.korting, false, false) : "") +
+     totalsRow(inv.vatLabel, inv.vat, false, false) +
+     totalsRow("Totaal", inv.total, true, true) +
+     "</table></td></tr>" +
+diff --git a/functions/_lib/invoice.js b/functions/_lib/invoice.js
+index 54111d9..39595e5 100644
+--- a/functions/_lib/invoice.js
++++ b/functions/_lib/invoice.js
+@@ -62,6 +62,8 @@ export function invoiceModel(order, env, opts) {
+     ].filter(Boolean),
+     items,
+     subtotal: money(order.subtotalCents),
++    kortingLabel: order.korting ? "Korting " + order.korting.code + " (" + order.korting.percent + "%)" : "",
++    korting: order.korting ? "- " + money(order.korting.cents) : "",
+     vatLabel,
+     vat: money(order.vatCents),
+     total: money(order.totalCents),
+@@ -87,6 +89,7 @@ export function orderTextSummary(order) {
+   }
+   lines.push("");
+   lines.push("Subtotaal (excl. btw): " + money(order.subtotalCents));
++  if (order.korting) lines.push("Korting " + order.korting.code + " (" + order.korting.percent + "%): -" + money(order.korting.cents));
+   lines.push("Btw (" + order.vatMode + "): " + money(order.vatCents));
+   lines.push("Totaal: " + money(order.totalCents));
+   return lines.join("\n");
+diff --git a/functions/_lib/kortingen.js b/functions/_lib/kortingen.js
+new file mode 100644
+index 0000000..bdfecb6
+--- /dev/null
++++ b/functions/_lib/kortingen.js
+@@ -0,0 +1,39 @@
++// Kortingscodes voor de webshop. De server rekent de korting uit; wat de
++// browser meestuurt is alleen de code, nooit een bedrag.
++//
++// Een code kan gelden voor bepaalde producten (handles) of voor de hele
++// bestelling (handles leeg). De datum in `tot` is de laatste dag waarop de code
++// werkt, in UTC.
++
++export const KORTINGEN = {
++  TALENT: {
++    percent: 10,
++    handles: ["competentieboek"],
++    tot: "2027-12-31",
++  },
++};
++
++export function normaliseerCode(s) {
++  return String(s == null ? "" : s).trim().toUpperCase().replace(/\s+/g, "").slice(0, 32);
++}
++
++// Geeft null als er geen code is ingevuld. Anders altijd een object met `ok`,
++// zodat de checkoutpagina kan laten zien waarom een code niet werkt.
++export function bepaalKorting(code, items, nu) {
++  const c = normaliseerCode(code);
++  if (!c) return null;
++  const k = KORTINGEN[c];
++  if (!k) return { code: c, ok: false, reden: "onbekend", cents: 0 };
++
++  const moment = nu instanceof Date ? nu : new Date();
++  if (k.vanaf && moment < new Date(k.vanaf + "T00:00:00Z")) return { code: c, ok: false, reden: "nog_niet_geldig", cents: 0 };
++  if (k.tot && moment > new Date(k.tot + "T23:59:59Z")) return { code: c, ok: false, reden: "verlopen", cents: 0 };
++
++  const vanToepassing = (it) => !k.handles || !k.handles.length || k.handles.indexOf(it.handle) > -1;
++  const grondslag = (items || []).filter(vanToepassing).reduce((s, it) => s + (it.lineCents || 0), 0);
++  if (grondslag <= 0) return { code: c, ok: false, reden: "niet_van_toepassing", cents: 0 };
++
++  const cents = Math.min(grondslag, Math.round((grondslag * k.percent) / 100));
++  if (cents <= 0) return { code: c, ok: false, reden: "niet_van_toepassing", cents: 0 };
++  return { code: c, ok: true, percent: k.percent, cents, handles: k.handles || [] };
++}
+diff --git a/functions/_lib/pdf.js b/functions/_lib/pdf.js
+index 7fd3614..eb11fa5 100644
+--- a/functions/_lib/pdf.js
++++ b/functions/_lib/pdf.js
+@@ -163,6 +163,7 @@ export function invoicePdf(inv) {
+   y -= 10;
+   const tl = 360;
+   T(tl, y, 9.5, "Subtotaal (excl. btw)", { color: MUT }); T(R, y, 9.5, inv.subtotal, { right: true, color: INK }); y -= 15;
++  if (inv.korting) { T(tl, y, 9.5, inv.kortingLabel, { color: MUT }); T(R, y, 9.5, inv.korting, { right: true, color: INK }); y -= 15; }
+   T(tl, y, 9.5, inv.vatLabel, { color: MUT }); T(R, y, 9.5, inv.vat, { right: true, color: INK }); y -= 8;
+   rects.push({ x: tl - 6, y: y - 20, w: R - tl + 6, h: 26, color: NAVY });
+   T(tl, y - 14, 11.5, "Totaal", { bold: true, color: [1, 1, 1] });
+diff --git a/functions/_lib/vat.js b/functions/_lib/vat.js
+index 5f6a7a7..ca2ab9e 100644
+--- a/functions/_lib/vat.js
++++ b/functions/_lib/vat.js
+@@ -29,7 +29,7 @@ export function computeVat(country, vat) {
+ }
+ 
+ // Bedragen in centen om afrondingsfouten te vermijden.
+-export function priceOrder(lines, prices, country, vat) {
++export function priceOrder(lines, prices, country, vat, kortingCents) {
+   let subtotalCents = 0;
+   const items = [];
+   for (const l of lines || []) {
+@@ -42,9 +42,12 @@ export function priceOrder(lines, prices, country, vat) {
+     items.push({ handle: l.handle, title: p.title, qty, unitCents, lineCents, candidates: l.candidates || [] });
+   }
+   const v = computeVat(country, vat);
+-  const vatCents = Math.round(subtotalCents * v.rate);
+-  const totalCents = subtotalCents + vatCents;
+-  return { items, subtotalCents, vatCents, totalCents, vatRate: v.rate, vatMode: v.mode };
++  // Een korting gaat van het subtotaal af voordat de btw wordt berekend.
++  const korting = Math.max(0, Math.min(subtotalCents, Math.round(Number(kortingCents) || 0)));
++  const grondslag = subtotalCents - korting;
++  const vatCents = Math.round(grondslag * v.rate);
++  const totalCents = grondslag + vatCents;
++  return { items, subtotalCents, kortingCents: korting, vatCents, totalCents, vatRate: v.rate, vatMode: v.mode };
+ }
+ 
+ export function eur(cents) { return (cents / 100).toFixed(2); }
+diff --git a/functions/api/checkout.js b/functions/api/checkout.js
+index 76d8592..921557b 100644
+--- a/functions/api/checkout.js
++++ b/functions/api/checkout.js
+@@ -4,6 +4,7 @@
+ // Vereist: env.MOLLIE_API_KEY (secret). Optioneel: env.DB (D1) voor orderopslag.
+ import { PRICES } from "../_lib/catalog.js";
+ import { priceOrder, eur } from "../_lib/vat.js";
++import { bepaalKorting } from "../_lib/kortingen.js";
+ 
+ const json = (obj, status = 200) =>
+   new Response(JSON.stringify(obj), { status, headers: { "Content-Type": "application/json" } });
+@@ -36,6 +37,14 @@ export async function onRequestPost(context) {
+   try { priced = priceOrder(lines, PRICES, b.country, b.vat); }
+   catch (e) { return json({ error: "pricing_failed", detail: String(e.message || e) }, 400); }
+ 
++  // De korting wordt hier bepaald, niet in de browser. Een code die niet klopt
++  // laat de bestelling gewoon doorgaan tegen de normale prijs.
++  const korting = bepaalKorting(body.kortingscode, priced.items);
++  if (korting && korting.ok) {
++    try { priced = priceOrder(lines, PRICES, b.country, b.vat, korting.cents); }
++    catch (e) { return json({ error: "pricing_failed", detail: String(e.message || e) }, 400); }
++  }
++
+   if (priced.totalCents <= 0) return json({ error: "zero_total" }, 400);
+ 
+   const orderId = uuid();
+@@ -56,6 +65,7 @@ export async function onRequestPost(context) {
+       city: b.city, reference: b.reference || "",
+     },
+     items: priced.items,
++    korting: korting && korting.ok ? { code: korting.code, percent: korting.percent, cents: korting.cents } : null,
+     subtotalCents: priced.subtotalCents,
+     vatCents: priced.vatCents,
+     totalCents: priced.totalCents,
+@@ -74,7 +84,7 @@ export async function onRequestPost(context) {
+         orderId, orderRecord.created, "open", locale, b.email, b.company, b.contact, b.phone || "",
+         b.country, b.vat || "", b.street, b.postal, b.city, b.reference || "",
+         priced.subtotalCents, priced.vatCents, priced.totalCents, priced.vatMode, "EUR", null,
+-        JSON.stringify({ items: priced.items })
++        JSON.stringify({ items: priced.items, korting: orderRecord.korting })
+       ).run();
+     } catch (e) {
+       // Opslag mislukt: log en ga door (betaling blijft mogelijk, webhook valt terug op metadata).
+diff --git a/functions/api/invoice.js b/functions/api/invoice.js
+index d5fc9ed..4428b6b 100644
+--- a/functions/api/invoice.js
++++ b/functions/api/invoice.js
+@@ -4,12 +4,12 @@ import { invoiceModel } from "../_lib/invoice.js";
+ import { invoicePdf } from "../_lib/pdf.js";
+ 
+ function rowToOrder(row) {
+-  let items = [];
+-  try { items = (JSON.parse(row.items_json || "{}").items) || []; } catch (e) {}
++  let items = [], korting = null;
++  try { const j = JSON.parse(row.items_json || "{}"); items = j.items || []; korting = j.korting || null; } catch (e) {}
+   return {
+     id: row.id, created: row.created, status: row.status, locale: row.locale,
+     billing: { company: row.company, contact: row.contact, email: row.email, phone: row.phone, country: row.country, vat: row.vat, street: row.street, postal: row.postal, city: row.city, reference: row.reference },
+-    items, subtotalCents: row.subtotal_cents, vatCents: row.vat_cents, totalCents: row.total_cents, vatMode: row.vat_mode, currency: row.currency, paidAt: row.paid_at,
++    items, korting, subtotalCents: row.subtotal_cents, vatCents: row.vat_cents, totalCents: row.total_cents, vatMode: row.vat_mode, currency: row.currency, paidAt: row.paid_at,
+   };
+ }
+ 
+diff --git a/functions/api/korting.js b/functions/api/korting.js
+new file mode 100644
+index 0000000..6d99667
+--- /dev/null
++++ b/functions/api/korting.js
+@@ -0,0 +1,26 @@
++// POST /api/korting — controleert een kortingscode voor de huidige winkelmand.
++// Alleen om de checkoutpagina te laten zien wat de code oplevert. Bij het
++// afrekenen rekent /api/checkout het opnieuw uit, en dat bedrag telt.
++import { PRICES } from "../_lib/catalog.js";
++import { priceOrder } from "../_lib/vat.js";
++import { bepaalKorting } from "../_lib/kortingen.js";
++
++const json = (obj, status = 200) =>
++  new Response(JSON.stringify(obj), { status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } });
++
++export async function onRequestPost({ request }) {
++  let body;
++  try { body = await request.json(); } catch (e) { return json({ error: "bad_json" }, 400); }
++
++  const lines = Array.isArray(body.lines) ? body.lines : [];
++  if (!lines.length) return json({ ok: false, reden: "lege_mand" });
++
++  let priced;
++  try { priced = priceOrder(lines, PRICES, "NL", ""); }
++  catch (e) { return json({ ok: false, reden: "onbekend_product" }); }
++
++  const k = bepaalKorting(body.kortingscode, priced.items);
++  if (!k) return json({ ok: false, reden: "geen_code" });
++  if (!k.ok) return json({ ok: false, reden: k.reden, code: k.code });
++  return json({ ok: true, code: k.code, percent: k.percent, cents: k.cents });
++}
+diff --git a/functions/api/mollie-webhook.js b/functions/api/mollie-webhook.js
+index 4d34d7f..47f016e 100644
+--- a/functions/api/mollie-webhook.js
++++ b/functions/api/mollie-webhook.js
+@@ -8,8 +8,8 @@ import { sendMail } from "../_lib/mail.js";
+ import { eur } from "../_lib/vat.js";
+ 
+ function rowToOrder(row) {
+-  let items = [];
+-  try { items = (JSON.parse(row.items_json || "{}").items) || []; } catch (e) {}
++  let items = [], korting = null;
++  try { const j = JSON.parse(row.items_json || "{}"); items = j.items || []; korting = j.korting || null; } catch (e) {}
+   return {
+     id: row.id, created: row.created, status: row.status, locale: row.locale,
+     billing: {
+@@ -18,6 +18,7 @@ function rowToOrder(row) {
+       city: row.city, reference: row.reference,
+     },
+     items,
++    korting,
+     subtotalCents: row.subtotal_cents, vatCents: row.vat_cents, totalCents: row.total_cents,
+     vatMode: row.vat_mode, currency: row.currency, paidAt: row.paid_at,
+   };
+diff --git a/src/components/Checkout.astro b/src/components/Checkout.astro
+index c84a777..77c3661 100644
+--- a/src/components/Checkout.astro
++++ b/src/components/Checkout.astro
+@@ -20,6 +20,14 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
+     <aside class="co-order">
+       <h2 class="co-kop">{c.orderTitle}</h2>
+       <div id="coLines"></div>
++      <div class="co-korting">
++        <label for="coCode">{c.k}</label>
++        <div class="co-korting-rij">
++          <input id="coCode" type="text" name="kortingscode" placeholder={c.kPlace} autocomplete="off" spellcheck="false" />
++          <button type="button" class="btn btn-light co-korting-knop" id="coCodeBtn">{c.kApply}</button>
++        </div>
++        <p class="co-korting-melding" id="coCodeMsg" hidden></p>
++      </div>
+       <div class="co-sum" id="coSum"></div>
+       <a class="co-edit" href={shopHref}>{c.editCart}</a>
+     </aside>
+@@ -120,6 +128,16 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
+   .co-edit:hover { color: var(--accent); }
+ 
+   /* Totalen */
++  .co-korting { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
++  .co-korting label { display: block; font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
++  .co-korting-rij { display: flex; gap: 8px; }
++  .co-korting-rij input { flex: 1 1 auto; min-width: 0; padding: 9px 12px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); font-family: inherit; font-size: 14px; text-transform: uppercase; }
++  .co-korting-rij input:focus { outline: 2px solid var(--blue); border-color: var(--blue); }
++  .co-korting-knop { flex: 0 0 auto; }
++  .co-korting-melding { margin: 8px 0 0; font-size: 13px; font-weight: 600; line-height: 1.45; }
++  .co-korting-melding.ok { color: #1a7f4b; }
++  .co-korting-melding.fout { color: #b3261e; }
++  .co-sum-korting span:last-child { color: #1a7f4b; }
+   .co-sum { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); display: grid; gap: 8px; }
+   .co-sum-row { display: flex; justify-content: space-between; gap: 14px; font-size: 14px; color: var(--text); }
+   .co-sum-row span:last-child { font-variant-numeric: tabular-nums; white-space: nowrap; }
+@@ -222,12 +240,21 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
+       else { rate = 0.21; mode = "nl"; label = C.sumVat + " (21%)"; }
+       return { rate: rate, mode: mode, label: label };
+     }
++    // De server bepaalt de korting; hier staat alleen wat hij teruggaf.
++    var korting = null;
++    function kortingLabel() {
++      return (C.kLabel || "Korting {code} ({percent}%)")
++        .replace("{code}", korting.code).replace("{percent}", korting.percent);
++    }
+     function renderSum() {
+       var v = computeVat();
+-      var vatAmt = subtotal * v.rate;
+-      var total = subtotal + vatAmt;
++      var kort = korting ? Math.min(subtotal, korting.cents / 100) : 0;
++      var grondslag = subtotal - kort;
++      var vatAmt = grondslag * v.rate;
++      var total = grondslag + vatAmt;
+       sumEl.innerHTML =
+         '<div class="co-sum-row"><span>' + esc(C.sumSubtotal) + '</span><span>' + money(subtotal) + '</span></div>' +
++        (kort ? '<div class="co-sum-row co-sum-korting"><span>' + esc(kortingLabel()) + '</span><span>- ' + money(kort) + '</span></div>' : '') +
+         '<div class="co-sum-row"><span>' + esc(v.label) + '</span><span>' + money(vatAmt) + '</span></div>' +
+         '<div class="co-sum-row co-sum-total"><span>' + esc(C.sumTotal) + '</span><span>' + money(total) + '</span></div>';
+       return v;
+@@ -236,6 +263,50 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
+     countryEl.addEventListener("change", renderSum);
+     vatEl.addEventListener("input", renderSum);
+ 
++    /* ---------- Kortingscode ---------- */
++    var codeEl = document.getElementById("coCode");
++    var codeBtn = document.getElementById("coCodeBtn");
++    var codeMsg = document.getElementById("coCodeMsg");
++    var REDEN = { onbekend: C.kUnknown, verlopen: C.kExpired, niet_van_toepassing: C.kNotFor, lege_mand: C.kNotFor };
++    function toonCodeMelding(tekst, goed) {
++      codeMsg.textContent = tekst || "";
++      codeMsg.className = "co-korting-melding" + (tekst ? (goed ? " ok" : " fout") : "");
++      codeMsg.hidden = !tekst;
++    }
++    function zetKnop(bezig) {
++      codeBtn.disabled = bezig;
++      codeBtn.textContent = bezig ? C.kBusy : (korting ? C.kRemove : C.kApply);
++    }
++    function wisKorting() {
++      korting = null; codeEl.value = ""; codeEl.disabled = false;
++      toonCodeMelding("", true); zetKnop(false); renderSum();
++    }
++    function controleerCode() {
++      if (korting) { wisKorting(); return; }
++      var code = (codeEl.value || "").trim();
++      if (!code) { toonCodeMelding("", true); return; }
++      zetKnop(true);
++      fetch("/api/korting", {
++        method: "POST", headers: { "Content-Type": "application/json" },
++        body: JSON.stringify({ kortingscode: code, lines: cart.lines.map(function (l) { return { handle: l.lineId, qty: l.qty }; }) }),
++      })
++        .then(function (r) { return r.json().catch(function () { return {}; }); })
++        .then(function (uit) {
++          if (uit && uit.ok) {
++            korting = { code: uit.code, percent: uit.percent, cents: uit.cents };
++            codeEl.value = uit.code; codeEl.disabled = true;
++            toonCodeMelding((C.kOk || "").replace("{code}", uit.code).replace("{percent}", uit.percent), true);
++          } else {
++            korting = null;
++            toonCodeMelding(REDEN[uit && uit.reden] || C.kUnknown, false);
++          }
++          zetKnop(false); renderSum();
++        })
++        .catch(function () { korting = null; toonCodeMelding(C.kError, false); zetKnop(false); renderSum(); });
++    }
++    codeBtn.addEventListener("click", controleerCode);
++    codeEl.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); controleerCode(); } });
++
+     var form = document.getElementById("coForm");
+     var warnEl = document.getElementById("coWarn");
+     var payBtn = document.getElementById("coPay");
+@@ -289,6 +360,7 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
+           street: form.elements["street"].value.trim(), postal: form.elements["postal"].value.trim(),
+           city: form.elements["city"].value.trim(), reference: form.elements["reference"].value.trim(),
+         },
++        kortingscode: korting ? korting.code : "",
+         vatHint: { mode: v.mode, rate: v.rate },
+       };
+ 
+diff --git a/src/data/checkout-i18n.js b/src/data/checkout-i18n.js
+index 00c878e..baff626 100644
+--- a/src/data/checkout-i18n.js
++++ b/src/data/checkout-i18n.js
+@@ -24,6 +24,7 @@ export const CHECKOUT_I18N = {
+     street: "Adres", postal: "Postcode", city: "Plaats", reference: "Referentie / inkoopordernummer (optioneel)",
+     pick: "Kies…",
+     sumSubtotal: "Subtotaal (excl. btw)", sumVat: "Btw", sumVatReverse: "Btw verlegd (0%)", sumVatExport: "Buiten EU (0%)", outsideEu: "Buiten de EU", sumTotal: "Totaal",
++    k: "Kortingscode", kPlace: "Bijvoorbeeld TALENT", kApply: "Toepassen", kRemove: "Verwijderen", kOk: "Code {code} toegepast: {percent}% korting.", kUnknown: "Deze code kennen we niet. Controleer de schrijfwijze.", kExpired: "Deze code is verlopen.", kNotFor: "Deze code geldt niet voor de producten in je mand.", kLabel: "Korting {code} ({percent}%)", kBusy: "Controleren…", kError: "We konden de code nu niet controleren. Probeer het zo nog eens.",
+     pay: "Naar betalen", paying: "Bezig…",
+     secure: "Veilig betalen via iDEAL, Bancontact, creditcard en meer.",
+     terms: "Door te bestellen ga je akkoord met onze voorwaarden. Levering vindt handmatig plaats; je ontvangt de kandidaatlink(s) na betaling.",
+@@ -42,6 +43,7 @@ export const CHECKOUT_I18N = {
+     street: "Address", postal: "Postal code", city: "City", reference: "Reference / PO number (optional)",
+     pick: "Choose…",
+     sumSubtotal: "Subtotal (excl. VAT)", sumVat: "VAT", sumVatReverse: "VAT reverse-charged (0%)", sumVatExport: "Outside EU (0%)", outsideEu: "Outside the EU", sumTotal: "Total",
++    k: "Discount code", kPlace: "For example TALENT", kApply: "Apply", kRemove: "Remove", kOk: "Code {code} applied: {percent}% off.", kUnknown: "We do not recognise this code. Please check the spelling.", kExpired: "This code has expired.", kNotFor: "This code does not apply to the products in your cart.", kLabel: "Discount {code} ({percent}%)", kBusy: "Checking…", kError: "We could not check the code right now. Please try again shortly.",
+     pay: "Continue to payment", paying: "Working…",
+     secure: "Secure payment via iDEAL, Bancontact, credit card and more.",
+     terms: "By ordering you agree to our terms. Delivery is handled manually; you receive the candidate link(s) after payment.",
+@@ -60,6 +62,7 @@ export const CHECKOUT_I18N = {
+     street: "Adresse", postal: "PLZ", city: "Ort", reference: "Referenz / Bestellnummer (optional)",
+     pick: "Wählen…",
+     sumSubtotal: "Zwischensumme (netto)", sumVat: "MwSt.", sumVatReverse: "Reverse Charge (0%)", sumVatExport: "Außerhalb EU (0%)", outsideEu: "Außerhalb der EU", sumTotal: "Gesamt",
++    k: "Rabattcode", kPlace: "Zum Beispiel TALENT", kApply: "Anwenden", kRemove: "Entfernen", kOk: "Code {code} angewendet: {percent}% Rabatt.", kUnknown: "Diesen Code kennen wir nicht. Bitte die Schreibweise prüfen.", kExpired: "Dieser Code ist abgelaufen.", kNotFor: "Dieser Code gilt nicht für die Produkte in Ihrem Warenkorb.", kLabel: "Rabatt {code} ({percent}%)", kBusy: "Wird geprüft…", kError: "Der Code ließ sich gerade nicht prüfen. Bitte gleich erneut versuchen.",
+     pay: "Weiter zur Zahlung", paying: "Läuft…",
+     secure: "Sichere Zahlung per iDEAL, Bancontact, Kreditkarte u. a.",
+     terms: "Mit der Bestellung akzeptieren Sie unsere Bedingungen. Die Lieferung erfolgt manuell; die Kandidaten-Links erhalten Sie nach der Zahlung.",
+@@ -78,6 +81,7 @@ export const CHECKOUT_I18N = {
+     street: "Adresse", postal: "Code postal", city: "Ville", reference: "Référence / n° de commande (facultatif)",
+     pick: "Choisir…",
+     sumSubtotal: "Sous-total (hors TVA)", sumVat: "TVA", sumVatReverse: "TVA autoliquidée (0%)", sumVatExport: "Hors UE (0%)", outsideEu: "Hors de l'UE", sumTotal: "Total",
++    k: "Code de réduction", kPlace: "Par exemple TALENT", kApply: "Appliquer", kRemove: "Retirer", kOk: "Code {code} appliqué : {percent}% de réduction.", kUnknown: "Nous ne reconnaissons pas ce code. Vérifiez l'orthographe.", kExpired: "Ce code a expiré.", kNotFor: "Ce code ne s'applique pas aux produits de votre panier.", kLabel: "Remise {code} ({percent}%)", kBusy: "Vérification…", kError: "Impossible de vérifier le code pour le moment. Réessayez dans un instant.",
+     pay: "Passer au paiement", paying: "En cours…",
+     secure: "Paiement sécurisé via iDEAL, Bancontact, carte et plus.",
+     terms: "En commandant, vous acceptez nos conditions. La livraison est manuelle ; vous recevez le(s) lien(s) candidat après paiement.",
+@@ -96,6 +100,7 @@ export const CHECKOUT_I18N = {
+     street: "Dirección", postal: "Código postal", city: "Ciudad", reference: "Referencia / n.º de pedido (opcional)",
+     pick: "Elegir…",
+     sumSubtotal: "Subtotal (sin IVA)", sumVat: "IVA", sumVatReverse: "IVA con inversión (0%)", sumVatExport: "Fuera de la UE (0%)", outsideEu: "Fuera de la UE", sumTotal: "Total",
++    k: "Código de descuento", kPlace: "Por ejemplo TALENT", kApply: "Aplicar", kRemove: "Quitar", kOk: "Código {code} aplicado: {percent}% de descuento.", kUnknown: "No reconocemos este código. Revisa cómo está escrito.", kExpired: "Este código ha caducado.", kNotFor: "Este código no se aplica a los productos de tu carrito.", kLabel: "Descuento {code} ({percent}%)", kBusy: "Comprobando…", kError: "No hemos podido comprobar el código ahora. Inténtalo en un momento.",
+     pay: "Ir al pago", paying: "Procesando…",
+     secure: "Pago seguro con iDEAL, Bancontact, tarjeta y más.",
+     terms: "Al realizar el pedido aceptas nuestras condiciones. La entrega es manual; recibirás los enlaces del candidato tras el pago.",
+@@ -114,6 +119,7 @@ export const CHECKOUT_I18N = {
+     street: "Adresă", postal: "Cod poștal", city: "Oraș", reference: "Referință / nr. comandă (opțional)",
+     pick: "Alege…",
+     sumSubtotal: "Subtotal (fără TVA)", sumVat: "TVA", sumVatReverse: "TVA taxare inversă (0%)", sumVatExport: "În afara UE (0%)", outsideEu: "În afara UE", sumTotal: "Total",
++    k: "Cod de reducere", kPlace: "De exemplu TALENT", kApply: "Aplică", kRemove: "Elimină", kOk: "Cod {code} aplicat: {percent}% reducere.", kUnknown: "Nu recunoaștem acest cod. Verifică scrierea.", kExpired: "Acest cod a expirat.", kNotFor: "Acest cod nu se aplică produselor din coșul tău.", kLabel: "Reducere {code} ({percent}%)", kBusy: "Se verifică…", kError: "Nu am putut verifica acum codul. Încearcă din nou imediat.",
+     pay: "Continuă spre plată", paying: "Se procesează…",
+     secure: "Plată securizată prin iDEAL, Bancontact, card și altele.",
+     terms: "Prin plasarea comenzii accepți condițiile noastre. Livrarea este manuală; primești linkurile candidatului după plată.",
+-- 
+2.43.0
+

@@ -1,0 +1,251 @@
+From 97ed3b5aaa9bf1575f4bf3bf1acc7250dcbfdfdd Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Mon, 5 Oct 2026 07:35:17 +0000
+Subject: [PATCH] Dubbele kennisartikelen uit de index halen
+
+Vier artikelen stonden onder twee adressen. Het tweede adres bevatte
+alleen het woord Verplaatst en verwees naar het echte artikel. In
+_redirects stond daar een 301 voor, alleen past Cloudflare Pages maar
+een deel van dat bestand toe, dus die regels vielen weg en het lege
+adres bleef als gewone pagina in de lucht. Daar concurreerde het in
+Google met het artikel zelf.
+
+De site bouwt die vier adressen niet meer. De terugvalpagina met
+noindex en een canonical vangt ze op, en de 301-regels staan nu in het
+prioriteitsblok bovenaan _redirects. Dezelfde ronde maakte ook de
+ontbrekende terugvalpagina's voor de hernoemde oefentest-slug.
+---
+ public/_redirects                             | 13 ++++++---
+ .../oefentest/numerisches-denken/index.html   | 14 ++++++++++
+ .../oefentest/numerical-reasoning/index.html  | 14 ++++++++++
+ .../razonamiento-numerico/index.html          | 14 ++++++++++
+ .../raisonnement-numerique/index.html         | 14 ++++++++++
+ .../oefentest/numeriek-redeneren/index.html   | 14 ++++++++++
+ .../oefentest/rationament-numeric/index.html  | 14 ++++++++++
+ src/data/kenniscentrum-duplicaten.js          | 27 +++++++++++++++++++
+ src/pages/[...path].astro                     |  4 +++
+ 9 files changed, 124 insertions(+), 4 deletions(-)
+ create mode 100644 public/de/oefentest/numerisches-denken/index.html
+ create mode 100644 public/en/oefentest/numerical-reasoning/index.html
+ create mode 100644 public/es/oefentest/razonamiento-numerico/index.html
+ create mode 100644 public/fr/oefentest/raisonnement-numerique/index.html
+ create mode 100644 public/oefentest/numeriek-redeneren/index.html
+ create mode 100644 public/ro/oefentest/rationament-numeric/index.html
+ create mode 100644 src/data/kenniscentrum-duplicaten.js
+
+diff --git a/public/_redirects b/public/_redirects
+index 284c185..271caf2 100644
+--- a/public/_redirects
++++ b/public/_redirects
+@@ -36,6 +36,15 @@
+ /ro/toepassingen/zorg/ /ro/sectoren/zorg/ 301
+ /ro/toepassingen/onderwijs/ /ro/sectoren/onderwijs/ 301
+ /ro/toepassingen/industrie/ /ro/sectoren/industrie/ 301
++
++# Kennisartikelen die twee adressen hadden. Het tweede adres bevatte alleen
++# het woord Verplaatst. Deze regels staan hier bovenaan, want onderaan het
++# bestand paste Cloudflare ze niet toe en bleef de dubbele pagina in de lucht.
++/kenniscentrum/onderwijs/werkdruk-onderwijs/ /kenniscentrum/werkdruk-onderwijs/ 301
++/kenniscentrum/ontwikkeling/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/ /kenniscentrum/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/ 301
++/kenniscentrum/ontwikkeling/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/ /kenniscentrum/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/ 301
++/kenniscentrum/ontwikkeling/piramide-van-lencioni/ /assessments/lencioni-teamdynamiek/ 301
++
+ /wp-content/* /media/wp-content/:splat 301
+ /product-categorie/* /shop/ 301
+ /news_category/* /kenniscentrum/ 301
+@@ -240,10 +249,6 @@
+ /demo-aanvragen/ /demo/ 301
+ /aanvragen/ /demo/ 301
+ /plan-een-demo/ /demo/ 301
+-/kenniscentrum/onderwijs/werkdruk-onderwijs/ /kenniscentrum/werkdruk-onderwijs/ 301
+-/kenniscentrum/ontwikkeling/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/ /kenniscentrum/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/ 301
+-/kenniscentrum/ontwikkeling/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/ /kenniscentrum/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/ 301
+-/kenniscentrum/ontwikkeling/piramide-van-lencioni/ /assessments/lencioni-teamdynamiek/ 301
+ /hrm-software/ /hrm-oplossingen/ 301
+ /hrmforce-scans/ /assessment-overzicht/ 301
+ /instructievideos/ /kenniscentrum/ 301
+diff --git a/public/de/oefentest/numerisches-denken/index.html b/public/de/oefentest/numerisches-denken/index.html
+new file mode 100644
+index 0000000..f1793b2
+--- /dev/null
++++ b/public/de/oefentest/numerisches-denken/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/de/oefentest/rechenaufgaben/">
++<link rel="canonical" href="/de/oefentest/rechenaufgaben/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/de/oefentest/rechenaufgaben/">/de/oefentest/rechenaufgaben/</a>.</p>
++<script>location.replace("/de/oefentest/rechenaufgaben/");</script>
++</body>
++</html>
+diff --git a/public/en/oefentest/numerical-reasoning/index.html b/public/en/oefentest/numerical-reasoning/index.html
+new file mode 100644
+index 0000000..57852db
+--- /dev/null
++++ b/public/en/oefentest/numerical-reasoning/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/en/oefentest/numerical-calculation/">
++<link rel="canonical" href="/en/oefentest/numerical-calculation/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/en/oefentest/numerical-calculation/">/en/oefentest/numerical-calculation/</a>.</p>
++<script>location.replace("/en/oefentest/numerical-calculation/");</script>
++</body>
++</html>
+diff --git a/public/es/oefentest/razonamiento-numerico/index.html b/public/es/oefentest/razonamiento-numerico/index.html
+new file mode 100644
+index 0000000..2d90985
+--- /dev/null
++++ b/public/es/oefentest/razonamiento-numerico/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/es/oefentest/calculo-numerico/">
++<link rel="canonical" href="/es/oefentest/calculo-numerico/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/es/oefentest/calculo-numerico/">/es/oefentest/calculo-numerico/</a>.</p>
++<script>location.replace("/es/oefentest/calculo-numerico/");</script>
++</body>
++</html>
+diff --git a/public/fr/oefentest/raisonnement-numerique/index.html b/public/fr/oefentest/raisonnement-numerique/index.html
+new file mode 100644
+index 0000000..6105456
+--- /dev/null
++++ b/public/fr/oefentest/raisonnement-numerique/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/fr/oefentest/calcul-numerique/">
++<link rel="canonical" href="/fr/oefentest/calcul-numerique/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/fr/oefentest/calcul-numerique/">/fr/oefentest/calcul-numerique/</a>.</p>
++<script>location.replace("/fr/oefentest/calcul-numerique/");</script>
++</body>
++</html>
+diff --git a/public/oefentest/numeriek-redeneren/index.html b/public/oefentest/numeriek-redeneren/index.html
+new file mode 100644
+index 0000000..f92fd15
+--- /dev/null
++++ b/public/oefentest/numeriek-redeneren/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/oefentest/rekenopgaven/">
++<link rel="canonical" href="/oefentest/rekenopgaven/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/oefentest/rekenopgaven/">/oefentest/rekenopgaven/</a>.</p>
++<script>location.replace("/oefentest/rekenopgaven/");</script>
++</body>
++</html>
+diff --git a/public/ro/oefentest/rationament-numeric/index.html b/public/ro/oefentest/rationament-numeric/index.html
+new file mode 100644
+index 0000000..92d573c
+--- /dev/null
++++ b/public/ro/oefentest/rationament-numeric/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/ro/oefentest/calcul-numeric/">
++<link rel="canonical" href="/ro/oefentest/calcul-numeric/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/ro/oefentest/calcul-numeric/">/ro/oefentest/calcul-numeric/</a>.</p>
++<script>location.replace("/ro/oefentest/calcul-numeric/");</script>
++</body>
++</html>
+diff --git a/src/data/kenniscentrum-duplicaten.js b/src/data/kenniscentrum-duplicaten.js
+new file mode 100644
+index 0000000..4fb6b60
+--- /dev/null
++++ b/src/data/kenniscentrum-duplicaten.js
+@@ -0,0 +1,27 @@
++// Kennisartikelen die onder twee adressen op de site stonden.
++//
++// Bij de migratie uit WordPress kreeg een deel van de artikelen een tweede,
++// genest adres met de oude categorie erin (/kenniscentrum/ontwikkeling/...).
++// Die tweede versie bevat alleen het woord "Verplaatst" en verwijst naar het
++// echte artikel. Ze stonden wel in _redirects, alleen past Cloudflare Pages
++// maar een deel van dat bestand toe, dus ze bleven als gewone pagina in de
++// lucht en concurreerden in Google met het artikel zelf.
++//
++// Door ze hier te noemen bouwt de site ze niet meer. De terugvalpagina uit
++// npm run hsf:redirects vangt het oude adres op, met noindex en een canonical
++// naar het artikel dat blijft.
++export const DUBBELE_ARTIKELEN = {
++  "/kenniscentrum/onderwijs/werkdruk-onderwijs/":
++    "/kenniscentrum/werkdruk-onderwijs/",
++  "/kenniscentrum/ontwikkeling/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/":
++    "/kenniscentrum/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/",
++  "/kenniscentrum/ontwikkeling/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/":
++    "/kenniscentrum/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/",
++  "/kenniscentrum/ontwikkeling/piramide-van-lencioni/":
++    "/assessments/lencioni-teamdynamiek/",
++};
++
++// De paden zoals de catch-all route ze kent: zonder schuine streep ervoor en erachter.
++export const DUBBELE_PADEN = new Set(
++  Object.keys(DUBBELE_ARTIKELEN).map((p) => p.replace(/^\/+|\/+$/g, ""))
++);
+diff --git a/src/pages/[...path].astro b/src/pages/[...path].astro
+index f6bacd2..b77ab6b 100644
+--- a/src/pages/[...path].astro
++++ b/src/pages/[...path].astro
+@@ -8,6 +8,7 @@ import { shopInfo } from "../data/assessment-shop.js";
+ import { localizePath, sanitizeBodyLinks } from "../i18n/utils.js";
+ import LogoSlider from "../components/LogoSlider.astro";
+ import validPaths from "../data/valid-paths.js";
++import { DUBBELE_PADEN } from "../data/kenniscentrum-duplicaten.js";
+ 
+ // Gemigreerde kenniscentrum-artikelen uit WordPress. Elk artikel-document in
+ // Sanity heeft een volledig 'path'; deze catch-all route rendert ze op dat pad.
+@@ -19,6 +20,8 @@ export async function getStaticPaths() {
+   // Statische routes hebben voorrang; sluit paden uit die we nu als eigen
+   // pagina bouwen (bijv. de sectoren-index) om dubbele routes te voorkomen.
+   const OWN = new Set(["sectoren", "en/sectoren", "de/sectoren", "fr/sectoren", "es/sectoren", "ro/sectoren", "sectoren/onderwijs"]);
++  // Artikelen die twee adressen hebben. Het lege "Verplaatst"-adres bouwen we
++  // niet meer; een terugvalpagina stuurt de bezoeker naar het echte artikel.
+   // Migratieresten uit WordPress: paden als /?page_id=8355/. Het zijn dubbelen
+   // van echte pagina's (templates, testpagina's, tweede versies van Support en
+   // de algemene voorwaarden) met een URL zonder betekenis. Ze niet bouwen haalt
+@@ -36,6 +39,7 @@ export async function getStaticPaths() {
+     .map((a) => ({ ...a, gedeeldeIntro: telling[kop(a.body)] > 1 }))
+     .map((a) => ({ p: a.path.replace(/^\/+|\/+$/g, ""), a }))
+     .filter((x) => !OWN.has(x.p))
++    .filter((x) => !DUBBELE_PADEN.has(x.p))
+     .map((x) => ({ params: { path: x.p }, props: { article: x.a } }));
+ }
+ 
+-- 
+2.43.0
+

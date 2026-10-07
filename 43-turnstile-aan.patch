@@ -1,0 +1,94 @@
+From cd5e58db7050880c7932ff141ffd9c08cf07eef8 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sun, 27 Sep 2026 05:43:11 +0000
+Subject: [PATCH] Turnstile aangezet met de sitesleutel van hrmforce.com
+
+De variabelen van dit project lopen via wrangler.toml, dus een
+build-variabele is er niet. De sitesleutel is publiek en staat nu in
+src/data/turnstile.js, met PUBLIC_TURNSTILE_SITE_KEY als overschrijving.
+
+Verder laadt Mensencheck.astro nu het script van Cloudflare, dat ontbrak
+nog, en krijgt het vakje een vers token zodra een formulier na een
+geslaagde verzending reset() aanroept.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ src/components/Mensencheck.astro | 29 ++++++++++++++++++++++++++++-
+ src/data/turnstile.js            |  8 ++++++++
+ 2 files changed, 36 insertions(+), 1 deletion(-)
+ create mode 100644 src/data/turnstile.js
+
+diff --git a/src/components/Mensencheck.astro b/src/components/Mensencheck.astro
+index f7fc4d9..71b750f 100644
+--- a/src/components/Mensencheck.astro
++++ b/src/components/Mensencheck.astro
+@@ -7,9 +7,10 @@
+    extra's. De server controleert alle drie; hier staat alleen wat de bezoeker
+    nodig heeft. */
+ import { MENS_UI } from "../data/mensencheck-tekst.js";
++import { TURNSTILE_SITE_KEY } from "../data/turnstile.js";
+ const { lang = "nl" } = Astro.props;
+ const u = MENS_UI[lang] || MENS_UI.nl;
+-const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
++const siteKey = TURNSTILE_SITE_KEY;
+ const TAAL = { nl: "nl", en: "en", de: "de", fr: "fr", es: "es", ro: "ro" };
+ ---
+ <div class="mc-val" aria-hidden="true">
+@@ -20,6 +21,18 @@ const TAAL = { nl: "nl", en: "en", de: "de", fr: "fr", es: "es", ro: "ro" };
+ {siteKey && (
+   <div class="mc-vak cf-turnstile" data-sitekey={siteKey} data-language={TAAL[lang] || "nl"} data-theme="light" data-size="flexible"></div>
+ )}
++{siteKey && (
++  <script is:inline>
++    if (!window.__mcTurnstile) {
++      window.__mcTurnstile = true;
++      var mcS = document.createElement("script");
++      mcS.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
++      mcS.async = true;
++      mcS.defer = true;
++      document.head.appendChild(mcS);
++    }
++  </script>
++)}
+ 
+ <style is:global>
+   .mc-val { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+@@ -45,6 +58,20 @@ const TAAL = { nl: "nl", en: "en", de: "de", fr: "fr", es: "es", ro: "ro" };
+     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", stempel);
+     else stempel();
+ 
++    /* Een token is eenmalig. Elk formulier dat na een geslaagde verzending
++       reset() aanroept krijgt hier een vers vakje en een nieuw starttijdstip. */
++    document.addEventListener("reset", function (ev) {
++      var form = ev.target;
++      if (!form || !form.querySelectorAll) return;
++      setTimeout(function () {
++        stempel();
++        if (!window.turnstile) return;
++        form.querySelectorAll(".cf-turnstile").forEach(function (vak) {
++          try { window.turnstile.reset(vak); } catch (e) {}
++        });
++      }, 0);
++    });
++
+     /* Afhandeling voor de formulieren die hiervoor rechtstreeks naar Formspree
+        gingen. Formulieren met een eigen script doen niet mee. */
+     document.addEventListener("submit", function (ev) {
+diff --git a/src/data/turnstile.js b/src/data/turnstile.js
+new file mode 100644
+index 0000000..1252ff1
+--- /dev/null
++++ b/src/data/turnstile.js
+@@ -0,0 +1,8 @@
++/* De sitesleutel van Cloudflare Turnstile voor hrmforce.com. Deze sleutel is
++   publiek: hij staat in de HTML van elke pagina met een formulier. De geheime
++   sleutel hoort er niet bij te staan, die leeft als secret in Cloudflare.
++   De variabelen van dit project lopen via wrangler.toml, dus een
++   build-variabele is er niet; PUBLIC_TURNSTILE_SITE_KEY blijft wel werken als
++   hij ooit wel wordt gezet, bijvoorbeeld lokaal of op een testomgeving. */
++export const TURNSTILE_SITE_KEY =
++  import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "0x4AAAAAAFE7bSi8lU2xFA5D";
+-- 
+2.43.0
+

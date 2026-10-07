@@ -1,0 +1,12 @@
+---
+import Base from "../../../layouts/Base.astro";
+import CameraTest from "../../../components/CameraTest.astro";
+import { cameraTestContent } from "../../../data/camera-test-content.js";
+import { perTaal } from "../../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const t = cameraTestContent[lang];
+---
+<Base title={t.meta.title} description={t.meta.description} active="">
+  <CameraTest t={t} lang={lang} />
+</Base>

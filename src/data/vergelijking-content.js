@@ -1,5 +1,21 @@
 // Vergelijkingspagina's. Feitelijk en neutraal geformuleerd; geen verzonnen
 // claims over concurrenten. hrmforce's onderscheidende punten centraal.
+
+// Omschrijving van de detailpagina /vergelijking/<slug>/. {naam} wordt
+// vervangen door de naam van de aanbieder.
+export const VERG_DETAIL_D = {
+  nl: "hrmforce naast {naam}: wat de instrumenten meten, in welke talen ze beschikbaar zijn en wat een licentie kost. Zonder verkooppraat.",
+  en: "hrmforce next to {naam}: what the instruments measure, which languages they cover and what a licence costs. No sales talk.",
+  de: "hrmforce neben {naam}: was die Instrumente messen, in welchen Sprachen sie verfügbar sind und was eine Lizenz kostet. Ohne Verkaufsgerede.",
+  fr: "hrmforce face à {naam} : ce que mesurent les instruments, dans quelles langues ils existent et ce que coûte une licence. Sans discours commercial.",
+  es: "hrmforce frente a {naam}: qué miden los instrumentos, en qué idiomas están disponibles y qué cuesta una licencia. Sin discurso comercial.",
+  ro: "hrmforce față de {naam}: ce măsoară instrumentele, în ce limbi sunt disponibile și cât costă o licență. Fără discurs comercial.",
+};
+
+export function vergDetailD(lang, naam) {
+  return (VERG_DETAIL_D[lang] || VERG_DETAIL_D.nl).replace("{naam}", naam);
+}
+
 export const VERG_UI = {
  "nl": {
   "faqTitle": "Veelgestelde vragen bij het vergelijken",

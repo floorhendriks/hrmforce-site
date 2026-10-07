@@ -5,13 +5,13 @@ import { SECTORPAGINAS } from "../../../data/sector-paginas.js";
 import { SECTORPAGINAS_I18N } from "../../../data/sector-paginas-i18n.js";
 import { assessments } from "../../../data/assessments.js";
 import { assessmentsI18n } from "../../../data/assessments-i18n.js";
-import { localizePath, demoPath, navHref } from "../../../i18n/utils.js";
+import { localizePath, demoPath, navHref, PREFIXED } from "../../../i18n/utils.js";
 import { SECTOR_UI } from "../../../data/sector-ui.js";
 import { titel as maakTitel, kortZin } from "../../../lib/meta.js";
 import validPaths from "../../../data/valid-paths.js";
 
 export async function getStaticPaths() {
-  const langs = ["en", "de", "fr", "es", "ro"];
+  const langs = PREFIXED;
   const paden = [];
   for (const lang of langs) {
     for (const [sector, nl] of Object.entries(SECTORPAGINAS)) {

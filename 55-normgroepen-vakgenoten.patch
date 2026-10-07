@@ -1,0 +1,30 @@
+From 889f14a876721b43da5d0a0d3aaadca6dc910402 Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Mon, 5 Oct 2026 09:20:51 +0000
+Subject: [PATCH] Normgroepen: toevoegen dat een beoordeling uit de eigen
+ beroepsgroep komt
+
+Een regel over wie er beoordeelt, in de vorm die het NIP zelf publiceert:
+vrijwilligers uit hetzelfde vakgebied, met een richtlijn tegen het
+beoordelen van eigen werk. Het blijft daarmee een toets door vakgenoten
+en geen onafhankelijke audit. Zonder uitspraak over wie welke
+organisaties adviseert, want dat is niet te staven.
+---
+ src/data/themapaginas.js | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/data/themapaginas.js b/src/data/themapaginas.js
+index e1384e0..3238b99 100644
+--- a/src/data/themapaginas.js
++++ b/src/data/themapaginas.js
+@@ -488,6 +488,7 @@ export const THEMAPAGINAS = {
+           { t: "Wel: de opzet en de verantwoording", d: "Is het instrument gebouwd op een erkend model, is er onderzoek gedaan en is dat navolgbaar opgeschreven? Daar geeft een beoordeling antwoord op." },
+           { t: "Niet: de normgroep van vandaag", d: "Een oordeel beschrijft de stand op het moment van beoordelen. Daarna kan er jaren overheen gaan zonder dat er opnieuw naar wordt gekeken." },
+           { t: "Vrijwillig en op aanvraag", d: "Een uitgever vraagt een beoordeling zelf aan. Beoordelaars zijn vrijwilligers, dus hoeveel instrumenten er per jaar langskomen is beperkt." },
++          { t: "Een toets door vakgenoten", d: "Beoordelaars zijn vrijwilligers uit hetzelfde vakgebied, met een richtlijn die voorkomt dat iemand zijn eigen instrument beoordeelt. Dat is zorgvuldig geregeld. Het blijft een oordeel vanuit de eigen beroepsgroep, en dat is iets anders dan een onafhankelijke audit." },
+           { t: "Geen uitspraak over jouw gebruik", d: "Of een instrument past bij jouw functie, jouw doelgroep en jouw procedure, staat los van het oordeel over het instrument zelf." },
+         ] },
+         tests: { title: "Verder lezen", intro: "De pagina's waar dit onderwerp aan raakt.", cta: "Bekijken", kaarten: [
+-- 
+2.43.0
+

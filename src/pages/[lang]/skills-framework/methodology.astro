@@ -1,0 +1,8 @@
+---
+import Method from '../../../views/Method.astro';
+import { altSection } from '../../../lib/alt';
+import { perTaal } from "../../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+---
+<Method lang={lang} alternates={altSection('method')} />

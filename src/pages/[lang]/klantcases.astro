@@ -1,0 +1,12 @@
+---
+import Base from "../../layouts/Base.astro";
+import Cases from "../../components/Cases.astro";
+import { CASE_UI } from "../../data/cases-content.js";
+import { perTaal } from "../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const m = (CASE_UI[lang] || CASE_UI.nl).meta;
+---
+<Base title={m.title} description={m.description} active="about">
+  <Cases />
+</Base>

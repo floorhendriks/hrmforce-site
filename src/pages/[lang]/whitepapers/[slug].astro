@@ -1,0 +1,10 @@
+---
+import Base from "../../../layouts/Base.astro";
+import WhitepaperDetail from "../../../components/WhitepaperDetail.astro";
+import { WHITEPAPERS, WP_UI } from "../../../data/whitepapers-content.js";
+import { perTaal } from "../../../i18n/paden.js";
+export function getStaticPaths(){ return perTaal(WHITEPAPERS.map((wp)=>({ params:{slug:wp.slug}, props:{wp} }))); }
+const { lang } = Astro.params;
+const { wp } = Astro.props; const ui = WP_UI[lang]; const d = wp.i18n[lang];
+---
+<Base title={`${d.title} | hrmforce`} description={d.summary} active=""><WhitepaperDetail wp={wp} ui={ui} lang={lang} /></Base>

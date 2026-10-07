@@ -1,0 +1,330 @@
+From 3d0221981b735e99ebaa4913f9679bad83a1db7c Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Fri, 2 Oct 2026 06:12:37 +0000
+Subject: [PATCH] Bestelling melden zodra hij binnen is, niet pas na betaling
+
+Tot nu toe gingen alle mails pas weg als Mollie de betaling als betaald
+meldde. Bij een overboeking duurt dat dagen. In die tijd wist niemand bij
+hrmforce dat er een bestelling lag en hoorde de klant niets van ons,
+terwijl de bedankpagina wel zei dat de betaling ontvangen was.
+
+Drie wijzigingen:
+- /api/checkout stuurt meteen een interne melding met alle ordergegevens
+  en de stand 'wachten op betaling'. Die loopt in de achtergrond, dus de
+  klant wacht er niet op, en komt er ook als de webhook nooit volgt.
+- De webhook stuurt de klant bij de eerste overgang naar 'in afwachting'
+  een bericht dat de bestelling binnen is, met uitleg over de overboeking,
+  in de taal van de bestelling.
+- De bedankpagina haalt de echte status op via /api/order-status en toont
+  die. De pagina claimt niet meer uit zichzelf dat er betaald is, en de
+  factuurknop verschijnt alleen bij een betaalde bestelling.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ functions/_lib/bestelstatus.js  | 100 ++++++++++++++++++++++++++++++++
+ functions/api/checkout.js       |  22 +++++++
+ functions/api/mollie-webhook.js |  15 ++++-
+ functions/api/order-status.js   |  24 ++++++++
+ src/components/Bedankt.astro    |  31 +++++++++-
+ src/data/checkout-i18n.js       |  12 ++--
+ 6 files changed, 194 insertions(+), 10 deletions(-)
+ create mode 100644 functions/_lib/bestelstatus.js
+ create mode 100644 functions/api/order-status.js
+
+diff --git a/functions/_lib/bestelstatus.js b/functions/_lib/bestelstatus.js
+new file mode 100644
+index 0000000..5d1d2e6
+--- /dev/null
++++ b/functions/_lib/bestelstatus.js
+@@ -0,0 +1,100 @@
++// Teksten voor de mail die de klant krijgt zodra een bestelling binnen is maar
++// de betaling nog niet. Dat gebeurt vooral bij een overboeking: Mollie stuurt
++// dan alleen de bankgegevens, en zonder dit bericht hoort de klant dagenlang
++// niets van hrmforce.
++
++const T = {
++  nl: {
++    onderwerp: (nr) => "We hebben je bestelling ontvangen (" + nr + ")",
++    aanhef: (naam) => "Beste " + (naam || "klant") + ",",
++    intro: "We hebben je bestelling ontvangen. De betaling is nog niet bij ons verwerkt.",
++    overboeking: "Je hebt gekozen voor een overboeking. Dat duurt meestal een tot drie werkdagen. De bankgegevens staan in de e-mail van Mollie, onze betaalpartner.",
++    anders: "Zodra de betaling is afgerond gaat je bestelling verder.",
++    slot: "Zodra de betaling binnen is, ontvang je de bevestiging met de factuur en zetten we de assessments voor je klaar. Je hoeft zelf niets te doen.",
++    vraag: "Vragen over deze bestelling? Mail naar service@hrmforce.com en noem het ordernummer.",
++    groet: "Met vriendelijke groet,\nhrmforce",
++    kop: "Je bestelling:",
++  },
++  en: {
++    onderwerp: (nr) => "We have received your order (" + nr + ")",
++    aanhef: (naam) => "Dear " + (naam || "customer") + ",",
++    intro: "We have received your order. Your payment has not reached us yet.",
++    overboeking: "You chose a bank transfer. That usually takes one to three working days. The bank details are in the email from Mollie, our payment partner.",
++    anders: "Your order continues as soon as the payment is completed.",
++    slot: "Once the payment arrives you receive the confirmation with the invoice, and we prepare the assessments for you. Nothing further is needed from your side.",
++    vraag: "Questions about this order? Email service@hrmforce.com and mention the order number.",
++    groet: "Kind regards,\nhrmforce",
++    kop: "Your order:",
++  },
++  de: {
++    onderwerp: (nr) => "Wir haben Ihre Bestellung erhalten (" + nr + ")",
++    aanhef: (naam) => "Guten Tag " + (naam || "") + ",",
++    intro: "Wir haben Ihre Bestellung erhalten. Ihre Zahlung ist bei uns noch nicht eingegangen.",
++    overboeking: "Sie haben eine Überweisung gewählt. Das dauert in der Regel ein bis drei Werktage. Die Bankdaten stehen in der E-Mail von Mollie, unserem Zahlungspartner.",
++    anders: "Sobald die Zahlung abgeschlossen ist, läuft Ihre Bestellung weiter.",
++    slot: "Sobald die Zahlung eingegangen ist, erhalten Sie die Bestätigung mit der Rechnung und wir richten die Assessments für Sie ein. Von Ihrer Seite ist nichts weiter nötig.",
++    vraag: "Fragen zu dieser Bestellung? Schreiben Sie an service@hrmforce.com und nennen Sie die Bestellnummer.",
++    groet: "Mit freundlichen Grüßen,\nhrmforce",
++    kop: "Ihre Bestellung:",
++  },
++  fr: {
++    onderwerp: (nr) => "Nous avons bien reçu votre commande (" + nr + ")",
++    aanhef: (naam) => "Bonjour " + (naam || "") + ",",
++    intro: "Nous avons bien reçu votre commande. Votre paiement ne nous est pas encore parvenu.",
++    overboeking: "Vous avez choisi le virement bancaire. Cela prend généralement un à trois jours ouvrables. Les coordonnées bancaires figurent dans l'e-mail de Mollie, notre partenaire de paiement.",
++    anders: "Votre commande se poursuit dès que le paiement est finalisé.",
++    slot: "Dès réception du paiement, vous recevez la confirmation avec la facture et nous préparons les évaluations. Rien d'autre n'est requis de votre part.",
++    vraag: "Des questions sur cette commande ? Écrivez à service@hrmforce.com en indiquant le numéro de commande.",
++    groet: "Cordialement,\nhrmforce",
++    kop: "Votre commande :",
++  },
++  es: {
++    onderwerp: (nr) => "Hemos recibido tu pedido (" + nr + ")",
++    aanhef: (naam) => "Hola " + (naam || "") + ",",
++    intro: "Hemos recibido tu pedido. Tu pago todavía no nos ha llegado.",
++    overboeking: "Has elegido una transferencia bancaria. Suele tardar de uno a tres días laborables. Los datos bancarios están en el correo de Mollie, nuestro socio de pagos.",
++    anders: "Tu pedido continúa en cuanto se complete el pago.",
++    slot: "En cuanto llegue el pago recibirás la confirmación con la factura y prepararemos las evaluaciones. No tienes que hacer nada más.",
++    vraag: "¿Dudas sobre este pedido? Escribe a service@hrmforce.com indicando el número de pedido.",
++    groet: "Un cordial saludo,\nhrmforce",
++    kop: "Tu pedido:",
++  },
++  ro: {
++    onderwerp: (nr) => "Am primit comanda ta (" + nr + ")",
++    aanhef: (naam) => "Bună " + (naam || "") + ",",
++    intro: "Am primit comanda ta. Plata nu a ajuns încă la noi.",
++    overboeking: "Ai ales transferul bancar. De obicei durează una până la trei zile lucrătoare. Datele bancare sunt în e-mailul de la Mollie, partenerul nostru de plăți.",
++    anders: "Comanda continuă imediat ce plata este finalizată.",
++    slot: "Imediat ce plata ajunge primești confirmarea cu factura și pregătim evaluările. Nu mai trebuie să faci nimic.",
++    vraag: "Întrebări despre această comandă? Scrie la service@hrmforce.com și menționează numărul comenzii.",
++    groet: "Cu stimă,\nhrmforce",
++    kop: "Comanda ta:",
++  },
++};
++
++const geld = (c) => "EUR " + (c / 100).toFixed(2).replace(".", ",");
++
++// order = het record uit de database, methode = de betaalmethode van Mollie.
++export function wachtOpBetalingMail(order, methode) {
++  const t = T[order.locale] || T.nl;
++  const nr = String(order.id).slice(0, 8).toUpperCase();
++  const regels = (order.items || []).map((it) => "- " + it.title + " x" + it.qty + "  " + geld(it.lineCents));
++  const tekst = [
++    t.aanhef((order.billing && order.billing.contact) || ""),
++    "",
++    t.intro,
++    "",
++    t.kop,
++    ...regels,
++    "Totaal: " + geld(order.totalCents),
++    "",
++    methode === "banktransfer" ? t.overboeking : t.anders,
++    "",
++    t.slot,
++    "",
++    t.vraag,
++    "",
++    t.groet,
++  ].join("\n");
++  return { onderwerp: t.onderwerp(nr), tekst };
++}
+diff --git a/functions/api/checkout.js b/functions/api/checkout.js
+index 921557b..b7f4687 100644
+--- a/functions/api/checkout.js
++++ b/functions/api/checkout.js
+@@ -5,6 +5,8 @@
+ import { PRICES } from "../_lib/catalog.js";
+ import { priceOrder, eur } from "../_lib/vat.js";
+ import { bepaalKorting } from "../_lib/kortingen.js";
++import { sendMail } from "../_lib/mail.js";
++import { orderTextSummary } from "../_lib/invoice.js";
+ 
+ const json = (obj, status = 200) =>
+   new Response(JSON.stringify(obj), { status, headers: { "Content-Type": "application/json" } });
+@@ -92,6 +94,26 @@ export async function onRequestPost(context) {
+     }
+   }
+ 
++  // Interne melding zodra de bestelling binnen is, dus voordat er betaald is.
++  // Bij een overboeking duurt de betaling dagen; zonder deze mail ziet niemand
++  // dat er een bestelling ligt. Loopt in de achtergrond, de klant wacht er niet op.
++  const meldIntern = async () => {
++    try {
++      const naar = String((env && env.ORDER_EMAIL_TO) || "service@hrmforce.com")
++        .split(",").map((x) => x.trim()).filter(Boolean);
++      await sendMail(env, {
++        to: naar,
++        subject: "Bestelling geplaatst " + orderId.slice(0, 8) + " - " + b.company + " (betaling nog niet binnen)",
++        text: "Er is zojuist een bestelling geplaatst in de webshop. De betaling is nog niet bevestigd.\n" +
++          "Bij een overboeking kan dat enkele dagen duren. Zodra de betaling binnen is volgt de\n" +
++          "gebruikelijke melding met de factuur.\n\n" +
++          orderTextSummary(orderRecord) + "\n\nStatus: wachten op betaling.\n",
++      });
++    } catch (e) { console.log("order_placed_mail_failed", String(e.message || e)); }
++  };
++  if (context.waitUntil) context.waitUntil(meldIntern());
++  else await meldIntern();
++
+   if (!env.MOLLIE_API_KEY) return json({ error: "payments_unconfigured" }, 503);
+ 
+   const description = "hrmforce bestelling " + orderId.slice(0, 8) + " (" + b.company + ")";
+diff --git a/functions/api/mollie-webhook.js b/functions/api/mollie-webhook.js
+index 47f016e..c1f53a4 100644
+--- a/functions/api/mollie-webhook.js
++++ b/functions/api/mollie-webhook.js
+@@ -2,6 +2,7 @@
+ // Verifieert de status bij Mollie, werkt de order bij en stuurt bij 'paid'
+ // eenmalig de teammelding + klantbevestiging met factuur-PDF. Idempotent.
+ import { invoiceModel, orderTextSummary } from "../_lib/invoice.js";
++import { wachtOpBetalingMail } from "../_lib/bestelstatus.js";
+ import { invoicePdf } from "../_lib/pdf.js";
+ import { orderEmailHtml } from "../_lib/email-template.js";
+ import { sendMail } from "../_lib/mail.js";
+@@ -67,7 +68,19 @@ export async function onRequestPost(context) {
+       .bind(newStatus, paidAt, paymentId, row.id).run();
+   } catch (e) { console.log("order_update_failed", String(e.message || e)); }
+ 
+-  if (pay.status !== "paid") return new Response("ok", { status: 200 });
++  // Nog niet betaald. Bij de eerste overgang van open naar in afwachting laten
++  // we de klant weten dat de bestelling binnen is. Vooral bij een overboeking,
++  // want die kan dagen duren en tot dan hoort de klant anders niets van ons.
++  if (pay.status !== "paid") {
++    if (newStatus === "pending" && row.status === "open" && (env.MAIL_PROVIDER || "").toLowerCase() === "resend") {
++      try {
++        const wacht = rowToOrder(row);
++        const m = wachtOpBetalingMail(wacht, pay.method || "");
++        await sendMail(env, { to: [wacht.billing.email], subject: m.onderwerp, text: m.tekst, orderId: wacht.id });
++      } catch (e) { console.log("pending_mail_failed", String(e.message || e)); }
++    }
++    return new Response("ok", { status: 200 });
++  }
+ 
+   // Betaald: eenmalig mailen.
+   const order = rowToOrder({ ...row, status: "paid", paid_at: paidAt });
+diff --git a/functions/api/order-status.js b/functions/api/order-status.js
+new file mode 100644
+index 0000000..b794b9e
+--- /dev/null
++++ b/functions/api/order-status.js
+@@ -0,0 +1,24 @@
++// GET /api/order-status?order=<id> — alleen de status van een bestelling.
++// De bedankpagina gebruikt dit om de juiste tekst te tonen: bij een overboeking
++// is er nog niet betaald, en dan klopt "we hebben je betaling ontvangen" niet.
++// Er gaan bewust geen persoonsgegevens of bedragen over deze route; het id is
++// een niet-raadbare uuid en staat alleen in de link van de klant zelf.
++
++const json = (obj, status = 200) =>
++  new Response(JSON.stringify(obj), {
++    status,
++    headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
++  });
++
++export async function onRequestGet({ request, env }) {
++  const id = new URL(request.url).searchParams.get("order");
++  if (!id) return json({ error: "missing_order" }, 400);
++  if (!env.DB) return json({ status: "onbekend" });
++
++  let row;
++  try { row = await env.DB.prepare("SELECT status FROM orders WHERE id=?").bind(id).first(); }
++  catch (e) { return json({ status: "onbekend" }); }
++  if (!row) return json({ status: "onbekend" });
++
++  return json({ status: row.status, factuur: row.status === "paid" });
++}
+diff --git a/src/components/Bedankt.astro b/src/components/Bedankt.astro
+index 4fccb30..16de18f 100644
+--- a/src/components/Bedankt.astro
++++ b/src/components/Bedankt.astro
+@@ -4,6 +4,7 @@ import { localizePath } from "../i18n/utils.js";
+ const { lang } = Astro.props;
+ const s = SUCCESS_I18N[lang] || SUCCESS_I18N.nl;
+ const shopHref = localizePath("/shop/", lang);
++const S = { h1: s.h1, lead: s.lead, h1Wacht: s.h1Wacht, leadWacht: s.leadWacht, h1Mis: s.h1Mis, leadMis: s.leadMis };
+ ---
+ <section class="wrap bd-wrap">
+   <div class="bd-card">
+@@ -11,7 +12,7 @@ const shopHref = localizePath("/shop/", lang);
+       <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+     </div>
+     <h1 class="bd-h1">{s.h1}</h1>
+-    <p class="bd-lead">{s.lead}</p>
++    <p class="bd-lead">{s.leadWacht}</p>
+     <p class="bd-order" id="bdOrder" hidden><strong>{s.order}:</strong> <span id="bdOrderId"></span></p>
+     <div class="bd-actions">
+       <a class="btn btn-light" id="bdInvoice" href="#" hidden>{s.invoice}</a>
+@@ -33,7 +34,7 @@ const shopHref = localizePath("/shop/", lang);
+   @media (max-width: 520px) { .bd-actions { flex-direction: column; } .bd-actions .btn { width: 100%; } }
+ </style>
+ 
+-<script is:inline>
++<script is:inline define:vars={{ S }}>
+   (function () {
+     try { localStorage.removeItem("hrmforce_cart_v2"); } catch (e) {}
+     var id = new URLSearchParams(location.search).get("order");
+@@ -41,7 +42,31 @@ const shopHref = localizePath("/shop/", lang);
+       var o = document.getElementById("bdOrder"); var oi = document.getElementById("bdOrderId");
+       if (o && oi) { oi.textContent = id.slice(0, 8).toUpperCase(); o.hidden = false; }
+       var inv = document.getElementById("bdInvoice");
+-      if (inv) { inv.href = "/api/invoice?order=" + encodeURIComponent(id); inv.hidden = false; }
++      /* De factuur bestaat pas na betaling, en bij een overboeking is er nog
++         niet betaald. Daarom eerst de status opvragen en dan pas de juiste
++         tekst en knop tonen. Komt er geen antwoord, dan blijft de pagina staan
++         zoals hij was. */
++      fetch("/api/order-status?order=" + encodeURIComponent(id))
++        .then(function (r) { return r.json(); })
++        .then(function (uit) {
++          var st = uit && uit.status;
++          var kop = document.querySelector(".bd-h1"), lead = document.querySelector(".bd-lead");
++          var vink = document.querySelector(".bd-check");
++          if (st === "paid") {
++            if (kop) kop.textContent = S.h1;
++            if (lead) lead.textContent = S.lead;
++            if (inv) { inv.href = "/api/invoice?order=" + encodeURIComponent(id); inv.hidden = false; }
++            return;
++          }
++          if (st === "pending" || st === "open" || !st || st === "onbekend") {
++            if (vink) vink.style.background = "#037ACB";
++          } else {
++            if (kop) kop.textContent = S.h1Mis;
++            if (lead) lead.textContent = S.leadMis;
++            if (vink) vink.style.background = "#b3261e";
++          }
++        })
++        .catch(function () {});
+     }
+   })();
+ </script>
+diff --git a/src/data/checkout-i18n.js b/src/data/checkout-i18n.js
+index baff626..39f5137 100644
+--- a/src/data/checkout-i18n.js
++++ b/src/data/checkout-i18n.js
+@@ -130,10 +130,10 @@ export const CHECKOUT_I18N = {
+ };
+ 
+ export const SUCCESS_I18N = {
+-  nl: { title: "Bedankt voor je bestelling! | hrmforce", h1: "Bedankt voor je bestelling", lead: "We hebben je betaling ontvangen. Je ontvangt een bevestiging per e-mail; wij zetten de assessments handmatig klaar en sturen de kandidaatlink(s) kort daarna toe.", order: "Ordernummer", invoice: "Download je factuur (PDF)", toShop: "Verder in de shop", note: "Geen e-mail ontvangen? Controleer je spam of mail service@hrmforce.com." },
+-  en: { title: "Thank you for your order! | hrmforce", h1: "Thank you for your order", lead: "We have received your payment. You will get a confirmation by email; we set up the assessments manually and send the candidate link(s) shortly after.", order: "Order number", invoice: "Download your invoice (PDF)", toShop: "Continue in the shop", note: "No email received? Check your spam or email service@hrmforce.com." },
+-  de: { title: "Danke für Ihre Bestellung! | hrmforce", h1: "Danke für Ihre Bestellung", lead: "Wir haben Ihre Zahlung erhalten. Sie erhalten eine Bestätigung per E-Mail; wir richten die Assessments manuell ein und senden die Kandidaten-Links kurz danach.", order: "Bestellnummer", invoice: "Rechnung herunterladen (PDF)", toShop: "Weiter im Shop", note: "Keine E-Mail erhalten? Prüfen Sie den Spam oder mailen Sie service@hrmforce.com." },
+-  fr: { title: "Merci pour votre commande ! | hrmforce", h1: "Merci pour votre commande", lead: "Nous avons reçu votre paiement. Vous recevrez une confirmation par e-mail ; nous préparons les évaluations manuellement et envoyons le(s) lien(s) candidat peu après.", order: "Numéro de commande", invoice: "Télécharger votre facture (PDF)", toShop: "Continuer dans la boutique", note: "Pas d'e-mail reçu ? Vérifiez vos spams ou écrivez à service@hrmforce.com." },
+-  es: { title: "¡Gracias por tu pedido! | hrmforce", h1: "Gracias por tu pedido", lead: "Hemos recibido tu pago. Recibirás una confirmación por correo; preparamos las evaluaciones manualmente y enviamos los enlaces del candidato poco después.", order: "Número de pedido", invoice: "Descargar tu factura (PDF)", toShop: "Seguir en la tienda", note: "¿No recibiste el correo? Revisa el spam o escribe a service@hrmforce.com." },
+-  ro: { title: "Îți mulțumim pentru comandă! | hrmforce", h1: "Îți mulțumim pentru comandă", lead: "Am primit plata ta. Vei primi o confirmare pe e-mail; pregătim evaluările manual și trimitem linkurile candidatului la scurt timp după.", order: "Număr comandă", invoice: "Descarcă factura (PDF)", toShop: "Continuă în magazin", note: "Nu ai primit e-mailul? Verifică spam-ul sau scrie la service@hrmforce.com." },
++  nl: { title: "Bedankt voor je bestelling! | hrmforce", h1: "Bedankt voor je bestelling", lead: "We hebben je betaling ontvangen. Je ontvangt een bevestiging per e-mail; wij zetten de assessments handmatig klaar en sturen de kandidaatlink(s) kort daarna toe.", order: "Ordernummer", invoice: "Download je factuur (PDF)", toShop: "Verder in de shop", note: "Geen e-mail ontvangen? Controleer je spam of mail service@hrmforce.com.", h1Wacht: "Bedankt voor je bestelling", leadWacht: "We hebben je bestelling ontvangen. De betaling is nog niet bij ons verwerkt. Bij een overboeking duurt dat meestal een tot drie werkdagen. Zodra de betaling binnen is ontvang je de bevestiging met de factuur en zetten we de assessments voor je klaar.", h1Mis: "Je bestelling staat klaar, de betaling nog niet", leadMis: "De betaling is niet afgerond. Je bestelling staat bij ons geregistreerd. Mail naar service@hrmforce.com met je ordernummer, dan sturen we je een nieuwe betaallink of een factuur." },
++  en: { title: "Thank you for your order! | hrmforce", h1: "Thank you for your order", lead: "We have received your payment. You will get a confirmation by email; we set up the assessments manually and send the candidate link(s) shortly after.", order: "Order number", invoice: "Download your invoice (PDF)", toShop: "Continue in the shop", note: "No email received? Check your spam or email service@hrmforce.com.", h1Wacht: "Thank you for your order", leadWacht: "We have received your order. Your payment has not reached us yet. A bank transfer usually takes one to three working days. Once it arrives you receive the confirmation with the invoice and we prepare the assessments for you.", h1Mis: "Your order is registered, the payment is not", leadMis: "The payment was not completed. Your order is registered with us. Email service@hrmforce.com with your order number and we will send a new payment link or an invoice." },
++  de: { title: "Danke für Ihre Bestellung! | hrmforce", h1: "Danke für Ihre Bestellung", lead: "Wir haben Ihre Zahlung erhalten. Sie erhalten eine Bestätigung per E-Mail; wir richten die Assessments manuell ein und senden die Kandidaten-Links kurz danach.", order: "Bestellnummer", invoice: "Rechnung herunterladen (PDF)", toShop: "Weiter im Shop", note: "Keine E-Mail erhalten? Prüfen Sie den Spam oder mailen Sie service@hrmforce.com.", h1Wacht: "Danke für Ihre Bestellung", leadWacht: "Wir haben Ihre Bestellung erhalten. Ihre Zahlung ist bei uns noch nicht eingegangen. Eine Überweisung dauert meist ein bis drei Werktage. Sobald sie eingegangen ist, erhalten Sie die Bestätigung mit der Rechnung und wir richten die Assessments ein.", h1Mis: "Ihre Bestellung ist erfasst, die Zahlung noch nicht", leadMis: "Die Zahlung wurde nicht abgeschlossen. Ihre Bestellung ist bei uns erfasst. Schreiben Sie an service@hrmforce.com mit Ihrer Bestellnummer, dann senden wir einen neuen Zahlungslink oder eine Rechnung." },
++  fr: { title: "Merci pour votre commande ! | hrmforce", h1: "Merci pour votre commande", lead: "Nous avons reçu votre paiement. Vous recevrez une confirmation par e-mail ; nous préparons les évaluations manuellement et envoyons le(s) lien(s) candidat peu après.", order: "Numéro de commande", invoice: "Télécharger votre facture (PDF)", toShop: "Continuer dans la boutique", note: "Pas d'e-mail reçu ? Vérifiez vos spams ou écrivez à service@hrmforce.com.", h1Wacht: "Merci pour votre commande", leadWacht: "Nous avons bien reçu votre commande. Votre paiement ne nous est pas encore parvenu. Un virement prend généralement un à trois jours ouvrables. Dès réception, vous recevez la confirmation avec la facture et nous préparons les évaluations.", h1Mis: "Votre commande est enregistrée, le paiement non", leadMis: "Le paiement n'a pas abouti. Votre commande est enregistrée chez nous. Écrivez à service@hrmforce.com avec votre numéro de commande et nous vous envoyons un nouveau lien de paiement ou une facture." },
++  es: { title: "¡Gracias por tu pedido! | hrmforce", h1: "Gracias por tu pedido", lead: "Hemos recibido tu pago. Recibirás una confirmación por correo; preparamos las evaluaciones manualmente y enviamos los enlaces del candidato poco después.", order: "Número de pedido", invoice: "Descargar tu factura (PDF)", toShop: "Seguir en la tienda", note: "¿No recibiste el correo? Revisa el spam o escribe a service@hrmforce.com.", h1Wacht: "Gracias por tu pedido", leadWacht: "Hemos recibido tu pedido. Tu pago todavía no nos ha llegado. Una transferencia suele tardar de uno a tres días laborables. En cuanto llegue recibirás la confirmación con la factura y prepararemos las evaluaciones.", h1Mis: "Tu pedido está registrado, el pago no", leadMis: "El pago no se completó. Tu pedido está registrado. Escribe a service@hrmforce.com con tu número de pedido y te enviaremos un nuevo enlace de pago o una factura." },
++  ro: { title: "Îți mulțumim pentru comandă! | hrmforce", h1: "Îți mulțumim pentru comandă", lead: "Am primit plata ta. Vei primi o confirmare pe e-mail; pregătim evaluările manual și trimitem linkurile candidatului la scurt timp după.", order: "Număr comandă", invoice: "Descarcă factura (PDF)", toShop: "Continuă în magazin", note: "Nu ai primit e-mailul? Verifică spam-ul sau scrie la service@hrmforce.com.", h1Wacht: "Mulțumim pentru comandă", leadWacht: "Am primit comanda ta. Plata nu a ajuns încă la noi. Un transfer bancar durează de obicei una până la trei zile lucrătoare. Imediat ce ajunge primești confirmarea cu factura și pregătim evaluările.", h1Mis: "Comanda este înregistrată, plata nu", leadMis: "Plata nu a fost finalizată. Comanda ta este înregistrată la noi. Scrie la service@hrmforce.com cu numărul comenzii și îți trimitem un nou link de plată sau o factură." },
+ };
+-- 
+2.43.0
+

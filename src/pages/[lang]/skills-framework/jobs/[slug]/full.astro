@@ -1,0 +1,15 @@
+---
+import FunctionFull from '../../../../../views/FunctionFull.astro';
+import { functions, getFunction } from '../../../../../lib/hsf';
+import { PREFIXED } from '../../../../../i18n/utils.js';
+export async function getStaticPaths() {
+  return PREFIXED.flatMap((lang) =>
+    functions
+      .filter((f: any) => f.slug?.[lang])
+      .map((f: any) => ({ params: { lang, slug: f.slug[lang] }, props: { id: f.id } }))
+  );
+}
+const { lang } = Astro.params;
+const fn = await getFunction(Astro.props.id);
+---
+<FunctionFull lang={lang} fn={fn} />

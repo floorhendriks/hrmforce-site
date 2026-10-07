@@ -1,0 +1,227 @@
+From 232651f6db6814faf9b9e32b3532fab3545a732c Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Tue, 29 Sep 2026 09:19:23 +0000
+Subject: [PATCH] Training als eigen segment in de shop, en service@ in cc bij
+ particulieren
+
+De doorverwijzing die een particulier automatisch krijgt, gaat nu ook in
+cc naar service@hrmforce.com, naast f.hendriks@hrmforce.com. Adressen
+worden ontdubbeld, ook als een variabele er meerdere bevat.
+
+Certificatietraining staat in de shop nu ook onder het segment Training,
+naast Materialen, zodat het filter erop werkt. Bij een training vervallen
+de vier kenmerken over losse testafname, de tien vragen over assessments
+en het blok voor het aanvragen van een voorbeeldrapport. Daarvoor in de
+plaats komen kenmerken en zes vragen die over de training zelf gaan, in
+alle zes talen.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ functions/api/aanvraag.js   | 15 +++++++-
+ src/components/Shop.astro   | 28 +++++++++++----
+ src/data/shop-trainingen.js | 70 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 105 insertions(+), 8 deletions(-)
+ create mode 100644 src/data/shop-trainingen.js
+
+diff --git a/functions/api/aanvraag.js b/functions/api/aanvraag.js
+index 70ba069..3903fd4 100644
+--- a/functions/api/aanvraag.js
++++ b/functions/api/aanvraag.js
+@@ -93,7 +93,9 @@ export async function onRequestPost({ request, env }) {
+       await sendMail(env, {
+         from: van,
+         to: [email],
+-        cc: [ccIntern],
++        // service@ en f.hendriks@ lezen mee, zodat de doorverwijzing ook in de
++        // eigen postbus staat en het gesprek daar verder kan lopen.
++        cc: adressen(naarIntern, ccIntern),
+         subject: m.onderwerp,
+         text: m.tekst,
+       });
+@@ -105,6 +107,17 @@ export async function onRequestPost({ request, env }) {
+   return json({ ok: true, soort, doorverwezen: naarAanvrager });
+ }
+ 
++// Adressen samenvoegen, ontdubbeld, ook als een variabele meerdere adressen
++// met komma's bevat.
++function adressen(...regels) {
++  const uit = [];
++  regels.forEach((r) => String(r || "").split(",").forEach((a) => {
++    const x = a.trim();
++    if (x && !uit.includes(x)) uit.push(x);
++  }));
++  return uit;
++}
++
+ function json(data, status = 200) {
+   return new Response(JSON.stringify(data), {
+     status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+diff --git a/src/components/Shop.astro b/src/components/Shop.astro
+index 4bd7408..952d552 100644
+--- a/src/components/Shop.astro
++++ b/src/components/Shop.astro
+@@ -5,6 +5,7 @@ import { shopImages } from "../data/shop-images.js";
+ import { SHOP_CONTENT } from "../data/shop-products.js";
+ import catalog from "../data/shop-catalog.json";
+ import { faqFor, BY_SEGMENT, generalFaq } from "../data/shop-faq.js";
++import { TRAINING_HANDLES, TRAINING_SEGMENT, TRAINING_BULLETS, TRAINING_FAQ } from "../data/shop-trainingen.js";
+ 
+ const { t, lang } = Astro.props;
+ 
+@@ -138,6 +139,14 @@ const rq = REQ_I18N[lang] || REQ_I18N.nl;
+ // voorberekend zodat het inline script alleen hoeft op te zoeken op productType.
+ const FAQ_SEG = {};
+ Object.keys(BY_SEGMENT).forEach((s) => { FAQ_SEG[s] = faqFor(s, lang); });
++
++// Trainingen: eigen segment, eigen kenmerken en eigen vragen.
++const TRAIN = {
++  handles: TRAINING_HANDLES,
++  segment: TRAINING_SEGMENT,
++  bullets: TRAINING_BULLETS[lang] || TRAINING_BULLETS.nl,
++  faq: TRAINING_FAQ[lang] || TRAINING_FAQ.nl,
++};
+ const FAQ_DEFAULT = generalFaq(lang);
+ import Mensencheck from "./Mensencheck.astro";
+ const MC_OK = { nl: "Bedankt. We nemen zo snel mogelijk contact met je op.", en: "Thank you. We will get in touch as soon as we can.", de: "Danke. Wir melden uns so schnell wie möglich.", fr: "Merci. Nous vous recontactons au plus vite.", es: "Gracias. Nos pondremos en contacto lo antes posible.", ro: "Mulțumim. Revenim cât de repede putem." };
+@@ -379,7 +388,7 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
+   .cart-warn { color: #b3261e; background: #fdeceb; border: 1px solid #f6c9c5; border-radius: var(--radius-sm); padding: 8px 12px; font-size: 13px; font-weight: 600; margin: 0 0 10px; }
+ </style>
+ 
+-<script is:inline define:vars={{ L, ENRICH, LANG, IMGMAP: shopImages, SC_URL: "/shop-products.json", VENDOR_LOGO, RQ: rq, FAQ_SEG, FAQ_DEFAULT, CATALOG: catalog, CHECKOUT_URL: afrekenenHref }}>
++<script is:inline define:vars={{ L, ENRICH, LANG, TRAIN, IMGMAP: shopImages, SC_URL: "/shop-products.json", VENDOR_LOGO, RQ: rq, FAQ_SEG, FAQ_DEFAULT, CATALOG: catalog, CHECKOUT_URL: afrekenenHref }}>
+   (function () {
+     var app = document.getElementById("shopApp");
+     if (!app) return;
+@@ -396,17 +405,21 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
+     function parseTaxo(node) {
+       var cyclus = (node.tags || []).filter(function (t) { return CYCLUS_TAGS.indexOf(t) > -1; });
+       var uit = node.vendor && node.vendor !== "My Store" ? node.vendor : null;
+-      return { cyclus: cyclus, segment: node.productType ? [node.productType] : [], uitgever: uit };
++      var seg = node.productType ? [node.productType] : [];
++      if (TRAIN.handles.indexOf(node.handle) > -1 && seg.indexOf(TRAIN.segment) === -1) seg.push(TRAIN.segment);
++      return { cyclus: cyclus, segment: seg, uitgever: uit };
+     }
+     function nl(n) { var v = (Math.round(n * 100) / 100); return Number.isInteger(v) ? v.toString() + ",-" : v.toFixed(2).replace(".", ","); }
+     function money(a, c) { var n = parseFloat(a); return (c === "EUR" ? "€\u00a0" : (c + " ")) + nl(n); }
+     function fillSelect(sel, values) { values.sort().forEach(function (v) { var o = document.createElement("option"); o.value = v; o.textContent = v; sel.appendChild(o); }); }
+     function esc(s) { return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+     function enrichImg(p) { return (IMGMAP && IMGMAP[p.handle]) || (p.taxo.segment[0] && ENRICH.imgBySeg[p.taxo.segment[0]]) || ENRICH.defImg; }
++    function isTraining(p) { return !!(p && TRAIN.handles.indexOf(p.handle) > -1); }
+     function enrichD(p) { return ENRICH.desc[LANG] || ENRICH.desc.nl; }
+     function enrichText(p) { return enrichD(p).intro.replace("{name}", p.title); }
+-    function enrichHtml(p) { var d = enrichD(p); return "<p>" + esc(d.intro.replace("{name}", p.title)) + "</p><p>" + esc(d.body) + "</p><ul>" + d.bullets.map(function (b) { return "<li>" + esc(b) + "</li>"; }).join("") + "</ul>"; }
+-    function enrichBullets() { var d = enrichD(); return "<ul>" + d.bullets.map(function (b) { return "<li>" + esc(b) + "</li>"; }).join("") + "</ul>"; }
++    function enrichHtml(p) { var d = enrichD(p); return "<p>" + esc(d.intro.replace("{name}", p.title)) + "</p><p>" + esc(d.body) + "</p>" + enrichBullets(p); }
++    function bulletsOf(p) { return isTraining(p) ? TRAIN.bullets : enrichD(p).bullets; }
++    function enrichBullets(p) { return "<ul>" + bulletsOf(p).map(function (b) { return "<li>" + esc(b) + "</li>"; }).join("") + "</ul>"; }
+ 
+     /* ---------- Echte productinhoud (van hrmforce.com) + logo per product ----------
+        SC komt uit /shop-products.json en arriveert vlak na het renderen. Tot die
+@@ -417,7 +430,7 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
+     // Echte beschrijving (NL) uit SHOP_CONTENT; val terug op de generieke tekst.
+     function descOf(p) { var c = scFor(p); if (!c || !c.desc) return null; return (typeof c.desc === "string") ? c.desc : (c.desc[LANG] || c.desc.nl); }
+     function descText(p) { return descOf(p) || enrichText(p); }
+-    function descHtml(p) { var d = descOf(p); return d ? ("<p>" + esc(d) + "</p>" + meerLink(p) + enrichBullets()) : enrichHtml(p); }
++    function descHtml(p) { var d = descOf(p); return d ? ("<p>" + esc(d) + "</p>" + meerLink(p) + enrichBullets(p)) : enrichHtml(p); }
+     // Optionele verwijzing naar een verdiepende pagina, per taal, uit SHOP_CONTENT.meer.
+     function meerLink(p) {
+       var c = scFor(p); if (!c || !c.meer) return "";
+@@ -425,7 +438,7 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
+       return '<p class="pm-meer"><a href="' + esc(h) + '">' + esc(l) + ' &rarr;</a></p>';
+     }
+     // FAQ per product: segment-specifiek + algemeen (≥10) uit shop-faq.js.
+-    function faqOf(p) { var seg = (p.taxo && p.taxo.segment && p.taxo.segment[0]); return (seg && FAQ_SEG[seg]) || FAQ_DEFAULT; }
++    function faqOf(p) { if (isTraining(p)) return TRAIN.faq; var seg = (p.taxo && p.taxo.segment && p.taxo.segment[0]); return (seg && FAQ_SEG[seg]) || FAQ_DEFAULT; }
+     // Logo-URL: eigen merk-/testlogo van het product, anders het uitgeverslogo.
+     function brandUrl(p) {
+       var c = scFor(p);
+@@ -606,7 +619,8 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
+       add.onclick = function () { if (p.variantId) { addToCart(p.variantId, add); } };
+       // Voorbeeldrapport-formulier resetten voor dit product
+       var _rq = document.getElementById("pmReq");
+-      if (_rq) {
++      if (_rq) _rq.hidden = isTraining(p);
++      if (_rq && !_rq.hidden) {
+         document.getElementById("pmReqProduct").value = p.title;
+         _rq.querySelector(".pm-req-row").style.display = "";
+         document.getElementById("pmReqPhone").style.display = "";
+diff --git a/src/data/shop-trainingen.js b/src/data/shop-trainingen.js
+new file mode 100644
+index 0000000..35d31b5
+--- /dev/null
++++ b/src/data/shop-trainingen.js
+@@ -0,0 +1,70 @@
++/* Trainingen in de webshop. Een training is geen test: er is geen rapport, geen
++   afnametijd en geen voorbeeldrapport. Daarom krijgen deze producten een eigen
++   segment, eigen kenmerken en een eigen vragenlijst, en blijft het blok voor
++   het aanvragen van een voorbeeldrapport bij deze producten weg. */
++
++export const TRAINING_HANDLES = ["online-certificatietraining"];
++export const TRAINING_SEGMENT = "Training";
++
++/* De vier kenmerken onder de beschrijving. Alles hieronder staat in de
++   productomschrijving van de training zelf. */
++export const TRAINING_BULLETS = {
++  nl: ["Eén dag, van 09:30 tot 16:30", "Maximaal twaalf deelnemers", "Certificering als hrmforce-gebruiker", "Op locatie, data staan in de trainingskalender"],
++  en: ["One day, from 09:30 to 16:30", "Twelve participants at most", "Certification as an hrmforce user", "On site, dates are in the training calendar"],
++  de: ["Ein Tag, von 09:30 bis 16:30 Uhr", "Höchstens zwölf Teilnehmende", "Zertifizierung als hrmforce-Nutzer", "Vor Ort, Termine stehen im Trainingskalender"],
++  fr: ["Une journée, de 09h30 à 16h30", "Douze participants au maximum", "Certification comme utilisateur hrmforce", "Sur site, les dates figurent au calendrier des formations"],
++  es: ["Un día, de 09:30 a 16:30", "Doce participantes como máximo", "Certificación como usuario de hrmforce", "Presencial, las fechas están en el calendario de formación"],
++  ro: ["O zi, de la 09:30 la 16:30", "Cel mult doisprezece participanți", "Certificare ca utilizator hrmforce", "La sediu, datele sunt în calendarul de training"],
++};
++
++/* Vragen die bij een training horen, in plaats van de vragen over assessments. */
++export const TRAINING_FAQ = {
++  nl: [
++    { q: "Hoe lang duurt de training?", a: "Eén dag, van 09:30 tot 16:30, inclusief pauzes. Je rondt de dag af als gecertificeerd gebruiker." },
++    { q: "Hoeveel deelnemers zitten er in een groep?", a: "Maximaal twaalf. Daardoor is er ruimte om zelf te oefenen en je eigen vragen te stellen." },
++    { q: "Wat komt er tijdens de dag aan bod?", a: "Het invoeren van kandidaten, het versturen van vragenlijsten, het interpreteren van de resultaten en het voeren van een feedbackgesprek." },
++    { q: "Wat levert de training op?", a: "Na afloop ben je gecertificeerd hrmforce-gebruiker en werk je zelfstandig met de vragenlijsten en rapportages." },
++    { q: "Waar vindt de training plaats?", a: "Op locatie. De data, het adres en de prijs staan in de trainingskalender." },
++    { q: "Voor wie is de training bedoeld?", a: "Voor wie binnen de eigen organisatie met de vragenlijsten van hrmforce gaat werken. Voorkennis van testgebruik is niet nodig." },
++  ],
++  en: [
++    { q: "How long does the training take?", a: "One day, from 09:30 to 16:30, breaks included. You finish the day as a certified user." },
++    { q: "How many participants are in a group?", a: "Twelve at most. That leaves room to practise yourself and ask your own questions." },
++    { q: "What does the day cover?", a: "Entering candidates, sending out questionnaires, interpreting the results and holding a feedback conversation." },
++    { q: "What does the training give me?", a: "Afterwards you are a certified hrmforce user and work independently with the questionnaires and reports." },
++    { q: "Where does the training take place?", a: "On site. The dates, address and price are in the training calendar." },
++    { q: "Who is the training for?", a: "For anyone who will work with the hrmforce questionnaires within their own organisation. No prior test experience is needed." },
++  ],
++  de: [
++    { q: "Wie lange dauert die Schulung?", a: "Ein Tag, von 09:30 bis 16:30 Uhr, Pausen inbegriffen. Sie schließen den Tag als zertifizierter Nutzer ab." },
++    { q: "Wie viele Teilnehmende sind in einer Gruppe?", a: "Höchstens zwölf. So bleibt Raum zum eigenen Üben und für Ihre Fragen." },
++    { q: "Was wird an diesem Tag behandelt?", a: "Das Anlegen von Kandidaten, das Versenden von Fragebögen, die Interpretation der Ergebnisse und das Führen eines Feedbackgesprächs." },
++    { q: "Was bringt die Schulung?", a: "Danach sind Sie zertifizierter hrmforce-Nutzer und arbeiten selbstständig mit den Fragebögen und Berichten." },
++    { q: "Wo findet die Schulung statt?", a: "Vor Ort. Termine, Adresse und Preis stehen im Trainingskalender." },
++    { q: "Für wen ist die Schulung gedacht?", a: "Für alle, die in der eigenen Organisation mit den Fragebögen von hrmforce arbeiten werden. Vorkenntnisse im Testeinsatz sind nicht nötig." },
++  ],
++  fr: [
++    { q: "Combien de temps dure la formation ?", a: "Une journée, de 09h30 à 16h30, pauses comprises. Vous terminez la journée comme utilisateur certifié." },
++    { q: "Combien de participants par groupe ?", a: "Douze au maximum. Cela laisse la place pour s'exercer soi-même et poser ses propres questions." },
++    { q: "Que couvre la journée ?", a: "La saisie des candidats, l'envoi des questionnaires, l'interprétation des résultats et la conduite d'un entretien de restitution." },
++    { q: "Qu'apporte la formation ?", a: "Ensuite, vous êtes utilisateur hrmforce certifié et travaillez de façon autonome avec les questionnaires et les rapports." },
++    { q: "Où se déroule la formation ?", a: "Sur site. Les dates, l'adresse et le prix figurent au calendrier des formations." },
++    { q: "À qui s'adresse la formation ?", a: "À toute personne qui utilisera les questionnaires hrmforce au sein de son organisation. Aucune expérience préalable des tests n'est requise." },
++  ],
++  es: [
++    { q: "¿Cuánto dura la formación?", a: "Un día, de 09:30 a 16:30, pausas incluidas. Terminas el día como usuario certificado." },
++    { q: "¿Cuántos participantes hay por grupo?", a: "Doce como máximo. Así queda espacio para practicar y plantear tus propias preguntas." },
++    { q: "¿Qué se ve durante el día?", a: "El alta de candidatos, el envío de cuestionarios, la interpretación de los resultados y la conducción de una entrevista de devolución." },
++    { q: "¿Qué aporta la formación?", a: "Después eres usuario certificado de hrmforce y trabajas de forma autónoma con los cuestionarios y los informes." },
++    { q: "¿Dónde se imparte la formación?", a: "Presencial. Las fechas, la dirección y el precio están en el calendario de formación." },
++    { q: "¿A quién va dirigida la formación?", a: "A quien vaya a trabajar con los cuestionarios de hrmforce dentro de su organización. No hace falta experiencia previa con tests." },
++  ],
++  ro: [
++    { q: "Cât durează trainingul?", a: "O zi, de la 09:30 la 16:30, pauzele incluse. Închei ziua ca utilizator certificat." },
++    { q: "Câți participanți sunt într-o grupă?", a: "Cel mult doisprezece. Astfel rămâne loc pentru exercițiu și pentru întrebările tale." },
++    { q: "Ce se parcurge în timpul zilei?", a: "Introducerea candidaților, trimiterea chestionarelor, interpretarea rezultatelor și purtarea unei discuții de feedback." },
++    { q: "Ce oferă trainingul?", a: "După aceea ești utilizator hrmforce certificat și lucrezi independent cu chestionarele și rapoartele." },
++    { q: "Unde are loc trainingul?", a: "La sediu. Datele, adresa și prețul sunt în calendarul de training." },
++    { q: "Cui se adresează trainingul?", a: "Celor care vor lucra cu chestionarele hrmforce în propria organizație. Nu este nevoie de experiență anterioară cu teste." },
++  ],
++};
+-- 
+2.43.0
+

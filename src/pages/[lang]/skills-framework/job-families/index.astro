@@ -1,0 +1,8 @@
+---
+import FamilyIndex from '../../../../views/FamilyIndex.astro';
+import { altSection } from '../../../../lib/alt';
+import { perTaal } from "../../../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+---
+<FamilyIndex lang={lang} alternates={altSection('families')} />

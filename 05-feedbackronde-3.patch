@@ -1,0 +1,1904 @@
+From 5e46b6cc4c327acf7493fa170a67da6436debb8e Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Fri, 11 Sep 2026 14:23:22 +0000
+Subject: [PATCH] Feedbackronde 3: goedgekeurde punten uit de schermopnames
+
+Homepage
+- H1/H2 Google-beoordeling met sterren in de hero, in plaats van de losse micro-regel
+- H6 ITC-logo groter en scherper, positie behouden
+- H7 de vertrouwensbalk in de footer verwijderd
+
+Assessmentpagina's
+- A1/A3/Z2 prijsblok vervangen door een rustige prijsregel, losse prijs en
+  licentie in een zin, prijsnotatie in Nederlandse opmaak
+- A5 klantlogo-slider toegevoegd
+- A6/A7 nieuw blok "kijkje in de vragenlijst" met de echte opmaak en zes
+  voorbeeldvragen, het aparte voorbeeldvragenblok vervalt
+- A8 infobalk vervallen, invultijd naar boven bij Wanneer inzetten en Doel
+- A10 toelichting en competentieniveaus ingeklapt onderaan
+- A11 uitsnede van de foto bij het citaat
+- A12 knoplabel naar "Meer over hrmforce"
+- A14 volgorde van de secties herzien, blok uit het kenniscentrum vervalt
+
+Oplossingen
+- O1 vergelijkingsblok "zonder onderbouwing" tegenover "met hrmforce"
+
+Kenniscentrum
+- K1 artikelkop niet meer meescrollend
+- K3 eerste afbeelding als header van het artikel
+
+Site-breed
+- X1 gele randjes verwijderd
+- X3 rolverdeling met duidelijke labels
+- X4 minder verticale ruimte in secties en in de bewijsbalk
+- X5 sectiekoppen links uitgelijnd
+- Z1 doorverwijzingen die bestaande paginas afschermden verwijderd
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ public/_redirects                           |   2 -
+ src/components/Footer.astro                 |  23 --
+ src/components/Home.astro                   |  31 ++-
+ src/components/IntegratieDetail.astro       |   2 +-
+ src/components/LiveAssessments.astro        |   2 +-
+ src/components/Oefenen.astro                |   2 +-
+ src/components/PlanBlock.astro              |   4 +-
+ src/components/QPreview.astro               | 153 +++++++++++++
+ src/components/SectorenIndex.astro          |   2 +-
+ src/components/Shop.astro                   |   7 +-
+ src/components/SocialProof.astro            |   6 +-
+ src/components/Toepassing.astro             |   2 +-
+ src/components/Vacatures.astro              |   2 +-
+ src/components/Vergelijking.astro           |   2 +-
+ src/components/VergelijkingIndex.astro      |   2 +-
+ src/components/Voorbereiding.astro          |   2 +-
+ src/components/WhitepaperDetail.astro       |   2 +-
+ src/data/assessment-detail-ui.js            |  12 +-
+ src/data/assessment-examples.js             | 144 ++++++------
+ src/data/assessment-shop.js                 |   9 +
+ src/data/oplossingen.js                     |  38 +++-
+ src/pages/[...path].astro                   |  16 +-
+ src/pages/[lang]/assessments/[slug].astro   | 236 ++++++++------------
+ src/pages/advies.astro                      |   6 +-
+ src/pages/assessments/[slug].astro          | 216 ++++++++----------
+ src/pages/contact.astro                     |   2 +-
+ src/pages/de/contact.astro                  |   2 +-
+ src/pages/en/contact.astro                  |   2 +-
+ src/pages/es/contact.astro                  |   2 +-
+ src/pages/fr/contact.astro                  |   2 +-
+ src/pages/geschiktvoorzorg/index.astro      |   2 +-
+ src/pages/geschiktvoorzorg/klantcases.astro |   2 +-
+ src/pages/hrm-oplossingen/[slug].astro      |  33 +++
+ src/pages/ro/contact.astro                  |   2 +-
+ src/styles/global.css                       |   7 +-
+ 35 files changed, 565 insertions(+), 414 deletions(-)
+ create mode 100644 src/components/QPreview.astro
+
+diff --git a/public/_redirects b/public/_redirects
+index f055e99..f87e7f3 100644
+--- a/public/_redirects
++++ b/public/_redirects
+@@ -136,8 +136,6 @@
+ /assessments-sitemap.xml                  /sitemap-index.xml                   301
+ 
+ # --- Advies-subpagina's zonder eigen pagina op de nieuwe site ---
+-/advies/talent-management/                /hrm-oplossingen/                    301
+-/advies/competentie-management/           /hrm-oplossingen/                    301
+ /advies/consultancy/                      /contact/                            301
+ /advies/coaching/                         /contact/                            301
+ /advies/selectie-begeleiding/             /advies/selectie-assessment/         301
+diff --git a/src/components/Footer.astro b/src/components/Footer.astro
+index fccecc5..4894333 100644
+--- a/src/components/Footer.astro
++++ b/src/components/Footer.astro
+@@ -2,7 +2,6 @@
+ import { routes } from "../i18n/ui.js";
+ import { getLangFromUrl, useTranslations, navHref } from "../i18n/utils.js";
+ import validPaths from "../data/valid-paths.js";
+-import TrustBadges from "./TrustBadges.astro";
+ 
+ const lang = getLangFromUrl(Astro.url);
+ const t = useTranslations(lang);
+@@ -10,25 +9,8 @@ const year = new Date().getFullYear();
+ const L = (p) => navHref(p, lang, validPaths);
+ const _tourLabel = {nl:"Rondleiding",en:"Product tour",de:"Produkttour",fr:"Visite du produit",es:"Tour del producto",ro:"Tur al produsului"}[lang] || "Rondleiding";
+ const _compareLabel = {nl:"Vergelijken",en:"Compare",de:"Vergleichen",fr:"Comparer",es:"Comparar",ro:"Comparație"}[lang] || "Vergelijken";
+-// Sitebrede trust-balk: korte, feitelijke signalen (per taal).
+-const trustBarByLang = {
+-  nl: ["Wetenschappelijk gevalideerd", "AVG-proof gegevensverwerking", "36+ online assessments", "Beschikbaar in 14 talen"],
+-  en: ["Scientifically validated", "GDPR-compliant data handling", "36+ online assessments", "Available in 14 languages"],
+-  de: ["Wissenschaftlich validiert", "DSGVO-konforme Datenverarbeitung", "36+ Online-Assessments", "In 14 Sprachen verfügbar"],
+-  fr: ["Validé scientifiquement", "Traitement des données conforme au RGPD", "36+ évaluations en ligne", "Disponible en 14 langues"],
+-  es: ["Validado científicamente", "Tratamiento de datos conforme al RGPD", "36+ evaluaciones online", "Disponible en 14 idiomas"],
+-  ro: ["Validat științific", "Prelucrare a datelor conformă GDPR", "36+ evaluări online", "Disponibil în 14 limbi"],
+-};
+-const trustBar = trustBarByLang[lang] ?? trustBarByLang.nl;
+-const _check = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`;
+ ---
+-<TrustBadges />
+ <footer>
+-  <div class="trustbar"><div class="wrap">
+-    <ul class="tb-list">
+-      {trustBar.map((item) => (<li><span class="tb-ic" set:html={_check}></span>{item}</li>))}
+-    </ul>
+-  </div></div>
+   <div class="wrap">
+     <div class="fgrid">
+       <div>
+@@ -83,11 +65,6 @@ const _check = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stro
+ </footer>
+ 
+ <style>
+-  .trustbar{border-bottom:1px solid rgba(255,255,255,.12);padding:16px 0}
+-  .tb-list{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:14px 28px;justify-content:center}
+-  .tb-list li{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.9);font-size:14px;font-weight:600}
+-  .tb-ic{display:inline-flex;color:var(--gold)}
+-  @media(max-width:640px){.tb-list{gap:12px 20px}.tb-list li{font-size:13px}}
+   .cookie-prefs-btn {
+     background: none;
+     border: none;
+diff --git a/src/components/Home.astro b/src/components/Home.astro
+index 94beb89..73e30cc 100644
+--- a/src/components/Home.astro
++++ b/src/components/Home.astro
+@@ -119,7 +119,12 @@ const faqLd = {
+         <a class="btn btn-primary" href={demoHref}>{c.hero.ctaPrimary} →</a>
+         <a class="btn btn-ghost hero-ghost" href={assessHref}>{c.hero.ctaGhost}</a>
+       </div>
+-      <p class="hero-micro">{c.hero.micro}</p>
++      {googleUrl && (
++        <a class="hero-rating" href={googleUrl} target="_blank" rel="noopener nofollow">
++          <span class="hr-stars" aria-hidden="true">★★★★★</span>
++          <span class="hr-txt"><b>{GOOG.score}</b> {GOOG.label}</span>
++        </a>
++      )}
+       <div class="hero-badges">
+         {c.hero.badges.map((b) => <span class="hb"><span class="hb-ic">✓</span> {b}</span>)}
+       </div>
+@@ -276,7 +281,7 @@ const faqLd = {
+   <div class="wrap" style="display:block">
+     <div class="itc-bar">
+       <span class="itc-badge">
+-        <Img src="https://images.weserv.nl/?url=www.intestcom.org/images/logo.png&output=webp&w=200&we" alt="Logo International Test Commission" loading="lazy" onerror="this.parentNode.classList.add('is-txt');this.remove();" />
++        <Img src="https://images.weserv.nl/?url=www.intestcom.org/images/logo.png&output=webp&w=560&we" alt="Logo International Test Commission" loading="lazy" onerror="this.parentNode.classList.add('is-txt');this.remove();" />
+         <em>ITC</em>
+       </span>
+       <div class="itc-copy">
+@@ -379,7 +384,11 @@ const faqLd = {
+   .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin: 28px 0 8px; }
+   .hero-ghost { background: rgba(255,255,255,.06); color: #fff; border-color: rgba(255,255,255,.45); }
+   .hero-ghost:hover { background: rgba(255,255,255,.14); color: #fff; border-color: #fff; }
+-  .hero-micro { color: #a9c0e0; font-size: 13.5px; margin-top: 12px; }
++  .hero-rating { display: inline-flex; align-items: center; gap: 10px; margin-top: 14px; text-decoration: none; }
++  .hero-rating .hr-stars { color: var(--gold); letter-spacing: 2px; font-size: 17px; }
++  .hero-rating .hr-txt { color: #dbe7f7; font-size: 14.5px; font-weight: 600; }
++  .hero-rating .hr-txt b { color: #fff; font-size: 16px; font-weight: 800; }
++  .hero-rating:hover .hr-txt { color: #fff; }
+   .hero-badges { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 24px; }
+   .hb { display: inline-flex; align-items: center; gap: 8px; color: #dbe7f7; font-size: 13.5px; font-weight: 600; }
+   .hb-ic { width: 24px; height: 24px; border-radius: 7px; background: rgba(255,255,255,.12); color: var(--gold); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; }
+@@ -495,7 +504,7 @@ const faqLd = {
+   .cases-teaser { background: var(--bg); }
+   .ct-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+   @media (max-width: 780px) { .ct-grid { grid-template-columns: 1fr; } }
+-  .ct-card { background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--gold); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-xs); }
++  .ct-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 24px; box-shadow: var(--shadow-xs); }
+   .ct-sector { display: inline-block; background: var(--navy); color: #fff; font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; padding: 4px 11px; border-radius: 999px; margin-bottom: 12px; }
+   .ct-result { color: var(--navy); font-size: 1.05rem; font-weight: 700; line-height: 1.4; margin: 0; }
+   .faq-a p { padding-top: 16px; }
+@@ -510,20 +519,20 @@ const faqLd = {
+   .testi-card figcaption b { color:var(--navy); font-size:14.5px; }
+   .testi-card figcaption span { color:var(--muted); font-size:13px; }
+   .itc-sec { background:var(--bg-soft); border-bottom:1px solid var(--line); }
+-  .itc-sec .wrap { padding-top:30px; padding-bottom:30px; }
+-  .itc-bar { display:flex; align-items:center; gap:22px; margin:0 auto; background:#fff; border:1px solid var(--line); border-left:4px solid var(--gold); border-radius:16px; padding:22px 26px; max-width:920px; box-shadow:var(--shadow-sm); }
+-  .itc-badge { flex:none; width:112px; min-height:72px; padding:10px 12px; border-radius:12px; background:#fff; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; }
+-  .itc-badge img { max-height:52px; max-width:88px; width:auto; object-fit:contain; display:block; }
++  .itc-sec .wrap { padding-top:26px; padding-bottom:26px; }
++  .itc-bar { display:flex; align-items:center; gap:30px; margin:0 auto; background:#fff; border:1px solid var(--line); border-radius:18px; padding:30px 34px; max-width:980px; box-shadow:var(--shadow-sm); }
++  .itc-badge { flex:none; width:188px; min-height:118px; padding:16px 18px; border-radius:14px; background:#fff; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; }
++  .itc-badge img { max-height:86px; max-width:152px; width:auto; object-fit:contain; display:block; }
+   .itc-badge em { display:none; font-style:normal; font-weight:800; font-size:17px; color:#fff; letter-spacing:1px; }
+   .itc-badge.is-txt { background:var(--navy); border:0; }
+   .itc-badge.is-txt em { display:inline; }
+   .itc-copy { min-width:0; }
+-  .itc-title { color:var(--navy); font-size:1.1rem; margin:0 0 6px; line-height:1.3; }
+-  .itc-bar p { color:var(--muted); font-size:14.5px; margin:0; line-height:1.6; }
++  .itc-title { color:var(--navy); font-size:1.35rem; margin:0 0 8px; line-height:1.25; }
++  .itc-bar p { color:var(--muted); font-size:15.5px; margin:0; line-height:1.65; }
+   .itc-link { display:inline-block; margin-top:10px; color:var(--accent); font-weight:700; font-size:14px; }
+   @media (max-width:640px) {
+     .itc-bar { flex-direction:column; align-items:flex-start; gap:14px; padding:20px; border-radius:14px; }
+-    .itc-badge { width:auto; min-width:96px; }
++    .itc-badge { width:100%; max-width:260px; min-height:96px; }
+     .itc-title { font-size:1.02rem; }
+   }
+   .outcome-note { color:#b8c8de; font-size:13px; margin-top:10px; }
+diff --git a/src/components/IntegratieDetail.astro b/src/components/IntegratieDetail.astro
+index a08c62d..6b889a4 100644
+--- a/src/components/IntegratieDetail.astro
++++ b/src/components/IntegratieDetail.astro
+@@ -31,7 +31,7 @@ const _crumbLd = { "@context":"https://schema.org","@type":"BreadcrumbList", ite
+   <p style="font-size:17px;color:var(--text);line-height:1.65">{ui.conn}</p>
+   <h2 class="section-title" style="margin-top:34px">{ui.enTitle}</h2>
+   <ul class="traits">{ui.en.map((x) => <li>{S(x)}</li>)}</ul>
+-  <p style="margin-top:26px;padding:16px 20px;background:var(--bg-soft);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:12px;color:var(--muted);font-size:14px;line-height:1.6">{S(ui.disc)}</p>
++  <p style="margin-top:26px;padding:16px 20px;background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:14px;line-height:1.6">{S(ui.disc)}</p>
+   <div style="margin-top:24px"><a href={intHref} class="btn btn-ghost">← {ui.back}</a></div>
+ </div></section>
+ 
+diff --git a/src/components/LiveAssessments.astro b/src/components/LiveAssessments.astro
+index 930000e..b08c065 100644
+--- a/src/components/LiveAssessments.astro
++++ b/src/components/LiveAssessments.astro
+@@ -59,7 +59,7 @@ const testkiezerHref = localizePath("/testkiezer/", lang);
+ 
+ <style>
+   .la-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 8px; }
+-  .la-card { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--gold); border-radius: 14px; padding: 22px; box-shadow: var(--shadow-xs); text-decoration: none; transition: transform .15s, box-shadow .15s; }
++  .la-card { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 22px; box-shadow: var(--shadow-xs); text-decoration: none; transition: transform .15s, box-shadow .15s; }
+   .la-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+   .la-card h3 { color: var(--navy); font-size: 17px; font-weight: 800; margin: 0 0 8px; }
+   .la-card p { color: var(--muted); font-size: 14px; line-height: 1.5; margin: 0 0 14px; flex: 1; }
+diff --git a/src/components/Oefenen.astro b/src/components/Oefenen.astro
+index 40fdde6..09d6305 100644
+--- a/src/components/Oefenen.astro
++++ b/src/components/Oefenen.astro
+@@ -34,7 +34,7 @@ const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList",
+   <p class="lead" style="margin-bottom:22px">{ex.intro}</p>
+   <div style="display:flex;flex-direction:column;gap:12px">
+     {ex.items.map((qq, i) => (
+-      <div style="display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow-xs)">
++      <div style="display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow-xs)">
+         <span style="flex:none;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center">{i + 1}</span>
+         <span style="color:var(--navy);font-weight:600;font-size:15px;line-height:1.5">{qq}</span>
+       </div>
+diff --git a/src/components/PlanBlock.astro b/src/components/PlanBlock.astro
+index 9998214..a2a0840 100644
+--- a/src/components/PlanBlock.astro
++++ b/src/components/PlanBlock.astro
+@@ -1,7 +1,7 @@
+ ---
+ // Vaste bouwsteen voor oplossingen-, advies- en trainingspagina's:
+ // een stappenplan met uitkomst, plus een rolverdeling (hrmforce vs. organisatie).
+-const { plan, roles, rolesEyebrow = "Rolverdeling", hrmLabel = "hrmforce doet", orgLabel = "Jullie doen", tone = "soft" } = Astro.props;
++const { plan, roles, rolesEyebrow = "Rolverdeling", hrmLabel = "Wat hrmforce doet", orgLabel = "Wat jij doet", tone = "soft" } = Astro.props;
+ ---
+ {plan && (
+   <section class={tone === "soft" ? "bg-soft" : ""}>
+@@ -63,7 +63,7 @@ const { plan, roles, rolesEyebrow = "Rolverdeling", hrmLabel = "hrmforce doet",
+   .rolecard { border:1px solid var(--line); border-radius:16px; padding:26px 24px; background:#fff; box-shadow:var(--shadow-xs); transition:transform .2s ease, box-shadow .2s ease; }
+   .rolecard:hover { transform:translateY(-3px); box-shadow:var(--shadow-md); }
+   .rolecard.hrm { border-left:4px solid var(--accent); }
+-  .rolecard.org { border-left:4px solid var(--gold); }
++  .rolecard.org { }
+   .rolecard h3 { color:var(--navy); font-size:1.1rem; margin:0 0 14px; }
+   .rolecard ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+   .rolecard li { color:var(--text); font-size:15px; line-height:1.5; padding-left:26px; position:relative; }
+diff --git a/src/components/QPreview.astro b/src/components/QPreview.astro
+new file mode 100644
+index 0000000..7ecb899
+--- /dev/null
++++ b/src/components/QPreview.astro
+@@ -0,0 +1,153 @@
++---
++// Kijkje in de vragenlijst. Geen schermafbeelding maar de echte opmaak, zodat
++// het meeschaalt en op telefoon leesbaar blijft. Toont het startscherm plus de
++// voorbeeldvragen met de echte antwoordschaal.
++const { lang = "nl", testName = "", ex = {} } = Astro.props;
++
++const T = {
++  nl: { chip: "Vragenlijst", welcome: "Welkom bij", intro: "Je krijgt een reeks vragen. Geef per vraag aan wat het best bij je past.",
++        b1: "Duurt enkele minuten", b2: "Er zijn geen goede of foute antwoorden", b3: "Antwoord spontaan, dat geeft het beste beeld",
++        start: "Start de vragenlijst", own: "In je eigen taal en tempo", sample: "Voorbeeldvragen", of: "van", vraag: "Vraag",
++        note: "Kies wat het best bij je past.", prev: "Vorige", next: "Volgende", demo: "Voorbeeldweergave, je antwoorden worden niet bewaard" },
++  en: { chip: "Questionnaire", welcome: "Welcome to", intro: "You will get a series of questions. For each one, indicate what fits you best.",
++        b1: "Takes a few minutes", b2: "There are no right or wrong answers", b3: "Answer spontaneously, that gives the best picture",
++        start: "Start the questionnaire", own: "In your own language and pace", sample: "Example questions", of: "of", vraag: "Question",
++        note: "Choose what fits you best.", prev: "Previous", next: "Next", demo: "Preview only, your answers are not saved" },
++  de: { chip: "Fragebogen", welcome: "Willkommen bei", intro: "Sie erhalten eine Reihe von Fragen. Geben Sie je Frage an, was am besten passt.",
++        b1: "Dauert einige Minuten", b2: "Es gibt keine richtigen oder falschen Antworten", b3: "Antworten Sie spontan, das ergibt das beste Bild",
++        start: "Fragebogen starten", own: "In Ihrer Sprache und Ihrem Tempo", sample: "Beispielfragen", of: "von", vraag: "Frage",
++        note: "Wählen Sie, was am besten passt.", prev: "Zurück", next: "Weiter", demo: "Vorschau, Ihre Antworten werden nicht gespeichert" },
++  fr: { chip: "Questionnaire", welcome: "Bienvenue dans", intro: "Vous recevrez une série de questions. Indiquez pour chacune ce qui vous correspond le mieux.",
++        b1: "Dure quelques minutes", b2: "Il n'y a pas de bonnes ou mauvaises réponses", b3: "Répondez spontanément, cela donne le meilleur aperçu",
++        start: "Démarrer le questionnaire", own: "Dans votre langue et à votre rythme", sample: "Exemples de questions", of: "sur", vraag: "Question",
++        note: "Choisissez ce qui vous correspond le mieux.", prev: "Précédent", next: "Suivant", demo: "Aperçu, vos réponses ne sont pas enregistrées" },
++  es: { chip: "Cuestionario", welcome: "Bienvenido a", intro: "Recibirás una serie de preguntas. Indica en cada una lo que mejor encaja contigo.",
++        b1: "Dura unos minutos", b2: "No hay respuestas correctas o incorrectas", b3: "Responde de forma espontánea, da la mejor imagen",
++        start: "Iniciar el cuestionario", own: "En tu idioma y a tu ritmo", sample: "Preguntas de ejemplo", of: "de", vraag: "Pregunta",
++        note: "Elige lo que mejor encaje contigo.", prev: "Anterior", next: "Siguiente", demo: "Vista previa, tus respuestas no se guardan" },
++  ro: { chip: "Chestionar", welcome: "Bine ai venit la", intro: "Vei primi o serie de întrebări. Indică pentru fiecare ce ți se potrivește cel mai bine.",
++        b1: "Durează câteva minute", b2: "Nu există răspunsuri corecte sau greșite", b3: "Răspunde spontan, așa iese cea mai bună imagine",
++        start: "Începe chestionarul", own: "În limba și ritmul tău", sample: "Întrebări exemplu", of: "din", vraag: "Întrebarea",
++        note: "Alege ce ți se potrivește cel mai bine.", prev: "Înapoi", next: "Înainte", demo: "Previzualizare, răspunsurile nu se salvează" },
++}[lang] || {};
++
++const vragen = (ex.items || []).slice(0, 6);
++const punten = String(ex.scale || "").split(" - ").map((x) => x.trim()).filter(Boolean);
++const isSchaal = punten.length >= 3;
++const keuzes = Array.isArray(ex.mockOptions) && ex.mockOptions.length ? ex.mockOptions : null;
++// Eén voorbeeldantwoord ingevuld, zodat meteen zichtbaar is hoe het werkt.
++const voorbeeldAntwoord = isSchaal ? Math.min(3, punten.length - 1) : 0;
++const naam = String(testName || "").split("|")[0].trim();
++---
++<div class="qp">
++  <div class="qp-bar">
++    <span class="qp-logo">hrmforce</span>
++    <span class="qp-chip">{T.chip}</span>
++  </div>
++
++  <div class="qp-body">
++    <aside class="qp-start">
++      <p class="qp-kicker">{T.chip}</p>
++      <h3>{T.welcome} {naam}</h3>
++      <p class="qp-lead">{T.intro}</p>
++      <ul class="qp-points">
++        <li>{T.b1}</li>
++        <li>{T.b2}</li>
++        <li>{T.b3}</li>
++      </ul>
++      <span class="qp-btn">{T.start}</span>
++      <p class="qp-own">{T.own}</p>
++    </aside>
++
++    <section class="qp-vragen" aria-label={T.sample}>
++      <div class="qp-vkop">
++        <p class="qp-kicker">{T.sample}</p>
++        <span class="qp-teller">1 {T.of} {vragen.length}</span>
++      </div>
++
++      <ol class="qp-lijst">
++        {vragen.map((v, i) => (
++          <li class="qp-vraag">
++            <p class="qp-tekst"><span class="qp-nr">{i + 1}</span>{v}</p>
++            {isSchaal ? (
++              <div class="qp-schaal" role="group" aria-label={T.note}>
++                {punten.map((pt, j) => (
++                  <span class={"qp-optie" + (i === 0 && j === voorbeeldAntwoord ? " aan" : "")}>
++                    <span class="qp-bol" aria-hidden="true"></span>
++                    <span class="qp-lbl">{pt}</span>
++                  </span>
++                ))}
++              </div>
++            ) : (
++              keuzes && i === 0 && (
++                <div class="qp-keuzes">
++                  {keuzes.map((k, j) => (
++                    <span class={"qp-keuze" + (j === 0 ? " aan" : "")}>{k}</span>
++                  ))}
++                </div>
++              )
++            )}
++          </li>
++        ))}
++      </ol>
++
++      <div class="qp-voet">
++        <span class="qp-ghost">{T.prev}</span>
++        <span class="qp-btn klein">{T.next}</span>
++      </div>
++    </section>
++  </div>
++
++  <p class="qp-demo">{T.demo}</p>
++</div>
++
++<style>
++  .qp { border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: #fff; box-shadow: var(--shadow-sm); }
++  .qp-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 18px; border-bottom: 1px solid var(--line); background: var(--bg-soft); }
++  .qp-logo { color: var(--navy); font-weight: 800; letter-spacing: -.01em; font-size: 15px; }
++  .qp-chip { color: var(--muted); font-size: 12.5px; font-weight: 600; }
++
++  .qp-body { display: grid; grid-template-columns: 300px 1fr; }
++  .qp-start { padding: 24px; border-right: 1px solid var(--line); background: var(--bg-soft); }
++  .qp-kicker { color: var(--accent); font-size: 11.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; margin: 0 0 6px; }
++  .qp-start h3 { color: var(--navy); font-size: 1.05rem; margin: 0 0 8px; line-height: 1.3; }
++  .qp-lead { color: var(--muted); font-size: 14px; line-height: 1.55; margin: 0 0 14px; }
++  .qp-points { list-style: none; margin: 0 0 18px; padding: 0; display: flex; flex-direction: column; gap: 9px; }
++  .qp-points li { color: var(--navy); font-size: 13.5px; line-height: 1.45; padding-left: 24px; position: relative; }
++  .qp-points li::before { content: ""; position: absolute; left: 0; top: 4px; width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--line-strong); }
++  .qp-btn { display: inline-block; background: var(--navy); color: #fff; font-weight: 700; font-size: 14px; padding: 10px 18px; border-radius: 10px; }
++  .qp-btn.klein { padding: 8px 16px; font-size: 13.5px; }
++  .qp-own { color: var(--muted); font-size: 12.5px; margin: 10px 0 0; }
++
++  .qp-vragen { padding: 22px 24px; min-width: 0; }
++  .qp-vkop { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
++  .qp-teller { color: var(--muted); font-size: 12.5px; }
++  .qp-lijst { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
++  .qp-vraag { padding: 14px 0; border-bottom: 1px solid var(--line); }
++  .qp-vraag:last-child { border-bottom: 0; }
++  .qp-tekst { color: var(--navy); font-weight: 600; font-size: 15px; line-height: 1.45; margin: 0 0 10px; display: flex; gap: 10px; align-items: baseline; }
++  .qp-nr { flex: none; color: var(--muted); font-weight: 700; font-size: 12.5px; min-width: 14px; }
++
++  .qp-schaal { display: flex; flex-wrap: wrap; gap: 6px 14px; padding-left: 24px; }
++  .qp-optie { display: inline-flex; align-items: center; gap: 7px; }
++  .qp-bol { width: 15px; height: 15px; border-radius: 50%; border: 2px solid var(--line-strong); flex: none; }
++  .qp-optie.aan .qp-bol { border-color: var(--accent); background: var(--accent); box-shadow: inset 0 0 0 3px #fff; }
++  .qp-lbl { color: var(--muted); font-size: 12.5px; }
++  .qp-optie.aan .qp-lbl { color: var(--navy); font-weight: 700; }
++
++  .qp-keuzes { display: flex; flex-wrap: wrap; gap: 8px; padding-left: 24px; }
++  .qp-keuze { border: 1px solid var(--line-strong); border-radius: 999px; padding: 5px 13px; font-size: 13px; color: var(--muted); }
++  .qp-keuze.aan { border-color: var(--accent); color: var(--navy); font-weight: 700; background: #eef5fd; }
++
++  .qp-voet { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); }
++  .qp-ghost { color: var(--muted); font-size: 13.5px; }
++  .qp-demo { color: var(--muted); font-size: 12.5px; text-align: center; margin: 0; padding: 10px 16px; border-top: 1px solid var(--line); background: var(--bg-soft); }
++
++  @media (max-width: 820px) {
++    .qp-body { grid-template-columns: 1fr; }
++    .qp-start { border-right: 0; border-bottom: 1px solid var(--line); padding: 20px; }
++    .qp-vragen { padding: 18px; }
++    .qp-schaal, .qp-keuzes { padding-left: 0; }
++    .qp-lbl { font-size: 12px; }
++  }
++</style>
+diff --git a/src/components/SectorenIndex.astro b/src/components/SectorenIndex.astro
+index acc5f0e..6c46b58 100644
+--- a/src/components/SectorenIndex.astro
++++ b/src/components/SectorenIndex.astro
+@@ -63,7 +63,7 @@ const landHref = (slug) => localizePath(`/toepassingen/${slug}/`, lang);
+   .sec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+   @media(max-width:980px){.sec-grid{grid-template-columns:1fr 1fr}}
+   @media(max-width:640px){.sec-grid{grid-template-columns:1fr}}
+-  .sec-card{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:14px;padding:22px 24px;box-shadow:var(--shadow-xs);display:flex;flex-direction:column}
++  .sec-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px;box-shadow:var(--shadow-xs);display:flex;flex-direction:column}
+   .sec-name{color:var(--navy);font-size:1.15rem;margin:0 0 8px}
+   .sec-blurb{color:var(--muted);font-size:14.5px;line-height:1.55;margin:0 0 14px;flex:1}
+   .sec-casus{background:var(--bg-soft,#f6f9fc);border-radius:10px;padding:10px 12px;color:var(--navy);font-size:13px;line-height:1.5;margin:0 0 14px}
+diff --git a/src/components/Shop.astro b/src/components/Shop.astro
+index 16a17ef..543da10 100644
+--- a/src/components/Shop.astro
++++ b/src/components/Shop.astro
+@@ -300,7 +300,7 @@ const FAQ_DEFAULT = generalFaq(lang);
+   .shop-status { text-align: center; color: var(--muted); padding: 24px 0; }
+   .shop-placeholder { text-align: center; padding: 30px 0 10px; }
+   .shop-usps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+-  .shop-usps .usp { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; border-left: 3px solid var(--gold); }
++  .shop-usps .usp { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+   .shop-usps .usp strong { display: block; color: var(--navy); margin-bottom: 4px; }
+   .shop-usps .usp span { color: var(--muted); font-size: 14px; }
+   @media (max-width: 880px) { .shop-usps { grid-template-columns: 1fr 1fr; } }
+@@ -390,7 +390,8 @@ const FAQ_DEFAULT = generalFaq(lang);
+       var uit = node.vendor && node.vendor !== "My Store" ? node.vendor : null;
+       return { cyclus: cyclus, segment: node.productType ? [node.productType] : [], uitgever: uit };
+     }
+-    function money(a, c) { var n = parseFloat(a); return (c === "EUR" ? "€" : (c + " ")) + n.toFixed(2).replace(".", ","); }
++    function nl(n) { var v = (Math.round(n * 100) / 100); return Number.isInteger(v) ? v.toString() + ",-" : v.toFixed(2).replace(".", ","); }
++    function money(a, c) { var n = parseFloat(a); return (c === "EUR" ? "€\u00a0" : (c + " ")) + nl(n); }
+     function fillSelect(sel, values) { values.sort().forEach(function (v) { var o = document.createElement("option"); o.value = v; o.textContent = v; sel.appendChild(o); }); }
+     function esc(s) { return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+     function enrichImg(p) { return (IMGMAP && IMGMAP[p.handle]) || (p.taxo.segment[0] && ENRICH.imgBySeg[p.taxo.segment[0]]) || ENRICH.defImg; }
+@@ -424,7 +425,7 @@ const FAQ_DEFAULT = generalFaq(lang);
+ 
+     /* ---------- Winkelmand (native, localStorage) ---------- */
+     var CART_LS = "hrmforce_cart_v2";
+-    function money2(n) { return "\u20ac" + (Math.round(n * 100) / 100).toFixed(2).replace(".", ","); }
++    function money2(n) { return "\u20ac\u00a0" + nl(n); }
+     function catFor(handle) { for (var i = 0; i < CATALOG.length; i++) { if (CATALOG[i].handle === handle) return CATALOG[i]; } return null; }
+     function prodFor(handle) { for (var i = 0; i < products.length; i++) { if (products[i].handle === handle) return products[i]; } return null; }
+     function findLine(handle) { for (var i = 0; i < cart.lines.length; i++) { if (cart.lines[i].lineId === handle) return cart.lines[i]; } return null; }
+diff --git a/src/components/SocialProof.astro b/src/components/SocialProof.astro
+index ed69879..795a872 100644
+--- a/src/components/SocialProof.astro
++++ b/src/components/SocialProof.astro
+@@ -42,8 +42,8 @@ const trustHref = localizePath("/trust/", lang);
+ <style>
+   .socialproof { background:#fff; border-bottom:1px solid var(--line); }
+   .socialproof.soft { background:var(--bg-soft); }
+-  .socialproof .wrap { padding-top:20px; padding-bottom:20px; }
+-  .sp-row { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
++  .socialproof .wrap { padding-top:14px; padding-bottom:14px; }
++  .sp-row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+   .sp-item { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; padding:6px 2px; min-width:0; }
+   a.sp-item:hover .sp-txt b { color:var(--accent); }
+   .sp-ic { flex:none; width:40px; height:40px; border-radius:11px; background:var(--bg-soft); color:var(--navy); display:inline-flex; align-items:center; justify-content:center; }
+@@ -52,5 +52,5 @@ const trustHref = localizePath("/trust/", lang);
+   .sp-txt { display:flex; flex-direction:column; min-width:0; }
+   .sp-txt b { color:var(--navy); font-size:14.5px; font-weight:700; line-height:1.3; }
+   .sp-txt em { color:var(--muted); font-style:normal; font-size:12.5px; }
+-  @media (max-width:820px) { .sp-row { grid-template-columns:1fr; gap:10px; } .socialproof .wrap { padding-top:16px; padding-bottom:16px; } }
++  @media (max-width:820px) { .sp-row { grid-template-columns:1fr; gap:8px; } .socialproof .wrap { padding-top:12px; padding-bottom:12px; } }
+ </style>
+diff --git a/src/components/Toepassing.astro b/src/components/Toepassing.astro
+index c5070f2..bf50b0f 100644
+--- a/src/components/Toepassing.astro
++++ b/src/components/Toepassing.astro
+@@ -109,7 +109,7 @@ const _faqLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntit
+ 
+ <style>
+   .lp-pains{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
+-  .lp-pain{display:flex;gap:12px;background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow-xs)}
++  .lp-pain{display:flex;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow-xs)}
+   .lp-pain span{color:var(--gold);font-weight:800;font-size:20px;line-height:1.2}
+   .lp-pain p{margin:0;color:var(--navy);font-weight:600;font-size:15px;line-height:1.5}
+   .lp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:26px}
+diff --git a/src/components/Vacatures.astro b/src/components/Vacatures.astro
+index 432d1c0..678447c 100644
+--- a/src/components/Vacatures.astro
++++ b/src/components/Vacatures.astro
+@@ -64,7 +64,7 @@ const _jobsLd = (t.jobs || []).map((j, i) => ({
+ 
+ <style>
+   .vac-list{display:flex;flex-direction:column;gap:20px;margin-top:8px}
+-  .vac-card{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:16px;padding:26px 28px;box-shadow:var(--shadow-xs)}
++  .vac-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 28px;box-shadow:var(--shadow-xs)}
+   .vac-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap}
+   .vac-type{display:inline-block;background:var(--bg-soft);color:var(--navy);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:4px 10px;border-radius:var(--radius-pill)}
+   .vac-title{color:var(--navy);font-size:1.25rem;margin:8px 0 4px;letter-spacing:-.02em}
+diff --git a/src/components/Vergelijking.astro b/src/components/Vergelijking.astro
+index 57d6379..0020627 100644
+--- a/src/components/Vergelijking.astro
++++ b/src/components/Vergelijking.astro
+@@ -47,7 +47,7 @@ const _crumbLd = { "@context":"https://schema.org","@type":"BreadcrumbList", ite
+ 
+ <style>
+   .vg-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:8px}
+-  .vg-card{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:14px;padding:22px 24px}
++  .vg-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px}
+   .vg-card h3{color:var(--navy);font-size:1.05rem;margin:0 0 8px;letter-spacing:-.01em}
+   .vg-card p{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0}
+   .vg-edges{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 26px}
+diff --git a/src/components/VergelijkingIndex.astro b/src/components/VergelijkingIndex.astro
+index d52a5cf..c86126c 100644
+--- a/src/components/VergelijkingIndex.astro
++++ b/src/components/VergelijkingIndex.astro
+@@ -60,7 +60,7 @@ const gidsHref = localizePath("/whitepapers/assessments-kiezen-gids/", lang);
+ 
+ <style>
+   .vg-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:8px}
+-  .vg-card{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:14px;padding:22px 24px}
++  .vg-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px}
+   .vg-card h3{color:var(--navy);font-size:1.05rem;margin:0 0 8px;letter-spacing:-.01em}
+   .vg-card p{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0}
+   @media(max-width:820px){.vg-grid{grid-template-columns:1fr}}
+diff --git a/src/components/Voorbereiding.astro b/src/components/Voorbereiding.astro
+index 5149b3e..ecff1e0 100644
+--- a/src/components/Voorbereiding.astro
++++ b/src/components/Voorbereiding.astro
+@@ -116,7 +116,7 @@ const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voo
+   @media(max-width:760px){ .prep-books{grid-template-columns:1fr} }
+   .prep-search{width:100%;max-width:420px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:15px;margin-bottom:16px}
+   .prep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+-  .prep-card{display:flex;flex-direction:column;gap:8px;background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:16px 18px;text-decoration:none}
++  .prep-card{display:flex;flex-direction:column;gap:8px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;text-decoration:none}
+   .prep-card:hover{box-shadow:var(--shadow-sm)}
+   .prep-name{color:var(--navy);font-weight:800;font-size:15px}
+   .prep-link{color:var(--blue);font-weight:700;font-size:13.5px}
+diff --git a/src/components/WhitepaperDetail.astro b/src/components/WhitepaperDetail.astro
+index 4410c60..c6683a4 100644
+--- a/src/components/WhitepaperDetail.astro
++++ b/src/components/WhitepaperDetail.astro
+@@ -37,7 +37,7 @@ const wpHref = localizePath("/whitepapers/", lang);
+         <p style="font-size:17px;line-height:1.65;color:var(--text)">{s.p2}</p>
+       </div>
+     ))}
+-    <p style="padding:16px 20px;background:var(--bg-soft);border-left:4px solid var(--gold);border-radius:12px"><strong>{ui.takeawayLabel}:</strong> {d.takeaway}</p>
++    <p style="padding:16px 20px;background:var(--bg-soft);border-radius:12px"><strong>{ui.takeawayLabel}:</strong> {d.takeaway}</p>
+     <div style="margin-top:22px"><a href={wpHref} class="btn btn-ghost">← {ui.back}</a> <a href={localizePath("/contact/", lang)} class="btn btn-primary" style="margin-left:8px">{ui.form} →</a></div>
+   </div>
+ </div></section>
+diff --git a/src/data/assessment-detail-ui.js b/src/data/assessment-detail-ui.js
+index 36d10e8..b5f9edc 100644
+--- a/src/data/assessment-detail-ui.js
++++ b/src/data/assessment-detail-ui.js
+@@ -5,7 +5,7 @@ export const detailUi = {
+   nl: {
+     eyebrowAssessments: "Online assessments", crumbAssessments: "Online assessments",
+     phase: "Wanneer inzetten?", goal: "Doel",
+-    priceLabel: "Prijs per los assessment", priceNote: "Bij bulkafname of een eigen portal betaal je aanzienlijk minder per afname.",
++    detailsSummary: "Toelichting en competentieniveaus", priceLabel: "Prijs per los assessment", priceNote: "per losse afname, of onbeperkt afnemen met een eigen portal op licentiebasis.",
+     demo: "Plan een gratis demo", orderLoose: "Los bestellen", inShop: "Bekijk in de shop",
+     portalPre: "Structureel inzetten? Start met een ", portalLink: "eigen portal op licentiebasis",
+     portalPost: ", onbeperkt afnemen tegen een vaste jaarprijs.",
+@@ -29,7 +29,7 @@ export const detailUi = {
+   en: {
+     eyebrowAssessments: "Online assessments", crumbAssessments: "Online assessments",
+     phase: "When to use it?", goal: "Goal",
+-    priceLabel: "Price per single assessment", priceNote: "With bulk orders or your own portal you pay considerably less per assessment.",
++    detailsSummary: "Background and competency levels", priceLabel: "Price per single assessment", priceNote: "per single assessment, or unlimited use with your own licensed portal.",
+     demo: "Book a free demo", orderLoose: "Order individually", inShop: "View in the shop",
+     portalPre: "Rolling it out structurally? Start with your ", portalLink: "own licensed portal",
+     portalPost: ", unlimited use for a fixed annual price.",
+@@ -53,7 +53,7 @@ export const detailUi = {
+   de: {
+     eyebrowAssessments: "Online assessments", crumbAssessments: "Online assessments",
+     phase: "Wann einsetzen?", goal: "Ziel",
+-    priceLabel: "Preis pro Einzel-Assessment", priceNote: "Bei Mengenabnahme oder einem eigenen Portal zahlen Sie deutlich weniger pro Assessment.",
++    detailsSummary: "Hintergrund und Kompetenzstufen", priceLabel: "Preis pro Einzel-Assessment", priceNote: "pro Einzel-Assessment, oder unbegrenzt nutzen mit einem eigenen Lizenzportal.",
+     demo: "Kostenlose Demo buchen", orderLoose: "Einzeln bestellen", inShop: "Im Shop ansehen",
+     portalPre: "Strukturell einsetzen? Starten Sie mit einem ", portalLink: "eigenen Portal auf Lizenzbasis",
+     portalPost: ", unbegrenzte Nutzung zu einem festen Jahrespreis.",
+@@ -77,7 +77,7 @@ export const detailUi = {
+   fr: {
+     eyebrowAssessments: "Évaluations en ligne", crumbAssessments: "Évaluations en ligne",
+     phase: "Quand l'utiliser ?", goal: "Objectif",
+-    priceLabel: "Prix par évaluation isolée", priceNote: "En volume ou avec votre propre portail, vous payez nettement moins par évaluation.",
++    detailsSummary: "Explications et niveaux de compétence", priceLabel: "Prix par évaluation isolée", priceNote: "par évaluation isolée, ou en illimité avec votre propre portail sous licence.",
+     demo: "Réserver une démo gratuite", orderLoose: "Commander à l'unité", inShop: "Voir dans la boutique",
+     portalPre: "Un déploiement structurel ? Commencez avec votre ", portalLink: "propre portail sous licence",
+     portalPost: ", utilisation illimitée pour un prix annuel fixe.",
+@@ -101,7 +101,7 @@ export const detailUi = {
+   es: {
+     eyebrowAssessments: "Evaluaciones online", crumbAssessments: "Evaluaciones online",
+     phase: "¿Cuándo usarla?", goal: "Objetivo",
+-    priceLabel: "Precio por evaluación individual", priceNote: "Con volumen o con tu propio portal pagas bastante menos por evaluación.",
++    detailsSummary: "Explicación y niveles de competencia", priceLabel: "Precio por evaluación individual", priceNote: "por evaluación individual, o uso ilimitado con tu propio portal con licencia.",
+     demo: "Reservar una demo gratis", orderLoose: "Pedir por unidad", inShop: "Ver en la tienda",
+     portalPre: "¿Implementación estructural? Empieza con tu ", portalLink: "propio portal con licencia",
+     portalPost: ", uso ilimitado por un precio anual fijo.",
+@@ -125,7 +125,7 @@ export const detailUi = {
+   ro: {
+     eyebrowAssessments: "Evaluări online", crumbAssessments: "Evaluări online",
+     phase: "Când o folosești?", goal: "Obiectiv",
+-    priceLabel: "Preț per evaluare individuală", priceNote: "La volum sau cu propriul portal plătești considerabil mai puțin per evaluare.",
++    detailsSummary: "Explicații și niveluri de competență", priceLabel: "Preț per evaluare individuală", priceNote: "per evaluare individuală, sau nelimitat cu propriul portal pe bază de licență.",
+     demo: "Rezervă o demonstrație gratuită", orderLoose: "Comandă individual", inShop: "Vezi în magazin",
+     portalPre: "Implementare structurală? Începe cu ", portalLink: "propriul portal pe bază de licență",
+     portalPost: ", utilizare nelimitată la un preț anual fix.",
+diff --git a/src/data/assessment-examples.js b/src/data/assessment-examples.js
+index be85464..4a5195a 100644
+--- a/src/data/assessment-examples.js
++++ b/src/data/assessment-examples.js
+@@ -1,13 +1,13 @@
+ // Voorbeeldvragen per assessment-TYPE, in 6 talen. Ter illustratie op de
+-// detailpagina's — het zijn representatieve voorbeelden, niet de echte items.
++// detailpagina's - het zijn representatieve voorbeelden, niet de echte items.
+ 
+ export const EX_UI = {
+-  nl: { title: "Voorbeeldvragen", intro: "Zo ziet dit assessment er in de praktijk uit. Onderstaande vragen zijn ter illustratie — de echte vragenlijst is uitgebreider.", scaleLabel: "Antwoordschaal", tag: "Voorbeeld" },
+-  en: { title: "Example questions", intro: "A preview of what this assessment looks like in practice. The questions below are illustrative — the actual questionnaire is more extensive.", scaleLabel: "Answer scale", tag: "Example" },
+-  de: { title: "Beispielfragen", intro: "Ein Vorgeschmack, wie dieses Assessment in der Praxis aussieht. Die folgenden Fragen dienen der Veranschaulichung — der eigentliche Fragebogen ist umfangreicher.", scaleLabel: "Antwortskala", tag: "Beispiel" },
+-  fr: { title: "Exemples de questions", intro: "Un aperçu de cet assessment en pratique. Les questions ci-dessous sont données à titre d'illustration — le questionnaire réel est plus complet.", scaleLabel: "Échelle de réponse", tag: "Exemple" },
++  nl: { title: "Voorbeeldvragen", intro: "Zo ziet dit assessment er in de praktijk uit. Onderstaande vragen zijn ter illustratie - de echte vragenlijst is uitgebreider.", scaleLabel: "Antwoordschaal", tag: "Voorbeeld" },
++  en: { title: "Example questions", intro: "A preview of what this assessment looks like in practice. The questions below are illustrative - the actual questionnaire is more extensive.", scaleLabel: "Answer scale", tag: "Example" },
++  de: { title: "Beispielfragen", intro: "Ein Vorgeschmack, wie dieses Assessment in der Praxis aussieht. Die folgenden Fragen dienen der Veranschaulichung - der eigentliche Fragebogen ist umfangreicher.", scaleLabel: "Antwortskala", tag: "Beispiel" },
++  fr: { title: "Exemples de questions", intro: "Un aperçu de cet assessment en pratique. Les questions ci-dessous sont données à titre d'illustration - le questionnaire réel est plus complet.", scaleLabel: "Échelle de réponse", tag: "Exemple" },
+   es: { title: "Preguntas de ejemplo", intro: "Una muestra de cómo es esta evaluación en la práctica. Las preguntas siguientes son ilustrativas; el cuestionario real es más amplio.", scaleLabel: "Escala de respuesta", tag: "Ejemplo" },
+-  ro: { title: "Întrebări exemplu", intro: "O previzualizare a modului în care arată această evaluare în practică. Întrebările de mai jos sunt ilustrative — chestionarul real este mai amplu.", scaleLabel: "Scală de răspuns", tag: "Exemplu" },
++  ro: { title: "Întrebări exemplu", intro: "O previzualizare a modului în care arată această evaluare în practică. Întrebările de mai jos sunt ilustrative - chestionarul real este mai amplu.", scaleLabel: "Scală de răspuns", tag: "Exemplu" },
+ };
+ 
+ // Koppeling assessment-slug -> type. Onbekende slugs vallen terug op "personality".
+@@ -29,34 +29,34 @@ export const slugType = {
+   "verkoopvaardigheden": "skills", "lean-scan": "skills", "job-profiler": "jobprofile",
+ };
+ 
+-const LIKERT = { nl: "Helemaal oneens — Oneens — Neutraal — Eens — Helemaal eens", en: "Strongly disagree — Disagree — Neutral — Agree — Strongly agree", de: "Stimme gar nicht zu — Neutral — Stimme voll zu", fr: "Pas du tout d'accord — Neutre — Tout à fait d'accord", es: "Muy en desacuerdo — Neutral — Muy de acuerdo", ro: "Total dezacord — Neutru — Total de acord" };
++const LIKERT = { nl: "Helemaal oneens - Oneens - Neutraal - Eens - Helemaal eens", en: "Strongly disagree - Disagree - Neutral - Agree - Strongly agree", de: "Stimme gar nicht zu - Neutral - Stimme voll zu", fr: "Pas du tout d'accord - Neutre - Tout à fait d'accord", es: "Muy en desacuerdo - Neutral - Muy de acuerdo", ro: "Total dezacord - Neutru - Total de acord" };
+ 
+ export const EXAMPLES = {
+   personality: {
+     scale: LIKERT, answer: "scale",
+     items: {
+-      nl: ["Ik voel me op mijn gemak in een groep onbekende mensen.", "Ik plan mijn werk graag ruim van tevoren.", "Ik blijf rustig als er onverwacht iets misgaat."],
+-      en: ["I feel at ease in a group of people I don't know.", "I like to plan my work well in advance.", "I stay calm when something unexpectedly goes wrong."],
+-      de: ["Ich fühle mich in einer Gruppe unbekannter Menschen wohl.", "Ich plane meine Arbeit gern lange im Voraus.", "Ich bleibe ruhig, wenn unerwartet etwas schiefgeht."],
+-      fr: ["Je me sens à l'aise dans un groupe de personnes que je ne connais pas.", "J'aime planifier mon travail bien à l'avance.", "Je reste calme lorsqu'un imprévu survient."],
+-      es: ["Me siento cómodo en un grupo de personas desconocidas.", "Me gusta planificar mi trabajo con antelación.", "Mantengo la calma cuando algo sale mal de forma inesperada."],
+-      ro: ["Mă simt în largul meu într-un grup de persoane necunoscute.", "Îmi place să îmi planific munca din timp.", "Rămân calm când ceva nu merge bine pe neașteptate."],
++      nl: ["Ik voel me op mijn gemak in een groep onbekende mensen.", "Ik plan mijn werk graag ruim van tevoren.", "Ik blijf rustig als er onverwacht iets misgaat.", "Ik neem graag de leiding als een groep iets moet beslissen.", "Ik let scherp op details in mijn werk.", "Ik zoek uit mezelf contact met nieuwe collega's."],
++      en: ["I feel at ease in a group of people I don't know.", "I like to plan my work well in advance.", "I stay calm when something unexpectedly goes wrong.", "I like to take the lead when a group has to decide something.", "I pay close attention to detail in my work.", "I reach out to new colleagues on my own initiative."],
++      de: ["Ich fühle mich in einer Gruppe unbekannter Menschen wohl.", "Ich plane meine Arbeit gern lange im Voraus.", "Ich bleibe ruhig, wenn unerwartet etwas schiefgeht.", "Ich übernehme gern die Führung, wenn eine Gruppe entscheiden muss.", "Ich achte in meiner Arbeit genau auf Details.", "Ich gehe von mir aus auf neue Kolleginnen und Kollegen zu."],
++      fr: ["Je me sens à l'aise dans un groupe de personnes que je ne connais pas.", "J'aime planifier mon travail bien à l'avance.", "Je reste calme lorsqu'un imprévu survient.", "J'aime prendre la direction quand un groupe doit décider.", "Je fais très attention aux détails dans mon travail.", "Je vais spontanément vers de nouveaux collègues."],
++      es: ["Me siento cómodo en un grupo de personas desconocidas.", "Me gusta planificar mi trabajo con antelación.", "Mantengo la calma cuando algo sale mal de forma inesperada.", "Me gusta tomar la iniciativa cuando un grupo debe decidir.", "Presto mucha atención a los detalles en mi trabajo.", "Busco contacto por iniciativa propia con nuevos compañeros."],
++      ro: ["Mă simt în largul meu într-un grup de persoane necunoscute.", "Îmi place să îmi planific munca din timp.", "Rămân calm când ceva nu merge bine pe neașteptate.", "Îmi place să preiau conducerea când un grup trebuie să decidă.", "Sunt foarte atent la detalii în munca mea.", "Caut din proprie inițiativă contactul cu colegii noi."],
+     },
+   },
+   cognitive: {
+-    scale: { nl: "Meerkeuze — kies het juiste antwoord", en: "Multiple choice — pick the correct answer", de: "Multiple Choice — wählen Sie die richtige Antwort", fr: "Choix multiple — choisissez la bonne réponse", es: "Opción múltiple — elige la respuesta correcta", ro: "Alegere multiplă — alege răspunsul corect" },
++    scale: { nl: "Meerkeuze - kies het juiste antwoord", en: "Multiple choice - pick the correct answer", de: "Multiple Choice - wählen Sie die richtige Antwort", fr: "Choix multiple - choisissez la bonne réponse", es: "Opción múltiple - elige la respuesta correcta", ro: "Alegere multiplă - alege răspunsul corect" },
+     answer: "choice",
+     mock: {
+       q: { nl: "Welk getal komt logisch na: 2, 4, 8, 16, …?", en: "Which number logically follows: 2, 4, 8, 16, …?", de: "Welche Zahl folgt logisch: 2, 4, 8, 16, …?", fr: "Quel nombre suit logiquement : 2, 4, 8, 16, … ?", es: "¿Qué número sigue lógicamente: 2, 4, 8, 16, …?", ro: "Ce număr urmează logic: 2, 4, 8, 16, …?" },
+       options: { nl: ["24", "30", "32", "64"], en: ["24", "30", "32", "64"], de: ["24", "30", "32", "64"], fr: ["24", "30", "32", "64"], es: ["24", "30", "32", "64"], ro: ["24", "30", "32", "64"] },
+     },
+     items: {
+-      nl: ["Welk getal komt logisch na: 2, 4, 8, 16, …?", "‘Boek’ verhoudt zich tot ‘lezen’ zoals ‘vork’ tot …?", "Als alle A’s B zijn en alle B’s C, dan zijn alle A’s …?"],
+-      en: ["Which number logically follows: 2, 4, 8, 16, …?", "‘Book’ is to ‘reading’ as ‘fork’ is to …?", "If all A’s are B and all B’s are C, then all A’s are …?"],
+-      de: ["Welche Zahl folgt logisch: 2, 4, 8, 16, …?", "‘Buch’ verhält sich zu ‘lesen’ wie ‘Gabel’ zu …?", "Wenn alle A B sind und alle B C, dann sind alle A …?"],
+-      fr: ["Quel nombre suit logiquement : 2, 4, 8, 16, … ?", "‘Livre’ est à ‘lire’ ce que ‘fourchette’ est à … ?", "Si tous les A sont B et tous les B sont C, alors tous les A sont … ?"],
+-      es: ["¿Qué número sigue lógicamente: 2, 4, 8, 16, …?", "‘Libro’ es a ‘leer’ como ‘tenedor’ es a …?", "Si todos los A son B y todos los B son C, entonces todos los A son …?"],
+-      ro: ["Ce număr urmează logic: 2, 4, 8, 16, …?", "‘Carte’ este pentru ‘citit’ ceea ce ‘furculiță’ este pentru …?", "Dacă toți A sunt B și toți B sunt C, atunci toți A sunt …?"],
++      nl: ["Welk getal komt logisch na: 2, 4, 8, 16, …?", "‘Boek’ verhoudt zich tot ‘lezen’ zoals ‘vork’ tot …?", "Als alle A’s B zijn en alle B’s C, dan zijn alle A’s …?", "Welke figuur hoort niet in de reeks thuis?", "Een product van 80 euro daalt met 25% in prijs. Wat kost het dan?", "'Altijd' verhoudt zich tot 'nooit' zoals 'alles' tot …?"],
++      en: ["Which number logically follows: 2, 4, 8, 16, …?", "‘Book’ is to ‘reading’ as ‘fork’ is to …?", "If all A’s are B and all B’s are C, then all A’s are …?", "Which figure does not belong in the series?", "A product of 80 euro drops 25% in price. What does it cost then?", "'Always' relates to 'never' as 'everything' relates to …?"],
++      de: ["Welche Zahl folgt logisch: 2, 4, 8, 16, …?", "‘Buch’ verhält sich zu ‘lesen’ wie ‘Gabel’ zu …?", "Wenn alle A B sind und alle B C, dann sind alle A …?", "Welche Figur gehört nicht in die Reihe?", "Ein Produkt für 80 Euro wird um 25% günstiger. Was kostet es dann?", "'Immer' verhält sich zu 'nie' wie 'alles' zu …?"],
++      fr: ["Quel nombre suit logiquement : 2, 4, 8, 16, … ?", "‘Livre’ est à ‘lire’ ce que ‘fourchette’ est à … ?", "Si tous les A sont B et tous les B sont C, alors tous les A sont … ?", "Quelle figure n'appartient pas à la série ?", "Un produit à 80 euros baisse de 25%. Combien coûte-t-il ?", "'Toujours' est à 'jamais' ce que 'tout' est à …?"],
++      es: ["¿Qué número sigue lógicamente: 2, 4, 8, 16, …?", "‘Libro’ es a ‘leer’ como ‘tenedor’ es a …?", "Si todos los A son B y todos los B son C, entonces todos los A son …?", "¿Qué figura no encaja en la serie?", "Un producto de 80 euros baja un 25%. ¿Cuánto cuesta entonces?", "'Siempre' es a 'nunca' lo que 'todo' es a …?"],
++      ro: ["Ce număr urmează logic: 2, 4, 8, 16, …?", "‘Carte’ este pentru ‘citit’ ceea ce ‘furculiță’ este pentru …?", "Dacă toți A sunt B și toți B sunt C, atunci toți A sunt …?", "Care figură nu se potrivește în serie?", "Un produs de 80 de euro scade cu 25%. Cât costă atunci?", "'Întotdeauna' este pentru 'niciodată' ceea ce 'tot' este pentru …?"],
+     },
+   },
+   disc: {
+@@ -67,70 +67,70 @@ export const EXAMPLES = {
+       options: { nl: ["Daadkrachtig", "Enthousiast", "Geduldig", "Nauwkeurig"], en: ["Decisive", "Enthusiastic", "Patient", "Precise"], de: ["Entschlossen", "Enthusiastisch", "Geduldig", "Genau"], fr: ["Déterminé", "Enthousiaste", "Patient", "Précis"], es: ["Decidido", "Entusiasta", "Paciente", "Preciso"], ro: ["Hotărât", "Entuziast", "Răbdător", "Precis"] },
+     },
+     items: {
+-      nl: ["Kies het woord dat het best bij je past: Daadkrachtig / Enthousiast / Geduldig / Nauwkeurig.", "Wat past het minst bij je: Direct / Sociaal / Kalm / Kritisch.", "In een team ben ik vooral: Sturend / Inspirerend / Ondersteunend / Analyserend."],
+-      en: ["Pick the word that fits you best: Decisive / Enthusiastic / Patient / Precise.", "Which fits you least: Direct / Sociable / Calm / Critical.", "In a team I am mainly: Directing / Inspiring / Supporting / Analysing."],
+-      de: ["Wählen Sie das Wort, das am besten passt: Entschlossen / Enthusiastisch / Geduldig / Genau.", "Was passt am wenigsten: Direkt / Gesellig / Ruhig / Kritisch.", "Im Team bin ich vor allem: Steuernd / Inspirierend / Unterstützend / Analysierend."],
+-      fr: ["Choisissez le mot qui vous correspond le mieux : Déterminé / Enthousiaste / Patient / Précis.", "Lequel vous correspond le moins : Direct / Sociable / Calme / Critique.", "Dans une équipe, je suis surtout : Directif / Inspirant / Soutenant / Analytique."],
+-      es: ["Elige la palabra que mejor te describe: Decidido / Entusiasta / Paciente / Preciso.", "¿Cuál te describe menos: Directo / Sociable / Tranquilo / Crítico.", "En un equipo soy sobre todo: Directivo / Inspirador / Colaborador / Analítico."],
+-      ro: ["Alege cuvântul care ți se potrivește cel mai bine: Hotărât / Entuziast / Răbdător / Precis.", "Care ți se potrivește cel mai puțin: Direct / Sociabil / Calm / Critic.", "Într-o echipă sunt mai ales: Directiv / Inspirator / Suportiv / Analitic."],
++      nl: ["Kies het woord dat het best bij je past: Daadkrachtig / Enthousiast / Geduldig / Nauwkeurig.", "Wat past het minst bij je: Direct / Sociaal / Kalm / Kritisch.", "In een team ben ik vooral: Sturend / Inspirerend / Ondersteunend / Analyserend.", "Wat typeert jou het meest in overleg: Beslissen / Overtuigen / Luisteren / Onderbouwen.", "Onder tijdsdruk word ik vooral: Directer / Enthousiaster / Rustiger / Preciezer.", "Wat vind je het lastigst: Details / Regels / Snelle wisselingen / Confrontatie."],
++      en: ["Pick the word that fits you best: Decisive / Enthusiastic / Patient / Precise.", "Which fits you least: Direct / Sociable / Calm / Critical.", "In a team I am mainly: Directing / Inspiring / Supporting / Analysing.", "What typifies you most in a meeting: Deciding / Persuading / Listening / Substantiating.", "Under time pressure I mainly become: More direct / More enthusiastic / Calmer / More precise.", "What do you find hardest: Details / Rules / Rapid changes / Confrontation."],
++      de: ["Wählen Sie das Wort, das am besten passt: Entschlossen / Enthusiastisch / Geduldig / Genau.", "Was passt am wenigsten: Direkt / Gesellig / Ruhig / Kritisch.", "Im Team bin ich vor allem: Steuernd / Inspirierend / Unterstützend / Analysierend.", "Was kennzeichnet Sie in Besprechungen am meisten: Entscheiden / Überzeugen / Zuhören / Begründen.", "Unter Zeitdruck werde ich vor allem: Direkter / Begeisterter / Ruhiger / Genauer.", "Was fällt Ihnen am schwersten: Details / Regeln / Schnelle Wechsel / Konfrontation."],
++      fr: ["Choisissez le mot qui vous correspond le mieux : Déterminé / Enthousiaste / Patient / Précis.", "Lequel vous correspond le moins : Direct / Sociable / Calme / Critique.", "Dans une équipe, je suis surtout : Directif / Inspirant / Soutenant / Analytique.", "Ce qui vous caractérise le plus en réunion : Décider / Convaincre / Écouter / Argumenter.", "Sous pression, je deviens surtout : Plus direct / Plus enthousiaste / Plus calme / Plus précis.", "Ce que vous trouvez le plus difficile : Les détails / Les règles / Les changements rapides / La confrontation."],
++      es: ["Elige la palabra que mejor te describe: Decidido / Entusiasta / Paciente / Preciso.", "¿Cuál te describe menos: Directo / Sociable / Tranquilo / Crítico.", "En un equipo soy sobre todo: Directivo / Inspirador / Colaborador / Analítico.", "Lo que más te caracteriza en una reunión: Decidir / Convencer / Escuchar / Argumentar.", "Bajo presión me vuelvo sobre todo: Más directo / Más entusiasta / Más tranquilo / Más preciso.", "Lo que te resulta más difícil: Los detalles / Las reglas / Los cambios rápidos / La confrontación."],
++      ro: ["Alege cuvântul care ți se potrivește cel mai bine: Hotărât / Entuziast / Răbdător / Precis.", "Care ți se potrivește cel mai puțin: Direct / Sociabil / Calm / Critic.", "Într-o echipă sunt mai ales: Directiv / Inspirator / Suportiv / Analitic.", "Ce te caracterizează cel mai mult în ședințe: Decizi / Convingi / Asculți / Argumentezi.", "Sub presiune devin mai ales: Mai direct / Mai entuziast / Mai calm / Mai precis.", "Ce ți se pare cel mai greu: Detaliile / Regulile / Schimbările rapide / Confruntarea."],
+     },
+   },
+   drives: {
+-    scale: { nl: "Onbelangrijk — Heel belangrijk", en: "Not important — Very important", de: "Unwichtig — Sehr wichtig", fr: "Pas important — Très important", es: "Nada importante — Muy importante", ro: "Neimportant — Foarte important" },
++    scale: { nl: "Onbelangrijk - Heel belangrijk", en: "Not important - Very important", de: "Unwichtig - Sehr wichtig", fr: "Pas important - Très important", es: "Nada importante - Muy importante", ro: "Neimportant - Foarte important" },
+     answer: "scale",
+     items: {
+-      nl: ["Hoe belangrijk is het voor jou om je werk zelfstandig in te richten?", "Hoe belangrijk is het om te blijven leren en jezelf te ontwikkelen?", "Hoe belangrijk zijn waardering en erkenning van collega’s?"],
+-      en: ["How important is it for you to organise your work independently?", "How important is it to keep learning and developing yourself?", "How important are appreciation and recognition from colleagues?"],
+-      de: ["Wie wichtig ist es Ihnen, Ihre Arbeit selbstständig zu gestalten?", "Wie wichtig ist es, weiter zu lernen und sich zu entwickeln?", "Wie wichtig sind Wertschätzung und Anerkennung durch Kollegen?"],
+-      fr: ["Quelle importance accordez-vous à organiser votre travail de façon autonome ?", "Quelle importance accordez-vous à continuer d'apprendre et à vous développer ?", "Quelle importance accordez-vous à la reconnaissance de vos collègues ?"],
+-      es: ["¿Qué importancia tiene para ti organizar tu trabajo de forma autónoma?", "¿Qué importancia tiene seguir aprendiendo y desarrollándote?", "¿Qué importancia tiene el reconocimiento de tus compañeros?"],
+-      ro: ["Cât de important este pentru tine să îți organizezi munca independent?", "Cât de important este să înveți continuu și să te dezvolți?", "Cât de importantă este aprecierea din partea colegilor?"],
++      nl: ["Hoe belangrijk is het voor jou om je werk zelfstandig in te richten?", "Hoe belangrijk is het om te blijven leren en jezelf te ontwikkelen?", "Hoe belangrijk zijn waardering en erkenning van collega’s?", "Hoe belangrijk is het voor jou om samen met anderen te werken?", "Hoe belangrijk is zekerheid over je baan en inkomen?", "Hoe belangrijk is het om invloed te hebben op besluiten?"],
++      en: ["How important is it for you to organise your work independently?", "How important is it to keep learning and developing yourself?", "How important are appreciation and recognition from colleagues?", "How important is it for you to work together with others?", "How important is security about your job and income?", "How important is it to have influence on decisions?"],
++      de: ["Wie wichtig ist es Ihnen, Ihre Arbeit selbstständig zu gestalten?", "Wie wichtig ist es, weiter zu lernen und sich zu entwickeln?", "Wie wichtig sind Wertschätzung und Anerkennung durch Kollegen?", "Wie wichtig ist es Ihnen, mit anderen zusammenzuarbeiten?", "Wie wichtig ist Sicherheit bei Arbeitsplatz und Einkommen?", "Wie wichtig ist Einfluss auf Entscheidungen?"],
++      fr: ["Quelle importance accordez-vous à organiser votre travail de façon autonome ?", "Quelle importance accordez-vous à continuer d'apprendre et à vous développer ?", "Quelle importance accordez-vous à la reconnaissance de vos collègues ?", "Quelle importance accordez-vous au travail avec les autres ?", "Quelle importance a la sécurité de l'emploi et du revenu ?", "Quelle importance a le fait d'influencer les décisions ?"],
++      es: ["¿Qué importancia tiene para ti organizar tu trabajo de forma autónoma?", "¿Qué importancia tiene seguir aprendiendo y desarrollándote?", "¿Qué importancia tiene el reconocimiento de tus compañeros?", "¿Qué importancia tiene para ti trabajar junto a otros?", "¿Qué importancia tiene la seguridad del empleo y los ingresos?", "¿Qué importancia tiene influir en las decisiones?"],
++      ro: ["Cât de important este pentru tine să îți organizezi munca independent?", "Cât de important este să înveți continuu și să te dezvolți?", "Cât de importantă este aprecierea din partea colegilor?", "Cât de important este pentru tine să lucrezi împreună cu alții?", "Cât de importantă este siguranța locului de muncă și a venitului?", "Cât de important este să ai influență asupra deciziilor?"],
+     },
+   },
+   feedback360: {
+-    scale: { nl: "Nooit — Zelden — Soms — Vaak — Altijd", en: "Never — Rarely — Sometimes — Often — Always", de: "Nie — Selten — Manchmal — Oft — Immer", fr: "Jamais — Rarement — Parfois — Souvent — Toujours", es: "Nunca — Rara vez — A veces — A menudo — Siempre", ro: "Niciodată — Rar — Uneori — Des — Întotdeauna" },
++    scale: { nl: "Nooit - Zelden - Soms - Vaak - Altijd", en: "Never - Rarely - Sometimes - Often - Always", de: "Nie - Selten - Manchmal - Oft - Immer", fr: "Jamais - Rarement - Parfois - Souvent - Toujours", es: "Nunca - Rara vez - A veces - A menudo - Siempre", ro: "Niciodată - Rar - Uneori - Des - Întotdeauna" },
+     answer: "scale",
+     items: {
+-      nl: ["Deze collega communiceert helder en op tijd.", "Deze collega neemt verantwoordelijkheid voor resultaten.", "Deze collega staat open voor feedback van anderen."],
+-      en: ["This colleague communicates clearly and on time.", "This colleague takes responsibility for results.", "This colleague is open to feedback from others."],
+-      de: ["Diese Kollegin/dieser Kollege kommuniziert klar und rechtzeitig.", "Diese Person übernimmt Verantwortung für Ergebnisse.", "Diese Person ist offen für Feedback anderer."],
+-      fr: ["Ce collègue communique de manière claire et en temps voulu.", "Ce collègue assume la responsabilité des résultats.", "Ce collègue est ouvert aux retours des autres."],
+-      es: ["Este compañero se comunica con claridad y a tiempo.", "Este compañero asume la responsabilidad de los resultados.", "Este compañero está abierto a las opiniones de los demás."],
+-      ro: ["Acest coleg comunică clar și la timp.", "Acest coleg își asumă responsabilitatea pentru rezultate.", "Acest coleg este deschis la feedback din partea altora."],
++      nl: ["Deze collega communiceert helder en op tijd.", "Deze collega neemt verantwoordelijkheid voor resultaten.", "Deze collega staat open voor feedback van anderen.", "Deze collega geeft anderen ruimte om mee te denken.", "Deze collega houdt het overzicht als het druk wordt.", "Deze collega komt afspraken na."],
++      en: ["This colleague communicates clearly and on time.", "This colleague takes responsibility for results.", "This colleague is open to feedback from others.", "This colleague gives others room to contribute.", "This colleague keeps an overview when things get busy.", "This colleague keeps agreements."],
++      de: ["Diese Kollegin/dieser Kollege kommuniziert klar und rechtzeitig.", "Diese Person übernimmt Verantwortung für Ergebnisse.", "Diese Person ist offen für Feedback anderer.", "Diese Kollegin oder dieser Kollege lässt anderen Raum zum Mitdenken.", "Diese Person behält den Überblick, wenn es hektisch wird.", "Diese Person hält Absprachen ein."],
++      fr: ["Ce collègue communique de manière claire et en temps voulu.", "Ce collègue assume la responsabilité des résultats.", "Ce collègue est ouvert aux retours des autres.", "Ce collègue laisse de la place aux idées des autres.", "Ce collègue garde une vue d'ensemble quand la charge augmente.", "Ce collègue respecte les engagements pris."],
++      es: ["Este compañero se comunica con claridad y a tiempo.", "Este compañero asume la responsabilidad de los resultados.", "Este compañero está abierto a las opiniones de los demás.", "Este compañero da espacio a las ideas de los demás.", "Este compañero mantiene la visión de conjunto cuando hay mucha carga.", "Este compañero cumple los acuerdos."],
++      ro: ["Acest coleg comunică clar și la timp.", "Acest coleg își asumă responsabilitatea pentru rezultate.", "Acest coleg este deschis la feedback din partea altora.", "Acest coleg lasă spațiu ideilor celorlalți.", "Acest coleg păstrează imaginea de ansamblu când e aglomerat.", "Acest coleg respectă înțelegerile."],
+     },
+   },
+   interest: {
+-    scale: { nl: "Spreekt me niet aan — Spreekt me erg aan", en: "Not appealing — Very appealing", de: "Spricht mich nicht an — Spricht mich sehr an", fr: "Ne m'attire pas — M'attire beaucoup", es: "No me atrae — Me atrae mucho", ro: "Nu mă atrage — Mă atrage foarte mult" },
++    scale: { nl: "Spreekt me niet aan - Spreekt me erg aan", en: "Not appealing - Very appealing", de: "Spricht mich nicht an - Spricht mich sehr an", fr: "Ne m'attire pas - M'attire beaucoup", es: "No me atrae - Me atrae mucho", ro: "Nu mă atrage - Mă atrage foarte mult" },
+     answer: "scale",
+     items: {
+-      nl: ["Ik werk graag met mijn handen aan concrete resultaten.", "Ik los graag ingewikkelde problemen op met cijfers of data.", "Ik help en begeleid graag andere mensen."],
+-      en: ["I enjoy working with my hands on concrete results.", "I enjoy solving complex problems with numbers or data.", "I enjoy helping and guiding other people."],
+-      de: ["Ich arbeite gern mit den Händen an konkreten Ergebnissen.", "Ich löse gern komplexe Probleme mit Zahlen oder Daten.", "Ich helfe und begleite gern andere Menschen."],
+-      fr: ["J'aime travailler de mes mains sur des résultats concrets.", "J'aime résoudre des problèmes complexes avec des chiffres ou des données.", "J'aime aider et accompagner les autres."],
+-      es: ["Me gusta trabajar con las manos en resultados concretos.", "Me gusta resolver problemas complejos con números o datos.", "Me gusta ayudar y orientar a otras personas."],
+-      ro: ["Îmi place să lucrez cu mâinile la rezultate concrete.", "Îmi place să rezolv probleme complexe cu cifre sau date.", "Îmi place să ajut și să îndrum alte persoane."],
++      nl: ["Ik werk graag met mijn handen aan concrete resultaten.", "Ik los graag ingewikkelde problemen op met cijfers of data.", "Ik help en begeleid graag andere mensen.", "Ik organiseer graag activiteiten voor een groep.", "Ik ben graag creatief bezig met vormgeving of tekst.", "Ik werk het liefst volgens duidelijke procedures."],
++      en: ["I enjoy working with my hands on concrete results.", "I enjoy solving complex problems with numbers or data.", "I enjoy helping and guiding other people.", "I enjoy organising activities for a group.", "I like being creative with design or writing.", "I prefer working according to clear procedures."],
++      de: ["Ich arbeite gern mit den Händen an konkreten Ergebnissen.", "Ich löse gern komplexe Probleme mit Zahlen oder Daten.", "Ich helfe und begleite gern andere Menschen.", "Ich organisiere gern Aktivitäten für eine Gruppe.", "Ich bin gern kreativ mit Gestaltung oder Text.", "Ich arbeite am liebsten nach klaren Abläufen."],
++      fr: ["J'aime travailler de mes mains sur des résultats concrets.", "J'aime résoudre des problèmes complexes avec des chiffres ou des données.", "J'aime aider et accompagner les autres.", "J'aime organiser des activités pour un groupe.", "J'aime être créatif avec le design ou l'écriture.", "Je préfère travailler selon des procédures claires."],
++      es: ["Me gusta trabajar con las manos en resultados concretos.", "Me gusta resolver problemas complejos con números o datos.", "Me gusta ayudar y orientar a otras personas.", "Me gusta organizar actividades para un grupo.", "Me gusta ser creativo con el diseño o los textos.", "Prefiero trabajar con procedimientos claros."],
++      ro: ["Îmi place să lucrez cu mâinile la rezultate concrete.", "Îmi place să rezolv probleme complexe cu cifre sau date.", "Îmi place să ajut și să îndrum alte persoane.", "Îmi place să organizez activități pentru un grup.", "Îmi place să fiu creativ cu design sau text.", "Prefer să lucrez după proceduri clare."],
+     },
+   },
+   team: {
+     scale: LIKERT, answer: "scale",
+     items: {
+-      nl: ["In ons team weten we wat we van elkaar kunnen verwachten.", "We spreken elkaar aan als afspraken niet worden nagekomen.", "Besluiten worden in ons team door iedereen gedragen."],
+-      en: ["In our team we know what to expect from one another.", "We address each other when agreements aren't kept.", "Decisions in our team are supported by everyone."],
+-      de: ["In unserem Team wissen wir, was wir voneinander erwarten können.", "Wir sprechen einander an, wenn Absprachen nicht eingehalten werden.", "Entscheidungen werden in unserem Team von allen mitgetragen."],
+-      fr: ["Dans notre équipe, nous savons à quoi nous attendre les uns des autres.", "Nous nous interpellons lorsque les accords ne sont pas respectés.", "Les décisions sont soutenues par tous dans notre équipe."],
+-      es: ["En nuestro equipo sabemos qué esperar unos de otros.", "Nos decimos las cosas cuando no se cumplen los acuerdos.", "Las decisiones cuentan con el apoyo de todo el equipo."],
+-      ro: ["În echipa noastră știm la ce să ne așteptăm unii de la alții.", "Ne atragem atenția când nu se respectă înțelegerile.", "Deciziile sunt susținute de toți în echipa noastră."],
++      nl: ["In ons team weten we wat we van elkaar kunnen verwachten.", "We spreken elkaar aan als afspraken niet worden nagekomen.", "Besluiten worden in ons team door iedereen gedragen.", "We bespreken verschillen van mening open met elkaar.", "Iedereen weet waar het team dit jaar voor gaat.", "We staan stil bij wat er goed gaat."],
++      en: ["In our team we know what to expect from one another.", "We address each other when agreements aren't kept.", "Decisions in our team are supported by everyone.", "We discuss differences of opinion openly.", "Everyone knows what the team is going for this year.", "We take time to note what is going well."],
++      de: ["In unserem Team wissen wir, was wir voneinander erwarten können.", "Wir sprechen einander an, wenn Absprachen nicht eingehalten werden.", "Entscheidungen werden in unserem Team von allen mitgetragen.", "Wir sprechen Meinungsverschiedenheiten offen an.", "Alle wissen, wofür das Team dieses Jahr steht.", "Wir halten fest, was gut läuft."],
++      fr: ["Dans notre équipe, nous savons à quoi nous attendre les uns des autres.", "Nous nous interpellons lorsque les accords ne sont pas respectés.", "Les décisions sont soutenues par tous dans notre équipe.", "Nous abordons ouvertement nos désaccords.", "Chacun sait ce que vise l'équipe cette année.", "Nous prenons le temps de souligner ce qui va bien."],
++      es: ["En nuestro equipo sabemos qué esperar unos de otros.", "Nos decimos las cosas cuando no se cumplen los acuerdos.", "Las decisiones cuentan con el apoyo de todo el equipo.", "Hablamos abiertamente de las diferencias de opinión.", "Todos saben qué persigue el equipo este año.", "Nos detenemos en lo que va bien."],
++      ro: ["În echipa noastră știm la ce să ne așteptăm unii de la alții.", "Ne atragem atenția când nu se respectă înțelegerile.", "Deciziile sunt susținute de toți în echipa noastră.", "Discutăm deschis diferențele de opinie.", "Toți știu ce urmărește echipa anul acesta.", "Ne oprim și asupra a ceea ce merge bine."],
+     },
+   },
+   wellbeing: {
+     scale: LIKERT, answer: "scale",
+     items: {
+-      nl: ["Ik heb voldoende energie voor mijn werk.", "Ik kan werk en privé goed in balans houden.", "Ik herstel snel na een drukke of stressvolle periode."],
+-      en: ["I have enough energy for my work.", "I can keep a good balance between work and private life.", "I recover quickly after a busy or stressful period."],
+-      de: ["Ich habe genug Energie für meine Arbeit.", "Ich kann Arbeit und Privatleben gut in Balance halten.", "Ich erhole mich schnell nach einer stressigen Phase."],
+-      fr: ["J'ai suffisamment d'énergie pour mon travail.", "Je parviens à bien équilibrer travail et vie privée.", "Je récupère vite après une période chargée ou stressante."],
+-      es: ["Tengo suficiente energía para mi trabajo.", "Consigo un buen equilibrio entre el trabajo y la vida privada.", "Me recupero rápido tras un periodo intenso o estresante."],
+-      ro: ["Am suficientă energie pentru munca mea.", "Reușesc să echilibrez bine munca și viața personală.", "Îmi revin repede după o perioadă aglomerată sau stresantă."],
++      nl: ["Ik heb voldoende energie voor mijn werk.", "Ik kan werk en privé goed in balans houden.", "Ik herstel snel na een drukke of stressvolle periode.", "Ik krijg voldoende steun van mijn leidinggevende.", "Ik zie mezelf dit werk over drie jaar nog doen.", "De hoeveelheid werk is goed te behappen."],
++      en: ["I have enough energy for my work.", "I can keep a good balance between work and private life.", "I recover quickly after a busy or stressful period.", "I get enough support from my manager.", "I can see myself still doing this work in three years.", "The amount of work is manageable."],
++      de: ["Ich habe genug Energie für meine Arbeit.", "Ich kann Arbeit und Privatleben gut in Balance halten.", "Ich erhole mich schnell nach einer stressigen Phase.", "Ich bekomme genug Unterstützung von meiner Führungskraft.", "Ich sehe mich diese Arbeit in drei Jahren noch machen.", "Die Arbeitsmenge ist gut zu bewältigen."],
++      fr: ["J'ai suffisamment d'énergie pour mon travail.", "Je parviens à bien équilibrer travail et vie privée.", "Je récupère vite après une période chargée ou stressante.", "Je reçois assez de soutien de mon responsable.", "Je me vois encore faire ce travail dans trois ans.", "La charge de travail reste gérable."],
++      es: ["Tengo suficiente energía para mi trabajo.", "Consigo un buen equilibrio entre el trabajo y la vida privada.", "Me recupero rápido tras un periodo intenso o estresante.", "Recibo suficiente apoyo de mi responsable.", "Me veo haciendo este trabajo dentro de tres años.", "La cantidad de trabajo es manejable."],
++      ro: ["Am suficientă energie pentru munca mea.", "Reușesc să echilibrez bine munca și viața personală.", "Îmi revin repede după o perioadă aglomerată sau stresantă.", "Primesc suficient sprijin de la managerul meu.", "Mă văd făcând această muncă și peste trei ani.", "Volumul de muncă este gestionabil."],
+     },
+   },
+   skills: {
+@@ -141,24 +141,24 @@ export const EXAMPLES = {
+       options: { nl: ["Breng eerst de knelpunten in kaart", "Los meteen het grootste symptoom op", "Vraag om een extra budget", "Wacht op instructies van boven"], en: ["Map the bottlenecks first", "Fix the biggest symptom right away", "Ask for extra budget", "Wait for instructions from above"], de: ["Zuerst die Engpässe erfassen", "Sofort das größte Symptom beheben", "Zusätzliches Budget anfragen", "Auf Anweisungen von oben warten"], fr: ["Cartographier d'abord les points de blocage", "Corriger tout de suite le principal symptôme", "Demander un budget supplémentaire", "Attendre les instructions de la hiérarchie"], es: ["Mapear primero los cuellos de botella", "Resolver de inmediato el mayor síntoma", "Pedir presupuesto adicional", "Esperar instrucciones de arriba"], ro: ["Cartografiază mai întâi blocajele", "Rezolvă imediat cel mai mare simptom", "Cere buget suplimentar", "Așteaptă instrucțiuni de sus"] },
+     },
+     items: {
+-      nl: ["Een klant twijfelt over de prijs. Wat doe je als eerste?", "Een proces verloopt inefficiënt. Welke stap zet je als eerste?", "Je krijgt tegenstrijdige opdrachten. Hoe pak je dit aan?"],
+-      en: ["A client hesitates about the price. What do you do first?", "A process runs inefficiently. What is your first step?", "You receive conflicting instructions. How do you handle this?"],
+-      de: ["Ein Kunde zögert wegen des Preises. Was tun Sie zuerst?", "Ein Prozess läuft ineffizient. Welchen Schritt gehen Sie zuerst?", "Sie erhalten widersprüchliche Aufträge. Wie gehen Sie vor?"],
+-      fr: ["Un client hésite sur le prix. Que faites-vous en premier ?", "Un processus est inefficace. Quelle est votre première étape ?", "Vous recevez des consignes contradictoires. Comment gérez-vous cela ?"],
+-      es: ["Un cliente duda por el precio. ¿Qué haces primero?", "Un proceso es ineficiente. ¿Cuál es tu primer paso?", "Recibes instrucciones contradictorias. ¿Cómo lo gestionas?"],
+-      ro: ["Un client ezită din cauza prețului. Ce faci mai întâi?", "Un proces este ineficient. Care este primul tău pas?", "Primești instrucțiuni contradictorii. Cum procedezi?"],
++      nl: ["Een klant twijfelt over de prijs. Wat doe je als eerste?", "Een proces verloopt inefficiënt. Welke stap zet je als eerste?", "Je krijgt tegenstrijdige opdrachten. Hoe pak je dit aan?", "Een collega levert te laat aan. Wat doe je als eerste?", "Een klant is ontevreden over de service. Hoe reageer je?", "Je ziet een fout die steeds terugkomt. Wat doe je?"],
++      en: ["A client hesitates about the price. What do you do first?", "A process runs inefficiently. What is your first step?", "You receive conflicting instructions. How do you handle this?", "A colleague delivers too late. What do you do first?", "A customer is unhappy with the service. How do you respond?", "You spot a mistake that keeps recurring. What do you do?"],
++      de: ["Ein Kunde zögert wegen des Preises. Was tun Sie zuerst?", "Ein Prozess läuft ineffizient. Welchen Schritt gehen Sie zuerst?", "Sie erhalten widersprüchliche Aufträge. Wie gehen Sie vor?", "Eine Kollegin liefert zu spät. Was tun Sie zuerst?", "Ein Kunde ist unzufrieden mit dem Service. Wie reagieren Sie?", "Ihnen fällt ein wiederkehrender Fehler auf. Was tun Sie?"],
++      fr: ["Un client hésite sur le prix. Que faites-vous en premier ?", "Un processus est inefficace. Quelle est votre première étape ?", "Vous recevez des consignes contradictoires. Comment gérez-vous cela ?", "Un collègue livre en retard. Que faites-vous en premier ?", "Un client est mécontent du service. Comment réagissez-vous ?", "Vous repérez une erreur qui revient sans cesse. Que faites-vous ?"],
++      es: ["Un cliente duda por el precio. ¿Qué haces primero?", "Un proceso es ineficiente. ¿Cuál es tu primer paso?", "Recibes instrucciones contradictorias. ¿Cómo lo gestionas?", "Un compañero entrega tarde. ¿Qué haces primero?", "Un cliente está descontento con el servicio. ¿Cómo reaccionas?", "Detectas un error que se repite. ¿Qué haces?"],
++      ro: ["Un client ezită din cauza prețului. Ce faci mai întâi?", "Un proces este ineficient. Care este primul tău pas?", "Primești instrucțiuni contradictorii. Cum procedezi?", "Un coleg livrează prea târziu. Ce faci mai întâi?", "Un client este nemulțumit de servicii. Cum reacționezi?", "Observi o greșeală care se tot repetă. Ce faci?"],
+     },
+   },
+   jobprofile: {
+-    scale: { nl: "Niet nodig — Essentieel voor de functie", en: "Not needed — Essential for the role", de: "Nicht nötig — Unverzichtbar für die Stelle", fr: "Pas nécessaire — Essentiel pour le poste", es: "No necesario — Esencial para el puesto", ro: "Nu este necesar — Esențial pentru post" },
++    scale: { nl: "Niet nodig - Essentieel voor de functie", en: "Not needed - Essential for the role", de: "Nicht nötig - Unverzichtbar für die Stelle", fr: "Pas nécessaire - Essentiel pour le poste", es: "No necesario - Esencial para el puesto", ro: "Nu este necesar - Esențial pentru post" },
+     answer: "scale",
+     items: {
+-      nl: ["Hoe belangrijk is 'analytisch vermogen' voor deze functie?", "Hoe belangrijk is 'klantgerichtheid' voor deze functie?", "Hoe belangrijk is 'plannen en organiseren' voor deze functie?"],
+-      en: ["How important is 'analytical ability' for this role?", "How important is 'customer focus' for this role?", "How important is 'planning and organising' for this role?"],
+-      de: ["Wie wichtig ist 'analytisches Denken' für diese Stelle?", "Wie wichtig ist 'Kundenorientierung' für diese Stelle?", "Wie wichtig ist 'Planen und Organisieren' für diese Stelle?"],
+-      fr: ["Quelle importance a 'la capacité d'analyse' pour ce poste ?", "Quelle importance a 'l'orientation client' pour ce poste ?", "Quelle importance a 'la planification et l'organisation' pour ce poste ?"],
+-      es: ["¿Qué importancia tiene 'la capacidad analítica' para este puesto?", "¿Qué importancia tiene 'la orientación al cliente' para este puesto?", "¿Qué importancia tiene 'planificar y organizar' para este puesto?"],
+-      ro: ["Cât de importantă este 'capacitatea analitică' pentru acest post?", "Cât de importantă este 'orientarea către client' pentru acest post?", "Cât de importantă este 'planificarea și organizarea' pentru acest post?"],
++      nl: ["Hoe belangrijk is 'analytisch vermogen' voor deze functie?", "Hoe belangrijk is 'klantgerichtheid' voor deze functie?", "Hoe belangrijk is 'plannen en organiseren' voor deze functie?", "Hoe belangrijk is 'samenwerken' voor deze functie?", "Hoe belangrijk is 'stressbestendigheid' voor deze functie?", "Hoe belangrijk is 'zelfstandig werken' voor deze functie?"],
++      en: ["How important is 'analytical ability' for this role?", "How important is 'customer focus' for this role?", "How important is 'planning and organising' for this role?", "How important is 'collaboration' for this role?", "How important is 'resilience under pressure' for this role?", "How important is 'working independently' for this role?"],
++      de: ["Wie wichtig ist 'analytisches Denken' für diese Stelle?", "Wie wichtig ist 'Kundenorientierung' für diese Stelle?", "Wie wichtig ist 'Planen und Organisieren' für diese Stelle?", "Wie wichtig ist 'Zusammenarbeit' für diese Stelle?", "Wie wichtig ist 'Belastbarkeit' für diese Stelle?", "Wie wichtig ist 'selbstständiges Arbeiten' für diese Stelle?"],
++      fr: ["Quelle importance a 'la capacité d'analyse' pour ce poste ?", "Quelle importance a 'l'orientation client' pour ce poste ?", "Quelle importance a 'la planification et l'organisation' pour ce poste ?", "Quelle importance a 'la collaboration' pour ce poste ?", "Quelle importance a 'la résistance au stress' pour ce poste ?", "Quelle importance a 'l'autonomie' pour ce poste ?"],
++      es: ["¿Qué importancia tiene 'la capacidad analítica' para este puesto?", "¿Qué importancia tiene 'la orientación al cliente' para este puesto?", "¿Qué importancia tiene 'planificar y organizar' para este puesto?", "¿Qué importancia tiene 'la colaboración' para este puesto?", "¿Qué importancia tiene 'la resistencia al estrés' para este puesto?", "¿Qué importancia tiene 'trabajar de forma autónoma' para este puesto?"],
++      ro: ["Cât de importantă este 'capacitatea analitică' pentru acest post?", "Cât de importantă este 'orientarea către client' pentru acest post?", "Cât de importantă este 'planificarea și organizarea' pentru acest post?", "Cât de importantă este 'colaborarea' pentru acest post?", "Cât de importantă este 'rezistența la stres' pentru acest post?", "Cât de important este 'lucrul independent' pentru acest post?"],
+     },
+   },
+ };
+diff --git a/src/data/assessment-shop.js b/src/data/assessment-shop.js
+index 97bc940..0c2bed9 100644
+--- a/src/data/assessment-shop.js
++++ b/src/data/assessment-shop.js
+@@ -52,3 +52,12 @@ export function shopInfo(slug) {
+     url: m.handle ? `/shop/?p=${m.handle}` : `/shop/`,
+   };
+ }
++
++// Prijs netjes in Nederlandse notatie: hele bedragen als "395,-", anders met twee decimalen.
++export function prijs(v) {
++  if (v === undefined || v === null || v === "") return "";
++  const t = String(v).replace(",", ".");
++  const n = Number(t);
++  if (!isFinite(n)) return String(v);
++  return Number.isInteger(n) ? n.toLocaleString("nl-NL") + ",-" : n.toLocaleString("nl-NL", { minimumFractionDigits: 2 });
++}
+diff --git a/src/data/oplossingen.js b/src/data/oplossingen.js
+index a718024..fa6a77e 100644
+--- a/src/data/oplossingen.js
++++ b/src/data/oplossingen.js
+@@ -5,6 +5,14 @@
+ export const oplossingen = [
+   {
+     slug: "matching",
++    vergelijk: {
++      title: "Van onderbuikgevoel naar een onderbouwde keuze",
++      lead: "Dit is wat er misgaat bij selectie zonder data, en wat hrmforce anders doet.",
++      oudTitle: "Zonder onderbouwing",
++      nieuwTitle: "Met hrmforce",
++      oud: ["Voorselecteren op cv en een eerste indruk", "Eén gesprek en één opdracht als hele onderbouwing", "Elke kandidaat vult hetzelfde standaardpakket in", "Iedereen in de selectie kijkt naar iets anders", "Een verkeerde hire merk je pas na maanden"],
++      nieuw: ["Matchprofiel op basis van het functieprofiel en je eigen topperformers", "Objectieve match-score van 0% tot 100% per kandidaat", "Alleen de vragenlijsten die relevant zijn voor die functie", "Iedereen beoordeelt op dezelfde competenties", "Risico's en aandachtspunten staan al in het rapport"],
++    },
+     title: "Matching & selectie",
+     metaTitle: "Matching & selectie | Automatisch de beste kandidaten matchen | Hrmforce",
+     metaDescription:
+@@ -25,7 +33,7 @@ export const oplossingen = [
+     image: "/media/wp-content/uploads/2023/05/NLP-recruitment-development.webp",
+     photo: "https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=900",
+     ctaBtn: "Plan een gratis demo",
+-    cta: "Bepaal met een HR-specialist welke assessments bij jullie vacatures passen",
++    cta: "Bepaal met een HR-specialist welke assessments bij je vacatures passen",
+     plan: {
+       eyebrow: "Stappenplan",
+       title: "Van wervingsprobleem naar een onderbouwde keuze",
+@@ -56,6 +64,14 @@ export const oplossingen = [
+   },
+   {
+     slug: "development",
++    vergelijk: {
++      title: "Van losse gesprekken naar een cyclus die loopt",
++      lead: "Dit gaat er mis zonder structuur in de gesprekscyclus, en zo pakt hrmforce het aan.",
++      oudTitle: "Zonder onderbouwing",
++      nieuwTitle: "Met hrmforce",
++      oud: ["Gesprekken schuiven door en vinden soms niet plaats", "Afspraken staan in een mailtje of een notitieblok", "Feedback blijft algemeen: goed bezig, ga zo door", "Niemand weet wat er vorig jaar is afgesproken", "HR heeft geen zicht op wat er in de teams speelt"],
++      nieuw: ["Jaarplanning met bila, ontwikkelgesprek en jaargesprek klaargezet", "Werkafspraken digitaal vastgelegd, met wie en wanneer", "Onderbouwde feedback uit een wetenschappelijke vragenlijst", "Alle gesprekken bewaard, je begint waar je gebleven was", "Organisatiebreed zicht op voortgang en knelpunten"],
++    },
+     title: "HR Gesprekscyclus",
+     metaTitle: "HR Gesprekscyclus | Structuur in je gesprekscycli | Hrmforce",
+     metaDescription:
+@@ -79,7 +95,7 @@ export const oplossingen = [
+     image: "/mockups/gesprekscyclus.svg",
+     photo: "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=900",
+     ctaBtn: "Plan een gratis demo",
+-    cta: "Bespreek met een HR-specialist welke ontwikkelaanpak bij jullie team past",
++    cta: "Bespreek met een HR-specialist welke ontwikkelaanpak bij je team past",
+     plan: {
+       eyebrow: "Stappenplan",
+       title: "Zo ziet de gesprekscyclus er in de praktijk uit",
+@@ -111,6 +127,14 @@ export const oplossingen = [
+   },
+   {
+     slug: "employability",
++    vergelijk: {
++      title: "Van verrassingen naar zicht op inzetbaarheid",
++      lead: "Zo zie je verzuim en verloop aankomen in plaats van achteraf te constateren.",
++      oudTitle: "Zonder onderbouwing",
++      nieuwTitle: "Met hrmforce",
++      oud: ["Je ziet pas dat iemand vastloopt als het verzuim al begonnen is", "Tevredenheid meet je hooguit één keer per jaar", "Loopbaanvragen komen pas op tafel bij een exitgesprek", "Kennis vertrekt met de medewerker de deur uit"],
++      nieuw: ["Periodieke Pulse Survey laat vroeg zien waar de energie weglekt", "Meten per team en per periode, zodat je effect ziet", "Medewerkers verkennen zelf passende rollen en vacatures", "Ontwikkelen en doorstromen houdt kennis in huis"],
++    },
+     title: "Employability",
+     metaTitle: "HR Employability | Gezond en gemotiveerd personeel | Hrmforce",
+     metaDescription:
+@@ -162,6 +186,14 @@ export const oplossingen = [
+   },
+   {
+     slug: "hr-analytics",
++    vergelijk: {
++      title: "Van losse uitslagen naar stuurinformatie",
++      lead: "Zo gaat HR-data van een stapel rapporten naar een besluit dat je kunt uitleggen.",
++      oudTitle: "Zonder onderbouwing",
++      nieuwTitle: "Met hrmforce",
++      oud: ["Testuitslagen staan verspreid in mappen en mailboxen", "Beslissingen over instroom en doorstroom gaan op gevoel", "Je ziet patronen pas als het probleem er al is", "Cijfers voor de directie kosten dagen handwerk"],
++      nieuw: ["Alle uitkomsten in één omgeving, gekoppeld aan functies en teams", "Dashboards per team, afdeling en organisatie", "Trends zichtbaar voordat ze een probleem worden", "Overzichten die automatisch bijwerken bij nieuwe afnames"],
++    },
+     title: "HR Analytics",
+     metaTitle: "HR Analytics | 24/7 inzicht in personeelsdata | Hrmforce",
+     metaDescription:
+@@ -182,7 +214,7 @@ export const oplossingen = [
+     image: "/media/wp-content/uploads/2022/02/ass-afb3.png",
+     photo: "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=900",
+     ctaBtn: "Plan een gratis demo",
+-    cta: "Bespreek met een HR-specialist welke HR-data jullie beslissingen onderbouwt",
++    cta: "Bespreek met een HR-specialist welke HR-data je beslissingen onderbouwt",
+     plan: {
+       eyebrow: "Stappenplan",
+       title: "Van losse testuitslagen naar stuurinformatie",
+diff --git a/src/pages/[...path].astro b/src/pages/[...path].astro
+index b9238d3..dd285ed 100644
+--- a/src/pages/[...path].astro
++++ b/src/pages/[...path].astro
+@@ -169,6 +169,10 @@ body = body.replace(/<img\b([^>]*)>/gi, (m, attrs) =>
+   /\salt\s*=/i.test(attrs) ? m : `<img${attrs} alt="${_altFallback}">`
+ );
+ 
++// K3: eerste afbeelding uit het artikel als header-beeld, zodat de kop niet kaal is.
++const _img = body.match(/<img\b[^>]*\bsrc="([^"]+)"[^>]*>/i);
++const headerImg = _img ? _img[1] : "";
++
+ // Meta description uit de eerste alinea's van de body (in plaats van de titel).
+ const _plain = body
+   .replace(/<(script|style)[\s\S]*?<\/\1>/gi, " ")
+@@ -249,7 +253,8 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
+     <div class="wrap"><a href={localizePath("/", lang)}>{K.crumbHome}</a> › <a href={kcHref}>{K.crumb}</a> › <span>{article.title}</span></div>
+   </div>
+ 
+-  <header class="kc-head">
++  <div class={"kc-head" + (headerImg ? " met-beeld" : "")}>
++    {headerImg && <img class="kc-hero-img" src={headerImg} alt="" aria-hidden="true" loading="eager" />}
+     <div class="wrap">
+       <div class="eyebrow" style="color:var(--gold)">{K.eyebrow}</div>
+       <h1>{article.title}</h1>
+@@ -259,7 +264,7 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
+         <span class="kc-mi"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks" width="26" height="26" loading="lazy" />Floor Hendriks</span>
+       </div>
+     </div>
+-  </header>
++  </div>
+ 
+   <article class="kc-article">
+     <div class="wrap">
+@@ -325,7 +330,10 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
+ </Base>
+ 
+ <style>
+-  .kc-head { background: linear-gradient(160deg, var(--navy), var(--navy-deep)); color: #fff; }
++  .kc-head { position: relative; overflow: hidden; background: linear-gradient(160deg, var(--navy), var(--navy-deep)); color: #fff; }
++  .kc-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .22; }
++  .kc-head.met-beeld::after { content: ""; position: absolute; inset: 0; background: linear-gradient(160deg, rgba(14,70,140,.86), rgba(11,42,92,.92)); }
++  .kc-head .wrap { position: relative; z-index: 2; }
+   .kc-head .wrap { max-width: 860px; margin: 0 auto; padding: 40px 20px 34px; }
+   .kc-head h1 { color: #fff; font-size: clamp(1.7rem, 1.4rem + 1.4vw, 2.3rem); line-height: 1.2; margin: 6px 0 0; }
+   .kc-meta { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 18px; }
+@@ -373,7 +381,7 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
+   .kc-ctx .ctx-btn:hover { background: var(--accent-hover); }
+   @media (max-width: 620px) { .kc-ctx { flex-direction: column; align-items: flex-start; } .kc-ctx .ctx-btn { width: 100%; text-align: center; } }
+ 
+-  .kc-integ { display:flex; gap:20px; align-items:center; justify-content:space-between; flex-wrap:wrap; background:#fff; border:1px solid var(--line); border-left:3px solid var(--gold); border-radius:16px; padding:22px 26px; margin:24px 0; box-shadow:var(--shadow-xs); }
++  .kc-integ { display:flex; gap:20px; align-items:center; justify-content:space-between; flex-wrap:wrap; background:#fff; border:1px solid var(--line); border-radius:16px; padding:22px 26px; margin:24px 0; box-shadow:var(--shadow-xs); }
+   .kc-integ h3 { color:var(--navy); font-size:1.15rem; margin:6px 0 6px; }
+   .kc-integ p { color:var(--muted); font-size:14.5px; margin:0; max-width:640px; }
+   .kc-integ .ctx-tag { color:var(--blue); font-weight:800; font-size:12px; text-transform:uppercase; letter-spacing:.5px; }
+diff --git a/src/pages/[lang]/assessments/[slug].astro b/src/pages/[lang]/assessments/[slug].astro
+index e3788fb..6185acc 100644
+--- a/src/pages/[lang]/assessments/[slug].astro
++++ b/src/pages/[lang]/assessments/[slug].astro
+@@ -4,16 +4,17 @@ import Base from "../../../layouts/Base.astro";
+ import { assessments } from "../../../data/assessments.js";
+ import { assessmentsI18n } from "../../../data/assessments-i18n.js";
+ import { detailUi } from "../../../data/assessment-detail-ui.js";
+-import { shopInfo } from "../../../data/assessment-shop.js";
++import { shopInfo, prijs } from "../../../data/assessment-shop.js";
+ import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../../data/site-config.js";
+ import { localizePath } from "../../../i18n/utils.js";
+ import { examplesFor } from "../../../data/assessment-examples.js";
+ import { extraFor } from "../../../data/assessment-detail-extra.js";
+ import { theoryFor } from "../../../data/assessment-theory.js";
+ import { generalFaq } from "../../../data/general-faq.js";
+-import QMock from "../../../components/QMock.astro";
++import QPreview from "../../../components/QPreview.astro";
+ import ReviewSlider from "../../../components/ReviewSlider.astro";
+ import SocialProof from "../../../components/SocialProof.astro";
++import LogoSlider from "../../../components/LogoSlider.astro";
+ import { oefentests } from "../../../data/oefentests.js";
+ import { createClient } from "@sanity/client";
+ import { kenniscentrumContent } from "../../../data/kenniscentrum-content.js";
+@@ -118,12 +119,12 @@ const _offerLd = (shop && shop.price)
+         <h1>{a.title}</h1>
+         <div class="meta-row"><span class="lbl">{t.phase}</span><span class="val">{a.phase}</span></div>
+         <div class="meta-row"><span class="lbl">{t.goal}</span><span class="val">{a.goal}</span></div>
++        {a.time && <div class="meta-row"><span class="lbl">{t.time}</span><span class="val">{a.time}</span></div>}
+         {shop.price && (
+-          <div class="pricebox">
+-            <span class="pricebox-label">{t.priceLabel}</span>
+-            <span class="pricebox-amt">&euro;{shop.price}</span>
+-            <span class="pricebox-note">{t.priceNote}</span>
+-          </div>
++          <p class="priceline">
++            <span class="priceline-amt">&euro;&nbsp;{prijs(shop.price)}</span>
++            <span class="priceline-txt">{t.priceNote}</span>
++          </p>
+         )}
+         <div class="btns">
+           <a href={localizePath("/contact/", lang)} class="btn btn-primary">{t.demo} &rarr;</a>
+@@ -131,7 +132,6 @@ const _offerLd = (shop && shop.price)
+             {shop.price ? t.orderLoose : t.inShop}
+           </a>
+         </div>
+-        <p class="portal-nudge">{t.portalPre}<a href={localizePath("/tarieven/", lang)}>{t.portalLink}</a>{t.portalPost}</p>
+         <div class="guarantee">
+           <strong style="color:#fff">{t.guaranteeTitle}</strong>
+           <span><span class="stars">★★★★★</span> {t.guaranteeMeta}<b style="color:#fff">{t.guaranteeStars}</b></span>
+@@ -154,66 +154,31 @@ const _offerLd = (shop && shop.price)
+ 
+ <SocialProof lang={lang} />
+ 
+-{(() => {
+-  const M = {
+-    en:{e:"How it works",h:"A look inside the questionnaire",l:"This is what the questionnaire looks like for your candidates, from invitation to completion.",c1:"Start in your own language and pace",c2:"Statements with a clear answer scale",c3:"Discuss the results in person"},
+-    de:{e:"So funktioniert es",h:"Ein Blick in den Fragebogen",l:"So sieht der Fragebogen für Ihre Kandidaten aus, von der Einladung bis zum Abschluss.",c1:"Starten in eigener Sprache und im eigenen Tempo",c2:"Aussagen mit einer klaren Antwortskala",c3:"Die Ergebnisse besprechen Sie persönlich"},
+-    fr:{e:"Comment ça marche",h:"Un aperçu du questionnaire",l:"Voici à quoi ressemble le questionnaire pour vos candidats, de l'invitation à la fin.",c1:"Commencez dans votre langue et à votre rythme",c2:"Des affirmations avec une échelle de réponse claire",c3:"Les résultats se discutent en personne"},
+-    es:{e:"Cómo funciona",h:"Un vistazo al cuestionario",l:"Así ve el cuestionario tu candidato, desde la invitación hasta el final.",c1:"Empieza en tu idioma y a tu ritmo",c2:"Afirmaciones con una escala de respuesta clara",c3:"Los resultados se comentan en persona"},
+-    ro:{e:"Cum funcționează",h:"O privire în chestionar",l:"Așa arată chestionarul pentru candidații tăi, de la invitație până la final.",c1:"Începe în limba și ritmul tău",c2:"Afirmații cu o scală de răspuns clară",c3:"Rezultatele se discută personal"}
+-  };
+-  const q = M[lang] || M.en;
+-  return (
+-    <section class="qshots"><div class="wrap">
+-      <div class="eyebrow" style="color:var(--gold)">{q.e}</div>
+-      <h2 class="qshots-h">{q.h}</h2>
+-      <p class="qshots-lead">{q.l}</p>
+-      <div class="qshots-track">
+-        <figure class="qshot"><QMock screen="intro" lang={lang} testName={a.title} /><figcaption>{q.c1}</figcaption></figure>
+-        <figure class="qshot"><QMock screen="vraag" lang={lang} testName={a.title} question={ex.mockQuestion} scaleNote={ex.scale} answer={ex.answer} options={ex.mockOptions || []} /><figcaption>{q.c2}</figcaption></figure>
+-        <figure class="qshot"><Img src={`/mockups/vragenlijst-afgerond.${lang}.svg`} alt={`${q.c3}: ${a.title}`} loading="eager" /><figcaption>{q.c3}</figcaption></figure>
+-      </div>
++<LogoSlider heading={null} note={null} />
+ 
+-      <div class="qex">
+-        <h3 class="qex-h">{ex.title}</h3>
+-        <p class="qex-lead">{ex.intro}</p>
+-        <div class="qex-list">
+-          {ex.items.map((qq, i) => (
+-            <div class="qex-item">
+-              <span class="qex-n">{i + 1}</span>
+-              <span class="qex-q">{qq}</span>
+-            </div>
+-          ))}
+-        </div>
+-        <p class="qex-scale"><strong>{ex.scaleLabel}:</strong> {ex.scale}</p>
+-        {_oefen && (<p style="margin:0 0 18px"><a href={localizePath(`/oefenen/${_oefen.slug}/`, lang)} class="btn btn-ghost">{t.practiceLink} &rarr;</a></p>)}
+-        <div class="vv-cta">
+-          <div class="vv-copy">
+-            <strong>{t.vvTitle}</strong>
+-            <span>{t.vvText.replace("{t}", a.title)}</span>
+-          </div>
+-          <form class="vv-form" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
+-            <input type="hidden" name="onderwerp" value={`Voorbeeldvragen ${a.title}`} />
+-            <input type="hidden" name="assessment" value={a.title} />
+-            <input type="email" name="email" required placeholder={t.vvPlaceholder} aria-label={t.workEmail} />
+-            <button type="submit" class="btn btn-primary">{t.vvButton}</button>
+-          </form>
+-        </div>
+-      </div>
+-    </div></section>
+-  );
+-})()}
++<section class="qshots"><div class="wrap">
++  <h2 class="qshots-h">{ex.title}</h2>
++  <p class="qshots-lead">{ex.intro}</p>
+ 
+-  <div class="infobar">
+-    <div class="wrap">
+-      <div class="info-grid">
+-        <div><div class="lbl">{t.time}</div><div class="v">{a.time}</div></div>
+-        <div><div class="lbl">{t.form}</div><div class="v">{a.form}</div></div>
+-        <div><div class="lbl">{t.feedback}</div><div class="v">{a.feedback}</div></div>
+-        <div><div class="lbl">{t.extra}</div><div class="v">{a.extra}</div></div>
+-      </div>
++  <QPreview lang={lang} testName={a.title} ex={ex} />
++
++  <p class="qex-scale"><strong>{ex.scaleLabel}:</strong> {ex.scale}</p>
++  {_oefen && (<p style="margin:0 0 20px"><a href={localizePath(`/oefenen/${_oefen.slug}/`, lang)} class="btn btn-ghost">{t.practiceLink} &rarr;</a></p>)}
++
++  <div class="vv-cta">
++    <div class="vv-copy">
++      <strong>{t.vvTitle}</strong>
++      <span>{t.vvText.replace("{t}", a.title)}</span>
+     </div>
++    <form class="vv-form" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
++      <input type="hidden" name="onderwerp" value={`Voorbeeldvragen ${a.title}`} />
++      <input type="hidden" name="assessment" value={a.title} />
++      <input type="email" name="email" required placeholder={t.vvPlaceholder} aria-label={t.workEmail} />
++      <button type="submit" class="btn btn-primary">{t.vvButton}</button>
++    </form>
+   </div>
++</div></section>
++
+ 
+   <section>
+     <div class="wrap">
+@@ -252,20 +217,23 @@ const _offerLd = (shop && shop.price)
+     </div>
+   </section>
+ 
+-  {extra && extra.blocks && extra.blocks.length > 0 && (
+-    <section class="bg-soft"><div class="wrap" style="max-width:880px">
+-      {extra.blocks.map((b) => (
+-        <div class="xblock">
+-          <h3 class="xblock-h">{b.title}</h3>
+-          {b.lead && <p class="xblock-lead">{b.lead}</p>}
+-          {b.type === "list" && b.items.length > 0 && (
+-            <ul class="xblock-list">{b.items.map((it) => <li>{it}</li>)}</ul>
+-          )}
+-          {b.type === "text" && b.text && <p class="xblock-text">{b.text}</p>}
+-        </div>
+-      ))}
+-    </div></section>
+-  )}
++  <section style="background:var(--bg)">
++    <div class="wrap">
++      <div>
++        <div class="eyebrow">{t.howEyebrow}</div>
++        <h2 class="section-title">{howTitle}</h2>
++      </div>
++      <div class="order-steps">
++        <div class="ostep"><span class="on">1</span><h4>{t.step1t}</h4><p>{t.step1b}</p></div>
++        <div class="ostep"><span class="on">2</span><h4>{t.step2t}</h4><p>{t.step2b}</p></div>
++        <div class="ostep"><span class="on">3</span><h4>{t.step3t}</h4><p>{t.step3b}</p></div>
++      </div>
++      <div style="margin-top:26px">
++        <a href={localizePath("/contact/", lang)} class="btn btn-primary">{t.demoPlain}</a>
++        <a href={localizePath("/tarieven/", lang)} class="btn btn-ghost" style="margin-left:8px">{t.licenseOptions}</a>
++      </div>
++    </div>
++  </section>
+ 
+   {theory && (
+     <section><div class="wrap" style="max-width:880px">
+@@ -299,7 +267,7 @@ const _offerLd = (shop && shop.price)
+ 
+   <section>
+     <div class="wrap">
+-      <div class="center">
++      <div>
+         <div class="eyebrow">{t.faqEyebrow}</div>
+         <h2 class="section-title" style="margin-bottom:42px">{faqTitle}</h2>
+       </div>
+@@ -314,10 +282,28 @@ const _offerLd = (shop && shop.price)
+     </div>
+   </section>
+ 
++  <section class="formsec" id="request">
++    <div class="wrap">
++      <div>
++        <div class="eyebrow">{t.requestEyebrow}</div>
++        <h2 class="section-title">{requestTitle}</h2>
++        <p class="lead" style="margin-bottom:36px">{t.requestLead}</p>
++      </div>
++      <form class="formcard" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
++        <div class="frow">
++          <div class="fg"><label>{t.firstName}</label><input type="text" name="voornaam" required /></div>
++          <div class="fg"><label>{t.workEmail}</label><input type="email" name="email" required /></div>
++        </div>
++        <div class="fg"><label>{t.company}</label><input type="text" name="bedrijf" /></div>
++        <button type="submit" class="btn btn-primary">{t.submit}</button>
++      </form>
++    </div>
++  </section>
++
+   {related.length > 0 && (
+     <section style="background:var(--bg)">
+       <div class="wrap">
+-        <div class="center">
++        <div>
+           <div class="eyebrow">{t.relatedEyebrow}</div>
+           <h2 class="section-title" style="margin-bottom:36px">{t.relatedTitle}</h2>
+         </div>
+@@ -335,61 +321,23 @@ const _offerLd = (shop && shop.price)
+     </section>
+   )}
+ 
+-  <section style="background:var(--bg)">
+-    <div class="wrap">
+-      <div class="center">
+-        <div class="eyebrow" style="justify-content:center">{t.howEyebrow}</div>
+-        <h2 class="section-title">{howTitle}</h2>
+-      </div>
+-      <div class="order-steps">
+-        <div class="ostep"><span class="on">1</span><h4>{t.step1t}</h4><p>{t.step1b}</p></div>
+-        <div class="ostep"><span class="on">2</span><h4>{t.step2t}</h4><p>{t.step2b}</p></div>
+-        <div class="ostep"><span class="on">3</span><h4>{t.step3t}</h4><p>{t.step3b}</p></div>
+-      </div>
+-      <div class="center" style="margin-top:26px">
+-        <a href={localizePath("/contact/", lang)} class="btn btn-primary">{t.demoPlain}</a>
+-        <a href={localizePath("/tarieven/", lang)} class="btn btn-ghost" style="margin-left:8px">{t.licenseOptions}</a>
+-      </div>
+-    </div>
+-  </section>
+-
+-  {kc && kc.length > 0 && (
+-    <section>
+-      <div class="wrap">
+-        <div class="center">
+-          <div class="eyebrow">{t.kcEyebrow}</div>
+-          <h2 class="section-title" style="margin-bottom:36px">{t.kcTitle}</h2>
+-        </div>
+-        <div class="cards">
+-          {kc.map((p) => (
+-            <a class="card" href={p.path} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+-              <h3>{p.title}</h3>
+-              <p style="flex:1">{p.excerpt}</p>
+-              <span class="readmore">{t.kcRead} &rarr;</span>
+-            </a>
+-          ))}
++  {extra && extra.blocks && extra.blocks.length > 0 && (
++    <section class="bg-soft"><div class="wrap" style="max-width:880px">
++      <details class="xdetails">
++        <summary>{t.detailsSummary}</summary>
++      {extra.blocks.map((b) => (
++        <div class="xblock">
++          <h3 class="xblock-h">{b.title}</h3>
++          {b.lead && <p class="xblock-lead">{b.lead}</p>}
++          {b.type === "list" && b.items.length > 0 && (
++            <ul class="xblock-list">{b.items.map((it) => <li>{it}</li>)}</ul>
++          )}
++          {b.type === "text" && b.text && <p class="xblock-text">{b.text}</p>}
+         </div>
+-      </div>
+-    </section>
++      ))}
++      </details>
++    </div></section>
+   )}
+-
+-  <section class="formsec" id="request">
+-    <div class="wrap">
+-      <div class="center">
+-        <div class="eyebrow">{t.requestEyebrow}</div>
+-        <h2 class="section-title">{requestTitle}</h2>
+-        <p class="lead" style="margin-bottom:36px">{t.requestLead}</p>
+-      </div>
+-      <form class="formcard" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
+-        <div class="frow">
+-          <div class="fg"><label>{t.firstName}</label><input type="text" name="voornaam" required /></div>
+-          <div class="fg"><label>{t.workEmail}</label><input type="email" name="email" required /></div>
+-        </div>
+-        <div class="fg"><label>{t.company}</label><input type="text" name="bedrijf" /></div>
+-        <button type="submit" class="btn btn-primary">{t.submit}</button>
+-      </form>
+-    </div>
+-  </section>
+ </Base>
+ 
+ <style>
+@@ -406,7 +354,7 @@ const _offerLd = (shop && shop.price)
+   .pricebox{
+     display:inline-flex;flex-direction:column;gap:2px;
+     background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);
+-    border-left:3px solid var(--gold);
++    
+     padding:10px 16px;border-radius:10px;margin:16px 0 6px;max-width:420px;
+   }
+   .pricebox-label{color:#c4d2e6;font-size:12px;text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+@@ -422,19 +370,31 @@ const _offerLd = (shop && shop.price)
+   .ostep h4{color:var(--navy);font-size:1.05rem;margin-bottom:6px}
+   .ostep p{color:var(--muted);font-size:14px}
+   @media(max-width:760px){.order-steps{grid-template-columns:1fr}}
+-  .qshots{padding:48px 0}
++  .xdetails{border:1px solid var(--line);border-radius:14px;background:#fff}
++  .xdetails>summary{cursor:pointer;list-style:none;padding:16px 20px;color:var(--navy);font-weight:700;font-size:1.02rem;display:flex;align-items:center;justify-content:space-between;gap:12px}
++  .xdetails>summary::-webkit-details-marker{display:none}
++  .xdetails>summary::after{content:"+";color:var(--muted);font-weight:700;font-size:1.2rem;line-height:1}
++  .xdetails[open]>summary::after{content:"\2013"}
++  .xdetails[open]>summary{border-bottom:1px solid var(--line)}
++  .xdetails>.xblock{padding:0 20px}
++  .xdetails>.xblock:first-of-type{padding-top:18px}
++  .xdetails>.xblock:last-of-type{padding-bottom:6px}
++  .priceline{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin:18px 0 4px;max-width:520px}
++  .priceline-amt{color:#fff;font-size:1.5rem;font-weight:800;letter-spacing:-.01em}
++  .priceline-txt{color:#c4d2e6;font-size:14px;line-height:1.5}
++  .qshots{padding:34px 0}
+   .infobar .info-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:22px 0}
+   .infobar .info-grid>div{background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+   .infobar .info-grid .lbl{font-size:11.5px;margin-bottom:2px}
+   .infobar .info-grid .v{color:var(--navy);font-size:14.5px;font-weight:600;line-height:1.4}
+   @media(max-width:880px){.infobar .info-grid{grid-template-columns:1fr 1fr}}
+-  .quote-photo{width:112px;height:112px;border-radius:50%;object-fit:cover;flex:none;border:3px solid rgba(255,255,255,.35)}
++  .quote-photo{width:112px;height:112px;border-radius:50%;object-fit:cover;object-position:50% 18%;flex:none;border:3px solid rgba(255,255,255,.35)}
+   .quote-cta{display:inline-block;margin-top:14px;color:#fff;font-weight:700;font-size:14.5px;border-bottom:2px solid var(--gold);padding-bottom:2px}
+   .qex{margin-top:34px;padding-top:30px;border-top:1px solid var(--line)}
+   .qex-h{color:var(--navy);font-size:1.35rem;margin:0 0 6px}
+   .qex-lead{color:var(--muted);max-width:640px;margin:0 0 20px}
+   .qex-list{display:flex;flex-direction:column;gap:10px}
+-  .qex-item{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:14px 18px;box-shadow:var(--shadow-xs)}
++  .qex-item{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;box-shadow:var(--shadow-xs)}
+   .qex-n{flex:none;width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;font-size:13.5px;display:flex;align-items:center;justify-content:center}
+   .qex-q{color:var(--navy);font-weight:600;font-size:15px;line-height:1.5}
+   .qex-scale{color:var(--muted);font-size:14px;margin:16px 0 18px}
+@@ -447,7 +407,7 @@ const _offerLd = (shop && shop.price)
+   .qshot figcaption{margin-top:10px;color:var(--muted);font-size:14px;text-align:center}
+   @media(min-width:900px){ .qshot{flex-basis:62%} }
+   .assess-usage{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line); color:var(--text); }
+-  .vv-cta{margin-top:26px;display:flex;flex-wrap:wrap;align-items:center;gap:18px;justify-content:space-between;background:var(--navy);border-radius:16px;padding:22px 24px}
++  .vv-cta{margin-top:20px;display:flex;flex-wrap:wrap;align-items:center;gap:18px;justify-content:space-between;background:var(--navy);border-radius:16px;padding:22px 24px}
+   .vv-copy{display:flex;flex-direction:column;gap:4px;max-width:440px}
+   .vv-copy strong{color:#fff;font-size:1.05rem}
+   .vv-copy span{color:#c4d2e6;font-size:14px;line-height:1.5}
+diff --git a/src/pages/advies.astro b/src/pages/advies.astro
+index c78d258..27e2dc2 100644
+--- a/src/pages/advies.astro
++++ b/src/pages/advies.astro
+@@ -27,7 +27,7 @@ const groups = [
+     items: [
+       { h: "Certificatietraining", icon: "cap", p: "Word gecertificeerd gebruiker: vragenlijsten kiezen, resultaten correct interpreteren en zorgvuldig terugkoppelen. Inclusief e-learning psychometrie en toets.", href: "/advies/trainingen/", cta: "Bekijk trainingen" },
+       { h: "Training Het goede gesprek", icon: "chat", p: "Voor leidinggevenden die hun bila's, ontwikkel- en jaargesprekken concreter willen maken. Oefenen met eigen casuïstiek en een terugkomsessie.", href: "/advies/training-het-goede-gesprek/", cta: "Bekijk de training" },
+-      { h: "Teamtraining", icon: "users", p: "Een sessie met het hele team op basis van de teamanalyse: hoe vullen jullie elkaar aan, waar botst het en welke afspraken maak je daarover.", href: "/advies/team-training/", cta: "Bekijk de teamtraining" },
++      { h: "Teamtraining", icon: "users", p: "Een sessie met het hele team op basis van de teamanalyse: hoe vul je elkaar aan, waar botst het en welke afspraken maak je daarover.", href: "/advies/team-training/", cta: "Bekijk de teamtraining" },
+     ],
+   },
+   {
+@@ -48,8 +48,8 @@ const groups = [
+     title: "Hulp bij het inrichten van je HR-processen",
+     lead: "Van competentietaal tot de complete gesprekscyclus, samen met een vaste adviseur.",
+     items: [
+-      { h: "Talent management", icon: "star", p: "Talent in je organisatie herkennen, benutten en behouden. We vertalen je strategie naar wat dat van mensen vraagt en hoe je dat meet.", href: "/hrm-oplossingen/", cta: "Bekijk de oplossingen" },
+-      { h: "Competentiemanagement", icon: "grid", p: "Visie en strategie vertaald naar competenties en functieprofielen, zodat er helderheid en structuur komt in alle functies.", href: "/contact/", cta: "Plan een kennismaking" },
++      { h: "Talent management", icon: "star", p: "Talent in je organisatie herkennen, benutten en behouden. We vertalen je strategie naar wat dat van mensen vraagt en hoe je dat meet.", href: "/advies/talent-management/", cta: "Meer over talent management" },
++      { h: "Competentiemanagement", icon: "grid", p: "Visie en strategie vertaald naar competenties en functieprofielen, zodat er helderheid en structuur komt in alle functies.", href: "/advies/competentie-management/", cta: "Meer over competentiemanagement" },
+       { h: "Consultancy en coaching", icon: "chat", p: "Begeleiding bij verandering, en coaching van medewerkers op basis van persoonlijkheid, motivatie en gedrag.", href: "/contact/", cta: "Plan een kennismaking" },
+     ],
+   },
+diff --git a/src/pages/assessments/[slug].astro b/src/pages/assessments/[slug].astro
+index 0044c3d..1e07681 100644
+--- a/src/pages/assessments/[slug].astro
++++ b/src/pages/assessments/[slug].astro
+@@ -2,7 +2,7 @@
+ import Img from "../../components/Img.astro";
+ import Base from "../../layouts/Base.astro";
+ import { assessments } from "../../data/assessments.js";
+-import { shopInfo } from "../../data/assessment-shop.js";
++import { shopInfo, prijs } from "../../data/assessment-shop.js";
+ import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../data/site-config.js";
+ import { getLangFromUrl, localizePath } from "../../i18n/utils.js";
+ import { examplesFor } from "../../data/assessment-examples.js";
+@@ -13,9 +13,10 @@ import { posts as kcPosts } from "../../data/blog.js";
+ import validPaths from "../../data/valid-paths.js";
+ import { navHref } from "../../i18n/utils.js";
+ import { oefentests } from "../../data/oefentests.js";
+-import QMock from "../../components/QMock.astro";
++import QPreview from "../../components/QPreview.astro";
+ import ReviewSlider from "../../components/ReviewSlider.astro";
+ import SocialProof from "../../components/SocialProof.astro";
++import LogoSlider from "../../components/LogoSlider.astro";
+ 
+ const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
+ 
+@@ -113,12 +114,12 @@ const _offerLd = (shop && shop.price)
+         <h1>{a.title}</h1>
+         <div class="meta-row"><span class="lbl">Wanneer inzetten?</span><span class="val">{a.phase}</span></div>
+         <div class="meta-row"><span class="lbl">Doel</span><span class="val">{a.goal}</span></div>
++        {a.time && <div class="meta-row"><span class="lbl">Invultijd</span><span class="val">{a.time}</span></div>}
+         {shop.price && (
+-          <div class="pricebox">
+-            <span class="pricebox-label">Prijs per los assessment</span>
+-            <span class="pricebox-amt">&euro;{shop.price}</span>
+-            <span class="pricebox-note">Bij bulkafname of een eigen portal betaal je aanzienlijk minder per afname.</span>
+-          </div>
++          <p class="priceline">
++            <span class="priceline-amt">&euro;&nbsp;{prijs(shop.price)}</span>
++            <span class="priceline-txt">per losse afname, of onbeperkt afnemen met een <a href={localizePath("/tarieven/", lang)}>eigen portal op licentiebasis</a>.</span>
++          </p>
+         )}
+         <div class="btns">
+           <a href={localizePath("/contact/", lang)} class="btn btn-primary">Plan een gratis demo &rarr;</a>
+@@ -126,7 +127,6 @@ const _offerLd = (shop && shop.price)
+             {shop.price ? "Los bestellen" : "Bekijk in de shop"}
+           </a>
+         </div>
+-        <p class="portal-nudge">Structureel inzetten? Start met een <a href={localizePath("/tarieven/", lang)}>eigen portal op licentiebasis</a>, onbeperkt afnemen tegen een vaste jaarprijs.</p>
+         <div class="guarantee">
+           <strong style="color:#fff">Wetenschappelijk gevalideerd</strong>
+           <span><span class="stars">★★★★★</span> 10.000+ deelnemers · <b style="color:#fff">4,9/5 sterren</b></span>
+@@ -149,54 +149,30 @@ const _offerLd = (shop && shop.price)
+ 
+ <SocialProof lang="nl" />
+ 
++<LogoSlider heading="Vertrouwd door 1.200+ organisaties" note={null} />
++
+ <section class="qshots"><div class="wrap">
+-  <div class="eyebrow" style="color:var(--gold)">Zo werkt het</div>
+   <h2 class="qshots-h">Een kijkje in de vragenlijst</h2>
+-  <p class="qshots-lead">Zo ziet de vragenlijst er voor je kandidaten uit, van uitnodiging tot afronding.</p>
+-  <div class="qshots-track">
+-    <figure class="qshot"><QMock screen="intro" lang="nl" testName={a.title} /><figcaption>Starten in eigen taal en tempo</figcaption></figure>
+-    <figure class="qshot"><QMock screen="vraag" lang="nl" testName={a.title} question={ex.mockQuestion} scaleNote={ex.scale} answer={ex.answer} options={ex.mockOptions || []} /><figcaption>Een voorbeeldvraag uit deze vragenlijst</figcaption></figure>
+-    <figure class="qshot"><Img src="/mockups/vragenlijst-afgerond.svg" alt={`Afrondscherm van de vragenlijst ${a.title}`} loading="eager" /><figcaption>Uitkomsten bespreek je persoonlijk</figcaption></figure>
+-  </div>
++  <p class="qshots-lead">{ex.intro}</p>
+ 
+-  <div class="qex">
+-    <h3 class="qex-h">{ex.title}</h3>
+-    <p class="qex-lead">{ex.intro}</p>
+-    <div class="qex-list">
+-      {ex.items.map((qq, i) => (
+-        <div class="qex-item">
+-          <span class="qex-n">{i + 1}</span>
+-          <span class="qex-q">{qq}</span>
+-        </div>
+-      ))}
+-    </div>
+-    <p class="qex-scale"><strong>{ex.scaleLabel}:</strong> {ex.scale}</p>
+-    {_oefen && (<p style="margin:0 0 18px"><a href={`/oefenen/${_oefen.slug}/`} class="btn btn-ghost">Oefen met meer vragen &rarr;</a></p>)}
+-    <div class="vv-cta">
+-      <div class="vv-copy">
+-        <strong>Alle voorbeeldvragen ontvangen?</strong>
+-        <span>Laat je e-mail achter en we sturen je een set voorbeeldvragen van {a.title}, plus uitleg over de rapportage.</span>
+-      </div>
+-      <form class="vv-form" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
+-        <input type="hidden" name="onderwerp" value={`Voorbeeldvragen ${a.title}`} />
+-        <input type="hidden" name="assessment" value={a.title} />
+-        <input type="email" name="email" required placeholder="jouw@werkmail.nl" aria-label="Werk e-mail" />
+-        <button type="submit" class="btn btn-primary">Stuur mij de vragen</button>
+-      </form>
+-    </div>
+-  </div>
+-</div></section>
++  <QPreview lang="nl" testName={a.title} ex={ex} />
+ 
+-  <div class="infobar">
+-    <div class="wrap">
+-      <div class="info-grid">
+-        <div><div class="lbl">Tijd</div><div class="v">{a.time}</div></div>
+-        <div><div class="lbl">Vorm</div><div class="v">{a.form}</div></div>
+-        <div><div class="lbl">Feedback</div><div class="v">{a.feedback}</div></div>
+-        <div><div class="lbl">Extra</div><div class="v">{a.extra}</div></div>
+-      </div>
++  <p class="qex-scale"><strong>{ex.scaleLabel}:</strong> {ex.scale}</p>
++  {_oefen && (<p style="margin:0 0 20px"><a href={`/oefenen/${_oefen.slug}/`} class="btn btn-ghost">Oefen met meer vragen &rarr;</a></p>)}
++
++  <div class="vv-cta">
++    <div class="vv-copy">
++      <strong>Alle voorbeeldvragen ontvangen?</strong>
++      <span>Laat je e-mail achter en we sturen je een set voorbeeldvragen van {a.title}, plus uitleg over de rapportage.</span>
+     </div>
++    <form class="vv-form" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
++      <input type="hidden" name="onderwerp" value={`Voorbeeldvragen ${a.title}`} />
++      <input type="hidden" name="assessment" value={a.title} />
++      <input type="email" name="email" required placeholder="jouw@werkmail.nl" aria-label="Werk e-mail" />
++      <button type="submit" class="btn btn-primary">Stuur mij de vragen</button>
++    </form>
+   </div>
++</div></section>
+ 
+   <section>
+     <div class="wrap">
+@@ -219,20 +195,23 @@ const _offerLd = (shop && shop.price)
+     </div>
+   </section>
+ 
+-  {extra && extra.blocks && extra.blocks.length > 0 && (
+-    <section class="bg-soft"><div class="wrap" style="max-width:880px">
+-      {extra.blocks.map((b) => (
+-        <div class="xblock">
+-          <h3 class="xblock-h">{b.title}</h3>
+-          {b.lead && <p class="xblock-lead">{b.lead}</p>}
+-          {b.type === "list" && b.items.length > 0 && (
+-            <ul class="xblock-list">{b.items.map((it) => <li>{it}</li>)}</ul>
+-          )}
+-          {b.type === "text" && b.text && <p class="xblock-text">{b.text}</p>}
+-        </div>
+-      ))}
+-    </div></section>
+-  )}
++  <section style="background:var(--bg)">
++    <div class="wrap">
++      <div>
++        <div class="eyebrow">Hoe werkt het</div>
++        <h2 class="section-title">Zo zet je {a.title} in, in 3 stappen</h2>
++      </div>
++      <div class="order-steps">
++        <div class="ostep"><span class="on">1</span><h4>Kies je vorm</h4><p>Neem los af via de shop, of start met een eigen portal op licentiebasis voor onbeperkt gebruik.</p></div>
++        <div class="ostep"><span class="on">2</span><h4>Nodig kandidaten uit</h4><p>Verstuur in één klik een persoonlijke uitnodigingslink. Kandidaten vullen online in, in hun eigen taal.</p></div>
++        <div class="ostep"><span class="on">3</span><h4>Ontvang het rapport</h4><p>Zodra de vragenlijst is ingevuld, staat het heldere rapport klaar, direct bruikbaar in je gesprek of besluit.</p></div>
++      </div>
++      <div class="center" style="margin-top:26px">
++        <a href={localizePath("/contact/", lang)} class="btn btn-primary">Plan een gratis demo</a>
++        <a href={localizePath("/tarieven/", lang)} class="btn btn-ghost" style="margin-left:8px">Bekijk de licentieopties</a>
++      </div>
++    </div>
++  </section>
+ 
+   {theory && (
+     <section><div class="wrap" style="max-width:880px">
+@@ -256,7 +235,7 @@ const _offerLd = (shop && shop.price)
+           <h3>{a.quote.heading}</h3>
+           <blockquote>"{a.quote.text}"</blockquote>
+           <div class="who"><b>{a.quote.author}</b>, {a.quote.role}</div>
+-          <a class="quote-cta" href={localizePath("/over-ons/", lang)}>Maak kennis met het team &rarr;</a>
++          <a class="quote-cta" href={localizePath("/over-ons/", lang)}>Meer over hrmforce &rarr;</a>
+         </div>
+       </div>
+     </section>
+@@ -266,11 +245,11 @@ const _offerLd = (shop && shop.price)
+ 
+   <section>
+     <div class="wrap">
+-      <div class="center">
++      <div>
+         <div class="eyebrow">Veelgestelde vragen</div>
+         <h2 class="section-title" style="margin-bottom:42px">Alles over {a.title}</h2>
+       </div>
+-      <div style="max-width:820px;margin:0 auto">
++      <div style="max-width:820px">
+         {allFaq.map((f) => (
+           <div class="faq-item">
+             <div class="faq-q">{f.q}<span class="pl">+</span></div>
+@@ -281,10 +260,28 @@ const _offerLd = (shop && shop.price)
+     </div>
+   </section>
+ 
++  <section class="formsec" id="request">
++    <div class="wrap">
++      <div class="center">
++        <div class="eyebrow">Aanvragen</div>
++        <h2 class="section-title">{a.title} aanvragen</h2>
++        <p class="lead" style="margin-bottom:36px">Vul het formulier in en krijg binnen 24 uur toegang.</p>
++      </div>
++      <form class="formcard" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
++        <div class="frow">
++          <div class="fg"><label>Voornaam *</label><input type="text" name="voornaam" required /></div>
++          <div class="fg"><label>Werk e-mail *</label><input type="email" name="email" required /></div>
++        </div>
++        <div class="fg"><label>Bedrijfsnaam</label><input type="text" name="bedrijf" /></div>
++        <button type="submit" class="btn btn-primary">Verzenden</button>
++      </form>
++    </div>
++  </section>
++
+   {related.length > 0 && (
+     <section style="background:var(--bg)">
+       <div class="wrap">
+-        <div class="center">
++        <div>
+           <div class="eyebrow">Ook interessant</div>
+           <h2 class="section-title" style="margin-bottom:36px">Gerelateerde assessments</h2>
+         </div>
+@@ -302,62 +299,23 @@ const _offerLd = (shop && shop.price)
+     </section>
+   )}
+ 
+-  <section style="background:var(--bg)">
+-    <div class="wrap">
+-      <div class="center">
+-        <div class="eyebrow" style="justify-content:center">Hoe werkt het</div>
+-        <h2 class="section-title">Zo zet je {a.title} in, in 3 stappen</h2>
+-      </div>
+-      <div class="order-steps">
+-        <div class="ostep"><span class="on">1</span><h4>Kies je vorm</h4><p>Neem los af via de shop, of start met een eigen portal op licentiebasis voor onbeperkt gebruik.</p></div>
+-        <div class="ostep"><span class="on">2</span><h4>Nodig kandidaten uit</h4><p>Verstuur in één klik een persoonlijke uitnodigingslink. Kandidaten vullen online in, in hun eigen taal.</p></div>
+-        <div class="ostep"><span class="on">3</span><h4>Ontvang het rapport</h4><p>Zodra de vragenlijst is ingevuld, staat het heldere rapport klaar, direct bruikbaar in je gesprek of besluit.</p></div>
+-      </div>
+-      <div class="center" style="margin-top:26px">
+-        <a href={localizePath("/contact/", lang)} class="btn btn-primary">Plan een gratis demo</a>
+-        <a href={localizePath("/tarieven/", lang)} class="btn btn-ghost" style="margin-left:8px">Bekijk de licentieopties</a>
+-      </div>
+-    </div>
+-  </section>
+-
+-  {kcRelated.length > 0 && (
+-    <section>
+-      <div class="wrap">
+-        <div class="center">
+-          <div class="eyebrow">Verder lezen</div>
+-          <h2 class="section-title" style="margin-bottom:36px">Meer weten uit ons kenniscentrum</h2>
+-        </div>
+-        <div class="cards">
+-          {kcRelated.map((p) => (
+-            <a class="card" href={navHref(`/kenniscentrum/${p.slug}/`, lang, validPaths)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+-              <span class="eyebrow" style="color:var(--gold)">{p.category}</span>
+-              <h3>{p.title}</h3>
+-              <p style="flex:1">{p.excerpt}</p>
+-              <span class="readmore">Lees het artikel &rarr;</span>
+-            </a>
+-          ))}
++  {extra && extra.blocks && extra.blocks.length > 0 && (
++    <section class="bg-soft"><div class="wrap" style="max-width:880px">
++      <details class="xdetails">
++        <summary>Toelichting en competentieniveaus</summary>
++      {extra.blocks.map((b) => (
++        <div class="xblock">
++          <h3 class="xblock-h">{b.title}</h3>
++          {b.lead && <p class="xblock-lead">{b.lead}</p>}
++          {b.type === "list" && b.items.length > 0 && (
++            <ul class="xblock-list">{b.items.map((it) => <li>{it}</li>)}</ul>
++          )}
++          {b.type === "text" && b.text && <p class="xblock-text">{b.text}</p>}
+         </div>
+-      </div>
+-    </section>
++      ))}
++      </details>
++    </div></section>
+   )}
+-
+-  <section class="formsec" id="request">
+-    <div class="wrap">
+-      <div class="center">
+-        <div class="eyebrow">Aanvragen</div>
+-        <h2 class="section-title">{a.title} aanvragen</h2>
+-        <p class="lead" style="margin-bottom:36px">Vul het formulier in en krijg binnen 24 uur toegang.</p>
+-      </div>
+-      <form class="formcard" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
+-        <div class="frow">
+-          <div class="fg"><label>Voornaam *</label><input type="text" name="voornaam" required /></div>
+-          <div class="fg"><label>Werk e-mail *</label><input type="email" name="email" required /></div>
+-        </div>
+-        <div class="fg"><label>Bedrijfsnaam</label><input type="text" name="bedrijf" /></div>
+-        <button type="submit" class="btn btn-primary">Verzenden</button>
+-      </form>
+-    </div>
+-  </section>
+ </Base>
+ 
+ <style>
+@@ -380,6 +338,18 @@ const _offerLd = (shop && shop.price)
+   .pricebox-label{color:#c4d2e6;font-size:12px;text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+   .pricebox-amt{color:#fff;font-size:1.45rem;font-weight:800;line-height:1.15;letter-spacing:-.01em}
+   .pricebox-note{color:#aebfd4;font-size:12.5px;line-height:1.45}
++  .priceline{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin:18px 0 4px;max-width:520px}
++  .priceline-amt{color:#fff;font-size:1.5rem;font-weight:800;letter-spacing:-.01em}
++  .priceline-txt{color:#c4d2e6;font-size:14px;line-height:1.5}
++  .xdetails{border:1px solid var(--line);border-radius:14px;background:#fff}
++  .xdetails>summary{cursor:pointer;list-style:none;padding:16px 20px;color:var(--navy);font-weight:700;font-size:1.02rem;display:flex;align-items:center;justify-content:space-between;gap:12px}
++  .xdetails>summary::-webkit-details-marker{display:none}
++  .xdetails>summary::after{content:"+";color:var(--muted);font-weight:700;font-size:1.2rem;line-height:1}
++  .xdetails[open]>summary::after{content:"\2013"}
++  .xdetails[open]>summary{border-bottom:1px solid var(--line)}
++  .xdetails>.xblock{padding:0 20px}
++  .xdetails>.xblock:first-of-type{padding-top:18px}
++  .xdetails>.xblock:last-of-type{padding-bottom:6px}
+   .rel-img{display:block;width:100%;height:150px;object-fit:contain;background:#fff;border-radius:8px;margin-bottom:14px;padding:10px}
+   .readmore{color:var(--blue);font-weight:600;font-size:15px;margin-top:12px}
+   .portal-nudge{color:#c4d2e6;font-size:13.5px;margin-top:14px;max-width:460px}
+@@ -396,7 +366,7 @@ const _offerLd = (shop && shop.price)
+   .infobar .info-grid .lbl{font-size:11.5px;margin-bottom:2px}
+   .infobar .info-grid .v{color:var(--navy);font-size:14.5px;font-weight:600;line-height:1.4}
+   @media(max-width:880px){.infobar .info-grid{grid-template-columns:1fr 1fr}}
+-  .quote-photo{width:112px;height:112px;border-radius:50%;object-fit:cover;flex:none;border:3px solid rgba(255,255,255,.35)}
++  .quote-photo{width:112px;height:112px;border-radius:50%;object-fit:cover;object-position:50% 18%;flex:none;border:3px solid rgba(255,255,255,.35)}
+   .quote-cta{display:inline-block;margin-top:14px;color:#fff;font-weight:700;font-size:14.5px;border-bottom:2px solid var(--gold);padding-bottom:2px}
+   .qex{margin-top:34px;padding-top:30px;border-top:1px solid var(--line)}
+   .qex-h{color:var(--navy);font-size:1.35rem;margin:0 0 6px}
+diff --git a/src/pages/contact.astro b/src/pages/contact.astro
+index a40c865..d18e29e 100644
+--- a/src/pages/contact.astro
++++ b/src/pages/contact.astro
+@@ -209,7 +209,7 @@ const offices = [
+     }
+     .hours {
+       background: var(--bg);
+-      border-left: 3px solid var(--gold);
++      
+       padding: 14px 16px;
+       border-radius: 8px;
+       color: var(--muted);
+diff --git a/src/pages/de/contact.astro b/src/pages/de/contact.astro
+index 97e53c7..a4fb1c2 100644
+--- a/src/pages/de/contact.astro
++++ b/src/pages/de/contact.astro
+@@ -220,7 +220,7 @@ const offices = [
+     }
+     .hours {
+       background: var(--bg);
+-      border-left: 3px solid var(--gold);
++      
+       padding: 14px 16px;
+       border-radius: 8px;
+       color: var(--muted);
+diff --git a/src/pages/en/contact.astro b/src/pages/en/contact.astro
+index 0245cc0..98508f8 100644
+--- a/src/pages/en/contact.astro
++++ b/src/pages/en/contact.astro
+@@ -219,7 +219,7 @@ const offices = [
+     }
+     .hours {
+       background: var(--bg);
+-      border-left: 3px solid var(--gold);
++      
+       padding: 14px 16px;
+       border-radius: 8px;
+       color: var(--muted);
+diff --git a/src/pages/es/contact.astro b/src/pages/es/contact.astro
+index a6a4b5d..8df4783 100644
+--- a/src/pages/es/contact.astro
++++ b/src/pages/es/contact.astro
+@@ -216,7 +216,7 @@ const offices = [
+     }
+     .hours {
+       background: var(--bg);
+-      border-left: 3px solid var(--gold);
++      
+       padding: 14px 16px;
+       border-radius: 8px;
+       color: var(--muted);
+diff --git a/src/pages/fr/contact.astro b/src/pages/fr/contact.astro
+index f70f615..8210876 100644
+--- a/src/pages/fr/contact.astro
++++ b/src/pages/fr/contact.astro
+@@ -219,7 +219,7 @@ const offices = [
+     }
+     .hours {
+       background: var(--bg);
+-      border-left: 3px solid var(--gold);
++      
+       padding: 14px 16px;
+       border-radius: 8px;
+       color: var(--muted);
+diff --git a/src/pages/geschiktvoorzorg/index.astro b/src/pages/geschiktvoorzorg/index.astro
+index 1fa8a78..e296bc8 100644
+--- a/src/pages/geschiktvoorzorg/index.astro
++++ b/src/pages/geschiktvoorzorg/index.astro
+@@ -236,7 +236,7 @@ const gvzSchema = [
+   .gvz-org { font-size: 1.25rem; font-weight: 800; color: var(--navy); }
+   .gvz-metric { display: inline-block; align-self: flex-start; background: #e8f0fe; color: var(--navy); font-size: 12.5px; font-weight: 700; padding: 4px 11px; border-radius: 999px; margin: 8px 0 12px; }
+   .gvz-case p { color: var(--muted); font-size: 14.5px; line-height: 1.55; margin: 0 0 12px; }
+-  .gvz-case blockquote { color: var(--navy); font-weight: 600; font-size: 14.5px; line-height: 1.5; font-style: italic; border-left: 3px solid var(--gold); padding-left: 14px; margin: 0 0 14px; flex: 1; }
++  .gvz-case blockquote { color: var(--navy); font-weight: 600; font-size: 14.5px; line-height: 1.5; font-style: italic; padding-left: 14px; margin: 0 0 14px; flex: 1; }
+   .gvz-who { font-size: 13px; color: var(--muted); }
+   .gvz-who b { color: var(--navy); }
+   .gvz-trust { text-align: center; color: var(--muted); font-size: 14px; margin-top: 26px; }
+diff --git a/src/pages/geschiktvoorzorg/klantcases.astro b/src/pages/geschiktvoorzorg/klantcases.astro
+index fed6b5a..f1ce5f5 100644
+--- a/src/pages/geschiktvoorzorg/klantcases.astro
++++ b/src/pages/geschiktvoorzorg/klantcases.astro
+@@ -69,7 +69,7 @@ const cases = [
+         <h3>{c.naam}</h3>
+         <p style="color:var(--text)">{c.tekst}</p>
+         {c.quote && (
+-          <blockquote style="font-style:italic;color:var(--navy);border-left:3px solid var(--gold);padding-left:16px;margin-top:10px">
++          <blockquote style="font-style:italic;color:var(--navy);padding-left:16px;margin-top:10px">
+             "{c.quote}"
+             {c.auteur && (<div style="font-style:normal;margin-top:8px;font-size:14px;color:var(--muted)"><b>{c.auteur}</b>, {c.rol}</div>)}
+           </blockquote>
+diff --git a/src/pages/hrm-oplossingen/[slug].astro b/src/pages/hrm-oplossingen/[slug].astro
+index d70111e..d73ac77 100644
+--- a/src/pages/hrm-oplossingen/[slug].astro
++++ b/src/pages/hrm-oplossingen/[slug].astro
+@@ -45,6 +45,25 @@ const solutionsHref = localizePath("/hrm-oplossingen/", lang);
+ 
+ <SocialProof lang={lang} tone="soft" />
+ 
++{o.vergelijk && (
++  <section>
++    <div class="wrap" style="display:block">
++      <h2 class="section-title">{o.vergelijk.title}</h2>
++      <p class="lead" style="max-width:720px;margin:0 0 30px">{o.vergelijk.lead}</p>
++      <div class="vsgrid">
++        <div class="vscard oud">
++          <h3>{o.vergelijk.oudTitle}</h3>
++          <ul>{o.vergelijk.oud.map((x) => <li>{x}</li>)}</ul>
++        </div>
++        <div class="vscard nieuw">
++          <h3>{o.vergelijk.nieuwTitle}</h3>
++          <ul>{o.vergelijk.nieuw.map((x) => <li>{x}</li>)}</ul>
++        </div>
++      </div>
++    </div>
++  </section>
++)}
++
+   <section>
+     <div class="wrap">
+       <div class="eyebrow">Toelichting</div>
+@@ -82,6 +101,20 @@ const solutionsHref = localizePath("/hrm-oplossingen/", lang);
+ </Base>
+ <style>
+   .cta-note { color:#c4d2e6; font-size:13.5px; margin-top:12px; max-width:520px; }
++  .vsgrid { display:grid; grid-template-columns:1fr 1fr; gap:22px; }
++  .vscard { border-radius:18px; padding:28px 26px; border:1px solid var(--line); }
++  .vscard.oud { background:#fbfcfe; }
++  .vscard.nieuw { background:linear-gradient(160deg, var(--navy), var(--navy-deep)); color:#fff; border:0; box-shadow:0 24px 50px rgba(14,70,140,.22); }
++  .vscard h3 { font-size:1.15rem; margin:0 0 16px; }
++  .vscard.oud h3 { color:var(--navy); }
++  .vscard.nieuw h3 { color:#fff; }
++  .vscard ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px; }
++  .vscard li { display:flex; gap:11px; align-items:flex-start; font-size:15px; line-height:1.5; }
++  .vscard.oud li { color:var(--muted); }
++  .vscard li::before { flex:none; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; margin-top:1px; }
++  .vscard.oud li::before { content:"\2715"; background:#fdecec; color:#c0392b; }
++  .vscard.nieuw li::before { content:"\2713"; background:rgba(252,193,27,.22); color:var(--gold); }
++  @media (max-width:780px) { .vsgrid { grid-template-columns:1fr; } }
+   .pentagon .sol-photo {
+     width: 100%;
+     height: 260px;
+diff --git a/src/pages/ro/contact.astro b/src/pages/ro/contact.astro
+index ff88450..537e1be 100644
+--- a/src/pages/ro/contact.astro
++++ b/src/pages/ro/contact.astro
+@@ -186,7 +186,7 @@ const offices = [
+     .contact-list a { color: var(--blue); font-weight: 600; }
+     .contact-list a:hover { text-decoration: underline; }
+     .lbl { display: inline-block; min-width: 130px; color: var(--navy); font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: .4px; }
+-    .hours { background: var(--bg); border-left: 3px solid var(--gold); padding: 14px 16px; border-radius: 8px; color: var(--muted); font-size: 15px; margin-bottom: 18px; }
++    .hours { background: var(--bg); padding: 14px 16px; border-radius: 8px; color: var(--muted); font-size: 15px; margin-bottom: 18px; }
+     .hours strong { color: var(--navy); }
+     .map { margin-top: 8px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow); }
+     .map iframe { width: 100%; height: 260px; border: 0; display: block; }
+diff --git a/src/styles/global.css b/src/styles/global.css
+index ca6dfc7..3f3a2e3 100644
+--- a/src/styles/global.css
++++ b/src/styles/global.css
+@@ -169,7 +169,8 @@ nav.menu a.active{font-weight:700}
+ }
+ 
+ /* ---------- Generieke sectie ---------- */
+-section{padding:clamp(48px,6vw,88px) 0}
++section{padding:clamp(40px,4.4vw,64px) 0}
++section.bg-soft{padding:clamp(36px,4vw,56px) 0}
+ .eyebrow{color:var(--blue);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:1.4px;margin-bottom:12px;display:inline-flex;align-items:center;gap:8px}
+ /* Frivool micro-accent: gouden streepje voor de eyebrow */
+ .eyebrow::before{content:"";width:22px;height:3px;border-radius:2px;background:var(--gold);display:inline-block;flex:none}
+@@ -454,7 +455,7 @@ html{overflow-x:hidden;}
+ .mv-bar::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--w);background:linear-gradient(90deg,var(--blue),var(--gold));border-radius:6px}
+ @media(max-width:820px){.match-sec{grid-template-columns:1fr;gap:26px}}
+ /* Assessment-detail: alias-callout + rapportage/niveau-blokken (Batch 3) */
+-.alias-note{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:12px 16px;margin:4px 0 16px;color:var(--navy);font-size:15px;box-shadow:var(--shadow-xs)}
++.alias-note{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:4px 0 16px;color:var(--navy);font-size:15px;box-shadow:var(--shadow-xs)}
+ .xblock{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 28px;box-shadow:var(--shadow-xs)}
+ .xblock + .xblock{margin-top:20px}
+ .xblock-h{color:var(--navy);font-size:22px;margin:0 0 8px}
+@@ -475,7 +476,7 @@ html{overflow-x:hidden;}
+ .theory-note{color:var(--muted);font-size:13px;font-style:italic;margin:0;border-top:1px solid var(--line);padding-top:14px}
+ /* Over ons: USP-grid (Batch 7) */
+ .usps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:8px 0 30px}
+-.usp{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:18px 20px}
++.usp{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+ .usp h3{color:var(--navy);font-size:16px;margin:0 0 6px}
+ .usp p{color:var(--muted);font-size:14px;line-height:1.5;margin:0}
+ @media(max-width:880px){.usps{grid-template-columns:1fr 1fr}}
+-- 
+2.43.0
+

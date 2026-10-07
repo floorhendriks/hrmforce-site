@@ -1,0 +1,12 @@
+---
+import Base from "../../../layouts/Base.astro";
+import SectorenIndex from "../../../components/SectorenIndex.astro";
+import { SEC_UI } from "../../../data/sectoren-content.js";
+import { perTaal } from "../../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const m = (SEC_UI[lang] || SEC_UI.nl).meta;
+---
+<Base title={m.title} description={m.description} active="solutions">
+  <SectorenIndex />
+</Base>

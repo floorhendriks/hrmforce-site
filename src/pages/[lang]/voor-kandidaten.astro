@@ -1,0 +1,12 @@
+---
+import Base from "../../layouts/Base.astro";
+import Kandidaten from "../../components/Kandidaten.astro";
+import { kandidatenContent } from "../../data/kandidaten-content.js";
+import { perTaal } from "../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const t = kandidatenContent[lang];
+---
+<Base title={t.meta.title} description={t.meta.description} active="">
+  <Kandidaten t={t} lang={lang} />
+</Base>

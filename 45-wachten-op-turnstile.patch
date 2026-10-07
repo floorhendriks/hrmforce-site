@@ -1,0 +1,106 @@
+From 8d8e0aa31401b467caae8b69509c6cf35b0b12ab Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sun, 27 Sep 2026 06:18:39 +0000
+Subject: [PATCH] Verzenden even vasthouden zolang Turnstile nog verifieert
+
+Het vakje heeft na het laden een paar tellen nodig. Wie sneller klaar is
+met invullen dan het vakje met verifieren, kreeg een afwijzing van de
+server terwijl er niets aan de hand was.
+
+Mensencheck.astro houdt het verzenden nu vast tot het token er is, met
+een korte melding in de taal van de pagina, en verstuurt daarna vanzelf.
+Komt het token binnen acht seconden niet, dan gaat de inzending alsnog
+door en beslist de server. Dit loopt voor de afhandeling van de pagina
+zelf, dus het geldt voor elk formulier met een vakje.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ src/components/Mensencheck.astro | 42 +++++++++++++++++++++++++++++++-
+ src/data/mensencheck-tekst.js    | 12 ++++-----
+ 2 files changed, 47 insertions(+), 7 deletions(-)
+
+diff --git a/src/components/Mensencheck.astro b/src/components/Mensencheck.astro
+index 71b750f..91a885c 100644
+--- a/src/components/Mensencheck.astro
++++ b/src/components/Mensencheck.astro
+@@ -19,7 +19,7 @@ const TAAL = { nl: "nl", en: "en", de: "de", fr: "fr", es: "es", ro: "ro" };
+ </div>
+ <input type="hidden" name="gestart" value="" />
+ {siteKey && (
+-  <div class="mc-vak cf-turnstile" data-sitekey={siteKey} data-language={TAAL[lang] || "nl"} data-theme="light" data-size="flexible"></div>
++  <div class="mc-vak cf-turnstile" data-sitekey={siteKey} data-language={TAAL[lang] || "nl"} data-theme="light" data-size="flexible" data-traag={u.traag}></div>
+ )}
+ {siteKey && (
+   <script is:inline>
+@@ -58,6 +58,46 @@ const TAAL = { nl: "nl", en: "en", de: "de", fr: "fr", es: "es", ro: "ro" };
+     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", stempel);
+     else stempel();
+ 
++    /* Turnstile heeft na het laden van de pagina een paar tellen nodig. Wie
++       sneller klaar is met invullen dan het vakje met verifieren, zou anders
++       een afwijzing krijgen. Deze afhandeling loopt voor die van de pagina
++       zelf, houdt het verzenden even vast en probeert het daarna opnieuw. */
++    var WACHT_MS = 8000;
++    document.addEventListener("submit", function (ev) {
++      var form = ev.target;
++      if (!form || !form.querySelector) return;
++      var vak = form.querySelector(".cf-turnstile");
++      if (!vak) return;
++      if (form.dataset.mcGewacht === "1") return;
++      var veld = function () { return form.querySelector('input[name="cf-turnstile-response"]'); };
++      var nu = veld();
++      if (nu && nu.value) return;
++      ev.preventDefault();
++      ev.stopPropagation();
++      var knop = form.querySelector("button[type=submit], input[type=submit]");
++      if (knop) knop.disabled = true;
++      var regel = form.querySelector(".mc-wacht");
++      if (!regel) {
++        regel = document.createElement("p");
++        regel.className = "mc-melding mc-wacht";
++        vak.parentNode.insertBefore(regel, vak.nextSibling);
++      }
++      regel.textContent = vak.dataset.traag || "";
++      var tot = Date.now() + WACHT_MS;
++      var tik = setInterval(function () {
++        var v = veld();
++        if ((v && v.value) || Date.now() > tot) {
++          clearInterval(tik);
++          regel.textContent = "";
++          if (knop) knop.disabled = false;
++          form.dataset.mcGewacht = "1";
++          if (form.requestSubmit) form.requestSubmit(knop || undefined);
++          else form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
++          setTimeout(function () { delete form.dataset.mcGewacht; }, 0);
++        }
++      }, 200);
++    }, true);
++
+     /* Een token is eenmalig. Elk formulier dat na een geslaagde verzending
+        reset() aanroept krijgt hier een vers vakje en een nieuw starttijdstip. */
+     document.addEventListener("reset", function (ev) {
+diff --git a/src/data/mensencheck-tekst.js b/src/data/mensencheck-tekst.js
+index 65e8bcb..5119132 100644
+--- a/src/data/mensencheck-tekst.js
++++ b/src/data/mensencheck-tekst.js
+@@ -1,10 +1,10 @@
+ // Teksten rond de spamcontrole. Het verborgen veld heeft een label omdat
+ // schermlezers anders een naamloos invoerveld aankondigen.
+ export const MENS_UI = {
+-  nl: { val: "Laat dit veld leeg", fout: "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.", traag: "Even geduld, probeer het over een paar seconden nog eens." },
+-  en: { val: "Leave this field empty", fout: "We could not confirm that you are human. Tick the box and try again.", traag: "One moment, please try again in a few seconds." },
+-  de: { val: "Dieses Feld leer lassen", fout: "Wir konnten nicht feststellen, dass Sie ein Mensch sind. Bitte das Kästchen anklicken und erneut versuchen.", traag: "Einen Moment, bitte in ein paar Sekunden erneut versuchen." },
+-  fr: { val: "Laissez ce champ vide", fout: "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez.", traag: "Un instant, réessayez dans quelques secondes." },
+-  es: { val: "Deja este campo vacío", fout: "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo.", traag: "Un momento, inténtalo de nuevo en unos segundos." },
+-  ro: { val: "Lasă acest câmp gol", fout: "Nu am putut confirma că ești o persoană. Bifează căsuța și încearcă din nou.", traag: "O clipă, încearcă din nou peste câteva secunde." },
++  nl: { val: "Laat dit veld leeg", fout: "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.", traag: "Even geduld, de controle loopt nog." },
++  en: { val: "Leave this field empty", fout: "We could not confirm that you are human. Tick the box and try again.", traag: "One moment, the check is still running." },
++  de: { val: "Dieses Feld leer lassen", fout: "Wir konnten nicht feststellen, dass Sie ein Mensch sind. Bitte das Kästchen anklicken und erneut versuchen.", traag: "Einen Moment, die Prüfung läuft noch." },
++  fr: { val: "Laissez ce champ vide", fout: "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez.", traag: "Un instant, la vérification est en cours." },
++  es: { val: "Deja este campo vacío", fout: "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo.", traag: "Un momento, la verificación está en curso." },
++  ro: { val: "Lasă acest câmp gol", fout: "Nu am putut confirma că ești o persoană. Bifează căsuța și încearcă din nou.", traag: "O clipă, verificarea este în curs." },
+ };
+-- 
+2.43.0
+

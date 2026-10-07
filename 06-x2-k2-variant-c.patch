@@ -1,0 +1,1212 @@
+From 2540ea80258681036208ccef1ccdcd8a89c9bc6b Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Fri, 11 Sep 2026 14:27:44 +0000
+Subject: [PATCH] Feedbackronde 3: X2 en K2, variant C
+
+X2 sectielabels
+- het gouden streepje voor het label vervalt
+- label in grijs in plaats van blauw, iets lichter gezet
+- op donkere vlakken (hero, citaat, CTA-band) een lichte tint, zodat het
+  leesbaar blijft
+- de losse gouden kleuroverrides in de componenten zijn verwijderd, de
+  opmaak komt nu overal uit een regel
+
+K2 inhoudsopgave kenniscentrum
+- vlak en kader vervallen, alleen een lijn boven en onder
+- nummering links van de titels in plaats van een ingesprongen lijst
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ src/components/AssessmentOverzicht.astro      | 2 +-
+ src/components/Cases.astro                    | 2 +-
+ src/components/Faq.astro                      | 2 +-
+ src/components/Glossary.astro                 | 2 +-
+ src/components/Home.astro                     | 6 +++---
+ src/components/IntegratieDetail.astro         | 2 +-
+ src/components/Integraties.astro              | 4 ++--
+ src/components/Kandidaten.astro               | 2 +-
+ src/components/Kenniscentrum.astro            | 2 +-
+ src/components/LiveAssessments.astro          | 2 +-
+ src/components/Oefenen.astro                  | 4 ++--
+ src/components/OnlineAssessments.astro        | 2 +-
+ src/components/RoiRekentool.astro             | 2 +-
+ src/components/Rondleiding.astro              | 2 +-
+ src/components/SectorenIndex.astro            | 2 +-
+ src/components/Shop.astro                     | 2 +-
+ src/components/SubPage.astro                  | 2 +-
+ src/components/Tarieven.astro                 | 2 +-
+ src/components/Testkiezer.astro               | 4 ++--
+ src/components/Toepassing.astro               | 4 ++--
+ src/components/ToepassingenIndex.astro        | 4 ++--
+ src/components/Trainingen.astro               | 4 ++--
+ src/components/Trust.astro                    | 2 +-
+ src/components/Vacatures.astro                | 2 +-
+ src/components/Vergelijking.astro             | 4 ++--
+ src/components/VergelijkingIndex.astro        | 6 +++---
+ src/components/Voorbereiding.astro            | 6 +++---
+ src/components/Wetenschap.astro               | 6 +++---
+ src/components/WhitepaperDetail.astro         | 2 +-
+ src/components/WhitepaperIndex.astro          | 4 ++--
+ src/pages/[...path].astro                     | 9 +++++----
+ src/pages/[lang]/assessments/[slug].astro     | 2 +-
+ src/pages/advies.astro                        | 2 +-
+ src/pages/assessments/[slug].astro            | 2 +-
+ src/pages/contact.astro                       | 2 +-
+ src/pages/de/contact.astro                    | 2 +-
+ src/pages/de/hrm-oplossingen.astro            | 2 +-
+ src/pages/de/over-ons.astro                   | 2 +-
+ src/pages/de/support.astro                    | 2 +-
+ src/pages/demo.astro                          | 2 +-
+ src/pages/en/advies.astro                     | 2 +-
+ src/pages/en/contact.astro                    | 2 +-
+ src/pages/en/hrm-oplossingen.astro            | 2 +-
+ src/pages/en/over-ons.astro                   | 2 +-
+ src/pages/en/support.astro                    | 2 +-
+ src/pages/es/advies.astro                     | 2 +-
+ src/pages/es/contact.astro                    | 2 +-
+ src/pages/es/hrm-oplossingen.astro            | 2 +-
+ src/pages/es/over-ons.astro                   | 2 +-
+ src/pages/es/support.astro                    | 2 +-
+ src/pages/fr/contact.astro                    | 2 +-
+ src/pages/fr/hrm-oplossingen.astro            | 2 +-
+ src/pages/fr/over-ons.astro                   | 2 +-
+ src/pages/geschiktvoorzorg/index.astro        | 2 +-
+ src/pages/geschiktvoorzorg/klantcases.astro   | 2 +-
+ src/pages/geschiktvoorzorg/over-ons.astro     | 2 +-
+ src/pages/hrm-oplossingen.astro               | 4 ++--
+ src/pages/inschrijfformulier-trainingen.astro | 2 +-
+ src/pages/kenniscentrum/[slug].astro          | 6 +++---
+ src/pages/odion.astro                         | 2 +-
+ src/pages/oefen-assessment-maken.astro        | 2 +-
+ src/pages/over-ons.astro                      | 4 ++--
+ src/pages/partner/selier-van-duppen.astro     | 2 +-
+ src/pages/ro/contact.astro                    | 2 +-
+ src/pages/ro/hrm-oplossingen.astro            | 2 +-
+ src/pages/ro/over-ons.astro                   | 2 +-
+ src/pages/ro/support.astro                    | 2 +-
+ src/pages/shop.astro                          | 2 +-
+ src/pages/tarieven.astro                      | 2 +-
+ src/styles/global.css                         | 8 ++++----
+ 70 files changed, 97 insertions(+), 96 deletions(-)
+
+diff --git a/src/components/AssessmentOverzicht.astro b/src/components/AssessmentOverzicht.astro
+index 103957c..d8e6c62 100644
+--- a/src/components/AssessmentOverzicht.astro
++++ b/src/components/AssessmentOverzicht.astro
+@@ -24,7 +24,7 @@ const allUitgevers = [...new Set(items.map((i) => i.uitgever).filter(Boolean))].
+ 
+ <section class="ahero">
+   <div class="wrap" style="display:block">
+-    <div class="eyebrow" style="color:var(--gold)">{c.hero.eyebrow}</div>
++    <div class="eyebrow">{c.hero.eyebrow}</div>
+     <h1>{c.hero.title}</h1>
+     <p style="color:#c4d2e6;font-size:19px;max-width:840px;margin-top:8px" set:html={c.hero.intro}></p>
+     <div class="btns"><a class="btn btn-primary" href={contactHref}>{c.hero.cta}</a></div>
+diff --git a/src/components/Cases.astro b/src/components/Cases.astro
+index 1504dc6..4a16806 100644
+--- a/src/components/Cases.astro
++++ b/src/components/Cases.astro
+@@ -10,7 +10,7 @@ const tarievenHref = localizePath("/tarieven/", lang);
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{ui.eyebrow}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{ui.eyebrow}</div>
++  <div class="eyebrow">{ui.eyebrow}</div>
+   <h1>{ui.title}</h1>
+   <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px">{ui.intro}</p>
+ </div></section>
+diff --git a/src/components/Faq.astro b/src/components/Faq.astro
+index c9ec055..82ca70c 100644
+--- a/src/components/Faq.astro
++++ b/src/components/Faq.astro
+@@ -24,7 +24,7 @@ t.categories.forEach((c, i) => {
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={localizePath("/support/", lang)}>{t.crumb.support}</a> › <span>{t.crumb.faq}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{t.hero.eyebrow}</div>
++  <div class="eyebrow">{t.hero.eyebrow}</div>
+   <h1>{t.hero.title}</h1>
+   <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px" set:html={sanitizeBodyLinks(t.hero.intro, lang, validPaths)}></p>
+ </div></section>
+diff --git a/src/components/Glossary.astro b/src/components/Glossary.astro
+index c9008c9..e32921d 100644
+--- a/src/components/Glossary.astro
++++ b/src/components/Glossary.astro
+@@ -11,7 +11,7 @@ const L = (p) => localizePath(p, lang);
+ <div class="crumb"><div class="wrap"><a href={L("/")}>Home</a> › <span>{t.crumb}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{t.crumb}</div>
++  <div class="eyebrow">{t.crumb}</div>
+   <h1>{t.hero.title}</h1>
+   <p style="color:#c4d2e6;font-size:18px;max-width:780px;margin-top:10px">{t.hero.intro}</p>
+ </div></section>
+diff --git a/src/components/Home.astro b/src/components/Home.astro
+index 73e30cc..f188bf2 100644
+--- a/src/components/Home.astro
++++ b/src/components/Home.astro
+@@ -112,7 +112,7 @@ const faqLd = {
+   <span class="hero-blob blue" aria-hidden="true"></span>
+   <div class="wrap">
+     <div>
+-      <span class="eyebrow" style="color:var(--gold)">{c.hero.eyebrow}</span>
++      <span class="eyebrow">{c.hero.eyebrow}</span>
+       <h1>{c.hero.h1pre}<em>{c.hero.h1em}</em>{c.hero.h1post}</h1>
+       <p class="sub">{c.hero.sub}</p>
+       <div class="hero-btns">
+@@ -186,7 +186,7 @@ const faqLd = {
+ 
+ <section class="bg-soft"><div class="wrap match-sec">
+   <div class="match-copy">
+-    <span class="eyebrow" style="color:var(--gold)">{MATCH.eyebrow}</span>
++    <span class="eyebrow">{MATCH.eyebrow}</span>
+     <h2 class="section-title">{MATCH.title}</h2>
+     <p class="lead">{MATCH.lead}</p>
+     <ul class="match-list">{MATCH.b.map((x) => <li><span class="match-ic" aria-hidden="true">&check;</span>{x}</li>)}</ul>
+@@ -309,7 +309,7 @@ const faqLd = {
+ 
+ <section class="cta">
+   <div class="wrap" style="display:block">
+-    <div class="eyebrow center" style="color:var(--gold)">{c.ctaBand.eyebrow}</div>
++    <div class="eyebrow center">{c.ctaBand.eyebrow}</div>
+     <h2>{c.ctaBand.title}</h2>
+     <p>{c.ctaBand.text}</p>
+     <div class="btns">
+diff --git a/src/components/IntegratieDetail.astro b/src/components/IntegratieDetail.astro
+index 6b889a4..cb93bee 100644
+--- a/src/components/IntegratieDetail.astro
++++ b/src/components/IntegratieDetail.astro
+@@ -18,7 +18,7 @@ const _crumbLd = { "@context":"https://schema.org","@type":"BreadcrumbList", ite
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={intHref}>{ui.crumb}</a> › <span>{name}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{ui.eyebrow} · {sys.category}</div>
++  <div class="eyebrow">{ui.eyebrow} · {sys.category}</div>
+   <h1>{ui.heroA}{name}</h1>
+   <p style="color:#c4d2e6;font-size:18px;max-width:760px;margin-top:10px">{ui.introA}{name}{ui.introB}</p>
+   <div class="btns" style="margin-top:18px"><a href={contactHref} class="btn btn-primary">{ui.p} &rarr;</a></div>
+diff --git a/src/components/Integraties.astro b/src/components/Integraties.astro
+index aece826..54699de 100644
+--- a/src/components/Integraties.astro
++++ b/src/components/Integraties.astro
+@@ -13,7 +13,7 @@ const pcats = PARTNER_CATS[lang] || PARTNER_CATS.nl;
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{t.hero.eyebrow}</div>
++  <div class="eyebrow">{t.hero.eyebrow}</div>
+   <h1>{t.hero.title}</h1>
+   <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px" set:html={t.hero.intro}></p>
+   <p style="color:var(--gold);font-weight:700;font-size:14px;margin-top:12px">{t.hero.positioning}</p>
+@@ -57,7 +57,7 @@ const pcats = PARTNER_CATS[lang] || PARTNER_CATS.nl;
+ </div></section>
+ 
+ <section><div class="wrap">
+-  <div class="eyebrow" style="color:var(--gold)">{intSysHeading}</div>
++  <div class="eyebrow">{intSysHeading}</div>
+   <div class="int-sys">
+     {INT_SYSTEMS.map((sy) => (
+       <a class="int-sys-link" href={localizePath(`/integraties/${sy.slug}/`, lang)}>
+diff --git a/src/components/Kandidaten.astro b/src/components/Kandidaten.astro
+index 07c6a37..763eab4 100644
+--- a/src/components/Kandidaten.astro
++++ b/src/components/Kandidaten.astro
+@@ -12,7 +12,7 @@ const cardHref = (h) => (h === "/voorbereiding/" ? localizePath(h, lang) : h);
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{t.crumb}</div>
++  <div class="eyebrow">{t.crumb}</div>
+   <h1>{t.hero}</h1>
+   <p style="color:#c4d2e6;font-size:18px;max-width:780px;margin-top:10px">{t.intro}</p>
+ </div></section>
+diff --git a/src/components/Kenniscentrum.astro b/src/components/Kenniscentrum.astro
+index 6bb814c..faa0f8b 100644
+--- a/src/components/Kenniscentrum.astro
++++ b/src/components/Kenniscentrum.astro
+@@ -78,7 +78,7 @@ const isEmpty = list.length === 0;
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{t.hero.eyebrow}</div>
++  <div class="eyebrow">{t.hero.eyebrow}</div>
+   <h1>{t.hero.title}</h1>
+   <p style="color:#c4d2e6;font-size:19px;max-width:760px;margin-top:8px">{t.hero.intro}</p>
+ </div></section>
+diff --git a/src/components/LiveAssessments.astro b/src/components/LiveAssessments.astro
+index b08c065..61f4513 100644
+--- a/src/components/LiveAssessments.astro
++++ b/src/components/LiveAssessments.astro
+@@ -17,7 +17,7 @@ const testkiezerHref = localizePath("/testkiezer/", lang);
+ 
+ <section class="ahero">
+   <div class="wrap" style="display:block">
+-    <div class="eyebrow" style="color:var(--gold)">{ui.eyebrow}</div>
++    <div class="eyebrow">{ui.eyebrow}</div>
+     <h1>{ui.h1}</h1>
+     <p style="color:#c4d2e6;font-size:19px;max-width:840px;margin-top:8px">{ui.lead}</p>
+     <div class="btns" style="margin-top:16px">
+diff --git a/src/components/Oefenen.astro b/src/components/Oefenen.astro
+index 09d6305..a35ff84 100644
+--- a/src/components/Oefenen.astro
++++ b/src/components/Oefenen.astro
+@@ -19,7 +19,7 @@ const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList",
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={localizePath("/online-assessments/", lang)}>Online assessments</a> › <span>{d.hero}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{ui.prep}</div>
++  <div class="eyebrow">{ui.prep}</div>
+   <h1>{d.hero}</h1>
+   <p style="color:#c4d2e6;font-size:18px;max-width:760px;margin-top:10px">{d.intro}</p>
+   <div class="btns" style="margin-top:18px">
+@@ -29,7 +29,7 @@ const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList",
+ </div></section>
+ 
+ <section id="voorbeeldvragen"><div class="wrap" style="max-width:860px">
+-  <div class="eyebrow" style="color:var(--gold)">{ex.tag}</div>
++  <div class="eyebrow">{ex.tag}</div>
+   <h2 class="section-title">{ex.title}</h2>
+   <p class="lead" style="margin-bottom:22px">{ex.intro}</p>
+   <div style="display:flex;flex-direction:column;gap:12px">
+diff --git a/src/components/OnlineAssessments.astro b/src/components/OnlineAssessments.astro
+index 2f26d2b..6ce0b9b 100644
+--- a/src/components/OnlineAssessments.astro
++++ b/src/components/OnlineAssessments.astro
+@@ -81,7 +81,7 @@ const logos = [
+ 
+ <section class="ahero">
+   <div class="wrap" style="display:block">
+-    <div class="eyebrow" style="color:var(--gold)">{c.hero.eyebrow}</div>
++    <div class="eyebrow">{c.hero.eyebrow}</div>
+     <h1>{c.hero.title}</h1>
+     <p style="color:#c4d2e6;font-size:19px;max-width:840px;margin-top:8px">{c.hero.intro}</p>
+     <div class="btns"><a class="btn btn-primary" href={overzichtHref}>{c.hero.cta}</a></div>
+diff --git a/src/components/RoiRekentool.astro b/src/components/RoiRekentool.astro
+index df33b8d..5245114 100644
+--- a/src/components/RoiRekentool.astro
++++ b/src/components/RoiRekentool.astro
+@@ -6,7 +6,7 @@ const contactHref = localizePath("/contact/", lang);
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{t.hero.eyebrow}</div>
++  <div class="eyebrow">{t.hero.eyebrow}</div>
+   <h1>{t.hero.title}</h1>
+   <p style="color:#dbe6f5;font-size:19px;max-width:760px;margin-top:8px">
+     {t.hero.intro}
+diff --git a/src/components/Rondleiding.astro b/src/components/Rondleiding.astro
+index c64b36e..cf35fec 100644
+--- a/src/components/Rondleiding.astro
++++ b/src/components/Rondleiding.astro
+@@ -10,7 +10,7 @@ const steps = t.steps.map((s, i) => ({ ...s, img: `/mockups/vragenlijst-${TOUR_I
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> &rsaquo; <span>{t.crumb}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{t.eyebrow}</div>
++  <div class="eyebrow">{t.eyebrow}</div>
+   <h1>{t.hero}</h1>
+   <p style="color:#c4d2e6;font-size:18px;max-width:720px;margin-top:10px">{t.intro}</p>
+ </div></section>
+diff --git a/src/components/SectorenIndex.astro b/src/components/SectorenIndex.astro
+index 6c46b58..d70fd33 100644
+--- a/src/components/SectorenIndex.astro
++++ b/src/components/SectorenIndex.astro
+@@ -13,7 +13,7 @@ const landHref = (slug) => localizePath(`/toepassingen/${slug}/`, lang);
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{ui.eyebrow}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{ui.eyebrow}</div>
++  <div class="eyebrow">{ui.eyebrow}</div>
+   <h1>{ui.title}</h1>
+   <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:780px;margin-top:12px">{ui.intro}</p>
+ </div></section>
+diff --git a/src/components/Shop.astro b/src/components/Shop.astro
+index 543da10..7570a28 100644
+--- a/src/components/Shop.astro
++++ b/src/components/Shop.astro
+@@ -148,7 +148,7 @@ const FAQ_DEFAULT = generalFaq(lang);
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{t.hero.eyebrow}</div>
++  <div class="eyebrow">{t.hero.eyebrow}</div>
+   <h1>{t.hero.title}</h1>
+   <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">{t.hero.intro}</p>
+   <p style="color:#c4d2e6;font-size:15px;max-width:820px;margin-top:10px">{t.hero.licencePre}<a href={tarievenHref} style="color:#fff;border-bottom:1px solid var(--gold)">{t.hero.licenceLink}</a>{t.hero.licencePost}</p>
+diff --git a/src/components/SubPage.astro b/src/components/SubPage.astro
+index 584dd25..9b0ae92 100644
+--- a/src/components/SubPage.astro
++++ b/src/components/SubPage.astro
+@@ -27,7 +27,7 @@ const assessHref = localizePath(routes.assessments, lang);
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">{page.eyebrow}</div>
++      <div class="eyebrow">{page.eyebrow}</div>
+       <h1>{page.title}</h1>
+       <p style="color:#c4d2e6;font-size:19px;max-width:760px;margin-top:8px">{page.lead}</p>
+     </div>
+diff --git a/src/components/Tarieven.astro b/src/components/Tarieven.astro
+index ec6f422..01a671e 100644
+--- a/src/components/Tarieven.astro
++++ b/src/components/Tarieven.astro
+@@ -8,7 +8,7 @@ const roiHref = localizePath("/roi-rekentool/", lang);
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{t.hero.eyebrow}</div>
++  <div class="eyebrow">{t.hero.eyebrow}</div>
+   <h1>{t.hero.title}</h1>
+   <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px" set:html={t.hero.intro}></p>
+   <p style="color:var(--gold);font-weight:700;font-size:14px;margin-top:12px">{t.hero.positioning}</p>
+diff --git a/src/components/Testkiezer.astro b/src/components/Testkiezer.astro
+index 4c4d2a1..b75f01f 100644
+--- a/src/components/Testkiezer.astro
++++ b/src/components/Testkiezer.astro
+@@ -16,7 +16,7 @@ const recs = (key) => (TK_SLUGS[key] || []).map((s) => bySlug.get(s)).filter(Boo
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{t.crumb}</div>
++  <div class="eyebrow">{t.crumb}</div>
+   <h1>{t.hero}</h1>
+   <p style="color:#c4d2e6;font-size:18px;max-width:780px;margin-top:10px">{t.intro}</p>
+ </div></section>
+@@ -33,7 +33,7 @@ const recs = (key) => (TK_SLUGS[key] || []).map((s) => bySlug.get(s)).filter(Boo
+ 
+   {t.options.map((o) => (
+     <div class="tk-result" data-result={o.key} hidden>
+-      <div class="eyebrow" style="color:var(--gold)">{t.resultLabel}</div>
++      <div class="eyebrow">{t.resultLabel}</div>
+       <p class="lead" style="margin:6px 0 20px">{o.resultIntro}</p>
+       <div class="cards">
+         {recs(o.key).map((a) => (
+diff --git a/src/components/Toepassing.astro b/src/components/Toepassing.astro
+index bf50b0f..a60a474 100644
+--- a/src/components/Toepassing.astro
++++ b/src/components/Toepassing.astro
+@@ -41,7 +41,7 @@ const _faqLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntit
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>{ui.home}</a> &rsaquo; <a href={toepPath}>{ui.toep}</a> &rsaquo; <span>{t.title}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{t.eyebrow}</div>
++  <div class="eyebrow">{t.eyebrow}</div>
+   <h1>{t.hero}</h1>
+   <p style="color:#c4d2e6;font-size:18px;max-width:760px;margin-top:10px">{t.intro}</p>
+   <div class="btns" style="margin-top:18px">
+@@ -59,7 +59,7 @@ const _faqLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntit
+ </div></section>
+ 
+ <section class="bg-soft"><div class="wrap">
+-  <div class="eyebrow" style="color:var(--gold)">{ui.apEy}</div>
++  <div class="eyebrow">{ui.apEy}</div>
+   <h2 class="section-title">{ui.apT}</h2>
+   <div class="lp-grid">
+     {t.approach.map((a) => (<div class="lp-card"><h3>{a.h}</h3><p>{a.p}</p></div>))}
+diff --git a/src/components/ToepassingenIndex.astro b/src/components/ToepassingenIndex.astro
+index 6c00a9b..426348e 100644
+--- a/src/components/ToepassingenIndex.astro
++++ b/src/components/ToepassingenIndex.astro
+@@ -13,7 +13,7 @@ const T = (l) => (l.i18n[lang] || l.i18n.nl);
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>{ui.home}</a> &rsaquo; <span>{ui.toep}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{ui.toep}</div>
++  <div class="eyebrow">{ui.toep}</div>
+   <h1>{ui.idxHero}</h1>
+   <p style="color:#c4d2e6;font-size:18px;max-width:760px;margin-top:10px">{ui.idxIntro}</p>
+ </div></section>
+@@ -31,7 +31,7 @@ const T = (l) => (l.i18n[lang] || l.i18n.nl);
+ </div></section>
+ 
+ <section class="bg-soft"><div class="wrap">
+-  <div class="eyebrow" style="color:var(--gold)">{ui.perSector}</div>
++  <div class="eyebrow">{ui.perSector}</div>
+   <h2 class="section-title" style="margin-bottom:32px">{ui.sectors}</h2>
+   <div class="cards">
+     {sectors.map((l) => (
+diff --git a/src/components/Trainingen.astro b/src/components/Trainingen.astro
+index 14cad27..0d3c0a3 100644
+--- a/src/components/Trainingen.astro
++++ b/src/components/Trainingen.astro
+@@ -18,7 +18,7 @@ const cardHref = (nlHref) => (lang === "nl" ? nlHref : contactHref);
+ 
+ <section class="ahero">
+   <div class="wrap" style="display:block">
+-    <div class="eyebrow" style="color:var(--gold)">{t.eyebrow}</div>
++    <div class="eyebrow">{t.eyebrow}</div>
+     <h1>{t.h1}</h1>
+     <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px" set:html={t.lead}></p>
+     <div class="btns" style="margin-top:16px">
+@@ -51,7 +51,7 @@ const cardHref = (nlHref) => (lang === "nl" ? nlHref : contactHref);
+ 
+ <section id="kalender" class="bg-soft">
+   <div class="wrap">
+-    <div class="eyebrow" style="color:var(--gold)">{t.certEyebrow}</div>
++    <div class="eyebrow">{t.certEyebrow}</div>
+     <h2 class="section-title">{t.kalTitle}</h2>
+     <p class="lead" style="margin-bottom:20px">{t.kalLead}</p>
+     <div class="kal-wrap">
+diff --git a/src/components/Trust.astro b/src/components/Trust.astro
+index e66a0c3..c176ce9 100644
+--- a/src/components/Trust.astro
++++ b/src/components/Trust.astro
+@@ -7,7 +7,7 @@ const overHref = localizePath("/over-ons/", lang);
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{t.hero.eyebrow}</div>
++  <div class="eyebrow">{t.hero.eyebrow}</div>
+   <h1>{t.hero.title}</h1>
+   <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px" set:html={t.hero.intro}></p>
+   <div class="btns" style="margin-top:18px"><a href={contactHref} class="btn btn-primary">{t.hero.cta}</a></div>
+diff --git a/src/components/Vacatures.astro b/src/components/Vacatures.astro
+index 678447c..9abf3b8 100644
+--- a/src/components/Vacatures.astro
++++ b/src/components/Vacatures.astro
+@@ -26,7 +26,7 @@ const _jobsLd = (t.jobs || []).map((j, i) => ({
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> &rsaquo; <span>{t.crumb}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{t.eyebrow}</div>
++  <div class="eyebrow">{t.eyebrow}</div>
+   <h1>{t.hero}</h1>
+   <p style="color:#c4d2e6;font-size:18px;max-width:720px;margin-top:10px">{t.intro}</p>
+ </div></section>
+diff --git a/src/components/Vergelijking.astro b/src/components/Vergelijking.astro
+index 0020627..2db053d 100644
+--- a/src/components/Vergelijking.astro
++++ b/src/components/Vergelijking.astro
+@@ -16,14 +16,14 @@ const _crumbLd = { "@context":"https://schema.org","@type":"BreadcrumbList", ite
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> &rsaquo; <a href={localizePath("/vergelijking/", lang)}>{t.crumb}</a> &rsaquo; <span>{comp.name}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{t.eyebrow}</div>
++  <div class="eyebrow">{t.eyebrow}</div>
+   <h1>{t.altPrefix} {comp.name}</h1>
+   <p style="color:#c4d2e6;font-size:18px;max-width:760px;margin-top:10px">{comp.intro}</p>
+   <p style="color:#93a7c4;font-size:13px;max-width:760px;margin-top:12px">{t.neutralNote}</p>
+ </div></section>
+ 
+ <section class="bg-soft"><div class="wrap">
+-  <div class="eyebrow" style="color:var(--gold)">{t.edgeTitle}</div>
++  <div class="eyebrow">{t.edgeTitle}</div>
+   <h2 class="section-title" style="margin-bottom:8px">{t.edgeTitle}</h2>
+   <p class="lead" style="max-width:820px;margin:0 0 22px">{t.verdict}</p>
+   <ul class="vg-edges">
+diff --git a/src/components/VergelijkingIndex.astro b/src/components/VergelijkingIndex.astro
+index c86126c..b61be72 100644
+--- a/src/components/VergelijkingIndex.astro
++++ b/src/components/VergelijkingIndex.astro
+@@ -12,7 +12,7 @@ const gidsHref = localizePath("/whitepapers/assessments-kiezen-gids/", lang);
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> &rsaquo; <span>{t.crumb}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{t.eyebrow}</div>
++  <div class="eyebrow">{t.eyebrow}</div>
+   <h1>{t.hero}</h1>
+   <p style="color:#c4d2e6;font-size:18px;max-width:760px;margin-top:10px">{t.intro}</p>
+ </div></section>
+@@ -26,7 +26,7 @@ const gidsHref = localizePath("/whitepapers/assessments-kiezen-gids/", lang);
+ </div></section>
+ 
+ <section class="bg-soft"><div class="wrap">
+-  <div class="eyebrow" style="color:var(--gold)">{t.compareTitle}</div>
++  <div class="eyebrow">{t.compareTitle}</div>
+   <h2 class="section-title" style="margin-bottom:26px">{t.compareTitle}</h2>
+   <div class="cards">
+     {comps.map((c) => (
+@@ -41,7 +41,7 @@ const gidsHref = localizePath("/whitepapers/assessments-kiezen-gids/", lang);
+ 
+ <script type="application/ld+json" is:inline set:html={JSON.stringify(_faqLd)}></script>
+ <section><div class="wrap">
+-  <div class="eyebrow" style="color:var(--gold)">{t.guideTitle}</div>
++  <div class="eyebrow">{t.guideTitle}</div>
+   <h2 class="section-title" style="margin-bottom:8px">{t.guideTitle}</h2>
+   <p class="lead" style="max-width:640px;margin:0 0 16px">{t.guideText}</p>
+   <div class="btns"><a class="btn btn-primary" href={testkiezerHref}>{t.guideBtn} &rarr;</a><a class="btn btn-ghost" href={gidsHref} style="margin-left:8px">{t.guideBtn2}</a></div>
+diff --git a/src/components/Voorbereiding.astro b/src/components/Voorbereiding.astro
+index ecff1e0..f408fbb 100644
+--- a/src/components/Voorbereiding.astro
++++ b/src/components/Voorbereiding.astro
+@@ -38,7 +38,7 @@ const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voo
+ ---
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{t.hero.eyebrow}</div>
++  <div class="eyebrow">{t.hero.eyebrow}</div>
+   <h1>{t.hero.title}</h1>
+ </div></section>
+ 
+@@ -49,7 +49,7 @@ const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voo
+ </div></section>
+ 
+ <section class="bg-soft"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{prep.title}</div>
++  <div class="eyebrow">{prep.title}</div>
+   <h2 class="section-title">{prep.title}</h2>
+   <p style="max-width:820px;color:var(--muted);margin-bottom:18px">{prep.intro}</p>
+   <input type="search" id="prepSearch" class="prep-search" placeholder={prep.search} aria-label={prep.search} />
+@@ -65,7 +65,7 @@ const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voo
+ </div></section>
+ 
+ <section><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{books.eyebrow}</div>
++  <div class="eyebrow">{books.eyebrow}</div>
+   <h2 class="section-title">{books.title}</h2>
+   <p style="max-width:820px;color:var(--muted);margin-bottom:18px">{books.intro}</p>
+   <div class="prep-books">
+diff --git a/src/components/Wetenschap.astro b/src/components/Wetenschap.astro
+index 547d81c..6f19f2e 100644
+--- a/src/components/Wetenschap.astro
++++ b/src/components/Wetenschap.astro
+@@ -11,7 +11,7 @@ const _faqLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntit
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{t.hero.eyebrow}</div>
++  <div class="eyebrow">{t.hero.eyebrow}</div>
+   <h1>{t.hero.title}</h1>
+   <p style="color:#c4d2e6;font-size:18px;max-width:780px;margin-top:10px">{t.hero.intro}</p>
+   <div class="btns" style="margin-top:18px"><a href={contactHref} class="btn btn-primary">{t.hero.cta} &rarr;</a></div>
+@@ -26,7 +26,7 @@ const _faqLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntit
+ </div></section>
+ 
+ <section class="bg-soft"><div class="wrap">
+-  <div class="eyebrow" style="color:var(--gold)">{t.quality.eyebrow}</div>
++  <div class="eyebrow">{t.quality.eyebrow}</div>
+   <h2 class="section-title">{t.quality.title}</h2>
+   <div class="ws-grid">
+     {t.quality.items.map((it) => (<div class="ws-card ws-check"><h3>{it.title}</h3><p>{it.text}</p></div>))}
+@@ -34,7 +34,7 @@ const _faqLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntit
+ </div></section>
+ 
+ <section><div class="wrap">
+-  <div class="eyebrow" style="color:var(--gold)">{t.fairness.eyebrow}</div>
++  <div class="eyebrow">{t.fairness.eyebrow}</div>
+   <h2 class="section-title">{t.fairness.title}</h2>
+   <p class="lead" style="max-width:820px;margin:0 0 22px">{t.fairness.lead}</p>
+   <div class="ws-grid">
+diff --git a/src/components/WhitepaperDetail.astro b/src/components/WhitepaperDetail.astro
+index c6683a4..7b72936 100644
+--- a/src/components/WhitepaperDetail.astro
++++ b/src/components/WhitepaperDetail.astro
+@@ -9,7 +9,7 @@ const wpHref = localizePath("/whitepapers/", lang);
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={wpHref}>{ui.idxCrumb}</a> › <span>{d.title}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{ui.idxCrumb}</div>
++  <div class="eyebrow">{ui.idxCrumb}</div>
+   <h1>{d.title}</h1>
+   <p style="color:#c4d2e6;font-size:18px;max-width:760px;margin-top:10px">{d.subtitle}</p>
+ </div></section>
+diff --git a/src/components/WhitepaperIndex.astro b/src/components/WhitepaperIndex.astro
+index 6d904e0..ca4daa0 100644
+--- a/src/components/WhitepaperIndex.astro
++++ b/src/components/WhitepaperIndex.astro
+@@ -5,7 +5,7 @@ const { ui, lang } = Astro.props;
+ ---
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{ui.idxCrumb}</span></div></div>
+ <section class="ahero"><div class="wrap" style="display:block">
+-  <div class="eyebrow" style="color:var(--gold)">{ui.idxCrumb}</div>
++  <div class="eyebrow">{ui.idxCrumb}</div>
+   <h1>{ui.idxTitle}</h1>
+   <p style="color:#c4d2e6;font-size:18px;max-width:760px;margin-top:10px">{ui.idxIntro}</p>
+ </div></section>
+@@ -13,7 +13,7 @@ const { ui, lang } = Astro.props;
+   <div class="cards">
+     {WHITEPAPERS.map((w) => { const d = w.i18n[lang] ?? w.i18n.nl; return (
+       <a class="card" href={localizePath(`/whitepapers/${w.slug}/`, lang)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+-        <span class="eyebrow" style="color:var(--gold)">{ui.idxCrumb}</span>
++        <span class="eyebrow">{ui.idxCrumb}</span>
+         <h3>{d.title}</h3>
+         <p style="flex:1">{d.summary}</p>
+         <span class="readmore">{ui.read} &rarr;</span>
+diff --git a/src/pages/[...path].astro b/src/pages/[...path].astro
+index dd285ed..442a2b2 100644
+--- a/src/pages/[...path].astro
++++ b/src/pages/[...path].astro
+@@ -256,7 +256,7 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
+   <div class={"kc-head" + (headerImg ? " met-beeld" : "")}>
+     {headerImg && <img class="kc-hero-img" src={headerImg} alt="" aria-hidden="true" loading="eager" />}
+     <div class="wrap">
+-      <div class="eyebrow" style="color:var(--gold)">{K.eyebrow}</div>
++      <div class="eyebrow">{K.eyebrow}</div>
+       <h1>{article.title}</h1>
+       <div class="kc-meta">
+         {dateLabel && <span class="kc-mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 11h18"/></svg>{K.published} {dateLabel}</span>}
+@@ -340,10 +340,11 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
+   .kc-mi { display: inline-flex; align-items: center; gap: 8px; color: #c4d2e6; font-size: 13.5px; font-weight: 600; }
+   .kc-mi svg { width: 16px; height: 16px; color: var(--gold); }
+   .kc-mi img { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
+-  .kc-toc { background: var(--bg-soft); border: 1px solid var(--line); border-left: 4px solid var(--gold); border-radius: 14px; padding: 20px 24px; margin: 0 0 30px; }
++  .kc-toc { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 18px 0; margin: 0 0 30px; }
+   .kc-toc-h { color: var(--navy); font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: .6px; margin: 0 0 10px; }
+-  .kc-toc ol { margin: 0; padding-left: 20px; }
+-  .kc-toc li { margin: 6px 0; }
++  .kc-toc ol { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
++  .kc-toc li { margin: 0; display: flex; gap: 10px; align-items: baseline; }
++  .kc-toc li::before { content: counter(list-item); color: var(--muted); font-weight: 700; font-size: 13px; min-width: 14px; font-variant-numeric: tabular-nums; }
+   .kc-toc a { color: var(--blue); font-weight: 600; font-size: 15px; text-decoration: none; }
+   .kc-toc a:hover { color: var(--accent); text-decoration: underline; }
+   .kc-author { display: flex; gap: 18px; align-items: flex-start; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 22px 24px; margin: 34px 0 0; box-shadow: var(--shadow-xs); }
+diff --git a/src/pages/[lang]/assessments/[slug].astro b/src/pages/[lang]/assessments/[slug].astro
+index 6185acc..6c3e2a9 100644
+--- a/src/pages/[lang]/assessments/[slug].astro
++++ b/src/pages/[lang]/assessments/[slug].astro
+@@ -237,7 +237,7 @@ const _offerLd = (shop && shop.price)
+ 
+   {theory && (
+     <section><div class="wrap" style="max-width:880px">
+-      <div class="eyebrow" style="color:var(--gold)">{theory.modelLabel}</div>
++      <div class="eyebrow">{theory.modelLabel}</div>
+       <h2 class="section-title">{theory.title}</h2>
+       <div class="theory-card">
+         <h3 class="theory-name">{theory.name}</h3>
+diff --git a/src/pages/advies.astro b/src/pages/advies.astro
+index 27e2dc2..d7b637b 100644
+--- a/src/pages/advies.astro
++++ b/src/pages/advies.astro
+@@ -66,7 +66,7 @@ const groups = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Advies</div>
++      <div class="eyebrow">Advies</div>
+       <h1>Advies, assessments en trainingen</h1>
+       <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">Naast de <a href="/online-assessments/">online assessments</a> en <a href="/hrm-oplossingen/">HRM-oplossingen</a> begeleiden onze adviseurs en assessoren trajecten op maat. Je kiest of je het zelf doet met een training, of dat wij het assessment afnemen.</p>
+       <div class="btns" style="margin-top:18px">
+diff --git a/src/pages/assessments/[slug].astro b/src/pages/assessments/[slug].astro
+index 1e07681..5bf84a6 100644
+--- a/src/pages/assessments/[slug].astro
++++ b/src/pages/assessments/[slug].astro
+@@ -215,7 +215,7 @@ const _offerLd = (shop && shop.price)
+ 
+   {theory && (
+     <section><div class="wrap" style="max-width:880px">
+-      <div class="eyebrow" style="color:var(--gold)">{theory.modelLabel}</div>
++      <div class="eyebrow">{theory.modelLabel}</div>
+       <h2 class="section-title">{theory.title}</h2>
+       <div class="theory-card">
+         <h3 class="theory-name">{theory.name}</h3>
+diff --git a/src/pages/contact.astro b/src/pages/contact.astro
+index d18e29e..2595314 100644
+--- a/src/pages/contact.astro
++++ b/src/pages/contact.astro
+@@ -61,7 +61,7 @@ const offices = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Contact</div>
++      <div class="eyebrow">Contact</div>
+       <h1>Interesse of heb je een vraag? Neem contact met ons op.</h1>
+       <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">
+         Wij helpen je graag en denken mee om samen tot een passende oplossing te komen.
+diff --git a/src/pages/de/contact.astro b/src/pages/de/contact.astro
+index a4fb1c2..2df5125 100644
+--- a/src/pages/de/contact.astro
++++ b/src/pages/de/contact.astro
+@@ -66,7 +66,7 @@ const offices = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Kontakt</div>
++      <div class="eyebrow">Kontakt</div>
+       <h1>Sind Sie interessiert oder haben Sie eine Frage?</h1>
+       <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">
+         Wir helfen Ihnen gerne und denken mit Ihnen mit, um gemeinsam eine passende Lösung zu finden.
+diff --git a/src/pages/de/hrm-oplossingen.astro b/src/pages/de/hrm-oplossingen.astro
+index 8395ea2..2889676 100644
+--- a/src/pages/de/hrm-oplossingen.astro
++++ b/src/pages/de/hrm-oplossingen.astro
+@@ -19,7 +19,7 @@ const cards = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">HRM-Lösungen</div>
++      <div class="eyebrow">HRM-Lösungen</div>
+       <h1>HRM-Lösungen</h1>
+     </div>
+   </section>
+diff --git a/src/pages/de/over-ons.astro b/src/pages/de/over-ons.astro
+index 9378ef7..82a5895 100644
+--- a/src/pages/de/over-ons.astro
++++ b/src/pages/de/over-ons.astro
+@@ -29,7 +29,7 @@ const domains = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">hrmforce</div>
++      <div class="eyebrow">hrmforce</div>
+       <h1>hrmforce</h1>
+     </div>
+   </section>
+diff --git a/src/pages/de/support.astro b/src/pages/de/support.astro
+index d8e65a1..b989150 100644
+--- a/src/pages/de/support.astro
++++ b/src/pages/de/support.astro
+@@ -12,7 +12,7 @@ import Base from "../../layouts/Base.astro";
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Support</div>
++      <div class="eyebrow">Support</div>
+       <h1>Kundendienst und Support</h1>
+     </div>
+   </section>
+diff --git a/src/pages/demo.astro b/src/pages/demo.astro
+index 7cdba94..2f6b368 100644
+--- a/src/pages/demo.astro
++++ b/src/pages/demo.astro
+@@ -15,7 +15,7 @@ const googleUrl = REVIEWS_EXTERNAL?.google || "";
+   <section class="dm">
+     <div class="wrap dm-grid">
+       <div class="dm-copy">
+-        <div class="eyebrow" style="color:var(--gold)">Gratis demo</div>
++        <div class="eyebrow">Gratis demo</div>
+         <h1>Zie in 30 minuten wat hrmforce voor jouw HR-vraag doet</h1>
+         <p class="dm-lead">Een specialist laat je het platform zien met jouw situatie als uitgangspunt: welke assessments passen, hoe de rapportage eruitziet en wat het kost.</p>
+ 
+diff --git a/src/pages/en/advies.astro b/src/pages/en/advies.astro
+index 1049c49..8c4ded2 100644
+--- a/src/pages/en/advies.astro
++++ b/src/pages/en/advies.astro
+@@ -17,7 +17,7 @@ const items = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Advice</div>
++      <div class="eyebrow">Advice</div>
+       <h1>Hrmforce consulting</h1>
+       <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">In addition to our online assessments and HRM solutions, you can contact us for <strong>training</strong> and assessor-led <strong>live assessments</strong>. Our experienced consultants are happy to think along with your HRM issues.</p>
+     </div>
+diff --git a/src/pages/en/contact.astro b/src/pages/en/contact.astro
+index 98508f8..fd7f2a9 100644
+--- a/src/pages/en/contact.astro
++++ b/src/pages/en/contact.astro
+@@ -57,7 +57,7 @@ const offices = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Contact</div>
++      <div class="eyebrow">Contact</div>
+       <h1>Any questions? Contact us.</h1>
+       <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">
+         We like to provide you with any necessary support and try to figure out the best solution available.
+diff --git a/src/pages/en/hrm-oplossingen.astro b/src/pages/en/hrm-oplossingen.astro
+index 5ebd5d6..d179cb4 100644
+--- a/src/pages/en/hrm-oplossingen.astro
++++ b/src/pages/en/hrm-oplossingen.astro
+@@ -19,7 +19,7 @@ const blocks = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">HRM solutions</div>
++      <div class="eyebrow">HRM solutions</div>
+       <h1>HRM solutions</h1>
+       <p style="color:#c4d2e6;font-size:19px;max-width:780px;margin-top:8px">In addition to conducting <a href="/en/online-assessments/" style="color:#fff;text-decoration:underline">online assessments</a>, hrmforce offers many more functionalities. The questionnaires have been incorporated into workflows for recruitment, development and assessment of applicants and employees.</p>
+     </div>
+diff --git a/src/pages/en/over-ons.astro b/src/pages/en/over-ons.astro
+index 7d30796..2522c1e 100644
+--- a/src/pages/en/over-ons.astro
++++ b/src/pages/en/over-ons.astro
+@@ -20,7 +20,7 @@ const domains = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">About us</div>
++      <div class="eyebrow">About us</div>
+       <h1>About us</h1>
+     </div>
+   </section>
+diff --git a/src/pages/en/support.astro b/src/pages/en/support.astro
+index b913af0..7b213f7 100644
+--- a/src/pages/en/support.astro
++++ b/src/pages/en/support.astro
+@@ -12,7 +12,7 @@ import Base from "../../layouts/Base.astro";
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Support</div>
++      <div class="eyebrow">Support</div>
+       <h1>Support</h1>
+     </div>
+   </section>
+diff --git a/src/pages/es/advies.astro b/src/pages/es/advies.astro
+index 276da61..83e7410 100644
+--- a/src/pages/es/advies.astro
++++ b/src/pages/es/advies.astro
+@@ -17,7 +17,7 @@ const items = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Asesoría</div>
++      <div class="eyebrow">Asesoría</div>
+       <h1>Asesoría de hrmforce</h1>
+       <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">Además de nuestras evaluaciones online y soluciones de RR. HH., puedes contar con <strong>formación</strong> y <strong>evaluaciones en directo</strong> guiadas por asesores. Nuestros consultores piensan contigo sobre tus retos de RR. HH.</p>
+     </div>
+diff --git a/src/pages/es/contact.astro b/src/pages/es/contact.astro
+index 8df4783..37192eb 100644
+--- a/src/pages/es/contact.astro
++++ b/src/pages/es/contact.astro
+@@ -58,7 +58,7 @@ const offices = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Contacto</div>
++      <div class="eyebrow">Contacto</div>
+       <h1>¿Está interesado o tiene alguna pregunta?</h1>
+       <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">
+         Estaremos encantados de ayudarle y de pensar con usted para encontrar juntos una solución adecuada.
+diff --git a/src/pages/es/hrm-oplossingen.astro b/src/pages/es/hrm-oplossingen.astro
+index f2a82e6..120321a 100644
+--- a/src/pages/es/hrm-oplossingen.astro
++++ b/src/pages/es/hrm-oplossingen.astro
+@@ -19,7 +19,7 @@ const blocks = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Soluciones de GRH</div>
++      <div class="eyebrow">Soluciones de GRH</div>
+       <h1>Soluciones de gestión de recursos humanos</h1>
+       <p style="color:#c4d2e6;font-size:19px;max-width:780px;margin-top:8px">Hrmforce ofrece muchas más funcionalidades además de las evaluaciones en línea. Los cuestionarios se incorporan a los flujos de trabajo para la (pre)selección, el desarrollo y la evaluación de candidatos y empleados.</p>
+     </div>
+diff --git a/src/pages/es/over-ons.astro b/src/pages/es/over-ons.astro
+index c836e05..3571977 100644
+--- a/src/pages/es/over-ons.astro
++++ b/src/pages/es/over-ons.astro
+@@ -20,7 +20,7 @@ const domains = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Lo Que Hacemos</div>
++      <div class="eyebrow">Lo Que Hacemos</div>
+       <h1>Lo Que Hacemos</h1>
+     </div>
+   </section>
+diff --git a/src/pages/es/support.astro b/src/pages/es/support.astro
+index 033110b..d18019f 100644
+--- a/src/pages/es/support.astro
++++ b/src/pages/es/support.astro
+@@ -12,7 +12,7 @@ import Base from "../../layouts/Base.astro";
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Ayuda</div>
++      <div class="eyebrow">Ayuda</div>
+       <h1>Ayuda</h1>
+       <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">¿Tiene alguna pregunta sobre el uso de hrmforce? Nuestro equipo de soporte estará encantado de ayudarle. Puede contactarnos al +31 88 88 321 88, de lunes a viernes, en horario de oficina, de 8:30 a 18:00.</p>
+     </div>
+diff --git a/src/pages/fr/contact.astro b/src/pages/fr/contact.astro
+index 8210876..d483082 100644
+--- a/src/pages/fr/contact.astro
++++ b/src/pages/fr/contact.astro
+@@ -57,7 +57,7 @@ const offices = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Contact</div>
++      <div class="eyebrow">Contact</div>
+       <h1>Des questions ? Contactez-nous.</h1>
+       <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">
+         Nous sommes heureux de vous apporter le soutien necessaire et cherchons avec vous la meilleure solution possible.
+diff --git a/src/pages/fr/hrm-oplossingen.astro b/src/pages/fr/hrm-oplossingen.astro
+index 40ac0ee..08974d3 100644
+--- a/src/pages/fr/hrm-oplossingen.astro
++++ b/src/pages/fr/hrm-oplossingen.astro
+@@ -19,7 +19,7 @@ const domains = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Solutions de GRH</div>
++      <div class="eyebrow">Solutions de GRH</div>
+       <h1>Solutions de GRH</h1>
+     </div>
+   </section>
+diff --git a/src/pages/fr/over-ons.astro b/src/pages/fr/over-ons.astro
+index e449191..0c48700 100644
+--- a/src/pages/fr/over-ons.astro
++++ b/src/pages/fr/over-ons.astro
+@@ -20,7 +20,7 @@ const domains = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">hrmforce</div>
++      <div class="eyebrow">hrmforce</div>
+       <h1>hrmforce</h1>
+     </div>
+   </section>
+diff --git a/src/pages/geschiktvoorzorg/index.astro b/src/pages/geschiktvoorzorg/index.astro
+index e296bc8..5cbdd4f 100644
+--- a/src/pages/geschiktvoorzorg/index.astro
++++ b/src/pages/geschiktvoorzorg/index.astro
+@@ -33,7 +33,7 @@ const gvzSchema = [
+ 
+   <section class="ahero"><div class="wrap">
+     <div>
+-      <div class="eyebrow" style="color:var(--gold)">Geschikt voor de Zorg</div>
++      <div class="eyebrow">Geschikt voor de Zorg</div>
+       <h1>Zorgmedewerkers vinden voor de moeilijkste vacatures?</h1>
+       <p style="color:#dbe6f5;font-size:19px;max-width:640px;margin-bottom:8px">
+         Met de Geschikt voor Zorg-test vind je de juiste persoon voor iedere doelgroep in de zorg. Ook voor de meest complexe groepen.
+diff --git a/src/pages/geschiktvoorzorg/klantcases.astro b/src/pages/geschiktvoorzorg/klantcases.astro
+index f1ce5f5..b1157e2 100644
+--- a/src/pages/geschiktvoorzorg/klantcases.astro
++++ b/src/pages/geschiktvoorzorg/klantcases.astro
+@@ -56,7 +56,7 @@ const cases = [
+   </div></div>
+ 
+   <section class="ahero"><div class="wrap" style="display:block">
+-    <div class="eyebrow" style="color:var(--gold)">Klantcases</div>
++    <div class="eyebrow">Klantcases</div>
+     <h1>Klantcases</h1>
+     <p style="color:#dbe6f5;font-size:19px;max-width:760px;margin-top:8px">
+       Geschikt voor Zorg is trots op de vele organisaties waarvoor wij nieuwe medewerkers hebben gematcht. Hieronder een greep uit de opdrachtgevers die gebruikmaken van de Geschikt voor Zorg-methode.
+diff --git a/src/pages/geschiktvoorzorg/over-ons.astro b/src/pages/geschiktvoorzorg/over-ons.astro
+index 21a035b..6676d16 100644
+--- a/src/pages/geschiktvoorzorg/over-ons.astro
++++ b/src/pages/geschiktvoorzorg/over-ons.astro
+@@ -11,7 +11,7 @@ import Base from "../../layouts/Base.astro";
+   </div></div>
+ 
+   <section class="ahero"><div class="wrap" style="display:block">
+-    <div class="eyebrow" style="color:var(--gold)">Over ons</div>
++    <div class="eyebrow">Over ons</div>
+     <h1>Geschikt voor Zorg is een organisatie met een zorghart</h1>
+     <p style="color:#dbe6f5;font-size:19px;max-width:760px;margin-top:8px">
+       Sinds 2014 ontwikkelen wij digitale oplossingen voor problemen in de zorg.
+diff --git a/src/pages/hrm-oplossingen.astro b/src/pages/hrm-oplossingen.astro
+index 167e442..2fc9988 100644
+--- a/src/pages/hrm-oplossingen.astro
++++ b/src/pages/hrm-oplossingen.astro
+@@ -42,7 +42,7 @@ const icons = {
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">HRM oplossingen</div>
++      <div class="eyebrow">HRM oplossingen</div>
+       <h1>HRM oplossingen</h1>
+       <p style="color:#c4d2e6;font-size:19px;max-width:780px;margin-top:8px">Hrmforce biedt naast het afnemen van online assessments nog veel meer functionaliteiten. De vragenlijsten zijn verwerkt in workflows voor (pre)selectie, ontwikkeling en beoordeling van sollicitanten en medewerkers.</p>
+     </div>
+@@ -98,7 +98,7 @@ const icons = {
+   <section class="roi-band"><div class="wrap">
+     <div class="roi-band-inner">
+       <div>
+-        <div class="eyebrow" style="color:var(--gold)">Rekenhulp</div>
++        <div class="eyebrow">Rekenhulp</div>
+         <h2>Bereken wat objectief selecteren jou oplevert</h2>
+         <p>Een verkeerde aanname kost al snel een veelvoud van een assessment. Reken in twee minuten uit wat gerichter selecteren en ontwikkelen voor jouw organisatie kan besparen.</p>
+       </div>
+diff --git a/src/pages/inschrijfformulier-trainingen.astro b/src/pages/inschrijfformulier-trainingen.astro
+index 109faa7..8ee2049 100644
+--- a/src/pages/inschrijfformulier-trainingen.astro
++++ b/src/pages/inschrijfformulier-trainingen.astro
+@@ -16,7 +16,7 @@ const trainingen = [
+   <div class="crumb"><div class="wrap"><a href="/">Home</a> › <span>Inschrijfformulier trainingen</span></div></div>
+ 
+   <section class="ahero"><div class="wrap" style="display:block">
+-    <div class="eyebrow" style="color:var(--gold)">Trainingen</div>
++    <div class="eyebrow">Trainingen</div>
+     <h1>Inschrijfformulier trainingen</h1>
+     <p style="color:#dbe6f5;font-size:19px;max-width:760px;margin-top:8px">
+       Vul onderstaande gegevens in om je aan te melden voor een van onze trainingen. Heb je hulp nodig of nog vragen? Neem gerust contact met ons op.
+diff --git a/src/pages/kenniscentrum/[slug].astro b/src/pages/kenniscentrum/[slug].astro
+index a41ce90..d267a7e 100644
+--- a/src/pages/kenniscentrum/[slug].astro
++++ b/src/pages/kenniscentrum/[slug].astro
+@@ -74,7 +74,7 @@ const _articleLd = {
+   <script type="application/ld+json" is:inline set:html={JSON.stringify(_articleLd)}></script>
+   <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={localizePath("/kenniscentrum/", lang)}>Kenniscentrum</a> › <span>{p.title}</span></div></div>
+   <section class="ahero"><div class="wrap" style="display:block">
+-    <div class="eyebrow" style="color:var(--gold)">{p.category}</div>
++    <div class="eyebrow">{p.category}</div>
+     <h1>{p.title}</h1>
+     <div class="kc-meta">
+       {dateLabel && <span class="kc-mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 11h18"/></svg>{KC.published} {dateLabel}</span>}
+@@ -100,7 +100,7 @@ const _articleLd = {
+   {(relAssess.length > 0 || relArticles.length > 0) && (
+     <section class="bg-soft"><div class="wrap">
+       {relAssess.length > 0 && (<>
+-        <div class="eyebrow" style="color:var(--gold)">{RL.a}</div>
++        <div class="eyebrow">{RL.a}</div>
+         <div class="cards" style="margin-bottom:28px">
+           {relAssess.map((a) => (
+             <a class="card" href={localizePath(`/assessments/${a.slug}/`, lang)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+@@ -114,7 +114,7 @@ const _articleLd = {
+         <div class="cards">
+           {relArticles.map((q) => (
+             <a class="card" href={navHref(`/kenniscentrum/${q.slug}/`, lang, validPaths)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+-              <span class="eyebrow" style="color:var(--gold)">{q.category}</span><h3>{q.title}</h3><p style="flex:1">{q.excerpt}</p><span class="readmore">{RL.read} &rarr;</span>
++              <span class="eyebrow">{q.category}</span><h3>{q.title}</h3><p style="flex:1">{q.excerpt}</p><span class="readmore">{RL.read} &rarr;</span>
+             </a>
+           ))}
+         </div>
+diff --git a/src/pages/odion.astro b/src/pages/odion.astro
+index b32ffd7..5b7f5bf 100644
+--- a/src/pages/odion.astro
++++ b/src/pages/odion.astro
+@@ -10,7 +10,7 @@ import Base from "../layouts/Base.astro";
+ 
+   <section class="ahero"><div class="wrap">
+     <div>
+-      <div class="eyebrow" style="color:var(--gold)">Klantcase & kandidatenportal</div>
++      <div class="eyebrow">Klantcase & kandidatenportal</div>
+       <h1>Odion</h1>
+       <p style="color:#dbe6f5;font-size:19px;max-width:640px;margin-bottom:8px">
+         Odion is actief in de regio's Zaanstreek, Kennemerland en Waterland met 63 locaties, 1500 medewerkers en vrijwilligers, en helpt zo'n 1750 kinderen en volwassenen met een beperking om iedere dag zo fijn mogelijk te maken.
+diff --git a/src/pages/oefen-assessment-maken.astro b/src/pages/oefen-assessment-maken.astro
+index bfbc9ed..93da667 100644
+--- a/src/pages/oefen-assessment-maken.astro
++++ b/src/pages/oefen-assessment-maken.astro
+@@ -11,7 +11,7 @@ const oefenUrl = "https://assessment.hrmforce.com/AbilitySampleDetails.aspx?Lang
+   <div class="crumb"><div class="wrap"><a href="/">Home</a> › <span>Oefen assessment maken</span></div></div>
+ 
+   <section class="ahero"><div class="wrap" style="display:block">
+-    <div class="eyebrow" style="color:var(--gold)">Voorbereiding</div>
++    <div class="eyebrow">Voorbereiding</div>
+     <h1>Gratis oefen assessment maken</h1>
+     <p style="color:#dbe6f5;font-size:19px;max-width:760px;margin-top:8px">
+       Wil je eerst oefenen voordat je een assessment gaat maken? Doe dan dit gratis oefen assessment. Zo weet je wat je kunt verwachten en ben je optimaal voorbereid.
+diff --git a/src/pages/over-ons.astro b/src/pages/over-ons.astro
+index 9c4ef55..b3d6108 100644
+--- a/src/pages/over-ons.astro
++++ b/src/pages/over-ons.astro
+@@ -29,7 +29,7 @@ const domains = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Over ons</div>
++      <div class="eyebrow">Over ons</div>
+       <h1>Over ons</h1>
+     </div>
+   </section>
+@@ -41,7 +41,7 @@ const domains = [
+       <div class="founder-avatar" style="display:none">FH</div>
+     </div>
+     <div>
+-      <div class="eyebrow" style="color:var(--gold)">Oprichter</div>
++      <div class="eyebrow">Oprichter</div>
+       <h2>Floor Hendriks</h2>
+       <p>Floor heeft een royale ervaring in het adviseren en implementeren van (online) HR-instrumenten en diensten. Al meer dan twintig jaar specialiseert hij zich in het benutten van online assessments en tools voor talentmanagement-uitdagingen in de HR-cyclus, met als doel de prestaties van medewerkers en organisaties te verhogen.</p>
+       <p class="founder-meta">Meer dan twintig jaar ervaring in talentmanagement en HR-assessments.</p>
+diff --git a/src/pages/partner/selier-van-duppen.astro b/src/pages/partner/selier-van-duppen.astro
+index bb1155f..2f53b03 100644
+--- a/src/pages/partner/selier-van-duppen.astro
++++ b/src/pages/partner/selier-van-duppen.astro
+@@ -11,7 +11,7 @@ import Base from "../../layouts/Base.astro";
+   </div></div>
+ 
+   <section class="ahero"><div class="wrap" style="display:block">
+-    <div class="eyebrow" style="color:var(--gold)">Partner</div>
++    <div class="eyebrow">Partner</div>
+     <h1>Selier &amp; Van Duppen</h1>
+     <p style="color:#dbe6f5;font-size:19px;max-width:760px;margin-top:8px">
+       Selier &amp; Van Duppen is partner van hrmforce. Samen helpen we organisaties bij het maken van betere HR- en selectiebeslissingen met wetenschappelijk onderbouwde assessments.
+diff --git a/src/pages/ro/contact.astro b/src/pages/ro/contact.astro
+index 537e1be..00058b1 100644
+--- a/src/pages/ro/contact.astro
++++ b/src/pages/ro/contact.astro
+@@ -57,7 +57,7 @@ const offices = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Contact</div>
++      <div class="eyebrow">Contact</div>
+       <h1>Sunteți interesat(ă) sau aveți o întrebare?</h1>
+       <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">
+         Vă vom ajuta cu plăcere și ne vom gândi împreună cu dumneavoastră să găsim o soluție potrivită.
+diff --git a/src/pages/ro/hrm-oplossingen.astro b/src/pages/ro/hrm-oplossingen.astro
+index 2a20192..d973d9f 100644
+--- a/src/pages/ro/hrm-oplossingen.astro
++++ b/src/pages/ro/hrm-oplossingen.astro
+@@ -19,7 +19,7 @@ const blocks = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Soluții HRM</div>
++      <div class="eyebrow">Soluții HRM</div>
+       <h1>Soluții HRM</h1>
+       <p style="color:#c4d2e6;font-size:19px;max-width:820px;margin-top:8px">Hrmforce oferă multe alte funcționalități în afară de evaluările online. Chestionarele sunt încorporate în fluxurile de lucru pentru (pre)selecția, dezvoltarea și evaluarea candidaților și angajaților.</p>
+     </div>
+diff --git a/src/pages/ro/over-ons.astro b/src/pages/ro/over-ons.astro
+index fdabd60..e7c8612 100644
+--- a/src/pages/ro/over-ons.astro
++++ b/src/pages/ro/over-ons.astro
+@@ -20,7 +20,7 @@ const domains = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Ce Facem Noi</div>
++      <div class="eyebrow">Ce Facem Noi</div>
+       <h1>Ce Facem Noi</h1>
+     </div>
+   </section>
+diff --git a/src/pages/ro/support.astro b/src/pages/ro/support.astro
+index 7e887e6..37f1fc7 100644
+--- a/src/pages/ro/support.astro
++++ b/src/pages/ro/support.astro
+@@ -45,7 +45,7 @@ const criterii = [
+ 
+   <section class="ahero">
+     <div class="wrap" style="display:block">
+-      <div class="eyebrow" style="color:var(--gold)">Asistenţă</div>
++      <div class="eyebrow">Asistenţă</div>
+       <h1>ASISTENŢĂ</h1>
+       <p style="color:#c4d2e6;font-size:19px;max-width:900px;margin-top:8px">Soluţia HrmForce reprezintă un aspect important al afacerii dumneavoastră şi de aceea vă oferim asistenţă de calitate pentru investiţia dumneavoastră. În cazul în care aveţi o întrebare sau o problemă, suntem pregătiţi să vă ajutăm imediat. În cazul în care nu beneficiaţi încă de asistenţă din partea noastră, departamentul nostru de relaţii cu clienţii vă stă la dispoziţie. Ne puteţi contacta la numărul de telefon +40 728 909 301, de luni până vineri, între orele 09:00 – 17:30.</p>
+     </div>
+diff --git a/src/pages/shop.astro b/src/pages/shop.astro
+index 0a53332..a568e63 100644
+--- a/src/pages/shop.astro
++++ b/src/pages/shop.astro
+@@ -9,7 +9,7 @@ const t = shopContent.nl;
+   <Shop t={t} lang="nl" />
+ 
+   <section class="wrap" style="padding:48px 0">
+-    <div class="eyebrow" style="color:var(--gold)">Zo werkt een afname</div>
++    <div class="eyebrow">Zo werkt een afname</div>
+     <h2>Van bestelling tot rapport</h2>
+     <div style="display:flex;flex-wrap:wrap;gap:24px;margin-top:18px">
+       <div style="flex:1 1 220px"><strong>1. Bestel je vragenlijst</strong><p style="color:var(--muted);margin-top:6px">Reken af in de shop en vul de kandidaatgegevens in.</p></div>
+diff --git a/src/pages/tarieven.astro b/src/pages/tarieven.astro
+index ea0ae83..b313c64 100644
+--- a/src/pages/tarieven.astro
++++ b/src/pages/tarieven.astro
+@@ -9,7 +9,7 @@ const t = tarievenContent.nl;
+   <section class="roi-band"><div class="wrap">
+     <div class="roi-band-inner">
+       <div>
+-        <div class="eyebrow" style="color:var(--gold)">Rekenhulp</div>
++        <div class="eyebrow">Rekenhulp</div>
+         <h2>Bereken wat objectief selecteren jou oplevert</h2>
+         <p>Een verkeerde aanname kost al snel een veelvoud van een assessment. Reken in twee minuten uit wat gerichter selecteren en ontwikkelen voor jouw organisatie kan besparen.</p>
+       </div>
+diff --git a/src/styles/global.css b/src/styles/global.css
+index 3f3a2e3..bbdec7c 100644
+--- a/src/styles/global.css
++++ b/src/styles/global.css
+@@ -171,9 +171,9 @@ nav.menu a.active{font-weight:700}
+ /* ---------- Generieke sectie ---------- */
+ section{padding:clamp(40px,4.4vw,64px) 0}
+ section.bg-soft{padding:clamp(36px,4vw,56px) 0}
+-.eyebrow{color:var(--blue);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:1.4px;margin-bottom:12px;display:inline-flex;align-items:center;gap:8px}
+-/* Frivool micro-accent: gouden streepje voor de eyebrow */
+-.eyebrow::before{content:"";width:22px;height:3px;border-radius:2px;background:var(--gold);display:inline-block;flex:none}
++.eyebrow{color:var(--muted);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:1.1px;margin-bottom:12px;display:inline-flex;align-items:center;gap:8px}
++/* Op donkere vlakken een lichte tint, anders valt het label weg */
++.hero .eyebrow,.ahero .eyebrow,.cta .eyebrow,.quote .eyebrow,.match-visual .eyebrow{color:#b9c9dd}
+ .center .eyebrow{justify-content:center}
+ h2.section-title{font-size:clamp(1.6rem,1.25rem + 1.6vw,2.25rem);font-weight:800;letter-spacing:-.022em;margin-bottom:14px;color:var(--navy)}
+ .sub{color:var(--muted);font-size:1.0625rem}
+@@ -296,7 +296,7 @@ footer a:hover{color:#fff;opacity:1}
+ .ahero:before{content:"";position:absolute;top:-30%;right:-10%;width:55%;height:120%;background:radial-gradient(closest-side,rgba(70,145,206,.32),transparent 70%);pointer-events:none}
+ .ahero .wrap{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:center}
+ .ahero .wrap>*{min-width:0}
+-.ahero .eyebrow{color:var(--gold)}
++.ahero .eyebrow{color:#b9c9dd}
+ .ahero h1{color:#fff;font-size:clamp(1.9rem,1.4rem + 2.4vw,2.5rem);font-weight:800;letter-spacing:-.028em;line-height:1.08;margin-bottom:22px}
+ .meta-row{margin-bottom:10px}
+ .meta-row .lbl{color:var(--gold);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.5px;display:block}
+-- 
+2.43.0
+

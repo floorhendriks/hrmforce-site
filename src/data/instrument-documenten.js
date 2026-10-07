@@ -15,6 +15,35 @@
 // lijst terug op het Engels; de documenten bestaan zelf ook niet in die talen.
 // Het veld taal zegt in welke taal het document is geschreven.
 
+// Titel en omschrijving van /documenten/. Stonden eerder per taal in de
+// paginabestanden zelf.
+export const DOC_META = {
+  nl: {
+    title: "Documenten van de uitgevers | hrmforce",
+    description: "Brochures, voorbeeldrapporten en handleidingen van SHL, GITP en Cubiks bij OPQ32, Verify, Connector Ability, Reflector, Logiks, PAPI 3 en Talogy 360.",
+  },
+  en: {
+    title: "Documents from the publishers | hrmforce",
+    description: "Brochures, sample reports and manuals from SHL, GITP and Cubiks for OPQ32, Verify, Connector Ability, Reflector, Logiks, PAPI 3 and Talogy 360.",
+  },
+  de: {
+    title: "Dokumente der Herausgeber | hrmforce",
+    description: "Broschüren, Musterberichte und Handbücher von SHL, GITP und Cubiks zu OPQ32, Verify, Connector Ability, Reflector, Logiks, PAPI 3 und Talogy 360.",
+  },
+  fr: {
+    title: "Documents des éditeurs | hrmforce",
+    description: "Brochures, rapports types et manuels de SHL, GITP et Cubiks pour OPQ32, Verify, Connector Ability, Reflector, Logiks, PAPI 3 et Talogy 360.",
+  },
+  es: {
+    title: "Documentos de las editoriales | hrmforce",
+    description: "Folletos, informes de muestra y manuales de SHL, GITP y Cubiks para OPQ32, Verify, Connector Ability, Reflector, Logiks, PAPI 3 y Talogy 360.",
+  },
+  ro: {
+    title: "Documente de la editori | hrmforce",
+    description: "Broșuri, rapoarte model și manuale de la SHL, GITP și Cubiks pentru OPQ32, Verify, Connector Ability, Reflector, Logiks, PAPI 3 și Talogy 360.",
+  },
+};
+
 export const DOCS = {
   "opq32-brochure": {
     href: "/media/documenten/shl/opq32-productbrochure.pdf", bron: "SHL", taal: "EN", mb: 0.4,

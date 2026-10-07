@@ -1,0 +1,10 @@
+---
+import Base from "../../../layouts/Base.astro";
+import ToepassingenIndex from "../../../components/ToepassingenIndex.astro";
+import { LAND_UI } from "../../../data/landings.js";
+import { perTaal } from "../../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const ui = LAND_UI[lang];
+---
+<Base title={ui.idxTitle} description={ui.idxDesc} active="solutions"><ToepassingenIndex lang={lang} /></Base>

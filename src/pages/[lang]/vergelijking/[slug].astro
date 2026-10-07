@@ -1,0 +1,10 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Vergelijking from "../../../components/Vergelijking.astro";
+import { VERG_UI, COMPETITORS, vergDetailD } from "../../../data/vergelijking-content.js";
+import { perTaal } from "../../../i18n/paden.js";
+export function getStaticPaths(){ return perTaal(Object.keys(COMPETITORS).map((slug)=>({ params:{slug}, props:{slug} }))); }
+const { lang } = Astro.params;
+const { slug } = Astro.props; const t = VERG_UI[lang]; const c = COMPETITORS[slug];
+---
+<Base title={`${t.altPrefix} ${c.name} | hrmforce`} description={vergDetailD(lang, c.name)} active=""><Vergelijking slug={slug} lang={lang} /></Base>

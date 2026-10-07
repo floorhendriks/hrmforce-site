@@ -1,0 +1,47 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Oefentest from "../../../components/Oefentest.astro";
+import GratisTests from "../../../components/GratisTests.astro";
+import Oefenvragenlijst from "../../../components/Oefenvragenlijst.astro";
+import { ONDERDELEN, OT_UI, OT_META } from "../../../data/oefentest-ui.js";
+import { VRAGENLIJSTEN, VL_UI, VL_META } from "../../../data/oefenvragenlijst.js";
+import { PREFIXED } from "../../../i18n/utils.js";
+
+// De vragenbanken staan per onderdeel en per taal in een eigen json. Omdat de
+// taal pas tijdens het bouwen bekend is, komen ze binnen via een glob in plaats
+// van een import per bestand. De sleutel is "<onderdeel>.<taal>".
+const BRONNEN = import.meta.glob("../../../data/oefenbank/*.json", { eager: true });
+function bank(naam, lang) {
+  const pad = `../../../data/oefenbank/${naam}.${lang}.json`;
+  const mod = BRONNEN[pad];
+  return mod?.default ?? mod;
+}
+
+export function getStaticPaths() {
+  const paden = [];
+  for (const lang of PREFIXED) {
+    for (const [sleutel, o] of Object.entries(ONDERDELEN)) {
+      paden.push({ params: { lang, onderdeel: o.slug[lang] }, props: { sleutel, o, vragenlijst: false } });
+    }
+    for (const [sleutel, o] of Object.entries(VRAGENLIJSTEN)) {
+      paden.push({ params: { lang, onderdeel: o.slug[lang] }, props: { sleutel, o, vragenlijst: true } });
+    }
+  }
+  return paden;
+}
+
+const { lang } = Astro.params;
+const { sleutel, o, vragenlijst } = Astro.props;
+const BESTAND = { numeriek: "numeriek", verbaal: "verbaal", calculation: "calculation", ruimtelijk: "ruimtelijk", abstract: "abstract" };
+const BESTAND_VL = { bigfive: "vl-bigfive", disc: "vl-disc", drijfveren: "vl-drijfveren", leiderschap: "vl-leiderschap", competenties: "vl-competenties", studiekeuze: "vl-studiekeuze" };
+const vragen = vragenlijst ? bank(BESTAND_VL[sleutel], lang) : bank(BESTAND[sleutel], lang);
+const t = vragenlijst ? VL_UI[lang] : OT_UI[lang];
+const naam = o.naam[lang];
+const meta = vragenlijst ? VL_META[lang] : OT_META[lang];
+---
+<Base lang={lang} title={meta.titel(naam)} description={meta.omschrijving(naam)} active="">
+  {vragenlijst
+    ? <Oefenvragenlijst onderdeel={sleutel} lang={lang} bank={vragen} />
+    : <Oefentest onderdeel={sleutel} lang={lang} bank={vragen} />}
+  <GratisTests lang={lang} huidig={sleutel} />
+</Base>

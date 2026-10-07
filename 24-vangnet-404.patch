@@ -1,0 +1,130 @@
+From 6b1847eb1d913a854314a87b7584a6363b2c779c Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Tue, 15 Sep 2026 09:48:51 +0000
+Subject: [PATCH] Vangnet op de 404-pagina en de proefdomeinnaam uit de teksten
+
+Vangnet
+De wildcard /winkel* is de enige regel die buiten het deel valt dat
+Cloudflare Pages toepast. Een oud shopadres dat niet bij naam in de lijst
+staat gaf daardoor een 404. De 404-pagina herkent nu de oude WordPress-
+patronen (/winkel/, /product/, /wp-content/, de categorie-archieven) en
+stuurt alsnog door. Alle andere adressen krijgen gewoon de 404-pagina.
+
+Proefdomeinnaam
+De shoppagina zei in zes talen dat de shop verschijnt binnen
+website.hrmforce.com. Dat is de tijdelijke naam en klopt straks niet meer.
+De zin noemt nu geen domein. De sitemap van het skills framework had
+website.hrmforce.com als terugval, nu hrmforce.com.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ src/data/shop-content.js                  | 12 ++++++------
+ src/pages/404.astro                       | 19 +++++++++++++++++++
+ src/pages/sitemap-skills-framework.xml.ts |  2 +-
+ 3 files changed, 26 insertions(+), 7 deletions(-)
+
+diff --git a/src/data/shop-content.js b/src/data/shop-content.js
+index f32a365..37405cd 100644
+--- a/src/data/shop-content.js
++++ b/src/data/shop-content.js
+@@ -36,7 +36,7 @@ export const shopContent = {
+     toShop: "Naar de shop →",
+     placeholder: {
+       title: "De ingebouwde shop wordt geactiveerd",
+-      lead: "De volledige shop verschijnt hier binnen website.hrmforce.com zodra de Shopify-koppeling is geactiveerd. Bekijk in de tussentijd het volledige aanbod in onze webshop.",
++      lead: "De volledige shop verschijnt hier zodra de Shopify-koppeling is geactiveerd. Bekijk in de tussentijd het volledige aanbod in onze webshop.",
+     },
+     usps: [
+       { strong: "Veilig betalen", span: "Afrekenen via de beveiligde Shopify-checkout." },
+@@ -80,7 +80,7 @@ export const shopContent = {
+     toShop: "Go to the shop →",
+     placeholder: {
+       title: "The built-in shop is being activated",
+-      lead: "The full shop will appear here within website.hrmforce.com once the Shopify connection is activated. In the meantime, browse the full range in our webshop.",
++      lead: "The full shop will appear here once the Shopify connection is activated. In the meantime, browse the full range in our webshop.",
+     },
+     usps: [
+       { strong: "Secure payment", span: "Check out via the secure Shopify checkout." },
+@@ -124,7 +124,7 @@ export const shopContent = {
+     toShop: "Zum Shop →",
+     placeholder: {
+       title: "Der integrierte Shop wird aktiviert",
+-      lead: "Der vollständige Shop erscheint hier innerhalb von website.hrmforce.com, sobald die Shopify-Anbindung aktiviert ist. Sehen Sie sich in der Zwischenzeit das gesamte Angebot in unserem Webshop an.",
++      lead: "Der vollständige Shop erscheint hier, sobald die Shopify-Anbindung aktiviert ist. Sehen Sie sich in der Zwischenzeit das gesamte Angebot in unserem Webshop an.",
+     },
+     usps: [
+       { strong: "Sicher bezahlen", span: "Bezahlung über den sicheren Shopify-Checkout." },
+@@ -168,7 +168,7 @@ export const shopContent = {
+     toShop: "Aller à la boutique →",
+     placeholder: {
+       title: "La boutique intégrée est en cours d'activation",
+-      lead: "La boutique complète apparaîtra ici sur website.hrmforce.com dès que la connexion Shopify sera activée. En attendant, découvrez toute l'offre dans notre boutique en ligne.",
++      lead: "La boutique complète apparaîtra ici dès que la connexion Shopify sera activée. En attendant, découvrez toute l'offre dans notre boutique en ligne.",
+     },
+     usps: [
+       { strong: "Paiement sécurisé", span: "Paiement via le checkout sécurisé Shopify." },
+@@ -212,7 +212,7 @@ export const shopContent = {
+     toShop: "Ir a la tienda →",
+     placeholder: {
+       title: "La tienda integrada se está activando",
+-      lead: "La tienda completa aparecerá aquí dentro de website.hrmforce.com en cuanto se active la conexión con Shopify. Mientras tanto, consulte toda la oferta en nuestra tienda en línea.",
++      lead: "La tienda completa aparecerá aquí en cuanto se active la conexión con Shopify. Mientras tanto, consulte toda la oferta en nuestra tienda en línea.",
+     },
+     usps: [
+       { strong: "Pago seguro", span: "Pague mediante el checkout seguro de Shopify." },
+@@ -256,7 +256,7 @@ export const shopContent = {
+     toShop: "Mergeți la magazin →",
+     placeholder: {
+       title: "Magazinul integrat este în curs de activare",
+-      lead: "Magazinul complet va apărea aici pe website.hrmforce.com de îndată ce conexiunea Shopify este activată. Între timp, consultați întreaga ofertă în magazinul nostru online.",
++      lead: "Magazinul complet va apărea aici de îndată ce conexiunea Shopify este activată. Între timp, consultați întreaga ofertă în magazinul nostru online.",
+     },
+     usps: [
+       { strong: "Plată sigură", span: "Plătiți prin checkout-ul securizat Shopify." },
+diff --git a/src/pages/404.astro b/src/pages/404.astro
+index 87459e4..4e30c21 100644
+--- a/src/pages/404.astro
++++ b/src/pages/404.astro
+@@ -17,6 +17,25 @@ import Base from "../layouts/Base.astro";
+   </section>
+ </Base>
+ 
++<script is:inline>
++  // Vangnet voor oude WordPress-adressen. De wildcardregels in _redirects
++  // vallen soms weg, omdat Cloudflare Pages maar een deel van dat bestand
++  // toepast. Herkennen we hier een oud patroon, dan sturen we alsnog door
++  // naar de juiste plek in plaats van deze pagina te tonen.
++  (function () {
++    var p = location.pathname;
++    var naar = null;
++    if (/^\/(winkel|product|winkelmand|winkelwagen|mijn-account)(\/|$)/.test(p)) naar = "https://shop.hrmforce.com/shop/";
++    else if (/^\/wp-content\//.test(p)) naar = "/media" + p;
++    else if (/^\/(product-categorie|uitgever)(\/|$)/.test(p)) naar = "https://shop.hrmforce.com/shop/";
++    else if (/^\/(news_category|kenniscentrum_category)(\/|$)/.test(p)) naar = "/kenniscentrum/";
++    else if (/^\/testimonials-category(\/|$)/.test(p)) naar = "/klantcases/";
++    else if (/^\/partner_categorie(\/|$)/.test(p)) naar = "/partners/";
++    else if (/^\/advies_categorieen(\/|$)/.test(p)) naar = "/advies/";
++    if (naar) location.replace(naar);
++  })();
++</script>
++
+ <style>
+   .nf { padding: 88px 0 96px; text-align: center; }
+   .nf .wrap { max-width: 640px; margin: 0 auto; padding: 0 20px; }
+diff --git a/src/pages/sitemap-skills-framework.xml.ts b/src/pages/sitemap-skills-framework.xml.ts
+index 76976ab..ecd6631 100644
+--- a/src/pages/sitemap-skills-framework.xml.ts
++++ b/src/pages/sitemap-skills-framework.xml.ts
+@@ -10,7 +10,7 @@ import { functions, skills, families } from '../lib/hsf';
+ import { path, LOCALES } from '../lib/i18n';
+ 
+ export const GET: APIRoute = ({ site }) => {
+-  const base = (site ?? new URL('https://website.hrmforce.com')).toString().replace(/\/$/, '');
++  const base = (site ?? new URL('https://hrmforce.com')).toString().replace(/\/$/, '');
+   const today = new Date().toISOString().slice(0, 10);
+   type Entry = { paths: Record<string, string>; prio: string; freq: string };
+   const entries: Entry[] = [];
+-- 
+2.43.0
+

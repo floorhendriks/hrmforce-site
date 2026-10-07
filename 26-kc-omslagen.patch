@@ -1,0 +1,1098 @@
+From b10c73c3f109692c74f2105528f75c74a9406b20 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Tue, 15 Sep 2026 19:08:17 +0000
+Subject: [PATCH] Getekende omslagen voor kenniscentrumartikelen zonder beeld
+
+236 van de 343 artikelen hebben geen afbeelding in de tekst. In het
+overzicht stond daar een leeg vlak. Die krijgen nu een eigen omslag,
+getekend in dezelfde stijl als de iconen: raster van 24, lijndikte 1,5,
+rechte uiteinden, huiskleuren met een gouden accent.
+
+Veertien thema's, elk met een eigen motief: een radar voor
+persoonlijkheid, een trechter voor selectie, een piramide voor modellen,
+een trap voor loopbaan, een golf voor welzijn, en zo verder. Per thema zes
+varianten, en welke een artikel krijgt volgt uit de titel. Zelfde titel
+geeft dus altijd dezelfde omslag, en twee artikelen naast elkaar in
+hetzelfde thema zien er niet identiek uit.
+
+De 84 omslagen staan als losse SVG's in public/media/kc-omslag, samen 340
+kB, in plaats van een data-URI per kaart. Het overzicht toont ruim 340
+kaarten, dus dat scheelt honderden kilobytes en de browser kan ze cachen.
+
+Opnieuw genereren of aanpassen: npm run hsf:omslagen.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ package.json                                 |   3 +-
+ public/media/kc-omslag/assessment-0.svg      |   1 +
+ public/media/kc-omslag/assessment-1.svg      |   1 +
+ public/media/kc-omslag/assessment-2.svg      |   1 +
+ public/media/kc-omslag/assessment-3.svg      |   1 +
+ public/media/kc-omslag/assessment-4.svg      |   1 +
+ public/media/kc-omslag/assessment-5.svg      |   1 +
+ public/media/kc-omslag/cognitie-0.svg        |   1 +
+ public/media/kc-omslag/cognitie-1.svg        |   1 +
+ public/media/kc-omslag/cognitie-2.svg        |   1 +
+ public/media/kc-omslag/cognitie-3.svg        |   1 +
+ public/media/kc-omslag/cognitie-4.svg        |   1 +
+ public/media/kc-omslag/cognitie-5.svg        |   1 +
+ public/media/kc-omslag/drijfveren-0.svg      |   1 +
+ public/media/kc-omslag/drijfveren-1.svg      |   1 +
+ public/media/kc-omslag/drijfveren-2.svg      |   1 +
+ public/media/kc-omslag/drijfveren-3.svg      |   1 +
+ public/media/kc-omslag/drijfveren-4.svg      |   1 +
+ public/media/kc-omslag/drijfveren-5.svg      |   1 +
+ public/media/kc-omslag/hr-0.svg              |   1 +
+ public/media/kc-omslag/hr-1.svg              |   1 +
+ public/media/kc-omslag/hr-2.svg              |   1 +
+ public/media/kc-omslag/hr-3.svg              |   1 +
+ public/media/kc-omslag/hr-4.svg              |   1 +
+ public/media/kc-omslag/hr-5.svg              |   1 +
+ public/media/kc-omslag/leiderschap-0.svg     |   1 +
+ public/media/kc-omslag/leiderschap-1.svg     |   1 +
+ public/media/kc-omslag/leiderschap-2.svg     |   1 +
+ public/media/kc-omslag/leiderschap-3.svg     |   1 +
+ public/media/kc-omslag/leiderschap-4.svg     |   1 +
+ public/media/kc-omslag/leiderschap-5.svg     |   1 +
+ public/media/kc-omslag/loopbaan-0.svg        |   1 +
+ public/media/kc-omslag/loopbaan-1.svg        |   1 +
+ public/media/kc-omslag/loopbaan-2.svg        |   1 +
+ public/media/kc-omslag/loopbaan-3.svg        |   1 +
+ public/media/kc-omslag/loopbaan-4.svg        |   1 +
+ public/media/kc-omslag/loopbaan-5.svg        |   1 +
+ public/media/kc-omslag/modellen-0.svg        |   1 +
+ public/media/kc-omslag/modellen-1.svg        |   1 +
+ public/media/kc-omslag/modellen-2.svg        |   1 +
+ public/media/kc-omslag/modellen-3.svg        |   1 +
+ public/media/kc-omslag/modellen-4.svg        |   1 +
+ public/media/kc-omslag/modellen-5.svg        |   1 +
+ public/media/kc-omslag/ontwikkeling-0.svg    |   1 +
+ public/media/kc-omslag/ontwikkeling-1.svg    |   1 +
+ public/media/kc-omslag/ontwikkeling-2.svg    |   1 +
+ public/media/kc-omslag/ontwikkeling-3.svg    |   1 +
+ public/media/kc-omslag/ontwikkeling-4.svg    |   1 +
+ public/media/kc-omslag/ontwikkeling-5.svg    |   1 +
+ public/media/kc-omslag/overig-0.svg          |   1 +
+ public/media/kc-omslag/overig-1.svg          |   1 +
+ public/media/kc-omslag/overig-2.svg          |   1 +
+ public/media/kc-omslag/overig-3.svg          |   1 +
+ public/media/kc-omslag/overig-4.svg          |   1 +
+ public/media/kc-omslag/overig-5.svg          |   1 +
+ public/media/kc-omslag/persoonlijkheid-0.svg |   1 +
+ public/media/kc-omslag/persoonlijkheid-1.svg |   1 +
+ public/media/kc-omslag/persoonlijkheid-2.svg |   1 +
+ public/media/kc-omslag/persoonlijkheid-3.svg |   1 +
+ public/media/kc-omslag/persoonlijkheid-4.svg |   1 +
+ public/media/kc-omslag/persoonlijkheid-5.svg |   1 +
+ public/media/kc-omslag/product-0.svg         |   1 +
+ public/media/kc-omslag/product-1.svg         |   1 +
+ public/media/kc-omslag/product-2.svg         |   1 +
+ public/media/kc-omslag/product-3.svg         |   1 +
+ public/media/kc-omslag/product-4.svg         |   1 +
+ public/media/kc-omslag/product-5.svg         |   1 +
+ public/media/kc-omslag/selectie-0.svg        |   1 +
+ public/media/kc-omslag/selectie-1.svg        |   1 +
+ public/media/kc-omslag/selectie-2.svg        |   1 +
+ public/media/kc-omslag/selectie-3.svg        |   1 +
+ public/media/kc-omslag/selectie-4.svg        |   1 +
+ public/media/kc-omslag/selectie-5.svg        |   1 +
+ public/media/kc-omslag/teams-0.svg           |   1 +
+ public/media/kc-omslag/teams-1.svg           |   1 +
+ public/media/kc-omslag/teams-2.svg           |   1 +
+ public/media/kc-omslag/teams-3.svg           |   1 +
+ public/media/kc-omslag/teams-4.svg           |   1 +
+ public/media/kc-omslag/teams-5.svg           |   1 +
+ public/media/kc-omslag/welzijn-0.svg         |   1 +
+ public/media/kc-omslag/welzijn-1.svg         |   1 +
+ public/media/kc-omslag/welzijn-2.svg         |   1 +
+ public/media/kc-omslag/welzijn-3.svg         |   1 +
+ public/media/kc-omslag/welzijn-4.svg         |   1 +
+ public/media/kc-omslag/welzijn-5.svg         |   1 +
+ scripts/hsf-build-kc-covers.mjs              |  18 +++
+ src/components/Kenniscentrum.astro           |   5 +-
+ src/lib/kc-omslag.js                         | 154 +++++++++++++++++++
+ 88 files changed, 262 insertions(+), 2 deletions(-)
+ create mode 100644 public/media/kc-omslag/assessment-0.svg
+ create mode 100644 public/media/kc-omslag/assessment-1.svg
+ create mode 100644 public/media/kc-omslag/assessment-2.svg
+ create mode 100644 public/media/kc-omslag/assessment-3.svg
+ create mode 100644 public/media/kc-omslag/assessment-4.svg
+ create mode 100644 public/media/kc-omslag/assessment-5.svg
+ create mode 100644 public/media/kc-omslag/cognitie-0.svg
+ create mode 100644 public/media/kc-omslag/cognitie-1.svg
+ create mode 100644 public/media/kc-omslag/cognitie-2.svg
+ create mode 100644 public/media/kc-omslag/cognitie-3.svg
+ create mode 100644 public/media/kc-omslag/cognitie-4.svg
+ create mode 100644 public/media/kc-omslag/cognitie-5.svg
+ create mode 100644 public/media/kc-omslag/drijfveren-0.svg
+ create mode 100644 public/media/kc-omslag/drijfveren-1.svg
+ create mode 100644 public/media/kc-omslag/drijfveren-2.svg
+ create mode 100644 public/media/kc-omslag/drijfveren-3.svg
+ create mode 100644 public/media/kc-omslag/drijfveren-4.svg
+ create mode 100644 public/media/kc-omslag/drijfveren-5.svg
+ create mode 100644 public/media/kc-omslag/hr-0.svg
+ create mode 100644 public/media/kc-omslag/hr-1.svg
+ create mode 100644 public/media/kc-omslag/hr-2.svg
+ create mode 100644 public/media/kc-omslag/hr-3.svg
+ create mode 100644 public/media/kc-omslag/hr-4.svg
+ create mode 100644 public/media/kc-omslag/hr-5.svg
+ create mode 100644 public/media/kc-omslag/leiderschap-0.svg
+ create mode 100644 public/media/kc-omslag/leiderschap-1.svg
+ create mode 100644 public/media/kc-omslag/leiderschap-2.svg
+ create mode 100644 public/media/kc-omslag/leiderschap-3.svg
+ create mode 100644 public/media/kc-omslag/leiderschap-4.svg
+ create mode 100644 public/media/kc-omslag/leiderschap-5.svg
+ create mode 100644 public/media/kc-omslag/loopbaan-0.svg
+ create mode 100644 public/media/kc-omslag/loopbaan-1.svg
+ create mode 100644 public/media/kc-omslag/loopbaan-2.svg
+ create mode 100644 public/media/kc-omslag/loopbaan-3.svg
+ create mode 100644 public/media/kc-omslag/loopbaan-4.svg
+ create mode 100644 public/media/kc-omslag/loopbaan-5.svg
+ create mode 100644 public/media/kc-omslag/modellen-0.svg
+ create mode 100644 public/media/kc-omslag/modellen-1.svg
+ create mode 100644 public/media/kc-omslag/modellen-2.svg
+ create mode 100644 public/media/kc-omslag/modellen-3.svg
+ create mode 100644 public/media/kc-omslag/modellen-4.svg
+ create mode 100644 public/media/kc-omslag/modellen-5.svg
+ create mode 100644 public/media/kc-omslag/ontwikkeling-0.svg
+ create mode 100644 public/media/kc-omslag/ontwikkeling-1.svg
+ create mode 100644 public/media/kc-omslag/ontwikkeling-2.svg
+ create mode 100644 public/media/kc-omslag/ontwikkeling-3.svg
+ create mode 100644 public/media/kc-omslag/ontwikkeling-4.svg
+ create mode 100644 public/media/kc-omslag/ontwikkeling-5.svg
+ create mode 100644 public/media/kc-omslag/overig-0.svg
+ create mode 100644 public/media/kc-omslag/overig-1.svg
+ create mode 100644 public/media/kc-omslag/overig-2.svg
+ create mode 100644 public/media/kc-omslag/overig-3.svg
+ create mode 100644 public/media/kc-omslag/overig-4.svg
+ create mode 100644 public/media/kc-omslag/overig-5.svg
+ create mode 100644 public/media/kc-omslag/persoonlijkheid-0.svg
+ create mode 100644 public/media/kc-omslag/persoonlijkheid-1.svg
+ create mode 100644 public/media/kc-omslag/persoonlijkheid-2.svg
+ create mode 100644 public/media/kc-omslag/persoonlijkheid-3.svg
+ create mode 100644 public/media/kc-omslag/persoonlijkheid-4.svg
+ create mode 100644 public/media/kc-omslag/persoonlijkheid-5.svg
+ create mode 100644 public/media/kc-omslag/product-0.svg
+ create mode 100644 public/media/kc-omslag/product-1.svg
+ create mode 100644 public/media/kc-omslag/product-2.svg
+ create mode 100644 public/media/kc-omslag/product-3.svg
+ create mode 100644 public/media/kc-omslag/product-4.svg
+ create mode 100644 public/media/kc-omslag/product-5.svg
+ create mode 100644 public/media/kc-omslag/selectie-0.svg
+ create mode 100644 public/media/kc-omslag/selectie-1.svg
+ create mode 100644 public/media/kc-omslag/selectie-2.svg
+ create mode 100644 public/media/kc-omslag/selectie-3.svg
+ create mode 100644 public/media/kc-omslag/selectie-4.svg
+ create mode 100644 public/media/kc-omslag/selectie-5.svg
+ create mode 100644 public/media/kc-omslag/teams-0.svg
+ create mode 100644 public/media/kc-omslag/teams-1.svg
+ create mode 100644 public/media/kc-omslag/teams-2.svg
+ create mode 100644 public/media/kc-omslag/teams-3.svg
+ create mode 100644 public/media/kc-omslag/teams-4.svg
+ create mode 100644 public/media/kc-omslag/teams-5.svg
+ create mode 100644 public/media/kc-omslag/welzijn-0.svg
+ create mode 100644 public/media/kc-omslag/welzijn-1.svg
+ create mode 100644 public/media/kc-omslag/welzijn-2.svg
+ create mode 100644 public/media/kc-omslag/welzijn-3.svg
+ create mode 100644 public/media/kc-omslag/welzijn-4.svg
+ create mode 100644 public/media/kc-omslag/welzijn-5.svg
+ create mode 100644 scripts/hsf-build-kc-covers.mjs
+ create mode 100644 src/lib/kc-omslag.js
+
+diff --git a/package.json b/package.json
+index d398ee7..6dd1aed 100644
+--- a/package.json
++++ b/package.json
+@@ -14,7 +14,8 @@
+     "hsf:search": "node scripts/hsf-build-search.mjs",
+     "hsf:manifest": "node scripts/hsf-build-downloads-manifest.mjs",
+     "hsf:upload": "bash scripts/hsf-upload-downloads.sh",
+-    "hsf:redirects": "node scripts/hsf-build-redirect-fallbacks.mjs"
++    "hsf:redirects": "node scripts/hsf-build-redirect-fallbacks.mjs",
++    "hsf:omslagen": "node scripts/hsf-build-kc-covers.mjs"
+   },
+   "dependencies": {
+     "@astrojs/sitemap": "^3.2.0",
+diff --git a/public/media/kc-omslag/assessment-0.svg b/public/media/kc-omslag/assessment-0.svg
+new file mode 100644
+index 0000000..0411acc
+--- /dev/null
++++ b/public/media/kc-omslag/assessment-0.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(114 51) scale(1.12)'><rect x='14' y='20' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='28' x2='133' y2='28' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='14' y='42' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='50' x2='135' y2='50' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='14' y='64' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='72' x2='111' y2='72' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='14' y='86' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='94' x2='111' y2='94' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><polyline points='18,50 24,56 34,42' fill='none' stroke='#C9A227' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/></g><rect x='0' y='236' width='156' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/assessment-1.svg b/public/media/kc-omslag/assessment-1.svg
+new file mode 100644
+index 0000000..1d3e734
+--- /dev/null
++++ b/public/media/kc-omslag/assessment-1.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(116 70) scale(1.12)'><rect x='14' y='20' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='28' x2='138' y2='28' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='14' y='42' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='50' x2='126' y2='50' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='14' y='64' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='72' x2='127' y2='72' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='14' y='86' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='94' x2='142' y2='94' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><polyline points='18,50 24,56 34,42' fill='none' stroke='#C9A227' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/></g><rect x='0' y='236' width='158' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/assessment-2.svg b/public/media/kc-omslag/assessment-2.svg
+new file mode 100644
+index 0000000..e6f8f20
+--- /dev/null
++++ b/public/media/kc-omslag/assessment-2.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(118 51) scale(1.12)'><rect x='14' y='20' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='28' x2='139' y2='28' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='14' y='42' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='50' x2='127' y2='50' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='14' y='64' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='72' x2='131' y2='72' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='14' y='86' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='94' x2='131' y2='94' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><polyline points='18,50 24,56 34,42' fill='none' stroke='#C9A227' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/></g><rect x='0' y='236' width='91' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/assessment-3.svg b/public/media/kc-omslag/assessment-3.svg
+new file mode 100644
+index 0000000..49f3400
+--- /dev/null
++++ b/public/media/kc-omslag/assessment-3.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(105 65) scale(1.12)'><rect x='14' y='20' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='28' x2='134' y2='28' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='14' y='42' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='50' x2='118' y2='50' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='14' y='64' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='72' x2='133' y2='72' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='14' y='86' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='94' x2='112' y2='94' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><polyline points='18,50 24,56 34,42' fill='none' stroke='#C9A227' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/></g><rect x='0' y='236' width='202' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/assessment-4.svg b/public/media/kc-omslag/assessment-4.svg
+new file mode 100644
+index 0000000..e4dadb7
+--- /dev/null
++++ b/public/media/kc-omslag/assessment-4.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(131 51) scale(1.12)'><rect x='14' y='20' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='28' x2='135' y2='28' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='14' y='42' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='50' x2='126' y2='50' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='14' y='64' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='72' x2='135' y2='72' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='14' y='86' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='94' x2='139' y2='94' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><polyline points='18,50 24,56 34,42' fill='none' stroke='#C9A227' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/></g><rect x='0' y='236' width='109' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/assessment-5.svg b/public/media/kc-omslag/assessment-5.svg
+new file mode 100644
+index 0000000..856e9d1
+--- /dev/null
++++ b/public/media/kc-omslag/assessment-5.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(112 52) scale(1.12)'><rect x='14' y='20' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='28' x2='134' y2='28' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='14' y='42' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='50' x2='125' y2='50' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='14' y='64' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='72' x2='111' y2='72' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='14' y='86' width='16' height='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='40' y1='94' x2='126' y2='94' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><polyline points='18,50 24,56 34,42' fill='none' stroke='#C9A227' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/></g><rect x='0' y='236' width='152' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/cognitie-0.svg b/public/media/kc-omslag/cognitie-0.svg
+new file mode 100644
+index 0000000..9507025
+--- /dev/null
++++ b/public/media/kc-omslag/cognitie-0.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(130 53) scale(1.12)'><rect x='20' y='20' width='80' height='80' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='60' y='40' width='80' height='60' fill='none' stroke='#4691CE' stroke-width='1.5'/><line x1='20' y1='60' x2='140' y2='60' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/></g><rect x='0' y='236' width='128' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/cognitie-1.svg b/public/media/kc-omslag/cognitie-1.svg
+new file mode 100644
+index 0000000..ff9ea27
+--- /dev/null
++++ b/public/media/kc-omslag/cognitie-1.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(135 67) scale(1.12)'><rect x='20' y='20' width='80' height='80' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='65' y='40' width='80' height='60' fill='none' stroke='#4691CE' stroke-width='1.5'/><line x1='20' y1='60' x2='140' y2='60' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/></g><rect x='0' y='236' width='116' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/cognitie-2.svg b/public/media/kc-omslag/cognitie-2.svg
+new file mode 100644
+index 0000000..12d13ee
+--- /dev/null
++++ b/public/media/kc-omslag/cognitie-2.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(125 57) scale(1.12)'><rect x='20' y='20' width='80' height='80' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='68' y='40' width='80' height='60' fill='none' stroke='#4691CE' stroke-width='1.5'/><line x1='20' y1='60' x2='140' y2='60' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/></g><rect x='0' y='236' width='141' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/cognitie-3.svg b/public/media/kc-omslag/cognitie-3.svg
+new file mode 100644
+index 0000000..e5c142e
+--- /dev/null
++++ b/public/media/kc-omslag/cognitie-3.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(127 53) scale(1.12)'><rect x='20' y='20' width='80' height='80' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='63' y='40' width='80' height='60' fill='none' stroke='#4691CE' stroke-width='1.5'/><line x1='20' y1='60' x2='140' y2='60' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/></g><rect x='0' y='236' width='176' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/cognitie-4.svg b/public/media/kc-omslag/cognitie-4.svg
+new file mode 100644
+index 0000000..5937f96
+--- /dev/null
++++ b/public/media/kc-omslag/cognitie-4.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(121 62) scale(1.12)'><rect x='20' y='20' width='80' height='80' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='67' y='40' width='80' height='60' fill='none' stroke='#4691CE' stroke-width='1.5'/><line x1='20' y1='60' x2='140' y2='60' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/></g><rect x='0' y='236' width='116' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/cognitie-5.svg b/public/media/kc-omslag/cognitie-5.svg
+new file mode 100644
+index 0000000..75e8439
+--- /dev/null
++++ b/public/media/kc-omslag/cognitie-5.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(124 52) scale(1.12)'><rect x='20' y='20' width='80' height='80' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='61' y='40' width='80' height='60' fill='none' stroke='#4691CE' stroke-width='1.5'/><line x1='20' y1='60' x2='140' y2='60' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/></g><rect x='0' y='236' width='174' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/drijfveren-0.svg b/public/media/kc-omslag/drijfveren-0.svg
+new file mode 100644
+index 0000000..2842d96
+--- /dev/null
++++ b/public/media/kc-omslag/drijfveren-0.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(124 50) scale(1.12)'><circle cx='80' cy='60' r='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='80' cy='60' r='30' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='80' cy='60' r='44' fill='none' stroke='#4691CE' stroke-width='1.5'/><line x1='80' y1='60' x2='132' y2='22' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/></g><rect x='0' y='236' width='163' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/drijfveren-1.svg b/public/media/kc-omslag/drijfveren-1.svg
+new file mode 100644
+index 0000000..7a23e4f
+--- /dev/null
++++ b/public/media/kc-omslag/drijfveren-1.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(135 60) scale(1.12)'><circle cx='79' cy='60' r='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='79' cy='60' r='30' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='79' cy='60' r='44' fill='none' stroke='#4691CE' stroke-width='1.5'/><line x1='79' y1='60' x2='132' y2='22' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/></g><rect x='0' y='236' width='137' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/drijfveren-2.svg b/public/media/kc-omslag/drijfveren-2.svg
+new file mode 100644
+index 0000000..58c4f10
+--- /dev/null
++++ b/public/media/kc-omslag/drijfveren-2.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(115 67) scale(1.12)'><circle cx='79' cy='60' r='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='79' cy='60' r='30' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='79' cy='60' r='44' fill='none' stroke='#4691CE' stroke-width='1.5'/><line x1='79' y1='60' x2='132' y2='22' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/></g><rect x='0' y='236' width='91' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/drijfveren-3.svg b/public/media/kc-omslag/drijfveren-3.svg
+new file mode 100644
+index 0000000..1fcdd8d
+--- /dev/null
++++ b/public/media/kc-omslag/drijfveren-3.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(125 63) scale(1.12)'><circle cx='73' cy='60' r='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='73' cy='60' r='30' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='73' cy='60' r='44' fill='none' stroke='#4691CE' stroke-width='1.5'/><line x1='73' y1='60' x2='132' y2='22' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/></g><rect x='0' y='236' width='151' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/drijfveren-4.svg b/public/media/kc-omslag/drijfveren-4.svg
+new file mode 100644
+index 0000000..a41ee84
+--- /dev/null
++++ b/public/media/kc-omslag/drijfveren-4.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(109 65) scale(1.12)'><circle cx='76' cy='60' r='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='76' cy='60' r='30' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='76' cy='60' r='44' fill='none' stroke='#4691CE' stroke-width='1.5'/><line x1='76' y1='60' x2='132' y2='22' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/></g><rect x='0' y='236' width='91' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/drijfveren-5.svg b/public/media/kc-omslag/drijfveren-5.svg
+new file mode 100644
+index 0000000..cbe37dc
+--- /dev/null
++++ b/public/media/kc-omslag/drijfveren-5.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(114 65) scale(1.12)'><circle cx='80' cy='60' r='16' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='80' cy='60' r='30' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='80' cy='60' r='44' fill='none' stroke='#4691CE' stroke-width='1.5'/><line x1='80' y1='60' x2='132' y2='22' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/></g><rect x='0' y='236' width='209' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/hr-0.svg b/public/media/kc-omslag/hr-0.svg
+new file mode 100644
+index 0000000..c92cdd7
+--- /dev/null
++++ b/public/media/kc-omslag/hr-0.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(108 67) scale(1.12)'><line x1='14' y1='104' x2='146' y2='104' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><rect x='20' y='51' width='14' height='53' fill='#0E468C'/><rect x='46' y='25' width='14' height='79' fill='#0E468C'/><rect x='72' y='63' width='14' height='41' fill='#0E468C'/><rect x='98' y='15' width='14' height='89' fill='#C9A227'/><rect x='124' y='51' width='14' height='53' fill='#0E468C'/></g><rect x='0' y='236' width='101' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/hr-1.svg b/public/media/kc-omslag/hr-1.svg
+new file mode 100644
+index 0000000..e5e26ee
+--- /dev/null
++++ b/public/media/kc-omslag/hr-1.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(109 68) scale(1.12)'><line x1='14' y1='104' x2='146' y2='104' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><rect x='20' y='63' width='14' height='41' fill='#0E468C'/><rect x='46' y='33' width='14' height='71' fill='#0E468C'/><rect x='72' y='71' width='14' height='33' fill='#0E468C'/><rect x='98' y='12' width='14' height='92' fill='#C9A227'/><rect x='124' y='44' width='14' height='60' fill='#0E468C'/></g><rect x='0' y='236' width='123' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/hr-2.svg b/public/media/kc-omslag/hr-2.svg
+new file mode 100644
+index 0000000..f63fb4d
+--- /dev/null
++++ b/public/media/kc-omslag/hr-2.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(113 61) scale(1.12)'><line x1='14' y1='104' x2='146' y2='104' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><rect x='20' y='50' width='14' height='54' fill='#0E468C'/><rect x='46' y='33' width='14' height='71' fill='#0E468C'/><rect x='72' y='71' width='14' height='33' fill='#0E468C'/><rect x='98' y='10' width='14' height='94' fill='#C9A227'/><rect x='124' y='49' width='14' height='55' fill='#0E468C'/></g><rect x='0' y='236' width='178' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/hr-3.svg b/public/media/kc-omslag/hr-3.svg
+new file mode 100644
+index 0000000..7f50e24
+--- /dev/null
++++ b/public/media/kc-omslag/hr-3.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(114 58) scale(1.12)'><line x1='14' y1='104' x2='146' y2='104' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><rect x='20' y='56' width='14' height='48' fill='#0E468C'/><rect x='46' y='27' width='14' height='77' fill='#0E468C'/><rect x='72' y='69' width='14' height='35' fill='#0E468C'/><rect x='98' y='9' width='14' height='95' fill='#C9A227'/><rect x='124' y='45' width='14' height='59' fill='#0E468C'/></g><rect x='0' y='236' width='202' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/hr-4.svg b/public/media/kc-omslag/hr-4.svg
+new file mode 100644
+index 0000000..c6963ca
+--- /dev/null
++++ b/public/media/kc-omslag/hr-4.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(117 52) scale(1.12)'><line x1='14' y1='104' x2='146' y2='104' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><rect x='20' y='55' width='14' height='49' fill='#0E468C'/><rect x='46' y='32' width='14' height='72' fill='#0E468C'/><rect x='72' y='67' width='14' height='37' fill='#0E468C'/><rect x='98' y='15' width='14' height='89' fill='#C9A227'/><rect x='124' y='51' width='14' height='53' fill='#0E468C'/></g><rect x='0' y='236' width='130' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/hr-5.svg b/public/media/kc-omslag/hr-5.svg
+new file mode 100644
+index 0000000..abd5674
+--- /dev/null
++++ b/public/media/kc-omslag/hr-5.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(113 51) scale(1.12)'><line x1='14' y1='104' x2='146' y2='104' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><rect x='20' y='52' width='14' height='52' fill='#0E468C'/><rect x='46' y='29' width='14' height='75' fill='#0E468C'/><rect x='72' y='75' width='14' height='29' fill='#0E468C'/><rect x='98' y='7' width='14' height='97' fill='#C9A227'/><rect x='124' y='42' width='14' height='62' fill='#0E468C'/></g><rect x='0' y='236' width='156' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/leiderschap-0.svg b/public/media/kc-omslag/leiderschap-0.svg
+new file mode 100644
+index 0000000..a4feafe
+--- /dev/null
++++ b/public/media/kc-omslag/leiderschap-0.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(104 51) scale(1.12)'><polyline points='14,102 80,27 146,102 14,102' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><rect x='74' y='8' width='12' height='12' fill='#C9A227'/></g><rect x='0' y='236' width='138' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/leiderschap-1.svg b/public/media/kc-omslag/leiderschap-1.svg
+new file mode 100644
+index 0000000..c8ab219
+--- /dev/null
++++ b/public/media/kc-omslag/leiderschap-1.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(109 51) scale(1.12)'><polyline points='14,102 80,24 146,102 14,102' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><rect x='74' y='8' width='12' height='12' fill='#C9A227'/></g><rect x='0' y='236' width='171' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/leiderschap-2.svg b/public/media/kc-omslag/leiderschap-2.svg
+new file mode 100644
+index 0000000..1b94255
+--- /dev/null
++++ b/public/media/kc-omslag/leiderschap-2.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(116 56) scale(1.12)'><polyline points='14,102 80,22 146,102 14,102' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><rect x='74' y='8' width='12' height='12' fill='#C9A227'/></g><rect x='0' y='236' width='200' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/leiderschap-3.svg b/public/media/kc-omslag/leiderschap-3.svg
+new file mode 100644
+index 0000000..c62214f
+--- /dev/null
++++ b/public/media/kc-omslag/leiderschap-3.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(119 65) scale(1.12)'><polyline points='14,102 80,29 146,102 14,102' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><rect x='74' y='8' width='12' height='12' fill='#C9A227'/></g><rect x='0' y='236' width='109' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/leiderschap-4.svg b/public/media/kc-omslag/leiderschap-4.svg
+new file mode 100644
+index 0000000..bddea89
+--- /dev/null
++++ b/public/media/kc-omslag/leiderschap-4.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(112 66) scale(1.12)'><polyline points='14,102 80,27 146,102 14,102' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><rect x='74' y='8' width='12' height='12' fill='#C9A227'/></g><rect x='0' y='236' width='151' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/leiderschap-5.svg b/public/media/kc-omslag/leiderschap-5.svg
+new file mode 100644
+index 0000000..9177a65
+--- /dev/null
++++ b/public/media/kc-omslag/leiderschap-5.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(117 66) scale(1.12)'><polyline points='14,102 80,24 146,102 14,102' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><rect x='74' y='8' width='12' height='12' fill='#C9A227'/></g><rect x='0' y='236' width='125' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/loopbaan-0.svg b/public/media/kc-omslag/loopbaan-0.svg
+new file mode 100644
+index 0000000..1f28f4a
+--- /dev/null
++++ b/public/media/kc-omslag/loopbaan-0.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(115 64) scale(1.12)'><polyline points='0,104 34,104 34,82 34,82 68,82 68,60 68,60 102,60 102,38 102,38 136,38 136,16' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><line x1='136' y1='30' x2='152' y2='14' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/><line x1='136' y1='14' x2='152' y2='14' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/></g><rect x='0' y='236' width='196' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/loopbaan-1.svg b/public/media/kc-omslag/loopbaan-1.svg
+new file mode 100644
+index 0000000..aa8852d
+--- /dev/null
++++ b/public/media/kc-omslag/loopbaan-1.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(112 65) scale(1.12)'><polyline points='0,104 34,104 34,82 34,82 68,82 68,60 68,60 102,60 102,38 102,38 136,38 136,16' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><line x1='136' y1='30' x2='152' y2='14' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/><line x1='136' y1='14' x2='152' y2='14' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/></g><rect x='0' y='236' width='175' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/loopbaan-2.svg b/public/media/kc-omslag/loopbaan-2.svg
+new file mode 100644
+index 0000000..393a1f0
+--- /dev/null
++++ b/public/media/kc-omslag/loopbaan-2.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(134 59) scale(1.12)'><polyline points='0,104 34,104 34,82 34,82 68,82 68,60 68,60 102,60 102,38 102,38 136,38 136,16' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><line x1='136' y1='30' x2='152' y2='14' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/><line x1='136' y1='14' x2='152' y2='14' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/></g><rect x='0' y='236' width='93' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/loopbaan-3.svg b/public/media/kc-omslag/loopbaan-3.svg
+new file mode 100644
+index 0000000..4e808b4
+--- /dev/null
++++ b/public/media/kc-omslag/loopbaan-3.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(118 61) scale(1.12)'><polyline points='0,104 34,104 34,82 34,82 68,82 68,60 68,60 102,60 102,38 102,38 136,38 136,16' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><line x1='136' y1='30' x2='152' y2='14' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/><line x1='136' y1='14' x2='152' y2='14' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/></g><rect x='0' y='236' width='200' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/loopbaan-4.svg b/public/media/kc-omslag/loopbaan-4.svg
+new file mode 100644
+index 0000000..5ad4dca
+--- /dev/null
++++ b/public/media/kc-omslag/loopbaan-4.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(127 54) scale(1.12)'><polyline points='0,104 34,104 34,82 34,82 68,82 68,60 68,60 102,60 102,38 102,38 136,38 136,16' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><line x1='136' y1='30' x2='152' y2='14' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/><line x1='136' y1='14' x2='152' y2='14' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/></g><rect x='0' y='236' width='140' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/loopbaan-5.svg b/public/media/kc-omslag/loopbaan-5.svg
+new file mode 100644
+index 0000000..899b069
+--- /dev/null
++++ b/public/media/kc-omslag/loopbaan-5.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(128 59) scale(1.12)'><polyline points='0,104 34,104 34,82 34,82 68,82 68,60 68,60 102,60 102,38 102,38 136,38 136,16' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><line x1='136' y1='30' x2='152' y2='14' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/><line x1='136' y1='14' x2='152' y2='14' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/></g><rect x='0' y='236' width='91' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/modellen-0.svg b/public/media/kc-omslag/modellen-0.svg
+new file mode 100644
+index 0000000..7e08510
+--- /dev/null
++++ b/public/media/kc-omslag/modellen-0.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(136 63) scale(1.12)'><rect x='63' y='24' width='34' height='18' fill='none' stroke='#C9A227' stroke-width='1.5'/><rect x='49' y='44' width='62' height='18' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='35' y='64' width='90' height='18' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='21' y='84' width='118' height='18' fill='none' stroke='#0E468C' stroke-width='1.5'/></g><rect x='0' y='236' width='157' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/modellen-1.svg b/public/media/kc-omslag/modellen-1.svg
+new file mode 100644
+index 0000000..5e47e30
+--- /dev/null
++++ b/public/media/kc-omslag/modellen-1.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(125 66) scale(1.12)'><rect x='63' y='24' width='34' height='18' fill='none' stroke='#C9A227' stroke-width='1.5'/><rect x='49' y='44' width='62' height='18' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='35' y='64' width='90' height='18' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='21' y='84' width='118' height='18' fill='none' stroke='#0E468C' stroke-width='1.5'/></g><rect x='0' y='236' width='208' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/modellen-2.svg b/public/media/kc-omslag/modellen-2.svg
+new file mode 100644
+index 0000000..b9d68cb
+--- /dev/null
++++ b/public/media/kc-omslag/modellen-2.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(126 65) scale(1.12)'><rect x='63' y='24' width='34' height='18' fill='none' stroke='#C9A227' stroke-width='1.5'/><rect x='49' y='44' width='62' height='18' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='35' y='64' width='90' height='18' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='21' y='84' width='118' height='18' fill='none' stroke='#0E468C' stroke-width='1.5'/></g><rect x='0' y='236' width='125' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/modellen-3.svg b/public/media/kc-omslag/modellen-3.svg
+new file mode 100644
+index 0000000..1614f3e
+--- /dev/null
++++ b/public/media/kc-omslag/modellen-3.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(123 67) scale(1.12)'><rect x='63' y='24' width='34' height='18' fill='none' stroke='#C9A227' stroke-width='1.5'/><rect x='49' y='44' width='62' height='18' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='35' y='64' width='90' height='18' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='21' y='84' width='118' height='18' fill='none' stroke='#0E468C' stroke-width='1.5'/></g><rect x='0' y='236' width='197' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/modellen-4.svg b/public/media/kc-omslag/modellen-4.svg
+new file mode 100644
+index 0000000..9f61e4a
+--- /dev/null
++++ b/public/media/kc-omslag/modellen-4.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(107 65) scale(1.12)'><rect x='63' y='24' width='34' height='18' fill='none' stroke='#C9A227' stroke-width='1.5'/><rect x='49' y='44' width='62' height='18' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='35' y='64' width='90' height='18' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='21' y='84' width='118' height='18' fill='none' stroke='#0E468C' stroke-width='1.5'/></g><rect x='0' y='236' width='185' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/modellen-5.svg b/public/media/kc-omslag/modellen-5.svg
+new file mode 100644
+index 0000000..aa560e5
+--- /dev/null
++++ b/public/media/kc-omslag/modellen-5.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(110 62) scale(1.12)'><rect x='63' y='24' width='34' height='18' fill='none' stroke='#C9A227' stroke-width='1.5'/><rect x='49' y='44' width='62' height='18' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='35' y='64' width='90' height='18' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='21' y='84' width='118' height='18' fill='none' stroke='#0E468C' stroke-width='1.5'/></g><rect x='0' y='236' width='160' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/ontwikkeling-0.svg b/public/media/kc-omslag/ontwikkeling-0.svg
+new file mode 100644
+index 0000000..30e96b4
+--- /dev/null
++++ b/public/media/kc-omslag/ontwikkeling-0.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(114 54) scale(1.12)'><line x1='14' y1='104' x2='146' y2='104' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><line x1='14' y1='104' x2='14' y2='14' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><rect x='26' y='86.72' width='16' height='17.28' fill='#0E468C'/><rect x='58' y='69.44' width='16' height='34.56' fill='#0E468C'/><rect x='90' y='52.160000000000004' width='16' height='51.839999999999996' fill='#0E468C'/><rect x='122' y='34.879999999999995' width='16' height='69.12' fill='#C9A227'/><polyline points='22,94.4 60,75.2 98,58.400000000000006 136,39.19999999999999' fill='none' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/></g><rect x='0' y='236' width='207' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/ontwikkeling-1.svg b/public/media/kc-omslag/ontwikkeling-1.svg
+new file mode 100644
+index 0000000..d68d6c2
+--- /dev/null
++++ b/public/media/kc-omslag/ontwikkeling-1.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(117 57) scale(1.12)'><line x1='14' y1='104' x2='146' y2='104' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><line x1='14' y1='104' x2='14' y2='14' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><rect x='26' y='87.44' width='16' height='16.56' fill='#0E468C'/><rect x='58' y='70.88' width='16' height='33.12' fill='#0E468C'/><rect x='90' y='54.32' width='16' height='49.68' fill='#0E468C'/><rect x='122' y='37.760000000000005' width='16' height='66.24' fill='#C9A227'/><polyline points='22,94.8 60,76.4 98,60.300000000000004 136,41.9' fill='none' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/></g><rect x='0' y='236' width='139' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/ontwikkeling-2.svg b/public/media/kc-omslag/ontwikkeling-2.svg
+new file mode 100644
+index 0000000..cf532b8
+--- /dev/null
++++ b/public/media/kc-omslag/ontwikkeling-2.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(105 54) scale(1.12)'><line x1='14' y1='104' x2='146' y2='104' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><line x1='14' y1='104' x2='14' y2='14' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><rect x='26' y='90.32' width='16' height='13.68' fill='#0E468C'/><rect x='58' y='76.64' width='16' height='27.36' fill='#0E468C'/><rect x='90' y='62.96' width='16' height='41.04' fill='#0E468C'/><rect x='122' y='49.28' width='16' height='54.72' fill='#C9A227'/><polyline points='22,96.4 60,81.2 98,67.9 136,52.699999999999996' fill='none' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/></g><rect x='0' y='236' width='188' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/ontwikkeling-3.svg b/public/media/kc-omslag/ontwikkeling-3.svg
+new file mode 100644
+index 0000000..e0dce40
+--- /dev/null
++++ b/public/media/kc-omslag/ontwikkeling-3.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(119 61) scale(1.12)'><line x1='14' y1='104' x2='146' y2='104' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><line x1='14' y1='104' x2='14' y2='14' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><rect x='26' y='88.16' width='16' height='15.84' fill='#0E468C'/><rect x='58' y='72.32' width='16' height='31.68' fill='#0E468C'/><rect x='90' y='56.480000000000004' width='16' height='47.519999999999996' fill='#0E468C'/><rect x='122' y='40.64' width='16' height='63.36' fill='#C9A227'/><polyline points='22,95.2 60,77.6 98,62.2 136,44.599999999999994' fill='none' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/></g><rect x='0' y='236' width='192' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/ontwikkeling-4.svg b/public/media/kc-omslag/ontwikkeling-4.svg
+new file mode 100644
+index 0000000..d471b31
+--- /dev/null
++++ b/public/media/kc-omslag/ontwikkeling-4.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(130 66) scale(1.12)'><line x1='14' y1='104' x2='146' y2='104' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><line x1='14' y1='104' x2='14' y2='14' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><rect x='26' y='86.72' width='16' height='17.28' fill='#0E468C'/><rect x='58' y='69.44' width='16' height='34.56' fill='#0E468C'/><rect x='90' y='52.160000000000004' width='16' height='51.839999999999996' fill='#0E468C'/><rect x='122' y='34.879999999999995' width='16' height='69.12' fill='#C9A227'/><polyline points='22,94.4 60,75.2 98,58.400000000000006 136,39.19999999999999' fill='none' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/></g><rect x='0' y='236' width='93' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/ontwikkeling-5.svg b/public/media/kc-omslag/ontwikkeling-5.svg
+new file mode 100644
+index 0000000..4030721
+--- /dev/null
++++ b/public/media/kc-omslag/ontwikkeling-5.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(110 64) scale(1.12)'><line x1='14' y1='104' x2='146' y2='104' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><line x1='14' y1='104' x2='14' y2='14' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><rect x='26' y='87.44' width='16' height='16.56' fill='#0E468C'/><rect x='58' y='70.88' width='16' height='33.12' fill='#0E468C'/><rect x='90' y='54.32' width='16' height='49.68' fill='#0E468C'/><rect x='122' y='37.760000000000005' width='16' height='66.24' fill='#C9A227'/><polyline points='22,94.8 60,76.4 98,60.300000000000004 136,41.9' fill='none' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/></g><rect x='0' y='236' width='117' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/overig-0.svg b/public/media/kc-omslag/overig-0.svg
+new file mode 100644
+index 0000000..d7493a7
+--- /dev/null
++++ b/public/media/kc-omslag/overig-0.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(117 66) scale(1.12)'><line x1='-8' y1='104' x2='26' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='16' y1='104' x2='50' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='40' y1='104' x2='74' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='64' y1='104' x2='98' y2='16' stroke='#C9A227' stroke-width='1.5' stroke-linecap='square'/><line x1='88' y1='104' x2='122' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='112' y1='104' x2='146' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='136' y1='104' x2='170' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/></g><rect x='0' y='236' width='126' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/overig-1.svg b/public/media/kc-omslag/overig-1.svg
+new file mode 100644
+index 0000000..b5fe2ab
+--- /dev/null
++++ b/public/media/kc-omslag/overig-1.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(115 59) scale(1.12)'><line x1='-4' y1='104' x2='30' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='20' y1='104' x2='54' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='44' y1='104' x2='78' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='68' y1='104' x2='102' y2='16' stroke='#C9A227' stroke-width='1.5' stroke-linecap='square'/><line x1='92' y1='104' x2='126' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='116' y1='104' x2='150' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='140' y1='104' x2='174' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/></g><rect x='0' y='236' width='126' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/overig-2.svg b/public/media/kc-omslag/overig-2.svg
+new file mode 100644
+index 0000000..dbb513e
+--- /dev/null
++++ b/public/media/kc-omslag/overig-2.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(127 52) scale(1.12)'><line x1='-8' y1='104' x2='26' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='16' y1='104' x2='50' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='40' y1='104' x2='74' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='64' y1='104' x2='98' y2='16' stroke='#C9A227' stroke-width='1.5' stroke-linecap='square'/><line x1='88' y1='104' x2='122' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='112' y1='104' x2='146' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='136' y1='104' x2='170' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/></g><rect x='0' y='236' width='172' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/overig-3.svg b/public/media/kc-omslag/overig-3.svg
+new file mode 100644
+index 0000000..1836dc0
+--- /dev/null
++++ b/public/media/kc-omslag/overig-3.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(122 51) scale(1.12)'><line x1='0' y1='104' x2='34' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='24' y1='104' x2='58' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='48' y1='104' x2='82' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='72' y1='104' x2='106' y2='16' stroke='#C9A227' stroke-width='1.5' stroke-linecap='square'/><line x1='96' y1='104' x2='130' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='120' y1='104' x2='154' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='144' y1='104' x2='178' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/></g><rect x='0' y='236' width='167' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/overig-4.svg b/public/media/kc-omslag/overig-4.svg
+new file mode 100644
+index 0000000..a98b5db
+--- /dev/null
++++ b/public/media/kc-omslag/overig-4.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(123 51) scale(1.12)'><line x1='-6' y1='104' x2='28' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='18' y1='104' x2='52' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='42' y1='104' x2='76' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='66' y1='104' x2='100' y2='16' stroke='#C9A227' stroke-width='1.5' stroke-linecap='square'/><line x1='90' y1='104' x2='124' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='114' y1='104' x2='148' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='138' y1='104' x2='172' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/></g><rect x='0' y='236' width='169' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/overig-5.svg b/public/media/kc-omslag/overig-5.svg
+new file mode 100644
+index 0000000..0698ec5
+--- /dev/null
++++ b/public/media/kc-omslag/overig-5.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(128 62) scale(1.12)'><line x1='1' y1='104' x2='35' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='25' y1='104' x2='59' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='49' y1='104' x2='83' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='73' y1='104' x2='107' y2='16' stroke='#C9A227' stroke-width='1.5' stroke-linecap='square'/><line x1='97' y1='104' x2='131' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='121' y1='104' x2='155' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='145' y1='104' x2='179' y2='16' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/></g><rect x='0' y='236' width='166' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/persoonlijkheid-0.svg b/public/media/kc-omslag/persoonlijkheid-0.svg
+new file mode 100644
+index 0000000..33a9dc4
+--- /dev/null
++++ b/public/media/kc-omslag/persoonlijkheid-0.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(120 58) scale(1.12)'><polyline points='80.0,16.0 121.8,46.4 105.9,95.6 54.1,95.6 38.2,46.4 80.0,16.0' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><polyline points='80.0,37.6 101.3,53.1 93.2,78.1 66.8,78.1 58.7,53.1 80.0,37.6' fill='none' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/></g><rect x='0' y='236' width='145' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/persoonlijkheid-1.svg b/public/media/kc-omslag/persoonlijkheid-1.svg
+new file mode 100644
+index 0000000..65e85a9
+--- /dev/null
++++ b/public/media/kc-omslag/persoonlijkheid-1.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(125 55) scale(1.12)'><polyline points='80.0,16.0 121.8,46.4 105.9,95.6 54.1,95.6 38.2,46.4 80.0,16.0' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><polyline points='80.0,34.5 104.3,52.1 95.0,80.6 65.0,80.6 55.7,52.1 80.0,34.5' fill='none' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/></g><rect x='0' y='236' width='146' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/persoonlijkheid-2.svg b/public/media/kc-omslag/persoonlijkheid-2.svg
+new file mode 100644
+index 0000000..a180a49
+--- /dev/null
++++ b/public/media/kc-omslag/persoonlijkheid-2.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(115 56) scale(1.12)'><polyline points='80.0,16.0 121.8,46.4 105.9,95.6 54.1,95.6 38.2,46.4 80.0,16.0' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><polyline points='80.0,27.3 111.1,49.9 99.2,86.5 60.8,86.5 48.9,49.9 80.0,27.3' fill='none' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/></g><rect x='0' y='236' width='153' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/persoonlijkheid-3.svg b/public/media/kc-omslag/persoonlijkheid-3.svg
+new file mode 100644
+index 0000000..22fc212
+--- /dev/null
++++ b/public/media/kc-omslag/persoonlijkheid-3.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(120 56) scale(1.12)'><polyline points='80.0,16.0 121.8,46.4 105.9,95.6 54.1,95.6 38.2,46.4 80.0,16.0' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><polyline points='80.0,37.7 101.2,53.1 93.1,78.0 66.9,78.0 58.8,53.1 80.0,37.7' fill='none' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/></g><rect x='0' y='236' width='126' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/persoonlijkheid-4.svg b/public/media/kc-omslag/persoonlijkheid-4.svg
+new file mode 100644
+index 0000000..80d2de9
+--- /dev/null
++++ b/public/media/kc-omslag/persoonlijkheid-4.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(111 56) scale(1.12)'><polyline points='80.0,16.0 121.8,46.4 105.9,95.6 54.1,95.6 38.2,46.4 80.0,16.0' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><polyline points='80.0,33.5 105.2,51.8 95.6,81.5 64.4,81.5 54.8,51.8 80.0,33.5' fill='none' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/></g><rect x='0' y='236' width='121' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/persoonlijkheid-5.svg b/public/media/kc-omslag/persoonlijkheid-5.svg
+new file mode 100644
+index 0000000..9deb4ac
+--- /dev/null
++++ b/public/media/kc-omslag/persoonlijkheid-5.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(106 69) scale(1.12)'><polyline points='80.0,16.0 121.8,46.4 105.9,95.6 54.1,95.6 38.2,46.4 80.0,16.0' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><polyline points='80.0,36.3 102.5,52.7 93.9,79.1 66.1,79.1 57.5,52.7 80.0,36.3' fill='none' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/></g><rect x='0' y='236' width='117' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/product-0.svg b/public/media/kc-omslag/product-0.svg
+new file mode 100644
+index 0000000..7b41b31
+--- /dev/null
++++ b/public/media/kc-omslag/product-0.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(119 52) scale(1.12)'><rect x='14' y='18' width='132' height='86' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='14' y1='38' x2='146' y2='38' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='56' x2='108' y2='56' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='72' x2='120' y2='72' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='88' x2='127' y2='88' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='104' x2='102' y2='104' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='120' x2='109' y2='120' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='24' y='24' width='8' height='8' fill='#C9A227'/></g><rect x='0' y='236' width='99' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/product-1.svg b/public/media/kc-omslag/product-1.svg
+new file mode 100644
+index 0000000..e3825bf
+--- /dev/null
++++ b/public/media/kc-omslag/product-1.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(114 50) scale(1.12)'><rect x='14' y='18' width='132' height='86' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='14' y1='38' x2='146' y2='38' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='56' x2='96' y2='56' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='72' x2='91' y2='72' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='88' x2='108' y2='88' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='104' x2='118' y2='104' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='24' y='24' width='8' height='8' fill='#C9A227'/></g><rect x='0' y='236' width='92' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/product-2.svg b/public/media/kc-omslag/product-2.svg
+new file mode 100644
+index 0000000..bb70210
+--- /dev/null
++++ b/public/media/kc-omslag/product-2.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(113 66) scale(1.12)'><rect x='14' y='18' width='132' height='86' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='14' y1='38' x2='146' y2='38' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='56' x2='106' y2='56' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='72' x2='123' y2='72' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='88' x2='115' y2='88' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='24' y='24' width='8' height='8' fill='#C9A227'/></g><rect x='0' y='236' width='145' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/product-3.svg b/public/media/kc-omslag/product-3.svg
+new file mode 100644
+index 0000000..132acf7
+--- /dev/null
++++ b/public/media/kc-omslag/product-3.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(108 53) scale(1.12)'><rect x='14' y='18' width='132' height='86' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='14' y1='38' x2='146' y2='38' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='56' x2='115' y2='56' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='72' x2='94' y2='72' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='88' x2='120' y2='88' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='104' x2='104' y2='104' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='24' y='24' width='8' height='8' fill='#C9A227'/></g><rect x='0' y='236' width='176' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/product-4.svg b/public/media/kc-omslag/product-4.svg
+new file mode 100644
+index 0000000..eb9d333
+--- /dev/null
++++ b/public/media/kc-omslag/product-4.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(133 57) scale(1.12)'><rect x='14' y='18' width='132' height='86' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='14' y1='38' x2='146' y2='38' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='56' x2='100' y2='56' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='72' x2='128' y2='72' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='88' x2='95' y2='88' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='104' x2='121' y2='104' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='24' y='24' width='8' height='8' fill='#C9A227'/></g><rect x='0' y='236' width='158' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/product-5.svg b/public/media/kc-omslag/product-5.svg
+new file mode 100644
+index 0000000..fb780cc
+--- /dev/null
++++ b/public/media/kc-omslag/product-5.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(136 63) scale(1.12)'><rect x='14' y='18' width='132' height='86' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='14' y1='38' x2='146' y2='38' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='56' x2='102' y2='56' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='72' x2='92' y2='72' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='28' y1='88' x2='101' y2='88' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><rect x='24' y='24' width='8' height='8' fill='#C9A227'/></g><rect x='0' y='236' width='166' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/selectie-0.svg b/public/media/kc-omslag/selectie-0.svg
+new file mode 100644
+index 0000000..11258b1
+--- /dev/null
++++ b/public/media/kc-omslag/selectie-0.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(116 66) scale(1.12)'><polyline points='14,18 146,18 96,62 96,104 64,88 64,62 14,18' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><line x1='14' y1='18' x2='146' y2='18' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/><line x1='110' y1='88' x2='146' y2='88' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/></g><rect x='0' y='236' width='174' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/selectie-1.svg b/public/media/kc-omslag/selectie-1.svg
+new file mode 100644
+index 0000000..6cfb3a1
+--- /dev/null
++++ b/public/media/kc-omslag/selectie-1.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(116 60) scale(1.12)'><polyline points='14,18 146,18 96,62 96,104 64,88 64,62 14,18' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><line x1='14' y1='18' x2='146' y2='18' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/><line x1='110' y1='86' x2='146' y2='86' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/></g><rect x='0' y='236' width='157' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/selectie-2.svg b/public/media/kc-omslag/selectie-2.svg
+new file mode 100644
+index 0000000..3aa2cde
+--- /dev/null
++++ b/public/media/kc-omslag/selectie-2.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(111 70) scale(1.12)'><polyline points='14,18 146,18 96,62 96,104 64,88 64,62 14,18' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><line x1='14' y1='18' x2='146' y2='18' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/><line x1='110' y1='85' x2='146' y2='85' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/></g><rect x='0' y='236' width='128' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/selectie-3.svg b/public/media/kc-omslag/selectie-3.svg
+new file mode 100644
+index 0000000..bac45fc
+--- /dev/null
++++ b/public/media/kc-omslag/selectie-3.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(106 51) scale(1.12)'><polyline points='14,18 146,18 96,62 96,104 64,88 64,62 14,18' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><line x1='14' y1='18' x2='146' y2='18' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/><line x1='110' y1='90' x2='146' y2='90' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/></g><rect x='0' y='236' width='95' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/selectie-4.svg b/public/media/kc-omslag/selectie-4.svg
+new file mode 100644
+index 0000000..70014b1
+--- /dev/null
++++ b/public/media/kc-omslag/selectie-4.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(104 68) scale(1.12)'><polyline points='14,18 146,18 96,62 96,104 64,88 64,62 14,18' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><line x1='14' y1='18' x2='146' y2='18' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/><line x1='110' y1='91' x2='146' y2='91' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/></g><rect x='0' y='236' width='126' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/selectie-5.svg b/public/media/kc-omslag/selectie-5.svg
+new file mode 100644
+index 0000000..75f6885
+--- /dev/null
++++ b/public/media/kc-omslag/selectie-5.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(110 69) scale(1.12)'><polyline points='14,18 146,18 96,62 96,104 64,88 64,62 14,18' fill='none' stroke='#0E468C' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/><line x1='14' y1='18' x2='146' y2='18' stroke='#C9A227' stroke-width='3' stroke-linecap='square'/><line x1='110' y1='92' x2='146' y2='92' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/></g><rect x='0' y='236' width='153' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/teams-0.svg b/public/media/kc-omslag/teams-0.svg
+new file mode 100644
+index 0000000..7ef0e41
+--- /dev/null
++++ b/public/media/kc-omslag/teams-0.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(129 61) scale(1.12)'><circle cx='34' cy='42' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='80' cy='76' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='126' cy='44' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='46' y1='50' x2='70' y2='68' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='92' y1='70' x2='114' y2='52' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/></g><rect x='0' y='236' width='104' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/teams-1.svg b/public/media/kc-omslag/teams-1.svg
+new file mode 100644
+index 0000000..68f9b88
+--- /dev/null
++++ b/public/media/kc-omslag/teams-1.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(132 60) scale(1.12)'><circle cx='34' cy='50' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='80' cy='68' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='126' cy='44' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='46' y1='58' x2='70' y2='60' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='92' y1='62' x2='114' y2='52' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/></g><rect x='0' y='236' width='148' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/teams-2.svg b/public/media/kc-omslag/teams-2.svg
+new file mode 100644
+index 0000000..8caf3db
+--- /dev/null
++++ b/public/media/kc-omslag/teams-2.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(127 69) scale(1.12)'><circle cx='34' cy='45' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='80' cy='73' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='126' cy='44' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='46' y1='53' x2='70' y2='65' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='92' y1='67' x2='114' y2='52' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/></g><rect x='0' y='236' width='193' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/teams-3.svg b/public/media/kc-omslag/teams-3.svg
+new file mode 100644
+index 0000000..bcf99f3
+--- /dev/null
++++ b/public/media/kc-omslag/teams-3.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(126 61) scale(1.12)'><circle cx='34' cy='40' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='80' cy='78' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='126' cy='44' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='46' y1='48' x2='70' y2='70' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='92' y1='72' x2='114' y2='52' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/></g><rect x='0' y='236' width='150' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/teams-4.svg b/public/media/kc-omslag/teams-4.svg
+new file mode 100644
+index 0000000..c2e68df
+--- /dev/null
++++ b/public/media/kc-omslag/teams-4.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(108 50) scale(1.12)'><circle cx='34' cy='47' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='80' cy='71' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='126' cy='44' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='46' y1='55' x2='70' y2='63' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='92' y1='65' x2='114' y2='52' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/></g><rect x='0' y='236' width='165' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/teams-5.svg b/public/media/kc-omslag/teams-5.svg
+new file mode 100644
+index 0000000..f4e4f2b
+--- /dev/null
++++ b/public/media/kc-omslag/teams-5.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(105 62) scale(1.12)'><circle cx='34' cy='45' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='80' cy='73' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><circle cx='126' cy='44' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><line x1='46' y1='53' x2='70' y2='65' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/><line x1='92' y1='67' x2='114' y2='52' stroke='#4691CE' stroke-width='1.5' stroke-linecap='square'/></g><rect x='0' y='236' width='160' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/welzijn-0.svg b/public/media/kc-omslag/welzijn-0.svg
+new file mode 100644
+index 0000000..1357d5d
+--- /dev/null
++++ b/public/media/kc-omslag/welzijn-0.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(113 52) scale(1.12)'><path d="M0 76 q 20 -16 40 0 q 20 16 40 0 q 20 -16 40 0 q 20 16 40 0 q 20 -16 40 0 q 20 16 40 0 q 20 -16 40 0 q 20 16 40 0" fill='none' stroke='#4691CE' stroke-width='1.5'/><path d="M0 76 q 20 -16 40 0 q 20 16 40 0 q 20 -16 40 0 q 20 16 40 0 q 20 -16 40 0 q 20 16 40 0 q 20 -16 40 0 q 20 16 40 0" fill='none' stroke='#0E468C' stroke-width='1.5' transform='translate(0 -22)'/><circle cx='126' cy='26' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='122' y='22' width='8' height='8' fill='#C9A227'/></g><rect x='0' y='236' width='189' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/welzijn-1.svg b/public/media/kc-omslag/welzijn-1.svg
+new file mode 100644
+index 0000000..ca32c46
+--- /dev/null
++++ b/public/media/kc-omslag/welzijn-1.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(127 62) scale(1.12)'><path d="M0 76 q 20 -20 40 0 q 20 20 40 0 q 20 -20 40 0 q 20 20 40 0 q 20 -20 40 0 q 20 20 40 0 q 20 -20 40 0 q 20 20 40 0" fill='none' stroke='#4691CE' stroke-width='1.5'/><path d="M0 76 q 20 -20 40 0 q 20 20 40 0 q 20 -20 40 0 q 20 20 40 0 q 20 -20 40 0 q 20 20 40 0 q 20 -20 40 0 q 20 20 40 0" fill='none' stroke='#0E468C' stroke-width='1.5' transform='translate(0 -22)'/><circle cx='126' cy='26' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='122' y='22' width='8' height='8' fill='#C9A227'/></g><rect x='0' y='236' width='171' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/welzijn-2.svg b/public/media/kc-omslag/welzijn-2.svg
+new file mode 100644
+index 0000000..91b6784
+--- /dev/null
++++ b/public/media/kc-omslag/welzijn-2.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(124 52) scale(1.12)'><path d="M0 76 q 20 -25 40 0 q 20 25 40 0 q 20 -25 40 0 q 20 25 40 0 q 20 -25 40 0 q 20 25 40 0 q 20 -25 40 0 q 20 25 40 0" fill='none' stroke='#4691CE' stroke-width='1.5'/><path d="M0 76 q 20 -25 40 0 q 20 25 40 0 q 20 -25 40 0 q 20 25 40 0 q 20 -25 40 0 q 20 25 40 0 q 20 -25 40 0 q 20 25 40 0" fill='none' stroke='#0E468C' stroke-width='1.5' transform='translate(0 -22)'/><circle cx='126' cy='26' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='122' y='22' width='8' height='8' fill='#C9A227'/></g><rect x='0' y='236' width='122' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/welzijn-3.svg b/public/media/kc-omslag/welzijn-3.svg
+new file mode 100644
+index 0000000..8c2d517
+--- /dev/null
++++ b/public/media/kc-omslag/welzijn-3.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(135 62) scale(1.12)'><path d="M0 76 q 20 -26 40 0 q 20 26 40 0 q 20 -26 40 0 q 20 26 40 0 q 20 -26 40 0 q 20 26 40 0 q 20 -26 40 0 q 20 26 40 0" fill='none' stroke='#4691CE' stroke-width='1.5'/><path d="M0 76 q 20 -26 40 0 q 20 26 40 0 q 20 -26 40 0 q 20 26 40 0 q 20 -26 40 0 q 20 26 40 0 q 20 -26 40 0 q 20 26 40 0" fill='none' stroke='#0E468C' stroke-width='1.5' transform='translate(0 -22)'/><circle cx='126' cy='26' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='122' y='22' width='8' height='8' fill='#C9A227'/></g><rect x='0' y='236' width='179' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/welzijn-4.svg b/public/media/kc-omslag/welzijn-4.svg
+new file mode 100644
+index 0000000..d1a1ca9
+--- /dev/null
++++ b/public/media/kc-omslag/welzijn-4.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(136 62) scale(1.12)'><path d="M0 76 q 20 -24 40 0 q 20 24 40 0 q 20 -24 40 0 q 20 24 40 0 q 20 -24 40 0 q 20 24 40 0 q 20 -24 40 0 q 20 24 40 0" fill='none' stroke='#4691CE' stroke-width='1.5'/><path d="M0 76 q 20 -24 40 0 q 20 24 40 0 q 20 -24 40 0 q 20 24 40 0 q 20 -24 40 0 q 20 24 40 0 q 20 -24 40 0 q 20 24 40 0" fill='none' stroke='#0E468C' stroke-width='1.5' transform='translate(0 -22)'/><circle cx='126' cy='26' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='122' y='22' width='8' height='8' fill='#C9A227'/></g><rect x='0' y='236' width='180' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/public/media/kc-omslag/welzijn-5.svg b/public/media/kc-omslag/welzijn-5.svg
+new file mode 100644
+index 0000000..41b4cfb
+--- /dev/null
++++ b/public/media/kc-omslag/welzijn-5.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true"><rect width='400' height='240' fill='#e7eef7'/><line x1='0' y1='0' x2='0' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='50' y1='0' x2='50' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='100' y1='0' x2='100' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='150' y1='0' x2='150' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='200' y1='0' x2='200' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='250' y1='0' x2='250' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='300' y1='0' x2='300' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><line x1='350' y1='0' x2='350' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/><g transform='translate(106 62) scale(1.12)'><path d="M0 76 q 20 -24 40 0 q 20 24 40 0 q 20 -24 40 0 q 20 24 40 0 q 20 -24 40 0 q 20 24 40 0 q 20 -24 40 0 q 20 24 40 0" fill='none' stroke='#4691CE' stroke-width='1.5'/><path d="M0 76 q 20 -24 40 0 q 20 24 40 0 q 20 -24 40 0 q 20 24 40 0 q 20 -24 40 0 q 20 24 40 0 q 20 -24 40 0 q 20 24 40 0" fill='none' stroke='#0E468C' stroke-width='1.5' transform='translate(0 -22)'/><circle cx='126' cy='26' r='15' fill='none' stroke='#0E468C' stroke-width='1.5'/><rect x='122' y='22' width='8' height='8' fill='#C9A227'/></g><rect x='0' y='236' width='98' height='4' fill='#C9A227'/></svg>
+\ No newline at end of file
+diff --git a/scripts/hsf-build-kc-covers.mjs b/scripts/hsf-build-kc-covers.mjs
+new file mode 100644
+index 0000000..427e56b
+--- /dev/null
++++ b/scripts/hsf-build-kc-covers.mjs
+@@ -0,0 +1,18 @@
++// Schrijft de getekende omslagen voor het kenniscentrum weg als losse SVG's.
++// Losse bestanden in plaats van een data-URI per kaart, want het overzicht
++// toont ruim 340 kaarten en dan scheelt dat honderden kilobytes.
++//
++// Draaien: npm run hsf:omslagen
++import fs from "node:fs";
++import { OMSLAG_THEMAS, OMSLAG_VARIANTEN, omslagSvg } from "../src/lib/kc-omslag.js";
++
++const map = "public/media/kc-omslag";
++fs.mkdirSync(map, { recursive: true });
++let n = 0;
++for (const cat of OMSLAG_THEMAS) {
++  for (let v = 0; v < OMSLAG_VARIANTEN; v++) {
++    fs.writeFileSync(`${map}/${cat}-${v}.svg`, omslagSvg(cat, v), "utf8");
++    n++;
++  }
++}
++console.log(`omslagen geschreven: ${n}`);
+diff --git a/src/components/Kenniscentrum.astro b/src/components/Kenniscentrum.astro
+index 8d331c5..cb0b7ad 100644
+--- a/src/components/Kenniscentrum.astro
++++ b/src/components/Kenniscentrum.astro
+@@ -2,6 +2,7 @@
+ import { createClient } from "@sanity/client";
+ import { localizePath, localizeExisting, eigenMedia } from "../i18n/utils.js";
+ import validPaths from "../data/valid-paths.js";
++import { omslagUrl } from "../lib/kc-omslag.js";
+ 
+ const { t, lang } = Astro.props;
+ 
+@@ -58,7 +59,9 @@ const list = raw
+   .filter((p) => p.path && p.title)
+   .map((p) => {
+     const key = categorize(p.title);
+-    return { title: p.title, path: p.path, date: p.date, cat: key, catLabel: t.cats[key] || t.cats.overig, img: firstImage(p.body), excerpt: excerpt(p.body) };
++    // Artikelen zonder beeld in de tekst krijgen een getekende omslag per thema,
++    // zodat er in het overzicht geen leeg vlak staat.
++    return { title: p.title, path: p.path, date: p.date, cat: key, catLabel: t.cats[key] || t.cats.overig, img: firstImage(p.body) || omslagUrl(key, p.title), excerpt: excerpt(p.body) };
+   });
+ 
+ const featured = list[0] || null;
+diff --git a/src/lib/kc-omslag.js b/src/lib/kc-omslag.js
+new file mode 100644
+index 0000000..1d10cbe
+--- /dev/null
++++ b/src/lib/kc-omslag.js
+@@ -0,0 +1,154 @@
++// Getekende omslag voor kenniscentrumkaarten zonder eigen afbeelding.
++//
++// Ruim tweederde van de gemigreerde artikelen heeft geen beeld in de tekst.
++// In het overzicht gaf dat een leeg vlak. In plaats van een stockfoto tekent
++// dit bestand per artikel een eigen omslag in dezelfde stijl als de iconen:
++// raster van 24, lijndikte 1,5, rechte uiteinden, huiskleuren. Het motief
++// volgt het thema, de variatie (aantal, hoogte, verschuiving) komt uit de
++// titel, zodat twee artikelen in hetzelfde thema er niet identiek uitzien.
++
++const NAVY = "#0E468C";
++const BLAUW = "#4691CE";
++const GOUD = "#C9A227";
++const TINT = "#e7eef7";
++
++// Kleine, stabiele hash: zelfde titel geeft altijd dezelfde omslag.
++function zaad(tekst) {
++  let h = 2166136261;
++  for (let i = 0; i < (tekst || "").length; i++) {
++    h ^= tekst.charCodeAt(i);
++    h = Math.imul(h, 16777619);
++  }
++  return () => {
++    h ^= h << 13; h >>>= 0;
++    h ^= h >> 17;
++    h ^= h << 5; h >>>= 0;
++    return h / 4294967296;
++  };
++}
++
++const L = (x1, y1, x2, y2, kleur = NAVY, dikte = 1.5) =>
++  `<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}' stroke='${kleur}' stroke-width='${dikte}' stroke-linecap='square'/>`;
++const R = (x, y, w, h, kleur = NAVY) =>
++  `<rect x='${x}' y='${y}' width='${w}' height='${h}' fill='none' stroke='${kleur}' stroke-width='1.5'/>`;
++const RV = (x, y, w, h, kleur) => `<rect x='${x}' y='${y}' width='${w}' height='${h}' fill='${kleur}'/>`;
++const C = (cx, cy, r, kleur = NAVY) =>
++  `<circle cx='${cx}' cy='${cy}' r='${r}' fill='none' stroke='${kleur}' stroke-width='1.5'/>`;
++const P = (punten, kleur = NAVY) =>
++  `<polyline points='${punten}' fill='none' stroke='${kleur}' stroke-width='1.5' stroke-linecap='square' stroke-linejoin='miter'/>`;
++
++// Elk thema tekent binnen een vak van 160 bij 120, linksboven op 0,0.
++const MOTIEF = {
++  welzijn: (r) => {
++    const a = 16 + Math.round(r() * 10);
++    let d = `M0 ${76}`;
++    for (let i = 0; i < 4; i++) d += ` q 20 -${a} 40 0 q 20 ${a} 40 0`;
++    return `<path d="${d}" fill='none' stroke='${BLAUW}' stroke-width='1.5'/>` +
++      `<path d="${d}" fill='none' stroke='${NAVY}' stroke-width='1.5' transform='translate(0 -22)'/>` +
++      C(126, 26, 15) + RV(122, 22, 8, 8, GOUD);
++  },
++  loopbaan: (r) => {
++    const n = 4;
++    let p = "";
++    for (let i = 0; i < n; i++) p += `${i * 34},${104 - i * 22} ${(i + 1) * 34},${104 - i * 22} ${(i + 1) * 34},${104 - (i + 1) * 22} `;
++    return P(p.trim()) + L(136, 30, 152, 14, GOUD, 3) + L(136, 14, 152, 14, GOUD, 3);
++  },
++  teams: (r) => {
++    const dy = Math.round(r() * 14);
++    return C(34, 40 + dy, 15) + C(80, 78 - dy, 15) + C(126, 44, 15) +
++      L(46, 48 + dy, 70, 70 - dy, BLAUW) + L(92, 72 - dy, 114, 52, BLAUW);
++  },
++  leiderschap: (r) =>
++    P(`14,102 80,${20 + Math.round(r() * 10)} 146,102 14,102`) + RV(74, 8, 12, 12, GOUD),
++  drijfveren: (r) => {
++    const o = Math.round(r() * 8);
++    return C(80 - o, 60, 16) + C(80 - o, 60, 30) + C(80 - o, 60, 44, BLAUW) + L(80 - o, 60, 132, 22, GOUD, 3);
++  },
++  persoonlijkheid: (r) => {
++    const s = 44, cx = 80, cy = 60;
++    const pt = (f) => Array.from({ length: 5 }, (_, i) => {
++      const a = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
++      return `${(cx + Math.cos(a) * s * f).toFixed(1)},${(cy + Math.sin(a) * s * f).toFixed(1)}`;
++    }).join(" ");
++    const f = 0.45 + r() * 0.3;
++    return P(pt(1) + " " + pt(1).split(" ")[0]) + P(pt(f) + " " + pt(f).split(" ")[0], BLAUW);
++  },
++  cognitie: (r) => {
++    const h = Math.round(r() * 10);
++    return R(20, 20, 80, 80) + R(60 + h, 40, 80, 60, BLAUW) + L(20, 60, 140, 60, GOUD, 3);
++  },
++  selectie: (r) => {
++    const k = 10 + Math.round(r() * 10);
++    return P(`14,18 146,18 96,62 96,104 64,88 64,62 14,18`) + L(14, 18, 146, 18, GOUD, 3) + L(110, 74 + k, 146, 74 + k, BLAUW);
++  },
++  hr: (r) => {
++    let s = L(14, 104, 146, 104);
++    const hs = [40, 66, 28, 84, 52].map((v) => v + Math.round(r() * 14));
++    hs.forEach((h, i) => { s += RV(20 + i * 26, 104 - h, 14, h, i === 3 ? GOUD : NAVY); });
++    return s;
++  },
++  ontwikkeling: (r) => {
++    const st = 16 + Math.round(r() * 8);
++    let s = L(14, 104, 146, 104) + L(14, 104, 14, 14);
++    [0, 1, 2, 3].forEach((i) => { const h = st * (i + 1) * 0.72; s += RV(26 + i * 32, 104 - h, 16, h, i === 3 ? GOUD : NAVY); });
++    return s + P(`22,${104 - st * 0.4} 60,${104 - st * 1.2} 98,${104 - st * 1.9} 136,${104 - st * 2.7}`, BLAUW);
++  },
++  product: (r) => {
++    const n = 3 + Math.round(r() * 2);
++    let s = R(14, 18, 132, 86) + L(14, 38, 146, 38);
++    for (let i = 0; i < n; i++) s += L(28, 56 + i * 16, 28 + 60 + Math.round(r() * 40), 56 + i * 16, BLAUW);
++    return s + RV(24, 24, 8, 8, GOUD);
++  },
++  modellen: (r) => {
++    let s = "";
++    for (let i = 0; i < 4; i++) {
++      const w = 34 + i * 28, y = 24 + i * 20;
++      s += R(80 - w / 2, y, w, 18, i === 0 ? GOUD : NAVY);
++    }
++    return s;
++  },
++  assessment: (r) => {
++    let s = "";
++    const n = 4;
++    for (let i = 0; i < n; i++) {
++      s += R(14, 20 + i * 22, 16, 16) + L(40, 28 + i * 22, 40 + 70 + Math.round(r() * 36), 28 + i * 22, BLAUW);
++    }
++    return s + P("18,50 24,56 34,42", GOUD);
++  },
++  overig: (r) => {
++    let s = "";
++    const o = Math.round(r() * 16);
++    for (let i = 0; i < 7; i++) s += L(6 + i * 24 - o, 104, 40 + i * 24 - o, 16, i === 3 ? GOUD : BLAUW);
++    return s;
++  },
++};
++
++export const OMSLAG_THEMAS = Object.keys(MOTIEF);
++export const OMSLAG_VARIANTEN = 6;
++
++/** Tekent een omslag-SVG voor een thema en een variantnummer. */
++export function omslagSvg(cat, variant) {
++  const r = zaad(`${cat}#${variant}`);
++  const teken = MOTIEF[cat] || MOTIEF.overig;
++  // Het motief is 160 bij 120 en staat gecentreerd in het vlak van 400 bij 240,
++  // met een kleine verschuiving per variant zodat ze niet identiek ogen.
++  const x = 104 + Math.round(r() * 32);
++  const y = 50 + Math.round(r() * 20);
++  const raster = Array.from({ length: 8 }, (_, i) =>
++    `<line x1='${i * 50}' y1='0' x2='${i * 50}' y2='240' stroke='#14315b' stroke-width='1' opacity='.06'/>`).join("");
++  return (
++    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-hidden="true">` +
++    `<rect width='400' height='240' fill='${TINT}'/>` + raster +
++    `<g transform='translate(${x} ${y}) scale(1.12)'>${teken(r)}</g>` +
++    `<rect x='0' y='236' width='${90 + Math.round(r() * 120)}' height='4' fill='${GOUD}'/>` +
++    `</svg>`
++  );
++}
++
++/** Pad naar de omslag voor een artikel. Zelfde titel geeft altijd dezelfde omslag. */
++export function omslagUrl(cat, titel) {
++  const sleutel = MOTIEF[cat] ? cat : "overig";
++  const r = zaad(titel || sleutel);
++  const v = Math.floor(r() * OMSLAG_VARIANTEN);
++  return `/media/kc-omslag/${sleutel}-${v}.svg`;
++}
+-- 
+2.43.0
+

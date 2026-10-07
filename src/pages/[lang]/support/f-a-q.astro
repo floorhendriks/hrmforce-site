@@ -1,0 +1,12 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Faq from "../../../components/Faq.astro";
+import { faqContent } from "../../../data/faq-content.js";
+import { perTaal } from "../../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const t = faqContent[lang];
+---
+<Base title={t.meta.title} description={t.meta.description} active="">
+  <Faq t={t} lang={lang} />
+</Base>

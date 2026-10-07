@@ -1,0 +1,34 @@
+---
+// Themapagina's met een eigen slug per taal: de vier testhubs
+// (persoonlijkheid, capaciteiten, teamrollen, psychologisch) en de
+// losse themapagina's (integriteit, ai, opq32, papi-3).
+//
+// Welke pagina in welke taal bestaat, bepaalt de slug-map in de datafile.
+// Staat er voor een taal geen slug, dan komt die pagina er ook niet.
+// De Nederlandse versies staan op de root en hebben hun eigen bestand.
+import Base from "../../layouts/Base.astro";
+import Themapagina from "../../components/Themapagina.astro";
+import { TESTHUBS } from "../../data/testhubs.js";
+import { THEMAPAGINAS } from "../../data/themapaginas.js";
+import { PREFIXED } from "../../i18n/utils.js";
+
+export function getStaticPaths() {
+  const bronnen = [...Object.values(TESTHUBS), ...Object.values(THEMAPAGINAS)];
+  const paden = [];
+  for (const lang of PREFIXED) {
+    for (const pagina of bronnen) {
+      const slug = pagina.slug?.[lang];
+      const t = pagina.i18n?.[lang];
+      if (!slug || !t) continue;
+      paden.push({ params: { lang, hub: slug }, props: { t, kaarten: pagina.kaarten } });
+    }
+  }
+  return paden;
+}
+
+const { lang } = Astro.params;
+const { t, kaarten } = Astro.props;
+---
+<Base title={t.meta.title} description={t.meta.description} active="">
+  <Themapagina t={t} lang={lang} kaarten={kaarten} />
+</Base>

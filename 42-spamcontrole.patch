@@ -1,0 +1,792 @@
+From 49ec4d0963d2dc23920a81559eabf5fdda9b54c2 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sun, 27 Sep 2026 05:11:11 +0000
+Subject: [PATCH] Spamcontrole op alle formulieren
+
+Drie lagen, onafhankelijk van elkaar. Een verborgen veld dat alleen een
+bot invult. De tijd tussen het openen en het verzenden, want onder de
+drie seconden zit geen mens. En het vakje van Cloudflare Turnstile,
+zodra de twee sleutels zijn ingesteld. De eerste twee werken meteen en
+de bezoeker merkt er niets van.
+
+De server controleert alle drie en weigert met 422 zonder mail te
+versturen. Valt Turnstile uit, dan gaat de aanvraag door: een storing
+mag geen klant kosten.
+
+Alle formulieren gaan nu via onze eigen server in plaats van
+rechtstreeks naar Formspree: demo, de zes contactformulieren, de twee
+blokken op de assessmentpagina's, de oefenpagina's, whitepapers,
+toepassingen, shop, trainingen en geschiktvoorzorg. Een bot kan Formspree
+daardoor niet meer omzeilen. De interne mail bevat nu ook alle overige
+velden die een formulier meestuurt, zodat er van die aanvragen niets
+verloren gaat.
+
+Foutmeldingen staan in zes talen.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ functions/_lib/mens.js                        | 45 ++++++++++
+ functions/api/aanvraag.js                     | 15 ++++
+ functions/api/oefenmateriaal.js               |  4 +
+ src/components/Mensencheck.astro              | 89 +++++++++++++++++++
+ src/components/OefenAanvraagForm.astro        | 15 +++-
+ src/components/Shop.astro                     | 13 ++-
+ src/components/Toepassing.astro               | 11 ++-
+ src/components/WhitepaperDetail.astro         | 11 ++-
+ src/data/mensencheck-tekst.js                 | 10 +++
+ src/pages/[lang]/assessments/[slug].astro     | 11 ++-
+ src/pages/assessments/[slug].astro            | 11 ++-
+ src/pages/contact.astro                       |  4 +-
+ src/pages/de/contact.astro                    |  4 +-
+ src/pages/demo.astro                          |  4 +-
+ src/pages/en/contact.astro                    |  4 +-
+ src/pages/es/contact.astro                    |  4 +-
+ src/pages/fr/contact.astro                    |  4 +-
+ src/pages/geschiktvoorzorg/index.astro        |  6 +-
+ src/pages/inschrijfformulier-trainingen.astro | 10 ++-
+ src/pages/ro/contact.astro                    |  4 +-
+ 20 files changed, 262 insertions(+), 17 deletions(-)
+ create mode 100644 functions/_lib/mens.js
+ create mode 100644 src/components/Mensencheck.astro
+ create mode 100644 src/data/mensencheck-tekst.js
+
+diff --git a/functions/_lib/mens.js b/functions/_lib/mens.js
+new file mode 100644
+index 0000000..4566870
+--- /dev/null
++++ b/functions/_lib/mens.js
+@@ -0,0 +1,45 @@
++// Spamcontrole aan de serverkant. Drie lagen, onafhankelijk van elkaar:
++//   1. het verborgen veld "website"; alleen een bot vult dat in
++//   2. het veld "gestart"; ontbreekt het of zit er minder dan drie seconden
++//      tussen openen en verzenden, dan is het geen mens
++//   3. Cloudflare Turnstile, zodra TURNSTILE_SECRET_KEY is ingesteld
++// Laag 1 en 2 werken zonder instellingen. Laag 3 slaat pas aan met de sleutel,
++// zodat het formulier blijft werken zolang die nog niet is gezet.
++const MIN_MS = 3000;
++const MAX_MS = 1000 * 60 * 60 * 6;
++
++export async function controleerMens(env, body, request) {
++  if (String(body.website || "").trim() !== "") return { ok: false, reden: "val" };
++
++  const gestart = Number(body.gestart || 0);
++  if (!Number.isFinite(gestart) || gestart <= 0) return { ok: false, reden: "geen_tijd" };
++  const verstreken = Date.now() - gestart;
++  if (verstreken < MIN_MS) return { ok: false, reden: "te_snel" };
++  if (verstreken > MAX_MS) return { ok: false, reden: "verlopen" };
++
++  const geheim = env && env.TURNSTILE_SECRET_KEY;
++  if (!geheim) return { ok: true, reden: "zonder_turnstile" };
++
++  const token = String(body["cf-turnstile-response"] || "");
++  if (!token) return { ok: false, reden: "geen_token" };
++
++  const veld = new FormData();
++  veld.append("secret", geheim);
++  veld.append("response", token);
++  const ip = request.headers.get("CF-Connecting-IP");
++  if (ip) veld.append("remoteip", ip);
++
++  try {
++    const r = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", body: veld });
++    const uit = await r.json();
++    if (uit && uit.success) return { ok: true, reden: "turnstile" };
++    return { ok: false, reden: "turnstile_afgewezen" };
++  } catch {
++    // Valt de controle uit, dan laten we de aanvraag door; laag 1 en 2 hebben
++    // hun werk al gedaan en een storing mag geen klant kosten.
++    return { ok: true, reden: "turnstile_onbereikbaar" };
++  }
++}
++
++/** Velden die niet in de mail thuishoren. */
++export const TECHNISCH = new Set(["website", "gestart", "cf-turnstile-response", "taal", "bron", "soort", "onderwerp", "onderdeel", "titel"]);
+diff --git a/functions/api/aanvraag.js b/functions/api/aanvraag.js
+index e19c4e3..70ba069 100644
+--- a/functions/api/aanvraag.js
++++ b/functions/api/aanvraag.js
+@@ -5,6 +5,7 @@
+ // pagina waarop is aangevraagd.
+ import { sendMail } from "../_lib/mail.js";
+ import { PARTICULIER_MAIL } from "../../src/data/aanvraag-tekst.js";
++import { controleerMens, TECHNISCH } from "../_lib/mens.js";
+ 
+ const TALEN = ["nl", "en", "de", "fr", "es", "ro"];
+ const schoon = (s, max) => String(s == null ? "" : s).replace(/[\r\n\t]+/g, " ").trim().slice(0, max);
+@@ -38,6 +39,9 @@ export async function onRequestPost({ request, env }) {
+ 
+   if (!mailOk(email)) return json({ error: "invalid_email" }, 400);
+ 
++  const mens = await controleerMens(env, body, request);
++  if (!mens.ok) return json({ error: "geen_mens", reden: mens.reden }, 422);
++
+   const naarIntern = (env && env.REQUEST_EMAIL_TO) || "service@hrmforce.com";
+   const ccIntern = (env && env.REQUEST_EMAIL_CC) || "f.hendriks@hrmforce.com";
+   const van = (env && env.REQUEST_EMAIL_FROM) || "service@hrmforce.com";
+@@ -56,6 +60,17 @@ export async function onRequestPost({ request, env }) {
+     bericht || "-",
+   ].filter((r) => r !== "");
+ 
++  // Alles wat dit formulier verder meestuurt, zodat er niets verloren gaat.
++  const gebruikt = new Set(["naam", "voornaam", "firstname", "nombre", "prenume", "vorname",
++    "achternaam", "surname", "apellido", "nume", "email", "e-mail", "correo",
++    "bedrijf", "company", "organisatie", "empresa", "firma", "entreprise", "companie",
++    "telefoon", "phone", "tel", "telefono", "telefon",
++    "bericht", "message", "vraag", "mensaje", "nachricht", "mesaj", "subject", "asunto", "betreff", "sujet", "subiect"]);
++  const overig = Object.entries(body)
++    .filter(([k, v]) => !gebruikt.has(k) && !TECHNISCH.has(k) && String(v).trim() !== "")
++    .map(([k, v]) => `${k}: ${schoon(v, 500)}`);
++  if (overig.length) regels.push("", "Overige velden:", ...overig);
++
+   const kop = soort === "particulier"
+     ? "Particuliere aanvraag, doorverwijzing is automatisch verstuurd."
+     : "Zakelijke aanvraag.";
+diff --git a/functions/api/oefenmateriaal.js b/functions/api/oefenmateriaal.js
+index 26afd5c..b68d188 100644
+--- a/functions/api/oefenmateriaal.js
++++ b/functions/api/oefenmateriaal.js
+@@ -2,6 +2,7 @@
+ // kandidaat, met oefenen@hrmforce.com in cc zodat de aanvraag daar binnenkomt.
+ // De documenten staan als PDF in public/media/oefenvragen.
+ import { sendMail } from "../_lib/mail.js";
++import { controleerMens } from "../_lib/mens.js";
+ 
+ const schoon = (s, max) => String(s == null ? "" : s).replace(/[\r\n\t]+/g, " ").trim().slice(0, max);
+ const mailOk = (s) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s);
+@@ -94,6 +95,9 @@ export async function onRequestPost({ request, env }) {
+   if (!TALEN.includes(taal)) taal = "nl";
+   if (!mailOk(email)) return json({ error: "invalid_email" }, 400);
+ 
++  const mens = await controleerMens(env, body, request);
++  if (!mens.ok) return json({ error: "geen_mens", reden: mens.reden }, 422);
++
+   const t = T[taal];
+   const doc = DOCUMENT[onderdeel];
+   const origin = new URL(request.url).origin;
+diff --git a/src/components/Mensencheck.astro b/src/components/Mensencheck.astro
+new file mode 100644
+index 0000000..f7fc4d9
+--- /dev/null
++++ b/src/components/Mensencheck.astro
+@@ -0,0 +1,89 @@
++---
++/* Spamcontrole voor alle formulieren. Drie lagen:
++   1. een verborgen veld dat alleen een bot invult
++   2. de tijd tussen openen en verzenden; onder de drie seconden is het geen mens
++   3. het vakje van Cloudflare Turnstile, zodra de sleutels zijn ingesteld
++   Zonder sleutels blijven laag 1 en 2 gewoon werken en ziet de bezoeker niets
++   extra's. De server controleert alle drie; hier staat alleen wat de bezoeker
++   nodig heeft. */
++import { MENS_UI } from "../data/mensencheck-tekst.js";
++const { lang = "nl" } = Astro.props;
++const u = MENS_UI[lang] || MENS_UI.nl;
++const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
++const TAAL = { nl: "nl", en: "en", de: "de", fr: "fr", es: "es", ro: "ro" };
++---
++<div class="mc-val" aria-hidden="true">
++  <label for={`mc-web-${lang}`}>{u.val}</label>
++  <input id={`mc-web-${lang}`} type="text" name="website" tabindex="-1" autocomplete="off" />
++</div>
++<input type="hidden" name="gestart" value="" />
++{siteKey && (
++  <div class="mc-vak cf-turnstile" data-sitekey={siteKey} data-language={TAAL[lang] || "nl"} data-theme="light" data-size="flexible"></div>
++)}
++
++<style is:global>
++  .mc-val { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
++  .mc-vak { margin: 0 0 14px; max-width: 320px; }
++  .vv-form .mc-vak { flex-basis: 100%; margin: 4px 0 0; }
++  .dm-form .mc-vak { margin: 0 0 16px; }
++  .mc-melding { margin: 12px 0 0; font-size: 14px; font-weight: 600; line-height: 1.45; }
++  .mc-melding.ok { color: #1a7f4b; }
++  .mc-melding.fout { color: #b3261e; }
++  .pm-req .mc-melding, .gvz-form .mc-melding { color: #fff; }
++  .pm-req .mc-melding.fout, .gvz-form .mc-melding.fout { color: #ffd4cf; }
++</style>
++
++<script>
++  (function () {
++    /* Zet het starttijdstip zodra de pagina er staat. Een bot die het formulier
++       rechtstreeks post heeft dit veld niet ingevuld. */
++    function stempel() {
++      document.querySelectorAll('input[name="gestart"]').forEach(function (i) {
++        if (!i.value) i.value = String(Date.now());
++      });
++    }
++    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", stempel);
++    else stempel();
++
++    /* Afhandeling voor de formulieren die hiervoor rechtstreeks naar Formspree
++       gingen. Formulieren met een eigen script doen niet mee. */
++    document.addEventListener("submit", function (ev) {
++      var form = ev.target;
++      if (!form || !form.matches || !form.matches("form[data-mensform]")) return;
++      if (ev.defaultPrevented) return;
++      ev.preventDefault();
++      var knop = form.querySelector("button[type=submit], input[type=submit]");
++      var melding = form.querySelector(".mc-melding");
++      if (!melding) {
++        melding = document.createElement("p");
++        melding.className = "mc-melding";
++        form.appendChild(melding);
++      }
++      var oud = knop ? knop.textContent : "";
++      if (knop) { knop.disabled = true; knop.textContent = form.dataset.bezig || "..."; }
++      melding.className = "mc-melding";
++      melding.textContent = "";
++      fetch(form.getAttribute("action"), {
++        method: "POST", body: new FormData(form), headers: { Accept: "application/json" },
++      })
++        .then(function (r) { return r.json().catch(function () { return {}; }); })
++        .then(function (uit) {
++          if (knop) { knop.disabled = false; knop.textContent = oud; }
++          if (uit && uit.ok) {
++            form.reset();
++            stempel();
++            melding.className = "mc-melding ok";
++            melding.textContent = form.dataset.ok || "";
++          } else {
++            melding.className = "mc-melding fout";
++            melding.textContent = (uit && uit.error === "geen_mens") ? (form.dataset.mensfout || "") : (form.dataset.fout || "");
++          }
++        })
++        .catch(function () {
++          if (knop) { knop.disabled = false; knop.textContent = oud; }
++          melding.className = "mc-melding fout";
++          melding.textContent = form.dataset.fout || "";
++        });
++    });
++  })();
++</script>
+diff --git a/src/components/OefenAanvraagForm.astro b/src/components/OefenAanvraagForm.astro
+index f6068a5..ba1cf70 100644
+--- a/src/components/OefenAanvraagForm.astro
++++ b/src/components/OefenAanvraagForm.astro
+@@ -8,6 +8,14 @@ const NAAM_LABEL = {
+   nl: "Je naam", en: "Your name", de: "Ihr Name", fr: "Votre nom", es: "Tu nombre", ro: "Numele t\u0103u",
+ };
+ const naamLabel = NAAM_LABEL[lang] || NAAM_LABEL.nl;
++const MENSFOUT = {
++  nl: "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.",
++  en: "We could not confirm that you are human. Tick the box and try again.",
++  de: "Wir konnten nicht feststellen, dass Sie ein Mensch sind. Bitte das Kästchen anklicken und erneut versuchen.",
++  fr: "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez.",
++  es: "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo.",
++  ro: "Nu am putut confirma că ești o persoană. Bifează căsuța și încearcă din nou.",
++};
+ const BEVESTIGING = {
+   nl: { ok: "Gelukt. Je oefenvragen zijn onderweg naar je mailbox.", fout: "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar oefenen@hrmforce.com.", bezig: "Bezig…" },
+   en: { ok: "Done. Your practice questions are on their way to your inbox.", fout: "Something went wrong while sending. Please try again or email oefenen@hrmforce.com.", bezig: "Working…" },
+@@ -17,15 +25,18 @@ const BEVESTIGING = {
+   ro: { ok: "Gata. Întrebările tale de exersare sunt pe drum spre inbox.", fout: "A apărut o eroare la trimitere. Încearcă din nou sau scrie la oefenen@hrmforce.com.", bezig: "Se trimite…" },
+ };
+ const b = BEVESTIGING[lang] || BEVESTIGING.nl;
++const mensfout = MENSFOUT[lang] || MENSFOUT.nl;
++import Mensencheck from "./Mensencheck.astro";
+ ---
+ <form class={`oa-form ${klasse}`} method="POST" action="/api/oefenmateriaal"
+-      data-oefenaanvraag data-ok={b.ok} data-fout={b.fout} data-bezig={b.bezig}>
++      data-oefenaanvraag data-ok={b.ok} data-fout={b.fout} data-bezig={b.bezig} data-mensfout={mensfout}>
+   <input type="hidden" name="onderdeel" value={onderdeel} />
+   <input type="hidden" name="taal" value={lang} />
+   <input type="hidden" name="titel" value={titel} />
+   <input type="hidden" name="bron" value={bron} />
+   <input type="text" name="naam" autocomplete="name" placeholder={naamLabel} aria-label={naamLabel} />
+   <input type="email" name="email" required placeholder={placeholder} aria-label={placeholder} />
++  <Mensencheck lang={lang} />
+   <button type="submit" class="btn btn-primary">{knop}</button>
+ </form>
+ <p class="oa-melding" hidden></p>
+@@ -76,7 +87,7 @@ const b = BEVESTIGING[lang] || BEVESTIGING.nl;
+         if (knop) { knop.disabled = false; knop.textContent = oudeTekst; }
+         if (!melding) return;
+         var gelukt = uit && uit.ok;
+-        melding.textContent = gelukt ? form.dataset.ok : form.dataset.fout;
++        melding.textContent = gelukt ? form.dataset.ok : (uit && uit.error === "geen_mens" ? form.dataset.mensfout : form.dataset.fout);
+         melding.className = "oa-melding " + (gelukt ? "ok" : "fout");
+         melding.hidden = false;
+         if (gelukt) form.reset();
+diff --git a/src/components/Shop.astro b/src/components/Shop.astro
+index ff8c5df..fca78b3 100644
+--- a/src/components/Shop.astro
++++ b/src/components/Shop.astro
+@@ -139,6 +139,12 @@ const rq = REQ_I18N[lang] || REQ_I18N.nl;
+ const FAQ_SEG = {};
+ Object.keys(BY_SEGMENT).forEach((s) => { FAQ_SEG[s] = faqFor(s, lang); });
+ const FAQ_DEFAULT = generalFaq(lang);
++import Mensencheck from "./Mensencheck.astro";
++const MC_OK = { nl: "Bedankt. We nemen zo snel mogelijk contact met je op.", en: "Thank you. We will get in touch as soon as we can.", de: "Danke. Wir melden uns so schnell wie möglich.", fr: "Merci. Nous vous recontactons au plus vite.", es: "Gracias. Nos pondremos en contacto lo antes posible.", ro: "Mulțumim. Revenim cât de repede putem." };
++const MC_FOUT = { nl: "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.", en: "Something went wrong while sending. Please try again or email service@hrmforce.com.", de: "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.", fr: "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.", es: "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.", ro: "A apărut o eroare la trimitere. Încearcă din nou sau scrie la service@hrmforce.com." };
++const MC_MENS = { nl: "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.", en: "We could not confirm that you are human. Tick the box and try again.", de: "Wir konnten nicht feststellen, dass Sie ein Mensch sind. Bitte das Kästchen anklicken und erneut versuchen.", fr: "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez.", es: "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo.", ro: "Nu am putut confirma că ești o persoană. Bifează căsuța și încearcă din nou." };
++const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…", fr: "Envoi…", es: "Enviando…", ro: "Se trimite…" };
++
+ ---
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+ 
+@@ -219,7 +225,7 @@ const FAQ_DEFAULT = generalFaq(lang);
+           <div class="pm-desc" id="pmDesc"></div>
+           <div class="pm-faq" id="pmFaq"></div>
+           <button class="btn btn-primary pm-add" id="pmAdd" type="button">{ct.add}</button>
+-          <form class="pm-req" id="pmReq" method="POST" action={FORMSPREE_ENDPOINT}>
++          <form class="pm-req" id="pmReq" method="POST" action="/api/aanvraag" data-mensform data-ok={MC_OK[lang] || MC_OK.nl} data-fout={MC_FOUT[lang] || MC_FOUT.nl} data-mensfout={MC_MENS[lang] || MC_MENS.nl} data-bezig={MC_BEZIG[lang] || MC_BEZIG.nl}>
+             <div class="pm-req-h">{rq.title}</div>
+             <p class="pm-req-intro">{rq.intro}</p>
+             <input type="hidden" name="product" id="pmReqProduct" />
+@@ -229,6 +235,9 @@ const FAQ_DEFAULT = generalFaq(lang);
+               <input type="email" name="email" id="pmReqEmail" placeholder={rq.email} required />
+             </div>
+             <input type="tel" name="telefoon" id="pmReqPhone" placeholder={rq.phone} />
++            <input type="hidden" name="taal" value={lang} />
++            <input type="hidden" name="bron" value="shop" />
++            <Mensencheck lang={lang} />
+             <button type="submit" class="btn btn-light pm-req-btn" id="pmReqBtn">{rq.submit}</button>
+             <p class="pm-req-done" id="pmReqDone" hidden>{rq.thanks}</p>
+           </form>
+@@ -612,7 +621,7 @@ const FAQ_DEFAULT = generalFaq(lang);
+     if (_reqForm) _reqForm.addEventListener("submit", function (e) {
+       e.preventDefault();
+       var btn = document.getElementById("pmReqBtn"); btn.disabled = true; btn.textContent = RQ.sending;
+-      fetch(FORM, { method: "POST", headers: { Accept: "application/json" }, body: new FormData(_reqForm) })
++      fetch("/api/aanvraag", { method: "POST", headers: { Accept: "application/json" }, body: new FormData(_reqForm) })
+         .then(function (r) {
+           if (r.ok) { _reqForm.querySelector(".pm-req-row").style.display = "none"; document.getElementById("pmReqPhone").style.display = "none"; btn.style.display = "none"; document.getElementById("pmReqDone").hidden = false; }
+           else { btn.disabled = false; btn.textContent = RQ.submit; }
+diff --git a/src/components/Toepassing.astro b/src/components/Toepassing.astro
+index 0de94ce..c5adaab 100644
+--- a/src/components/Toepassing.astro
++++ b/src/components/Toepassing.astro
+@@ -35,6 +35,12 @@ const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList",
+ ] };
+ const _svcLd = { "@context": "https://schema.org", "@type": "Service", name: t.title, description: t.metaDescription, provider: { "@type": "Organization", name: "hrmforce" }, areaServed: "EU" };
+ const _faqLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: (t.faq || []).map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) };
++import Mensencheck from "./Mensencheck.astro";
++const MC_OK = { nl: "Bedankt. We nemen zo snel mogelijk contact met je op.", en: "Thank you. We will get in touch as soon as we can.", de: "Danke. Wir melden uns so schnell wie möglich.", fr: "Merci. Nous vous recontactons au plus vite.", es: "Gracias. Nos pondremos en contacto lo antes posible.", ro: "Mulțumim. Revenim cât de repede putem." };
++const MC_FOUT = { nl: "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.", en: "Something went wrong while sending. Please try again or email service@hrmforce.com.", de: "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.", fr: "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.", es: "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.", ro: "A apărut o eroare la trimitere. Încearcă din nou sau scrie la service@hrmforce.com." };
++const MC_MENS = { nl: "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.", en: "We could not confirm that you are human. Tick the box and try again.", de: "Wir konnten nicht feststellen, dass Sie ein Mensch sind. Bitte das Kästchen anklicken und erneut versuchen.", fr: "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez.", es: "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo.", ro: "Nu am putut confirma că ești o persoană. Bifează căsuța și încearcă din nou." };
++const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…", fr: "Envoi…", es: "Enviando…", ro: "Se trimite…" };
++
+ ---
+ <script type="application/ld+json" is:inline set:html={JSON.stringify(_svcLd)}></script>
+ <script type="application/ld+json" is:inline set:html={JSON.stringify(_faqLd)}></script>
+@@ -97,13 +103,16 @@ const _faqLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntit
+   <div class="center"><div class="eyebrow">{ui.formEy}</div>
+     <h2 class="section-title">{ui.formT}</h2>
+     <p class="lead" style="margin-bottom:36px">{ui.formLead}</p></div>
+-  <form class="formcard" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
++  <form class="formcard" action="/api/aanvraag" method="POST" data-mensform data-ok={MC_OK[lang] || MC_OK.nl} data-fout={MC_FOUT[lang] || MC_FOUT.nl} data-mensfout={MC_MENS[lang] || MC_MENS.nl} data-bezig={MC_BEZIG[lang] || MC_BEZIG.nl}>
+     <input type="hidden" name="onderwerp" value={`${ui.interest}: ${t.title}`} />
+     <div class="frow">
+       <div class="fg"><label>{ui.fn} *</label><input type="text" name="voornaam" required /></div>
+       <div class="fg"><label>{ui.we} *</label><input type="email" name="email" required /></div>
+     </div>
+     <div class="fg"><label>{ui.comp}</label><input type="text" name="bedrijf" /></div>
++    <input type="hidden" name="taal" value={lang} />
++    <input type="hidden" name="bron" value="toepassing" />
++    <Mensencheck lang={lang} />
+     <button type="submit" class="btn btn-primary">{ui.send}</button>
+   </form>
+ </div></section>
+diff --git a/src/components/WhitepaperDetail.astro b/src/components/WhitepaperDetail.astro
+index 0c6866f..6554c82 100644
+--- a/src/components/WhitepaperDetail.astro
++++ b/src/components/WhitepaperDetail.astro
+@@ -5,6 +5,12 @@ const { wp, ui, lang } = Astro.props;
+ const d = wp.i18n[lang] ?? wp.i18n.nl;
+ const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
+ const wpHref = localizePath("/whitepapers/", lang);
++import Mensencheck from "./Mensencheck.astro";
++const MC_OK = { nl: "Bedankt. We nemen zo snel mogelijk contact met je op.", en: "Thank you. We will get in touch as soon as we can.", de: "Danke. Wir melden uns so schnell wie möglich.", fr: "Merci. Nous vous recontactons au plus vite.", es: "Gracias. Nos pondremos en contacto lo antes posible.", ro: "Mulțumim. Revenim cât de repede putem." };
++const MC_FOUT = { nl: "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.", en: "Something went wrong while sending. Please try again or email service@hrmforce.com.", de: "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.", fr: "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.", es: "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.", ro: "A apărut o eroare la trimitere. Încearcă din nou sau scrie la service@hrmforce.com." };
++const MC_MENS = { nl: "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.", en: "We could not confirm that you are human. Tick the box and try again.", de: "Wir konnten nicht feststellen, dass Sie ein Mensch sind. Bitte das Kästchen anklicken und erneut versuchen.", fr: "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez.", es: "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo.", ro: "Nu am putut confirma că ești o persoană. Bifează căsuța și încearcă din nou." };
++const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…", fr: "Envoi…", es: "Enviando…", ro: "Se trimite…" };
++
+ ---
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={wpHref}>{ui.idxCrumb}</a> › <span>{d.title}</span></div></div>
+ 
+@@ -19,11 +25,14 @@ const wpHref = localizePath("/whitepapers/", lang);
+   <h2 class="section-title" style="margin-top:26px">{ui.inside}</h2>
+   <ul class="traits">{d.inside.map((x) => <li>{x}</li>)}</ul>
+ 
+-  <form class="wp-form formcard" id="wpform" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"} style="margin-top:26px">
++  <form class="wp-form formcard" id="wpform" action="/api/aanvraag" method="POST" style="margin-top:26px" data-mensform data-ok={MC_OK[lang] || MC_OK.nl} data-fout={MC_FOUT[lang] || MC_FOUT.nl} data-mensfout={MC_MENS[lang] || MC_MENS.nl} data-bezig={MC_BEZIG[lang] || MC_BEZIG.nl}>
+     <input type="hidden" name="onderwerp" value={`Whitepaper: ${d.title}`} />
+     <input type="hidden" name="whitepaper" value={d.title} />
+     <div class="eyebrow">{ui.form}</div>
+     <div class="fg" style="margin-top:10px"><label>{ui.email} *</label><input type="email" name="email" required placeholder="jouw@werkmail.nl" /></div>
++    <input type="hidden" name="taal" value={lang} />
++    <input type="hidden" name="bron" value="whitepaper" />
++    <Mensencheck lang={lang} />
+     <button type="submit" class="btn btn-primary">{ui.submit} &darr;</button>
+     <p class="note" style="margin-top:10px;font-size:13px;color:var(--muted)">{ui.note}</p>
+   </form>
+diff --git a/src/data/mensencheck-tekst.js b/src/data/mensencheck-tekst.js
+new file mode 100644
+index 0000000..65e8bcb
+--- /dev/null
++++ b/src/data/mensencheck-tekst.js
+@@ -0,0 +1,10 @@
++// Teksten rond de spamcontrole. Het verborgen veld heeft een label omdat
++// schermlezers anders een naamloos invoerveld aankondigen.
++export const MENS_UI = {
++  nl: { val: "Laat dit veld leeg", fout: "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.", traag: "Even geduld, probeer het over een paar seconden nog eens." },
++  en: { val: "Leave this field empty", fout: "We could not confirm that you are human. Tick the box and try again.", traag: "One moment, please try again in a few seconds." },
++  de: { val: "Dieses Feld leer lassen", fout: "Wir konnten nicht feststellen, dass Sie ein Mensch sind. Bitte das Kästchen anklicken und erneut versuchen.", traag: "Einen Moment, bitte in ein paar Sekunden erneut versuchen." },
++  fr: { val: "Laissez ce champ vide", fout: "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez.", traag: "Un instant, réessayez dans quelques secondes." },
++  es: { val: "Deja este campo vacío", fout: "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo.", traag: "Un momento, inténtalo de nuevo en unos segundos." },
++  ro: { val: "Lasă acest câmp gol", fout: "Nu am putut confirma că ești o persoană. Bifează căsuța și încearcă din nou.", traag: "O clipă, încearcă din nou peste câteva secunde." },
++};
+diff --git a/src/pages/[lang]/assessments/[slug].astro b/src/pages/[lang]/assessments/[slug].astro
+index 376363a..8fab3bb 100644
+--- a/src/pages/[lang]/assessments/[slug].astro
++++ b/src/pages/[lang]/assessments/[slug].astro
+@@ -9,6 +9,7 @@ import { detailUi } from "../../../data/assessment-detail-ui.js";
+ import { shopInfo, prijs } from "../../../data/assessment-shop.js";
+ import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../../data/site-config.js";
+ import OefenAanvraagForm from "../../../components/OefenAanvraagForm.astro";
++import Mensencheck from "../../../components/Mensencheck.astro";
+ import { localizePath, demoPath } from "../../../i18n/utils.js";
+ import { examplesFor } from "../../../data/assessment-examples.js";
+ import { extraFor } from "../../../data/assessment-detail-extra.js";
+@@ -139,6 +140,11 @@ const dvNorm = /capacit|cognit|abstract|numer|verbaal|redeneer|ability|iq|intell
+   .test(`${a.slug} ${a.title} ${(a.traits || []).join(" ")}`);
+ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentieprofiel";
+ 
++const MC_OK = { nl: "Bedankt. We nemen zo snel mogelijk contact met je op.", en: "Thank you. We will get in touch as soon as we can.", de: "Danke. Wir melden uns so schnell wie möglich.", fr: "Merci. Nous vous recontactons au plus vite.", es: "Gracias. Nos pondremos en contacto lo antes posible.", ro: "Mulțumim. Revenim cât de repede putem." };
++const MC_FOUT = { nl: "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.", en: "Something went wrong while sending. Please try again or email service@hrmforce.com.", de: "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.", fr: "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.", es: "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.", ro: "A apărut o eroare la trimitere. Încearcă din nou sau scrie la service@hrmforce.com." };
++const MC_MENS = { nl: "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.", en: "We could not confirm that you are human. Tick the box and try again.", de: "Wir konnten nicht feststellen, dass Sie ein Mensch sind. Bitte das Kästchen anklicken und erneut versuchen.", fr: "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez.", es: "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo.", ro: "Nu am putut confirma că ești o persoană. Bifează căsuța și încearcă din nou." };
++const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…", fr: "Envoi…", es: "Enviando…", ro: "Se trimite…" };
++
+ ---
+ <Base title={a.metaTitle} description={a.metaDescription} active="assessments">
+   <script type="application/ld+json" is:inline set:html={JSON.stringify(_offerLd)}></script>
+@@ -336,12 +342,15 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
+         <h2 class="section-title">{requestTitle}</h2>
+         <p class="lead" style="margin-bottom:36px">{t.requestLead}</p>
+       </div>
+-      <form class="formcard" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
++      <form class="formcard" action="/api/aanvraag" method="POST" data-mensform data-ok={MC_OK[lang] || MC_OK.nl} data-fout={MC_FOUT[lang] || MC_FOUT.nl} data-mensfout={MC_MENS[lang] || MC_MENS.nl} data-bezig={MC_BEZIG[lang] || MC_BEZIG.nl}>
+         <div class="frow">
+           <div class="fg"><label>{t.firstName}</label><input type="text" name="voornaam" required /></div>
+           <div class="fg"><label>{t.workEmail}</label><input type="email" name="email" required /></div>
+         </div>
+         <div class="fg"><label>{t.company}</label><input type="text" name="bedrijf" /></div>
++        <input type="hidden" name="taal" value={lang} />
++        <input type="hidden" name="bron" value="assessment-toegang" />
++        <Mensencheck lang={lang} />
+         <button type="submit" class="btn btn-primary">{t.submit}</button>
+       </form>
+       </div>
+diff --git a/src/pages/assessments/[slug].astro b/src/pages/assessments/[slug].astro
+index 16551d9..1907f45 100644
+--- a/src/pages/assessments/[slug].astro
++++ b/src/pages/assessments/[slug].astro
+@@ -7,6 +7,7 @@ import { assessments } from "../../data/assessments.js";
+ import { shopInfo, prijs } from "../../data/assessment-shop.js";
+ import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../data/site-config.js";
+ import OefenAanvraagForm from "../../components/OefenAanvraagForm.astro";
++import Mensencheck from "../../components/Mensencheck.astro";
+ import { getLangFromUrl, localizePath, demoPath } from "../../i18n/utils.js";
+ import { examplesFor } from "../../data/assessment-examples.js";
+ import { extraFor } from "../../data/assessment-detail-extra.js";
+@@ -134,6 +135,11 @@ const dvNorm = /capacit|cognit|abstract|numer|verbaal|redeneer|ability|iq|intell
+   .test(`${a.slug} ${a.title} ${(a.traits || []).join(" ")}`);
+ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentieprofiel";
+ 
++const MC_OK = { nl: "Bedankt. We nemen zo snel mogelijk contact met je op.", en: "Thank you. We will get in touch as soon as we can.", de: "Danke. Wir melden uns so schnell wie möglich.", fr: "Merci. Nous vous recontactons au plus vite.", es: "Gracias. Nos pondremos en contacto lo antes posible.", ro: "Mulțumim. Revenim cât de repede putem." };
++const MC_FOUT = { nl: "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.", en: "Something went wrong while sending. Please try again or email service@hrmforce.com.", de: "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.", fr: "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.", es: "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.", ro: "A apărut o eroare la trimitere. Încearcă din nou sau scrie la service@hrmforce.com." };
++const MC_MENS = { nl: "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.", en: "We could not confirm that you are human. Tick the box and try again.", de: "Wir konnten nicht feststellen, dass Sie ein Mensch sind. Bitte das Kästchen anklicken und erneut versuchen.", fr: "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez.", es: "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo.", ro: "Nu am putut confirma că ești o persoană. Bifează căsuța și încearcă din nou." };
++const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…", fr: "Envoi…", es: "Enviando…", ro: "Se trimite…" };
++
+ ---
+ <Base title={a.metaTitle} description={a.metaDescription} active="assessments">
+   <script type="application/ld+json" is:inline set:html={JSON.stringify(_offerLd)}></script>
+@@ -317,12 +323,15 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
+         <h2 class="section-title">{a.title} aanvragen</h2>
+         <p class="lead" style="margin-bottom:36px">Vul het formulier in en krijg binnen 24 uur toegang.</p>
+       </div>
+-      <form class="formcard" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
++      <form class="formcard" action="/api/aanvraag" method="POST" data-mensform data-ok={MC_OK["nl"] || MC_OK.nl} data-fout={MC_FOUT["nl"] || MC_FOUT.nl} data-mensfout={MC_MENS["nl"] || MC_MENS.nl} data-bezig={MC_BEZIG["nl"] || MC_BEZIG.nl}>
+         <div class="frow">
+           <div class="fg"><label>Voornaam *</label><input type="text" name="voornaam" required /></div>
+           <div class="fg"><label>Werk e-mail *</label><input type="email" name="email" required /></div>
+         </div>
+         <div class="fg"><label>Bedrijfsnaam</label><input type="text" name="bedrijf" /></div>
++        <input type="hidden" name="taal" value={"nl"} />
++        <input type="hidden" name="bron" value="assessment-toegang" />
++        <Mensencheck lang={"nl"} />
+         <button type="submit" class="btn btn-primary">Verzenden</button>
+       </form>
+       </div>
+diff --git a/src/pages/contact.astro b/src/pages/contact.astro
+index 8914d52..b324fcc 100644
+--- a/src/pages/contact.astro
++++ b/src/pages/contact.astro
+@@ -51,6 +51,7 @@ const offices = [
+   },
+ ];
+ import AanvraagSoort from "../components/AanvraagSoort.astro";
++import Mensencheck from "../components/Mensencheck.astro";
+ ---
+ <Base
+   title="Contact opnemen | Hrmforce.com"
+@@ -130,6 +131,7 @@ import AanvraagSoort from "../components/AanvraagSoort.astro";
+           </div>
+           <div class="next-steps"><strong>Wat gebeurt er daarna?</strong><ol><li>We reageren binnen 1 werkdag.</li><li>Een korte kennismaking, afgestemd op jouw vraag.</li><li>Een demo op maat, vrijblijvend.</li></ol><div class="ns-proof"><span class="ns-stars"><Sterren /></span> 10.000+ deelnemers · 1.200+ organisaties · 4,9/5</div></div>
+           <AanvraagSoort lang="nl" bron="contact" />
++          <Mensencheck lang="nl" />
+           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
+           <button type="submit" class="btn btn-primary">Verstuur</button>
+           <p class="privacy-note">
+@@ -335,7 +337,7 @@ import AanvraagSoort from "../components/AanvraagSoort.astro";
+               msg.textContent = uit.doorverwezen ? "Bedankt. We hebben je een mail gestuurd met de mogelijkheden voor particulieren." : "Bedankt voor je bericht. We nemen zo snel mogelijk contact met je op.";
+             } else {
+               msg.className = "form-msg error";
+-              msg.textContent = "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.";
++              msg.textContent = (uit && uit.error === "geen_mens") ? "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw." : "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.";
+             }
+           })
+           .catch(function () {
+diff --git a/src/pages/de/contact.astro b/src/pages/de/contact.astro
+index eab818c..7b75497 100644
+--- a/src/pages/de/contact.astro
++++ b/src/pages/de/contact.astro
+@@ -56,6 +56,7 @@ const offices = [
+   },
+ ];
+ import AanvraagSoort from "../../components/AanvraagSoort.astro";
++import Mensencheck from "../../components/Mensencheck.astro";
+ ---
+ <Base
+   title="Kontakt - hrmforce"
+@@ -149,6 +150,7 @@ import AanvraagSoort from "../../components/AanvraagSoort.astro";
+           </div>
+           <div class="next-steps"><strong>Wie geht es weiter?</strong><ol><li>Wir antworten innerhalb von 1 Werktag.</li><li>Ein kurzes Kennenlernen, auf Ihre Frage abgestimmt.</li><li>Eine individuelle Demo, unverbindlich.</li></ol><div class="ns-proof"><span class="ns-stars"><Sterren /></span> 10.000+ Teilnehmende · 1.200+ Organisationen · 4,9/5</div></div>
+           <AanvraagSoort lang="de" bron="contact" />
++          <Mensencheck lang="de" />
+           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
+           <button type="submit" class="btn btn-primary">Senden</button>
+           <p class="privacy-note">
+@@ -343,7 +345,7 @@ import AanvraagSoort from "../../components/AanvraagSoort.astro";
+               msg.textContent = uit.doorverwezen ? "Danke. Wir haben Ihnen die Möglichkeiten für Privatpersonen per E-Mail geschickt." : "Danke für Ihre Nachricht. Wir melden uns so schnell wie möglich.";
+             } else {
+               msg.className = "form-msg error";
+-              msg.textContent = "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.";
++              msg.textContent = (uit && uit.error === "geen_mens") ? "Wir konnten nicht feststellen, dass Sie ein Mensch sind. Bitte das Kästchen anklicken und erneut versuchen." : "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.";
+             }
+           })
+           .catch(function () {
+diff --git a/src/pages/demo.astro b/src/pages/demo.astro
+index cffe8b2..6969618 100644
+--- a/src/pages/demo.astro
++++ b/src/pages/demo.astro
+@@ -8,6 +8,7 @@ import AanvraagSoort from "../components/AanvraagSoort.astro";
+ // drie velden, één keer sociale bewijskracht. Geen navigatie-omleidingen, geen FAQ.
+ const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
+ const googleUrl = REVIEWS_EXTERNAL?.google || "";
++import Mensencheck from "../components/Mensencheck.astro";
+ ---
+ <Base
+   title="Gratis demo aanvragen | hrmforce"
+@@ -54,6 +55,7 @@ const googleUrl = REVIEWS_EXTERNAL?.google || "";
+             <label for="dm-vraag">Je vraag (optioneel)</label>
+             <textarea id="dm-vraag" name="bericht" rows="3" placeholder="Waar loop je tegenaan?"></textarea>
+           </details>
++          <Mensencheck lang="nl" />
+           <p id="demoMsg" class="form-msg" role="status" aria-live="polite"></p>
+           <button type="submit" class="btn btn-primary dm-submit">Vraag de gratis demo aan</button>
+           <p class="dm-fine">Vrijblijvend, geen verkoopdruk. We gebruiken je gegevens alleen om contact op te nemen, conform onze <a href="/trust/">privacyafspraken</a>.</p>
+@@ -88,7 +90,7 @@ const googleUrl = REVIEWS_EXTERNAL?.google || "";
+               : "Bedankt voor je aanvraag. We reageren binnen 24 uur op werkdagen.";
+           } else {
+             msg.className = "form-msg error";
+-            msg.textContent = "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.";
++            msg.textContent = (uit && uit.error === "geen_mens") ? "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw." : "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.";
+           }
+         })
+         .catch(function () {
+diff --git a/src/pages/en/contact.astro b/src/pages/en/contact.astro
+index 8b6a178..91c0cf4 100644
+--- a/src/pages/en/contact.astro
++++ b/src/pages/en/contact.astro
+@@ -47,6 +47,7 @@ const offices = [
+   },
+ ];
+ import AanvraagSoort from "../../components/AanvraagSoort.astro";
++import Mensencheck from "../../components/Mensencheck.astro";
+ ---
+ <Base
+   title="Contact - hrmforce"
+@@ -149,6 +150,7 @@ import AanvraagSoort from "../../components/AanvraagSoort.astro";
+           </div>
+           <div class="next-steps"><strong>What happens next?</strong><ol><li>We respond within 1 business day.</li><li>A short intro call, tailored to your question.</li><li>A personalised demo, no obligation.</li></ol><div class="ns-proof"><span class="ns-stars"><Sterren /></span> 10,000+ participants · 1,200+ organisations · 4.9/5</div></div>
+           <AanvraagSoort lang="en" bron="contact" />
++          <Mensencheck lang="en" />
+           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
+           <button type="submit" class="btn btn-primary">Submit</button>
+           <p class="privacy-note">
+@@ -341,7 +343,7 @@ import AanvraagSoort from "../../components/AanvraagSoort.astro";
+               msg.textContent = uit.doorverwezen ? "Thank you. We have emailed you the options for individuals." : "Thank you for your message. We will get in touch as soon as we can.";
+             } else {
+               msg.className = "form-msg error";
+-              msg.textContent = "Something went wrong while sending. Please try again or email service@hrmforce.com.";
++              msg.textContent = (uit && uit.error === "geen_mens") ? "We could not confirm that you are human. Tick the box and try again." : "Something went wrong while sending. Please try again or email service@hrmforce.com.";
+             }
+           })
+           .catch(function () {
+diff --git a/src/pages/es/contact.astro b/src/pages/es/contact.astro
+index 16c7740..509249a 100644
+--- a/src/pages/es/contact.astro
++++ b/src/pages/es/contact.astro
+@@ -48,6 +48,7 @@ const offices = [
+   },
+ ];
+ import AanvraagSoort from "../../components/AanvraagSoort.astro";
++import Mensencheck from "../../components/Mensencheck.astro";
+ ---
+ <Base
+   title="Contacto - hrmforce"
+@@ -150,6 +151,7 @@ import AanvraagSoort from "../../components/AanvraagSoort.astro";
+           </div>
+           <div class="next-steps"><strong>¿Qué pasa después?</strong><ol><li>Respondemos en un plazo de 1 día laborable.</li><li>Una breve toma de contacto, adaptada a tu pregunta.</li><li>Una demo personalizada, sin compromiso.</li></ol><div class="ns-proof"><span class="ns-stars"><Sterren /></span> 10.000+ participantes · 1.200+ organizaciones · 4,9/5</div></div>
+           <AanvraagSoort lang="es" bron="contact" />
++          <Mensencheck lang="es" />
+           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
+           <button type="submit" class="btn btn-primary">Enviar</button>
+         </form>
+@@ -331,7 +333,7 @@ import AanvraagSoort from "../../components/AanvraagSoort.astro";
+               msg.textContent = uit.doorverwezen ? "Gracias. Te hemos enviado por correo las opciones para particulares." : "Gracias por tu mensaje. Nos pondremos en contacto lo antes posible.";
+             } else {
+               msg.className = "form-msg error";
+-              msg.textContent = "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.";
++              msg.textContent = (uit && uit.error === "geen_mens") ? "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo." : "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.";
+             }
+           })
+           .catch(function () {
+diff --git a/src/pages/fr/contact.astro b/src/pages/fr/contact.astro
+index 1f04d43..d418f2b 100644
+--- a/src/pages/fr/contact.astro
++++ b/src/pages/fr/contact.astro
+@@ -46,6 +46,7 @@ const offices = [
+   },
+ ];
+ import AanvraagSoort from "../../components/AanvraagSoort.astro";
++import Mensencheck from "../../components/Mensencheck.astro";
+ ---
+ <Base
+   title="Contact - hrmforce"
+@@ -148,6 +149,7 @@ import AanvraagSoort from "../../components/AanvraagSoort.astro";
+           </div>
+           <div class="next-steps"><strong>Que se passe-t-il ensuite ?</strong><ol><li>Nous repondons sous 1 jour ouvre.</li><li>Un court echange, adapte a votre question.</li><li>Une demo personnalisee, sans engagement.</li></ol><div class="ns-proof"><span class="ns-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> 10 000+ participants &middot; 1 200+ organisations &middot; 4,9/5</div></div>
+           <AanvraagSoort lang="fr" bron="contact" />
++          <Mensencheck lang="fr" />
+           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
+           <button type="submit" class="btn btn-primary">Envoyer</button>
+           <p class="privacy-note">
+@@ -342,7 +344,7 @@ import AanvraagSoort from "../../components/AanvraagSoort.astro";
+               msg.textContent = uit.doorverwezen ? "Merci. Nous vous avons envoyé par e-mail les possibilités pour les particuliers." : "Merci pour votre message. Nous vous recontactons au plus vite.";
+             } else {
+               msg.className = "form-msg error";
+-              msg.textContent = "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.";
++              msg.textContent = (uit && uit.error === "geen_mens") ? "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez." : "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.";
+             }
+           })
+           .catch(function () {
+diff --git a/src/pages/geschiktvoorzorg/index.astro b/src/pages/geschiktvoorzorg/index.astro
+index 7e421d0..d641982 100644
+--- a/src/pages/geschiktvoorzorg/index.astro
++++ b/src/pages/geschiktvoorzorg/index.astro
+@@ -23,6 +23,7 @@ const gvzSchema = [
+   ] },
+   { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: gvzFaq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) },
+ ];
++import Mensencheck from "../../components/Mensencheck.astro";
+ ---
+ <Base crumbs={false}
+   title="Geschikt voor de Zorg | Hrmforce"
+@@ -204,7 +205,7 @@ const gvzSchema = [
+       <h2 class="section-title">Vraag een gratis demo aan</h2>
+       <p class="lead center" style="max-width:640px;margin:0 0 8px">Doe zelf de test en ontvang een voorbeeldrapportage. Gratis &middot; geen verplichting &middot; per e-mail.</p>
+     </div>
+-    <form class="gvz-form" id="gvzForm" method="POST" action={formAction}>
++    <form class="gvz-form" id="gvzForm" method="POST" action="/api/aanvraag">
+       <input type="hidden" name="_subject" value="Demo-aanvraag Geschikt voor Zorg" />
+       <div class="gvz-form-row">
+         <input type="text" name="naam" placeholder="Naam" required />
+@@ -214,6 +215,9 @@ const gvzSchema = [
+         <input type="text" name="organisatie" placeholder="Organisatie" />
+         <input type="text" name="vacatures" placeholder="Aantal openstaande vacatures (optioneel)" />
+       </div>
++      <input type="hidden" name="taal" value="nl" />
++      <input type="hidden" name="bron" value="geschiktvoorzorg" />
++      <Mensencheck lang="nl" />
+       <button type="submit" class="btn btn-primary" id="gvzBtn">Vraag de gratis demo aan</button>
+       <p class="gvz-form-done" id="gvzDone" hidden>Bedankt! We sturen de voorbeeldrapportage zo snel mogelijk per e-mail.</p>
+       <p class="gvz-form-note">We gebruiken je gegevens alleen om je de demo en rapportage te sturen.</p>
+diff --git a/src/pages/inschrijfformulier-trainingen.astro b/src/pages/inschrijfformulier-trainingen.astro
+index bab7d2d..d4db04e 100644
+--- a/src/pages/inschrijfformulier-trainingen.astro
++++ b/src/pages/inschrijfformulier-trainingen.astro
+@@ -7,6 +7,7 @@ const trainingen = [
+   "24-09-2026 Certificatietraining",
+   "19-11-2026 Certificatietraining",
+ ];
++import Mensencheck from "../components/Mensencheck.astro";
+ ---
+ <Base
+   title="Inschrijfformulier trainingen | Hrmforce"
+@@ -24,7 +25,11 @@ const trainingen = [
+   </div></section>
+ 
+   <section class="formsec"><div class="wrap">
+-    <form id="training-form" class="formcard" action="/contact/" method="POST" novalidate>
++    <form id="training-form" class="formcard" action="/api/aanvraag" method="POST" novalidate
++      data-mensform data-ok="Bedankt voor je inschrijving. We nemen zo snel mogelijk contact met je op."
++      data-fout="Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com."
++      data-mensfout="We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw."
++      data-bezig="Verzenden…">
+       <div class="fg">
+         <label for="aanhef">Aanhef *</label>
+         <select id="aanhef" name="aanhef" required>
+@@ -54,6 +59,9 @@ const trainingen = [
+       </div>
+       <div class="fg"><label for="opmerking">Opmerking</label><textarea id="opmerking" name="opmerking" rows="4"></textarea></div>
+       <div id="form-msg" style="display:none;margin-bottom:16px;padding:12px 14px;border-radius:var(--radius);font-size:14px"></div>
++      <input type="hidden" name="taal" value="nl" />
++      <input type="hidden" name="bron" value="training" />
++      <Mensencheck lang="nl" />
+       <button type="submit" class="btn btn-primary">Verzenden</button>
+       <p style="color:var(--muted);font-size:13px;margin-top:14px">Velden met een * zijn verplicht. Na verzending nemen wij zo snel mogelijk contact met je op.</p>
+     </form>
+diff --git a/src/pages/ro/contact.astro b/src/pages/ro/contact.astro
+index 318a371..c42a984 100644
+--- a/src/pages/ro/contact.astro
++++ b/src/pages/ro/contact.astro
+@@ -47,6 +47,7 @@ const offices = [
+   },
+ ];
+ import AanvraagSoort from "../../components/AanvraagSoort.astro";
++import Mensencheck from "../../components/Mensencheck.astro";
+ ---
+ <Base
+   title="Contact - hrmforce"
+@@ -150,6 +151,7 @@ import AanvraagSoort from "../../components/AanvraagSoort.astro";
+           </div>
+           <div class="next-steps"><strong>Ce urmează?</strong><ol><li>Răspundem în maximum 1 zi lucrătoare.</li><li>O scurtă discuție, adaptată întrebării tale.</li><li>O demonstrație personalizată, fără obligații.</li></ol><div class="ns-proof"><span class="ns-stars"><Sterren /></span> 10.000+ participanți · 1.200+ organizații · 4,9/5</div></div>
+           <AanvraagSoort lang="ro" bron="contact" />
++          <Mensencheck lang="ro" />
+           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
+           <button type="submit" class="btn btn-primary">Submit</button>
+         </form>
+@@ -254,7 +256,7 @@ import AanvraagSoort from "../../components/AanvraagSoort.astro";
+               msg.textContent = uit.doorverwezen ? "Mulțumim. Ți-am trimis pe e-mail opțiunile pentru persoane fizice." : "Mulțumim pentru mesaj. Revenim cât de repede putem.";
+             } else {
+               msg.className = "form-msg error";
+-              msg.textContent = "A apărut o eroare la trimitere. Încearcă din nou sau scrie la service@hrmforce.com.";
++              msg.textContent = (uit && uit.error === "geen_mens") ? "Nu am putut confirma că ești o persoană. Bifează căsuța și încearcă din nou." : "A apărut o eroare la trimitere. Încearcă din nou sau scrie la service@hrmforce.com.";
+             }
+           })
+           .catch(function () {
+-- 
+2.43.0
+

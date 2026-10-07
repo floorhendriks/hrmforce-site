@@ -1,0 +1,12 @@
+---
+import Base from "../../layouts/Base.astro";
+import Integraties from "../../components/Integraties.astro";
+import { integratiesContent } from "../../data/integraties-content.js";
+import { perTaal } from "../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const t = integratiesContent[lang];
+---
+<Base title={t.meta.title} description={t.meta.description} active="solutions">
+  <Integraties t={t} lang={lang} />
+</Base>

@@ -1,0 +1,8 @@
+---
+import SkillIndex from '../../../../views/SkillIndex.astro';
+import { altSection } from '../../../../lib/alt';
+import { perTaal } from "../../../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+---
+<SkillIndex lang={lang} alternates={altSection('skills')} />

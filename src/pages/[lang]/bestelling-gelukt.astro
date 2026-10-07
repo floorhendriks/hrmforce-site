@@ -1,0 +1,12 @@
+---
+import Base from "../../layouts/Base.astro";
+import Bedankt from "../../components/Bedankt.astro";
+import { SUCCESS_I18N } from "../../data/checkout-i18n.js";
+import { perTaal } from "../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const t = SUCCESS_I18N[lang];
+---
+<Base title={t.title} description={t.h1} noindex active="shop">
+  <Bedankt lang={lang} />
+</Base>

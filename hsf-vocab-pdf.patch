@@ -1,0 +1,1217 @@
+From 7b8d366a62d33ff7eced91e92504e191498e3d5a Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Wed, 9 Sep 2026 14:12:15 +0000
+Subject: [PATCH] Vocabulairvelden vertaald en pdf-profielen naar R2 in plaats
+ van de repo
+
+VOCABULAIR
+Een deel van de dataset is geen vrije tekst maar een vaste waarde zonder en-variant:
+de meetmethode ("Werkproef"), trainbaarheid ("middel"), ai-vraag ("stabiel"),
+herbruikbaarheid ("transversaal"), instrumenten, de competentienaam uit het
+50-competentieframework ("Plannen en organiseren"), de sectortags ("mkb", "zorg"), de
+CBS-beroepsomschrijving en de instrumentomschrijving. Die bleven op ALLE andere talen
+Nederlands staan, ook op de Engelse pagina's.
+
+- src/data/vocab.json: 221 waarden in zes talen, gevuld door scripts/hsf-translate-vocab.mjs.
+- src/data/vocab-seed.json: handmatige termen die voorgaan op DeepL. De 17 hrmforce-
+  productnamen (Big Fifty, Ability Scan, Pulse Survey, ...) staan daar met product: true
+  en blijven in elke taal gelijk. De 25 sectortags staan er met de hand in alle talen in,
+  want als los woord zonder context maakte DeepL van "mkb" Fachexperten en van "bouw" Aufbau.
+- src/lib/vocab.ts biedt vt(waarde, taal); toegepast in SkillPage, FunctionPage,
+  FunctionFull, ProfileTable, CompetencyTable, InstrumentList, MatchCalculator en de
+  sectorchips in Search. Bij de chips blijft data-tag de Nederlandse sleutel, want daarop
+  filtert de zoekindex; alleen het label is vertaald. Ook de CategoryCode-naam in de
+  JSON-LD is nu vertaald.
+- Senioriteit (junior/medior/senior/lead) blijft ongewijzigd, dat zijn internationale termen.
+
+PDF-PROFIELEN
+450 profielen x 6 talen is 2700 pdf's van samen 1,2 GB. Dat hoort niet in git en niet in
+elke Cloudflare-build, en het zou 2700 van de 20.000 bestanden per deploy opsouperen.
+
+- functions/downloads/[[path]].js levert de pdf's uit de R2-bucket (binding DOWNLOADS in
+  wrangler.toml) op /downloads/<taal>/<slug>.pdf, dus op het eigen domein. Dat is nodig
+  omdat het download-attribuut alleen same-origin werkt: via een downloadsubdomein zou de
+  pdf in een tab openen in plaats van opslaan. Statische bestanden gaan bij Pages voor op
+  functies, dus de bestaande nl- en en-pdf's blijven werken tot ze uit de repo gaan.
+- src/data/downloads-manifest.json zegt welke pdf's bestaan, zodat de build dat niet meer
+  met existsSync hoeft te bepalen. Staat een profiel er niet in, dan valt de knop terug op
+  de volledige printpagina. Getest door de/managing-director en de hele ro-tak uit het
+  manifest te halen: precies die pagina's vielen terug, de rest niet.
+- scripts/hsf-build-downloads-manifest.mjs schrijft het manifest,
+  scripts/hsf-upload-downloads.sh synct naar R2, hsf-build-pdfs.mjs kent alle zes talen.
+- public/downloads/ staat in .gitignore.
+
+Getest: build van 13.591 pagina's, en een steekproef van 80 pagina's in DE en ES vindt geen
+Nederlandse vocabulairwaarde meer.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_012zCdcwhqNudvoPtDHsesZB
+---
+ .gitignore                               |   2 +
+ functions/downloads/[[path]].js          |  46 ++++
+ package.json                             |   4 +-
+ scripts/hsf-build-downloads-manifest.mjs |  48 ++++
+ scripts/hsf-translate-vocab.mjs          | 161 ++++++++++++
+ scripts/hsf-upload-downloads.sh          |  63 +++++
+ src/components/CompetencyTable.astro     |   8 +-
+ src/components/InstrumentList.astro      |   5 +-
+ src/components/MatchCalculator.astro     |   3 +-
+ src/components/ProfileTable.astro        |   5 +-
+ src/components/Search.astro              |   3 +-
+ src/data/downloads-manifest.json         |   1 +
+ src/data/vocab-seed.json                 | 322 +++++++++++++++++++++++
+ src/data/vocab.json                      |   1 +
+ src/lib/downloads.ts                     |  28 ++
+ src/lib/vocab.ts                         |  32 +++
+ src/pages/skills-framework/README-hsf.md |  25 +-
+ src/views/FunctionFull.astro             |   7 +-
+ src/views/FunctionPage.astro             |  22 +-
+ src/views/SkillPage.astro                |  20 +-
+ wrangler.toml                            |   6 +
+ 21 files changed, 771 insertions(+), 41 deletions(-)
+ create mode 100644 functions/downloads/[[path]].js
+ create mode 100644 scripts/hsf-build-downloads-manifest.mjs
+ create mode 100644 scripts/hsf-translate-vocab.mjs
+ create mode 100755 scripts/hsf-upload-downloads.sh
+ create mode 100644 src/data/downloads-manifest.json
+ create mode 100644 src/data/vocab-seed.json
+ create mode 100644 src/data/vocab.json
+ create mode 100644 src/lib/downloads.ts
+ create mode 100644 src/lib/vocab.ts
+
+diff --git a/.gitignore b/.gitignore
+index 913372f..320497e 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -2,3 +2,5 @@ node_modules/
+ dist/
+ .astro/
+ scripts/.deepl-cache*.json
++# de functieprofiel-pdf's staan in de R2-bucket, niet in git (zie functions/downloads)
++public/downloads/
+diff --git a/functions/downloads/[[path]].js b/functions/downloads/[[path]].js
+new file mode 100644
+index 0000000..acddfa1
+--- /dev/null
++++ b/functions/downloads/[[path]].js
+@@ -0,0 +1,46 @@
++// GET /downloads/<taal>/<slug>.pdf — de functieprofiel-pdf's uit de R2-bucket.
++//
++// De pdf's staan niet in de repo: 450 profielen x 6 talen is ongeveer 1,2 GB en dat
++// hoort niet in git en niet in elke Cloudflare-build. Ze staan in de R2-bucket die
++// in wrangler.toml aan de binding DOWNLOADS hangt, en deze functie levert ze uit op
++// het eigen domein. Dat laatste is belangrijk: het download-attribuut in de leadform
++// werkt alleen same-origin, dus een los downloadsubdomein zou de pdf in een tab
++// openen in plaats van hem op te slaan.
++//
++// Statische bestanden gaan bij Pages voor op functies. Staat een pdf dus nog wel in
++// public/downloads, dan wordt die geleverd en komt deze functie niet aan bod.
++//
++// Uploaden: zie scripts/hsf-upload-downloads.sh
++
++const LANGS = new Set(['nl', 'en', 'de', 'fr', 'es', 'ro']);
++
++export async function onRequestGet(context) {
++  const { params, env, request } = context;
++  const parts = Array.isArray(params.path) ? params.path : [params.path].filter(Boolean);
++
++  // exact <taal>/<slug>.pdf, geen padtrucs
++  if (parts.length !== 2) return new Response('not found', { status: 404 });
++  const [lang, file] = parts;
++  if (!LANGS.has(lang) || !/^[a-z0-9][a-z0-9-]*\.pdf$/.test(file)) {
++    return new Response('not found', { status: 404 });
++  }
++  if (!env.DOWNLOADS) return new Response('downloads unavailable', { status: 503 });
++
++  const key = `${lang}/${file}`;
++  const object = await env.DOWNLOADS.get(key);
++  if (!object) return new Response('not found', { status: 404 });
++
++  const headers = new Headers();
++  object.writeHttpMetadata(headers);
++  headers.set('Content-Type', 'application/pdf');
++  headers.set('Content-Disposition', `attachment; filename="hrmforce-${file}"`);
++  headers.set('Cache-Control', 'public, max-age=86400, s-maxage=604800');
++  headers.set('ETag', object.httpEtag);
++  headers.set('X-Content-Type-Options', 'nosniff');
++
++  // conditionele request: scheelt bandbreedte bij herhaald ophalen
++  if (request.headers.get('if-none-match') === object.httpEtag) {
++    return new Response(null, { status: 304, headers });
++  }
++  return new Response(object.body, { headers });
++}
+diff --git a/package.json b/package.json
+index 151f9c6..afab69d 100644
+--- a/package.json
++++ b/package.json
+@@ -11,7 +11,9 @@
+     "hsf:pdf": "node scripts/hsf-build-pdfs.mjs",
+     "hsf:translate": "node scripts/hsf-translate-data.mjs",
+     "hsf:translate-ui": "node scripts/hsf-translate-ui.mjs",
+-    "hsf:search": "node scripts/hsf-build-search.mjs"
++    "hsf:search": "node scripts/hsf-build-search.mjs",
++    "hsf:manifest": "node scripts/hsf-build-downloads-manifest.mjs",
++    "hsf:upload": "bash scripts/hsf-upload-downloads.sh"
+   },
+   "dependencies": {
+     "@astrojs/sitemap": "^3.2.0",
+diff --git a/scripts/hsf-build-downloads-manifest.mjs b/scripts/hsf-build-downloads-manifest.mjs
+new file mode 100644
+index 0000000..ce11fc6
+--- /dev/null
++++ b/scripts/hsf-build-downloads-manifest.mjs
+@@ -0,0 +1,48 @@
++/**
++ * Schrijft src/data/downloads-manifest.json: welke functieprofiel-pdf's bestaan er
++ * per taal. De site leest dat manifest op buildtijd om te bepalen of de downloadknop
++ * naar een pdf wijst of naar de volledige printpagina.
++ *
++ * De pdf's zelf staan in een R2-bucket en niet in de repo, dus de build kan niet
++ * zelf op schijf kijken. Dit script draait direct na het genereren van de pdf's,
++ * op de machine waar ze staan.
++ *
++ * GEBRUIK
++ *   node scripts/hsf-build-downloads-manifest.mjs                 # leest public/downloads
++ *   node scripts/hsf-build-downloads-manifest.mjs /pad/naar/map   # of een andere map
++ */
++import { readdir, writeFile, mkdir } from 'node:fs/promises';
++import { existsSync } from 'node:fs';
++import { join, dirname } from 'node:path';
++import { fileURLToPath } from 'node:url';
++
++const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
++const SRC = process.argv[2] ? process.argv[2] : join(ROOT, 'public', 'downloads');
++const OUT = join(ROOT, 'src', 'data', 'downloads-manifest.json');
++const LANGS = ['nl', 'en', 'de', 'fr', 'es', 'ro'];
++
++if (!existsSync(SRC)) {
++  console.error(`Map bestaat niet: ${SRC}`);
++  process.exit(1);
++}
++
++const files = {};
++const counts = {};
++for (const lang of LANGS) {
++  const dir = join(SRC, lang);
++  if (!existsSync(dir)) continue;
++  const slugs = (await readdir(dir))
++    .filter((f) => f.endsWith('.pdf'))
++    .map((f) => f.replace(/\.pdf$/, ''))
++    .sort();
++  if (!slugs.length) continue;
++  files[lang] = slugs;
++  counts[lang] = slugs.length;
++}
++
++await mkdir(dirname(OUT), { recursive: true });
++await writeFile(OUT, `${JSON.stringify({ generated: new Date().toISOString().slice(0, 10), counts, files }, null, 0)}\n`);
++
++const total = Object.values(counts).reduce((a, b) => a + b, 0);
++console.log(`downloads-manifest.json: ${total} pdf's`);
++for (const lang of LANGS) if (counts[lang]) console.log(`  ${lang}: ${counts[lang]}`);
+diff --git a/scripts/hsf-translate-vocab.mjs b/scripts/hsf-translate-vocab.mjs
+new file mode 100644
+index 0000000..194908b
+--- /dev/null
++++ b/scripts/hsf-translate-vocab.mjs
+@@ -0,0 +1,161 @@
++/**
++ * Vertaalt de vocabulairvelden van de dataset naar alle zes talen.
++ *
++ * WAAROM
++ * Een deel van de dataset is geen vrije tekst maar een vaste waarde: de meetmethode
++ * ("Werkproef"), de trainbaarheid ("middel"), de ai-vraag ("stabiel stijgend"), de
++ * herbruikbaarheid ("transversaal"), de instrumenten en de competentienaam uit het
++ * 50-competentieframework van 2014 ("Plannen en organiseren"). Die staan als losse
++ * Nederlandse string in de data, zonder en-variant, dus ze bleven op ALLE andere
++ * talen Nederlands staan, ook op de Engelse pagina's.
++ *
++ * WAT HET DOET
++ *  - Verzamelt elke voorkomende waarde uit skills.json, functions/*.json en meta.json.
++ *  - Engels komt uit src/data/vocab-seed.json waar dat is ingevuld, anders van DeepL.
++ *  - Waarden met "product": true in de seed zijn hrmforce-productnamen en blijven in
++ *    alle talen gelijk aan de Engelse naam.
++ *  - De rest gaat van Engels naar DE/FR/ES/RO.
++ *  - Resultaat: src/data/vocab.json, gelezen door src/lib/vocab.ts.
++ *
++ * GEBRUIK
++ *   export DEEPL_API_KEY=xxxxx
++ *   node scripts/hsf-translate-vocab.mjs
++ *   HSF_VOCAB_FORCE=1 node scripts/hsf-translate-vocab.mjs   # alles opnieuw
++ *   HSF_TRANSLATE_MOCK=1 node scripts/hsf-translate-vocab.mjs
++ */
++import { readFile, writeFile, readdir } from 'node:fs/promises';
++import { existsSync } from 'node:fs';
++import { join, dirname } from 'node:path';
++import { fileURLToPath } from 'node:url';
++
++const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
++const DATA = join(ROOT, 'src', 'data');
++const SEED = join(DATA, 'vocab-seed.json');
++const OUT = join(DATA, 'vocab.json');
++
++const TARGETS = ['de', 'fr', 'es', 'ro'];
++const FORCE = process.env.HSF_VOCAB_FORCE === '1';
++const MOCK = process.env.HSF_TRANSLATE_MOCK === '1';
++const KEY = (process.env.DEEPL_API_KEY || '').trim();
++const IS_FREE = KEY.endsWith(':fx');
++const API = (process.env.DEEPL_API_URL || (IS_FREE ? 'https://api-free.deepl.com' : 'https://api.deepl.com'))
++  .replace(/\/$/, '') + '/v2/translate';
++const FORMAL = new Set(['de', 'fr', 'es']);
++const CONTEXT = 'Short controlled vocabulary terms from an HR competency framework: '
++  + 'assessment methods, trainability levels, demand trends, reusability levels and competency names.';
++
++if (!MOCK && !KEY) { console.error('Zet DEEPL_API_KEY (of HSF_TRANSLATE_MOCK=1).'); process.exit(1); }
++
++const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
++
++async function deepl(texts, source, target) {
++  if (MOCK) return texts.map((t) => `[${target}] ${t}`);
++  const body = new URLSearchParams();
++  for (const t of texts) body.append('text', t);
++  body.append('source_lang', source.toUpperCase());
++  body.append('target_lang', target.toUpperCase());
++  body.append('context', CONTEXT);
++  if (FORMAL.has(target)) body.append('formality', 'prefer_more');
++  for (let attempt = 0; attempt < 8; attempt++) {
++    let res;
++    try {
++      res = await fetch(API, {
++        method: 'POST',
++        headers: { Authorization: `DeepL-Auth-Key ${KEY}`, 'Content-Type': 'application/x-www-form-urlencoded' },
++        body,
++      });
++    } catch { await sleep(2000 * (attempt + 1)); continue; }
++    if (res.status === 429 || res.status === 529 || res.status >= 500) {
++      await sleep(Number(res.headers.get('retry-after')) * 1000 || 2000 * (attempt + 1));
++      continue;
++    }
++    if (!res.ok) throw new Error(`DeepL ${res.status}: ${(await res.text()).slice(0, 300)}`);
++    return (await res.json()).translations.map((x) => x.text);
++  }
++  throw new Error('DeepL bleef falen na 8 pogingen.');
++}
++
++// ---- waarden verzamelen ------------------------------------------------------
++const values = new Set();
++const addAll = (o) => {
++  if (!o) return;
++  for (const k of ['assessment', 'trainability', 'ai_demand', 'reusability', 'competency_2014']) {
++    if (typeof o[k] === 'string' && o[k].trim()) values.add(o[k].trim());
++  }
++  for (const i of o.instruments ?? []) if (typeof i === 'string' && i.trim()) values.add(i.trim());
++};
++
++const skills = JSON.parse(await readFile(join(DATA, 'skills.json'), 'utf8'));
++for (const s of skills) { addAll(s); for (const c of s.children ?? []) addAll(c); }
++
++for (const f of await readdir(join(DATA, 'functions'))) {
++  if (!f.endsWith('.json')) continue;
++  const fn = JSON.parse(await readFile(join(DATA, 'functions', f), 'utf8'));
++  for (const r of [...(fn.profile ?? []), ...(fn.competencies ?? [])]) addAll(r);
++}
++
++const meta = JSON.parse(await readFile(join(DATA, 'meta.json'), 'utf8'));
++for (const k of Object.keys(meta.assessment_methods ?? {})) values.add(k);
++for (const k of Object.keys(meta.instruments ?? {})) values.add(k);
++for (const v of meta.reusability_levels ?? []) values.add(v);
++
++// sectortags en de CBS-beroepsomschrijving staan ook als losse Nederlandse string
++// in de functie-index, en de instrumentomschrijving in elk functiebestand.
++const index = JSON.parse(await readFile(join(DATA, 'functions-index.json'), 'utf8'));
++for (const f of index) {
++  for (const s of f.sector_tags ?? []) values.add(s);
++  if (f.brc_naam) values.add(f.brc_naam.trim());
++}
++for (const f of await readdir(join(DATA, 'functions'))) {
++  if (!f.endsWith('.json')) continue;
++  const fn = JSON.parse(await readFile(join(DATA, 'functions', f), 'utf8'));
++  for (const i of fn.instrument_summary ?? []) if (i.description) values.add(i.description.trim());
++}
++const facets = JSON.parse(await readFile(join(DATA, 'facets.json'), 'utf8'));
++for (const s of facets.sector_tags ?? []) values.add(s);
++// label dat in SkillPage bij de crosswalk staat
++values.add('EU-competentieframework');
++
++const seed = JSON.parse(await readFile(SEED, 'utf8'));
++const all = [...values].filter((v) => !/^[A-Z]$/.test(v)).sort(); // losse typecodes hebben al een label in meta
++console.log(`${all.length} vocabulairwaarden gevonden, ${Object.keys(seed).filter((k) => !k.startsWith('_')).length} in de seed.`);
++
++const prev = existsSync(OUT) && !FORCE ? JSON.parse(await readFile(OUT, 'utf8')) : {};
++const out = {};
++
++// ---- Engels ------------------------------------------------------------------
++const needEn = all.filter((v) => !seed[v]?.en && !prev[v]?.en);
++if (needEn.length) {
++  console.log(`Engels vertalen: ${needEn.length} waarden`);
++  const en = [];
++  for (let i = 0; i < needEn.length; i += 40) en.push(...await deepl(needEn.slice(i, i + 40), 'nl', 'en'));
++  needEn.forEach((v, i) => { out[v] = { nl: v, en: en[i] }; });
++}
++for (const v of all) {
++  if (out[v]) continue;
++  out[v] = { nl: v, en: seed[v]?.en ?? prev[v]?.en ?? v };
++}
++for (const v of all) if (seed[v]?.product) out[v].product = true;
++
++// ---- de overige talen --------------------------------------------------------
++for (const lang of TARGETS) {
++  const todo = all.filter((v) => !out[v].product && !seed[v]?.[lang] && !prev[v]?.[lang]);
++  for (const v of all) {
++    if (out[v].product) out[v][lang] = out[v].en;          // productnaam blijft gelijk
++    else if (seed[v]?.[lang]) out[v][lang] = seed[v][lang]; // handmatige term gaat voor
++    else if (prev[v]?.[lang]) out[v][lang] = prev[v][lang]; // eerder vertaald blijft staan
++  }
++  if (!todo.length) { console.log(`[${lang}] niets te doen`); continue; }
++  console.log(`[${lang}] ${todo.length} waarden`);
++  const res = [];
++  for (let i = 0; i < todo.length; i += 40) res.push(...await deepl(todo.map((v) => out[v].en).slice(i, i + 40), 'en', lang));
++  todo.forEach((v, i) => { out[v][lang] = res[i]; });
++}
++
++const ordered = {};
++for (const v of all) ordered[v] = out[v];
++await writeFile(OUT, `${JSON.stringify(ordered, null, 0)}\n`);
++
++const products = all.filter((v) => out[v].product);
++console.log(`\nsrc/data/vocab.json: ${all.length} waarden, waarvan ${products.length} productnamen die gelijk blijven.`);
++console.log('productnamen:', products.join(', '));
+diff --git a/scripts/hsf-upload-downloads.sh b/scripts/hsf-upload-downloads.sh
+new file mode 100755
+index 0000000..17cd0b4
+--- /dev/null
++++ b/scripts/hsf-upload-downloads.sh
+@@ -0,0 +1,63 @@
++#!/usr/bin/env bash
++# Zet de functieprofiel-pdf's uit public/downloads in de R2-bucket hrmforce-downloads.
++#
++# De pdf's staan niet in de repo (450 profielen x 6 talen is ongeveer 1,2 GB). Ze gaan
++# naar R2 en functions/downloads/[[path]].js levert ze uit op het eigen domein, zodat
++# het download-attribuut in de leadform blijft werken.
++#
++# EENMALIG INSTELLEN
++#   1. Cloudflare dashboard -> R2 -> bucket "hrmforce-downloads" aanmaken.
++#   2. R2 -> API -> "Manage API tokens" -> token met Object Read & Write op die bucket.
++#   3. In de Pages-instellingen van hrmforce-site hoeft niets: de binding DOWNLOADS
++#      staat al in wrangler.toml.
++#
++# GEBRUIK
++#   export R2_ACCOUNT_ID=...          # het Account ID uit het R2-overzicht
++#   export R2_ACCESS_KEY_ID=...
++#   export R2_SECRET_ACCESS_KEY=...
++#   bash scripts/hsf-upload-downloads.sh                 # alle talen in public/downloads
++#   bash scripts/hsf-upload-downloads.sh de fr           # alleen deze talen
++#
++# Het script gebruikt rclone (installeert het zo nodig in de sandbox) en synct per taal.
++# Alleen nieuwe of gewijzigde bestanden gaan over de lijn.
++set -euo pipefail
++
++BUCKET="${R2_BUCKET:-hrmforce-downloads}"
++SRC="${HSF_DOWNLOADS_DIR:-public/downloads}"
++LANGS=("$@")
++if [ ${#LANGS[@]} -eq 0 ]; then LANGS=(nl en de fr es ro); fi
++
++for v in R2_ACCOUNT_ID R2_ACCESS_KEY_ID R2_SECRET_ACCESS_KEY; do
++  if [ -z "${!v:-}" ]; then echo "Zet $v (zie de kop van dit script)." >&2; exit 1; fi
++done
++if [ ! -d "$SRC" ]; then echo "Map $SRC bestaat niet. Draai eerst npm run hsf:pdf." >&2; exit 1; fi
++
++if ! command -v rclone >/dev/null 2>&1; then
++  echo "rclone niet gevonden, installeren..."
++  curl -fsSL https://rclone.org/install.sh | sudo bash >/dev/null
++fi
++
++export RCLONE_CONFIG_R2_TYPE=s3
++export RCLONE_CONFIG_R2_PROVIDER=Cloudflare
++export RCLONE_CONFIG_R2_ACCESS_KEY_ID="$R2_ACCESS_KEY_ID"
++export RCLONE_CONFIG_R2_SECRET_ACCESS_KEY="$R2_SECRET_ACCESS_KEY"
++export RCLONE_CONFIG_R2_ENDPOINT="https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
++export RCLONE_CONFIG_R2_ACL=private
++export RCLONE_CONFIG_R2_NO_CHECK_BUCKET=true
++
++for lang in "${LANGS[@]}"; do
++  if [ ! -d "$SRC/$lang" ]; then echo "  $lang: geen map, overgeslagen"; continue; fi
++  n=$(find "$SRC/$lang" -name '*.pdf' | wc -l)
++  echo "== $lang: $n pdf's"
++  rclone sync "$SRC/$lang" "R2:$BUCKET/$lang" \
++    --include '*.pdf' \
++    --header-upload "Content-Type: application/pdf" \
++    --transfers 16 --checkers 16 --s3-chunk-size 8M \
++    --stats 10s --stats-one-line
++done
++
++echo
++echo "Klaar. Controleer een bestand met:"
++echo "  curl -sI https://website.hrmforce.com/downloads/de/managing-director.pdf | head -5"
++echo "Werk daarna het manifest bij en commit dat:"
++echo "  node scripts/hsf-build-downloads-manifest.mjs && git add src/data/downloads-manifest.json"
+diff --git a/src/components/CompetencyTable.astro b/src/components/CompetencyTable.astro
+index 2e1e054..5fea5e7 100644
+--- a/src/components/CompetencyTable.astro
++++ b/src/components/CompetencyTable.astro
+@@ -4,6 +4,7 @@ import { useT, path } from '../lib/i18n';
+ import { constructById, instrumentInfo } from '../lib/hsf';
+ import Level from './Level.astro';
+ import { dlang } from '../lib/hsf-i18n';
++import { vt } from '../lib/vocab';
+ interface Props { rows: any[]; lang: string; anchors?: boolean }
+ const { rows, lang, anchors = true } = Astro.props;
+ const t = useT(lang);
+@@ -27,7 +28,7 @@ const dl = dlang(lang);
+           <tr>
+             <td>
+               <a href={path(lang, 'skills', c.slug[dl])}><strong>{r.name[dl]}</strong></a>
+-              {r.competency_2014 && <div class="hsf-xs hsf-muted">{t('tbl.competency')}: {r.competency_2014}</div>}
++              {r.competency_2014 && <div class="hsf-xs hsf-muted">{t('tbl.competency')}: {vt(r.competency_2014, dl)}</div>}
+               {r.critical && <div><span class="hsf-badge stop">{t('tbl.critical')}</span></div>}
+             </td>
+             <td class="num"><Level value={r.target_level} lang={lang} label={false} /> <span class="hsf-xs">N{r.target_level}</span></td>
+@@ -35,11 +36,12 @@ const dl = dlang(lang);
+               {r.instruments.length
+                 ? r.instruments.map((i: string, k: number) => {
+                     const info = instrumentInfo(i);
+-                    return <>{k > 0 && ', '}<span class="hsf-nowrap">{info?.url ? <a href={info.url}>{i}</a> : i}</span></>;
++                    const label = vt(i, dl);
++                    return <>{k > 0 && ', '}<span class="hsf-nowrap">{info?.url ? <a href={info.url}>{label}</a> : label}</span></>;
+                   })
+                 : '-'}
+             </td>
+-            <td class="hsf-xs">{r.assessment}</td>
++            <td class="hsf-xs">{vt(r.assessment, dl)}</td>
+             {anchors && <td class="anchor">{r.anchor[dl]}</td>}
+           </tr>
+         );
+diff --git a/src/components/InstrumentList.astro b/src/components/InstrumentList.astro
+index 9d39d22..62390a6 100644
+--- a/src/components/InstrumentList.astro
++++ b/src/components/InstrumentList.astro
+@@ -1,6 +1,7 @@
+ ---
+ import { useT } from '../lib/i18n';
+ import { dlang } from '../lib/hsf-i18n';
++import { vt } from '../lib/vocab';
+ interface Props { items: any[]; lang: string }
+ const { items, lang } = Astro.props;
+ const t = useT(lang);
+@@ -10,8 +11,8 @@ const dl = dlang(lang);
+   {items.map((i) => (
+     <a class="hsf-card hsf-card-link" href={i.url}>
+       <div class="hsf-badges"><span class="hsf-badge accent">{i.skills ?? i.count} {t('count.constructs')}</span></div>
+-      <h3 style="margin:.5rem 0 .25rem;font-size:1rem">{i.instrument}</h3>
+-      <p class="hsf-small hsf-muted" style="margin:0">{i.description || i[dl] || ''}</p>
++      <h3 style="margin:.5rem 0 .25rem;font-size:1rem">{vt(i.instrument, dl)}</h3>
++      <p class="hsf-small hsf-muted" style="margin:0">{i.description ? vt(i.description, dl) : (i[dl] || '')}</p>
+     </a>
+   ))}
+ </div>
+diff --git a/src/components/MatchCalculator.astro b/src/components/MatchCalculator.astro
+index 6a16f45..184694b 100644
+--- a/src/components/MatchCalculator.astro
++++ b/src/components/MatchCalculator.astro
+@@ -7,13 +7,14 @@
+ import { useT, path } from '../lib/i18n';
+ import { meta } from '../lib/hsf';
+ import { dlang } from '../lib/hsf-i18n';
++import { vt } from '../lib/vocab';
+ interface Props { lang: string; fn: any; family: any }
+ const { lang, fn, family } = Astro.props;
+ const t = useT(lang);
+ const dl = dlang(lang);
+ const rows = fn.profile.map((r: any) => ({
+   id: r.skill_id, n: r.name[dl], y: r.type, w: r.weight, c: r.critical,
+-  base: r.target_level, a: r.assessment, m: r.instruments.join(', '),
++  base: r.target_level, a: vt(r.assessment, dl), m: r.instruments.map((i: string) => vt(i, dl)).join(', '),
+ }));
+ const bands = (meta as any).match_model.bands;
+ ---
+diff --git a/src/components/ProfileTable.astro b/src/components/ProfileTable.astro
+index e6048c5..8cac80d 100644
+--- a/src/components/ProfileTable.astro
++++ b/src/components/ProfileTable.astro
+@@ -4,6 +4,7 @@ import { useT, path } from '../lib/i18n';
+ import { typeLabel, constructById } from '../lib/hsf';
+ import Level from './Level.astro';
+ import { dlang } from '../lib/hsf-i18n';
++import { vt } from '../lib/vocab';
+ interface Props { rows: any[]; lang: string; mode?: 'short' | 'full'; limit?: number }
+ const { rows, lang, mode = 'full', limit } = Astro.props;
+ const t = useT(lang);
+@@ -36,8 +37,8 @@ const dl = dlang(lang);
+             <td class="num"><Level value={r.target_level} lang={lang} label={false} /> <span class="hsf-xs">N{r.target_level}</span></td>
+             <td class="num">{r.weight}</td>
+             <td class="num">{r.critical ? <span class="hsf-badge stop">{t('yes')}</span> : <span class="hsf-xs hsf-muted">{t('no')}</span>}</td>
+-            <td class="hsf-xs">{r.assessment}</td>
+-            {mode === 'full' && <td class="hsf-xs">{r.instruments.join(', ') || '-'}</td>}
++            <td class="hsf-xs">{vt(r.assessment, dl)}</td>
++            {mode === 'full' && <td class="hsf-xs">{r.instruments.map((i: string) => vt(i, dl)).join(', ') || '-'}</td>}
+           </tr>
+         );
+       })}
+diff --git a/src/components/Search.astro b/src/components/Search.astro
+index d15db7e..786dc7c 100644
+--- a/src/components/Search.astro
++++ b/src/components/Search.astro
+@@ -9,6 +9,7 @@
+ import { useT, path, SEG, ROUTE_PREFIX } from '../lib/i18n';
+ import { facets } from '../lib/hsf';
+ import { dlang } from '../lib/hsf-i18n';
++import { vt } from '../lib/vocab';
+ interface Props { lang: string; autofocus?: boolean; scope?: 'all' | 'f' | 'c' | 's' }
+ const { lang, autofocus = false, scope = 'all' } = Astro.props;
+ const t = useT(lang);
+@@ -54,7 +55,7 @@ const kinds = [
+ 
+   <div class="hsf-chips" style="margin-bottom:1rem">
+     {facets.sector_tags.map((s: string) => (
+-      <button class="hsf-chip" type="button" data-tag={s} aria-pressed="false">{s}</button>
++      <button class="hsf-chip" type="button" data-tag={s} aria-pressed="false">{vt(s, dl)}</button>
+     ))}
+     <button class="hsf-chip" type="button" data-reset aria-pressed="false">{t('filter.reset')}</button>
+   </div>
+diff --git a/src/data/downloads-manifest.json b/src/data/downloads-manifest.json
+new file mode 100644
+index 0000000..e94d7d9
+--- /dev/null
++++ b/src/data/downloads-manifest.json
+@@ -0,0 +1 @@
++{"generated":"2026-09-09","counts":{"nl":450,"en":450},"files":{"nl":["account-executive","accountant","accountmanager","activiteitenbegeleider","adjunct-directeur","administratief-medewerker","advocaat","advocaat-stagiair","afdelingshoofd","afwasmedewerker","ai-engineer","ai-productmanager","algemeen-directeur","algemeen-directeur-woningcorporatie","algemeen-manager","ambulanceverpleegkundige","ambulant-begeleider","analytics-translator","anesthesiemedewerker","api-ontwikkelaar","apothekersassistent","arbeidsdeskundige","arbo-en-verzuimadviseur","architect","assistent-accountant","assistent-controller","assistent-filiaalmanager","auditor","backend-developer","banqueting-medewerker","barista","barkeeper","bedrijfsjurist","bedrijfsopleider","begeleider-gehandicaptenzorg","beleidsadviseur","beleidsmedewerker","bestelbuschauffeur","bestuurder-zorgorganisatie","bestuursadviseur","bestuurssecretaris","bi-consultant","bidmanager","bim-modelleur","binnendienstmedewerker-verkoop","boa","boekhouder","bouwfysisch-adviseur","bouwkundig-opzichter","bouwkundig-tekenaar","brandmanager","business-analist-ict","business-continuity-manager","business-controller","business-development-manager","business-intelligence-specialist","businessunitmanager","buurtwerker","calculator-bouw","calculator-techniek","callcentermedewerker","campagnemanager","casemanager-sociaal-domein","channel-manager","chef-kok","chief-data-officer","chief-executive-officer","chief-information-security-officer","chief-operating-officer","clientvertrouwenspersoon","cloud-architect","cloud-engineer","cnc-verspaner","commercieel-directeur","commercieel-manager","commissaris","communicatieadviseur","communicatiemedewerker","community-manager","compliance-officer","constructeur","constructiewerker","contentmarketeer","contractmanager-publiek","controller","coordinator","coordinator-dagbesteding","coordinator-stages","coordinator-vrijwilligers","copywriter","corporate-recruiter","cost-engineer","crediteurenadministrateur","crm-ontwikkelaar","curriculumontwikkelaar","customer-success-manager","cv-monteur","dagbestedingscoach","dakdekker","data-analist","data-architect","data-consultant","data-engineer","data-quality-analist","data-scientist","data-steward","database-administrator","debiteurenbeheerder","decaan","devops-engineer","dialyseverpleegkundige","dietist","directeur-bedrijfsvoering","directiesecretaresse","distributiecentrummanager","diversiteitsadviseur","divisiedirecteur","docent-hbo","docent-mbo","docent-nt2","doktersassistent","dossierbeheerder","douanedeclarant","draaier-frezer","duurzaamheidsadviseur-gebouwen","e-learningontwikkelaar","e-mailmarketeer","elektricien-bouw","elektromonteur","elektrotechnisch-ingenieur","embedded-software-engineer","employer-branding-specialist","ergotherapeut","eventmanager","examensecretaris","expeditiemedewerker","exportmanager","filiaalmanager","finance-manager","financial-controller","financieel-administratief-medewerker","financieel-analist","financieel-directeur","financieel-projectcontroller","fiscalist","fondsenwerver","franchisenemer","frontend-developer","fullstack-developer","functiewaarderingsdeskundige","functioneel-beheerder","fysiotherapeut","gastheer-gastvrouw","gedragswetenschapper","gegevensbeheerder","gemeentesecretaris","geo-informatiespecialist","geriatrieverpleegkundige","gespecialiseerd-verpleegkundige-ic","gezinsbegeleider","groepsleider-productie","grondwerker","handhaver","hbo-verpleegkundige","heftruckchauffeur","helpende-zorg-en-welzijn","hoofd-administratie","hoofd-bedrijfsbureau","hoofd-facilitair","hoofd-inkoop","hoofd-klantenservice","hoofd-technische-dienst","hoofduitvoerder","hoogleraar","horecamanager","housekeepingmedewerker","hr-adviseur","hr-adviseur-arbeidsvoorwaarden","hr-analist","hr-businesspartner","hr-directeur","hr-manager","hr-medewerker","hr-projectleider","hr-systeembeheerder","hypotheekadviseur","ict-beheerder","ict-inkoper","identiteitsbeheerder","industrieel-elektromonteur","informatiemanager","infrastructuurarchitect","inkoopadviseur-publiek","inkoper-logistiek","inside-sales-medewerker","installatiemonteur-werktuigbouw","instructeur","integratiespecialist","intercedent","interim-directeur","intern-begeleider","interne-controleur","jeugdhulpverlener","jobcoach","jongerenwerker","junior-accountmanager","juridisch-adviseur","juridisch-medewerker","jurist","kandidaat-notaris","kassamedewerker","keukenmedewerker","key-accountmanager","klachtenfunctionaris","klantadviseur","koerier","kok","kraamverzorgende","kwaliteitsinspecteur","kwaliteitsinspecteur-bouw","kwaliteitsmanager","kwaliteitstechnoloog","kwaliteitsverpleegkundige","lasser","lead-developer","learning-en-development-specialist","leerlingbegeleider","leraar-basisonderwijs","leraar-voortgezet-onderwijs","lid-raad-van-bestuur","logistiek-engineer","logistiek-manager","logistiek-medewerker","logistiek-planner","logistiek-teamleider","logopedist","loodgieter","low-code-developer","maatschappelijk-werker","machine-learning-engineer","machinebediener","machinist-grondverzet","maintenance-engineer","makelaar","managementassistent","managing-partner","mantelzorgconsulent","marketeer","marketing-automation-specialist","marketingcoordinator","marketingmanager","materiaalbeheerder","mechatronicus","medewerker-abonnementenadministratie","medewerker-backoffice","medewerker-bediening","medewerker-bezwaar-en-beroep","medewerker-binnendienst","medewerker-burgerzaken","medewerker-debiteuren","medewerker-douane-expeditie","medewerker-facilitaire-dienst","medewerker-facturatie","medewerker-horeca","medewerker-hr-servicedesk","medewerker-ict-support-tweede-lijn","medewerker-inkoopadministratie","medewerker-interne-communicatie","medewerker-klantenservice","medewerker-medische-administratie","medewerker-personeels-en-salarisadministratie","medewerker-retourlogistiek","medewerker-salarisadministratie","medewerker-subsidieadministratie","medewerker-tenderdesk","medewerker-verzekeringen","medisch-secretaresse","meewerkend-voorman","metselaar","mlops-engineer","mobile-developer","monteur","netwerkbeheerder","notarieel-medewerker","officemanager","ok-assistent","oncologieverpleegkundige","onderhoudsmonteur","onderhoudsplanner","ondernemer-met-personeel","onderwijsassistent","onderwijskundige","onderzoeksmedewerker-kwantitatief","online-marketeer","operationeel-manager","opleidingsadviseur","opleidingsmanager","orderpicker","orthopedagoog","paralegal","persoonlijk-begeleider","plaatwerker","planner-klantenservice","ploegleider","praktijkondersteuner-huisarts","praktijkopleider","praktijkverpleegkundige","privacy-officer","privacyjurist","procesoperator","procestechnoloog","product-owner","productiemedewerker","productmarketeer","programmamanager","projectleider","projectleider-beleid","projectleider-bouw","projectleider-techniek","psycholoog-gz","psychometrist","publieksvoorlichter","rapportagespecialist","receptionist","receptionist-hotel","reclasseringsmedewerker","recruiter","rector","regiomanager","relatiebeheerder","releasemanager","remedial-teacher","restaurantmanager","risk-manager","robotica-technicus","salarisadministrateur","sales-engineer","salesconsultant","salesdirecteur","salesmanager","salessupport-medewerker","schadebehandelaar","schilder","schooldirecteur","schuldhulpverlener","scrum-master","sea-specialist","secretaresse","security-analist","security-engineer","security-officer","senior-accountmanager","senior-beleidsadviseur","senior-verkoopmedewerker","seo-specialist","servicedeskmedewerker","servicedeskmedewerker-klantcontact","servicemanager","servicemonteur","shiftleader","sitemanager","sociaal-pedagogisch-hulpverlener","sociaal-werker","social-media-manager","software-engineer","softwarearchitect","softwarekwaliteitsmanager","softwareontwikkelaar","sous-chef","statisticus","statutair-directeur","storage-en-backupbeheerder","storemanager","storingsmonteur","stratenmaker","stukadoor","supervisor","supply-chain-analist","supply-chain-planner","systeembeheerder","talent-acquisition-manager","teamleider","teamleider-expeditie","teamleider-klantcontact","teamleider-onderwijs","teamleider-productie","teamleider-sociaal-domein","teamleider-zorg","teammanager-zorg","technical-lead","technicus-meet-en-regeltechniek","technisch-applicatiebeheerder","technisch-beheerder","technisch-commercieel-adviseur","technisch-productmanager","technisch-specialist","technisch-tekenaar","tegelzetter","tekenaar-constructeur","telefonisch-verkoper","telefonist","testautomatiseerder","tester","thuiszorgmedewerker","timmerman","toetsdeskundige","toezichthouder","trainer","trainer-opleidingen","transportcoordinator","transportplanner","treasury-medewerker","triagist-huisartsenpost","uitvoerder-bouw","ux-copywriter","vakdocent-techniek","verkoopadviseur","verkoopleider-retail","verkoopmedewerker-retail","verloskundige","verpleegkundig-specialist","verpleegkundig-teamcoach","verpleegkundige-niveau-4","verzekeringsadviseur","verzorgende-ig","vestigingsdirecteur","visual-merchandiser","voorraadbeheerder","vrachtwagenchauffeur","vulploegmedewerker","wagenparkbeheerder","warehousemanager","warehousemedewerker","warmtepompmonteur","webredacteur","werktuigbouwkundig-ingenieur","werktuigbouwkundig-monteur","werkvoorbereider-bouw","werkvoorbereider-techniek","wijkverpleegkundige","wmo-consulent","woonbegeleider","woordvoerder","workplacebeheerder","zelfstandig-werkend-kok","zonnepaneelmonteur","zorgbemiddelaar","zorgcoordinator","zorgcoordinator-onderwijs","zorghulp"],"en":["account-executive","account-manager","accounts-payable-administrator","accounts-receivable-clerk","accounts-receivable-officer","activity-support-worker","administrative-employee","advanced-nurse-practitioner","ai-engineer","ai-product-manager","ambulance-nurse","anaesthetic-assistant","analytics-translator","api-developer","architect","assessment-specialist","assistant-accountant","assistant-branch-manager","assistant-controller","back-office-employee","backend-developer","banqueting-staff","barista","bartender","behavioural-scientist","bid-manager","billing-clerk","bim-modeller","board-secretary","bookkeeper","branch-director","branch-manager","brand-manager","breakdown-technician","bricklayer","building-physics-consultant","building-services-installer","building-sustainability-consultant","business-continuity-manager","business-controller-en","business-development-manager","business-intelligence-consultant","business-intelligence-specialist","business-unit-manager","call-centre-agent","campaign-manager","candidate-notary","care-coordinator","care-placement-coordinator","care-support-worker","care-team-leader","care-team-manager","career-and-study-counselor","carpenter","case-manager-social-domain","cashier","certified-nursing-assistant","channel-manager","chartered-accountant","chief-commercial-officer","chief-data-officer","chief-executive-officer","chief-financial-officer","chief-human-resources-officer","chief-information-security-officer","chief-operating-officer","civil-registry-officer","claims-handler","client-advisor","client-advocate-complaints-officer","cloud-architect","cloud-engineer","cnc-machinist","commercial-manager","communications-adviser","communications-officer","community-manager","community-worker","compensation-and-benefits-adviser","complaints-officer","compliance-officer","construction-cost-estimator","construction-draughtsperson","construction-electrician","construction-project-manager","construction-quality-inspector","construction-site-inspector","construction-supervisor","construction-work-planner","content-marketer","controller-en","cook","coordinator","copywriter-en","corporate-learning-officer","corporate-recruiter-en","corporate-trainer","cost-engineer","courier","crm-developer","curriculum-developer","customer-contact-team-leader","customer-service-desk-employee","customer-service-planner","customer-service-representative","customer-success-manager","customs-declarant","customs-freight-forwarding-clerk","data-administrator","data-analyst","data-architect","data-consultant","data-engineer","data-quality-analyst","data-scientist","data-steward","database-administrator","day-activity-coach","day-activity-coordinator","debt-counsellor","delivery-van-driver","deputy-school-principal","design-draughtsman","devops-engineer","dialysis-nurse","dietitian","digital-marketer","director-of-corporate-services","disability-support-worker","dishwasher","dispatch-team-leader","distribution-centre-manager","district-nurse","diversity-and-inclusion-adviser","division-director","dutch-as-a-second-language-teacher","e-learning-developer","education-team-leader","educational-psychologist-orthopedagogue","electrical-engineer","electrical-technician","email-marketing-specialist","embedded-software-engineer","employer-branding-specialist-en","enforcement-officer","event-manager","examinations-officer","excavator-operator","executive-advisor","executive-board-member","executive-secretary","export-manager","facilities-services-employee","family-support-worker","field-service-technician","file-manager","finance-administration-clerk","finance-manager-en","financial-analyst","financial-controller-en","financial-project-controller","fleet-manager","forklift-operator","franchisee","frontend-developer","full-stack-developer","functional-application-manager","fundraiser","general-manager","general-practice-support-nurse","geriatric-nurse","gis-specialist","grants-administrator","groundworker","head-chef","head-of-administration","head-of-customer-service","head-of-department","head-of-facilities","head-of-procurement","head-of-technical-services","head-of-work-preparation","healthcare-executive","heat-pump-installer","heating-installer","higher-education-lecturer","home-care-helper","home-care-worker","hospitality-assistant","hospitality-manager","host-hostess","hotel-receptionist","housekeeping-attendant","housing-association-director","hr-adviser","hr-analyst","hr-and-payroll-administrator","hr-business-partner","hr-manager-en","hr-officer","hr-project-manager","hr-service-desk-officer","hris-administrator","identity-and-access-manager","in-house-counsel","independent-cook","industrial-electrical-technician","informal-care-consultant","information-manager","information-security-officer","infrastructure-architect","inside-sales-representative","inside-sales-support-employee","instructional-designer","instructor","instrumentation-and-control-technician","insurance-administration-employee","insurance-adviser","integration-specialist","intensive-care-nurse","interim-director","internal-auditor","internal-communications-officer","internal-control-officer","internal-sales-representative","internship-coordinator","inventory-controller","it-administrator","it-business-analyst","it-procurement-specialist","it-service-desk-agent","job-coach","job-evaluation-specialist","junior-account-manager","key-account-manager","kitchen-assistant","lawyer","lead-developer","learning-and-development-manager","learning-and-development-specialist","learning-trainer","legal-advisor","legal-counsel","legal-officer","logistics-buyer","logistics-employee","logistics-engineer","logistics-manager","logistics-planner","logistics-team-leader","low-code-developer","machine-learning-engineer","machine-operator","maintenance-engineer","maintenance-mechanic","maintenance-planner","management-assistant","managing-director","managing-partner","manual-machinist","marketer","marketing-automation-specialist-en","marketing-coordinator","marketing-manager","materials-controller","maternity-care-assistant","mechanical-engineer","mechanical-fitter","mechatronics-technician","medical-assistant-general-practice","medical-records-administrator","medical-secretary","midwife","mlops-engineer","mobile-developer","mortgage-advisor","municipal-secretary","network-administrator","non-executive-director","notarial-clerk","nursing-team-coach","objections-and-appeals-officer","occupational-expert","occupational-health-and-absence-adviser","occupational-therapist","office-manager","oncology-nurse","operating-theatre-assistant","operations-manager","order-picker","outreach-support-worker","owner-manager","painter","paralegal","paver","payroll-clerk","payroll-specialist","personal-support-worker","pharmacy-technician","physiotherapist","plasterer","plumber","policy-advisor","policy-officer","policy-project-leader","practice-nurse-general-practice","primary-school-teacher","privacy-lawyer","privacy-officer","probation-officer","process-operator","process-technologist","product-marketing-manager","product-owner","production-group-leader","production-operative","production-team-leader","professor","programme-manager","project-manager","psychometrician","public-information-officer","public-procurement-advisor","public-sector-contract-manager","purchasing-administrator","quality-and-safety-nurse","quality-inspector","quality-manager","quality-technologist","quantitative-research-analyst","real-estate-agent","receptionist","recruiter-en","regional-manager","registered-health-psychologist-gz","registered-nurse-associate-degree","registered-nurse-bachelor","regulatory-inspector","relationship-manager","release-manager","remedial-teacher","reporting-specialist","residential-support-worker","restaurant-manager","retail-sales-assistant","retail-sales-leader","returns-logistics-employee","risk-manager","robotics-technician","roofer","sales-advisor","sales-consultant","sales-director","sales-engineer","sales-manager","sales-support-officer","school-principal","school-principal-2","scrum-master","sea-specialist-en","second-line-it-support-specialist","secondary-school-teacher","secretary","security-analyst","security-engineer","senco","senior-account-manager","senior-construction-supervisor","senior-policy-advisor","senior-retail-sales-assistant","seo-specialist-en","service-manager","sheet-metal-worker","shelf-stacker","shift-leader","shift-leader-retail","shipping-employee","site-manager","social-media-manager-en","social-support-act-consultant-wmo","social-worker","social-worker-casework","socio-pedagogical-support-worker","software-architect","software-developer","software-engineer","software-quality-manager","software-tester","solar-panel-installer","sous-chef","special-investigating-officer","speech-and-language-therapist","spokesperson","staffing-consultant","statistician","statutory-director","storage-and-backup-administrator","store-manager","structural-engineer","structural-steel-worker","student-care-coordinator","student-counselor","subscription-administration-employee","supervisor","supply-chain-analyst","supply-chain-planner","switchboard-operator","system-administrator","talent-acquisition-manager-en","tax-adviser","teaching-assistant","team-leader","team-leader-social-domain","technical-application-manager","technical-cost-estimator","technical-draughtsman","technical-lead","technical-product-manager","technical-project-leader","technical-sales-engineer","technical-specialist","technical-subject-teacher","technical-systems-manager","technical-work-planner","technician","telephone-triage-nurse","telesales-representative","tender-desk-officer","test-automation-engineer","tile-setter","trainee-lawyer","training-adviser","transport-coordinator","transport-planner","treasury-officer","truck-driver","ux-writer","visual-merchandiser","vocational-education-teacher","volunteer-coordinator","waiter-waitress","warehouse-employee","warehouse-manager","web-editor","welder","working-foreman","workplace-administrator","workplace-trainer","youth-care-worker","youth-worker"]}}
+diff --git a/src/data/vocab-seed.json b/src/data/vocab-seed.json
+new file mode 100644
+index 0000000..986ab0e
+--- /dev/null
++++ b/src/data/vocab-seed.json
+@@ -0,0 +1,322 @@
++{
++  "_comment": "Handmatige termen voor de vocabulairvelden van de dataset (meetmethode, trainbaarheid, ai-vraag, herbruikbaarheid, instrumenten, sectortags). Elke taalsleutel die hier staat wordt overgenomen en niet door DeepL overschreven. product=true betekent: een hrmforce-productnaam, die blijft in alle talen gelijk. Waarden die hier niet in staan worden volledig door DeepL vertaald. Bijwerken en daarna scripts/hsf-translate-vocab.mjs draaien.",
++  "Cognitieve capaciteitentest": {
++    "en": "Cognitive ability test"
++  },
++  "Assessment center": {
++    "en": "Assessment centre"
++  },
++  "Werkproef": {
++    "en": "Work sample test"
++  },
++  "Situational Judgement Test": {
++    "en": "Situational Judgement Test",
++    "product": true
++  },
++  "Persoonlijkheidsvragenlijst": {
++    "en": "Personality questionnaire"
++  },
++  "360 feedback": {
++    "en": "360-degree feedback"
++  },
++  "Praktijkobservatie": {
++    "en": "On-the-job observation"
++  },
++  "Structureerd interview": {
++    "en": "Structured interview"
++  },
++  "Kennistoets": {
++    "en": "Knowledge test"
++  },
++  "Certificaat/diploma": {
++    "en": "Certificate or diploma"
++  },
++  "Simulatie": {
++    "en": "Simulation"
++  },
++  "Portfolio/bewijsstuk": {
++    "en": "Portfolio or evidence"
++  },
++  "Zelfrapportage met verificatie": {
++    "en": "Self-report with verification"
++  },
++  "laag": {
++    "en": "low"
++  },
++  "middel": {
++    "en": "medium"
++  },
++  "hoog": {
++    "en": "high"
++  },
++  "stabiel": {
++    "en": "stable"
++  },
++  "stijgend": {
++    "en": "rising"
++  },
++  "dalend": {
++    "en": "declining"
++  },
++  "transversaal": {
++    "en": "transversal"
++  },
++  "cross-sectoraal": {
++    "en": "cross-sector"
++  },
++  "sectorspecifiek": {
++    "en": "sector-specific"
++  },
++  "functiespecifiek": {
++    "en": "job-specific"
++  },
++  "Big Fifty": {
++    "en": "Big Fifty",
++    "product": true
++  },
++  "Ability Scan": {
++    "en": "Ability Scan",
++    "product": true
++  },
++  "Competency Check": {
++    "en": "Competency Check",
++    "product": true
++  },
++  "15PF": {
++    "en": "15PF",
++    "product": true
++  },
++  "Communicatiestijlen": {
++    "en": "Communication Styles",
++    "product": true
++  },
++  "Conflictstijlen": {
++    "en": "Conflict Styles",
++    "product": true
++  },
++  "Leerstijlen": {
++    "en": "Learning Styles",
++    "product": true
++  },
++  "Motivatie": {
++    "en": "Motivation",
++    "product": true
++  },
++  "Loopbaanorientaties": {
++    "en": "Career Orientations",
++    "product": true
++  },
++  "Loopbaanoriëntaties": {
++    "en": "Career Orientations",
++    "product": true
++  },
++  "Loopbaaninteresse": {
++    "en": "Career Interest",
++    "product": true
++  },
++  "Mentale Weerbaarheid (4C)": {
++    "en": "Mental Resilience (4C)",
++    "product": true
++  },
++  "Kleurenprofiel (Jung)": {
++    "en": "Colour Profile (Jung)",
++    "product": true
++  },
++  "360 Feedback": {
++    "en": "360 Feedback",
++    "product": true
++  },
++  "Ontwikkelgesprek": {
++    "en": "Development Review",
++    "product": true
++  },
++  "Pulse Survey": {
++    "en": "Pulse Survey",
++    "product": true
++  },
++  "TeamFlow": {
++    "en": "TeamFlow",
++    "product": true
++  },
++  "Kennistoets (klantspecifiek)": {
++    "en": "Knowledge test (client-specific)"
++  },
++  "Portfolio": {
++    "en": "Portfolio"
++  },
++  "management": {
++    "en": "management",
++    "de": "Management",
++    "fr": "management",
++    "es": "gestión",
++    "ro": "management"
++  },
++  "mkb": {
++    "en": "SME",
++    "de": "KMU",
++    "fr": "PME",
++    "es": "pymes",
++    "ro": "IMM"
++  },
++  "dienstverlening": {
++    "en": "services",
++    "de": "Dienstleistungen",
++    "fr": "services",
++    "es": "servicios",
++    "ro": "servicii"
++  },
++  "juridisch": {
++    "en": "legal",
++    "de": "Recht",
++    "fr": "juridique",
++    "es": "jurídico",
++    "ro": "juridic"
++  },
++  "enterprise": {
++    "en": "enterprise",
++    "de": "Großunternehmen",
++    "fr": "grands comptes",
++    "es": "gran empresa",
++    "ro": "corporații"
++  },
++  "industrie": {
++    "en": "industry",
++    "de": "Industrie",
++    "fr": "industrie",
++    "es": "industria",
++    "ro": "industrie"
++  },
++  "commercie": {
++    "en": "sales",
++    "de": "Vertrieb",
++    "fr": "commercial",
++    "es": "comercial",
++    "ro": "vânzări"
++  },
++  "b2b": {
++    "en": "B2B",
++    "de": "B2B",
++    "fr": "B2B",
++    "es": "B2B",
++    "ro": "B2B"
++  },
++  "overheid": {
++    "en": "government",
++    "de": "öffentlicher Sektor",
++    "fr": "secteur public",
++    "es": "sector público",
++    "ro": "sector public"
++  },
++  "staf": {
++    "en": "staff functions",
++    "de": "Stabsstellen",
++    "fr": "fonctions support",
++    "es": "funciones de staff",
++    "ro": "funcții de suport"
++  },
++  "finance": {
++    "en": "finance",
++    "de": "Finanzen",
++    "fr": "finance",
++    "es": "finanzas",
++    "ro": "finanțe"
++  },
++  "zorg": {
++    "en": "healthcare",
++    "de": "Gesundheitswesen",
++    "fr": "santé",
++    "es": "sanidad",
++    "ro": "sănătate"
++  },
++  "uitvoerend": {
++    "en": "operational",
++    "de": "ausführend",
++    "fr": "opérationnel",
++    "es": "operativo",
++    "ro": "operațional"
++  },
++  "logistiek": {
++    "en": "logistics",
++    "de": "Logistik",
++    "fr": "logistique",
++    "es": "logística",
++    "ro": "logistică"
++  },
++  "b2c": {
++    "en": "B2C",
++    "de": "B2C",
++    "fr": "B2C",
++    "es": "B2C",
++    "ro": "B2C"
++  },
++  "techniek": {
++    "en": "engineering",
++    "de": "Technik",
++    "fr": "technique",
++    "es": "técnica",
++    "ro": "tehnică"
++  },
++  "bouw": {
++    "en": "construction",
++    "de": "Baugewerbe",
++    "fr": "construction",
++    "es": "construcción",
++    "ro": "construcții"
++  },
++  "retail": {
++    "en": "retail",
++    "de": "Einzelhandel",
++    "fr": "commerce de détail",
++    "es": "comercio minorista",
++    "ro": "retail"
++  },
++  "horeca": {
++    "en": "hospitality",
++    "de": "Gastgewerbe",
++    "fr": "hôtellerie-restauration",
++    "es": "hostelería",
++    "ro": "HoReCa"
++  },
++  "welzijn": {
++    "en": "social care",
++    "de": "Sozialwesen",
++    "fr": "action sociale",
++    "es": "bienestar social",
++    "ro": "asistență socială"
++  },
++  "ict": {
++    "en": "IT",
++    "de": "IT",
++    "fr": "informatique",
++    "es": "TI",
++    "ro": "IT"
++  },
++  "marketing": {
++    "en": "marketing",
++    "de": "Marketing",
++    "fr": "marketing",
++    "es": "marketing",
++    "ro": "marketing"
++  },
++  "data": {
++    "en": "data",
++    "de": "Daten",
++    "fr": "données",
++    "es": "datos",
++    "ro": "date"
++  },
++  "hr": {
++    "en": "HR",
++    "de": "HR",
++    "fr": "RH",
++    "es": "RRHH",
++    "ro": "HR"
++  },
++  "onderwijs": {
++    "en": "education",
++    "de": "Bildung",
++    "fr": "enseignement",
++    "es": "educación",
++    "ro": "educație"
++  }
++}
+diff --git a/src/data/vocab.json b/src/data/vocab.json
+new file mode 100644
+index 0000000..67697c1
+--- /dev/null
++++ b/src/data/vocab.json
+@@ -0,0 +1 @@
++{"15PF":{"nl":"15PF","en":"15PF","product":true,"de":"15PF","fr":"15PF","es":"15PF","ro":"15PF"},"360 Feedback":{"nl":"360 Feedback","en":"360 Feedback","product":true,"de":"360 Feedback","fr":"360 Feedback","es":"360 Feedback","ro":"360 Feedback"},"360 feedback":{"nl":"360 feedback","en":"360-degree feedback","de":"360-Grad-Feedback","fr":"Feedback à 360 degrés","es":"Evaluación de 360 grados","ro":"Feedback la 360 de grade"},"Aansturen":{"nl":"Aansturen","en":"Management","de":"Management","fr":"Direction","es":"Gestión","ro":"Management"},"Ability Scan":{"nl":"Ability Scan","en":"Ability Scan","product":true,"de":"Ability Scan","fr":"Ability Scan","es":"Ability Scan","ro":"Ability Scan"},"Accountants":{"nl":"Accountants","en":"Accountants","de":"Buchhalter","fr":"Comptables","es":"Contables","ro":"Contabili"},"Accountmanagers retail en inkopers":{"nl":"Accountmanagers retail en inkopers","en":"Retail account managers and buyers","de":"Kundenbetreuer und Einkäufer im Einzelhandel","fr":"Responsables de comptes et acheteurs dans le secteur de la grande distribution","es":"Gestores de cuentas y compradores del sector minorista","ro":"Manageri de conturi și cumpărători din sectorul comerțului cu amănuntul"},"Administratief medewerkers":{"nl":"Administratief medewerkers","en":"Administrative staff","de":"Verwaltungsmitarbeiter","fr":"Personnel administratif","es":"Personal administrativo","ro":"Personal administrativ"},"Adviesvaardigheid":{"nl":"Adviesvaardigheid","en":"Consulting Skills","de":"Beratungskompetenzen","fr":"Compétences en conseil","es":"Habilidades de consultoría","ro":"Competențe de consultanță"},"Adviseurs marketing, public relations en sales":{"nl":"Adviseurs marketing, public relations en sales","en":"Marketing, public relations, and sales consultants","de":"Berater für Marketing, Öffentlichkeitsarbeit und Vertrieb","fr":"Consultants en marketing, relations publiques et vente","es":"Consultores de marketing, relaciones públicas y ventas","ro":"Consultanți în marketing, relații publice și vânzări"},"Algemeen directeuren":{"nl":"Algemeen directeuren","en":"Chief Executive Officers","de":"Vorstandsvorsitzende","fr":"Directeurs généraux","es":"Directores generales","ro":"Directori generali"},"Ambitie":{"nl":"Ambitie","en":"Ambition","de":"Ambition","fr":"Ambition","es":"Ambición","ro":"Ambiție"},"Apothekersassistenten":{"nl":"Apothekersassistenten","en":"Pharmacy Technicians","de":"Apothekenfachkräfte","fr":"Techniciens en pharmacie","es":"Técnicos de farmacia","ro":"Tehnicieni farmaceutici"},"Architecten en planologen":{"nl":"Architecten en planologen","en":"Architects and urban planners","de":"Architekten und Stadtplaner","fr":"Architectes et urbanistes","es":"Arquitectos y urbanistas","ro":"Arhitecți și urbaniști"},"Assemblagemedewerkers":{"nl":"Assemblagemedewerkers","en":"Assembly line workers","de":"Fließbandarbeiter","fr":"Ouvriers de chaîne de montage","es":"Trabajadores de la cadena de montaje","ro":"Muncitori de la linia de asamblare"},"Assertiviteit":{"nl":"Assertiviteit","en":"Assertiveness","de":"Durchsetzungsfähigkeit","fr":"Affirmation de soi","es":"Asertividad","ro":"Asertivitate"},"Assessment center":{"nl":"Assessment center","en":"Assessment centre","de":"Assessment-Center","fr":"Centre d'évaluation","es":"Centro de evaluación","ro":"Centru de evaluare"},"Auteurs en taalkundigen":{"nl":"Auteurs en taalkundigen","en":"Authors and linguists","de":"Autoren und Linguisten","fr":"Auteurs et linguistes","es":"Autores y lingüistas","ro":"Autori și lingviști"},"Bedieners mobiele machines":{"nl":"Bedieners mobiele machines","en":"Mobile machine operators","de":"Bediener mobiler Maschinen","fr":"Conducteurs d’engins mobiles","es":"Operadores de maquinaria móvil","ro":"Operatori de utilaje mobile"},"Bedrijfskundigen en organisatieadviseurs":{"nl":"Bedrijfskundigen en organisatieadviseurs","en":"Business administrators and organizational consultants","de":"Betriebswirte und Organisationsberater","fr":"Gestionnaires d'entreprise et consultants en organisation","es":"Administradores de empresas y consultores organizativos","ro":"Administratori de afaceri și consultanți organizaționali"},"Beleidsadviseurs":{"nl":"Beleidsadviseurs","en":"Policy Advisors","de":"Politische Berater","fr":"Conseillers en politiques","es":"Asesores de políticas","ro":"Consilieri politici"},"Beoordeling van eerder werk tegen vaste criteria":{"nl":"Beoordeling van eerder werk tegen vaste criteria","en":"Evaluation of prior work against fixed criteria","de":"Bewertung bisheriger Arbeiten anhand festgelegter Kriterien","fr":"Évaluation des travaux antérieurs selon des critères fixes","es":"Evaluación del trabajo previo según criterios fijos","ro":"Evaluarea activității anterioare în raport cu criterii prestabilite"},"Beroepsinteresses, aansluitend op de RIASEC-structuur":{"nl":"Beroepsinteresses, aansluitend op de RIASEC-structuur","en":"Career interests, aligned with the RIASEC framework","de":"Berufliche Interessen, abgestimmt auf das RIASEC-Modell","fr":"Intérêts professionnels, alignés sur le modèle RIASEC","es":"Intereses profesionales, alineados con el marco RIASEC","ro":"Interese profesionale, aliniate la cadrul RIASEC"},"Besluitvaardigheid":{"nl":"Besluitvaardigheid","en":"Decision-making ability","de":"Entscheidungsfähigkeit","fr":"Capacité de prise de décision","es":"Capacidad de toma de decisiones","ro":"Capacitatea de luare a deciziilor"},"Big Fifty":{"nl":"Big Fifty","en":"Big Fifty","product":true,"de":"Big Fifty","fr":"Big Fifty","es":"Big Fifty","ro":"Big Fifty"},"Big Fifty (schaal Integriteit)":{"nl":"Big Fifty (schaal Integriteit)","en":"Big Fifty (Integrity Scale)","de":"Big Fifty (Integritätsskala)","fr":"Big Fifty (échelle d’intégrité)","es":"Big Fifty (Escala de Integridad)","ro":"Big Fifty (Scala de integritate)"},"Biologen, wiskundigen en natuurwetenschappers":{"nl":"Biologen, wiskundigen en natuurwetenschappers","en":"Biologists, mathematicians, and natural scientists","de":"Biologen, Mathematiker und Naturwissenschaftler","fr":"Biologistes, mathématiciens et spécialistes des sciences de la nature","es":"Biólogos, matemáticos y científicos naturales","ro":"Biologi, matematicieni și oameni de știință din domeniul științelor naturii"},"Boekhouders":{"nl":"Boekhouders","en":"Accountants","de":"Buchhalter","fr":"Comptables","es":"Contables","ro":"Contabili"},"Bouwarbeiders afbouw":{"nl":"Bouwarbeiders afbouw","en":"Construction workers (finishing work)","de":"Bauarbeiter (Ausbauarbeiten)","fr":"Ouvriers du bâtiment (travaux de finition)","es":"Trabajadores de la construcción (trabajos de acabado)","ro":"Muncitori în construcții (lucrări de finisare)"},"Bouwarbeiders ruwbouw":{"nl":"Bouwarbeiders ruwbouw","en":"Construction workers (structural work)","de":"Bauarbeiter (Hochbau)","fr":"Ouvriers du bâtiment (travaux de structure)","es":"Trabajadores de la construcción (obras estructurales)","ro":"Muncitori în construcții (lucrări de structură)"},"Callcentermedewerkers outbound en overige verkopers":{"nl":"Callcentermedewerkers outbound en overige verkopers","en":"Outbound call center agents and other sales representatives","de":"Mitarbeiter in Outbound-Callcentern und andere Vertriebsmitarbeiter","fr":"Agents de centres d'appels sortants et autres commerciaux","es":"Agentes de centros de atención telefónica de salida y otros representantes de ventas","ro":"Agenți de call center pentru apeluri de ieșire și alți reprezentanți de vânzări"},"Capaciteitentest: verbaal, numeriek en abstract redeneervermogen":{"nl":"Capaciteitentest: verbaal, numeriek en abstract redeneervermogen","en":"Aptitude Test: Verbal, Numerical, and Abstract Reasoning Skills","de":"Eignungstest: Verbale, numerische und abstrakte Denkfähigkeiten","fr":"Test d'aptitude : capacités de raisonnement verbal, numérique et abstrait","es":"Prueba de aptitud: habilidades de razonamiento verbal, numérico y abstracto","ro":"Test de aptitudini: abilități de raționament verbal, numeric și abstract"},"Certificaat/diploma":{"nl":"Certificaat/diploma","en":"Certificate or diploma","de":"Zertifikat oder Diplom","fr":"Certificat ou diplôme","es":"Certificado o título","ro":"Certificat sau diplomă"},"Chauffeurs auto's, taxi's en bestelwagens":{"nl":"Chauffeurs auto's, taxi's en bestelwagens","en":"Drivers of cars, taxis, and delivery vans","de":"Fahrer von Pkw, Taxis und Lieferwagen","fr":"Conducteurs de voitures, de taxis et de camionnettes de livraison","es":"Conductores de turismos, taxis y furgonetas de reparto","ro":"Șoferi de autoturisme, taxiuri și autoutilitare de livrări"},"Coachen":{"nl":"Coachen","en":"Coaching","de":"Coaching","fr":"Coaching","es":"Coaching","ro":"Coaching"},"Cognitieve capaciteitentest":{"nl":"Cognitieve capaciteitentest","en":"Cognitive ability test","de":"Test zur kognitiven Leistungsfähigkeit","fr":"Test d’aptitudes cognitives","es":"Prueba de capacidad cognitiva","ro":"Test de abilități cognitive"},"Commercieel vermogen":{"nl":"Commercieel vermogen","en":"Commercial acumen","de":"Geschäftssinn","fr":"Sens des affaires","es":"Perspicacia comercial","ro":"Simț comercial"},"Communicatiestijlen":{"nl":"Communicatiestijlen","en":"Communication Styles","product":true,"de":"Communication Styles","fr":"Communication Styles","es":"Communication Styles","ro":"Communication Styles"},"Competency Check":{"nl":"Competency Check","en":"Competency Check","product":true,"de":"Competency Check","fr":"Competency Check","es":"Competency Check","ro":"Competency Check"},"Competentiebeoordeling op gedragsniveau":{"nl":"Competentiebeoordeling op gedragsniveau","en":"Behavioral-Level Competency Assessment","de":"Kompetenzbeurteilung auf Verhaltensebene","fr":"Évaluation des compétences au niveau comportemental","es":"Evaluación de competencias a nivel conductual","ro":"Evaluarea competențelor la nivel comportamental"},"Conceptueel denken":{"nl":"Conceptueel denken","en":"Conceptual thinking","de":"Konzeptionelles Denken","fr":"Pensée conceptuelle","es":"Pensamiento conceptual","ro":"Gândire conceptuală"},"Conflicthantering":{"nl":"Conflicthantering","en":"Conflict Management","de":"Konfliktmanagement","fr":"Gestion des conflits","es":"Gestión de conflictos","ro":"Gestionarea conflictelor"},"Conflictstijlen":{"nl":"Conflictstijlen","en":"Conflict Styles","product":true,"de":"Conflict Styles","fr":"Conflict Styles","es":"Conflict Styles","ro":"Conflict Styles"},"Creativiteit":{"nl":"Creativiteit","en":"Creativity","de":"Kreativität","fr":"Créativité","es":"Creatividad","ro":"Creativitate"},"Delegeren":{"nl":"Delegeren","en":"Delegation","de":"Delegation","fr":"Délégation","es":"Delegación","ro":"Delegarea"},"Discipline":{"nl":"Discipline","en":"Discipline","de":"Fachgebiet","fr":"Discipline","es":"Disciplina","ro":"Domeniu"},"Docenten algemene vakken secundair onderwijs":{"nl":"Docenten algemene vakken secundair onderwijs","en":"Teachers of general subjects in secondary education","de":"Lehrkräfte für allgemeinbildende Fächer im Sekundarbereich","fr":"Enseignants de matières générales dans l'enseignement secondaire","es":"Profesores de asignaturas troncales en la educación secundaria","ro":"Profesori de discipline generale din învățământul secundar"},"Docenten beroepsgerichte vakken secundair onderwijs":{"nl":"Docenten beroepsgerichte vakken secundair onderwijs","en":"Teachers of vocational subjects in secondary education","de":"Lehrkräfte für berufsbezogene Fächer im Sekundarbereich","fr":"Enseignants de matières professionnelles dans l'enseignement secondaire","es":"Profesores de asignaturas de formación profesional en la educación secundaria","ro":"Profesori de discipline profesionale din învățământul secundar"},"Docenten hoger onderwijs en hoogleraren":{"nl":"Docenten hoger onderwijs en hoogleraren","en":"Higher education instructors and professors","de":"Dozenten und Professoren im Hochschulbereich","fr":"Enseignants et professeurs de l'enseignement supérieur","es":"Docentes y catedráticos de educación superior","ro":"Cadre didactice și profesori din învățământul superior"},"Dokters- en tandartsassistenten":{"nl":"Dokters- en tandartsassistenten","en":"Medical and dental assistants","de":"Medizinische und zahnmedizinische Assistenten","fr":"Assistants médicaux et dentaires","es":"Auxiliares médicos y dentales","ro":"Asistenți medicali și stomatologici"},"Doorzettingsvermogen":{"nl":"Doorzettingsvermogen","en":"Perseverance","de":"Durchhaltevermögen","fr":"Persévérance","es":"Perseverancia","ro":"Perseverență"},"Drijfveren en motivatiebronnen":{"nl":"Drijfveren en motivatiebronnen","en":"Drivers and sources of motivation","de":"Treibende Faktoren und Motivationsquellen","fr":"Facteurs et sources de motivation","es":"Factores impulsores y fuentes de motivación","ro":"Factori determinanți și surse de motivație"},"Durf":{"nl":"Durf","en":"Dare","de":"Dare","fr":"Dare","es":"Dare","ro":"Dare"},"EU-competentieframework":{"nl":"EU-competentieframework","en":"EU Competency Framework","de":"EU-Kompetenzrahmen","fr":"Cadre européen des compétences","es":"Marco de Competencias de la UE","ro":"Cadrul de competențe al UE"},"Elektriciens en elektromonteurs":{"nl":"Elektriciens en elektromonteurs","en":"Electricians and electrical technicians","de":"Elektriker und Elektrotechniker","fr":"Électriciens et techniciens électriciens","es":"Electricistas y técnicos electricistas","ro":"Electricieni și tehnicieni electricieni"},"Elektrotechnisch ingenieurs":{"nl":"Elektrotechnisch ingenieurs","en":"Electrical engineers","de":"Elektroingenieure","fr":"Ingénieurs électriciens","es":"Ingenieros eléctricos","ro":"Ingineri electricieni"},"Energie":{"nl":"Energie","en":"Energy","de":"Energie","fr":"Énergie","es":"Energía","ro":"Energie"},"Fietskoeriers en dagbladenbezorgers":{"nl":"Fietskoeriers en dagbladenbezorgers","en":"Bicycle couriers and newspaper delivery people","de":"Fahrradkuriere und Zeitungsausträger","fr":"Coursiers à vélo et livreurs de journaux","es":"Mensajeros en bicicleta y repartidores de periódicos","ro":"Curieri pe bicicletă și distribuitori de ziare"},"Financieel administratief medewerkers":{"nl":"Financieel administratief medewerkers","en":"Financial Administrative Staff","de":"Finanz- und Verwaltungspersonal","fr":"Personnel administratif financier","es":"Personal administrativo financiero","ro":"Personalul administrativ financiar"},"Financieel specialisten en economen":{"nl":"Financieel specialisten en economen","en":"Financial specialists and economists","de":"Finanzexperten und Ökonomen","fr":"Spécialistes financiers et économistes","es":"Especialistas financieros y economistas","ro":"Specialiști financiari și economiști"},"Flexibiliteit":{"nl":"Flexibiliteit","en":"Flexibility","de":"Flexibilität","fr":"Flexibilité","es":"Flexibilidad","ro":"Flexibilitate"},"Fysiotherapeuten":{"nl":"Fysiotherapeuten","en":"Physical therapists","de":"Physiotherapeuten","fr":"Kinésithérapeutes","es":"Fisioterapeutas","ro":"Fizioterapeuți"},"Gebruikersondersteuning ICT":{"nl":"Gebruikersondersteuning ICT","en":"ICT User Support","de":"IKT-Benutzersupport","fr":"Assistance aux utilisateurs en matière de TIC","es":"Asistencia al usuario en TIC","ro":"Asistență pentru utilizatorii TIC"},"Gedragsgericht interview met vaste opzet":{"nl":"Gedragsgericht interview met vaste opzet","en":"Behavioral interview with a fixed structure","de":"Verhaltensorientiertes Vorstellungsgespräch mit fester Struktur","fr":"Entretien comportemental à structure fixe","es":"Entrevista conductual con una estructura fija","ro":"Interviu comportamental cu structură fixă"},"Gespecialiseerd verpleegkundigen":{"nl":"Gespecialiseerd verpleegkundigen","en":"Specialized nurses","de":"Fachpflegekräfte","fr":"Infirmiers spécialisés","es":"Enfermeros especializados","ro":"Asistenți medicali specializați"},"Gestructureerd ontwikkelgesprek":{"nl":"Gestructureerd ontwikkelgesprek","en":"Structured development interview","de":"Strukturiertes Entwicklungsgespräch","fr":"Entretien de développement structuré","es":"Entrevista estructurada de desarrollo","ro":"Interviu structurat de dezvoltare"},"Ingenieurs (geen elektrotechniek)":{"nl":"Ingenieurs (geen elektrotechniek)","en":"Engineers (excluding electrical engineering)","de":"Ingenieure (mit Ausnahme der Elektrotechnik)","fr":"Ingénieurs (à l'exception des ingénieurs en génie électrique)","es":"Ingenieros (excluida la ingeniería eléctrica)","ro":"Ingineri (cu excepția ingineriei electrice)"},"Initiatief":{"nl":"Initiatief","en":"Initiative","de":"Initiative","fr":"Initiative","es":"Iniciativa","ro":"Inițiativă"},"Innovatief vermogen":{"nl":"Innovatief vermogen","en":"Innovative capacity","de":"Innovationsfähigkeit","fr":"Capacité d’innovation","es":"Capacidad de innovación","ro":"Capacitate de inovare"},"Inspecteurs veiligheid, gezondheid en medische vakspecialisten":{"nl":"Inspecteurs veiligheid, gezondheid en medische vakspecialisten","en":"Safety and health inspectors and medical specialists","de":"Sicherheits- und Gesundheitsinspektoren sowie medizinische Fachkräfte","fr":"Inspecteurs de la sécurité et de la santé et spécialistes médicaux","es":"Inspectores de seguridad y salud y especialistas médicos","ro":"Inspectori de securitate și sănătate și specialiști medicali"},"Integriteit":{"nl":"Integriteit","en":"Integrity","de":"Integrität","fr":"Intégrité","es":"Integridad","ro":"Integritate"},"Juristen":{"nl":"Juristen","en":"Lawyers","de":"Rechtsanwälte","fr":"Avocats","es":"Abogados","ro":"Avocați"},"Kassamedewerkers":{"nl":"Kassamedewerkers","en":"Cashier","de":"Kassierer","fr":"Caissier","es":"Cajero","ro":"Casier"},"Kennistoets":{"nl":"Kennistoets","en":"Knowledge test","de":"Wissenstest","fr":"Test de connaissances","es":"Prueba de conocimientos","ro":"Test de cunoștințe"},"Kennistoets (klantspecifiek)":{"nl":"Kennistoets (klantspecifiek)","en":"Knowledge test (client-specific)","de":"Wissenstest (kundenspezifisch)","fr":"Test de connaissances (spécifique au client)","es":"Prueba de conocimientos (específica para cada cliente)","ro":"Test de cunoștințe (specific clientului)"},"Keukenhulpen":{"nl":"Keukenhulpen","en":"Kitchen Gadgets","de":"Küchengeräte","fr":"Ustensiles de cuisine","es":"Utensilios de cocina","ro":"Accesorii de bucătărie"},"Klantenservice medewerkers en receptionisten":{"nl":"Klantenservice medewerkers en receptionisten","en":"Customer service representatives and receptionists","de":"Kundendienstmitarbeiter und Rezeptionisten","fr":"Chargés de clientèle et réceptionnistes","es":"Representantes de atención al cliente y recepcionistas","ro":"Reprezentanți de relații cu clienții și recepționeri"},"Klantgerichtheid":{"nl":"Klantgerichtheid","en":"Customer Focus","de":"Kundenorientierung","fr":"Orientation client","es":"Orientación al cliente","ro":"Orientarea către client"},"Klantvriendelijkheid":{"nl":"Klantvriendelijkheid","en":"Customer-friendliness","de":"Kundenfreundlichkeit","fr":"Orientation client","es":"Orientación al cliente","ro":"Orientarea către client"},"Kleurenprofiel (Jung)":{"nl":"Kleurenprofiel (Jung)","en":"Colour Profile (Jung)","product":true,"de":"Colour Profile (Jung)","fr":"Colour Profile (Jung)","es":"Colour Profile (Jung)","ro":"Colour Profile (Jung)"},"Koks":{"nl":"Koks","en":"Koks","de":"Koks","fr":"Koks","es":"Koks","ro":"Koks"},"Kwaliteitsgerichtheid":{"nl":"Kwaliteitsgerichtheid","en":"Commitment to Quality","de":"Verpflichtung zur Qualität","fr":"Engagement en faveur de la qualité","es":"Compromiso con la calidad","ro":"Angajamentul față de calitate"},"Laders, lossers en vakkenvullers":{"nl":"Laders, lossers en vakkenvullers","en":"Loaders, unloaders, and shelf stockers","de":"Lader, Entlader und Regalauffüller","fr":"Chargateurs, déchargeurs et préparateurs de rayons","es":"Cargadores, descargadores y reponedores","ro":"Mânuitori de marfă, descărcători și aprovizionatori de rafturi"},"Lassers en plaatwerkers":{"nl":"Lassers en plaatwerkers","en":"Welders and sheet metal workers","de":"Schweißer und Blechbearbeiter","fr":"Soudeurs et tôliers","es":"Soldadores y chapistas","ro":"Sudori și tinichigii"},"Leerkrachten basisonderwijs":{"nl":"Leerkrachten basisonderwijs","en":"Elementary school teachers","de":"Grundschullehrer","fr":"Enseignants du primaire","es":"Profesores de primaria","ro":"Profesori de școală primară"},"Leerstijlen":{"nl":"Leerstijlen","en":"Learning Styles","product":true,"de":"Learning Styles","fr":"Learning Styles","es":"Learning Styles","ro":"Learning Styles"},"Leervermogen":{"nl":"Leervermogen","en":"Learning Ability","de":"Lernfähigkeit","fr":"Capacité d’apprentissage","es":"Capacidad de aprendizaje","ro":"Capacitatea de învățare"},"Lerend vermogen":{"nl":"Lerend vermogen","en":"Learning Ability","de":"Lernfähigkeit","fr":"Capacité d’apprentissage","es":"Capacidad de aprendizaje","ro":"Capacitatea de învățare"},"Loodgieters en pijpfitters":{"nl":"Loodgieters en pijpfitters","en":"Plumbers and pipe fitters","de":"Klempner und Rohrschlosser","fr":"Plombiers et monteurs de canalisations","es":"Fontaneros e instaladores de tuberías","ro":"Instalatori și montatori de țevi"},"Loopbaanankers en werkwaarden":{"nl":"Loopbaanankers en werkwaarden","en":"Career Anchors and Work Values","de":"Karriereanker und Arbeitswerte","fr":"Ancrages de carrière et valeurs professionnelles","es":"Anclas profesionales y valores laborales","ro":"Ancore de carieră și valori profesionale"},"Loopbaaninteresse":{"nl":"Loopbaaninteresse","en":"Career Interest","product":true,"de":"Career Interest","fr":"Career Interest","es":"Career Interest","ro":"Career Interest"},"Loopbaanorientaties":{"nl":"Loopbaanorientaties","en":"Career Orientations","product":true,"de":"Career Orientations","fr":"Career Orientations","es":"Career Orientations","ro":"Career Orientations"},"Loopbaanoriëntaties":{"nl":"Loopbaanoriëntaties","en":"Career Orientations","product":true,"de":"Career Orientations","fr":"Career Orientations","es":"Career Orientations","ro":"Career Orientations"},"Loyaliteit":{"nl":"Loyaliteit","en":"Loyalty","de":"Loyalität","fr":"Fidélité","es":"Lealtad","ro":"Loialitate"},"Luisteren":{"nl":"Luisteren","en":"Listen","de":"Anhören","fr":"Écouter","es":"Escuchar","ro":"Ascultați"},"Maatschappelijk werkers":{"nl":"Maatschappelijk werkers","en":"Social workers","de":"Sozialarbeiter","fr":"Travailleurs sociaux","es":"Trabajadores sociales","ro":"Asistenți sociali"},"Machine operators":{"nl":"Machine operators","en":"Machine operators","de":"Maschinenbediener","fr":"Opérateurs de machines","es":"Operadores de maquinaria","ro":"Operatori de utilaje"},"Machinemonteurs":{"nl":"Machinemonteurs","en":"Machine Mechanics","de":"Maschinenmechanik","fr":"Mécanique des machines","es":"Mecánica de máquinas","ro":"Mecanică"},"Managers ICT":{"nl":"Managers ICT","en":"ICT Managers","de":"IKT-Manager","fr":"Responsables des TIC","es":"Responsables de TIC","ro":"Manageri în domeniul TIC"},"Managers detail- en groothandel":{"nl":"Managers detail- en groothandel","en":"Retail and Wholesale Managers","de":"Führungskräfte im Einzel- und Großhandel","fr":"Responsables du commerce de détail et de gros","es":"Directivos del sector minorista y mayorista","ro":"Manageri din comerțul cu amănuntul și cu ridicata"},"Managers gespecialiseerde dienstverlening":{"nl":"Managers gespecialiseerde dienstverlening","en":"Specialized Services Managers","de":"Manager für spezialisierte Dienstleistungen","fr":"Responsables des services spécialisés","es":"Responsables de servicios especializados","ro":"Manageri de servicii specializate"},"Managers horeca":{"nl":"Managers horeca","en":"Hospitality managers","de":"Manager im Gastgewerbe","fr":"Responsables du secteur de l'hôtellerie","es":"Directivos del sector hotelero","ro":"Manageri din domeniul ospitalității"},"Managers logistiek":{"nl":"Managers logistiek","en":"Logistics Managers","de":"Logistikmanager","fr":"Responsables logistiques","es":"Responsables de logística","ro":"Manageri de logistică"},"Managers onderwijs":{"nl":"Managers onderwijs","en":"Education Managers","de":"Ausbildungsmanager","fr":"Responsables de la formation","es":"Responsables de formación","ro":"Manageri de formare"},"Managers productie":{"nl":"Managers productie","en":"Production Managers","de":"Produktionsleiter","fr":"Responsables de production","es":"Directores de producción","ro":"Manageri de producție"},"Managers verkoop en marketing":{"nl":"Managers verkoop en marketing","en":"Sales and Marketing Managers","de":"Vertriebs- und Marketingmanager","fr":"Responsables des ventes et du marketing","es":"Directores de ventas y marketing","ro":"Manageri de vânzări și marketing"},"Managers z.n.d.":{"nl":"Managers z.n.d.","en":"Managers, n.d.","de":"Manager, o. J.","fr":"Responsables, s.d.","es":"Directivos, s. f.","ro":"Managerii, f.d."},"Managers zakelijke en administratieve dienstverlening":{"nl":"Managers zakelijke en administratieve dienstverlening","en":"Managers in Business and Administrative Services","de":"Führungskräfte im Bereich Wirtschaft und Verwaltung","fr":"Cadres dans les services commerciaux et administratifs","es":"Directivos en el ámbito de los servicios empresariales y administrativos","ro":"Manageri din domeniul serviciilor comerciale și administrative"},"Managers zorginstellingen":{"nl":"Managers zorginstellingen","en":"Managers of healthcare institutions","de":"Leitende Mitarbeiter von Gesundheitseinrichtungen","fr":"Responsables d’établissements de santé","es":"Directivos de centros sanitarios","ro":"Managerii instituțiilor din domeniul sănătății"},"Marktgerichtheid":{"nl":"Marktgerichtheid","en":"Market Orientation","de":"Marktorientierung","fr":"Orientation vers le marché","es":"Orientación al mercado","ro":"Orientarea către piață"},"Medewerkers bediening horeca en barpersoneel":{"nl":"Medewerkers bediening horeca en barpersoneel","en":"Food and Beverage Service Staff and Bar Staff","de":"Servicepersonal im Gastronomiebereich und Barpersonal","fr":"Personnel de restauration et personnel de bar","es":"Personal de servicio de restauración y personal de bar","ro":"Personalul din domeniul serviciilor de alimentație și băuturi și personalul de bar"},"Meervoudige beoordeling op gedragsankers":{"nl":"Meervoudige beoordeling op gedragsankers","en":"Multiple assessments based on behavioral anchors","de":"Mehrere Bewertungen auf der Grundlage von Verhaltensankern","fr":"Évaluations multiples fondées sur des ancrages comportementaux","es":"Múltiples evaluaciones basadas en indicadores de comportamiento","ro":"Evaluări multiple bazate pe repere comportamentale"},"Mentale Weerbaarheid (4C)":{"nl":"Mentale Weerbaarheid (4C)","en":"Mental Resilience (4C)","product":true,"de":"Mental Resilience (4C)","fr":"Mental Resilience (4C)","es":"Mental Resilience (4C)","ro":"Mental Resilience (4C)"},"Mentale weerbaarheid volgens het 4C-model":{"nl":"Mentale weerbaarheid volgens het 4C-model","en":"Mental Resilience According to the 4C Model","de":"Psychische Belastbarkeit gemäß dem 4C-Modell","fr":"La résilience mentale selon le modèle des 4C","es":"Resiliencia mental según el modelo 4C","ro":"Reziliența mentală conform modelului 4C"},"Metaalbewerkers en constructiewerkers":{"nl":"Metaalbewerkers en constructiewerkers","en":"Metalworkers and construction workers","de":"Metallarbeiter und Bauarbeiter","fr":"Métallurgistes et ouvriers du bâtiment","es":"Trabajadores metalúrgicos y de la construcción","ro":"Muncitorii din industria metalurgică și cei din sectorul construcțiilor"},"Motivatie":{"nl":"Motivatie","en":"Motivation","product":true,"de":"Motivation","fr":"Motivation","es":"Motivation","ro":"Motivation"},"Nauwkeurigheid":{"nl":"Nauwkeurigheid","en":"Accuracy","de":"Genauigkeit","fr":"Précision","es":"Precisión","ro":"Precizie"},"Netwerken":{"nl":"Netwerken","en":"Networking","de":"Netzwerken","fr":"Réseautage","es":"Creación de redes","ro":"Rețele"},"Office managers en managementassistenten":{"nl":"Office managers en managementassistenten","en":"Office managers and executive assistants","de":"Büroleiter und Assistenten der Geschäftsleitung","fr":"Responsables administratifs et assistants de direction","es":"Responsables de oficina y asistentes ejecutivos","ro":"Manageri de birou și asistenți executivi"},"Omgevingsbewustzijn":{"nl":"Omgevingsbewustzijn","en":"Environmental Awareness","de":"Umweltbewusstsein","fr":"Sensibilisation à l'environnement","es":"Concienciación medioambiental","ro":"Conștientizarea problemelor de mediu"},"Onafhankelijkheid":{"nl":"Onafhankelijkheid","en":"Independence","de":"Selbstständigkeit","fr":"Autonomie","es":"Independencia","ro":"Independență"},"Onderhandelen":{"nl":"Onderhandelen","en":"Negotiation","de":"Verhandlung","fr":"Négociation","es":"Negociación","ro":"Negociere"},"Ondernemerschap":{"nl":"Ondernemerschap","en":"Entrepreneurship","de":"Unternehmertum","fr":"Esprit d'entreprise","es":"Emprendimiento","ro":"Antreprenoriat"},"Onderwijsassistenten":{"nl":"Onderwijsassistenten","en":"Teaching Assistants","de":"Lehrassistenten","fr":"Assistants d’enseignement","es":"Ayudantes docentes","ro":"Asistenți didactici"},"Onderwijsbegeleiders, onderwijskundigen en overige docenten":{"nl":"Onderwijsbegeleiders, onderwijskundigen en overige docenten","en":"Educational counselors, educational specialists, and other instructors","de":"Bildungsberater, Bildungsspezialisten und andere Lehrkräfte","fr":"Conseillers pédagogiques, spécialistes de l’éducation et autres formateurs","es":"Orientadores educativos, especialistas en educación y otros formadores","ro":"Consilieri educaționali, specialiști în educație și alți formatori"},"Ontwikkelgesprek":{"nl":"Ontwikkelgesprek","en":"Development Review","product":true,"de":"Development Review","fr":"Development Review","es":"Development Review","ro":"Development Review"},"Oordeelsvorming":{"nl":"Oordeelsvorming","en":"Judgment","de":"Beurteilungsvermögen","fr":"Jugement","es":"Capacidad de juicio","ro":"Capacitatea de judecată"},"Organisatiesensitiviteit":{"nl":"Organisatiesensitiviteit","en":"Organizational Sensitivity","de":"Organisatorische Sensibilität","fr":"Sensibilité organisationnelle","es":"Sensibilidad organizativa","ro":"Sensibilitate organizațională"},"Overheidsambtenaren":{"nl":"Overheidsambtenaren","en":"Government officials","de":"Beamte","fr":"Fonctionnaires","es":"Funcionarios públicos","ro":"Funcționari publici"},"Overheidsbestuurders":{"nl":"Overheidsbestuurders","en":"Government officials","de":"Beamte","fr":"Fonctionnaires","es":"Funcionarios públicos","ro":"Funcționari publici"},"Overtuigingskracht":{"nl":"Overtuigingskracht","en":"Persuasiveness","de":"Überzeugungskraft","fr":"Capacité de persuasion","es":"Capacidad de persuasión","ro":"Puterea de convingere"},"Periodieke meting op team- en organisatieniveau":{"nl":"Periodieke meting op team- en organisatieniveau","en":"Periodic measurement at the team and organizational levels","de":"Regelmäßige Messungen auf Team- und Organisationsebene","fr":"Mesures périodiques aux niveaux de l'équipe et de l'organisation","es":"Medición periódica a nivel de equipo y de organización","ro":"Măsurare periodică la nivel de echipă și la nivel organizațional"},"Persoonlijkheidsprofiel, korter alternatief voor de Big Fifty":{"nl":"Persoonlijkheidsprofiel, korter alternatief voor de Big Fifty","en":"Personality Profile, a shorter alternative to the Big Fifty","de":"„Personality Profile“, eine kürzere Alternative zum „Big Fifty“","fr":"Profil de personnalité, une alternative plus concise au « Big Fifty »","es":"Perfil de personalidad, una alternativa más concisa al «Big Fifty»","ro":"Profilul de personalitate, o alternativă mai succintă la Big Fifty"},"Persoonlijkheidsvragenlijst":{"nl":"Persoonlijkheidsvragenlijst","en":"Personality questionnaire","de":"Persönlichkeitsfragebogen","fr":"Questionnaire de personnalité","es":"Cuestionario de personalidad","ro":"Chestionar de personalitate"},"Persoonlijkheidsvragenlijst, 150 items, 25 factoren":{"nl":"Persoonlijkheidsvragenlijst, 150 items, 25 factoren","en":"Personality questionnaire, 150 items, 25 factors","de":"Persönlichkeitsfragebogen, 150 Items, 25 Faktoren","fr":"Questionnaire de personnalité, 150 items, 25 facteurs","es":"Cuestionario de personalidad, 150 ítems, 25 factores","ro":"Chestionar de personalitate, 150 de itemi, 25 de factori"},"Plannen en organiseren":{"nl":"Plannen en organiseren","en":"Planning and Organizing","de":"Planung und Organisation","fr":"Planification et organisation","es":"Planificación y organización","ro":"Planificare și organizare"},"Politie en brandweer":{"nl":"Politie en brandweer","en":"Police and Fire Department","de":"Polizei und Feuerwehr","fr":"Police et service des pompiers","es":"Cuerpo de Policía y Cuerpo de Bomberos","ro":"Poliția și Pompierii"},"Portfolio":{"nl":"Portfolio","en":"Portfolio","de":"Portfolio","fr":"Portefeuille","es":"Cartera","ro":"Portofoliu"},"Portfolio/bewijsstuk":{"nl":"Portfolio/bewijsstuk","en":"Portfolio or evidence","de":"Portfolio oder Nachweise","fr":"Portefeuille ou éléments justificatifs","es":"Portafolio o pruebas","ro":"Portofoliu sau dovezi"},"Praktijkobservatie":{"nl":"Praktijkobservatie","en":"On-the-job observation","de":"Beobachtung am Arbeitsplatz","fr":"Observation en situation de travail","es":"Observación en el puesto de trabajo","ro":"Observarea la locul de muncă"},"Presenteren":{"nl":"Presenteren","en":"Present","de":"Aktuell","fr":"Présent","es":"Presente","ro":"Prezent"},"Probleemanalyse":{"nl":"Probleemanalyse","en":"Problem Analysis","de":"Problemanalyse","fr":"Analyse du problème","es":"Análisis del problema","ro":"Analiza problemelor"},"Procesoperators":{"nl":"Procesoperators","en":"Process Operators","de":"Prozessoperatoren","fr":"Opérateurs de processus","es":"Operadores de proceso","ro":"Operatori de proces"},"Productcontroleurs":{"nl":"Productcontroleurs","en":"Product Controllers","de":"Produktcontroller","fr":"Contrôleurs de produits","es":"Controladores de producto","ro":"Controlori de produs"},"Productieleiders industrie en bouw":{"nl":"Productieleiders industrie en bouw","en":"Production Managers in Manufacturing and Construction","de":"Produktionsleiter in der Fertigungsindustrie und im Bauwesen","fr":"Responsables de production dans les secteurs de l'industrie manufacturière et de la construction","es":"Directores de producción en los sectores de la fabricación y la construcción","ro":"Manageri de producție din industria prelucrătoare și din construcții"},"Psychologen en sociologen":{"nl":"Psychologen en sociologen","en":"Psychologists and sociologists","de":"Psychologen und Soziologen","fr":"Psychologues et sociologues","es":"Psicólogos y sociólogos","ro":"Psihologi și sociologi"},"Pulse Survey":{"nl":"Pulse Survey","en":"Pulse Survey","product":true,"de":"Pulse Survey","fr":"Pulse Survey","es":"Pulse Survey","ro":"Pulse Survey"},"Representatief werkfragment onder gestandaardiseerde condities":{"nl":"Representatief werkfragment onder gestandaardiseerde condities","en":"Representative work sample under standardized conditions","de":"Repräsentatives Arbeitsbeispiel unter standardisierten Bedingungen","fr":"Échantillon de travail représentatif réalisé dans des conditions normalisées","es":"Muestra de trabajo representativa en condiciones estandarizadas","ro":"Eșantion reprezentativ de muncă în condiții standardizate"},"Resultaatgerichtheid":{"nl":"Resultaatgerichtheid","en":"Results-Orientation","de":"Ergebnisorientierung","fr":"Orientation vers les résultats","es":"Orientación a los resultados","ro":"Orientarea către rezultate"},"Samenwerken":{"nl":"Samenwerken","en":"Collaborate","de":"Zusammenarbeiten","fr":"Collaborer","es":"Colaborar","ro":"Colaborare"},"Schilders, verf- en lakspuiters":{"nl":"Schilders, verf- en lakspuiters","en":"Painters, Paint and Varnish Sprayers","de":"Maler, Lack- und Farbsprühtechniker","fr":"Peintres, pulvérisateurs de peinture et de vernis","es":"Pintores, pulverizadores de pintura y barniz","ro":"Vopsitori, specialişti în pulverizarea vopselelor şi lacurilor"},"Schoonmakers":{"nl":"Schoonmakers","en":"Cleaners","de":"Reinigungskräfte","fr":"Agents d'entretien","es":"Personal de limpieza","ro":"Personal de curățenie"},"Schriftelijke uitdrukkingsvaardigheid":{"nl":"Schriftelijke uitdrukkingsvaardigheid","en":"Written communication skills","de":"Schriftliche Kommunikationsfähigkeiten","fr":"Compétences en communication écrite","es":"Habilidades de comunicación escrita","ro":"Abilități de comunicare scrisă"},"Secretarieel medewerkers":{"nl":"Secretarieel medewerkers","en":"Administrative staff","de":"Verwaltungsmitarbeiter","fr":"Personnel administratif","es":"Personal administrativo","ro":"Personal administrativ"},"Sensitiviteit":{"nl":"Sensitiviteit","en":"Sensitivity","de":"Sensitivität","fr":"Sensibilité","es":"Sensibilidad","ro":"Sensibilitate"},"Simulatie":{"nl":"Simulatie","en":"Simulation","de":"Simulation","fr":"Simulation","es":"Simulación","ro":"Simulare"},"Situational Judgement Test":{"nl":"Situational Judgement Test","en":"Situational Judgement Test","product":true,"de":"Situational Judgement Test","fr":"Situational Judgement Test","es":"Situational Judgement Test","ro":"Situational Judgement Test"},"Sociaal werkers, groeps- en woonbegeleiders":{"nl":"Sociaal werkers, groeps- en woonbegeleiders","en":"Social workers, group and residential counselors","de":"Sozialarbeiter, Gruppen- und Wohnheimbetreuer","fr":"Travailleurs sociaux, animateurs de groupe et accompagnateurs en établissement","es":"Trabajadores sociales, consejeros de grupo y de centros residenciales","ro":"Asistenți sociali, consilieri de grup și consilieri rezidențiali"},"Sociabiliteit":{"nl":"Sociabiliteit","en":"Sociability","de":"Sozialkompetenz","fr":"Sociabilité","es":"Sociabilidad","ro":"Sociabilitate"},"Software- en applicatieontwikkelaars":{"nl":"Software- en applicatieontwikkelaars","en":"Software and application developers","de":"Software- und Anwendungsentwickler","fr":"Développeurs de logiciels et d'applications","es":"Desarrolladores de software y aplicaciones","ro":"Dezvoltatori de software și aplicații"},"Specialisten personeels- en loopbaanontwikkeling":{"nl":"Specialisten personeels- en loopbaanontwikkeling","en":"Human Resources and Career Development Specialists","de":"Fachkräfte für Personalwesen und Karriereentwicklung","fr":"Spécialistes des ressources humaines et du développement de carrière","es":"Especialistas en Recursos Humanos y Desarrollo Profesional","ro":"Specialiști în resurse umane și dezvoltare profesională"},"Stressbestendigheid":{"nl":"Stressbestendigheid","en":"Stress resilience","de":"Stressresilienz","fr":"Résilience face au stress","es":"Resiliencia ante el estrés","ro":"Rezistența la stres"},"Structureerd interview":{"nl":"Structureerd interview","en":"Structured interview","de":"Strukturiertes Interview","fr":"Entretien structuré","es":"Entrevista estructurada","ro":"Interviu structurat"},"Systeemanalisten en ICT-adviseurs":{"nl":"Systeemanalisten en ICT-adviseurs","en":"Systems analysts and IT consultants","de":"Systemanalytiker und IT-Berater","fr":"Analystes systèmes et consultants en informatique","es":"Analistas de sistemas y consultores de TI","ro":"Analisti de sisteme și consultanți IT"},"Systeembeheerders en netwerkspecialisten":{"nl":"Systeembeheerders en netwerkspecialisten","en":"System administrators and network specialists","de":"Systemadministratoren und Netzwerkspezialisten","fr":"Administrateurs système et spécialistes réseau","es":"Administradores de sistemas y especialistas en redes","ro":"Administratori de sistem și specialiști în rețele"},"Technici bouwkunde en natuur":{"nl":"Technici bouwkunde en natuur","en":"Engineering and Natural Sciences Technicians","de":"Techniker in den Bereichen Ingenieurwesen und Naturwissenschaften","fr":"Techniciens en ingénierie et en sciences naturelles","es":"Técnicos en ingeniería y ciencias naturales","ro":"Tehnicieni în inginerie și științe naturale"},"Timmerlieden":{"nl":"Timmerlieden","en":"Carpenters","de":"Zimmerleute","fr":"Charpentiers","es":"Carpinteros","ro":"Tâmplari"},"Toets van vakkennis, per klant samengesteld":{"nl":"Toets van vakkennis, per klant samengesteld","en":"Professional knowledge test, customized for each client","de":"Fachwissenstest, individuell auf jeden Kunden zugeschnitten","fr":"Test de connaissances professionnelles, personnalisé pour chaque client","es":"Prueba de conocimientos profesionales, adaptada a cada cliente","ro":"Test de cunoștințe profesionale, personalizat pentru fiecare client"},"Verkoopmedewerkers detailhandel":{"nl":"Verkoopmedewerkers detailhandel","en":"Retail sales associates","de":"Verkaufsmitarbeiter im Einzelhandel","fr":"Vendeurs en magasin","es":"Empleados de venta al por menor","ro":"Angajați în vânzări cu amănuntul"},"Verpleegkundigen (mbo)":{"nl":"Verpleegkundigen (mbo)","en":"Nurses (MBO)","de":"Pflegekräfte (MBO)","fr":"Infirmiers (MBO)","es":"Enfermeros (MBO)","ro":"Asistenți medicali (MBO)"},"Verzorgenden":{"nl":"Verzorgenden","en":"Caregivers","de":"Pflegekräfte","fr":"Personnel soignant","es":"Cuidadores","ro":"Persoane care oferă îngrijire"},"Vier kleurentypen, gekoppeld aan Big Fifty-factoren":{"nl":"Vier kleurentypen, gekoppeld aan Big Fifty-factoren","en":"Four color types, linked to Big Fifty factors","de":"Vier Farbtypen, verknüpft mit den „Big Fifty“-Faktoren","fr":"Quatre types de couleurs, associés aux facteurs « Big Fifty »","es":"Cuatro tipos de colores, vinculados a los factores «Big Fifty»","ro":"Patru tipuri de culori, corelate cu factorii „Big Fifty”"},"Visie":{"nl":"Visie","en":"Vision","de":"Vision","fr":"Vision","es":"Visión","ro":"Viziune"},"Voorkeur in leren en informatieverwerking":{"nl":"Voorkeur in leren en informatieverwerking","en":"Preferences in learning and information processing","de":"Präferenzen beim Lernen und bei der Informationsverarbeitung","fr":"Préférences en matière d’apprentissage et de traitement de l’information","es":"Preferencias en el aprendizaje y el procesamiento de la información","ro":"Preferințe în ceea ce privește învățarea și procesarea informațiilor"},"Voorkeursstijl in communicatie":{"nl":"Voorkeursstijl in communicatie","en":"Preferred communication style","de":"Bevorzugter Kommunikationsstil","fr":"Style de communication privilégié","es":"Estilo de comunicación preferido","ro":"Stilul preferat de comunicare"},"Voorkeursstijl in conflictsituaties":{"nl":"Voorkeursstijl in conflictsituaties","en":"Preferred style in conflict situations","de":"Bevorzugter Umgangsstil in Konfliktsituationen","fr":"Style privilégié en situation de conflit","es":"Estilo preferido en situaciones de conflicto","ro":"Stilul preferat în situații de conflict"},"Voortgangscontrole":{"nl":"Voortgangscontrole","en":"Progress monitoring","de":"Fortschrittsüberwachung","fr":"Suivi des progrès","es":"Seguimiento del progreso","ro":"Monitorizarea progresului"},"Vrachtwagenchauffeurs":{"nl":"Vrachtwagenchauffeurs","en":"Truck drivers","de":"Lkw-Fahrer","fr":"Chauffeurs routiers","es":"Conductores de camión","ro":"Șoferi de camioane"},"Werkproef":{"nl":"Werkproef","en":"Work sample test","de":"Arbeitsproben-Test","fr":"Test sur échantillon de travail","es":"Prueba de muestra de trabajo","ro":"Testul cu probe de lucru"},"Werkvoorbereiders en logistiek medewerkers":{"nl":"Werkvoorbereiders en logistiek medewerkers","en":"Work planners and logistics staff","de":"Arbeitsplaner und Logistikmitarbeiter","fr":"Les responsables de la planification du travail et le personnel logistique","es":"Planificadores de trabajo y personal de logística","ro":"Responsabilii cu planificarea activității și personalul din domeniul logisticii"},"Winkeliers en teamleiders detailhandel":{"nl":"Winkeliers en teamleiders detailhandel","en":"Retail Store Managers and Team Leaders","de":"Filialleiter und Teamleiter im Einzelhandel","fr":"Responsables de magasin et chefs d'équipe","es":"Gerentes de tiendas minoristas y jefes de equipo","ro":"Manageri de magazine de vânzare cu amănuntul și șefi de echipă"},"Zakelijke dienstverleners":{"nl":"Zakelijke dienstverleners","en":"Business service providers","de":"Anbieter von Unternehmensdienstleistungen","fr":"Prestataires de services aux entreprises","es":"Proveedores de servicios empresariales","ro":"Furnizori de servicii pentru întreprinderi"},"Zelfinzicht":{"nl":"Zelfinzicht","en":"Self-awareness","de":"Selbstwahrnehmung","fr":"Connaissance de soi","es":"Autoconciencia","ro":"Conștientizarea de sine"},"Zelfontwikkeling":{"nl":"Zelfontwikkeling","en":"Self-development","de":"Persönliche Weiterentwicklung","fr":"Développement personnel","es":"Desarrollo personal","ro":"Dezvoltare personală"},"Zelfrapportage met verificatie":{"nl":"Zelfrapportage met verificatie","en":"Self-report with verification","de":"Selbsteinschätzung mit Überprüfung","fr":"Auto-évaluation avec vérification","es":"Autovaloración con verificación","ro":"Autoevaluare cu verificare"},"Zelfvertrouwen":{"nl":"Zelfvertrouwen","en":"Self-confidence","de":"Selbstvertrauen","fr":"Confiance en soi","es":"Confianza en uno mismo","ro":"Încredere în sine"},"b2b":{"nl":"b2b","en":"B2B","de":"B2B","fr":"B2B","es":"B2B","ro":"B2B"},"b2c":{"nl":"b2c","en":"B2C","de":"B2C","fr":"B2C","es":"B2C","ro":"B2C"},"bouw":{"nl":"bouw","en":"construction","de":"Baugewerbe","fr":"construction","es":"construcción","ro":"construcții"},"commercie":{"nl":"commercie","en":"sales","de":"Vertrieb","fr":"commercial","es":"comercial","ro":"vânzări"},"cross-sectoraal":{"nl":"cross-sectoraal","en":"cross-sector","de":"branchenübergreifend","fr":"intersectoriel","es":"intersectorial","ro":"intersectorial"},"dalend":{"nl":"dalend","en":"declining","de":"rückläufig","fr":"en baisse","es":"en descenso","ro":"în scădere"},"data":{"nl":"data","en":"data","de":"Daten","fr":"données","es":"datos","ro":"date"},"dienstverlening":{"nl":"dienstverlening","en":"services","de":"Dienstleistungen","fr":"services","es":"servicios","ro":"servicii"},"enterprise":{"nl":"enterprise","en":"enterprise","de":"Großunternehmen","fr":"grands comptes","es":"gran empresa","ro":"corporații"},"finance":{"nl":"finance","en":"finance","de":"Finanzen","fr":"finance","es":"finanzas","ro":"finanțe"},"functiespecifiek":{"nl":"functiespecifiek","en":"job-specific","de":"auf die jeweilige Stelle zugeschnitten","fr":"spécifiques à un poste","es":"específicos del puesto de trabajo","ro":"specifice postului"},"hoog":{"nl":"hoog","en":"high","de":"hoch","fr":"élevé","es":"alto","ro":"ridicat"},"horeca":{"nl":"horeca","en":"hospitality","de":"Gastgewerbe","fr":"hôtellerie-restauration","es":"hostelería","ro":"HoReCa"},"hr":{"nl":"hr","en":"HR","de":"HR","fr":"RH","es":"RRHH","ro":"HR"},"ict":{"nl":"ict","en":"IT","de":"IT","fr":"informatique","es":"TI","ro":"IT"},"industrie":{"nl":"industrie","en":"industry","de":"Industrie","fr":"industrie","es":"industria","ro":"industrie"},"juridisch":{"nl":"juridisch","en":"legal","de":"Recht","fr":"juridique","es":"jurídico","ro":"juridic"},"laag":{"nl":"laag","en":"low","de":"niedrig","fr":"faible","es":"bajo","ro":"scăzut"},"logistiek":{"nl":"logistiek","en":"logistics","de":"Logistik","fr":"logistique","es":"logística","ro":"logistică"},"management":{"nl":"management","en":"management","de":"Management","fr":"management","es":"gestión","ro":"management"},"marketing":{"nl":"marketing","en":"marketing","de":"Marketing","fr":"marketing","es":"marketing","ro":"marketing"},"middel":{"nl":"middel","en":"medium","de":"mittel","fr":"moyen","es":"medio","ro":"mediu"},"mkb":{"nl":"mkb","en":"SME","de":"KMU","fr":"PME","es":"pymes","ro":"IMM"},"onderwijs":{"nl":"onderwijs","en":"education","de":"Bildung","fr":"enseignement","es":"educación","ro":"educație"},"overheid":{"nl":"overheid","en":"government","de":"öffentlicher Sektor","fr":"secteur public","es":"sector público","ro":"sector public"},"retail":{"nl":"retail","en":"retail","de":"Einzelhandel","fr":"commerce de détail","es":"comercio minorista","ro":"retail"},"sectorspecifiek":{"nl":"sectorspecifiek","en":"sector-specific","de":"branchenspezifisch","fr":"spécifiques à un secteur","es":"específicos del sector","ro":"specifice sectorului"},"stabiel":{"nl":"stabiel","en":"stable","de":"stabil","fr":"stable","es":"estable","ro":"stabil"},"staf":{"nl":"staf","en":"staff functions","de":"Stabsstellen","fr":"fonctions support","es":"funciones de staff","ro":"funcții de suport"},"stijgend":{"nl":"stijgend","en":"rising","de":"steigend","fr":"en hausse","es":"en alza","ro":"în creștere"},"techniek":{"nl":"techniek","en":"engineering","de":"Technik","fr":"technique","es":"técnica","ro":"tehnică"},"transversaal":{"nl":"transversaal","en":"transversal","de":"bereichsübergreifend","fr":"transversal","es":"transversal","ro":"transversal"},"uitvoerend":{"nl":"uitvoerend","en":"operational","de":"ausführend","fr":"opérationnel","es":"operativo","ro":"operațional"},"welzijn":{"nl":"welzijn","en":"social care","de":"Sozialwesen","fr":"action sociale","es":"bienestar social","ro":"asistență socială"},"zorg":{"nl":"zorg","en":"healthcare","de":"Gesundheitswesen","fr":"santé","es":"sanidad","ro":"sănătate"}}
+diff --git a/src/lib/downloads.ts b/src/lib/downloads.ts
+new file mode 100644
+index 0000000..4ae474f
+--- /dev/null
++++ b/src/lib/downloads.ts
+@@ -0,0 +1,28 @@
++/**
++ * Welke functieprofiel-pdf's bestaan er, en waar staan ze.
++ *
++ * De pdf's zitten niet in de repo maar in een R2-bucket, uitgeleverd door
++ * functions/downloads/[[path]].js op het eigen domein. Op buildtijd kan er dus niet
++ * met existsSync gekeken worden of een pdf bestaat; dat doet dit manifest, dat door
++ * scripts/hsf-build-downloads-manifest.mjs wordt bijgewerkt zodra de pdf's opnieuw
++ * gegenereerd zijn.
++ *
++ * Staat een profiel niet in het manifest, dan wijst de downloadknop naar de
++ * volledige printpagina. Zo staat er nooit een dode link op de site.
++ */
++import manifest from '../data/downloads-manifest.json';
++
++type Manifest = { generated: string; counts: Record<string, number>; files: Record<string, string[]> };
++
++const M = manifest as Manifest;
++const SETS: Record<string, Set<string>> = {};
++for (const [lang, slugs] of Object.entries(M.files ?? {})) SETS[lang] = new Set(slugs);
++
++/** Bestaat er een pdf voor deze taal en slug? */
++export const hasDownload = (lang: string, slug: string): boolean => SETS[lang]?.has(slug) ?? false;
++
++/** Het pad naar de pdf. Same-origin, zodat het download-attribuut werkt. */
++export const downloadUrl = (lang: string, slug: string): string => `/downloads/${lang}/${slug}.pdf`;
++
++/** Aantallen per taal, voor de verantwoordingspagina en om te controleren. */
++export const downloadCounts = M.counts ?? {};
+diff --git a/src/lib/vocab.ts b/src/lib/vocab.ts
+new file mode 100644
+index 0000000..d2ea9db
+--- /dev/null
++++ b/src/lib/vocab.ts
+@@ -0,0 +1,32 @@
++/**
++ * Vertaling van de vocabulairvelden van de dataset.
++ *
++ * Meetmethode, trainbaarheid, ai-vraag, herbruikbaarheid, instrumenten en de
++ * competentienaam uit het framework van 2014 staan als vaste Nederlandse string in de
++ * data, zonder en-variant. Zonder deze laag blijven ze op elke andere taal Nederlands
++ * staan, ook op de Engelse pagina's.
++ *
++ * src/data/vocab.json wordt gevuld door scripts/hsf-translate-vocab.mjs. hrmforce-
++ * productnamen (Big Fifty, Ability Scan, ...) staan daar met product: true en blijven
++ * in alle talen gelijk. Een waarde die niet in het bestand staat komt onvertaald door,
++ * zodat er nooit een leeg veld op de pagina belandt.
++ */
++import vocab from '../data/vocab.json';
++
++type Entry = { nl: string; en: string; product?: boolean; [lang: string]: string | boolean | undefined };
++const V = vocab as Record<string, Entry>;
++
++/** Vertaalt een vocabulairwaarde naar de gevraagde taal. */
++export function vt(value: string | null | undefined, lang: string): string {
++  if (!value) return '';
++  const e = V[value];
++  if (!e) return value;
++  return (e[lang] as string) || e.en || value;
++}
++
++/** Vertaalt een lijst vocabulairwaarden. */
++export const vtList = (values: readonly string[] | null | undefined, lang: string): string[] =>
++  (values ?? []).map((v) => vt(v, lang));
++
++/** Is dit een hrmforce-productnaam? Die blijft in elke taal gelijk. */
++export const isProduct = (value: string): boolean => V[value]?.product === true;
+diff --git a/src/pages/skills-framework/README-hsf.md b/src/pages/skills-framework/README-hsf.md
+index 5e5763a..5314a86 100644
+--- a/src/pages/skills-framework/README-hsf.md
++++ b/src/pages/skills-framework/README-hsf.md
+@@ -6,15 +6,24 @@ de matchcalculator, en downloaden het volledige profiel na het achterlaten van h
+ 
+ ## Download van het volledige profiel
+ - Leads gaan via Formspree (zelfde form als contact): src/components/LeadForm.astro.
+-- Bestaat er een echte pdf in public/downloads/<taal>/<slug>.pdf, dan wordt die gedownload.
+-  Bestaat die (nog) niet, dan valt de knop automatisch terug op de printbare volledig-pagina
+-  (/skills-framework/functies/<slug>/volledig/), die de bezoeker als pdf kan opslaan.
++- De pdf's staan NIET in de repo maar in de R2-bucket `hrmforce-downloads`. 450 profielen
++  x 6 talen is ongeveer 1,2 GB; dat hoort niet in git en niet in elke Cloudflare-build.
++- functions/downloads/[[path]].js levert ze uit op /downloads/<taal>/<slug>.pdf, dus op
++  het eigen domein. Dat is nodig omdat het download-attribuut alleen same-origin werkt:
++  via een los downloadsubdomein zou de pdf in een tab openen in plaats van opslaan.
++- Welke pdf's bestaan staat in src/data/downloads-manifest.json. Staat een profiel daar
++  niet in, dan valt de knop terug op de printbare volledig-pagina
++  (/skills-framework/functies/<slug>/volledig/), die de bezoeker zelf als pdf kan opslaan.
+ 
+-## Alle 900 pdf's genereren (in Codespace of CI, niet nodig om live te gaan)
++## Pdf's genereren en uploaden (in Codespace of in de sandbox, niet nodig om live te gaan)
+ ```
+-npm run build
++npm ci
+ npx playwright install --with-deps chromium
+-npm run hsf:pdf        # schrijft public/downloads/nl|en/<slug>.pdf
+-npm run build          # bouwt opnieuw zodat de pdf's in dist komen
++npm run build                                  # de pdf's worden uit dist gerenderd
++HSF_PDF_LANGS=nl,en,de,fr,es,ro npm run hsf:pdf
++npm run hsf:manifest                           # schrijft src/data/downloads-manifest.json
++R2_ACCOUNT_ID=... R2_ACCESS_KEY_ID=... R2_SECRET_ACCESS_KEY=... npm run hsf:upload
++git add src/data/downloads-manifest.json && git commit -m "pdf-manifest bijgewerkt" && git push
+ ```
+-Committen van de gegenereerde pdf's activeert per functie automatisch de echte pdf-download.
++Alleen het manifest gaat de repo in, de pdf's gaan naar R2. public/downloads/ staat in
++.gitignore.
+diff --git a/src/views/FunctionFull.astro b/src/views/FunctionFull.astro
+index 9607e5e..f0774cf 100644
+--- a/src/views/FunctionFull.astro
++++ b/src/views/FunctionFull.astro
+@@ -11,6 +11,7 @@ import CompetencyTable from '../components/CompetencyTable.astro';
+ import { useT, path, useTf } from '../lib/i18n';
+ import { familyById, meta, domainMix, constructById } from '../lib/hsf';
+ import { dlang } from '../lib/hsf-i18n';
++import { vt } from '../lib/vocab';
+ interface Props { lang: string; fn: any }
+ const { lang, fn } = Astro.props;
+ const t = useT(lang);
+@@ -39,7 +40,7 @@ const byDomain = (meta as any) && domainMix(fn.profile);
+ 
+   <h1 style="margin-bottom:.2rem">{fn.title[dl]}</h1>
+   <p class="hsf-small hsf-muted" style="margin-bottom:1rem">
+-    {fam.id} {fam.name[dl]} · ISCO-08 {fn.isco} · CBS {fn.brc} {fn.brc_naam} ·
++    {fam.id} {fam.name[dl]} · ISCO-08 {fn.isco} · CBS {fn.brc} {vt(fn.brc_naam, dl)} ·
+     {' '}{t('ui.seniority')} {fn.seniority_default}
+     {fn.aliases[dl].length > 0 && <> · {t('fn.aliases')}: {fn.aliases[dl].join(', ')}</>}
+   </p>
+@@ -141,7 +142,7 @@ const byDomain = (meta as any) && domainMix(fn.profile);
+       <tbody>
+         {methods.map((m: any) => (
+           <tr>
+-            <td><strong>{m.name}</strong></td>
++            <td><strong>{vt(m.name, dl)}</strong></td>
+             <td class="num">{m.rho != null ? m.rho.toFixed(2) : '-'}</td>
+             <td class="num">{m.sd != null ? m.sd.toFixed(2) : '-'}</td>
+             <td class="hsf-xs">{m[dl] ?? ''}</td>
+@@ -157,7 +158,7 @@ const byDomain = (meta as any) && domainMix(fn.profile);
+       <thead><tr><th>{t('tbl.instrument')}</th><th class="num">{t('ui.skills-2')}</th><th>{t('ui.what-it-measures')}</th></tr></thead>
+       <tbody>
+         {fn.instrument_summary.map((i: any) => (
+-          <tr><td><strong>{i.instrument}</strong></td><td class="num">{i.skills}</td><td class="hsf-xs">{i.description}</td></tr>
++          <tr><td><strong>{vt(i.instrument, dl)}</strong></td><td class="num">{i.skills}</td><td class="hsf-xs">{vt(i.description, dl)}</td></tr>
+         ))}
+       </tbody>
+     </table>
+diff --git a/src/views/FunctionPage.astro b/src/views/FunctionPage.astro
+index 09c78cd..ea36061 100644
+--- a/src/views/FunctionPage.astro
++++ b/src/views/FunctionPage.astro
+@@ -7,9 +7,10 @@ import InstrumentList from '../components/InstrumentList.astro';
+ import DomainMix from '../components/DomainMix.astro';
+ import LeadForm from '../components/LeadForm.astro';
+ import { useT, path, SEG, useTf } from '../lib/i18n';
+-import { existsSync } from 'node:fs';
+ import { familyById, functionsOfFamily, domainMix, meta } from '../lib/hsf';
+ import { dlang } from '../lib/hsf-i18n';
++import { hasDownload, downloadUrl } from '../lib/downloads';
++import { vt } from '../lib/vocab';
+ interface Props { lang: string; fn: any; alternates: Record<string, string> }
+ const { lang, fn, alternates } = Astro.props;
+ const t = useT(lang);
+@@ -21,14 +22,13 @@ const related = functionsOfFamily(fn.family_id).filter((x) => x.id !== fn.id).sl
+ const top = fn.profile.slice(0, 10);
+ const seg = SEG[lang] ?? SEG.en;
+ /**
+- * De download wijst naar de gegenereerde pdf. Bestaat die nog niet, bijvoorbeeld omdat
+- * `npm run pdf` nog niet is gelopen, dan valt de link terug op de printpagina. Zo staat er
+- * nooit een dode link op de site en schakelt de link automatisch om zodra de pijplijn de
+- * pdf's heeft gemaakt. Zie docs/06-pdf-generatie.md.
++ * De download wijst naar de gegenereerde pdf, die uit de R2-bucket komt via
++ * functions/downloads/[[path]].js. Welke pdf's bestaan staat in het manifest
++ * src/data/downloads-manifest.json; ontbreekt er een, dan valt de link terug op de
++ * printpagina, zodat er nooit een dode link op de site staat.
+  */
+-const pdfPath = `/downloads/${lang}/${fn.slug[dl]}.pdf`;
+-const hasPdf = existsSync(new URL(`../../public${pdfPath}`, import.meta.url));
+-const pdf = hasPdf ? pdfPath : path(lang, 'functions', fn.slug[dl], 'full');
++const hasPdf = hasDownload(lang, fn.slug[dl]);
++const pdf = hasPdf ? downloadUrl(lang, fn.slug[dl]) : path(lang, 'functions', fn.slug[dl], 'full');
+ const title = `${fn.title[dl]} | ${t('seo.job-profile-skills-and-competencies')} | hrmforce`;
+ const desc = `${fn.summary[dl]} ${tf('seo.job-desc-tail', { skills: fn.counts.skills, competencies: fn.counts.competencies })}`;
+ const jsonld = [{
+@@ -37,7 +37,7 @@ const jsonld = [{
+   alternateName: fn.aliases[dl],
+   occupationalCategory: [
+     { '@type': 'CategoryCode', codeValue: fn.isco, inCodeSet: { '@type': 'CategoryCodeSet', name: 'ISCO-08' } },
+-    { '@type': 'CategoryCode', codeValue: fn.brc, name: fn.brc_naam, inCodeSet: { '@type': 'CategoryCodeSet', name: 'Beroepenindeling ROA-CBS 2014' } },
++    { '@type': 'CategoryCode', codeValue: fn.brc, name: vt(fn.brc_naam, dl), inCodeSet: { '@type': 'CategoryCodeSet', name: 'Beroepenindeling ROA-CBS 2014' } },
+   ],
+   skills: fn.profile.map((r: any) => r.name[dl]).join(', '),
+   url: new URL(path(lang, 'functions', fn.slug[dl]), Astro.site).toString(),
+@@ -63,7 +63,7 @@ const jsonld = [{
+       <div class="hsf-badges" style="margin-bottom:.6rem">
+         <span class="hsf-badge accent">{fam.id} {fam.name[dl]}</span>
+         <span class="hsf-badge">{fn.seniority_default}</span>
+-        {fn.sector_tags.map((s: string) => <span class="hsf-badge">{s}</span>)}
++        {fn.sector_tags.map((s: string) => <span class="hsf-badge">{vt(s, dl)}</span>)}
+       </div>
+       <h1 style="margin-bottom:.3rem">{fn.title[dl]}</h1>
+       {fn.aliases[dl].length > 0 && (
+@@ -120,7 +120,7 @@ const jsonld = [{
+         <h3 style="margin-top:0;font-size:1rem">{t('fn.classification')}</h3>
+         <dl class="hsf-dl">
+           <dt>ISCO-08</dt><dd>{fn.isco}</dd>
+-          <dt>CBS</dt><dd>{fn.brc} {fn.brc_naam}</dd>
++          <dt>CBS</dt><dd>{fn.brc} {vt(fn.brc_naam, dl)}</dd>
+           <dt>{t('filter.family')}</dt><dd><a href={path(lang, 'families', fam.slug[dl])}>{fam.id}</a></dd>
+           <dt>{t('fn.skills.count')}</dt><dd>{fn.counts.skills}</dd>
+           <dt>{t('fn.critical.count')}</dt><dd>{fn.counts.critical}</dd>
+diff --git a/src/views/SkillPage.astro b/src/views/SkillPage.astro
+index e472cae..ed41faf 100644
+--- a/src/views/SkillPage.astro
++++ b/src/views/SkillPage.astro
+@@ -5,6 +5,7 @@ import Level from '../components/Level.astro';
+ import { useT, path , useTf} from '../lib/i18n';
+ import { meta, domainById, typeLabel, instrumentInfo, methodInfo, functionById, domains } from '../lib/hsf';
+ import { dlang } from '../lib/hsf-i18n';
++import { vt } from '../lib/vocab';
+ interface Props { lang: string; sk: any; alternates: Record<string, string> }
+ const { lang, sk, alternates } = Astro.props;
+ const t = useT(lang);
+@@ -17,7 +18,7 @@ const method = methodInfo(sk.assessment);
+ const scale = (meta as any).proficiency_scale;
+ const stdNames: Record<string, string> = {
+   esco: 'ESCO v1.2.1', onet: 'O*NET 31.0', lightcast: 'Lightcast Open Skills',
+-  sfia: 'SFIA 9', eu_framework: 'EU-competentieframework', wef: 'WEF Future of Jobs 2025',
++  sfia: 'SFIA 9', eu_framework: vt('EU-competentieframework', dl), wef: 'WEF Future of Jobs 2025',
+ };
+ const title = `${sk.name[dl]} | ${t('seo.skill-levels-and-measurement')} | hrmforce`;
+ const desc = `${sk.definition[dl]} ${tf('seo.skill-desc-tail', { n: sk.child_count })}`;
+@@ -48,7 +49,7 @@ const jsonld = [{
+       <div class="hsf-badges" style="margin-bottom:.6rem">
+         <span class="hsf-badge accent"><span class="hsf-type" data-t={sk.type} style="background:transparent;width:auto">{sk.type}</span> {typeLabel(sk.type, dl)}</span>
+         <span class="hsf-badge">{sk.id}</span>
+-        <span class="hsf-badge">{sk.reusability}</span>
++        <span class="hsf-badge">{vt(sk.reusability, dl)}</span>
+         <span class="hsf-badge">{sk.child_count} {t('count.skills')}</span>
+       </div>
+       <h1 style="margin-bottom:.3rem">{sk.name[dl]}</h1>
+@@ -58,17 +59,18 @@ const jsonld = [{
+       <div class="hsf-card">
+         <dl class="hsf-dl">
+           <dt>{t('tbl.assessment')}</dt>
+-          <dd><strong>{sk.assessment}</strong>{method?.rho != null && <span class="hsf-muted"> · rho {method.rho.toFixed(2)} (SD {method.sd?.toFixed(2)})</span>}</dd>
++          <dd><strong>{vt(sk.assessment, dl)}</strong>{method?.rho != null && <span class="hsf-muted"> · rho {method.rho.toFixed(2)} (SD {method.sd?.toFixed(2)})</span>}</dd>
+           <dt>{t('tbl.instrument')}</dt>
+           <dd>{sk.instruments.length
+             ? sk.instruments.map((i: string, k: number) => {
+                 const info = instrumentInfo(i);
+-                return <>{k > 0 && ', '}<span class="hsf-nowrap">{info?.url ? <a href={info.url}>{i}</a> : i}</span></>;
++                const label = vt(i, dl);
++                return <>{k > 0 && ', '}<span class="hsf-nowrap">{info?.url ? <a href={info.url}>{label}</a> : label}</span></>;
+               })
+             : (t('ui.no-standard-instrument-client-specific'))}</dd>
+-          {sk.competency_2014 && <><dt>{t('tbl.competency')}</dt><dd>{sk.competency_2014}</dd></>}
+-          <dt>{t('sk.trainability')}</dt><dd>{sk.trainability}</dd>
+-          <dt>{t('sk.ai')}</dt><dd>{sk.ai_demand}</dd>
++          {sk.competency_2014 && <><dt>{t('tbl.competency')}</dt><dd>{vt(sk.competency_2014, dl)}</dd></>}
++          <dt>{t('sk.trainability')}</dt><dd>{vt(sk.trainability, dl)}</dd>
++          <dt>{t('sk.ai')}</dt><dd>{vt(sk.ai_demand, dl)}</dd>
+         </dl>
+         {method && <p class="hsf-small hsf-muted" style="margin:.7rem 0 0">{method[dl]}</p>}
+         {(sk.type === 'A' || sk.type === 'G') && (
+@@ -117,7 +119,7 @@ const jsonld = [{
+                       {k.aliases[dl].length > 0 && <div class="hsf-xs hsf-muted">{k.aliases[dl].join(' · ')}</div>}
+                     </td>
+                     <td class="hsf-xs">{k.definition[dl]}</td>
+-                    <td class="num hsf-xs">{k.ai_demand}</td>
++                    <td class="num hsf-xs">{vt(k.ai_demand, dl)}</td>
+                   </tr>
+                 ))}
+               </tbody>
+@@ -133,7 +135,7 @@ const jsonld = [{
+         <dl class="hsf-dl">
+           <dt>{t('ui.domain')}</dt><dd><a href={path(lang, 'skills') + `#${dom.id}`}>{dom.id} {dom.name[dl]}</a></dd>
+           <dt>Cluster</dt><dd>{cluster ? `${cluster.id} ${cluster.name[dl]}` : sk.cluster_id}</dd>
+-          <dt>{t('sk.reuse')}</dt><dd>{sk.reusability}</dd>
++          <dt>{t('sk.reuse')}</dt><dd>{vt(sk.reusability, dl)}</dd>
+           <dt>{t('sk.functions')}</dt><dd>{sk.function_count}</dd>
+         </dl>
+       </div>
+diff --git a/wrangler.toml b/wrangler.toml
+index ff6288a..1c6efbf 100644
+--- a/wrangler.toml
++++ b/wrangler.toml
+@@ -7,6 +7,12 @@ binding = "DB"
+ database_name = "hrmforce-orders"
+ database_id = "e8d09d24-18f4-41f2-98e6-ab73f9244490"
+ 
++# De functieprofiel-pdf's (450 profielen x 6 talen, ongeveer 1,2 GB) staan hier en niet
++# in de repo. functions/downloads/[[path]].js levert ze uit op het eigen domein.
++[[r2_buckets]]
++binding = "DOWNLOADS"
++bucket_name = "hrmforce-downloads"
++
+ [vars]
+ ORDER_EMAIL_TO = "service@hrmforce.com,marketing@hrmforce.com"
+ ORDER_EMAIL_FROM = "shop@hrmforce.com"
+-- 
+2.43.0
+

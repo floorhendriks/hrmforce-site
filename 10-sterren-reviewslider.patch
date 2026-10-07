@@ -1,0 +1,80 @@
+From 1c2ad1691946471d6ef03c5b5b5ac5d6c8e2d13b Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Mon, 14 Sep 2026 10:13:45 +0000
+Subject: [PATCH] Sterren in de reviewslider ook getekend
+
+De reviewslider bouwde zijn sterren nog uit de tekens U+2605 en U+2606, die
+werden bij de eerste omzetting niet geraakt omdat ze per beoordeling worden
+samengesteld. Nu vijf getekende sterren in dezelfde icoonstijl, vol of open
+afhankelijk van de score.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ live.mjs                          | 15 +++++++++++++++
+ src/components/ReviewSlider.astro | 13 ++++++++++---
+ 2 files changed, 25 insertions(+), 3 deletions(-)
+ create mode 100644 live.mjs
+
+diff --git a/live.mjs b/live.mjs
+new file mode 100644
+index 0000000..cfb0e21
+--- /dev/null
++++ b/live.mjs
+@@ -0,0 +1,15 @@
++import { chromium } from 'playwright';
++const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
++const p = await b.newPage({ viewport: { width: 1280, height: 900 } });
++const lijst = [
++  ['live-home', 'https://website.hrmforce.com/', 2600],
++  ['live-assessment', 'https://website.hrmforce.com/assessments/15pf/', 3400],
++];
++for (const [naam, url, h] of lijst) {
++  await p.goto(url, { waitUntil: 'networkidle', timeout: 60000 }).catch(e => console.log('nav', e.message));
++  await p.setViewportSize({ width: 1280, height: h });
++  await p.waitForTimeout(1500);
++  await p.screenshot({ path: `/tmp/shots/${naam}.png` });
++  console.log(naam, 'ok');
++}
++await b.close();
+diff --git a/src/components/ReviewSlider.astro b/src/components/ReviewSlider.astro
+index b58616a..f4823c6 100644
+--- a/src/components/ReviewSlider.astro
++++ b/src/components/ReviewSlider.astro
+@@ -7,7 +7,7 @@ const reviews = Astro.props.reviews ?? REVIEWS[lang] ?? REVIEWS.nl;
+ const headingKey = Astro.props.headingKey || "default";
+ const heading = Astro.props.heading ?? (REVIEW_HEADINGS[headingKey]?.[lang] ?? REVIEW_HEADINGS.default[lang] ?? REVIEW_HEADINGS.default.nl);
+ const sample = Astro.props.sample ?? false;
+-const stars = (n) => "\u2605".repeat(n) + "\u2606".repeat(5 - n);
++const STER = "M12 3l2.6 6.1 6.4.5-4.9 4.2 1.5 6.2L12 16.7 6.4 20l1.5-6.2L3 9.6l6.4-.5z";
+ ---
+ {reviews.length > 0 && (
+ <section class="reviewslider">
+@@ -19,7 +19,11 @@ const stars = (n) => "\u2605".repeat(n) + "\u2606".repeat(5 - n);
+     <div class="rs-track">
+       { reviews.map((r) => (
+         <figure class="rs-card">
+-          <div class="rs-stars" aria-label={r.stars + " van 5 sterren"}>{stars(r.stars)}</div>
++          <div class="rs-stars" aria-label={r.stars + " van 5 sterren"}>
++            {Array.from({ length: 5 }).map((_, i) => (
++              <svg viewBox="0 0 24 24" class={i < r.stars ? "vol" : "leeg"} aria-hidden="true"><path d={STER} /></svg>
++            ))}
++          </div>
+           <blockquote class="rs-quote">{r.quote}</blockquote>
+           <figcaption class="rs-by">
+             <span class="rs-avatar" aria-hidden="true">{r.who.slice(0,1)}</span>
+@@ -38,7 +42,10 @@ const stars = (n) => "\u2605".repeat(n) + "\u2606".repeat(5 - n);
+   .rs-sample{ font-size:12px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:#8a6d1a; background:#fbf4e1; border:1px solid #e7cf8a; padding:4px 10px; border-radius:var(--radius-pill); }
+   .rs-track{ display:flex; gap:20px; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:12px; -webkit-overflow-scrolling:touch; }
+   .rs-card{ flex:0 0 88%; max-width:380px; scroll-snap-align:start; margin:0; background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:24px; box-shadow:var(--shadow-xs); display:flex; flex-direction:column; gap:12px; }
+-  .rs-stars{ color:var(--gold); font-size:18px; letter-spacing:2px; }
++  .rs-stars{ color:var(--gold); display:flex; gap:3px; }
++  .rs-stars svg{ width:17px; height:17px; display:block; }
++  .rs-stars svg.vol{ fill:var(--gold); }
++  .rs-stars svg.leeg{ fill:none; stroke:var(--gold); stroke-width:1.5; }
+   .rs-quote{ margin:0; color:var(--text); font-size:16px; line-height:1.55; }
+   .rs-by{ display:flex; align-items:center; gap:12px; margin-top:auto; }
+   .rs-avatar{ width:44px; height:44px; border-radius:var(--radius-sm); background:var(--navy); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
+-- 
+2.43.0
+

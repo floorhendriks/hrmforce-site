@@ -1,0 +1,2254 @@
+From 23b2330b5b62d850fd11002aecd00ff05d0682c8 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Tue, 15 Sep 2026 08:40:48 +0000
+Subject: [PATCH] Terugvalpagina's voor de redirects, want Pages past er maar
+ een deel toe
+
+De vorige poging maakte het erger: met de regels in een andere volgorde
+kapte Cloudflare al na 103 regels af in plaats van na 132. Zelfde aantal
+regels, kleiner bestand. Het is dus geen bytegrens en geen vast aantal,
+en waar de grens ligt valt niet te voorspellen. Er komt ook geen fout of
+waarschuwing uit de build.
+
+Daarom niet langer vertrouwen op de volgorde alleen, maar twee lagen:
+
+1. _redirects met de 27 wildcards bovenaan. Die dekken elk veel URL's en
+   kunnen niet als bestand bestaan, dus die krijgen voorrang. Daarna de
+   vijf sitemapregels en de 103 exacte regels.
+2. Een statische terugvalpagina per exacte regel, op het oude pad, met
+   een meta-refresh, een canonical en noindex. Nieuw script:
+   npm run hsf:redirects. 88 pagina's aangemaakt, 15 overgeslagen omdat
+   daar al een echte pagina staat.
+
+Een regel in _redirects wint van een bestand op hetzelfde pad, dus zolang
+de regel wordt toegepast blijft het een echte 301. Valt hij weg, dan
+stuurt de terugvalpagina alsnog door in plaats van een 404 te geven.
+
+Gecontroleerd tegen de 13.321 pagina's van de vorige deploy: geen van de
+88 paden botst met een bestaande pagina.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ package.json                                  |  3 +-
+ public/README-redirects.md                    | 33 ++++++----
+ public/_redirects                             | 65 ++++++++++---------
+ public/aanvragen/index.html                   | 14 ++++
+ public/about-us-new-translations/index.html   | 14 ++++
+ public/about-us/index.html                    | 14 ++++
+ public/advies/coaching/index.html             | 14 ++++
+ public/advies/consultancy/index.html          | 14 ++++
+ public/advies/selectie-begeleiding/index.html | 14 ++++
+ public/advies_categorieen/training/index.html | 14 ++++
+ public/assessment-locaties/index.html         | 14 ++++
+ public/assessment-ubersicht/index.html        | 14 ++++
+ public/assessments/big-fifty/index.html       | 14 ++++
+ .../cognitieve-capaciteitentest/index.html    | 14 ++++
+ public/assessments/index.html                 | 14 ++++
+ .../preselectie/disc-test/index.html          | 14 ++++
+ public/beneficii/index.html                   | 14 ++++
+ public/beneficios-clave/index.html            | 14 ++++
+ .../big-five-persoonlijkheidsmodel/index.html | 14 ++++
+ public/boutique/index.html                    | 14 ++++
+ public/branchen/index.html                    | 14 ++++
+ public/capaciteiten/index.html                | 14 ++++
+ public/ce-facem-noi/index.html                | 14 ++++
+ public/colaboratorii-nostri/index.html        | 14 ++++
+ public/competentieboek/index.html             | 14 ++++
+ public/competenties/index.html                | 14 ++++
+ public/competentiespel/index.html             | 14 ++++
+ public/consulting/index.html                  | 14 ++++
+ .../contact/inregistreaza-te-acum/index.html  | 14 ++++
+ public/contact/register-now/index.html        | 14 ++++
+ public/contacto/index.html                    | 14 ++++
+ public/cultuur/index.html                     | 14 ++++
+ public/datenshutzpagina/index.html            | 14 ++++
+ .../persoenlichkeitstest-big-five/index.html  | 14 ++++
+ public/de/einkaufswagen/index.html            | 14 ++++
+ public/de/wissenszentrum/index.html           | 14 ++++
+ public/demander-une-demo/index.html           | 14 ++++
+ public/demo-aanvragen/index.html              | 14 ++++
+ .../big-fifty-personality-test/index.html     | 14 ++++
+ .../preseleccion/perfil-big-fifty/index.html  | 14 ++++
+ public/es/cesta-de-la-compra/index.html       | 14 ++++
+ public/evaluacion-online/index.html           | 14 ++++
+ public/evaluare-online/index.html             | 14 ++++
+ public/evaluation-en-ligne/index.html         | 14 ++++
+ public/expertsessie-jho/index.html            | 14 ++++
+ public/faq/big-fifty/index.html               | 14 ++++
+ .../index.html                                | 14 ++++
+ public/gestion-del-talento/index.html         | 14 ++++
+ public/gestion-por-competencias/index.html    | 14 ++++
+ public/heerlijk-helder-hrmforce/index.html    | 14 ++++
+ public/hrm-oplossingen/recruitment/index.html | 14 ++++
+ public/hrm-software/index.html                | 14 ++++
+ public/hrm-solutions/index.html               | 14 ++++
+ public/hrmforce-scans/index.html              | 14 ++++
+ public/hrmforce/index.html                    | 14 ++++
+ public/impressum/index.html                   | 14 ++++
+ .../index.html                                | 14 ++++
+ public/instructievideos/index.html            | 14 ++++
+ .../onderwijs/werkdruk-onderwijs/index.html   | 14 ++++
+ .../index.html                                | 14 ++++
+ .../index.html                                | 14 ++++
+ .../piramide-van-lencioni/index.html          | 14 ++++
+ public/key-benefits/index.html                | 14 ++++
+ public/kontakt/index.html                     | 14 ++++
+ public/leiding-geven/index.html               | 14 ++++
+ public/lo-que-hacemos/index.html              | 14 ++++
+ public/mijn-account/index.html                | 14 ++++
+ public/motivatie/index.html                   | 14 ++++
+ public/onderwijs/index.html                   | 14 ++++
+ public/ontwikkeling/index.html                | 14 ++++
+ public/organisatie/index.html                 | 14 ++++
+ public/partner/flowpeople/index.html          | 14 ++++
+ public/partner/index.html                     | 14 ++++
+ public/persoonlijkheid/index.html             | 14 ++++
+ public/plan-een-demo/index.html               | 14 ++++
+ public/precios/index.html                     | 14 ++++
+ public/preise/index.html                      | 14 ++++
+ public/preparing-for-assessment/index.html    | 14 ++++
+ public/pricing/index.html                     | 14 ++++
+ public/recruitment/index.html                 | 14 ++++
+ public/ro/testen/index.html                   | 14 ++++
+ public/sectores/index.html                    | 14 ++++
+ public/selectie/index.html                    | 14 ++++
+ .../lencioni-teamdynamiek/index.html          | 14 ++++
+ public/solutii/index.html                     | 14 ++++
+ .../index.html                                | 14 ++++
+ public/tests/index.html                       | 14 ++++
+ .../training-360-graden-feedback/index.html   | 14 ++++
+ public/uitgever/hrmforce/index.html           | 14 ++++
+ .../index.html                                | 14 ++++
+ public/wekelijkse-update/index.html           | 14 ++++
+ scripts/hsf-build-redirect-fallbacks.mjs      | 62 ++++++++++++++++++
+ 92 files changed, 1351 insertions(+), 44 deletions(-)
+ create mode 100644 public/aanvragen/index.html
+ create mode 100644 public/about-us-new-translations/index.html
+ create mode 100644 public/about-us/index.html
+ create mode 100644 public/advies/coaching/index.html
+ create mode 100644 public/advies/consultancy/index.html
+ create mode 100644 public/advies/selectie-begeleiding/index.html
+ create mode 100644 public/advies_categorieen/training/index.html
+ create mode 100644 public/assessment-locaties/index.html
+ create mode 100644 public/assessment-ubersicht/index.html
+ create mode 100644 public/assessments/big-fifty/index.html
+ create mode 100644 public/assessments/cognitieve-capaciteitentest/index.html
+ create mode 100644 public/assessments/index.html
+ create mode 100644 public/assessments/preselectie/disc-test/index.html
+ create mode 100644 public/beneficii/index.html
+ create mode 100644 public/beneficios-clave/index.html
+ create mode 100644 public/big-five-persoonlijkheidsmodel/index.html
+ create mode 100644 public/boutique/index.html
+ create mode 100644 public/branchen/index.html
+ create mode 100644 public/capaciteiten/index.html
+ create mode 100644 public/ce-facem-noi/index.html
+ create mode 100644 public/colaboratorii-nostri/index.html
+ create mode 100644 public/competentieboek/index.html
+ create mode 100644 public/competenties/index.html
+ create mode 100644 public/competentiespel/index.html
+ create mode 100644 public/consulting/index.html
+ create mode 100644 public/contact/inregistreaza-te-acum/index.html
+ create mode 100644 public/contact/register-now/index.html
+ create mode 100644 public/contacto/index.html
+ create mode 100644 public/cultuur/index.html
+ create mode 100644 public/datenshutzpagina/index.html
+ create mode 100644 public/de/assessments/entwicklung/persoenlichkeitstest-big-five/index.html
+ create mode 100644 public/de/einkaufswagen/index.html
+ create mode 100644 public/de/wissenszentrum/index.html
+ create mode 100644 public/demander-une-demo/index.html
+ create mode 100644 public/demo-aanvragen/index.html
+ create mode 100644 public/en/assessments/big-fifty-personality-test/index.html
+ create mode 100644 public/es/assessments/preseleccion/perfil-big-fifty/index.html
+ create mode 100644 public/es/cesta-de-la-compra/index.html
+ create mode 100644 public/evaluacion-online/index.html
+ create mode 100644 public/evaluare-online/index.html
+ create mode 100644 public/evaluation-en-ligne/index.html
+ create mode 100644 public/expertsessie-jho/index.html
+ create mode 100644 public/faq/big-fifty/index.html
+ create mode 100644 public/general-terms-privacy-statement/index.html
+ create mode 100644 public/gestion-del-talento/index.html
+ create mode 100644 public/gestion-por-competencias/index.html
+ create mode 100644 public/heerlijk-helder-hrmforce/index.html
+ create mode 100644 public/hrm-oplossingen/recruitment/index.html
+ create mode 100644 public/hrm-software/index.html
+ create mode 100644 public/hrm-solutions/index.html
+ create mode 100644 public/hrmforce-scans/index.html
+ create mode 100644 public/hrmforce/index.html
+ create mode 100644 public/impressum/index.html
+ create mode 100644 public/independent-hr-business-partner-value-added-reseller-distributor-in-spain/index.html
+ create mode 100644 public/instructievideos/index.html
+ create mode 100644 public/kenniscentrum/onderwijs/werkdruk-onderwijs/index.html
+ create mode 100644 public/kenniscentrum/ontwikkeling/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/index.html
+ create mode 100644 public/kenniscentrum/ontwikkeling/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/index.html
+ create mode 100644 public/kenniscentrum/ontwikkeling/piramide-van-lencioni/index.html
+ create mode 100644 public/key-benefits/index.html
+ create mode 100644 public/kontakt/index.html
+ create mode 100644 public/leiding-geven/index.html
+ create mode 100644 public/lo-que-hacemos/index.html
+ create mode 100644 public/mijn-account/index.html
+ create mode 100644 public/motivatie/index.html
+ create mode 100644 public/onderwijs/index.html
+ create mode 100644 public/ontwikkeling/index.html
+ create mode 100644 public/organisatie/index.html
+ create mode 100644 public/partner/flowpeople/index.html
+ create mode 100644 public/partner/index.html
+ create mode 100644 public/persoonlijkheid/index.html
+ create mode 100644 public/plan-een-demo/index.html
+ create mode 100644 public/precios/index.html
+ create mode 100644 public/preise/index.html
+ create mode 100644 public/preparing-for-assessment/index.html
+ create mode 100644 public/pricing/index.html
+ create mode 100644 public/recruitment/index.html
+ create mode 100644 public/ro/testen/index.html
+ create mode 100644 public/sectores/index.html
+ create mode 100644 public/selectie/index.html
+ create mode 100644 public/shop/fase-hr-cyclus/ontwikkeling/lencioni-teamdynamiek/index.html
+ create mode 100644 public/solutii/index.html
+ create mode 100644 public/support/general-terms-privacy-statement/index.html
+ create mode 100644 public/tests/index.html
+ create mode 100644 public/training-360-graden-feedback/index.html
+ create mode 100644 public/uitgever/hrmforce/index.html
+ create mode 100644 public/vorbereitung-auf-ein-assessment/index.html
+ create mode 100644 public/wekelijkse-update/index.html
+ create mode 100644 scripts/hsf-build-redirect-fallbacks.mjs
+
+diff --git a/package.json b/package.json
+index 2d5ee14..d398ee7 100644
+--- a/package.json
++++ b/package.json
+@@ -13,7 +13,8 @@
+     "hsf:translate-ui": "node scripts/hsf-translate-ui.mjs",
+     "hsf:search": "node scripts/hsf-build-search.mjs",
+     "hsf:manifest": "node scripts/hsf-build-downloads-manifest.mjs",
+-    "hsf:upload": "bash scripts/hsf-upload-downloads.sh"
++    "hsf:upload": "bash scripts/hsf-upload-downloads.sh",
++    "hsf:redirects": "node scripts/hsf-build-redirect-fallbacks.mjs"
+   },
+   "dependencies": {
+     "@astrojs/sitemap": "^3.2.0",
+diff --git a/public/README-redirects.md b/public/README-redirects.md
+index f390109..e0c515e 100644
+--- a/public/README-redirects.md
++++ b/public/README-redirects.md
+@@ -10,18 +10,27 @@ en werkt direct op **Cloudflare Pages** en **Netlify**. Elke regel: `oud-pad  ni
+ 
+ ## Limiet van Cloudflare Pages
+ De documentatie noemt 2.000 statische en 100 dynamische regels, maar in de praktijk past
+-Cloudflare Pages op dit project alleen de eerste 132 regels toe. Alles daarna wordt stil
+-genegeerd: geen bouwfout, geen waarschuwing, de URL geeft gewoon 404. Dit is gemeten door
+-regels op bekende posities te testen, en het is geen bytegrens: een compacter bestand met
+-dezelfde regels kapte op precies hetzelfde punt af.
+-
+-Daarom:
+-- De volgorde in `_redirects` is prioriteitsvolgorde. Wat bovenaan staat werkt zeker.
+-- Onderaan staan bewust de drie minst waardevolle regels, als kanarie.
+-- Voeg niet zomaar regels toe. Voeg je er een toe, voeg hem dan bovenaan in en controleer
+-  na de deploy of de laatste regel van het bestand nog een 301 geeft.
+-- Liever samenvoegen dan toevoegen: twee oude paden met hetzelfde doel kunnen vaak in een
+-  wildcard, mits geen bestaande pagina onder dat prefix valt.
++Cloudflare Pages hier maar een deel van het bestand toe. De rest wordt stil genegeerd:
++geen bouwfout, geen waarschuwing, de URL geeft gewoon 404. Gemeten op de gepubliceerde
++site kapte het ene bestand af na 132 regels en een ander bestand met dezelfde regels in
++een andere volgorde al na 103. Het is dus geen bytegrens en geen vast aantal, en waar de
++grens ligt is niet te voorspellen.
++
++Daarom twee lagen:
++
++1. `_redirects` met de wildcards bovenaan. Die dekken elk veel URL's en kunnen niet als
++   bestand bestaan, dus die hebben voorrang. Daarna de sitemapregels en de exacte regels.
++2. Een statische terugvalpagina per exacte regel, gegenereerd met `npm run hsf:redirects`.
++   Dat zet een `index.html` met een meta-refresh en een canonical op het oude pad.
++
++Een regel in `_redirects` wint van een bestand op hetzelfde pad. Zolang de regel wordt
++toegepast krijg je dus een echte 301. Valt de regel weg, dan vangt de terugvalpagina hem
++op en landt de bezoeker alsnog goed, alleen zonder 301-status.
++
++Nieuwe redirect toevoegen:
++- Zet de regel in `_redirects`, exacte regels boven de wildcard die ze dekt.
++- Draai `npm run hsf:redirects` zodat de terugvalpagina meekomt.
++- Controleer na de deploy of het oude pad doorstuurt.
+ 
+ ## Belangrijk
+ - Test na livegang met een paar oude links of je netjes op de nieuwe pagina landt (geen redirect-lussen).
+diff --git a/public/_redirects b/public/_redirects
+index 921a084..9e2966e 100644
+--- a/public/_redirects
++++ b/public/_redirects
+@@ -1,9 +1,9 @@
+ # 301-redirects van de oude WordPress-site naar de nieuwe site.
+-# Volgorde = prioriteit: Cloudflare Pages past hier alleen de eerste ~132 regels toe.
+-# Eerste match wint, dus exacte regels staan voor de bijbehorende wildcard.
+-/persoonlijkheid/ /kenniscentrum/ 301
+-/recruitment/ /hrm-oplossingen/ 301
+-/selectie/ /assessment-overzicht/ 301
++# Cloudflare Pages past maar een deel van dit bestand toe en negeert de rest stil.
++# Daarom: wildcards eerst (die dekken elk veel URL's), daarna de exacte regels.
++# Elke exacte regel heeft daarnaast een statische terugvalpagina in public/,
++# zodat een genegeerde regel geen 404 oplevert maar alsnog doorstuurt.
++# Eerste match wint, dus een exacte regel staat voor de wildcard die hem dekt.
+ /product-categorie/* /shop/ 301
+ /news_category/* /kenniscentrum/ 301
+ /testimonials-category/* /klantcases/ 301
+@@ -11,6 +11,35 @@
+ /carousels-category/* / 301
+ /advies_categorieen/training/ /advies/trainingen/ 301
+ /advies_categorieen/* /advies/ 301
++/shop/segment/gedrag/disc-vragenlijst* /assessments/disc-test/ 301
++/de/hrm-loesungen* /de/hrm-oplossingen/ 301
++/product/* https://shop.hrmforce.com 301
++/winkel* https://shop.hrmforce.com 301
++/home* / 301
++/assessment/* /assessment-overzicht/ 301
++/hrm-loesungen* /de/hrm-oplossingen/ 301
++/wissenszentrum/* /de/kenniscentrum/ 301
++/solutions/* /en/hrm-oplossingen/ 301
++/vacancies/* /en/vacatures/ 301
++/knowledge-center/* /en/kenniscentrum/ 301
++/centre-de-connaissances/* /fr/kenniscentrum/ 301
++/asesoria-de-hrmforce/* /es/advies/ 301
++/soluciones-de-grh/* /es/hrm-oplossingen/ 301
++/socios/* /es/partners/ 301
++/ayuda/* /es/support/ 301
++/centro-de-conocimiento/* /es/kenniscentrum/ 301
++/vacantes/* /es/vacatures/ 301
++/asistenta/* /ro/support/ 301
++/concurrentvergel* /vergelijking/ 301
++/vavcancies/* /en/vacatures/ 301
++/sitemap.xml /sitemap-index.xml 301
++/sitemap_index.xml /sitemap-index.xml 301
++/page-sitemap.xml /sitemap-index.xml 301
++/post-sitemap.xml /sitemap-index.xml 301
++/assessments-sitemap.xml /sitemap-index.xml 301
++/persoonlijkheid/ /kenniscentrum/ 301
++/recruitment/ /hrm-oplossingen/ 301
++/selectie/ /assessment-overzicht/ 301
+ /assessments/big-fifty/ /assessments/big-five/ 301
+ /assessments/cognitieve-capaciteitentest/ /assessments/cognitieve-test/ 301
+ /assessments/preselectie/disc-test/ /assessments/disc-test/ 301
+@@ -18,14 +47,12 @@
+ /partner/flowpeople/ /partners/ 301
+ /ro/testen/ /ro/online-assessments/ 301
+ /shop/fase-hr-cyclus/ontwikkeling/lencioni-teamdynamiek/ /assessments/lencioni-teamdynamiek/ 301
+-/shop/segment/gedrag/disc-vragenlijst* /assessments/disc-test/ 301
+ /assessments/ /assessment-overzicht/ 301
+ /hrm-oplossingen/recruitment/ /hrm-oplossingen/matching/ 301
+ /voorbereiden-assessment/ /voorbereiding/ 301
+ /en/assessments/big-fifty-personality-test/ /en/assessments/big-five/ 301
+ /de/assessments/entwicklung/persoenlichkeitstest-big-five/ /de/assessments/big-five/ 301
+ /es/assessments/preseleccion/perfil-big-fifty/ /es/assessments/big-five/ 301
+-/de/hrm-loesungen* /de/hrm-oplossingen/ 301
+ /de/hrmforce/ /de/over-ons/ 301
+ /de/kontakt/ /de/contact/ 301
+ /de/wissenszentrum/ /de/kenniscentrum/ 301
+@@ -41,15 +68,11 @@
+ /ro/solutii/ /ro/hrm-oplossingen/ 301
+ /ro/ce-facem-noi/ /ro/over-ons/ 301
+ /ro/asistenta/ /ro/support/ 301
+-/product/* https://shop.hrmforce.com 301
+-/winkel* https://shop.hrmforce.com 301
+ /mijn-account/ https://shop.hrmforce.com 301
+ /de/einkaufswagen/ https://shop.hrmforce.com 301
+ /es/cesta-de-la-compra/ https://shop.hrmforce.com 301
+ /boutique/ https://shop.hrmforce.com 301
+-/home* / 301
+ /hrmforce/ /over-ons/ 301
+-/assessment/* /assessment-overzicht/ 301
+ /assessment-locaties/ /contact/ 301
+ /assessment-ubersicht/ /de/assessment-overzicht/ 301
+ /competentieboek/ / 301
+@@ -64,50 +87,32 @@
+ /preise/ /de/tarieven/ 301
+ /partner/ /de/partners/ 301
+ /impressum/ /de/over-ons/ 301
+-/hrm-loesungen* /de/hrm-oplossingen/ 301
+-/wissenszentrum/* /de/kenniscentrum/ 301
+ /branchen/ /de/sectoren/ 301
+ /vorbereitung-auf-ein-assessment/ /de/voorbereiding/ 301
+ /datenshutzpagina/ /de/over-ons/ 301
+ /about-us/ /en/over-ons/ 301
+-/solutions/* /en/hrm-oplossingen/ 301
+ /tests/ /en/online-assessments/ 301
+ /consulting/ /en/advies/ 301
+ /pricing/ /en/tarieven/ 301
+ /key-benefits/ /en/hrmforce/voordelen/ 301
+-/vacancies/* /en/vacatures/ 301
+-/knowledge-center/* /en/kenniscentrum/ 301
+ /preparing-for-assessment/ /en/voorbereiding/ 301
+ /independent-hr-business-partner-value-added-reseller-distributor-in-spain/ /en/vacatures/ 301
+ /hrm-solutions/ /fr/hrm-oplossingen/ 301
+ /evaluation-en-ligne/ /fr/online-assessments/ 301
+ /demander-une-demo/ /fr/contact/ 301
+-/centre-de-connaissances/* /fr/kenniscentrum/ 301
+-/asesoria-de-hrmforce/* /es/advies/ 301
+ /lo-que-hacemos/ /es/over-ons/ 301
+ /gestion-del-talento/ /es/advies/ 301
+ /gestion-por-competencias/ /es/advies/ 301
+ /sectores/ /es/sectoren/ 301
+ /evaluacion-online/ /es/online-assessments/ 301
+-/soluciones-de-grh/* /es/hrm-oplossingen/ 301
+ /contacto/ /es/contact/ 301
+-/socios/* /es/partners/ 301
+-/ayuda/* /es/support/ 301
+-/centro-de-conocimiento/* /es/kenniscentrum/ 301
+ /beneficios-clave/ /es/hrmforce/voordelen/ 301
+ /precios/ /es/tarieven/ 301
+-/vacantes/* /es/vacatures/ 301
+ /evaluare-online/ /ro/online-assessments/ 301
+ /colaboratorii-nostri/ /ro/partners/ 301
+ /solutii/ /ro/hrm-oplossingen/ 301
+ /ce-facem-noi/ /ro/over-ons/ 301
+ /beneficii/ /ro/hrmforce/voordelen/ 301
+-/asistenta/* /ro/support/ 301
+-/sitemap.xml /sitemap-index.xml 301
+-/sitemap_index.xml /sitemap-index.xml 301
+-/page-sitemap.xml /sitemap-index.xml 301
+-/post-sitemap.xml /sitemap-index.xml 301
+-/assessments-sitemap.xml /sitemap-index.xml 301
+ /advies/consultancy/ /contact/ 301
+ /advies/coaching/ /contact/ 301
+ /advies/selectie-begeleiding/ /advies/selectie-assessment/ 301
+@@ -123,7 +128,6 @@
+ /instructievideos/ /kenniscentrum/ 301
+ /heerlijk-helder-hrmforce/ /kenniscentrum/ 301
+ /wekelijkse-update/ /kenniscentrum/ 301
+-/concurrentvergel* /vergelijking/ 301
+ /uitgever/hrmforce/ /shop/ 301
+ /capaciteiten/ /kenniscentrum/ 301
+ /competenties/ /kenniscentrum/ 301
+@@ -135,4 +139,3 @@
+ /organisatie/ /kenniscentrum/ 301
+ /about-us-new-translations/ /over-ons/ 301
+ /expertsessie-jho/ / 301
+-/vavcancies/* /en/vacatures/ 301
+diff --git a/public/aanvragen/index.html b/public/aanvragen/index.html
+new file mode 100644
+index 0000000..23e2767
+--- /dev/null
++++ b/public/aanvragen/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/demo/">
++<link rel="canonical" href="/demo/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/demo/">/demo/</a>.</p>
++<script>location.replace("/demo/");</script>
++</body>
++</html>
+diff --git a/public/about-us-new-translations/index.html b/public/about-us-new-translations/index.html
+new file mode 100644
+index 0000000..93d3f72
+--- /dev/null
++++ b/public/about-us-new-translations/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/over-ons/">
++<link rel="canonical" href="/over-ons/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/over-ons/">/over-ons/</a>.</p>
++<script>location.replace("/over-ons/");</script>
++</body>
++</html>
+diff --git a/public/about-us/index.html b/public/about-us/index.html
+new file mode 100644
+index 0000000..15c7d35
+--- /dev/null
++++ b/public/about-us/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/en/over-ons/">
++<link rel="canonical" href="/en/over-ons/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/en/over-ons/">/en/over-ons/</a>.</p>
++<script>location.replace("/en/over-ons/");</script>
++</body>
++</html>
+diff --git a/public/advies/coaching/index.html b/public/advies/coaching/index.html
+new file mode 100644
+index 0000000..4e849e2
+--- /dev/null
++++ b/public/advies/coaching/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/contact/">
++<link rel="canonical" href="/contact/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/contact/">/contact/</a>.</p>
++<script>location.replace("/contact/");</script>
++</body>
++</html>
+diff --git a/public/advies/consultancy/index.html b/public/advies/consultancy/index.html
+new file mode 100644
+index 0000000..4e849e2
+--- /dev/null
++++ b/public/advies/consultancy/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/contact/">
++<link rel="canonical" href="/contact/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/contact/">/contact/</a>.</p>
++<script>location.replace("/contact/");</script>
++</body>
++</html>
+diff --git a/public/advies/selectie-begeleiding/index.html b/public/advies/selectie-begeleiding/index.html
+new file mode 100644
+index 0000000..cab3262
+--- /dev/null
++++ b/public/advies/selectie-begeleiding/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/advies/selectie-assessment/">
++<link rel="canonical" href="/advies/selectie-assessment/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/advies/selectie-assessment/">/advies/selectie-assessment/</a>.</p>
++<script>location.replace("/advies/selectie-assessment/");</script>
++</body>
++</html>
+diff --git a/public/advies_categorieen/training/index.html b/public/advies_categorieen/training/index.html
+new file mode 100644
+index 0000000..6f0476b
+--- /dev/null
++++ b/public/advies_categorieen/training/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/advies/trainingen/">
++<link rel="canonical" href="/advies/trainingen/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/advies/trainingen/">/advies/trainingen/</a>.</p>
++<script>location.replace("/advies/trainingen/");</script>
++</body>
++</html>
+diff --git a/public/assessment-locaties/index.html b/public/assessment-locaties/index.html
+new file mode 100644
+index 0000000..4e849e2
+--- /dev/null
++++ b/public/assessment-locaties/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/contact/">
++<link rel="canonical" href="/contact/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/contact/">/contact/</a>.</p>
++<script>location.replace("/contact/");</script>
++</body>
++</html>
+diff --git a/public/assessment-ubersicht/index.html b/public/assessment-ubersicht/index.html
+new file mode 100644
+index 0000000..e58c387
+--- /dev/null
++++ b/public/assessment-ubersicht/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/de/assessment-overzicht/">
++<link rel="canonical" href="/de/assessment-overzicht/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/de/assessment-overzicht/">/de/assessment-overzicht/</a>.</p>
++<script>location.replace("/de/assessment-overzicht/");</script>
++</body>
++</html>
+diff --git a/public/assessments/big-fifty/index.html b/public/assessments/big-fifty/index.html
+new file mode 100644
+index 0000000..e79357d
+--- /dev/null
++++ b/public/assessments/big-fifty/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/assessments/big-five/">
++<link rel="canonical" href="/assessments/big-five/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/assessments/big-five/">/assessments/big-five/</a>.</p>
++<script>location.replace("/assessments/big-five/");</script>
++</body>
++</html>
+diff --git a/public/assessments/cognitieve-capaciteitentest/index.html b/public/assessments/cognitieve-capaciteitentest/index.html
+new file mode 100644
+index 0000000..25b8ca7
+--- /dev/null
++++ b/public/assessments/cognitieve-capaciteitentest/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/assessments/cognitieve-test/">
++<link rel="canonical" href="/assessments/cognitieve-test/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/assessments/cognitieve-test/">/assessments/cognitieve-test/</a>.</p>
++<script>location.replace("/assessments/cognitieve-test/");</script>
++</body>
++</html>
+diff --git a/public/assessments/index.html b/public/assessments/index.html
+new file mode 100644
+index 0000000..bf6c01d
+--- /dev/null
++++ b/public/assessments/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/assessment-overzicht/">
++<link rel="canonical" href="/assessment-overzicht/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/assessment-overzicht/">/assessment-overzicht/</a>.</p>
++<script>location.replace("/assessment-overzicht/");</script>
++</body>
++</html>
+diff --git a/public/assessments/preselectie/disc-test/index.html b/public/assessments/preselectie/disc-test/index.html
+new file mode 100644
+index 0000000..5b4b5b7
+--- /dev/null
++++ b/public/assessments/preselectie/disc-test/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/assessments/disc-test/">
++<link rel="canonical" href="/assessments/disc-test/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/assessments/disc-test/">/assessments/disc-test/</a>.</p>
++<script>location.replace("/assessments/disc-test/");</script>
++</body>
++</html>
+diff --git a/public/beneficii/index.html b/public/beneficii/index.html
+new file mode 100644
+index 0000000..40f0dc2
+--- /dev/null
++++ b/public/beneficii/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/ro/hrmforce/voordelen/">
++<link rel="canonical" href="/ro/hrmforce/voordelen/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/ro/hrmforce/voordelen/">/ro/hrmforce/voordelen/</a>.</p>
++<script>location.replace("/ro/hrmforce/voordelen/");</script>
++</body>
++</html>
+diff --git a/public/beneficios-clave/index.html b/public/beneficios-clave/index.html
+new file mode 100644
+index 0000000..f567d6a
+--- /dev/null
++++ b/public/beneficios-clave/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/es/hrmforce/voordelen/">
++<link rel="canonical" href="/es/hrmforce/voordelen/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/es/hrmforce/voordelen/">/es/hrmforce/voordelen/</a>.</p>
++<script>location.replace("/es/hrmforce/voordelen/");</script>
++</body>
++</html>
+diff --git a/public/big-five-persoonlijkheidsmodel/index.html b/public/big-five-persoonlijkheidsmodel/index.html
+new file mode 100644
+index 0000000..32eea5a
+--- /dev/null
++++ b/public/big-five-persoonlijkheidsmodel/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/kenniscentrum/">
++<link rel="canonical" href="/kenniscentrum/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/kenniscentrum/">/kenniscentrum/</a>.</p>
++<script>location.replace("/kenniscentrum/");</script>
++</body>
++</html>
+diff --git a/public/boutique/index.html b/public/boutique/index.html
+new file mode 100644
+index 0000000..a499416
+--- /dev/null
++++ b/public/boutique/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=https://shop.hrmforce.com">
++<link rel="canonical" href="https://shop.hrmforce.com">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="https://shop.hrmforce.com">https://shop.hrmforce.com</a>.</p>
++<script>location.replace("https://shop.hrmforce.com");</script>
++</body>
++</html>
+diff --git a/public/branchen/index.html b/public/branchen/index.html
+new file mode 100644
+index 0000000..8abfe76
+--- /dev/null
++++ b/public/branchen/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/de/sectoren/">
++<link rel="canonical" href="/de/sectoren/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/de/sectoren/">/de/sectoren/</a>.</p>
++<script>location.replace("/de/sectoren/");</script>
++</body>
++</html>
+diff --git a/public/capaciteiten/index.html b/public/capaciteiten/index.html
+new file mode 100644
+index 0000000..32eea5a
+--- /dev/null
++++ b/public/capaciteiten/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/kenniscentrum/">
++<link rel="canonical" href="/kenniscentrum/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/kenniscentrum/">/kenniscentrum/</a>.</p>
++<script>location.replace("/kenniscentrum/");</script>
++</body>
++</html>
+diff --git a/public/ce-facem-noi/index.html b/public/ce-facem-noi/index.html
+new file mode 100644
+index 0000000..f8087f0
+--- /dev/null
++++ b/public/ce-facem-noi/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/ro/over-ons/">
++<link rel="canonical" href="/ro/over-ons/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/ro/over-ons/">/ro/over-ons/</a>.</p>
++<script>location.replace("/ro/over-ons/");</script>
++</body>
++</html>
+diff --git a/public/colaboratorii-nostri/index.html b/public/colaboratorii-nostri/index.html
+new file mode 100644
+index 0000000..9a6641c
+--- /dev/null
++++ b/public/colaboratorii-nostri/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/ro/partners/">
++<link rel="canonical" href="/ro/partners/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/ro/partners/">/ro/partners/</a>.</p>
++<script>location.replace("/ro/partners/");</script>
++</body>
++</html>
+diff --git a/public/competentieboek/index.html b/public/competentieboek/index.html
+new file mode 100644
+index 0000000..1c6deed
+--- /dev/null
++++ b/public/competentieboek/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/">
++<link rel="canonical" href="/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/">/</a>.</p>
++<script>location.replace("/");</script>
++</body>
++</html>
+diff --git a/public/competenties/index.html b/public/competenties/index.html
+new file mode 100644
+index 0000000..32eea5a
+--- /dev/null
++++ b/public/competenties/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/kenniscentrum/">
++<link rel="canonical" href="/kenniscentrum/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/kenniscentrum/">/kenniscentrum/</a>.</p>
++<script>location.replace("/kenniscentrum/");</script>
++</body>
++</html>
+diff --git a/public/competentiespel/index.html b/public/competentiespel/index.html
+new file mode 100644
+index 0000000..1c6deed
+--- /dev/null
++++ b/public/competentiespel/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/">
++<link rel="canonical" href="/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/">/</a>.</p>
++<script>location.replace("/");</script>
++</body>
++</html>
+diff --git a/public/consulting/index.html b/public/consulting/index.html
+new file mode 100644
+index 0000000..4245721
+--- /dev/null
++++ b/public/consulting/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/en/advies/">
++<link rel="canonical" href="/en/advies/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/en/advies/">/en/advies/</a>.</p>
++<script>location.replace("/en/advies/");</script>
++</body>
++</html>
+diff --git a/public/contact/inregistreaza-te-acum/index.html b/public/contact/inregistreaza-te-acum/index.html
+new file mode 100644
+index 0000000..4e849e2
+--- /dev/null
++++ b/public/contact/inregistreaza-te-acum/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/contact/">
++<link rel="canonical" href="/contact/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/contact/">/contact/</a>.</p>
++<script>location.replace("/contact/");</script>
++</body>
++</html>
+diff --git a/public/contact/register-now/index.html b/public/contact/register-now/index.html
+new file mode 100644
+index 0000000..4e849e2
+--- /dev/null
++++ b/public/contact/register-now/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/contact/">
++<link rel="canonical" href="/contact/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/contact/">/contact/</a>.</p>
++<script>location.replace("/contact/");</script>
++</body>
++</html>
+diff --git a/public/contacto/index.html b/public/contacto/index.html
+new file mode 100644
+index 0000000..2448130
+--- /dev/null
++++ b/public/contacto/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/es/contact/">
++<link rel="canonical" href="/es/contact/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/es/contact/">/es/contact/</a>.</p>
++<script>location.replace("/es/contact/");</script>
++</body>
++</html>
+diff --git a/public/cultuur/index.html b/public/cultuur/index.html
+new file mode 100644
+index 0000000..32eea5a
+--- /dev/null
++++ b/public/cultuur/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/kenniscentrum/">
++<link rel="canonical" href="/kenniscentrum/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/kenniscentrum/">/kenniscentrum/</a>.</p>
++<script>location.replace("/kenniscentrum/");</script>
++</body>
++</html>
+diff --git a/public/datenshutzpagina/index.html b/public/datenshutzpagina/index.html
+new file mode 100644
+index 0000000..39726b8
+--- /dev/null
++++ b/public/datenshutzpagina/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/de/over-ons/">
++<link rel="canonical" href="/de/over-ons/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/de/over-ons/">/de/over-ons/</a>.</p>
++<script>location.replace("/de/over-ons/");</script>
++</body>
++</html>
+diff --git a/public/de/assessments/entwicklung/persoenlichkeitstest-big-five/index.html b/public/de/assessments/entwicklung/persoenlichkeitstest-big-five/index.html
+new file mode 100644
+index 0000000..4a3d91f
+--- /dev/null
++++ b/public/de/assessments/entwicklung/persoenlichkeitstest-big-five/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/de/assessments/big-five/">
++<link rel="canonical" href="/de/assessments/big-five/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/de/assessments/big-five/">/de/assessments/big-five/</a>.</p>
++<script>location.replace("/de/assessments/big-five/");</script>
++</body>
++</html>
+diff --git a/public/de/einkaufswagen/index.html b/public/de/einkaufswagen/index.html
+new file mode 100644
+index 0000000..a499416
+--- /dev/null
++++ b/public/de/einkaufswagen/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=https://shop.hrmforce.com">
++<link rel="canonical" href="https://shop.hrmforce.com">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="https://shop.hrmforce.com">https://shop.hrmforce.com</a>.</p>
++<script>location.replace("https://shop.hrmforce.com");</script>
++</body>
++</html>
+diff --git a/public/de/wissenszentrum/index.html b/public/de/wissenszentrum/index.html
+new file mode 100644
+index 0000000..4c65d7e
+--- /dev/null
++++ b/public/de/wissenszentrum/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/de/kenniscentrum/">
++<link rel="canonical" href="/de/kenniscentrum/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/de/kenniscentrum/">/de/kenniscentrum/</a>.</p>
++<script>location.replace("/de/kenniscentrum/");</script>
++</body>
++</html>
+diff --git a/public/demander-une-demo/index.html b/public/demander-une-demo/index.html
+new file mode 100644
+index 0000000..917d85c
+--- /dev/null
++++ b/public/demander-une-demo/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/fr/contact/">
++<link rel="canonical" href="/fr/contact/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/fr/contact/">/fr/contact/</a>.</p>
++<script>location.replace("/fr/contact/");</script>
++</body>
++</html>
+diff --git a/public/demo-aanvragen/index.html b/public/demo-aanvragen/index.html
+new file mode 100644
+index 0000000..23e2767
+--- /dev/null
++++ b/public/demo-aanvragen/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/demo/">
++<link rel="canonical" href="/demo/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/demo/">/demo/</a>.</p>
++<script>location.replace("/demo/");</script>
++</body>
++</html>
+diff --git a/public/en/assessments/big-fifty-personality-test/index.html b/public/en/assessments/big-fifty-personality-test/index.html
+new file mode 100644
+index 0000000..5abc3d5
+--- /dev/null
++++ b/public/en/assessments/big-fifty-personality-test/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/en/assessments/big-five/">
++<link rel="canonical" href="/en/assessments/big-five/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/en/assessments/big-five/">/en/assessments/big-five/</a>.</p>
++<script>location.replace("/en/assessments/big-five/");</script>
++</body>
++</html>
+diff --git a/public/es/assessments/preseleccion/perfil-big-fifty/index.html b/public/es/assessments/preseleccion/perfil-big-fifty/index.html
+new file mode 100644
+index 0000000..b225855
+--- /dev/null
++++ b/public/es/assessments/preseleccion/perfil-big-fifty/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/es/assessments/big-five/">
++<link rel="canonical" href="/es/assessments/big-five/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/es/assessments/big-five/">/es/assessments/big-five/</a>.</p>
++<script>location.replace("/es/assessments/big-five/");</script>
++</body>
++</html>
+diff --git a/public/es/cesta-de-la-compra/index.html b/public/es/cesta-de-la-compra/index.html
+new file mode 100644
+index 0000000..a499416
+--- /dev/null
++++ b/public/es/cesta-de-la-compra/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=https://shop.hrmforce.com">
++<link rel="canonical" href="https://shop.hrmforce.com">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="https://shop.hrmforce.com">https://shop.hrmforce.com</a>.</p>
++<script>location.replace("https://shop.hrmforce.com");</script>
++</body>
++</html>
+diff --git a/public/evaluacion-online/index.html b/public/evaluacion-online/index.html
+new file mode 100644
+index 0000000..e655f7c
+--- /dev/null
++++ b/public/evaluacion-online/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/es/online-assessments/">
++<link rel="canonical" href="/es/online-assessments/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/es/online-assessments/">/es/online-assessments/</a>.</p>
++<script>location.replace("/es/online-assessments/");</script>
++</body>
++</html>
+diff --git a/public/evaluare-online/index.html b/public/evaluare-online/index.html
+new file mode 100644
+index 0000000..9e8492a
+--- /dev/null
++++ b/public/evaluare-online/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/ro/online-assessments/">
++<link rel="canonical" href="/ro/online-assessments/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/ro/online-assessments/">/ro/online-assessments/</a>.</p>
++<script>location.replace("/ro/online-assessments/");</script>
++</body>
++</html>
+diff --git a/public/evaluation-en-ligne/index.html b/public/evaluation-en-ligne/index.html
+new file mode 100644
+index 0000000..ec99e52
+--- /dev/null
++++ b/public/evaluation-en-ligne/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/fr/online-assessments/">
++<link rel="canonical" href="/fr/online-assessments/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/fr/online-assessments/">/fr/online-assessments/</a>.</p>
++<script>location.replace("/fr/online-assessments/");</script>
++</body>
++</html>
+diff --git a/public/expertsessie-jho/index.html b/public/expertsessie-jho/index.html
+new file mode 100644
+index 0000000..1c6deed
+--- /dev/null
++++ b/public/expertsessie-jho/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/">
++<link rel="canonical" href="/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/">/</a>.</p>
++<script>location.replace("/");</script>
++</body>
++</html>
+diff --git a/public/faq/big-fifty/index.html b/public/faq/big-fifty/index.html
+new file mode 100644
+index 0000000..e79357d
+--- /dev/null
++++ b/public/faq/big-fifty/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/assessments/big-five/">
++<link rel="canonical" href="/assessments/big-five/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/assessments/big-five/">/assessments/big-five/</a>.</p>
++<script>location.replace("/assessments/big-five/");</script>
++</body>
++</html>
+diff --git a/public/general-terms-privacy-statement/index.html b/public/general-terms-privacy-statement/index.html
+new file mode 100644
+index 0000000..8e97bc4
+--- /dev/null
++++ b/public/general-terms-privacy-statement/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/support/algemene-voorwaarden/">
++<link rel="canonical" href="/support/algemene-voorwaarden/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/support/algemene-voorwaarden/">/support/algemene-voorwaarden/</a>.</p>
++<script>location.replace("/support/algemene-voorwaarden/");</script>
++</body>
++</html>
+diff --git a/public/gestion-del-talento/index.html b/public/gestion-del-talento/index.html
+new file mode 100644
+index 0000000..9123e65
+--- /dev/null
++++ b/public/gestion-del-talento/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/es/advies/">
++<link rel="canonical" href="/es/advies/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/es/advies/">/es/advies/</a>.</p>
++<script>location.replace("/es/advies/");</script>
++</body>
++</html>
+diff --git a/public/gestion-por-competencias/index.html b/public/gestion-por-competencias/index.html
+new file mode 100644
+index 0000000..9123e65
+--- /dev/null
++++ b/public/gestion-por-competencias/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/es/advies/">
++<link rel="canonical" href="/es/advies/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/es/advies/">/es/advies/</a>.</p>
++<script>location.replace("/es/advies/");</script>
++</body>
++</html>
+diff --git a/public/heerlijk-helder-hrmforce/index.html b/public/heerlijk-helder-hrmforce/index.html
+new file mode 100644
+index 0000000..32eea5a
+--- /dev/null
++++ b/public/heerlijk-helder-hrmforce/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/kenniscentrum/">
++<link rel="canonical" href="/kenniscentrum/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/kenniscentrum/">/kenniscentrum/</a>.</p>
++<script>location.replace("/kenniscentrum/");</script>
++</body>
++</html>
+diff --git a/public/hrm-oplossingen/recruitment/index.html b/public/hrm-oplossingen/recruitment/index.html
+new file mode 100644
+index 0000000..4498e4e
+--- /dev/null
++++ b/public/hrm-oplossingen/recruitment/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/hrm-oplossingen/matching/">
++<link rel="canonical" href="/hrm-oplossingen/matching/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/hrm-oplossingen/matching/">/hrm-oplossingen/matching/</a>.</p>
++<script>location.replace("/hrm-oplossingen/matching/");</script>
++</body>
++</html>
+diff --git a/public/hrm-software/index.html b/public/hrm-software/index.html
+new file mode 100644
+index 0000000..d656ae9
+--- /dev/null
++++ b/public/hrm-software/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/hrm-oplossingen/">
++<link rel="canonical" href="/hrm-oplossingen/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/hrm-oplossingen/">/hrm-oplossingen/</a>.</p>
++<script>location.replace("/hrm-oplossingen/");</script>
++</body>
++</html>
+diff --git a/public/hrm-solutions/index.html b/public/hrm-solutions/index.html
+new file mode 100644
+index 0000000..1f2c4da
+--- /dev/null
++++ b/public/hrm-solutions/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/fr/hrm-oplossingen/">
++<link rel="canonical" href="/fr/hrm-oplossingen/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/fr/hrm-oplossingen/">/fr/hrm-oplossingen/</a>.</p>
++<script>location.replace("/fr/hrm-oplossingen/");</script>
++</body>
++</html>
+diff --git a/public/hrmforce-scans/index.html b/public/hrmforce-scans/index.html
+new file mode 100644
+index 0000000..bf6c01d
+--- /dev/null
++++ b/public/hrmforce-scans/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/assessment-overzicht/">
++<link rel="canonical" href="/assessment-overzicht/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/assessment-overzicht/">/assessment-overzicht/</a>.</p>
++<script>location.replace("/assessment-overzicht/");</script>
++</body>
++</html>
+diff --git a/public/hrmforce/index.html b/public/hrmforce/index.html
+new file mode 100644
+index 0000000..93d3f72
+--- /dev/null
++++ b/public/hrmforce/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/over-ons/">
++<link rel="canonical" href="/over-ons/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/over-ons/">/over-ons/</a>.</p>
++<script>location.replace("/over-ons/");</script>
++</body>
++</html>
+diff --git a/public/impressum/index.html b/public/impressum/index.html
+new file mode 100644
+index 0000000..39726b8
+--- /dev/null
++++ b/public/impressum/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/de/over-ons/">
++<link rel="canonical" href="/de/over-ons/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/de/over-ons/">/de/over-ons/</a>.</p>
++<script>location.replace("/de/over-ons/");</script>
++</body>
++</html>
+diff --git a/public/independent-hr-business-partner-value-added-reseller-distributor-in-spain/index.html b/public/independent-hr-business-partner-value-added-reseller-distributor-in-spain/index.html
+new file mode 100644
+index 0000000..a1df748
+--- /dev/null
++++ b/public/independent-hr-business-partner-value-added-reseller-distributor-in-spain/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/en/vacatures/">
++<link rel="canonical" href="/en/vacatures/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/en/vacatures/">/en/vacatures/</a>.</p>
++<script>location.replace("/en/vacatures/");</script>
++</body>
++</html>
+diff --git a/public/instructievideos/index.html b/public/instructievideos/index.html
+new file mode 100644
+index 0000000..32eea5a
+--- /dev/null
++++ b/public/instructievideos/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/kenniscentrum/">
++<link rel="canonical" href="/kenniscentrum/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/kenniscentrum/">/kenniscentrum/</a>.</p>
++<script>location.replace("/kenniscentrum/");</script>
++</body>
++</html>
+diff --git a/public/kenniscentrum/onderwijs/werkdruk-onderwijs/index.html b/public/kenniscentrum/onderwijs/werkdruk-onderwijs/index.html
+new file mode 100644
+index 0000000..82875bf
+--- /dev/null
++++ b/public/kenniscentrum/onderwijs/werkdruk-onderwijs/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/kenniscentrum/werkdruk-onderwijs/">
++<link rel="canonical" href="/kenniscentrum/werkdruk-onderwijs/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/kenniscentrum/werkdruk-onderwijs/">/kenniscentrum/werkdruk-onderwijs/</a>.</p>
++<script>location.replace("/kenniscentrum/werkdruk-onderwijs/");</script>
++</body>
++</html>
+diff --git a/public/kenniscentrum/ontwikkeling/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/index.html b/public/kenniscentrum/ontwikkeling/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/index.html
+new file mode 100644
+index 0000000..9529c9e
+--- /dev/null
++++ b/public/kenniscentrum/ontwikkeling/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/kenniscentrum/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/">
++<link rel="canonical" href="/kenniscentrum/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/kenniscentrum/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/">/kenniscentrum/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/</a>.</p>
++<script>location.replace("/kenniscentrum/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/");</script>
++</body>
++</html>
+diff --git a/public/kenniscentrum/ontwikkeling/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/index.html b/public/kenniscentrum/ontwikkeling/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/index.html
+new file mode 100644
+index 0000000..0c663b9
+--- /dev/null
++++ b/public/kenniscentrum/ontwikkeling/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/kenniscentrum/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/">
++<link rel="canonical" href="/kenniscentrum/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/kenniscentrum/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/">/kenniscentrum/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/</a>.</p>
++<script>location.replace("/kenniscentrum/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/");</script>
++</body>
++</html>
+diff --git a/public/kenniscentrum/ontwikkeling/piramide-van-lencioni/index.html b/public/kenniscentrum/ontwikkeling/piramide-van-lencioni/index.html
+new file mode 100644
+index 0000000..8f5850f
+--- /dev/null
++++ b/public/kenniscentrum/ontwikkeling/piramide-van-lencioni/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/assessments/lencioni-teamdynamiek/">
++<link rel="canonical" href="/assessments/lencioni-teamdynamiek/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/assessments/lencioni-teamdynamiek/">/assessments/lencioni-teamdynamiek/</a>.</p>
++<script>location.replace("/assessments/lencioni-teamdynamiek/");</script>
++</body>
++</html>
+diff --git a/public/key-benefits/index.html b/public/key-benefits/index.html
+new file mode 100644
+index 0000000..b4e7a9f
+--- /dev/null
++++ b/public/key-benefits/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/en/hrmforce/voordelen/">
++<link rel="canonical" href="/en/hrmforce/voordelen/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/en/hrmforce/voordelen/">/en/hrmforce/voordelen/</a>.</p>
++<script>location.replace("/en/hrmforce/voordelen/");</script>
++</body>
++</html>
+diff --git a/public/kontakt/index.html b/public/kontakt/index.html
+new file mode 100644
+index 0000000..053463a
+--- /dev/null
++++ b/public/kontakt/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/de/contact/">
++<link rel="canonical" href="/de/contact/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/de/contact/">/de/contact/</a>.</p>
++<script>location.replace("/de/contact/");</script>
++</body>
++</html>
+diff --git a/public/leiding-geven/index.html b/public/leiding-geven/index.html
+new file mode 100644
+index 0000000..32eea5a
+--- /dev/null
++++ b/public/leiding-geven/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/kenniscentrum/">
++<link rel="canonical" href="/kenniscentrum/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/kenniscentrum/">/kenniscentrum/</a>.</p>
++<script>location.replace("/kenniscentrum/");</script>
++</body>
++</html>
+diff --git a/public/lo-que-hacemos/index.html b/public/lo-que-hacemos/index.html
+new file mode 100644
+index 0000000..d015d5a
+--- /dev/null
++++ b/public/lo-que-hacemos/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/es/over-ons/">
++<link rel="canonical" href="/es/over-ons/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/es/over-ons/">/es/over-ons/</a>.</p>
++<script>location.replace("/es/over-ons/");</script>
++</body>
++</html>
+diff --git a/public/mijn-account/index.html b/public/mijn-account/index.html
+new file mode 100644
+index 0000000..a499416
+--- /dev/null
++++ b/public/mijn-account/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=https://shop.hrmforce.com">
++<link rel="canonical" href="https://shop.hrmforce.com">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="https://shop.hrmforce.com">https://shop.hrmforce.com</a>.</p>
++<script>location.replace("https://shop.hrmforce.com");</script>
++</body>
++</html>
+diff --git a/public/motivatie/index.html b/public/motivatie/index.html
+new file mode 100644
+index 0000000..32eea5a
+--- /dev/null
++++ b/public/motivatie/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/kenniscentrum/">
++<link rel="canonical" href="/kenniscentrum/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/kenniscentrum/">/kenniscentrum/</a>.</p>
++<script>location.replace("/kenniscentrum/");</script>
++</body>
++</html>
+diff --git a/public/onderwijs/index.html b/public/onderwijs/index.html
+new file mode 100644
+index 0000000..32eea5a
+--- /dev/null
++++ b/public/onderwijs/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/kenniscentrum/">
++<link rel="canonical" href="/kenniscentrum/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/kenniscentrum/">/kenniscentrum/</a>.</p>
++<script>location.replace("/kenniscentrum/");</script>
++</body>
++</html>
+diff --git a/public/ontwikkeling/index.html b/public/ontwikkeling/index.html
+new file mode 100644
+index 0000000..32eea5a
+--- /dev/null
++++ b/public/ontwikkeling/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/kenniscentrum/">
++<link rel="canonical" href="/kenniscentrum/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/kenniscentrum/">/kenniscentrum/</a>.</p>
++<script>location.replace("/kenniscentrum/");</script>
++</body>
++</html>
+diff --git a/public/organisatie/index.html b/public/organisatie/index.html
+new file mode 100644
+index 0000000..32eea5a
+--- /dev/null
++++ b/public/organisatie/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/kenniscentrum/">
++<link rel="canonical" href="/kenniscentrum/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/kenniscentrum/">/kenniscentrum/</a>.</p>
++<script>location.replace("/kenniscentrum/");</script>
++</body>
++</html>
+diff --git a/public/partner/flowpeople/index.html b/public/partner/flowpeople/index.html
+new file mode 100644
+index 0000000..150459d
+--- /dev/null
++++ b/public/partner/flowpeople/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/partners/">
++<link rel="canonical" href="/partners/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/partners/">/partners/</a>.</p>
++<script>location.replace("/partners/");</script>
++</body>
++</html>
+diff --git a/public/partner/index.html b/public/partner/index.html
+new file mode 100644
+index 0000000..8a3bd9a
+--- /dev/null
++++ b/public/partner/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/de/partners/">
++<link rel="canonical" href="/de/partners/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/de/partners/">/de/partners/</a>.</p>
++<script>location.replace("/de/partners/");</script>
++</body>
++</html>
+diff --git a/public/persoonlijkheid/index.html b/public/persoonlijkheid/index.html
+new file mode 100644
+index 0000000..32eea5a
+--- /dev/null
++++ b/public/persoonlijkheid/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/kenniscentrum/">
++<link rel="canonical" href="/kenniscentrum/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/kenniscentrum/">/kenniscentrum/</a>.</p>
++<script>location.replace("/kenniscentrum/");</script>
++</body>
++</html>
+diff --git a/public/plan-een-demo/index.html b/public/plan-een-demo/index.html
+new file mode 100644
+index 0000000..23e2767
+--- /dev/null
++++ b/public/plan-een-demo/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/demo/">
++<link rel="canonical" href="/demo/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/demo/">/demo/</a>.</p>
++<script>location.replace("/demo/");</script>
++</body>
++</html>
+diff --git a/public/precios/index.html b/public/precios/index.html
+new file mode 100644
+index 0000000..80eecf0
+--- /dev/null
++++ b/public/precios/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/es/tarieven/">
++<link rel="canonical" href="/es/tarieven/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/es/tarieven/">/es/tarieven/</a>.</p>
++<script>location.replace("/es/tarieven/");</script>
++</body>
++</html>
+diff --git a/public/preise/index.html b/public/preise/index.html
+new file mode 100644
+index 0000000..66d5a8d
+--- /dev/null
++++ b/public/preise/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/de/tarieven/">
++<link rel="canonical" href="/de/tarieven/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/de/tarieven/">/de/tarieven/</a>.</p>
++<script>location.replace("/de/tarieven/");</script>
++</body>
++</html>
+diff --git a/public/preparing-for-assessment/index.html b/public/preparing-for-assessment/index.html
+new file mode 100644
+index 0000000..a39a350
+--- /dev/null
++++ b/public/preparing-for-assessment/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/en/voorbereiding/">
++<link rel="canonical" href="/en/voorbereiding/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/en/voorbereiding/">/en/voorbereiding/</a>.</p>
++<script>location.replace("/en/voorbereiding/");</script>
++</body>
++</html>
+diff --git a/public/pricing/index.html b/public/pricing/index.html
+new file mode 100644
+index 0000000..2e69beb
+--- /dev/null
++++ b/public/pricing/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/en/tarieven/">
++<link rel="canonical" href="/en/tarieven/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/en/tarieven/">/en/tarieven/</a>.</p>
++<script>location.replace("/en/tarieven/");</script>
++</body>
++</html>
+diff --git a/public/recruitment/index.html b/public/recruitment/index.html
+new file mode 100644
+index 0000000..d656ae9
+--- /dev/null
++++ b/public/recruitment/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/hrm-oplossingen/">
++<link rel="canonical" href="/hrm-oplossingen/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/hrm-oplossingen/">/hrm-oplossingen/</a>.</p>
++<script>location.replace("/hrm-oplossingen/");</script>
++</body>
++</html>
+diff --git a/public/ro/testen/index.html b/public/ro/testen/index.html
+new file mode 100644
+index 0000000..9e8492a
+--- /dev/null
++++ b/public/ro/testen/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/ro/online-assessments/">
++<link rel="canonical" href="/ro/online-assessments/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/ro/online-assessments/">/ro/online-assessments/</a>.</p>
++<script>location.replace("/ro/online-assessments/");</script>
++</body>
++</html>
+diff --git a/public/sectores/index.html b/public/sectores/index.html
+new file mode 100644
+index 0000000..8cdcb3f
+--- /dev/null
++++ b/public/sectores/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/es/sectoren/">
++<link rel="canonical" href="/es/sectoren/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/es/sectoren/">/es/sectoren/</a>.</p>
++<script>location.replace("/es/sectoren/");</script>
++</body>
++</html>
+diff --git a/public/selectie/index.html b/public/selectie/index.html
+new file mode 100644
+index 0000000..bf6c01d
+--- /dev/null
++++ b/public/selectie/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/assessment-overzicht/">
++<link rel="canonical" href="/assessment-overzicht/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/assessment-overzicht/">/assessment-overzicht/</a>.</p>
++<script>location.replace("/assessment-overzicht/");</script>
++</body>
++</html>
+diff --git a/public/shop/fase-hr-cyclus/ontwikkeling/lencioni-teamdynamiek/index.html b/public/shop/fase-hr-cyclus/ontwikkeling/lencioni-teamdynamiek/index.html
+new file mode 100644
+index 0000000..8f5850f
+--- /dev/null
++++ b/public/shop/fase-hr-cyclus/ontwikkeling/lencioni-teamdynamiek/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/assessments/lencioni-teamdynamiek/">
++<link rel="canonical" href="/assessments/lencioni-teamdynamiek/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/assessments/lencioni-teamdynamiek/">/assessments/lencioni-teamdynamiek/</a>.</p>
++<script>location.replace("/assessments/lencioni-teamdynamiek/");</script>
++</body>
++</html>
+diff --git a/public/solutii/index.html b/public/solutii/index.html
+new file mode 100644
+index 0000000..ed92ac5
+--- /dev/null
++++ b/public/solutii/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/ro/hrm-oplossingen/">
++<link rel="canonical" href="/ro/hrm-oplossingen/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/ro/hrm-oplossingen/">/ro/hrm-oplossingen/</a>.</p>
++<script>location.replace("/ro/hrm-oplossingen/");</script>
++</body>
++</html>
+diff --git a/public/support/general-terms-privacy-statement/index.html b/public/support/general-terms-privacy-statement/index.html
+new file mode 100644
+index 0000000..8e97bc4
+--- /dev/null
++++ b/public/support/general-terms-privacy-statement/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/support/algemene-voorwaarden/">
++<link rel="canonical" href="/support/algemene-voorwaarden/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/support/algemene-voorwaarden/">/support/algemene-voorwaarden/</a>.</p>
++<script>location.replace("/support/algemene-voorwaarden/");</script>
++</body>
++</html>
+diff --git a/public/tests/index.html b/public/tests/index.html
+new file mode 100644
+index 0000000..302984c
+--- /dev/null
++++ b/public/tests/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/en/online-assessments/">
++<link rel="canonical" href="/en/online-assessments/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/en/online-assessments/">/en/online-assessments/</a>.</p>
++<script>location.replace("/en/online-assessments/");</script>
++</body>
++</html>
+diff --git a/public/training-360-graden-feedback/index.html b/public/training-360-graden-feedback/index.html
+new file mode 100644
+index 0000000..9270d45
+--- /dev/null
++++ b/public/training-360-graden-feedback/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/advies/">
++<link rel="canonical" href="/advies/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/advies/">/advies/</a>.</p>
++<script>location.replace("/advies/");</script>
++</body>
++</html>
+diff --git a/public/uitgever/hrmforce/index.html b/public/uitgever/hrmforce/index.html
+new file mode 100644
+index 0000000..111a0c3
+--- /dev/null
++++ b/public/uitgever/hrmforce/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/shop/">
++<link rel="canonical" href="/shop/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/shop/">/shop/</a>.</p>
++<script>location.replace("/shop/");</script>
++</body>
++</html>
+diff --git a/public/vorbereitung-auf-ein-assessment/index.html b/public/vorbereitung-auf-ein-assessment/index.html
+new file mode 100644
+index 0000000..4783893
+--- /dev/null
++++ b/public/vorbereitung-auf-ein-assessment/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/de/voorbereiding/">
++<link rel="canonical" href="/de/voorbereiding/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/de/voorbereiding/">/de/voorbereiding/</a>.</p>
++<script>location.replace("/de/voorbereiding/");</script>
++</body>
++</html>
+diff --git a/public/wekelijkse-update/index.html b/public/wekelijkse-update/index.html
+new file mode 100644
+index 0000000..32eea5a
+--- /dev/null
++++ b/public/wekelijkse-update/index.html
+@@ -0,0 +1,14 @@
++<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=/kenniscentrum/">
++<link rel="canonical" href="/kenniscentrum/">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="/kenniscentrum/">/kenniscentrum/</a>.</p>
++<script>location.replace("/kenniscentrum/");</script>
++</body>
++</html>
+diff --git a/scripts/hsf-build-redirect-fallbacks.mjs b/scripts/hsf-build-redirect-fallbacks.mjs
+new file mode 100644
+index 0000000..72ea0d1
+--- /dev/null
++++ b/scripts/hsf-build-redirect-fallbacks.mjs
+@@ -0,0 +1,62 @@
++// Bouwt een statische terugvalpagina voor elke exacte regel in public/_redirects.
++//
++// Waarom: Cloudflare Pages past maar een deel van _redirects toe en negeert de rest
++// zonder foutmelding of bouwfout. Waar de grens ligt is niet voorspelbaar gebleken.
++// Een regel die wegvalt levert een 404 op. Met een terugvalpagina op datzelfde pad
++// landt de bezoeker alsnog op de juiste pagina.
++//
++// Een regel in _redirects wint van een bestand met hetzelfde pad, dus zolang de regel
++// wel wordt toegepast krijg je een echte 301 en komt de terugvalpagina niet in beeld.
++//
++// Draaien: npm run hsf:redirects
++
++import fs from "node:fs";
++import path from "node:path";
++
++const paden = new Set(JSON.parse(fs.readFileSync("src/data/valid-paths.json", "utf8")));
++const bestaat = (p) => paden.has(p) || paden.has(p.replace(/\/$/, ""));
++
++const regels = fs
++  .readFileSync("public/_redirects", "utf8")
++  .split("\n")
++  .map((r) => r.trim())
++  .filter((r) => r && !r.startsWith("#"))
++  .map((r) => r.split(/\s+/));
++
++const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
++
++let gemaakt = 0;
++let overgeslagen = 0;
++
++for (const [bron, doel] of regels) {
++  if (bron.includes("*") || bron.endsWith(".xml")) continue;
++  if (bestaat(bron)) {
++    overgeslagen++;
++    continue;
++  }
++  const map = path.join("public", bron.replace(/\/$/, ""));
++  fs.mkdirSync(map, { recursive: true });
++  const d = esc(doel);
++  fs.writeFileSync(
++    path.join(map, "index.html"),
++    `<!doctype html>
++<html lang="nl">
++<head>
++<meta charset="utf-8">
++<title>Verplaatst</title>
++<meta name="robots" content="noindex, follow">
++<meta http-equiv="refresh" content="0; url=${d}">
++<link rel="canonical" href="${d}">
++</head>
++<body>
++<p>Deze pagina is verplaatst naar <a href="${d}">${d}</a>.</p>
++<script>location.replace(${JSON.stringify(doel)});</script>
++</body>
++</html>
++`,
++    "utf8",
++  );
++  gemaakt++;
++}
++
++console.log(`terugvalpagina's aangemaakt: ${gemaakt}, overgeslagen (bestaat al als pagina): ${overgeslagen}`);
+-- 
+2.43.0
+

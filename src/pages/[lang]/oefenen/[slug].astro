@@ -1,0 +1,10 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Oefenen from "../../../components/Oefenen.astro";
+import { oefentests, OEFEN_UI, oefenDetailD } from "../../../data/oefentests.js";
+import { perTaal } from "../../../i18n/paden.js";
+export function getStaticPaths(){ return perTaal(oefentests.map((o)=>({ params:{slug:o.slug}, props:{o} }))); }
+const { lang } = Astro.params;
+const { o } = Astro.props; const d=o.i18n[lang]; const ui=OEFEN_UI[lang];
+---
+<Base title={`${d.hero} | hrmforce`} description={oefenDetailD(lang, d.name)} active=""><Oefenen o={o} lang={lang} /></Base>

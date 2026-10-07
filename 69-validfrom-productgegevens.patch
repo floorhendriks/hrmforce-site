@@ -1,0 +1,79 @@
+From 5c608f8936324dcbf989ddf2011fad403e5bc2fd Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Tue, 6 Oct 2026 11:44:16 +0000
+Subject: [PATCH] validFrom bij het aanbod in de productgegevens
+
+Search Console meldde vier ontbrekende velden in de Merchant listings. Drie
+daarvan staan er al in sinds een eerdere patch: brand, shippingDetails en
+hasMerchantReturnPolicy. Die melding ging over pagina's die Google nog niet
+opnieuw had opgehaald.
+
+Het vierde veld ontbrak wel. De offer draagt nu validFrom met 2009-10-14, de
+dag waarop hrmforce deze instrumenten online is gaan aanbieden. Gecontroleerd
+in de build: alle 210 productblokken over zes talen hebben het veld.
+
+aggregateRating en review blijven leeg. Die zijn alleen te vullen met een
+beoordelingscijfer dat niet bestaat, en Google vraagt dat een beoordeling die
+je markeert ook op de pagina staat en over het product zelf gaat. De sterren
+uit het Google Bedrijfsprofiel gaan over hrmforce als bedrijf en mogen hier
+niet voor worden gebruikt. Beoordelingen per instrument verzamelen is een
+apart traject.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ src/pages/[lang]/assessments/[slug].astro | 6 +++++-
+ src/pages/assessments/[slug].astro        | 6 +++++-
+ 2 files changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/src/pages/[lang]/assessments/[slug].astro b/src/pages/[lang]/assessments/[slug].astro
+index 82cf2a0..12dc6b8 100644
+--- a/src/pages/[lang]/assessments/[slug].astro
++++ b/src/pages/[lang]/assessments/[slug].astro
+@@ -103,6 +103,10 @@ const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList",
+ ] };
+ const _faqLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: (allFaq || []).map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) };
+ const _euLanden = ["NL","BE","DE","FR","ES","IT","AT","PT","IE","LU","DK","SE","FI","PL","CZ","RO","GR","HU","SK","SI","HR","BG","EE","LV","LT","CY","MT"];
++// De datum waarop hrmforce deze instrumenten online is gaan aanbieden. Google
++// leest validFrom als de dag waarop het aanbod geldig werd; zonder dat veld
++// meldt Search Console de offer als onvolledig.
++const _aanbodVanaf = "2009-10-14";
+ // Digitale levering: de kandidaat krijgt de vragenlijst per e-mail, er wordt
+ // niets verzonden. Retour na levering is niet mogelijk; annuleren vóór de
+ // leverdatum gaat volgens de algemene voorwaarden.
+@@ -123,7 +127,7 @@ const _retour = {
+   merchantReturnLink: "https://hrmforce.com/support/algemene-voorwaarden/",
+ };
+ const _offerLd = (shop && shop.price)
+-  ? { "@context": "https://schema.org", "@type": "Product", name: a.title, description: a.goal, brand: { "@type": "Brand", name: "hrmforce" }, ...(a.image ? { image: a.image } : {}), offers: { "@type": "Offer", price: String(shop.price), priceCurrency: "EUR", availability: "https://schema.org/InStock", url: _canon, shippingDetails: _levering, hasMerchantReturnPolicy: _retour } }
++  ? { "@context": "https://schema.org", "@type": "Product", name: a.title, description: a.goal, brand: { "@type": "Brand", name: "hrmforce" }, ...(a.image ? { image: a.image } : {}), offers: { "@type": "Offer", price: String(shop.price), priceCurrency: "EUR", availability: "https://schema.org/InStock", validFrom: _aanbodVanaf, url: _canon, shippingDetails: _levering, hasMerchantReturnPolicy: _retour } }
+   : { "@context": "https://schema.org", "@type": "Service", name: a.title, description: a.goal, provider: { "@type": "Organization", name: "hrmforce" }, areaServed: "EU" };
+ // Voorbeeldrapportage per assessment. De dimensies komen uit de test zelf, de
+ // scores zijn afgeleid van de slug zodat elke test een eigen, vast beeld heeft.
+diff --git a/src/pages/assessments/[slug].astro b/src/pages/assessments/[slug].astro
+index 23a4c4c..6d80ebc 100644
+--- a/src/pages/assessments/[slug].astro
++++ b/src/pages/assessments/[slug].astro
+@@ -98,6 +98,10 @@ const kcRelated = (kcPosts || [])
+   .slice(0, 3)
+   .map((x) => x.p);
+ const _euLanden = ["NL","BE","DE","FR","ES","IT","AT","PT","IE","LU","DK","SE","FI","PL","CZ","RO","GR","HU","SK","SI","HR","BG","EE","LV","LT","CY","MT"];
++// De datum waarop hrmforce deze instrumenten online is gaan aanbieden. Google
++// leest validFrom als de dag waarop het aanbod geldig werd; zonder dat veld
++// meldt Search Console de offer als onvolledig.
++const _aanbodVanaf = "2009-10-14";
+ // Digitale levering: de kandidaat krijgt de vragenlijst per e-mail, er wordt
+ // niets verzonden. Retour na levering is niet mogelijk; annuleren vóór de
+ // leverdatum gaat volgens de algemene voorwaarden.
+@@ -123,7 +127,7 @@ const _beeld = a.image && !/\.svg$/i.test(a.image) ? a.image : (a.dimImage || ""
+ const _schemaBeeld = _beeld ? new URL(_beeld, "https://hrmforce.com").href : "";
+ 
+ const _offerLd = (shop && shop.price)
+-  ? { "@context": "https://schema.org", "@type": "Product", name: a.title, description: a.goal, brand: { "@type": "Brand", name: "hrmforce" }, ...(_schemaBeeld ? { image: _schemaBeeld } : {}), offers: { "@type": "Offer", price: String(shop.price), priceCurrency: "EUR", availability: "https://schema.org/InStock", url: _canon, shippingDetails: _levering, hasMerchantReturnPolicy: _retour } }
++  ? { "@context": "https://schema.org", "@type": "Product", name: a.title, description: a.goal, brand: { "@type": "Brand", name: "hrmforce" }, ...(_schemaBeeld ? { image: _schemaBeeld } : {}), offers: { "@type": "Offer", price: String(shop.price), priceCurrency: "EUR", availability: "https://schema.org/InStock", validFrom: _aanbodVanaf, url: _canon, shippingDetails: _levering, hasMerchantReturnPolicy: _retour } }
+   : { "@context": "https://schema.org", "@type": "Service", name: a.title, description: a.goal, provider: { "@type": "Organization", name: "hrmforce" }, areaServed: "EU" };
+ // Voorbeeldrapportage per assessment. De dimensies komen uit de test zelf, de
+ // scores zijn afgeleid van de slug zodat elke test een eigen, vast beeld heeft.
+-- 
+2.43.0
+

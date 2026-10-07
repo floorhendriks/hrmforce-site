@@ -1,0 +1,12 @@
+---
+import Base from "../../layouts/Base.astro";
+import Shop from "../../components/Shop.astro";
+import { shopContent } from "../../data/shop-content.js";
+import { perTaal } from "../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const t = shopContent[lang];
+---
+<Base title={t.meta.title} description={t.meta.description} active="shop">
+  <Shop t={t} lang={lang} />
+</Base>

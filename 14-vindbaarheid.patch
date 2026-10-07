@@ -1,0 +1,542 @@
+From 3d5ebdab50544bf92d9cb8ad7c9062a4352c9287 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Mon, 14 Sep 2026 19:58:13 +0000
+Subject: [PATCH] Vindbaarheid: zeven punten uit de Google-checklist
+
+s1 Migratieresten uit WordPress
+- 223 pagina's met een pad als /?page_id=8355/ worden niet meer gebouwd. Het
+  waren dubbelen van echte pagina's (templates, testpagina's, een tweede Support
+  en tweede algemene voorwaarden) met een URL zonder betekenis. Ze stonden ook
+  in de sitemap. Van de negentig dubbele paginatitels kwam vrijwel alles hier
+  vandaan; er blijven er 72 over, allemaal in het kenniscentrum.
+
+s2 Afbeeldingen van het oude domein
+- De omzetting van hrmforce.com/wp-content/ naar /media/wp-content/ zit in
+  eigenMedia() en werkt zowel in de artikelen als in de overzichtspagina's.
+  Van 637 pagina's die van het oude domein laadden naar nul. De 160 bestanden
+  zelf haal je binnen met haal-media.sh, dat staat los van deze patch omdat het
+  om 25 MB gaat.
+
+s4 Te lange titels
+- De merknaam valt weg zodra een titel boven de zestig tekens komt; Google zet
+  de sitenaam zelf achter het resultaat. Van 1.449 te lange titels naar 892.
+  De rest zijn artikeltitels uit Sanity, die vragen om een tekstronde.
+
+s6 Dubbele metadescriptions
+- Vergelijkings- en oefenpagina's krijgen een beschrijving met de naam van de
+  concurrent of de test erin, in alle zes talen. Artikelen uit een serie die met
+  dezelfde zin beginnen krijgen hun titel voor de beschrijving. Van 224 pagina's
+  met een gedeelde beschrijving naar veertien.
+
+s7 BreadcrumbList
+- Nu centraal in Base.astro, opgebouwd uit het pad, met vertaalde rubrieknamen.
+  De losse blokken in Vergelijking, Oefenen, Toepassing, IntegratieDetail en de
+  assessmentpagina's zijn eruit, zodat elke pagina er precies een heeft. De
+  skills-framework-pagina's en Geschikt voor de Zorg houden hun eigen pad via
+  crumbs={false}. Van 411 pagina's naar 2.934.
+
+s8 VideoObject
+- Artikelen met een YouTube-video krijgen VideoObject met voorbeeldafbeelding
+  en publicatiedatum. 1.380 pagina's.
+
+s9 Ankertekst
+- Hier, Meer informatie en Read more vervangen door tekst die zegt waar de link
+  heen gaat. De vijftien artikelen in Sanity met zo'n link volgen apart.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ src/components/IntegratieDetail.astro     |  1 -
+ src/components/Kenniscentrum.astro        |  4 +-
+ src/components/Oefenen.astro              |  1 -
+ src/components/Toepassing.astro           |  1 -
+ src/components/Vergelijking.astro         |  1 -
+ src/data/voorbereiding-content.js         |  4 +-
+ src/i18n/utils.js                         |  8 ++++
+ src/layouts/Base.astro                    | 58 ++++++++++++++++++++++-
+ src/layouts/HsfBase.astro                 |  2 +-
+ src/pages/[...path].astro                 | 36 ++++++++++++++
+ src/pages/[lang]/assessments/[slug].astro |  1 -
+ src/pages/assessments/[slug].astro        |  1 -
+ src/pages/de/oefenen/[slug].astro         |  2 +-
+ src/pages/de/vergelijking/[slug].astro    |  2 +-
+ src/pages/en/hrm-oplossingen.astro        |  2 +-
+ src/pages/en/oefenen/[slug].astro         |  2 +-
+ src/pages/en/vergelijking/[slug].astro    |  2 +-
+ src/pages/es/oefenen/[slug].astro         |  2 +-
+ src/pages/es/vergelijking/[slug].astro    |  2 +-
+ src/pages/fr/oefenen/[slug].astro         |  2 +-
+ src/pages/fr/vergelijking/[slug].astro    |  2 +-
+ src/pages/geschiktvoorzorg/index.astro    |  2 +-
+ src/pages/oefenen/[slug].astro            |  2 +-
+ src/pages/over-ons.astro                  |  2 +-
+ src/pages/ro/oefenen/[slug].astro         |  2 +-
+ src/pages/ro/vergelijking/[slug].astro    |  2 +-
+ src/pages/vergelijking/[slug].astro       |  2 +-
+ 27 files changed, 120 insertions(+), 28 deletions(-)
+
+diff --git a/src/components/IntegratieDetail.astro b/src/components/IntegratieDetail.astro
+index c0e08c8..3de08e4 100644
+--- a/src/components/IntegratieDetail.astro
++++ b/src/components/IntegratieDetail.astro
+@@ -13,7 +13,6 @@ const _crumbLd = { "@context":"https://schema.org","@type":"BreadcrumbList", ite
+   {"@type":"ListItem",position:3,name:name,item:_canon},
+ ]};
+ ---
+-<script type="application/ld+json" is:inline set:html={JSON.stringify(_crumbLd)}></script>
+ 
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={intHref}>{ui.crumb}</a> › <span>{name}</span></div></div>
+ 
+diff --git a/src/components/Kenniscentrum.astro b/src/components/Kenniscentrum.astro
+index 0199553..8d331c5 100644
+--- a/src/components/Kenniscentrum.astro
++++ b/src/components/Kenniscentrum.astro
+@@ -1,6 +1,6 @@
+ ---
+ import { createClient } from "@sanity/client";
+-import { localizePath, localizeExisting } from "../i18n/utils.js";
++import { localizePath, localizeExisting, eigenMedia } from "../i18n/utils.js";
+ import validPaths from "../data/valid-paths.js";
+ 
+ const { t, lang } = Astro.props;
+@@ -42,7 +42,7 @@ function categorize(title) {
+   return "overig";
+ }
+ function firstImage(body) {
+-  const m = (body || "").match(/<img[^>]+src=["']([^"']+)["']/i);
++  const m = eigenMedia(body || "").match(/<img[^>]+src=["']([^"']+)["']/i);
+   return m ? m[1] : null;
+ }
+ function excerpt(body) {
+diff --git a/src/components/Oefenen.astro b/src/components/Oefenen.astro
+index 561214c..36ca899 100644
+--- a/src/components/Oefenen.astro
++++ b/src/components/Oefenen.astro
+@@ -15,7 +15,6 @@ const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList",
+   { "@type": "ListItem", position: 2, name: d.name, item: _canon },
+ ] };
+ ---
+-<script type="application/ld+json" is:inline set:html={JSON.stringify(_crumbLd)}></script>
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={localizePath("/online-assessments/", lang)}>Online assessments</a> › <span>{d.hero}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+diff --git a/src/components/Toepassing.astro b/src/components/Toepassing.astro
+index 726722e..6faf037 100644
+--- a/src/components/Toepassing.astro
++++ b/src/components/Toepassing.astro
+@@ -35,7 +35,6 @@ const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList",
+ const _svcLd = { "@context": "https://schema.org", "@type": "Service", name: t.title, description: t.metaDescription, provider: { "@type": "Organization", name: "hrmforce" }, areaServed: "EU" };
+ const _faqLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: (t.faq || []).map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) };
+ ---
+-<script type="application/ld+json" is:inline set:html={JSON.stringify(_crumbLd)}></script>
+ <script type="application/ld+json" is:inline set:html={JSON.stringify(_svcLd)}></script>
+ <script type="application/ld+json" is:inline set:html={JSON.stringify(_faqLd)}></script>
+ 
+diff --git a/src/components/Vergelijking.astro b/src/components/Vergelijking.astro
+index 43eddf2..3394d96 100644
+--- a/src/components/Vergelijking.astro
++++ b/src/components/Vergelijking.astro
+@@ -12,7 +12,6 @@ const _crumbLd = { "@context":"https://schema.org","@type":"BreadcrumbList", ite
+   {"@type":"ListItem",position:3,name:`${t.altPrefix} ${comp.name}`,item:_canon},
+ ]};
+ ---
+-<script type="application/ld+json" is:inline set:html={JSON.stringify(_crumbLd)}></script>
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> &rsaquo; <a href={localizePath("/vergelijking/", lang)}>{t.crumb}</a> &rsaquo; <span>{comp.name}</span></div></div>
+ 
+ <section class="ahero"><div class="wrap" style="display:block">
+diff --git a/src/data/voorbereiding-content.js b/src/data/voorbereiding-content.js
+index 31acafd..8a0342b 100644
+--- a/src/data/voorbereiding-content.js
++++ b/src/data/voorbereiding-content.js
+@@ -24,7 +24,7 @@ export const voorbereidingContent = {
+ <p>Allereerst ontvangt de kandidaat een e-mail met een uitnodiging voor het maken van het assessment. Hierin staat zowel praktische informatie als persoonlijke inloggegevens. In de mail staat tevens een link waarmee je doorgeleid wordt naar een beveiligde online omgeving. Hier kun je het assessment maken.</p>
+ <p>Indien een opdrachtgever wenst dat je een assessment maakt in een gecontroleerde omgeving, kunnen zij hiervoor een plek binnen hun organisatie voorstellen.</p>
+ <h3>Oefenen wordt aangeraden</h3>
+-<p>Assessments kunnen van tevoren geoefend worden. Sterker nog, dit wordt zelfs aangeraden. Door van tevoren oefentoetsen te maken, krijg je een duidelijker beeld bij de assessments die je dient te maken. Ook leer je omgaan met de tijdsdruk en weet je wat voor soort vragen je kunt verwachten. Hierdoor kun je beter voorbereid en meer ontspannen starten aan het echte assessment. <a href="/oefen-assessment-maken/">Hier</a> vind je een oefentoets voor de capaciteitentest.</p>
++<p>Assessments kunnen van tevoren geoefend worden. Sterker nog, dit wordt zelfs aangeraden. Door van tevoren oefentoetsen te maken, krijg je een duidelijker beeld bij de assessments die je dient te maken. Ook leer je omgaan met de tijdsdruk en weet je wat voor soort vragen je kunt verwachten. Hierdoor kun je beter voorbereid en meer ontspannen starten aan het echte assessment. <a href="/oefen-assessment-maken/">Maak een oefentoets</a> voor de capaciteitentest.</p>
+ <p>Allereerst is het van belang dat je op de hoogte bent van het doel van het assessment en dat je weet waar het assessment over gaat. Voor veel assessments is het mogelijk om van tevoren te oefenen of om je hierop in te lezen.</p>
+ <p>Vervolgens is het van belang dat je uitgerust bent en in een rustige omgeving het assessment kunt maken waar je niet gestoord wordt door (externe) factoren.</p>
+ <h3>De cognitieve capaciteitentest</h3>
+@@ -178,7 +178,7 @@ export const voorbereidingContent = {
+ <p>Zunächst erhält der Kandidat eine E-Mail mit einer Einladung zum Absolvieren des Assessments. Darin stehen sowohl praktische Informationen als auch persönliche Zugangsdaten. In der E-Mail befindet sich außerdem ein Link, über den Sie zu einer sicheren Online-Umgebung weitergeleitet werden. Hier können Sie das Assessment absolvieren.</p>
+ <p>Wenn ein Auftraggeber wünscht, dass Sie ein Assessment in einer kontrollierten Umgebung absolvieren, kann er hierfür einen Platz innerhalb seiner Organisation vorschlagen.</p>
+ <h3>Üben wird empfohlen</h3>
+-<p>Assessments können im Voraus geübt werden. Mehr noch, dies wird sogar empfohlen. Indem Sie im Voraus Übungstests machen, erhalten Sie ein klareres Bild von den Assessments, die Sie absolvieren müssen. Außerdem lernen Sie, mit dem Zeitdruck umzugehen, und wissen, welche Art von Fragen Sie erwarten können. Dadurch können Sie besser vorbereitet und entspannter in das echte Assessment starten. <a href="/oefen-assessment-maken/">Hier</a> finden Sie einen Übungstest für den Fähigkeitstest.</p>
++<p>Assessments können im Voraus geübt werden. Mehr noch, dies wird sogar empfohlen. Indem Sie im Voraus Übungstests machen, erhalten Sie ein klareres Bild von den Assessments, die Sie absolvieren müssen. Außerdem lernen Sie, mit dem Zeitdruck umzugehen, und wissen, welche Art von Fragen Sie erwarten können. Dadurch können Sie besser vorbereitet und entspannter in das echte Assessment starten. <a href="/oefen-assessment-maken/">Machen Sie einen Übungstest</a> für den Fähigkeitstest.</p>
+ <p>Zunächst ist es wichtig, dass Sie über das Ziel des Assessments informiert sind und wissen, worum es beim Assessment geht. Bei vielen Assessments ist es möglich, sich im Voraus zu üben oder sich einzulesen.</p>
+ <p>Anschließend ist es wichtig, dass Sie ausgeruht sind und das Assessment in einer ruhigen Umgebung absolvieren können, in der Sie nicht durch (externe) Faktoren gestört werden.</p>
+ <h3>Der kognitive Fähigkeitstest</h3>
+diff --git a/src/i18n/utils.js b/src/i18n/utils.js
+index a6021d5..ab7a840 100644
+--- a/src/i18n/utils.js
++++ b/src/i18n/utils.js
+@@ -89,6 +89,14 @@ const SECTION_ROOTS = {
+ // bestemming: bekende oude patronen worden geremapt; anders val terug op de
+ // sectie-hoofdpagina en uiteindelijk het kenniscentrum-overzicht in dezelfde
+ // taal. Voorkomt 404's in artikel- en paginateksten.
++/**
++ * Afbeeldingen die bij de migratie naar de oude WordPress-site bleven wijzen,
++ * naar de eigen map halen. Zo hangt de site niet aan een domein dat vervangen wordt.
++ */
++export function eigenMedia(html) {
++  return String(html || "").replace(/https:\/\/(?:www\.)?hrmforce\.com\/wp-content\//g, "/media/wp-content/");
++}
++
+ export function sanitizeBodyLinks(html, lang, validPaths) {
+   if (!html) return html;
+   const valid = validPaths instanceof Set ? validPaths : new Set(validPaths);
+diff --git a/src/layouts/Base.astro b/src/layouts/Base.astro
+index e01cfa4..ade9b21 100644
+--- a/src/layouts/Base.astro
++++ b/src/layouts/Base.astro
+@@ -24,12 +24,65 @@ const {
+   description = "Talentmanagement software en online assessments van hrmforce.",
+   active = "",
+   noindex = false,
++  crumbs = true,   // uit zetten waar de pagina zelf al een BreadcrumbList levert
+   image = "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+ } = Astro.props;
+ 
+ const lang = getLangFromUrl(Astro.url);
+ const consentT = consentContent[lang] ?? consentContent.nl;
+ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://hrmforce.com");
++
++// Titel: Google kapt rond de 60 tot 65 tekens af. Is de titel al lang genoeg
++// om op zichzelf te staan, dan laten we de merknaam achterwege. Google zet de
++// sitenaam zelf achter het resultaat.
++const titelKort = (t) => {
++  const v = String(t || "").trim();
++  return v.length > 60 ? v.replace(/\s*\|\s*hrmforce\s*$/i, "").trim() : v;
++};
++const paginaTitel = titelKort(title);
++
++// Kruimelpad als BreadcrumbList. Google toont dat pad in het zoekresultaat in
++// plaats van de kale URL. Opgebouwd uit het pad zelf, zodat elke pagina met een
++// map erboven het krijgt en niet alleen de artikelen.
++const RUBRIEK = {
++  assessments: { nl: "Assessments", en: "Assessments", de: "Assessments", fr: "Évaluations", es: "Evaluaciones", ro: "Evaluări" },
++  kenniscentrum: { nl: "Kenniscentrum", en: "Knowledge centre", de: "Wissenszentrum", fr: "Centre de connaissances", es: "Centro de conocimiento", ro: "Centru de cunoștințe" },
++  "hrm-oplossingen": { nl: "HRM-oplossingen", en: "HR solutions", de: "HR-Lösungen", fr: "Solutions RH", es: "Soluciones RR. HH.", ro: "Soluții HR" },
++  advies: { nl: "Advies", en: "Advice", de: "Beratung", fr: "Conseil", es: "Asesoramiento", ro: "Consultanță" },
++  integraties: { nl: "Integraties", en: "Integrations", de: "Anbindungen", fr: "Intégrations", es: "Integraciones", ro: "Integrări" },
++  vergelijking: { nl: "Vergelijken", en: "Compare", de: "Vergleichen", fr: "Comparer", es: "Comparar", ro: "Comparați" },
++  oefenen: { nl: "Oefenen", en: "Practise", de: "Üben", fr: "S'entraîner", es: "Practicar", ro: "Exersați" },
++  sectoren: { nl: "Sectoren", en: "Sectors", de: "Branchen", fr: "Secteurs", es: "Sectores", ro: "Sectoare" },
++  toepassingen: { nl: "Toepassingen", en: "Use cases", de: "Anwendungen", fr: "Cas d'usage", es: "Casos de uso", ro: "Aplicații" },
++  whitepapers: { nl: "Whitepapers", en: "Whitepapers", de: "Whitepapers", fr: "Livres blancs", es: "Whitepapers", ro: "Whitepapers" },
++  vacatures: { nl: "Vacatures", en: "Vacancies", de: "Stellen", fr: "Offres", es: "Vacantes", ro: "Posturi" },
++  support: { nl: "Support", en: "Support", de: "Support", fr: "Assistance", es: "Soporte", ro: "Asistență" },
++  partner: { nl: "Partners", en: "Partners", de: "Partner", fr: "Partenaires", es: "Socios", ro: "Parteneri" },
++};
++const netjes = (seg) =>
++  decodeURIComponent(seg).replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase());
++const _delen = Astro.url.pathname.split("/").filter(Boolean);
++if (["en", "de", "fr", "es", "ro"].includes(_delen[0])) _delen.shift();
++const _basis = Astro.site ? String(Astro.site).replace(/\/$/, "") : "https://hrmforce.com";
++const _pre = lang === "nl" ? "" : "/" + lang;
++const kruimelLd = crumbs && _delen.length
++  ? {
++      "@context": "https://schema.org",
++      "@type": "BreadcrumbList",
++      itemListElement: [
++        { "@type": "ListItem", position: 1, name: "Home", item: `${_basis}${_pre}/` },
++        ..._delen.map((seg, i) => ({
++          "@type": "ListItem",
++          position: i + 2,
++          name:
++            i === _delen.length - 1
++              ? paginaTitel.replace(/\s*\|\s*hrmforce\s*$/i, "").trim()
++              : (RUBRIEK[seg] && (RUBRIEK[seg][lang] || RUBRIEK[seg].nl)) || netjes(seg),
++          item: `${_basis}${_pre}/${_delen.slice(0, i + 1).join("/")}/`,
++        })),
++      ],
++    }
++  : null;
+ const LOCALE_MAP = { nl: "nl_NL", en: "en_US", de: "de_DE", fr: "fr_FR", es: "es_ES", ro: "ro_RO" };
+ const ogLocale = LOCALE_MAP[lang] || "nl_NL";
+ const STICKY_DEMO = {
+@@ -109,12 +162,13 @@ const orgLd = {
+     <meta property="og:url" content={canonical} />
+     <meta property="og:image" content={image} />
+     <meta name="twitter:card" content="summary_large_image" />
+-    <meta name="twitter:title" content={title} />
++    <meta name="twitter:title" content={paginaTitel} />
+     <meta name="twitter:description" content={description} />
+     <meta name="twitter:image" content={image} />
+     <link rel="canonical" href={canonical} />
+     {hreflangs.map((h) => <link rel="alternate" hreflang={h.lang} href={h.href} />)}
+-    <title>{title}</title>
++    <title>{paginaTitel}</title>
++    {kruimelLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(kruimelLd)} />}
+     <script type="application/ld+json" set:html={JSON.stringify(orgLd)} is:inline></script>
+     <script type="application/ld+json" is:inline set:html={JSON.stringify({"@context":"https://schema.org","@type":"WebSite",name:"hrmforce",url:"https://hrmforce.com/",potentialAction:{"@type":"SearchAction",target:{"@type":"EntryPoint",urlTemplate:"https://hrmforce.com/kenniscentrum/?q={search_term_string}"},"query-input":"required name=search_term_string"}})}></script>
+     <slot name="head" />
+diff --git a/src/layouts/HsfBase.astro b/src/layouts/HsfBase.astro
+index 72a1a50..e72d243 100644
+--- a/src/layouts/HsfBase.astro
++++ b/src/layouts/HsfBase.astro
+@@ -53,7 +53,7 @@ const nav = [
+     </body>
+   </html>
+ ) : (
+-  <SiteBase title={title} description={description} active="kennisbank">
++  <SiteBase crumbs={false} title={title} description={description} active="kennisbank">
+     <Fragment slot="head">
+       {noindex && <meta name="robots" content="noindex, follow" />}
+       {Object.entries(alternates).map(([l, href]) => (
+diff --git a/src/pages/[...path].astro b/src/pages/[...path].astro
+index 34520df..ca8ed69 100644
+--- a/src/pages/[...path].astro
++++ b/src/pages/[...path].astro
+@@ -16,8 +16,21 @@ export async function getStaticPaths() {
+   // Statische routes hebben voorrang; sluit paden uit die we nu als eigen
+   // pagina bouwen (bijv. de sectoren-index) om dubbele routes te voorkomen.
+   const OWN = new Set(["sectoren", "en/sectoren", "de/sectoren", "fr/sectoren", "es/sectoren", "ro/sectoren", "sectoren/onderwijs"]);
++  // Migratieresten uit WordPress: paden als /?page_id=8355/. Het zijn dubbelen
++  // van echte pagina's (templates, testpagina's, tweede versies van Support en
++  // de algemene voorwaarden) met een URL zonder betekenis. Ze niet bouwen haalt
++  // ze ook uit de sitemap.
++  // Artikelen uit een serie beginnen vaak met dezelfde zin, waardoor de
++  // automatische metadescription op meerdere pagina's gelijk wordt. Markeer die,
++  // zodat de titel er straks voor komt te staan.
++  const kop = (b) => String(b || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 160);
++  const telling = {};
++  for (const a of arts) { const k = kop(a.body); if (k) telling[k] = (telling[k] || 0) + 1; }
++
+   return arts
+     .filter((a) => a.path && a.path.includes("/"))
++    .filter((a) => !/page_id=/i.test(a.path))
++    .map((a) => ({ ...a, gedeeldeIntro: telling[kop(a.body)] > 1 }))
+     .map((a) => ({ p: a.path.replace(/^\/+|\/+$/g, ""), a }))
+     .filter((x) => !OWN.has(x.p))
+     .map((x) => ({ params: { path: x.p }, props: { article: x.a } }));
+@@ -139,6 +152,9 @@ const _articleLd = {
+ 
+ // Body splitsen: contextuele kaart na de eerste </h2> (anders vóór de eindband).
+ let body = sanitizeBodyLinks(article.body || "", lang, validPaths);
++// Afbeeldingen stonden nog op de oude WordPress-site. Ze staan nu in /media/,
++// zodat de pagina niet afhankelijk is van een domein dat vervangen wordt.
++body = body.replace(/https:\/\/(?:www\.)?hrmforce\.com\/wp-content\//g, "/media/wp-content/");
+ // Verwijder de lege, doelloze kop "Organisaties die u voorgingen" die uit de oude
+ // WordPress-logoslider-plugin in de gemigreerde artikelinhoud is achtergebleven.
+ body = body
+@@ -195,6 +211,25 @@ const _descFallback = {
+   ro: "Mai multe despre evaluări, selecție și dezvoltarea talentelor la hrmforce.",
+ }[lang] || "Lees meer over assessments, selectie en talentontwikkeling bij hrmforce.";
+ if (metaDesc.length < 60) metaDesc = `${article.title}. ${_descFallback}`;
++// Deelt dit artikel zijn openingszin met andere delen uit dezelfde serie, dan
++// zet de titel ervoor. Anders krijgen meerdere pagina's dezelfde beschrijving.
++if (article.gedeeldeIntro) metaDesc = `${article.title}. ${metaDesc}`.slice(0, 170);
++
++// Video in de body: markeren als VideoObject, zodat Google er een
++// videoresultaat van kan maken met een voorbeeldafbeelding.
++const _vid = (body.match(/youtube(?:-nocookie)?\.com\/embed\/([A-Za-z0-9_-]{6,})/) || [])[1] || "";
++const videoLd = _vid
++  ? {
++      "@context": "https://schema.org",
++      "@type": "VideoObject",
++      name: article.title,
++      description: metaDesc,
++      thumbnailUrl: [`https://i.ytimg.com/vi/${_vid}/maxresdefault.jpg`],
++      embedUrl: `https://www.youtube.com/embed/${_vid}`,
++      uploadDate: article.date ? new Date(article.date).toISOString() : undefined,
++      publisher: { "@type": "Organization", name: "hrmforce" },
++    }
++  : null;
+ 
+ // H2-koppen een id geven en daaruit een klikbare inhoudsopgave opbouwen.
+ const _slug = (txt) =>
+@@ -248,6 +283,7 @@ const bodyTop = cut !== -1 ? body.slice(0, cut + 5) : body;
+ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
+ ---
+ <Base title={`${article.title} | hrmforce`} description={metaDesc}>
++  {videoLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(videoLd)} />}
+   <script type="application/ld+json" is:inline set:html={JSON.stringify(_articleLd)}></script>
+   <div class="crumb">
+     <div class="wrap"><a href={localizePath("/", lang)}>{K.crumbHome}</a> › <a href={kcHref}>{K.crumb}</a> › <span>{article.title}</span></div>
+diff --git a/src/pages/[lang]/assessments/[slug].astro b/src/pages/[lang]/assessments/[slug].astro
+index 2289a07..5fedb6d 100644
+--- a/src/pages/[lang]/assessments/[slug].astro
++++ b/src/pages/[lang]/assessments/[slug].astro
+@@ -122,7 +122,6 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
+ <Base title={a.metaTitle} description={a.metaDescription} active="assessments">
+   <script type="application/ld+json" is:inline set:html={JSON.stringify(_offerLd)}></script>
+   <script type="application/ld+json" is:inline set:html={JSON.stringify(_faqLd)}></script>
+-  <script type="application/ld+json" is:inline set:html={JSON.stringify(_crumbLd)}></script>
+ 
+   <div class="crumb">
+     <div class="wrap"><a href={localizePath("/", lang)}>{t.home}</a> › <a href={assessHref}>{t.crumbAssessments}</a> › <span>{a.title}</span></div>
+diff --git a/src/pages/assessments/[slug].astro b/src/pages/assessments/[slug].astro
+index bb151ef..7ca64b9 100644
+--- a/src/pages/assessments/[slug].astro
++++ b/src/pages/assessments/[slug].astro
+@@ -117,7 +117,6 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
+ <Base title={a.metaTitle} description={a.metaDescription} active="assessments">
+   <script type="application/ld+json" is:inline set:html={JSON.stringify(_offerLd)}></script>
+   <script type="application/ld+json" is:inline set:html={JSON.stringify(_faqLd)}></script>
+-  <script type="application/ld+json" is:inline set:html={JSON.stringify(_crumbLd)}></script>
+ 
+   <div class="crumb">
+     <div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={assessHref}>Online assessments</a> › <span>{a.title}</span></div>
+diff --git a/src/pages/de/oefenen/[slug].astro b/src/pages/de/oefenen/[slug].astro
+index 2e21a5b..f4ef746 100644
+--- a/src/pages/de/oefenen/[slug].astro
++++ b/src/pages/de/oefenen/[slug].astro
+@@ -5,4 +5,4 @@ import { oefentests, OEFEN_UI } from "../../../data/oefentests.js";
+ export function getStaticPaths(){ return oefentests.map((o)=>({ params:{slug:o.slug}, props:{o} })); }
+ const { o } = Astro.props; const d=o.i18n.de; const ui=OEFEN_UI.de;
+ ---
+-<Base title={`${d.hero} | hrmforce`} description={ui.metaD} active=""><Oefenen o={o} lang="de" /></Base>
++<Base title={`${d.hero} | hrmforce`} description={`Üben Sie mit ${d.name}. Beispielfragen, Erklärung der Antwortskala und Tipps, damit Sie ruhiger in den echten Test starten.`} active=""><Oefenen o={o} lang="de" /></Base>
+diff --git a/src/pages/de/vergelijking/[slug].astro b/src/pages/de/vergelijking/[slug].astro
+index 46e3a32..36c5e6c 100644
+--- a/src/pages/de/vergelijking/[slug].astro
++++ b/src/pages/de/vergelijking/[slug].astro
+@@ -5,4 +5,4 @@ import { VERG_UI, COMPETITORS } from "../../../data/vergelijking-content.js";
+ export function getStaticPaths(){ return Object.keys(COMPETITORS).map((slug)=>({ params:{slug}, props:{slug} })); }
+ const { slug } = Astro.props; const t = VERG_UI.de; const c = COMPETITORS[slug];
+ ---
+-<Base title={`${t.altPrefix} ${c.name} | hrmforce`} description={t.metaD} active=""><Vergelijking slug={slug} lang="de" /></Base>
++<Base title={`${t.altPrefix} ${c.name} | hrmforce`} description={`hrmforce neben ${c.name}: was die Instrumente messen, in welchen Sprachen sie verfügbar sind und was eine Lizenz kostet. Ohne Verkaufsgerede.`} active=""><Vergelijking slug={slug} lang="de" /></Base>
+diff --git a/src/pages/en/hrm-oplossingen.astro b/src/pages/en/hrm-oplossingen.astro
+index 893e34f..8470ea9 100644
+--- a/src/pages/en/hrm-oplossingen.astro
++++ b/src/pages/en/hrm-oplossingen.astro
+@@ -32,7 +32,7 @@ const blocks = [
+           <div class="sol-block">
+             <h2>{b.h}</h2>
+             <p>{b.p}</p>
+-            <a class="btn btn-primary" href={b.href}>Read more</a>
++            <a class="btn btn-primary" href={b.href}>{`More about ${b.h}`}</a>
+           </div>
+         ))}
+       </div>
+diff --git a/src/pages/en/oefenen/[slug].astro b/src/pages/en/oefenen/[slug].astro
+index 0aec8a3..2984b9f 100644
+--- a/src/pages/en/oefenen/[slug].astro
++++ b/src/pages/en/oefenen/[slug].astro
+@@ -5,4 +5,4 @@ import { oefentests, OEFEN_UI } from "../../../data/oefentests.js";
+ export function getStaticPaths(){ return oefentests.map((o)=>({ params:{slug:o.slug}, props:{o} })); }
+ const { o } = Astro.props; const d=o.i18n.en; const ui=OEFEN_UI.en;
+ ---
+-<Base title={`${d.hero} | hrmforce`} description={ui.metaD} active=""><Oefenen o={o} lang="en" /></Base>
++<Base title={`${d.hero} | hrmforce`} description={`Practise with ${d.name}. Example questions, an explanation of the answer scale and tips to start the real test calmer and sharper.`} active=""><Oefenen o={o} lang="en" /></Base>
+diff --git a/src/pages/en/vergelijking/[slug].astro b/src/pages/en/vergelijking/[slug].astro
+index c6c9d65..6d60cfa 100644
+--- a/src/pages/en/vergelijking/[slug].astro
++++ b/src/pages/en/vergelijking/[slug].astro
+@@ -5,4 +5,4 @@ import { VERG_UI, COMPETITORS } from "../../../data/vergelijking-content.js";
+ export function getStaticPaths(){ return Object.keys(COMPETITORS).map((slug)=>({ params:{slug}, props:{slug} })); }
+ const { slug } = Astro.props; const t = VERG_UI.en; const c = COMPETITORS[slug];
+ ---
+-<Base title={`${t.altPrefix} ${c.name} | hrmforce`} description={t.metaD} active=""><Vergelijking slug={slug} lang="en" /></Base>
++<Base title={`${t.altPrefix} ${c.name} | hrmforce`} description={`hrmforce next to ${c.name}: what the instruments measure, which languages they cover and what a licence costs. No sales talk.`} active=""><Vergelijking slug={slug} lang="en" /></Base>
+diff --git a/src/pages/es/oefenen/[slug].astro b/src/pages/es/oefenen/[slug].astro
+index 9d827db..7289ff1 100644
+--- a/src/pages/es/oefenen/[slug].astro
++++ b/src/pages/es/oefenen/[slug].astro
+@@ -5,4 +5,4 @@ import { oefentests, OEFEN_UI } from "../../../data/oefentests.js";
+ export function getStaticPaths(){ return oefentests.map((o)=>({ params:{slug:o.slug}, props:{o} })); }
+ const { o } = Astro.props; const d=o.i18n.es; const ui=OEFEN_UI.es;
+ ---
+-<Base title={`${d.hero} | hrmforce`} description={ui.metaD} active=""><Oefenen o={o} lang="es" /></Base>
++<Base title={`${d.hero} | hrmforce`} description={`Practica con ${d.name}. Preguntas de ejemplo, explicación de la escala de respuesta y consejos para afrontar el test real con más calma.`} active=""><Oefenen o={o} lang="es" /></Base>
+diff --git a/src/pages/es/vergelijking/[slug].astro b/src/pages/es/vergelijking/[slug].astro
+index 9b0f9ea..a91923d 100644
+--- a/src/pages/es/vergelijking/[slug].astro
++++ b/src/pages/es/vergelijking/[slug].astro
+@@ -5,4 +5,4 @@ import { VERG_UI, COMPETITORS } from "../../../data/vergelijking-content.js";
+ export function getStaticPaths(){ return Object.keys(COMPETITORS).map((slug)=>({ params:{slug}, props:{slug} })); }
+ const { slug } = Astro.props; const t = VERG_UI.es; const c = COMPETITORS[slug];
+ ---
+-<Base title={`${t.altPrefix} ${c.name} | hrmforce`} description={t.metaD} active=""><Vergelijking slug={slug} lang="es" /></Base>
++<Base title={`${t.altPrefix} ${c.name} | hrmforce`} description={`hrmforce frente a ${c.name}: qué miden los instrumentos, en qué idiomas están disponibles y qué cuesta una licencia. Sin discurso comercial.`} active=""><Vergelijking slug={slug} lang="es" /></Base>
+diff --git a/src/pages/fr/oefenen/[slug].astro b/src/pages/fr/oefenen/[slug].astro
+index 9a09b5a..957cfb4 100644
+--- a/src/pages/fr/oefenen/[slug].astro
++++ b/src/pages/fr/oefenen/[slug].astro
+@@ -5,4 +5,4 @@ import { oefentests, OEFEN_UI } from "../../../data/oefentests.js";
+ export function getStaticPaths(){ return oefentests.map((o)=>({ params:{slug:o.slug}, props:{o} })); }
+ const { o } = Astro.props; const d=o.i18n.fr; const ui=OEFEN_UI.fr;
+ ---
+-<Base title={`${d.hero} | hrmforce`} description={ui.metaD} active=""><Oefenen o={o} lang="fr" /></Base>
++<Base title={`${d.hero} | hrmforce`} description={`Entraînez-vous avec ${d.name}. Questions d'exemple, explication de l'échelle de réponse et conseils pour aborder le vrai test plus sereinement.`} active=""><Oefenen o={o} lang="fr" /></Base>
+diff --git a/src/pages/fr/vergelijking/[slug].astro b/src/pages/fr/vergelijking/[slug].astro
+index 2e38f5d..10ede5f 100644
+--- a/src/pages/fr/vergelijking/[slug].astro
++++ b/src/pages/fr/vergelijking/[slug].astro
+@@ -5,4 +5,4 @@ import { VERG_UI, COMPETITORS } from "../../../data/vergelijking-content.js";
+ export function getStaticPaths(){ return Object.keys(COMPETITORS).map((slug)=>({ params:{slug}, props:{slug} })); }
+ const { slug } = Astro.props; const t = VERG_UI.fr; const c = COMPETITORS[slug];
+ ---
+-<Base title={`${t.altPrefix} ${c.name} | hrmforce`} description={t.metaD} active=""><Vergelijking slug={slug} lang="fr" /></Base>
++<Base title={`${t.altPrefix} ${c.name} | hrmforce`} description={`hrmforce face à ${c.name} : ce que mesurent les instruments, dans quelles langues ils existent et ce que coûte une licence. Sans discours commercial.`} active=""><Vergelijking slug={slug} lang="fr" /></Base>
+diff --git a/src/pages/geschiktvoorzorg/index.astro b/src/pages/geschiktvoorzorg/index.astro
+index c2a8e27..2ba0cd6 100644
+--- a/src/pages/geschiktvoorzorg/index.astro
++++ b/src/pages/geschiktvoorzorg/index.astro
+@@ -24,7 +24,7 @@ const gvzSchema = [
+   { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: gvzFaq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) },
+ ];
+ ---
+-<Base
++<Base crumbs={false}
+   title="Geschikt voor de Zorg | Hrmforce"
+   description="Met de Geschikt voor Zorg-test vind je de juiste persoon voor iedere doelgroep in de zorg. Data-gedreven matching met 90% retentie."
+   active=""
+diff --git a/src/pages/oefenen/[slug].astro b/src/pages/oefenen/[slug].astro
+index 7a6616f..f94c5d3 100644
+--- a/src/pages/oefenen/[slug].astro
++++ b/src/pages/oefenen/[slug].astro
+@@ -5,4 +5,4 @@ import { oefentests, OEFEN_UI } from "../../data/oefentests.js";
+ export function getStaticPaths(){ return oefentests.map((o)=>({ params:{slug:o.slug}, props:{o} })); }
+ const { o } = Astro.props; const d=o.i18n.nl; const ui=OEFEN_UI.nl;
+ ---
+-<Base title={`${d.hero} | hrmforce`} description={ui.metaD} active=""><Oefenen o={o} lang="nl" /></Base>
++<Base title={`${d.hero} | hrmforce`} description={`Oefen met ${d.name}. Voorbeeldvragen, uitleg over de antwoordschaal en tips waarmee je rustiger en scherper aan de echte afname begint.`} active=""><Oefenen o={o} lang="nl" /></Base>
+diff --git a/src/pages/over-ons.astro b/src/pages/over-ons.astro
+index ed6ed91..f610ca2 100644
+--- a/src/pages/over-ons.astro
++++ b/src/pages/over-ons.astro
+@@ -102,7 +102,7 @@ const domains = [
+       </div>
+ 
+       <h2 class="section-title">Werken bij hrmforce</h2>
+-      <p>Bekijk <a href="/vacatures/">hier</a> onze openstaande vacatures.</p>
++      <p>Bekijk <a href="/vacatures/">onze openstaande vacatures</a>.</p>
+     </div>
+   </section>
+ </Base>
+diff --git a/src/pages/ro/oefenen/[slug].astro b/src/pages/ro/oefenen/[slug].astro
+index 81db79a..70a0f2c 100644
+--- a/src/pages/ro/oefenen/[slug].astro
++++ b/src/pages/ro/oefenen/[slug].astro
+@@ -5,4 +5,4 @@ import { oefentests, OEFEN_UI } from "../../../data/oefentests.js";
+ export function getStaticPaths(){ return oefentests.map((o)=>({ params:{slug:o.slug}, props:{o} })); }
+ const { o } = Astro.props; const d=o.i18n.ro; const ui=OEFEN_UI.ro;
+ ---
+-<Base title={`${d.hero} | hrmforce`} description={ui.metaD} active=""><Oefenen o={o} lang="ro" /></Base>
++<Base title={`${d.hero} | hrmforce`} description={`Exersează cu ${d.name}. Întrebări exemplu, explicarea scalei de răspuns și sfaturi ca să începi testul real mai calm.`} active=""><Oefenen o={o} lang="ro" /></Base>
+diff --git a/src/pages/ro/vergelijking/[slug].astro b/src/pages/ro/vergelijking/[slug].astro
+index b26a5b5..e807c1f 100644
+--- a/src/pages/ro/vergelijking/[slug].astro
++++ b/src/pages/ro/vergelijking/[slug].astro
+@@ -5,4 +5,4 @@ import { VERG_UI, COMPETITORS } from "../../../data/vergelijking-content.js";
+ export function getStaticPaths(){ return Object.keys(COMPETITORS).map((slug)=>({ params:{slug}, props:{slug} })); }
+ const { slug } = Astro.props; const t = VERG_UI.ro; const c = COMPETITORS[slug];
+ ---
+-<Base title={`${t.altPrefix} ${c.name} | hrmforce`} description={t.metaD} active=""><Vergelijking slug={slug} lang="ro" /></Base>
++<Base title={`${t.altPrefix} ${c.name} | hrmforce`} description={`hrmforce față de ${c.name}: ce măsoară instrumentele, în ce limbi sunt disponibile și cât costă o licență. Fără discurs comercial.`} active=""><Vergelijking slug={slug} lang="ro" /></Base>
+diff --git a/src/pages/vergelijking/[slug].astro b/src/pages/vergelijking/[slug].astro
+index 13a6dba..d1b9d96 100644
+--- a/src/pages/vergelijking/[slug].astro
++++ b/src/pages/vergelijking/[slug].astro
+@@ -5,4 +5,4 @@ import { VERG_UI, COMPETITORS } from "../../data/vergelijking-content.js";
+ export function getStaticPaths(){ return Object.keys(COMPETITORS).map((slug)=>({ params:{slug}, props:{slug} })); }
+ const { slug } = Astro.props; const t = VERG_UI.nl; const c = COMPETITORS[slug];
+ ---
+-<Base title={`${t.altPrefix} ${c.name} | hrmforce`} description={t.metaD} active=""><Vergelijking slug={slug} lang="nl" /></Base>
++<Base title={`${t.altPrefix} ${c.name} | hrmforce`} description={`hrmforce naast ${c.name}: wat de instrumenten meten, in welke talen ze beschikbaar zijn en wat een licentie kost. Zonder verkooppraat.`} active=""><Vergelijking slug={slug} lang="nl" /></Base>
+-- 
+2.43.0
+

@@ -1,0 +1,10 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Vacatures from "../../../components/Vacatures.astro";
+import { VAC } from "../../../data/vacatures-content.js";
+import { perTaal } from "../../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const t = VAC[lang];
+---
+<Base title={t.metaT} description={t.metaD} active="about"><Vacatures lang={lang} /></Base>

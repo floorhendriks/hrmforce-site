@@ -1,0 +1,37 @@
+From 5f27d5ce3291c60c6c8f540a6a44626df9740edd Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Tue, 15 Sep 2026 08:54:44 +0000
+Subject: [PATCH] Oude WordPress-afbeeldingen doorverwijzen naar de eigen
+ mediamap
+
+Na de overstap naar hrmforce.com geven alle /wp-content/uploads/-URL's een
+404. Dat raakt Google Afbeeldingen en elke externe site die een afbeelding
+van ons inlaadt. De bestanden staan op de nieuwe site onder /media/wp-content/.
+
+Een regel dekt alles: /wp-content/* naar /media/wp-content/:splat. Getest
+met 160 oude afbeeldings-URL's, alle 160 bestaan onder /media.
+
+Staat als eerste regel in het bestand, want dit is de regel die de meeste
+URL's dekt.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ public/_redirects | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/public/_redirects b/public/_redirects
+index 9e2966e..f690858 100644
+--- a/public/_redirects
++++ b/public/_redirects
+@@ -4,6 +4,7 @@
+ # Elke exacte regel heeft daarnaast een statische terugvalpagina in public/,
+ # zodat een genegeerde regel geen 404 oplevert maar alsnog doorstuurt.
+ # Eerste match wint, dus een exacte regel staat voor de wildcard die hem dekt.
++/wp-content/* /media/wp-content/:splat 301
+ /product-categorie/* /shop/ 301
+ /news_category/* /kenniscentrum/ 301
+ /testimonials-category/* /klantcases/ 301
+-- 
+2.43.0
+

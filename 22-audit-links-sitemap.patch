@@ -1,0 +1,338 @@
+From c72e82d59c8f8667ac3eb24f9869a53526c69e7f Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Tue, 15 Sep 2026 09:17:17 +0000
+Subject: [PATCH] Audit voor de overstap: kapotte links, sitemap en
+ redirectketens
+
+Alle 385 URL's uit de sitemap van de huidige WordPress-site nagelopen
+tegen de nieuwe site: 225 bestaan, 160 worden doorverwezen, nul 404's.
+Daarna de gebouwde site zelf doorzocht op interne links die nergens
+heen gaan. Dat leverde dit op.
+
+Privacylink in het downloadformulier (2.700 pagina's)
+Het leadformulier onder elk profiel van het skills framework linkte naar
+/privacy-statement/, een pad dat niet bestaat. De pagina staat op
+/support/privacy-statement/. De link is nu taalbewust, dus de Duitse
+bezoeker komt op de Duitse versie.
+
+Assessmentkaarten naar een niet-vertaalde pagina
+De Ontwikkelmatrix heeft geen vertaalde detailpagina, maar de kaarten in
+de overzichten linkten er in vijf talen wel naartoe. Die links gaan nu
+via navHref, die terugvalt op de Nederlandse pagina als de vertaling niet
+bestaat. Aangepast in AssessmentOverzicht, OnlineAssessments, Testkiezer,
+Toepassing en Oefenen.
+
+Redirectketen naar de shop
+Negentig oude productpagina's gingen naar shop.hrmforce.com, en die stuurt
+zelf door naar /shop/. Twee stappen dus. De regels wijzen nu direct naar
+https://shop.hrmforce.com/shop/.
+
+Sitemap zonder noindex-pagina's
+2.712 pagina's met noindex stonden wel in de sitemap: de volledige
+profielen van het skills framework en de afreken- en bevestigingspagina's.
+Search Console zou die allemaal melden als verzonden URL met noindex.
+Ze zijn er nu uit gefilterd, sitemap gaat van 13.321 naar 10.609 URL's.
+
+robots.txt verwees naar /sitemap.xml, wat zelf een redirect is. Nu de twee
+echte sitemaps, inclusief die van het skills framework.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ astro.config.mjs                         | 11 ++++++++++-
+ public/_redirects                        | 12 ++++++------
+ public/boutique/index.html               |  8 ++++----
+ public/de/einkaufswagen/index.html       |  8 ++++----
+ public/es/cesta-de-la-compra/index.html  |  8 ++++----
+ public/mijn-account/index.html           |  8 ++++----
+ public/robots.txt                        |  3 ++-
+ src/components/AssessmentOverzicht.astro |  5 +++--
+ src/components/LeadForm.astro            |  6 ++++--
+ src/components/Oefenen.astro             |  5 +++--
+ src/components/OnlineAssessments.astro   |  5 +++--
+ src/components/Testkiezer.astro          |  5 +++--
+ src/components/Toepassing.astro          |  5 +++--
+ 13 files changed, 53 insertions(+), 36 deletions(-)
+
+diff --git a/astro.config.mjs b/astro.config.mjs
+index 6f8ea91..11bf43a 100644
+--- a/astro.config.mjs
++++ b/astro.config.mjs
+@@ -4,7 +4,16 @@ import sitemap from '@astrojs/sitemap';
+ export default defineConfig({
+   site: 'https://hrmforce.com',
+   output: 'static',
+-  integrations: [sitemap()],
++  integrations: [
++    sitemap({
++      // Pagina's met noindex horen niet in de sitemap. Anders meldt Search Console
++      // ze als "verzonden URL met noindex". Het gaat om de volledige profielen van
++      // het skills framework en de bevestigingspagina's na een bestelling.
++      filter: (page) =>
++        !/\/skills-framework\/jobs\/[^/]+\/full\/?$/.test(page) &&
++        !/\/(bestelling-gelukt|afrekenen)\/?$/.test(page),
++    }),
++  ],
+   i18n: {
+     defaultLocale: 'nl',
+     locales: ['nl', 'en', 'de', 'fr', 'es', 'ro'],
+diff --git a/public/_redirects b/public/_redirects
+index f690858..e2dcf0a 100644
+--- a/public/_redirects
++++ b/public/_redirects
+@@ -14,8 +14,8 @@
+ /advies_categorieen/* /advies/ 301
+ /shop/segment/gedrag/disc-vragenlijst* /assessments/disc-test/ 301
+ /de/hrm-loesungen* /de/hrm-oplossingen/ 301
+-/product/* https://shop.hrmforce.com 301
+-/winkel* https://shop.hrmforce.com 301
++/product/* https://shop.hrmforce.com/shop/ 301
++/winkel* https://shop.hrmforce.com/shop/ 301
+ /home* / 301
+ /assessment/* /assessment-overzicht/ 301
+ /hrm-loesungen* /de/hrm-oplossingen/ 301
+@@ -69,10 +69,10 @@
+ /ro/solutii/ /ro/hrm-oplossingen/ 301
+ /ro/ce-facem-noi/ /ro/over-ons/ 301
+ /ro/asistenta/ /ro/support/ 301
+-/mijn-account/ https://shop.hrmforce.com 301
+-/de/einkaufswagen/ https://shop.hrmforce.com 301
+-/es/cesta-de-la-compra/ https://shop.hrmforce.com 301
+-/boutique/ https://shop.hrmforce.com 301
++/mijn-account/ https://shop.hrmforce.com/shop/ 301
++/de/einkaufswagen/ https://shop.hrmforce.com/shop/ 301
++/es/cesta-de-la-compra/ https://shop.hrmforce.com/shop/ 301
++/boutique/ https://shop.hrmforce.com/shop/ 301
+ /hrmforce/ /over-ons/ 301
+ /assessment-locaties/ /contact/ 301
+ /assessment-ubersicht/ /de/assessment-overzicht/ 301
+diff --git a/public/boutique/index.html b/public/boutique/index.html
+index a499416..efe0322 100644
+--- a/public/boutique/index.html
++++ b/public/boutique/index.html
+@@ -4,11 +4,11 @@
+ <meta charset="utf-8">
+ <title>Verplaatst</title>
+ <meta name="robots" content="noindex, follow">
+-<meta http-equiv="refresh" content="0; url=https://shop.hrmforce.com">
+-<link rel="canonical" href="https://shop.hrmforce.com">
++<meta http-equiv="refresh" content="0; url=https://shop.hrmforce.com/shop/">
++<link rel="canonical" href="https://shop.hrmforce.com/shop/">
+ </head>
+ <body>
+-<p>Deze pagina is verplaatst naar <a href="https://shop.hrmforce.com">https://shop.hrmforce.com</a>.</p>
+-<script>location.replace("https://shop.hrmforce.com");</script>
++<p>Deze pagina is verplaatst naar <a href="https://shop.hrmforce.com/shop/">https://shop.hrmforce.com/shop/</a>.</p>
++<script>location.replace("https://shop.hrmforce.com/shop/");</script>
+ </body>
+ </html>
+diff --git a/public/de/einkaufswagen/index.html b/public/de/einkaufswagen/index.html
+index a499416..efe0322 100644
+--- a/public/de/einkaufswagen/index.html
++++ b/public/de/einkaufswagen/index.html
+@@ -4,11 +4,11 @@
+ <meta charset="utf-8">
+ <title>Verplaatst</title>
+ <meta name="robots" content="noindex, follow">
+-<meta http-equiv="refresh" content="0; url=https://shop.hrmforce.com">
+-<link rel="canonical" href="https://shop.hrmforce.com">
++<meta http-equiv="refresh" content="0; url=https://shop.hrmforce.com/shop/">
++<link rel="canonical" href="https://shop.hrmforce.com/shop/">
+ </head>
+ <body>
+-<p>Deze pagina is verplaatst naar <a href="https://shop.hrmforce.com">https://shop.hrmforce.com</a>.</p>
+-<script>location.replace("https://shop.hrmforce.com");</script>
++<p>Deze pagina is verplaatst naar <a href="https://shop.hrmforce.com/shop/">https://shop.hrmforce.com/shop/</a>.</p>
++<script>location.replace("https://shop.hrmforce.com/shop/");</script>
+ </body>
+ </html>
+diff --git a/public/es/cesta-de-la-compra/index.html b/public/es/cesta-de-la-compra/index.html
+index a499416..efe0322 100644
+--- a/public/es/cesta-de-la-compra/index.html
++++ b/public/es/cesta-de-la-compra/index.html
+@@ -4,11 +4,11 @@
+ <meta charset="utf-8">
+ <title>Verplaatst</title>
+ <meta name="robots" content="noindex, follow">
+-<meta http-equiv="refresh" content="0; url=https://shop.hrmforce.com">
+-<link rel="canonical" href="https://shop.hrmforce.com">
++<meta http-equiv="refresh" content="0; url=https://shop.hrmforce.com/shop/">
++<link rel="canonical" href="https://shop.hrmforce.com/shop/">
+ </head>
+ <body>
+-<p>Deze pagina is verplaatst naar <a href="https://shop.hrmforce.com">https://shop.hrmforce.com</a>.</p>
+-<script>location.replace("https://shop.hrmforce.com");</script>
++<p>Deze pagina is verplaatst naar <a href="https://shop.hrmforce.com/shop/">https://shop.hrmforce.com/shop/</a>.</p>
++<script>location.replace("https://shop.hrmforce.com/shop/");</script>
+ </body>
+ </html>
+diff --git a/public/mijn-account/index.html b/public/mijn-account/index.html
+index a499416..efe0322 100644
+--- a/public/mijn-account/index.html
++++ b/public/mijn-account/index.html
+@@ -4,11 +4,11 @@
+ <meta charset="utf-8">
+ <title>Verplaatst</title>
+ <meta name="robots" content="noindex, follow">
+-<meta http-equiv="refresh" content="0; url=https://shop.hrmforce.com">
+-<link rel="canonical" href="https://shop.hrmforce.com">
++<meta http-equiv="refresh" content="0; url=https://shop.hrmforce.com/shop/">
++<link rel="canonical" href="https://shop.hrmforce.com/shop/">
+ </head>
+ <body>
+-<p>Deze pagina is verplaatst naar <a href="https://shop.hrmforce.com">https://shop.hrmforce.com</a>.</p>
+-<script>location.replace("https://shop.hrmforce.com");</script>
++<p>Deze pagina is verplaatst naar <a href="https://shop.hrmforce.com/shop/">https://shop.hrmforce.com/shop/</a>.</p>
++<script>location.replace("https://shop.hrmforce.com/shop/");</script>
+ </body>
+ </html>
+diff --git a/public/robots.txt b/public/robots.txt
+index 156a4ec..1b1d3d3 100644
+--- a/public/robots.txt
++++ b/public/robots.txt
+@@ -1,4 +1,5 @@
+ User-agent: *
+ Allow: /
++
+ Sitemap: https://hrmforce.com/sitemap-index.xml
+-Sitemap: https://hrmforce.com/sitemap.xml
++Sitemap: https://hrmforce.com/sitemap-skills-framework.xml
+diff --git a/src/components/AssessmentOverzicht.astro b/src/components/AssessmentOverzicht.astro
+index aa905b2..1a73fbc 100644
+--- a/src/components/AssessmentOverzicht.astro
++++ b/src/components/AssessmentOverzicht.astro
+@@ -1,12 +1,13 @@
+ ---
+-import { localizePath, demoPath } from "../i18n/utils.js";
++import { localizePath, demoPath, navHref } from "../i18n/utils.js";
++import validPaths from "../data/valid-paths.js";
+ import { shopMap } from "../data/assessment-shop.js";
+ const { c, lang } = Astro.props;
+ const contactHref = localizePath("/contact/", lang);
+ const demoHref = demoPath(lang);
+ // NL linkt naar de root-detailpagina; andere talen naar de gelokaliseerde
+ // detailpagina /<lang>/assessments/<slug>/ (die nu bestaat).
+-const cardHref = (slug) => localizePath(`/assessments/${slug}/`, lang);
++const cardHref = (slug) => navHref(`/assessments/${slug}/`, lang, validPaths);
+ 
+ // Verrijk elk item met shop-info (prijs, segment, uitgever). Segment/uitgever
+ // blijven Nederlands (afkomstig uit assessment-shop.js).
+diff --git a/src/components/LeadForm.astro b/src/components/LeadForm.astro
+index abb5883..09cbe29 100644
+--- a/src/components/LeadForm.astro
++++ b/src/components/LeadForm.astro
+@@ -14,6 +14,7 @@
+  * al is gedownload, zodat een terugkerende bezoeker niet opnieuw het formulier
+  * hoeft te vullen. Die vlag staat in localStorage en bevat geen persoonsgegevens.
+  */
++import { localizePath } from '../i18n/utils.js';
+ import { useT } from '../lib/i18n';
+ interface Props {
+   lang: string;
+@@ -27,7 +28,8 @@ interface Props {
+   isPdf?: boolean;
+ }
+ const { lang, fileUrl, fileName, subject, subjectId, endpoint = 'https://formspree.io/f/mqpznaqn',
+-        privacyUrl = '/privacy-statement/', isPdf = true } = Astro.props;
++        privacyUrl = null, isPdf = true } = Astro.props;
++const privacyHref = privacyUrl || localizePath('/support/privacy-statement/', lang);
+ const t = useT(lang);
+ ---
+ <div class="hsf-card tint hsf-noprint hsf-leadform" data-endpoint={endpoint} data-file={fileUrl}
+@@ -73,7 +75,7 @@ const t = useT(lang);
+            style="position:absolute;left:-9999px" aria-hidden="true" />
+     <button class="hsf-btn block" type="submit" data-submit>{t('lead.submit')}</button>
+     <p class="hsf-note" style="margin:.7rem 0 0">
+-      {t('lead.privacy')} <a href={privacyUrl}>{t('ui.privacy-policy')}</a>
++      {t('lead.privacy')} <a href={privacyHref}>{t('ui.privacy-policy')}</a>
+     </p>
+   </form>
+ </div>
+diff --git a/src/components/Oefenen.astro b/src/components/Oefenen.astro
+index 36ca899..dc3e5d6 100644
+--- a/src/components/Oefenen.astro
++++ b/src/components/Oefenen.astro
+@@ -1,5 +1,6 @@
+ ---
+-import { localizePath } from "../i18n/utils.js";
++import { localizePath, navHref } from "../i18n/utils.js";
++import validPaths from "../data/valid-paths.js";
+ import { OEFEN_UI } from "../data/oefentests.js";
+ import { examplesFor } from "../data/assessment-examples.js";
+ import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../data/site-config.js";
+@@ -8,7 +9,7 @@ const d = o.i18n[lang] ?? o.i18n.nl;
+ const ui = OEFEN_UI[lang] ?? OEFEN_UI.nl;
+ const formAction = FORMSPREE_ENDPOINT || `mailto:${CONTACT_EMAIL}`;
+ const ex = examplesFor(o.assessmentSlug, lang);
+-const assessHref = localizePath(`/assessments/${o.assessmentSlug}/`, lang);
++const assessHref = navHref(`/assessments/${o.assessmentSlug}/`, lang, validPaths);
+ const _canon = new URL(Astro.url.pathname, "https://hrmforce.com").href;
+ const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+   { "@type": "ListItem", position: 1, name: "Home", item: "https://hrmforce.com/" },
+diff --git a/src/components/OnlineAssessments.astro b/src/components/OnlineAssessments.astro
+index 46a1fef..1652424 100644
+--- a/src/components/OnlineAssessments.astro
++++ b/src/components/OnlineAssessments.astro
+@@ -1,12 +1,13 @@
+ ---
+ import Img from "./Img.astro";
+-import { localizePath, demoPath } from "../i18n/utils.js";
++import { localizePath, demoPath, navHref } from "../i18n/utils.js";
++import validPaths from "../data/valid-paths.js";
+ const { c, lang } = Astro.props;
+ const contactHref = localizePath("/contact/", lang);
+ const demoHref = demoPath(lang);
+ const overzichtHref = localizePath("/assessment-overzicht/", lang);
+ // NL linkt naar de root-detailpagina; andere talen naar /<lang>/assessments/<slug>/.
+-const cardHref = (slug) => localizePath(`/assessments/${slug}/`, lang);
++const cardHref = (slug) => navHref(`/assessments/${slug}/`, lang, validPaths);
+ 
+ const logos = [
+   { src: "/media/wp-content/uploads/2025/06/logo-cityofamsterdam.jpg", alt: "City of Amsterdam" },
+diff --git a/src/components/Testkiezer.astro b/src/components/Testkiezer.astro
+index 043a93f..667ee52 100644
+--- a/src/components/Testkiezer.astro
++++ b/src/components/Testkiezer.astro
+@@ -1,5 +1,6 @@
+ ---
+-import { localizePath } from "../i18n/utils.js";
++import { localizePath, navHref } from "../i18n/utils.js";
++import validPaths from "../data/valid-paths.js";
+ import { testkiezerContent, TK_SLUGS } from "../data/testkiezer-content.js";
+ import { assessments } from "../data/assessments.js";
+ import { assessmentsI18n } from "../data/assessments-i18n.js";
+@@ -37,7 +38,7 @@ const recs = (key) => (TK_SLUGS[key] || []).map((s) => bySlug.get(s)).filter(Boo
+       <p class="lead" style="margin:6px 0 20px">{o.resultIntro}</p>
+       <div class="cards">
+         {recs(o.key).map((a) => (
+-          <a class="card" href={localizePath(`/assessments/${a.slug}/`, lang)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
++          <a class="card" href={navHref(`/assessments/${a.slug}/`, lang, validPaths)} style="text-decoration:none;color:inherit;display:flex;flex-direction:column">
+             <h3>{a.title}</h3>
+             <p style="flex:1">{a.goal}</p>
+             <span class="readmore">{t.view} &rarr;</span>
+diff --git a/src/components/Toepassing.astro b/src/components/Toepassing.astro
+index 6faf037..0de94ce 100644
+--- a/src/components/Toepassing.astro
++++ b/src/components/Toepassing.astro
+@@ -2,7 +2,8 @@
+ import { LAND_UI } from "../data/landings.js";
+ import { assessments } from "../data/assessments.js";
+ import { assessmentsI18n } from "../data/assessments-i18n.js";
+-import { localizePath, demoPath } from "../i18n/utils.js";
++import { localizePath, demoPath, navHref } from "../i18n/utils.js";
++import validPaths from "../data/valid-paths.js";
+ import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../data/site-config.js";
+ 
+ const { l, lang = "nl" } = Astro.props;
+@@ -24,7 +25,7 @@ const toepPath = localizePath("/toepassingen/", lang);
+ const contactPath = localizePath("/contact/", lang);
+ const demoHrefT = demoPath(lang);
+ const onlinePath = localizePath("/online-assessments/", lang);
+-const assessPath = (slug) => localizePath(`/assessments/${slug}/`, lang);
++const assessPath = (slug) => navHref(`/assessments/${slug}/`, lang, validPaths);
+ 
+ const _canon = new URL(Astro.url.pathname, "https://hrmforce.com").href;
+ const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+-- 
+2.43.0
+

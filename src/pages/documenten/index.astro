@@ -1,7 +1,9 @@
 ---
 import Base from "../../layouts/Base.astro";
 import DocumentenOverzicht from "../../components/DocumentenOverzicht.astro";
+import { DOC_META } from "../../data/instrument-documenten.js";
+const m = DOC_META.nl;
 ---
-<Base lang="nl" title="Documenten van de uitgevers | hrmforce" description="Brochures, voorbeeldrapporten en handleidingen van SHL, GITP en Cubiks bij OPQ32, Verify, Connector Ability, Reflector, Logiks, PAPI 3 en Talogy 360." active="">
+<Base lang="nl" title={m.title} description={m.description} active="">
   <DocumentenOverzicht lang="nl" />
 </Base>

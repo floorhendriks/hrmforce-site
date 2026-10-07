@@ -1,0 +1,92 @@
+From 1c86f1dba90acb150762ec0f36f8dab0bc3c8695 Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Wed, 7 Oct 2026 06:56:27 +0000
+Subject: [PATCH] Knoppen onder de veelgestelde vragen weer in de kolom
+
+Op de assessmentpagina's stonden de twee knoppen onder de veelgestelde vragen
+buiten de div met de paginamarge. Daardoor begonnen ze op de linkerrand van het
+venster in plaats van onder de vragen: op 1440 pixels breed was dat 154 pixels
+naast de rest, op 1920 pixels 394. Opgemerkt door Dion.
+
+De knoppen staan nu in dezelfde kolom als de vragen. Gemeten op 390, 768, 1440
+en 1920 pixels: de linkerrand van de knoppen valt precies samen met die van de
+vragen, zonder horizontale schuifbalk. Het raakt 222 pagina's, 37 assessments
+maal zes talen.
+
+De marge van 8 pixels tussen de twee knoppen is vervangen door een flexregel met
+ruimte ertussen, zodat de tweede knop op een smal scherm onder de eerste komt in
+plaats van half weg te vallen.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ src/pages/[lang]/assessments/[slug].astro | 11 +++++++----
+ src/pages/assessments/[slug].astro        | 11 +++++++----
+ src/styles/global.css                     |  3 +++
+ 3 files changed, 17 insertions(+), 8 deletions(-)
+
+diff --git a/src/pages/[lang]/assessments/[slug].astro b/src/pages/[lang]/assessments/[slug].astro
+index 12dc6b8..33b8353 100644
+--- a/src/pages/[lang]/assessments/[slug].astro
++++ b/src/pages/[lang]/assessments/[slug].astro
+@@ -330,12 +330,15 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
+             <div class="faq-a"><p>{f.a}</p></div>
+           </div>
+         ))}
++        {/* Deze twee knoppen stonden buiten de wrap, dus zonder de marge van de
++            pagina. Op een breed scherm plakten ze tegen de linkerrand in plaats
++            van onder de vragen. Ze staan nu in dezelfde kolom als de vragen. */}
++        <div class="faq-knoppen">
++          <a href="#request" class="btn btn-primary">{t.blokCta.replace("{t}", a.title)}</a>
++          <a href={localizePath("/contact/", lang)} class="btn btn-ghost">{t.faqCta}</a>
++        </div>
+       </div>
+     </div>
+-      <div class="center" style="margin-top:24px">
+-        <a href="#request" class="btn btn-primary">{t.blokCta.replace("{t}", a.title)}</a>
+-        <a href={localizePath("/contact/", lang)} class="btn btn-ghost" style="margin-left:8px">{t.faqCta}</a>
+-      </div>
+   </section>
+ 
+   <section class="formsec" id="request">
+diff --git a/src/pages/assessments/[slug].astro b/src/pages/assessments/[slug].astro
+index 6d80ebc..49e4b03 100644
+--- a/src/pages/assessments/[slug].astro
++++ b/src/pages/assessments/[slug].astro
+@@ -316,12 +316,15 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
+             <div class="faq-a"><p>{f.a}</p></div>
+           </div>
+         ))}
++        {/* Deze twee knoppen stonden buiten de wrap, dus zonder de marge van de
++            pagina. Op een breed scherm plakten ze tegen de linkerrand in plaats
++            van onder de vragen. Ze staan nu in dezelfde kolom als de vragen. */}
++        <div class="faq-knoppen">
++          <a href="#request" class="btn btn-primary">{a.title} aanvragen</a>
++          <a href={localizePath("/contact/", lang)} class="btn btn-ghost">Staat je vraag er niet bij? Neem contact op</a>
++        </div>
+       </div>
+     </div>
+-      <div class="center" style="margin-top:24px">
+-        <a href="#request" class="btn btn-primary">{a.title} aanvragen</a>
+-        <a href={localizePath("/contact/", lang)} class="btn btn-ghost" style="margin-left:8px">Staat je vraag er niet bij? Neem contact op</a>
+-      </div>
+   </section>
+ 
+   <section class="formsec" id="request">
+diff --git a/src/styles/global.css b/src/styles/global.css
+index 817cc50..f0cb7ab 100644
+--- a/src/styles/global.css
++++ b/src/styles/global.css
+@@ -294,6 +294,9 @@ h2.section-title{font-size:clamp(1.6rem,1.25rem + 1.6vw,2.25rem);font-weight:800
+ .faq-q:hover{background:#fafcff}
+ .faq-a{padding:0 24px;max-height:0;overflow:hidden;color:var(--muted);transition:max-height .3s ease,padding .3s ease;font-size:15px;line-height:1.65}
+ .faq-item.open .faq-a{max-height:600px;padding:0 24px 22px}
++/* De twee knoppen onder de veelgestelde vragen. Naast elkaar waar het past,
++   onder elkaar op een smal scherm, zodat de tweede knop niet half wegvalt. */
++.faq-knoppen{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+ .faq-item.open .pl{transform:rotate(45deg)}
+ .pl{font-size:26px;color:var(--blue);transition:transform .2s ease;font-weight:300;line-height:1;flex:0 0 auto}
+ 
+-- 
+2.43.0
+

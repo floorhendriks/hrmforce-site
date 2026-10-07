@@ -1,0 +1,426 @@
+From e6b20612f9b3bfaaca75fc49640ad663bf46a05b Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Mon, 14 Sep 2026 10:33:42 +0000
+Subject: [PATCH] Over ons herschikt en een eigen voorbeeldrapportage per
+ assessment
+
+Over ons
+- Het blok over Floor stond direct onder de paginakop. Het staat nu tussen
+  Waarom hrmforce en Software leveren voor HRM. De grote sectie is daarvoor
+  in tweeen gesplitst, zodat het blok een eigen sectie is met een haarlijn
+  boven en onder in plaats van een ingesloten div.
+
+Datavisual per test
+- Onder de wetenschappelijke onderbouwing stond op elke assessmentpagina
+  dezelfde tekening. De dimensies komen nu uit de test zelf (a.traits), dus
+  Big Five toont Neuroticisme tot Conscientieusheid, DISC toont Dominant tot
+  Conscientieus, en zo verder.
+- De voorbeeldscores zijn afgeleid van de slug, dus elke test heeft een eigen
+  vast beeld dat niet per build verandert.
+- Capaciteiten- en cognitieve tests krijgen een normaalverdeling met een
+  percentielscore in plaats van een balkenprofiel.
+- De tekening groeit mee met het aantal dimensies, drie tot zes.
+- Er staat nu een label voorbeeld in de tekening en een bijschrift dat zegt
+  dat het geen scores van een echte kandidaat zijn, in alle zes talen.
+- De voetnoot staat onder de tekening in plaats van erin, zodat lange
+  testnamen netjes afbreken.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ src/components/Datavisual.astro           | 69 +++++++++++++++--------
+ src/data/assessment-detail-ui.js          | 12 ++--
+ src/pages/[lang]/assessments/[slug].astro | 22 +++++++-
+ src/pages/assessments/[slug].astro        | 24 +++++++-
+ src/pages/over-ons.astro                  | 40 +++++++------
+ src/styles/global.css                     |  2 +-
+ 6 files changed, 121 insertions(+), 48 deletions(-)
+
+diff --git a/src/components/Datavisual.astro b/src/components/Datavisual.astro
+index 26e338f..821f0ef 100644
+--- a/src/components/Datavisual.astro
++++ b/src/components/Datavisual.astro
+@@ -7,7 +7,16 @@
+  *
+  * <Datavisual soort="normverdeling" tone="donker" />
+  */
+-const { soort = "normverdeling", tone = "licht", class: cls = "", titel = "" } = Astro.props;
++const {
++  soort = "normverdeling",
++  tone = "licht",
++  class: cls = "",
++  titel = "",
++  rijen = null,       // [{ n, v }] eigen dimensies, anders het standaardvoorbeeld
++  vereist = 3.5,      // stippellijn: het vereiste niveau op de schaal 1 tot 5
++  bij = "",           // voetnoot onder de tekening
++  merk = "",          // klein label, bijvoorbeeld "voorbeeld"
++} = Astro.props;
+ 
+ // Normaalverdeling: y = piek * exp(-0.5 * z^2), z in standaarddeviaties
+ const X0 = 60, X1 = 440, BASE = 196, PIEK = 150, MID = 250, SD = 62;
+@@ -25,22 +34,34 @@ const vlak = Array.from({ length: 40 }, (_, i) => {
+ const asLabels = [[-2, "2"], [-1, "16"], [0, "50"], [1, "84"], [2, "98"]];
+ 
+ // Competentieprofiel: schaal 1 tot 5, vereist niveau 3,5
+-const comps = [
++const comps = (Array.isArray(rijen) && rijen.length ? rijen : [
+   { n: "Analytisch vermogen", v: 4.2 },
+   { n: "Klantgerichtheid", v: 4.5 },
+   { n: "Samenwerken", v: 3.6 },
+   { n: "Plannen en organiseren", v: 3.1 },
+   { n: "Leidinggeven", v: 2.8 },
+-];
+-const CX0 = 186, CX1 = 452, VEREIST = 3.5;
++]).slice(0, 6);
++const CX0 = 232, CX1 = 548, VEREIST = vereist;
+ const cx = (v) => CX0 + ((v - 1) / 4) * (CX1 - CX0);
++const RIJ = 33, TOP = 44;
++const CH = TOP + comps.length * RIJ + 24;   // hoogte groeit mee met het aantal dimensies
++const CB = TOP + comps.length * RIJ - 10;   // onderkant van het raster
+ 
+ // 9-box: prestatie horizontaal, potentieel verticaal, aantallen per cel
+ const cellen = [[1,3],[2,9],[3,4],[4,7],[5,22],[6,11],[7,2],[8,8],[9,5]];
++
++// Standaard voetnoot per soort, zodat een tekening nooit zonder uitleg staat
++const BIJ = {
++  normverdeling: "Percentielscore binnen de normgroep, n = 2.480",
++  competentieprofiel: "Score per dimensie op een vijfpuntsschaal",
++  negenbox: "71 medewerkers, ingedeeld naar prestatie en potentieel",
++  matchscore: "Gewogen match op zeven competenties en twee capaciteitentests",
++};
++const bijTxt = bij || BIJ[soort] || "";
+ ---
+ <figure class={`dv dv-${tone} ${cls}`.trim()}>
+   {soort === "normverdeling" && (
+-    <svg viewBox="0 0 500 250" role="img" aria-label="Normaalverdeling met de score van een kandidaat op percentiel 86">
++    <svg viewBox="0 0 500 232" role="img" aria-label="Normaalverdeling met de score van een kandidaat op percentiel 86">
+       <g class="dv-grid">
+         {asLabels.map(([z]) => <line x1={MID + z * SD} y1="34" x2={MID + z * SD} y2={BASE} />)}
+         <line x1={X0} y1={BASE} x2={X1} y2={BASE} class="dv-as" />
+@@ -51,32 +72,33 @@ const cellen = [[1,3],[2,9],[3,4],[4,7],[5,22],[6,11],[7,2],[8,8],[9,5]];
+       <circle cx={xK} cy={yv(xK)} r="4.5" class="dv-punt" />
+       <text x={xK} y="38" class="dv-waarde" text-anchor="middle">percentiel 86</text>
+       {asLabels.map(([z, l]) => <text x={MID + z * SD} y={BASE + 20} class="dv-tick" text-anchor="middle">{l}</text>)}
+-      <text x={X0} y={BASE + 42} class="dv-bij">Percentielscore binnen de normgroep, n = 2.480</text>
++      {merk && <text x="498" y="38" class="dv-merklabel" text-anchor="end">{merk}</text>}
+     </svg>
+   )}
+ 
+   {soort === "competentieprofiel" && (
+-    <svg viewBox="0 0 500 250" role="img" aria-label="Competentieprofiel met vijf competenties op een vijfpuntsschaal en het vereiste niveau">
++    <svg viewBox={`0 0 560 ${CH}`} role="img"
++         aria-label={`Profiel met ${comps.length} dimensies op een vijfpuntsschaal en het vereiste niveau`}>
+       <g class="dv-grid">
+-        {[1,2,3,4,5].map((v) => <line x1={cx(v)} y1="30" x2={cx(v)} y2="196" />)}
++        {[1,2,3,4,5].map((v) => <line x1={cx(v)} y1={TOP - 12} x2={cx(v)} y2={CB} />)}
+       </g>
+       {comps.map((c, i) => (
+         <g>
+-          <text x="10" y={54 + i * 33} class="dv-rij">{c.n}</text>
+-          <rect x={CX0} y={42 + i * 33} width={CX1 - CX0} height="15" class="dv-spoor" />
+-          <rect x={CX0} y={42 + i * 33} width={Math.max(2, cx(c.v) - CX0)} height="15" class="dv-balk" />
+-          <text x={cx(c.v) + 7} y={54 + i * 33} class="dv-cijfer">{String(c.v).replace(".", ",")}</text>
++          <text x="0" y={TOP + 12 + i * RIJ} class="dv-rij">{c.n}</text>
++          <rect x={CX0} y={TOP + i * RIJ} width={CX1 - CX0} height="15" class="dv-spoor" />
++          <rect x={CX0} y={TOP + i * RIJ} width={Math.max(2, cx(c.v) - CX0)} height="15" class="dv-balk" />
++          <text x={Math.min(cx(c.v) + 7, CX1 - 22)} y={TOP + 12 + i * RIJ} class="dv-cijfer">{String(c.v).replace(".", ",")}</text>
+         </g>
+       ))}
+-      <line x1={cx(VEREIST)} y1="34" x2={cx(VEREIST)} y2="196" class="dv-merk" />
+-      <text x={cx(VEREIST)} y="26" class="dv-waarde" text-anchor="middle">vereist 3,5</text>
+-      {[1,2,3,4,5].map((v) => <text x={cx(v)} y="215" class="dv-tick" text-anchor="middle">{v}</text>)}
+-      <text x="10" y="237" class="dv-bij">Gemiddelde competentiescore op een vijfpuntsschaal</text>
++      <line x1={cx(VEREIST)} y1={TOP - 16} x2={cx(VEREIST)} y2={CB} class="dv-merk" />
++      <text x={cx(VEREIST)} y={TOP - 24} class="dv-waarde" text-anchor="middle">{String(VEREIST).replace(".", ",")}</text>
++      {[1,2,3,4,5].map((v) => <text x={cx(v)} y={CB + 19} class="dv-tick" text-anchor="middle">{v}</text>)}
++      {merk && <text x="558" y={TOP - 24} class="dv-merklabel" text-anchor="end">{merk}</text>}
+     </svg>
+   )}
+ 
+   {soort === "negenbox" && (
+-    <svg viewBox="0 0 500 250" role="img" aria-label="Negenbox met de verdeling van 71 medewerkers over prestatie en potentieel">
++    <svg viewBox="0 0 500 232" role="img" aria-label="Negenbox met de verdeling van 71 medewerkers over prestatie en potentieel">
+       <g class="dv-grid">
+         {[0,1,2,3].map((i) => <line x1={150 + i * 90} y1="20" x2={150 + i * 90} y2="200" />)}
+         {[0,1,2,3].map((i) => <line x1="150" y1={20 + i * 60} x2="420" y2={20 + i * 60} />)}
+@@ -93,12 +115,12 @@ const cellen = [[1,3],[2,9],[3,4],[4,7],[5,22],[6,11],[7,2],[8,8],[9,5]];
+       })}
+       <text x="285" y="222" class="dv-tick" text-anchor="middle">Prestatie, laag naar hoog</text>
+       <text x="140" y="112" class="dv-tick" text-anchor="end">Potentieel</text>
+-      <text x="150" y="243" class="dv-bij">71 medewerkers, indeling uit het laatste beoordelingsronde-overzicht</text>
++      
+     </svg>
+   )}
+ 
+   {soort === "matchscore" && (
+-    <svg viewBox="0 0 500 160" role="img" aria-label="Matchscore van 88 procent tussen kandidaat en functieprofiel">
++    <svg viewBox="0 0 500 130" role="img" aria-label="Matchscore van 88 procent tussen kandidaat en functieprofiel">
+       <text x="10" y="42" class="dv-groot">88%</text>
+       <text x="118" y="42" class="dv-rij">match met het functieprofiel</text>
+       <rect x="10" y="70" width="480" height="20" class="dv-spoor" />
+@@ -107,22 +129,24 @@ const cellen = [[1,3],[2,9],[3,4],[4,7],[5,22],[6,11],[7,2],[8,8],[9,5]];
+         <line x1={10 + p * 4.8} y1="70" x2={10 + p * 4.8} y2={p % 50 === 0 ? 100 : 95} class="dv-ijk" />
+       ))}
+       {[0,50,100].map((p) => <text x={10 + p * 4.8} y="118" class="dv-tick" text-anchor={p === 0 ? "start" : p === 100 ? "end" : "middle"}>{p}</text>)}
+-      <text x="10" y="144" class="dv-bij">Gewogen match op zeven competenties en twee capaciteitentests</text>
++      
+     </svg>
+   )}
++  {bijTxt && <p class="dv-bij-txt">{bijTxt}</p>}
+   {titel && <figcaption>{titel}</figcaption>}
+ </figure>
+ 
+ <style is:global>
+   .dv { margin: 0; width: 100%; }
+   .dv svg { width: 100%; height: auto; display: block; overflow: visible; }
++  .dv .dv-bij-txt { font-family: var(--font-mono); font-size: 11.5px; line-height: 1.5; margin: 12px 0 0; }
+   .dv figcaption { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; margin-top: 12px; }
+ 
+   .dv-licht { --dv-lijn: var(--navy); --dv-vlak: rgba(14,70,140,.10); --dv-spoor: var(--bg-soft);
+               --dv-ink: var(--text); --dv-zacht: var(--muted); --dv-raster: var(--line); --dv-merk: var(--accent); }
+   .dv-donker { --dv-lijn: #ffffff; --dv-vlak: rgba(255,255,255,.14); --dv-spoor: rgba(255,255,255,.14);
+                --dv-ink: #ffffff; --dv-zacht: #b9cbe3; --dv-raster: rgba(255,255,255,.18); --dv-merk: var(--gold); }
+-  .dv figcaption { color: var(--dv-zacht); }
++  .dv figcaption, .dv .dv-bij-txt { color: var(--dv-zacht); }
+ 
+   .dv-grid line { stroke: var(--dv-raster); stroke-width: 1; }
+   .dv-as { stroke: var(--dv-zacht) !important; stroke-width: 1.5 !important; }
+@@ -138,8 +162,9 @@ const cellen = [[1,3],[2,9],[3,4],[4,7],[5,22],[6,11],[7,2],[8,8],[9,5]];
+   .dv-celtxt { fill: var(--dv-ink); font-family: var(--font-mono); font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+   .dv-cel-top + text, .dv-celtxt.op-merk { fill: var(--dv-ink); }
+   .dv-tick, .dv-bij { fill: var(--dv-zacht); font-family: var(--font-mono); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+-  .dv-rij { fill: var(--dv-ink); font-family: var(--font-sans); font-size: 13px; }
++  .dv-rij { fill: var(--dv-ink); font-family: var(--font-sans); font-size: 12.5px; }
+   .dv-cijfer { fill: var(--dv-ink); font-family: var(--font-mono); font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
+   .dv-waarde { fill: var(--dv-merk); font-family: var(--font-mono); font-size: 11.5px; font-weight: 600; letter-spacing: .06em; }
++  .dv-merklabel { fill: var(--dv-zacht); font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+   .dv-groot { fill: var(--dv-ink); font-family: var(--font-display); font-size: 44px; font-weight: 700; font-variant-numeric: tabular-nums; }
+ </style>
+diff --git a/src/data/assessment-detail-ui.js b/src/data/assessment-detail-ui.js
+index 2d674af..a7c40d4 100644
+--- a/src/data/assessment-detail-ui.js
++++ b/src/data/assessment-detail-ui.js
+@@ -5,7 +5,7 @@ export const detailUi = {
+   nl: {
+     eyebrowAssessments: "Online assessments", crumbAssessments: "Online assessments",
+     phase: "Wanneer inzetten?", goal: "Doel",
+-    detailsSummary: "Toelichting en competentieniveaus", priceLabel: "Prijs per los assessment", visualCaption: "Zo ziet een uitkomst eruit: scores per competentie tegen het vereiste niveau", priceNote: "Per losse afname. Onbeperkte bulkafname met eigen licentie tot 70% goedkoper.",
++    detailsSummary: "Toelichting en competentieniveaus", priceLabel: "Prijs per los assessment", visualCaption: "Voorbeeldrapportage, niet de scores van een echte kandidaat", visualScale: "Score per dimensie op een vijfpuntsschaal, de stippellijn is het vereiste niveau", visualMark: "voorbeeld", visualNorm: "Percentielscore binnen de normgroep", priceNote: "Per losse afname. Onbeperkte bulkafname met eigen licentie tot 70% goedkoper.",
+     demo: "Plan een gratis demo", orderLoose: "Los bestellen", inShop: "Bekijk in de shop",
+     portalPre: "Structureel inzetten? Start met een ", portalLink: "eigen portal op licentiebasis",
+     portalPost: ", onbeperkt afnemen tegen een vaste jaarprijs.",
+@@ -29,7 +29,7 @@ export const detailUi = {
+   en: {
+     eyebrowAssessments: "Online assessments", crumbAssessments: "Online assessments",
+     phase: "When to use it?", goal: "Goal",
+-    detailsSummary: "Background and competency levels", priceLabel: "Price per single assessment", visualCaption: "What a result looks like: scores per competency against the required level", priceNote: "Per single assessment. Unlimited volume use with your own licence, up to 70% cheaper.",
++    detailsSummary: "Background and competency levels", priceLabel: "Price per single assessment", visualCaption: "Sample report, not the scores of a real candidate", visualScale: "Score per dimension on a five-point scale, the dotted line is the required level", visualMark: "example", visualNorm: "Percentile score within the norm group", priceNote: "Per single assessment. Unlimited volume use with your own licence, up to 70% cheaper.",
+     demo: "Book a free demo", orderLoose: "Order individually", inShop: "View in the shop",
+     portalPre: "Rolling it out structurally? Start with your ", portalLink: "own licensed portal",
+     portalPost: ", unlimited use for a fixed annual price.",
+@@ -53,7 +53,7 @@ export const detailUi = {
+   de: {
+     eyebrowAssessments: "Online assessments", crumbAssessments: "Online assessments",
+     phase: "Wann einsetzen?", goal: "Ziel",
+-    detailsSummary: "Hintergrund und Kompetenzstufen", priceLabel: "Preis pro Einzel-Assessment", visualCaption: "So sieht ein Ergebnis aus: Werte je Kompetenz gegenüber dem geforderten Niveau", priceNote: "Pro Einzel-Assessment. Unbegrenzte Nutzung mit eigener Lizenz, bis zu 70% günstiger.",
++    detailsSummary: "Hintergrund und Kompetenzstufen", priceLabel: "Preis pro Einzel-Assessment", visualCaption: "Beispielbericht, nicht die Werte einer echten Person", visualScale: "Wert je Dimension auf einer fünfstufigen Skala, die gestrichelte Linie ist das geforderte Niveau", visualMark: "beispiel", visualNorm: "Perzentilwert innerhalb der Normgruppe", priceNote: "Pro Einzel-Assessment. Unbegrenzte Nutzung mit eigener Lizenz, bis zu 70% günstiger.",
+     demo: "Kostenlose Demo buchen", orderLoose: "Einzeln bestellen", inShop: "Im Shop ansehen",
+     portalPre: "Strukturell einsetzen? Starten Sie mit einem ", portalLink: "eigenen Portal auf Lizenzbasis",
+     portalPost: ", unbegrenzte Nutzung zu einem festen Jahrespreis.",
+@@ -77,7 +77,7 @@ export const detailUi = {
+   fr: {
+     eyebrowAssessments: "Évaluations en ligne", crumbAssessments: "Évaluations en ligne",
+     phase: "Quand l'utiliser ?", goal: "Objectif",
+-    detailsSummary: "Explications et niveaux de compétence", priceLabel: "Prix par évaluation isolée", visualCaption: "À quoi ressemble un résultat : scores par compétence face au niveau requis", priceNote: "Par évaluation isolée. Usage illimité avec votre propre licence, jusqu’à 70% moins cher.",
++    detailsSummary: "Explications et niveaux de compétence", priceLabel: "Prix par évaluation isolée", visualCaption: "Rapport d’exemple, pas les scores d’un candidat réel", visualScale: "Score par dimension sur une échelle en cinq points, la ligne pointillée est le niveau requis", visualMark: "exemple", visualNorm: "Score centile dans le groupe de référence", priceNote: "Par évaluation isolée. Usage illimité avec votre propre licence, jusqu’à 70% moins cher.",
+     demo: "Réserver une démo gratuite", orderLoose: "Commander à l'unité", inShop: "Voir dans la boutique",
+     portalPre: "Un déploiement structurel ? Commencez avec votre ", portalLink: "propre portail sous licence",
+     portalPost: ", utilisation illimitée pour un prix annuel fixe.",
+@@ -101,7 +101,7 @@ export const detailUi = {
+   es: {
+     eyebrowAssessments: "Evaluaciones online", crumbAssessments: "Evaluaciones online",
+     phase: "¿Cuándo usarla?", goal: "Objetivo",
+-    detailsSummary: "Explicación y niveles de competencia", priceLabel: "Precio por evaluación individual", visualCaption: "Así se ve un resultado: puntuaciones por competencia frente al nivel requerido", priceNote: "Por evaluación individual. Uso ilimitado con licencia propia, hasta un 70% más barato.",
++    detailsSummary: "Explicación y niveles de competencia", priceLabel: "Precio por evaluación individual", visualCaption: "Informe de ejemplo, no las puntuaciones de un candidato real", visualScale: "Puntuación por dimensión en una escala de cinco puntos, la línea discontinua es el nivel requerido", visualMark: "ejemplo", visualNorm: "Percentil dentro del grupo normativo", priceNote: "Por evaluación individual. Uso ilimitado con licencia propia, hasta un 70% más barato.",
+     demo: "Reservar una demo gratis", orderLoose: "Pedir por unidad", inShop: "Ver en la tienda",
+     portalPre: "¿Implementación estructural? Empieza con tu ", portalLink: "propio portal con licencia",
+     portalPost: ", uso ilimitado por un precio anual fijo.",
+@@ -125,7 +125,7 @@ export const detailUi = {
+   ro: {
+     eyebrowAssessments: "Evaluări online", crumbAssessments: "Evaluări online",
+     phase: "Când o folosești?", goal: "Obiectiv",
+-    detailsSummary: "Explicații și niveluri de competență", priceLabel: "Preț per evaluare individuală", visualCaption: "Cum arată un rezultat: scoruri pe competență față de nivelul cerut", priceNote: "Per evaluare individuală. Utilizare nelimitată cu licență proprie, cu până la 70% mai ieftin.",
++    detailsSummary: "Explicații și niveluri de competență", priceLabel: "Preț per evaluare individuală", visualCaption: "Raport exemplu, nu scorurile unui candidat real", visualScale: "Scor pe dimensiune pe o scală în cinci trepte, linia punctată este nivelul cerut", visualMark: "exemplu", visualNorm: "Scor percentil în grupul normativ", priceNote: "Per evaluare individuală. Utilizare nelimitată cu licență proprie, cu până la 70% mai ieftin.",
+     demo: "Rezervă o demonstrație gratuită", orderLoose: "Comandă individual", inShop: "Vezi în magazin",
+     portalPre: "Implementare structurală? Începe cu ", portalLink: "propriul portal pe bază de licență",
+     portalPost: ", utilizare nelimitată la un preț anual fix.",
+diff --git a/src/pages/[lang]/assessments/[slug].astro b/src/pages/[lang]/assessments/[slug].astro
+index 34c53bf..b236700 100644
+--- a/src/pages/[lang]/assessments/[slug].astro
++++ b/src/pages/[lang]/assessments/[slug].astro
+@@ -104,6 +104,20 @@ const _faqLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntit
+ const _offerLd = (shop && shop.price)
+   ? { "@context": "https://schema.org", "@type": "Product", name: a.title, description: a.goal, brand: { "@type": "Brand", name: "hrmforce" }, ...(a.image ? { image: a.image } : {}), offers: { "@type": "Offer", price: String(shop.price), priceCurrency: "EUR", availability: "https://schema.org/InStock", url: _canon } }
+   : { "@context": "https://schema.org", "@type": "Service", name: a.title, description: a.goal, provider: { "@type": "Organization", name: "hrmforce" }, areaServed: "EU" };
++// Voorbeeldrapportage per assessment. De dimensies komen uit de test zelf, de
++// scores zijn afgeleid van de slug zodat elke test een eigen, vast beeld heeft.
++// Het is nadrukkelijk een voorbeeld, dat staat ook in het bijschrift.
++const _dvHash = (str) => {
++  let h = 2166136261;
++  for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
++  return ((h >>> 0) % 1000) / 1000;
++};
++const _dvDims = (a.traits && a.traits.length ? a.traits : []).slice(0, 6);
++const dvRijen = _dvDims.map((n) => ({ n, v: Math.round((2.4 + _dvHash(a.slug + "|" + n) * 2.2) * 10) / 10 }));
++const dvNorm = /capacit|cognit|abstract|numer|verbaal|redeneer|ability|iq|intelligen|aanleg/i
++  .test(`${a.slug} ${a.title} ${(a.traits || []).join(" ")}`);
++const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentieprofiel";
++
+ ---
+ <Base title={a.metaTitle} description={a.metaDescription} active="assessments">
+   <script type="application/ld+json" is:inline set:html={JSON.stringify(_offerLd)}></script>
+@@ -248,7 +262,13 @@ const _offerLd = (shop && shop.price)
+         <ul class="theory-refs">{theory.refs.map((r) => <li>{r}</li>)}</ul>
+         <p class="theory-note">{theory.note}</p>
+       </div>
+-      <Datavisual soort="competentieprofiel" titel={t.visualCaption} class="theory-visual" />
++      <Datavisual
++        soort={dvSoort}
++        rijen={dvRijen}
++        merk={t.visualMark}
++        bij={dvSoort === "normverdeling" ? `${t.visualNorm}, ${a.title}` : t.visualScale}
++        titel={t.visualCaption}
++        class="theory-visual" />
+     </div></section>
+   )}
+ 
+diff --git a/src/pages/assessments/[slug].astro b/src/pages/assessments/[slug].astro
+index a7e2ffe..5cae975 100644
+--- a/src/pages/assessments/[slug].astro
++++ b/src/pages/assessments/[slug].astro
+@@ -99,6 +99,20 @@ const kcRelated = (kcPosts || [])
+ const _offerLd = (shop && shop.price)
+   ? { "@context": "https://schema.org", "@type": "Product", name: a.title, description: a.goal, brand: { "@type": "Brand", name: "hrmforce" }, ...(a.image ? { image: a.image } : {}), offers: { "@type": "Offer", price: String(shop.price), priceCurrency: "EUR", availability: "https://schema.org/InStock", url: _canon } }
+   : { "@context": "https://schema.org", "@type": "Service", name: a.title, description: a.goal, provider: { "@type": "Organization", name: "hrmforce" }, areaServed: "EU" };
++// Voorbeeldrapportage per assessment. De dimensies komen uit de test zelf, de
++// scores zijn afgeleid van de slug zodat elke test een eigen, vast beeld heeft.
++// Het is nadrukkelijk een voorbeeld, dat staat ook in het bijschrift.
++const _dvHash = (str) => {
++  let h = 2166136261;
++  for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
++  return ((h >>> 0) % 1000) / 1000;
++};
++const _dvDims = (a.traits && a.traits.length ? a.traits : []).slice(0, 6);
++const dvRijen = _dvDims.map((n) => ({ n, v: Math.round((2.4 + _dvHash(a.slug + "|" + n) * 2.2) * 10) / 10 }));
++const dvNorm = /capacit|cognit|abstract|numer|verbaal|redeneer|ability|iq|intelligen|aanleg/i
++  .test(`${a.slug} ${a.title} ${(a.traits || []).join(" ")}`);
++const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentieprofiel";
++
+ ---
+ <Base title={a.metaTitle} description={a.metaDescription} active="assessments">
+   <script type="application/ld+json" is:inline set:html={JSON.stringify(_offerLd)}></script>
+@@ -226,7 +240,15 @@ const _offerLd = (shop && shop.price)
+         <ul class="theory-refs">{theory.refs.map((r) => <li>{r}</li>)}</ul>
+         <p class="theory-note">{theory.note}</p>
+       </div>
+-      <Datavisual soort="competentieprofiel" titel={"Zo ziet een uitkomst eruit: scores per competentie tegen het vereiste niveau"} class="theory-visual" />
++      <Datavisual
++        soort={dvSoort}
++        rijen={dvRijen}
++        merk="voorbeeld"
++        bij={dvSoort === "normverdeling"
++          ? `Percentielscore binnen de normgroep, ${a.title}`
++          : "Score per dimensie op een vijfpuntsschaal, de stippellijn is het vereiste niveau"}
++        titel="Voorbeeldrapportage, niet de scores van een echte kandidaat"
++        class="theory-visual" />
+     </div></section>
+   )}
+ 
+diff --git a/src/pages/over-ons.astro b/src/pages/over-ons.astro
+index 5f1fb80..ed6ed91 100644
+--- a/src/pages/over-ons.astro
++++ b/src/pages/over-ons.astro
+@@ -34,22 +34,6 @@ const domains = [
+     </div>
+   </section>
+ 
+-<section class="founder"><div class="wrap">
+-  <div class="founder-grid">
+-    <div class="founder-photo">
+-      <Img src="data:image/jpeg;base64,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" alt="Floor Hendriks, oprichter van hrmforce" loading="eager" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+-      <div class="founder-avatar" style="display:none">FH</div>
+-    </div>
+-    <div>
+-      <div class="eyebrow">Oprichter</div>
+-      <h2>Floor Hendriks</h2>
+-      <p>Floor heeft een royale ervaring in het adviseren en implementeren van (online) HR-instrumenten en diensten. Al meer dan twintig jaar specialiseert hij zich in het benutten van online assessments en tools voor talentmanagement-uitdagingen in de HR-cyclus, met als doel de prestaties van medewerkers en organisaties te verhogen.</p>
+-      <p class="founder-meta">Meer dan twintig jaar ervaring in talentmanagement en HR-assessments.</p>
+-      <p style="margin-top:10px">Floor werkt samen met een vast team van specialisten in psychologie, data en HR, zodat elke opdracht met kennis en aandacht wordt uitgevoerd.</p>
+-    </div>
+-  </div>
+-</div></section>
+-
+   <section>
+     <div class="wrap ov">
+       <h2 class="section-title">Over Hrmforce</h2>
+@@ -68,6 +52,27 @@ const domains = [
+         <div class="usp"><h3>Scherp geprijsd</h3><p>Een eigen portal op licentiebasis is fors voordeliger en uitgebreider dan losse tools.</p></div>
+       </div>
+ 
++    </div>
++  </section>
++
++<section class="founder"><div class="wrap">
++  <div class="founder-grid">
++    <div class="founder-photo">
++      <Img src="data:image/jpeg;base64,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" alt="Floor Hendriks, oprichter van hrmforce" loading="eager" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
++      <div class="founder-avatar" style="display:none">FH</div>
++    </div>
++    <div>
++      <div class="eyebrow">Oprichter</div>
++      <h2>Floor Hendriks</h2>
++      <p>Floor heeft een royale ervaring in het adviseren en implementeren van (online) HR-instrumenten en diensten. Al meer dan twintig jaar specialiseert hij zich in het benutten van online assessments en tools voor talentmanagement-uitdagingen in de HR-cyclus, met als doel de prestaties van medewerkers en organisaties te verhogen.</p>
++      <p class="founder-meta">Meer dan twintig jaar ervaring in talentmanagement en HR-assessments.</p>
++      <p style="margin-top:10px">Floor werkt samen met een vast team van specialisten in psychologie, data en HR, zodat elke opdracht met kennis en aandacht wordt uitgevoerd.</p>
++    </div>
++  </div>
++</div></section>
++
++  <section>
++    <div class="wrap ov">
+       <h2 class="section-title">Software leveren voor HRM</h2>
+       <p>We leveren <a href="/assessment-overzicht/">online assessments</a> en HRM-oplossingen, met een adviseur die meedenkt over de inzet en de uitkomsten.</p>
+ 
+@@ -105,6 +110,7 @@ const domains = [
+ <style>
+   .ov { max-width: 900px; }
+   .ov h2.section-title { color: var(--navy); margin-top: 40px; }
++  .ov h2.section-title:first-child { margin-top: 0; }
+   .ov p { color: var(--text); font-size: 17px; margin-bottom: 16px; }
+   .ov img { max-width: 100%; height: auto; border-radius: var(--radius); }
+   .ov a { color: var(--blue); font-weight: 600; }
+@@ -113,7 +119,7 @@ const domains = [
+   .step .num { width: 40px; height: 40px; border-radius:var(--radius-sm); background: var(--navy); color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+   .step h3 { color: var(--navy); font-size: 20px; margin-bottom: 6px; }
+   .step p { margin-bottom: 0; font-size: 16px; color: var(--muted); }
+-  .founder{ padding:56px 0; }
++  .founder{ padding:48px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+   .founder-grid{ display:grid; grid-template-columns:220px 1fr; gap:36px; align-items:center; }
+   .founder-photo img{ width:220px; height:264px; object-fit:cover; border-radius:var(--radius); display:block; box-shadow:var(--shadow-sm); }
+   .founder-avatar{ width:220px; height:264px; border-radius:var(--radius); background:var(--navy); color:#fff; font-size:66px; font-weight:800; align-items:center; justify-content:center; }
+diff --git a/src/styles/global.css b/src/styles/global.css
+index cefad4e..86d4f78 100644
+--- a/src/styles/global.css
++++ b/src/styles/global.css
+@@ -503,7 +503,7 @@ html{overflow-x:hidden;}
+ .theory-refs li{position:relative;padding-left:18px;color:var(--muted);font-size:14px;line-height:1.5}
+ .theory-refs li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+ .theory-note{color:var(--muted);font-size:13px;font-style:italic;margin:0;border-top:1px solid var(--line);padding-top:14px}
+-.theory-visual{max-width:560px;margin:26px 0 0}
++.theory-visual{max-width:620px;margin:26px 0 0}
+ /* Over ons: USP-grid (Batch 7) */
+ .usps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:8px 0 30px}
+ .usp{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
+-- 
+2.43.0
+

@@ -1,0 +1,92 @@
+From ecbc30e842a3456a5a3e68a4132dac20e9f74d0f Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Thu, 10 Sep 2026 18:57:48 +0000
+Subject: [PATCH] Ervaringsclaim naar 20 jaar en oprichter in de juiste vorm
+
+Over ons: "meer dan tien jaar" wordt "meer dan twintig jaar", op beide plekken.
+Daarmee staat er nergens op de site nog een oudere ervaringsclaim.
+
+Contactpagina en/de/fr/es/ro: de aanduiding oprichter stond in de vrouwelijke
+vorm (Gruenderin, fondatrice, fundadora, fondatoarea). Dat is nu de mannelijke
+vorm, in lijn met de tekst op Over ons.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ src/pages/de/contact.astro | 2 +-
+ src/pages/es/contact.astro | 2 +-
+ src/pages/fr/contact.astro | 2 +-
+ src/pages/over-ons.astro   | 4 ++--
+ src/pages/ro/contact.astro | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/src/pages/de/contact.astro b/src/pages/de/contact.astro
+index 761e89e..97e53c7 100644
+--- a/src/pages/de/contact.astro
++++ b/src/pages/de/contact.astro
+@@ -154,7 +154,7 @@ const offices = [
+             <a href="/de/datenshutzpagina/">Datenschutzerklärung</a> zu.
+           </p>
+         </form>
+-        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, Gründerin von hrmforce" width="72" height="72" loading="lazy" /><div><strong>Lieber persönlicher Kontakt?</strong><span>Wir helfen Ihnen gern weiter. Rufen Sie an oder mailen Sie, wir antworten schnell.</span><span class="person-name">Floor Hendriks &middot; Gründerin von hrmforce &middot; über 20 Jahre Erfahrung</span></div></div>
++        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, Gründer von hrmforce" width="72" height="72" loading="lazy" /><div><strong>Lieber persönlicher Kontakt?</strong><span>Wir helfen Ihnen gern weiter. Rufen Sie an oder mailen Sie, wir antworten schnell.</span><span class="person-name">Floor Hendriks &middot; Gründer von hrmforce &middot; über 20 Jahre Erfahrung</span></div></div>
+       </div>
+     </div>
+   </section>
+diff --git a/src/pages/es/contact.astro b/src/pages/es/contact.astro
+index 194fd9b..a6a4b5d 100644
+--- a/src/pages/es/contact.astro
++++ b/src/pages/es/contact.astro
+@@ -151,7 +151,7 @@ const offices = [
+           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
+           <button type="submit" class="btn btn-primary">Enviar</button>
+         </form>
+-        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, fundadora de hrmforce" width="72" height="72" loading="lazy" /><div><strong>¿Prefieres el contacto personal?</strong><span>Estaremos encantados de ayudarte. Llama o escríbenos, respondemos rápido.</span><span class="person-name">Floor Hendriks &middot; fundadora de hrmforce &middot; más de 20 años de experiencia</span></div></div>
++        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, fundador de hrmforce" width="72" height="72" loading="lazy" /><div><strong>¿Prefieres el contacto personal?</strong><span>Estaremos encantados de ayudarte. Llama o escríbenos, respondemos rápido.</span><span class="person-name">Floor Hendriks &middot; fundador de hrmforce &middot; más de 20 años de experiencia</span></div></div>
+       </div>
+     </div>
+   </section>
+diff --git a/src/pages/fr/contact.astro b/src/pages/fr/contact.astro
+index 6750903..f70f615 100644
+--- a/src/pages/fr/contact.astro
++++ b/src/pages/fr/contact.astro
+@@ -154,7 +154,7 @@ const offices = [
+             <a href="/fr/support/">declaration de confidentialite</a>.
+           </p>
+         </form>
+-        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, fondatrice de hrmforce" width="72" height="72" loading="lazy" /><div><strong>Vous preferez un contact personnel ?</strong><span>Nous vous aidons volontiers. Appelez ou ecrivez-nous, nous repondons vite.</span><span class="person-name">Floor Hendriks &middot; fondatrice de hrmforce &middot; plus de 20 ans d'expérience</span></div></div>
++        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, fondateur de hrmforce" width="72" height="72" loading="lazy" /><div><strong>Vous preferez un contact personnel ?</strong><span>Nous vous aidons volontiers. Appelez ou ecrivez-nous, nous repondons vite.</span><span class="person-name">Floor Hendriks &middot; fondateur de hrmforce &middot; plus de 20 ans d'expérience</span></div></div>
+       </div>
+     </div>
+   </section>
+diff --git a/src/pages/over-ons.astro b/src/pages/over-ons.astro
+index c56e07f..9c4ef55 100644
+--- a/src/pages/over-ons.astro
++++ b/src/pages/over-ons.astro
+@@ -43,8 +43,8 @@ const domains = [
+     <div>
+       <div class="eyebrow" style="color:var(--gold)">Oprichter</div>
+       <h2>Floor Hendriks</h2>
+-      <p>Floor heeft een royale ervaring in het adviseren en implementeren van (online) HR-instrumenten en diensten. Al meer dan tien jaar specialiseert hij zich in het benutten van online assessments en tools voor talentmanagement-uitdagingen in de HR-cyclus, met als doel de prestaties van medewerkers en organisaties te verhogen.</p>
+-      <p class="founder-meta">Meer dan tien jaar ervaring in talentmanagement en HR-assessments.</p>
++      <p>Floor heeft een royale ervaring in het adviseren en implementeren van (online) HR-instrumenten en diensten. Al meer dan twintig jaar specialiseert hij zich in het benutten van online assessments en tools voor talentmanagement-uitdagingen in de HR-cyclus, met als doel de prestaties van medewerkers en organisaties te verhogen.</p>
++      <p class="founder-meta">Meer dan twintig jaar ervaring in talentmanagement en HR-assessments.</p>
+       <p style="margin-top:10px">Floor werkt samen met een vast team van specialisten in psychologie, data en HR, zodat elke opdracht met kennis en aandacht wordt uitgevoerd.</p>
+     </div>
+   </div>
+diff --git a/src/pages/ro/contact.astro b/src/pages/ro/contact.astro
+index 2b834b6..ff88450 100644
+--- a/src/pages/ro/contact.astro
++++ b/src/pages/ro/contact.astro
+@@ -151,7 +151,7 @@ const offices = [
+           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
+           <button type="submit" class="btn btn-primary">Submit</button>
+         </form>
+-        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, fondatoarea hrmforce" width="72" height="72" loading="lazy" /><div><strong>Preferi contactul personal?</strong><span>Te ajutăm cu plăcere. Sună sau scrie-ne, răspundem rapid.</span><span class="person-name">Floor Hendriks &middot; fondatoarea hrmforce &middot; peste 20 de ani de experiență</span></div></div>
++        <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, fondatorul hrmforce" width="72" height="72" loading="lazy" /><div><strong>Preferi contactul personal?</strong><span>Te ajutăm cu plăcere. Sună sau scrie-ne, răspundem rapid.</span><span class="person-name">Floor Hendriks &middot; fondatorul hrmforce &middot; peste 20 de ani de experiență</span></div></div>
+       </div>
+     </div>
+   </section>
+-- 
+2.43.0
+

@@ -1,0 +1,12 @@
+---
+import Base from "../../layouts/Base.astro";
+import OnlineAssessments from "../../components/OnlineAssessments.astro";
+import { oaContent } from "../../data/online-assessments-content.js";
+import { perTaal } from "../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const c = oaContent[lang];
+---
+<Base title={c.meta.title} description={c.meta.description} active="assessments">
+  <OnlineAssessments c={c} lang={lang} />
+</Base>

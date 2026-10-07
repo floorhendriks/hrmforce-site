@@ -1,0 +1,101 @@
+From 2755072b181c5187d885c1653caf637f9b92192d Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Mon, 5 Oct 2026 09:54:41 +0000
+Subject: [PATCH] Oude assessment-adressen echt laten doorsturen, Lean Scan
+ beter benoemd
+
+De 301-regels voor de oude slugs stonden onderaan _redirects, waar
+Cloudflare ze niet meer toepast. Daardoor bleven die adressen als gewone
+pagina in de lucht met alleen een canonical en noindex, en bleven ze
+vertoningen verzamelen in plaats van hun waarde door te geven.
+/assessments/big-fifty/ had zo 19.294 vertoningen in drie maanden,
+/assessments/preselectie/disc-test/ 6.509 en
+/assessments/cognitieve-capaciteitentest/ 4.282. De zes regels staan nu in
+het prioriteitsblok bovenaan, waar we hebben gezien dat Cloudflare ze wel
+toepast.
+
+Daarnaast de titel en omschrijving van de Lean Scan, in het Nederlands en
+het Engels. De Engelse pagina staat op positie 8,4 met 9.741 vertoningen
+en 2 klikken. De titel opende met een verkoopvraag en bevatte de zoekterm
+niet. Nu staat de term er wel in, met wat de scan meet en hoe lang hij
+duurt.
+---
+ public/_redirects            | 17 +++++++++++------
+ src/data/assessments-i18n.js |  4 ++--
+ src/data/assessments.js      |  4 ++--
+ 3 files changed, 15 insertions(+), 10 deletions(-)
+
+diff --git a/public/_redirects b/public/_redirects
+index 96a2223..e6842c1 100644
+--- a/public/_redirects
++++ b/public/_redirects
+@@ -37,6 +37,17 @@
+ /ro/toepassingen/onderwijs/ /ro/sectoren/onderwijs/ 301
+ /ro/toepassingen/industrie/ /ro/sectoren/industrie/ 301
+ 
++# Oude assessment-slugs. Deze stonden onderaan het bestand, waar Cloudflare ze
++# niet meer toepaste. Daardoor bleven de oude adressen als gewone pagina in de
++# lucht: /assessments/big-fifty/ alleen al had 19.294 vertoningen in drie maanden
++# terwijl de waarde naar /assessments/big-five/ hoort te gaan.
++/assessments/big-fifty/ /assessments/big-five/ 301
++/assessments/cognitieve-capaciteitentest/ /assessments/cognitieve-test/ 301
++/assessments/preselectie/disc-test/ /assessments/disc-test/ 301
++/faq/big-fifty/ /assessments/big-five/ 301
++/en/assessments/big-fifty-personality-test/ /en/assessments/big-five/ 301
++/es/assessments/preseleccion/perfil-big-fifty/ /es/assessments/big-five/ 301
++
+ # Kennisartikelen die twee adressen hadden. Het tweede adres bevatte alleen
+ # het woord Verplaatst. Deze regels staan hier bovenaan, want onderaan het
+ # bestand paste Cloudflare ze niet toe en bleef de dubbele pagina in de lucht.
+@@ -193,18 +204,12 @@
+ /persoonlijkheid/ /kenniscentrum/ 301
+ /recruitment/ /hrm-oplossingen/ 301
+ /selectie/ /assessment-overzicht/ 301
+-/assessments/big-fifty/ /assessments/big-five/ 301
+-/assessments/cognitieve-capaciteitentest/ /assessments/cognitieve-test/ 301
+-/assessments/preselectie/disc-test/ /assessments/disc-test/ 301
+-/faq/big-fifty/ /assessments/big-five/ 301
+ /partner/flowpeople/ /partners/ 301
+ /ro/testen/ /ro/online-assessments/ 301
+ /shop/fase-hr-cyclus/ontwikkeling/lencioni-teamdynamiek/ /assessments/lencioni-teamdynamiek/ 301
+ /assessments/ /assessment-overzicht/ 301
+ /hrm-oplossingen/recruitment/ /hrm-oplossingen/matching/ 301
+-/en/assessments/big-fifty-personality-test/ /en/assessments/big-five/ 301
+ /de/assessments/entwicklung/persoenlichkeitstest-big-five/ /de/assessments/big-five/ 301
+-/es/assessments/preseleccion/perfil-big-fifty/ /es/assessments/big-five/ 301
+ /de/wissenszentrum/ /de/kenniscentrum/ 301
+ /mijn-account/ https://shop.hrmforce.com/shop/ 301
+ /de/einkaufswagen/ https://shop.hrmforce.com/shop/ 301
+diff --git a/src/data/assessments-i18n.js b/src/data/assessments-i18n.js
+index 801b45e..f1ebe42 100644
+--- a/src/data/assessments-i18n.js
++++ b/src/data/assessments-i18n.js
+@@ -372,8 +372,8 @@ export const assessmentsI18n = {
+     },
+     "lean-scan": {
+       title: "Lean Scan",
+-      metaTitle: "Take a Lean Scan? | Lean Method | Discover Hrmforce",
+-      metaDescription: "With the Lean Scan, companies gain insight into the gap between the current and ideal situation to demonstrate the need for Lean management.",
++      metaTitle: "Lean management scan: measure the gap in 10 minutes | Hrmforce",
++      metaDescription: "A lean management scan shows where the current way of working differs from the ideal situation. Scores on four factors, per team, department or whole organisation. Ten minutes per respondent.",
+       phase: "Development → performance → appraisal",
+       goal: "Gaining insight into the gap between the current and ideal situation to demonstrate the need for Lean management.",
+       time: "10 minutes", form: "Multiple choice on a 5-point scale.",
+diff --git a/src/data/assessments.js b/src/data/assessments.js
+index cdc2674..397eda5 100644
+--- a/src/data/assessments.js
++++ b/src/data/assessments.js
+@@ -467,8 +467,8 @@ export const assessments = [
+     image: "/media/stock/pexels-3184465.webp",
+     dimImage: "/media/stock/pexels-590022.webp",
+     slug: "lean-scan", title: "Lean Scan",
+-    metaTitle: "Lean Scan doen? | Lean Methode | Ontdek Hrmforce",
+-    metaDescription: "Met de Lean Scan verkrijgen bedrijven inzicht in de gap tussen huidige en ideale situatie om zo behoefte en noodzaak van Lean management aan te tonen.",
++    metaTitle: "Lean management scan: meet het verschil in 10 minuten | Hrmforce",
++    metaDescription: "Een lean management scan laat zien waar de huidige werkwijze afwijkt van de ideale situatie. Scores op vier factoren, per team, afdeling of hele organisatie. Tien minuten per invuller.",
+     phase: "Ontwikkeling → functioneren → beoordelen",
+     goal: "Inzicht verkrijgen in de gap tussen de huidige en de ideale situatie om de behoefte en noodzaak van Lean management aan te tonen.",
+     benefit: "Maak de kloof tussen huidige en ideale situatie zichtbaar, zodat je de noodzaak en richting van Lean onderbouwt.",
+-- 
+2.43.0
+

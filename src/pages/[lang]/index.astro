@@ -1,0 +1,12 @@
+---
+import Base from "../../layouts/Base.astro";
+import Home from "../../components/Home.astro";
+import { homepageContent } from "../../data/homepage-content.js";
+import { perTaal } from "../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const c = homepageContent[lang];
+---
+<Base title={c.meta.title} description={c.meta.description} active="">
+  <Home c={c} lang={lang} />
+</Base>

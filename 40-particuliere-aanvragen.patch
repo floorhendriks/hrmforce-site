@@ -1,0 +1,837 @@
+From 9545fa3902f1b840bd8bb092941be01d02f77136 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 26 Sep 2026 05:43:37 +0000
+Subject: [PATCH] Particuliere aanvragen krijgen automatisch de weg naar de
+ webshop
+
+Op het demoformulier en de zes contactformulieren staat nu de vraag of
+iemand voor een team of organisatie aanvraagt, of voor zichzelf. De keuze
+staat standaard op zakelijk.
+
+Elke aanvraag gaat volledig naar service@hrmforce.com met
+f.hendriks@hrmforce.com in cc, met de ingevulde velden en de gemaakte
+keuze. Er gaat dus niets verloren, ook niet als een bedrijf zich per
+ongeluk als particulier aanmeldt.
+
+Wie particulier aanvinkt, krijgt daarnaast meteen een mail met de
+webshop, de gratis kleurentest en de online oefenvragen, in de taal van
+de pagina. Die mail sluit af met de uitnodiging om te reageren of te
+bellen als het toch om een team of organisatie gaat, zodat een verkeerd
+vinkje geen aanvraag kost.
+
+De vijf vertaalde contactformulieren stuurden tot nu toe een mailto; die
+komen nu net als het Nederlandse formulier binnen op de server.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ functions/api/aanvraag.js          |  97 ++++++++++++++++++
+ src/components/AanvraagSoort.astro |  32 ++++++
+ src/data/aanvraag-tekst.js         | 158 +++++++++++++++++++++++++++++
+ src/pages/contact.astro            |  44 ++++----
+ src/pages/de/contact.astro         |  30 +++++-
+ src/pages/demo.astro               |  48 ++++++++-
+ src/pages/en/contact.astro         |  30 +++++-
+ src/pages/es/contact.astro         |  30 +++++-
+ src/pages/fr/contact.astro         |  30 +++++-
+ src/pages/ro/contact.astro         |  30 +++++-
+ 10 files changed, 481 insertions(+), 48 deletions(-)
+ create mode 100644 functions/api/aanvraag.js
+ create mode 100644 src/components/AanvraagSoort.astro
+ create mode 100644 src/data/aanvraag-tekst.js
+
+diff --git a/functions/api/aanvraag.js b/functions/api/aanvraag.js
+new file mode 100644
+index 0000000..e19c4e3
+--- /dev/null
++++ b/functions/api/aanvraag.js
+@@ -0,0 +1,97 @@
++// Aanvragen vanaf het demo- en het contactformulier. Elke aanvraag gaat
++// volledig naar service@hrmforce.com met f.hendriks@hrmforce.com in cc, dus er
++// gaat niets verloren. Wie aangeeft als particulier aan te vragen, krijgt
++// daarnaast automatisch de doorverwijzing naar de webshop, in de taal van de
++// pagina waarop is aangevraagd.
++import { sendMail } from "../_lib/mail.js";
++import { PARTICULIER_MAIL } from "../../src/data/aanvraag-tekst.js";
++
++const TALEN = ["nl", "en", "de", "fr", "es", "ro"];
++const schoon = (s, max) => String(s == null ? "" : s).replace(/[\r\n\t]+/g, " ").trim().slice(0, max);
++const mailOk = (s) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s);
++
++// De formulieren gebruiken per taal andere veldnamen; hier lopen ze samen.
++const EERSTE = (b, namen, max = 120) => {
++  for (const n of namen) if (b[n] != null && String(b[n]).trim()) return schoon(b[n], max);
++  return "";
++};
++
++export async function onRequestPost({ request, env }) {
++  let body = {};
++  const type = request.headers.get("content-type") || "";
++  try {
++    if (type.includes("application/json")) body = await request.json();
++    else { const f = await request.formData(); f.forEach((v, k) => { body[k] = v; }); }
++  } catch { return json({ error: "bad_body" }, 400); }
++
++  const naam = [EERSTE(body, ["naam", "voornaam", "firstname", "nombre", "prenume", "vorname"], 80),
++    EERSTE(body, ["achternaam", "surname", "apellido", "nume"], 80)].filter(Boolean).join(" ").trim();
++  const email = EERSTE(body, ["email", "e-mail", "correo"], 160);
++  const bedrijf = EERSTE(body, ["bedrijf", "company", "organisatie", "empresa", "firma", "entreprise", "companie"], 120);
++  const telefoon = EERSTE(body, ["telefoon", "phone", "tel", "telefono", "telefon"], 40);
++  const bericht = EERSTE(body, ["bericht", "message", "vraag", "mensaje", "nachricht", "mesaj"], 2000);
++  const onderwerp = EERSTE(body, ["onderwerp", "subject", "asunto", "betreff", "sujet", "subiect"], 140);
++  const bron = schoon(body.bron, 60) || "formulier";
++  const soort = schoon(body.soort, 20).toLowerCase() === "particulier" ? "particulier" : "zakelijk";
++  let taal = schoon(body.taal, 5).toLowerCase();
++  if (!TALEN.includes(taal)) taal = "nl";
++
++  if (!mailOk(email)) return json({ error: "invalid_email" }, 400);
++
++  const naarIntern = (env && env.REQUEST_EMAIL_TO) || "service@hrmforce.com";
++  const ccIntern = (env && env.REQUEST_EMAIL_CC) || "f.hendriks@hrmforce.com";
++  const van = (env && env.REQUEST_EMAIL_FROM) || "service@hrmforce.com";
++
++  const regels = [
++    `Soort:      ${soort}`,
++    `Naam:       ${naam || "-"}`,
++    `E-mail:     ${email}`,
++    `Organisatie:${bedrijf ? " " + bedrijf : " -"}`,
++    `Telefoon:   ${telefoon || "-"}`,
++    `Taal:       ${taal}`,
++    `Formulier:  ${bron}`,
++    onderwerp ? `Onderwerp:  ${onderwerp}` : "",
++    "",
++    "Bericht:",
++    bericht || "-",
++  ].filter((r) => r !== "");
++
++  const kop = soort === "particulier"
++    ? "Particuliere aanvraag, doorverwijzing is automatisch verstuurd."
++    : "Zakelijke aanvraag.";
++
++  let intern = false, naarAanvrager = false;
++  try {
++    await sendMail(env, {
++      from: van,
++      to: [naarIntern],
++      cc: [ccIntern],
++      subject: `Aanvraag ${soort} via ${bron}${naam ? " - " + naam : ""}`,
++      text: `${kop}\n\n${regels.join("\n")}\n`,
++    });
++    intern = true;
++  } catch { /* de aanvrager krijgt zijn mail hoe dan ook nog */ }
++
++  if (soort === "particulier") {
++    const m = (PARTICULIER_MAIL[taal] || PARTICULIER_MAIL.nl)(naam);
++    try {
++      await sendMail(env, {
++        from: van,
++        to: [email],
++        cc: [ccIntern],
++        subject: m.onderwerp,
++        text: m.tekst,
++      });
++      naarAanvrager = true;
++    } catch { /* stil; de aanvraag zelf is al binnen */ }
++  }
++
++  if (!intern && !naarAanvrager) return json({ ok: false, error: "mail_failed" }, 202);
++  return json({ ok: true, soort, doorverwezen: naarAanvrager });
++}
++
++function json(data, status = 200) {
++  return new Response(JSON.stringify(data), {
++    status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
++  });
++}
+diff --git a/src/components/AanvraagSoort.astro b/src/components/AanvraagSoort.astro
+new file mode 100644
+index 0000000..8d2c0de
+--- /dev/null
++++ b/src/components/AanvraagSoort.astro
+@@ -0,0 +1,32 @@
++---
++/* Vraagt of de aanvraag zakelijk of particulier is. Een particuliere aanvraag
++   krijgt automatisch de doorverwijzing naar de webshop; zakelijk loopt zoals
++   altijd. De keuze staat standaard op zakelijk, zodat niemand hem per ongeluk
++   leeg laat. */
++import { SOORT_UI } from "../data/aanvraag-tekst.js";
++const { lang = "nl", bron = "" } = Astro.props;
++const u = SOORT_UI[lang] || SOORT_UI.nl;
++---
++<input type="hidden" name="taal" value={lang} />
++<input type="hidden" name="bron" value={bron} />
++<fieldset class="as-veld">
++  <legend>{u.vraag}</legend>
++  <label class="as-optie">
++    <input type="radio" name="soort" value="zakelijk" checked />
++    <span>{u.zakelijk}</span>
++  </label>
++  <label class="as-optie">
++    <input type="radio" name="soort" value="particulier" />
++    <span>{u.particulier}</span>
++  </label>
++</fieldset>
++
++<style is:global>
++  .as-veld { border: 0; margin: 0 0 14px; padding: 0; }
++  .as-veld legend { display: block; color: var(--navy); font-weight: 600; font-size: 13px; margin: 0 0 7px; padding: 0; float: none; width: auto; }
++  .as-veld .as-optie { display: flex; align-items: center; gap: 9px; padding: 9px 12px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); margin: 0 0 7px; cursor: pointer; font-size: 14.5px; font-weight: 400; line-height: 1.35; background: #fff; color: var(--text); }
++  .as-veld .as-optie:hover { border-color: var(--blue); }
++  .as-veld .as-optie input[type="radio"] { width: 16px; height: 16px; min-width: 16px; margin: 0; flex: none; accent-color: var(--navy); }
++  .as-veld .as-optie span { display: inline; margin: 0; }
++  .as-veld .as-optie:has(input:checked) { border-color: var(--navy); background: #eef3fa; color: var(--navy); font-weight: 600; }
++</style>
+diff --git a/src/data/aanvraag-tekst.js b/src/data/aanvraag-tekst.js
+new file mode 100644
+index 0000000..f67e2d0
+--- /dev/null
++++ b/src/data/aanvraag-tekst.js
+@@ -0,0 +1,158 @@
++// Teksten rond de vraag of iemand zakelijk of als particulier aanvraagt, en de
++// mail die een particulier automatisch terugkrijgt. In zes talen.
++export const SOORT_UI = {
++  nl: { vraag: "Je vraagt aan", zakelijk: "Voor een team of organisatie", particulier: "Voor mezelf, als particulier" },
++  en: { vraag: "You are asking", zakelijk: "For a team or organisation", particulier: "For myself, as an individual" },
++  de: { vraag: "Sie fragen an", zakelijk: "Für ein Team oder eine Organisation", particulier: "Für mich selbst, als Privatperson" },
++  fr: { vraag: "Votre demande concerne", zakelijk: "Une équipe ou une organisation", particulier: "Moi-même, à titre personnel" },
++  es: { vraag: "Tu solicitud es", zakelijk: "Para un equipo u organización", particulier: "Para mí, como particular" },
++  ro: { vraag: "Soliciți", zakelijk: "Pentru o echipă sau o organizație", particulier: "Pentru mine, ca persoană fizică" },
++};
++
++const L = {
++  shop: (t) => (t === "nl" ? "https://hrmforce.com/shop/" : `https://hrmforce.com/${t}/shop/`),
++  kleuren: "https://hrmforce.com/gratis-kleurentest/",
++  oefen: (t) => (t === "nl" ? "https://hrmforce.com/oefentest/" : `https://hrmforce.com/${t}/oefentest/`),
++};
++
++// De mail die een particuliere aanvrager automatisch terugkrijgt.
++export const PARTICULIER_MAIL = {
++  nl: (naam) => ({
++    onderwerp: "Je aanvraag bij hrmforce",
++    tekst: [
++      naam ? `Beste ${naam},` : "Beste,",
++      "",
++      "Bedankt voor je aanvraag via hrmforce.com.",
++      "",
++      "Je gaf aan dat je een test voor jezelf wilt maken. Losse tests bestel je rechtstreeks in onze webshop. Je ontvangt de vragenlijst per e-mail en je rapport zodra je klaar bent.",
++      L.shop("nl"),
++      "",
++      "Wil je eerst kosteloos kennismaken? Doe dan de gratis kleurentest:",
++      L.kleuren,
++      "",
++      "Oefenen kan ook. Op deze pagina staan oefenvragen per onderdeel, met na afloop het juiste antwoord en een toelichting:",
++      L.oefen("nl"),
++      "",
++      "Gaat je aanvraag toch over een team of een organisatie? Reageer dan op deze mail of bel Floor Hendriks op 06 18099421. We kijken dan samen wat past.",
++      "",
++      "Met vriendelijke groet,",
++      "hrmforce",
++      "service@hrmforce.com · hrmforce.com",
++    ].join("\n"),
++  }),
++  en: (naam) => ({
++    onderwerp: "Your request at hrmforce",
++    tekst: [
++      naam ? `Dear ${naam},` : "Hello,",
++      "",
++      "Thank you for your request via hrmforce.com.",
++      "",
++      "You indicated that you want to take a test for yourself. You can order single tests straight from our webshop. You receive the questionnaire by email and your report as soon as you finish.",
++      L.shop("en"),
++      "",
++      "Would you like a free introduction first? Take the free colour test:",
++      L.kleuren,
++      "",
++      "You can also practise. This page has practice questions per component, with the correct answer and an explanation afterwards:",
++      L.oefen("en"),
++      "",
++      "Is your request about a team or an organisation after all? Reply to this email or call Floor Hendriks on +31 6 18099421. We will look at what fits together.",
++      "",
++      "Kind regards,",
++      "hrmforce",
++      "service@hrmforce.com · hrmforce.com",
++    ].join("\n"),
++  }),
++  de: (naam) => ({
++    onderwerp: "Ihre Anfrage bei hrmforce",
++    tekst: [
++      naam ? `Guten Tag ${naam},` : "Guten Tag,",
++      "",
++      "Vielen Dank für Ihre Anfrage über hrmforce.com.",
++      "",
++      "Sie haben angegeben, dass Sie einen Test für sich selbst machen möchten. Einzelne Tests bestellen Sie direkt in unserem Webshop. Den Fragebogen erhalten Sie per E-Mail, Ihren Bericht sobald Sie fertig sind.",
++      L.shop("de"),
++      "",
++      "Möchten Sie uns erst kostenlos kennenlernen? Machen Sie den kostenlosen Farbtest:",
++      L.kleuren,
++      "",
++      "Üben ist auch möglich. Auf dieser Seite stehen Übungsfragen je Teil, danach jeweils die richtige Antwort und eine Erläuterung:",
++      L.oefen("de"),
++      "",
++      "Geht es bei Ihrer Anfrage doch um ein Team oder eine Organisation? Antworten Sie auf diese E-Mail oder rufen Sie Floor Hendriks an unter +31 6 18099421. Wir schauen dann gemeinsam, was passt.",
++      "",
++      "Mit freundlichen Grüßen,",
++      "hrmforce",
++      "service@hrmforce.com · hrmforce.com",
++    ].join("\n"),
++  }),
++  fr: (naam) => ({
++    onderwerp: "Votre demande chez hrmforce",
++    tekst: [
++      naam ? `Bonjour ${naam},` : "Bonjour,",
++      "",
++      "Merci pour votre demande via hrmforce.com.",
++      "",
++      "Vous avez indiqué vouloir passer un test pour vous-même. Les tests à l'unité se commandent directement dans notre boutique. Vous recevez le questionnaire par e-mail et votre rapport dès que vous avez terminé.",
++      L.shop("fr"),
++      "",
++      "Vous préférez faire connaissance sans frais ? Passez le test des couleurs gratuit :",
++      L.kleuren,
++      "",
++      "Vous pouvez aussi vous entraîner. Cette page propose des questions d'entraînement par composante, avec la bonne réponse et une explication à la fin :",
++      L.oefen("fr"),
++      "",
++      "Votre demande concerne finalement une équipe ou une organisation ? Répondez à cet e-mail ou appelez Floor Hendriks au +31 6 18099421. Nous verrons ensemble ce qui convient.",
++      "",
++      "Cordialement,",
++      "hrmforce",
++      "service@hrmforce.com · hrmforce.com",
++    ].join("\n"),
++  }),
++  es: (naam) => ({
++    onderwerp: "Tu solicitud en hrmforce",
++    tekst: [
++      naam ? `Hola ${naam}:` : "Hola:",
++      "",
++      "Gracias por tu solicitud a través de hrmforce.com.",
++      "",
++      "Nos indicaste que quieres hacer un test para ti. Los tests sueltos se compran directamente en nuestra tienda. Recibes el cuestionario por correo y tu informe en cuanto termines.",
++      L.shop("es"),
++      "",
++      "¿Prefieres conocernos primero sin coste? Haz el test de colores gratuito:",
++      L.kleuren,
++      "",
++      "También puedes practicar. En esta página hay preguntas de práctica por parte, con la respuesta correcta y una explicación al final:",
++      L.oefen("es"),
++      "",
++      "¿Tu solicitud es en realidad para un equipo o una organización? Responde a este correo o llama a Floor Hendriks al +31 6 18099421. Miramos juntos qué encaja.",
++      "",
++      "Un saludo,",
++      "hrmforce",
++      "service@hrmforce.com · hrmforce.com",
++    ].join("\n"),
++  }),
++  ro: (naam) => ({
++    onderwerp: "Solicitarea ta la hrmforce",
++    tekst: [
++      naam ? `Bună ${naam},` : "Bună,",
++      "",
++      "Mulțumim pentru solicitarea trimisă prin hrmforce.com.",
++      "",
++      "Ai indicat că vrei să dai un test pentru tine. Testele individuale se comandă direct din magazinul nostru. Primești chestionarul pe e-mail, iar raportul imediat ce termini.",
++      L.shop("ro"),
++      "",
++      "Vrei mai întâi o cunoaștere gratuită? Fă testul culorilor, fără costuri:",
++      L.kleuren,
++      "",
++      "Poți și să exersezi. Pe această pagină găsești întrebări de exersare pe fiecare parte, iar la final răspunsul corect și o explicație:",
++      L.oefen("ro"),
++      "",
++      "Solicitarea ta este totuși pentru o echipă sau o organizație? Răspunde la acest e-mail sau sună-l pe Floor Hendriks la +31 6 18099421. Vedem împreună ce se potrivește.",
++      "",
++      "Cu stimă,",
++      "hrmforce",
++      "service@hrmforce.com · hrmforce.com",
++    ].join("\n"),
++  }),
++};
+diff --git a/src/pages/contact.astro b/src/pages/contact.astro
+index 5e560ee..8914d52 100644
+--- a/src/pages/contact.astro
++++ b/src/pages/contact.astro
+@@ -50,6 +50,7 @@ const offices = [
+     mail: "atencioncliente@hrmforce.com",
+   },
+ ];
++import AanvraagSoort from "../components/AanvraagSoort.astro";
+ ---
+ <Base
+   title="Contact opnemen | Hrmforce.com"
+@@ -101,10 +102,8 @@ const offices = [
+         <form
+           id="contactForm"
+           class="formcard"
+-          action={formAction}
++          action="/api/aanvraag"
+           method="POST"
+-          enctype={useFormspree ? "application/x-www-form-urlencoded" : "text/plain"}
+-          data-formspree={useFormspree ? "1" : "0"}
+           novalidate
+         >
+           <div class="fg">
+@@ -130,6 +129,7 @@ const offices = [
+             <textarea id="bericht" name="bericht" rows="5" required></textarea>
+           </div>
+           <div class="next-steps"><strong>Wat gebeurt er daarna?</strong><ol><li>We reageren binnen 1 werkdag.</li><li>Een korte kennismaking, afgestemd op jouw vraag.</li><li>Een demo op maat, vrijblijvend.</li></ol><div class="ns-proof"><span class="ns-stars"><Sterren /></span> 10.000+ deelnemers · 1.200+ organisaties · 4,9/5</div></div>
++          <AanvraagSoort lang="nl" bron="contact" />
+           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
+           <button type="submit" class="btn btn-primary">Verstuur</button>
+           <p class="privacy-note">
+@@ -320,38 +320,28 @@ const offices = [
+           (missing[0] || email).focus();
+           return;
+         }
+-        if (!useFormspree) {
+-          // Geen Formspree geconfigureerd: val terug op mailto (standaardgedrag).
+-          msg.className = "form-msg success";
+-          msg.textContent = "Bedankt! Je bericht wordt geopend in je e-mailprogramma. Wij nemen zo snel mogelijk contact met je op.";
+-          return;
+-        }
+-        // Formspree: async verzenden zonder de pagina te verlaten.
+         e.preventDefault();
+-        var btn = form.querySelector("button[type=submit]");
+-        if (btn) { btn.disabled = true; btn.textContent = "Verzenden…"; }
+-        msg.className = "form-msg";
+-        msg.textContent = "";
+-        fetch(form.action, {
+-          method: "POST",
+-          body: new FormData(form),
+-          headers: { Accept: "application/json" },
+-        })
+-          .then(function (r) {
+-            if (r.ok) {
++        var knop = form.querySelector("button[type=submit]");
++        var oud = knop ? knop.textContent : "";
++        if (knop) { knop.disabled = true; knop.textContent = "Verzenden…"; }
++        msg.className = "form-msg"; msg.textContent = "";
++        fetch("/api/aanvraag", { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
++          .then(function (r) { return r.json().catch(function () { return {}; }); })
++          .then(function (uit) {
++            if (knop) { knop.disabled = false; knop.textContent = oud; }
++            if (uit && uit.ok) {
+               form.reset();
+               msg.className = "form-msg success";
+-              msg.textContent = "Bedankt voor je bericht! We nemen zo snel mogelijk contact met je op.";
++              msg.textContent = uit.doorverwezen ? "Bedankt. We hebben je een mail gestuurd met de mogelijkheden voor particulieren." : "Bedankt voor je bericht. We nemen zo snel mogelijk contact met je op.";
+             } else {
+-              throw new Error("Formspree error");
++              msg.className = "form-msg error";
++              msg.textContent = "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.";
+             }
+           })
+           .catch(function () {
++            if (knop) { knop.disabled = false; knop.textContent = oud; }
+             msg.className = "form-msg error";
+-            msg.textContent = "Er ging iets mis bij het verzenden. Mail ons gerust direct op service@hrmforce.com.";
+-          })
+-          .finally(function () {
+-            if (btn) { btn.disabled = false; btn.textContent = "Verstuur"; }
++            msg.textContent = "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.";
+           });
+       });
+     })();
+diff --git a/src/pages/de/contact.astro b/src/pages/de/contact.astro
+index 366a082..eab818c 100644
+--- a/src/pages/de/contact.astro
++++ b/src/pages/de/contact.astro
+@@ -55,6 +55,7 @@ const offices = [
+     mail: "atencioncliente@hrmforce.com",
+   },
+ ];
++import AanvraagSoort from "../../components/AanvraagSoort.astro";
+ ---
+ <Base
+   title="Kontakt - hrmforce"
+@@ -120,9 +121,8 @@ const offices = [
+         <form
+           id="contactForm"
+           class="formcard"
+-          action="mailto:service@hrmforce.com"
++          action="/api/aanvraag"
+           method="POST"
+-          enctype="text/plain"
+           novalidate
+         >
+           <div class="fg">
+@@ -148,6 +148,7 @@ const offices = [
+             <textarea id="bericht" name="bericht" rows="5" required></textarea>
+           </div>
+           <div class="next-steps"><strong>Wie geht es weiter?</strong><ol><li>Wir antworten innerhalb von 1 Werktag.</li><li>Ein kurzes Kennenlernen, auf Ihre Frage abgestimmt.</li><li>Eine individuelle Demo, unverbindlich.</li></ol><div class="ns-proof"><span class="ns-stars"><Sterren /></span> 10.000+ Teilnehmende · 1.200+ Organisationen · 4,9/5</div></div>
++          <AanvraagSoort lang="de" bron="contact" />
+           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
+           <button type="submit" class="btn btn-primary">Senden</button>
+           <p class="privacy-note">
+@@ -327,8 +328,29 @@ const offices = [
+           (missing[0] || email).focus();
+           return;
+         }
+-        msg.className = "form-msg success";
+-        msg.textContent = "Vielen Dank! Ihre Nachricht wird in Ihrem E-Mail-Programm geöffnet. Wir melden uns so schnell wie möglich bei Ihnen.";
++        e.preventDefault();
++        var knop = form.querySelector("button[type=submit]");
++        var oud = knop ? knop.textContent : "";
++        if (knop) { knop.disabled = true; knop.textContent = "Wird gesendet…"; }
++        msg.className = "form-msg"; msg.textContent = "";
++        fetch("/api/aanvraag", { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
++          .then(function (r) { return r.json().catch(function () { return {}; }); })
++          .then(function (uit) {
++            if (knop) { knop.disabled = false; knop.textContent = oud; }
++            if (uit && uit.ok) {
++              form.reset();
++              msg.className = "form-msg success";
++              msg.textContent = uit.doorverwezen ? "Danke. Wir haben Ihnen die Möglichkeiten für Privatpersonen per E-Mail geschickt." : "Danke für Ihre Nachricht. Wir melden uns so schnell wie möglich.";
++            } else {
++              msg.className = "form-msg error";
++              msg.textContent = "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.";
++            }
++          })
++          .catch(function () {
++            if (knop) { knop.disabled = false; knop.textContent = oud; }
++            msg.className = "form-msg error";
++            msg.textContent = "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.";
++          });
+       });
+     })();
+   </script>
+diff --git a/src/pages/demo.astro b/src/pages/demo.astro
+index a391ddd..cffe8b2 100644
+--- a/src/pages/demo.astro
++++ b/src/pages/demo.astro
+@@ -2,6 +2,7 @@
+ import Sterren from "../components/Sterren.astro";
+ import Base from "../layouts/Base.astro";
+ import { FORMSPREE_ENDPOINT, CONTACT_EMAIL, REVIEWS_EXTERNAL } from "../data/site-config.js";
++import AanvraagSoort from "../components/AanvraagSoort.astro";
+ 
+ // Conversiegerichte aanvraagpagina: zo weinig drempels mogelijk. Eén formulier,
+ // drie velden, één keer sociale bewijskracht. Geen navigatie-omleidingen, geen FAQ.
+@@ -37,7 +38,7 @@ const googleUrl = REVIEWS_EXTERNAL?.google || "";
+       <div class="dm-card">
+         <h2>Vraag je demo aan</h2>
+         <p class="dm-sub">Drie velden, dat is alles. We reageren binnen 24 uur op werkdagen.</p>
+-        <form class="dm-form" action={formAction} method="POST" enctype={FORMSPREE_ENDPOINT ? "application/x-www-form-urlencoded" : "text/plain"}>
++        <form class="dm-form" id="demoForm" action="/api/aanvraag" method="POST">
+           <input type="hidden" name="onderwerp" value="Demo-aanvraag via /demo/" />
+           <label for="dm-naam">Naam</label>
+           <input id="dm-naam" type="text" name="naam" required autocomplete="name" placeholder="Voor- en achternaam" />
+@@ -45,6 +46,7 @@ const googleUrl = REVIEWS_EXTERNAL?.google || "";
+           <input id="dm-mail" type="email" name="email" required autocomplete="email" placeholder="jouw@werkmail.nl" />
+           <label for="dm-org">Organisatie</label>
+           <input id="dm-org" type="text" name="bedrijf" required autocomplete="organization" placeholder="Naam van je organisatie" />
++          <AanvraagSoort lang="nl" bron="demo" />
+           <details class="dm-more">
+             <summary>Liever gebeld worden of iets toevoegen?</summary>
+             <label for="dm-tel">Telefoonnummer (optioneel)</label>
+@@ -52,6 +54,7 @@ const googleUrl = REVIEWS_EXTERNAL?.google || "";
+             <label for="dm-vraag">Je vraag (optioneel)</label>
+             <textarea id="dm-vraag" name="bericht" rows="3" placeholder="Waar loop je tegenaan?"></textarea>
+           </details>
++          <p id="demoMsg" class="form-msg" role="status" aria-live="polite"></p>
+           <button type="submit" class="btn btn-primary dm-submit">Vraag de gratis demo aan</button>
+           <p class="dm-fine">Vrijblijvend, geen verkoopdruk. We gebruiken je gegevens alleen om contact op te nemen, conform onze <a href="/trust/">privacyafspraken</a>.</p>
+         </form>
+@@ -60,6 +63,49 @@ const googleUrl = REVIEWS_EXTERNAL?.google || "";
+   </section>
+ </Base>
+ 
++<script is:inline>
++  /* Verstuurt de aanvraag zonder de pagina te verlaten. De conversietelling in
++     Base.astro luistert op de submit zelf en blijft dus werken. */
++  (function () {
++    var form = document.getElementById("demoForm");
++    if (!form) return;
++    var msg = document.getElementById("demoMsg");
++    form.addEventListener("submit", function (e) {
++      e.preventDefault();
++      var knop = form.querySelector("button[type=submit]");
++      var oud = knop ? knop.textContent : "";
++      if (knop) { knop.disabled = true; knop.textContent = "Verzenden…"; }
++      msg.className = "form-msg"; msg.textContent = "";
++      fetch("/api/aanvraag", { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
++        .then(function (r) { return r.json().catch(function () { return {}; }); })
++        .then(function (uit) {
++          if (knop) { knop.disabled = false; knop.textContent = oud; }
++          if (uit && uit.ok) {
++            form.reset();
++            msg.className = "form-msg success";
++            msg.textContent = uit.doorverwezen
++              ? "Bedankt. We hebben je een mail gestuurd met de mogelijkheden voor particulieren."
++              : "Bedankt voor je aanvraag. We reageren binnen 24 uur op werkdagen.";
++          } else {
++            msg.className = "form-msg error";
++            msg.textContent = "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.";
++          }
++        })
++        .catch(function () {
++          if (knop) { knop.disabled = false; knop.textContent = oud; }
++          msg.className = "form-msg error";
++          msg.textContent = "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.";
++        });
++    });
++  })();
++</script>
++
++<style is:global>
++  .dm-form .form-msg { font-size: 14px; font-weight: 600; margin: 0 0 10px; }
++  .dm-form .form-msg.success { color: #1a7f4b; }
++  .dm-form .form-msg.error { color: #b3261e; }
++</style>
++
+ <style>
+   .dm { background: var(--navy); }
+   .dm .wrap { padding-top: 52px; padding-bottom: 56px; }
+diff --git a/src/pages/en/contact.astro b/src/pages/en/contact.astro
+index 1ceb911..8b6a178 100644
+--- a/src/pages/en/contact.astro
++++ b/src/pages/en/contact.astro
+@@ -46,6 +46,7 @@ const offices = [
+     mail: "atencioncliente@hrmforce.com",
+   },
+ ];
++import AanvraagSoort from "../../components/AanvraagSoort.astro";
+ ---
+ <Base
+   title="Contact - hrmforce"
+@@ -110,9 +111,8 @@ const offices = [
+         <form
+           id="contactForm"
+           class="formcard"
+-          action="mailto:service@hrmforce.com"
++          action="/api/aanvraag"
+           method="POST"
+-          enctype="text/plain"
+           novalidate
+         >
+           <div class="frow">
+@@ -148,6 +148,7 @@ const offices = [
+             <textarea id="message" name="message" rows="5" required></textarea>
+           </div>
+           <div class="next-steps"><strong>What happens next?</strong><ol><li>We respond within 1 business day.</li><li>A short intro call, tailored to your question.</li><li>A personalised demo, no obligation.</li></ol><div class="ns-proof"><span class="ns-stars"><Sterren /></span> 10,000+ participants · 1,200+ organisations · 4.9/5</div></div>
++          <AanvraagSoort lang="en" bron="contact" />
+           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
+           <button type="submit" class="btn btn-primary">Submit</button>
+           <p class="privacy-note">
+@@ -325,8 +326,29 @@ const offices = [
+           (missing[0] || email).focus();
+           return;
+         }
+-        msg.className = "form-msg success";
+-        msg.textContent = "Thank you! Your message will open in your email program. We will contact you as soon as possible.";
++        e.preventDefault();
++        var knop = form.querySelector("button[type=submit]");
++        var oud = knop ? knop.textContent : "";
++        if (knop) { knop.disabled = true; knop.textContent = "Sending…"; }
++        msg.className = "form-msg"; msg.textContent = "";
++        fetch("/api/aanvraag", { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
++          .then(function (r) { return r.json().catch(function () { return {}; }); })
++          .then(function (uit) {
++            if (knop) { knop.disabled = false; knop.textContent = oud; }
++            if (uit && uit.ok) {
++              form.reset();
++              msg.className = "form-msg success";
++              msg.textContent = uit.doorverwezen ? "Thank you. We have emailed you the options for individuals." : "Thank you for your message. We will get in touch as soon as we can.";
++            } else {
++              msg.className = "form-msg error";
++              msg.textContent = "Something went wrong while sending. Please try again or email service@hrmforce.com.";
++            }
++          })
++          .catch(function () {
++            if (knop) { knop.disabled = false; knop.textContent = oud; }
++            msg.className = "form-msg error";
++            msg.textContent = "Something went wrong while sending. Please try again or email service@hrmforce.com.";
++          });
+       });
+     })();
+   </script>
+diff --git a/src/pages/es/contact.astro b/src/pages/es/contact.astro
+index 9e00aad..16c7740 100644
+--- a/src/pages/es/contact.astro
++++ b/src/pages/es/contact.astro
+@@ -47,6 +47,7 @@ const offices = [
+     mail: "atencioncliente@hrmforce.com",
+   },
+ ];
++import AanvraagSoort from "../../components/AanvraagSoort.astro";
+ ---
+ <Base
+   title="Contacto - hrmforce"
+@@ -111,9 +112,8 @@ const offices = [
+         <form
+           id="contactForm"
+           class="formcard"
+-          action="mailto:office@hrmforce.com"
++          action="/api/aanvraag"
+           method="POST"
+-          enctype="text/plain"
+           novalidate
+         >
+           <div class="frow">
+@@ -149,6 +149,7 @@ const offices = [
+             <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+           </div>
+           <div class="next-steps"><strong>¿Qué pasa después?</strong><ol><li>Respondemos en un plazo de 1 día laborable.</li><li>Una breve toma de contacto, adaptada a tu pregunta.</li><li>Una demo personalizada, sin compromiso.</li></ol><div class="ns-proof"><span class="ns-stars"><Sterren /></span> 10.000+ participantes · 1.200+ organizaciones · 4,9/5</div></div>
++          <AanvraagSoort lang="es" bron="contact" />
+           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
+           <button type="submit" class="btn btn-primary">Enviar</button>
+         </form>
+@@ -315,8 +316,29 @@ const offices = [
+           (missing[0] || email).focus();
+           return;
+         }
+-        msg.className = "form-msg success";
+-        msg.textContent = "¡Gracias! Su mensaje se abrirá en su programa de correo. Nos pondremos en contacto con usted lo antes posible.";
++        e.preventDefault();
++        var knop = form.querySelector("button[type=submit]");
++        var oud = knop ? knop.textContent : "";
++        if (knop) { knop.disabled = true; knop.textContent = "Enviando…"; }
++        msg.className = "form-msg"; msg.textContent = "";
++        fetch("/api/aanvraag", { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
++          .then(function (r) { return r.json().catch(function () { return {}; }); })
++          .then(function (uit) {
++            if (knop) { knop.disabled = false; knop.textContent = oud; }
++            if (uit && uit.ok) {
++              form.reset();
++              msg.className = "form-msg success";
++              msg.textContent = uit.doorverwezen ? "Gracias. Te hemos enviado por correo las opciones para particulares." : "Gracias por tu mensaje. Nos pondremos en contacto lo antes posible.";
++            } else {
++              msg.className = "form-msg error";
++              msg.textContent = "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.";
++            }
++          })
++          .catch(function () {
++            if (knop) { knop.disabled = false; knop.textContent = oud; }
++            msg.className = "form-msg error";
++            msg.textContent = "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.";
++          });
+       });
+     })();
+   </script>
+diff --git a/src/pages/fr/contact.astro b/src/pages/fr/contact.astro
+index 561c38c..1f04d43 100644
+--- a/src/pages/fr/contact.astro
++++ b/src/pages/fr/contact.astro
+@@ -45,6 +45,7 @@ const offices = [
+     mail: "atencioncliente@hrmforce.com",
+   },
+ ];
++import AanvraagSoort from "../../components/AanvraagSoort.astro";
+ ---
+ <Base
+   title="Contact - hrmforce"
+@@ -109,9 +110,8 @@ const offices = [
+         <form
+           id="contactForm"
+           class="formcard"
+-          action="mailto:service@hrmforce.com"
++          action="/api/aanvraag"
+           method="POST"
+-          enctype="text/plain"
+           novalidate
+         >
+           <div class="frow">
+@@ -147,6 +147,7 @@ const offices = [
+             <textarea id="message" name="message" rows="5" required></textarea>
+           </div>
+           <div class="next-steps"><strong>Que se passe-t-il ensuite ?</strong><ol><li>Nous repondons sous 1 jour ouvre.</li><li>Un court echange, adapte a votre question.</li><li>Une demo personnalisee, sans engagement.</li></ol><div class="ns-proof"><span class="ns-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> 10 000+ participants &middot; 1 200+ organisations &middot; 4,9/5</div></div>
++          <AanvraagSoort lang="fr" bron="contact" />
+           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
+           <button type="submit" class="btn btn-primary">Envoyer</button>
+           <p class="privacy-note">
+@@ -326,8 +327,29 @@ const offices = [
+           (missing[0] || email).focus();
+           return;
+         }
+-        msg.className = "form-msg success";
+-        msg.textContent = "Merci ! Votre message va s'ouvrir dans votre programme de messagerie. Nous vous contacterons des que possible.";
++        e.preventDefault();
++        var knop = form.querySelector("button[type=submit]");
++        var oud = knop ? knop.textContent : "";
++        if (knop) { knop.disabled = true; knop.textContent = "Envoi…"; }
++        msg.className = "form-msg"; msg.textContent = "";
++        fetch("/api/aanvraag", { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
++          .then(function (r) { return r.json().catch(function () { return {}; }); })
++          .then(function (uit) {
++            if (knop) { knop.disabled = false; knop.textContent = oud; }
++            if (uit && uit.ok) {
++              form.reset();
++              msg.className = "form-msg success";
++              msg.textContent = uit.doorverwezen ? "Merci. Nous vous avons envoyé par e-mail les possibilités pour les particuliers." : "Merci pour votre message. Nous vous recontactons au plus vite.";
++            } else {
++              msg.className = "form-msg error";
++              msg.textContent = "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.";
++            }
++          })
++          .catch(function () {
++            if (knop) { knop.disabled = false; knop.textContent = oud; }
++            msg.className = "form-msg error";
++            msg.textContent = "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.";
++          });
+       });
+     })();
+   </script>
+diff --git a/src/pages/ro/contact.astro b/src/pages/ro/contact.astro
+index 0d03fda..318a371 100644
+--- a/src/pages/ro/contact.astro
++++ b/src/pages/ro/contact.astro
+@@ -46,6 +46,7 @@ const offices = [
+     mail: "atencioncliente@hrmforce.com",
+   },
+ ];
++import AanvraagSoort from "../../components/AanvraagSoort.astro";
+ ---
+ <Base
+   title="Contact - hrmforce"
+@@ -111,9 +112,8 @@ const offices = [
+         <form
+           id="contactForm"
+           class="formcard"
+-          action="mailto:service@hrmforce.com"
++          action="/api/aanvraag"
+           method="POST"
+-          enctype="text/plain"
+           novalidate
+         >
+           <div class="frow">
+@@ -149,6 +149,7 @@ const offices = [
+             <textarea id="mesaj" name="mesaj" rows="5" required></textarea>
+           </div>
+           <div class="next-steps"><strong>Ce urmează?</strong><ol><li>Răspundem în maximum 1 zi lucrătoare.</li><li>O scurtă discuție, adaptată întrebării tale.</li><li>O demonstrație personalizată, fără obligații.</li></ol><div class="ns-proof"><span class="ns-stars"><Sterren /></span> 10.000+ participanți · 1.200+ organizații · 4,9/5</div></div>
++          <AanvraagSoort lang="ro" bron="contact" />
+           <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
+           <button type="submit" class="btn btn-primary">Submit</button>
+         </form>
+@@ -238,8 +239,29 @@ const offices = [
+           (missing[0] || email).focus();
+           return;
+         }
+-        msg.className = "form-msg success";
+-        msg.textContent = "Vă mulțumim! Mesajul dumneavoastră se va deschide în programul de e-mail. Vă vom contacta cât mai curând posibil.";
++        e.preventDefault();
++        var knop = form.querySelector("button[type=submit]");
++        var oud = knop ? knop.textContent : "";
++        if (knop) { knop.disabled = true; knop.textContent = "Se trimite…"; }
++        msg.className = "form-msg"; msg.textContent = "";
++        fetch("/api/aanvraag", { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
++          .then(function (r) { return r.json().catch(function () { return {}; }); })
++          .then(function (uit) {
++            if (knop) { knop.disabled = false; knop.textContent = oud; }
++            if (uit && uit.ok) {
++              form.reset();
++              msg.className = "form-msg success";
++              msg.textContent = uit.doorverwezen ? "Mulțumim. Ți-am trimis pe e-mail opțiunile pentru persoane fizice." : "Mulțumim pentru mesaj. Revenim cât de repede putem.";
++            } else {
++              msg.className = "form-msg error";
++              msg.textContent = "A apărut o eroare la trimitere. Încearcă din nou sau scrie la service@hrmforce.com.";
++            }
++          })
++          .catch(function () {
++            if (knop) { knop.disabled = false; knop.textContent = oud; }
++            msg.className = "form-msg error";
++            msg.textContent = "A apărut o eroare la trimitere. Încearcă din nou sau scrie la service@hrmforce.com.";
++          });
+       });
+     })();
+   </script>
+-- 
+2.43.0
+

@@ -1,0 +1,771 @@
+From c1f0cde7d0b250455e28fac0ecb68c989d18d71f Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Mon, 14 Sep 2026 11:33:25 +0000
+Subject: [PATCH] Conversie, snelheid en rust: acht acties uit de actielijst
+
+Conversie
+- Alle demoknoppen gaan naar /demo/ in plaats van /contact/. Elf plekken in de
+  code: tarieven, assessmentpagina's, oplossingen, advies en whitepapers, plus
+  de header en de zwevende knop. Nieuwe hulpfunctie demoPath(lang), want de
+  aparte demopagina bestaat alleen in het Nederlands.
+- De knop Claim gratis demo op /contact/ linkte naar /contact/ zelf. Die gaat
+  nu naar /demo/.
+- Advanced en Pro zeiden Op aanvraag. Beide staan nu op vanaf EUR 1,- per
+  medewerker per maand, in alle zes talen, met een aangepaste voetnoot onder
+  de pakketten.
+- Nieuwe band Hulpmiddelen onder de logobalk op de home, met de testkiezer en
+  de ROI-rekentool. Die stonden alleen in de voettekst en op twee diepe
+  pagina's. Haarlijnen, geen kaarten, in alle zes talen.
+
+Snelheid
+- Preload voor Archivo en IBM Plex Sans, zodat de eerste weergave niet meer in
+  een systeemfont komt en daarna verspringt.
+- De productteksten van de shop (257 kB) stonden als inline script in elke
+  shoppagina. Ze staan nu in /shop-products.json en worden na het renderen
+  opgehaald. De shoppagina gaat van 467 kB naar 227 kB. Tot de teksten binnen
+  zijn valt elk product terug op de generieke beschrijving, dus de pagina is
+  meteen bruikbaar.
+- Width en height op het logo, de vier assessmenticonen en het ITC-logo, tegen
+  layout shift.
+
+Rust
+- Eyebrows alleen nog op de hero en op een enkele sectie die echt een categorie
+  toevoegt. Home van negen naar twee, tarieven van zes naar twee, online
+  assessments van zeven naar twee.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ src/components/Header.astro               |  6 +-
+ src/components/Home.astro                 | 14 ++---
+ src/components/Hulpmiddelen.astro         | 70 +++++++++++++++++++++++
+ src/components/OnlineAssessments.astro    |  5 --
+ src/components/Shop.astro                 | 16 +++++-
+ src/components/Tarieven.astro             | 15 ++---
+ src/components/WhitepaperDetail.astro     |  4 +-
+ src/data/tarieven-content.js              | 36 ++++++------
+ src/i18n/utils.js                         |  8 +++
+ src/layouts/Base.astro                    | 10 +++-
+ src/pages/[lang]/assessments/[slug].astro |  6 +-
+ src/pages/advies/[slug].astro             |  8 +--
+ src/pages/assessments/[slug].astro        |  6 +-
+ src/pages/contact.astro                   |  2 +-
+ src/pages/hrm-oplossingen/[slug].astro    |  8 +--
+ src/pages/shop-products.json.ts           | 15 +++++
+ 16 files changed, 164 insertions(+), 65 deletions(-)
+ create mode 100644 src/components/Hulpmiddelen.astro
+ create mode 100644 src/pages/shop-products.json.ts
+
+diff --git a/src/components/Header.astro b/src/components/Header.astro
+index 746fd1b..815d578 100644
+--- a/src/components/Header.astro
++++ b/src/components/Header.astro
+@@ -1,6 +1,6 @@
+ ---
+ import { routes, languages } from "../i18n/ui.js";
+-import { getLangFromUrl, useTranslations, navHref, switchLocalePath } from "../i18n/utils.js";
++import { getLangFromUrl, useTranslations, navHref, switchLocalePath, demoPath } from "../i18n/utils.js";
+ import { navFor } from "../data/menu-content.js";
+ import validPaths from "../data/valid-paths.js";
+ 
+@@ -79,7 +79,7 @@ for (const p of _forLang) {
+ </div>
+ <header>
+   <div class="wrap nav">
+-    <a class="logo" href={lang === "nl" ? "/" : "/" + lang + "/"}><img src={logo} alt="hrmforce" /></a>
++    <a class="logo" href={lang === "nl" ? "/" : "/" + lang + "/"}><img src={logo} alt="hrmforce" width="220" height="50" /></a>
+     <button class="nav-toggle" aria-label="Menu" aria-expanded="false" onclick="var h=this.closest('header');var o=h.classList.toggle('nav-open');this.setAttribute('aria-expanded',o);"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+     <nav class="menu">
+       <div class={`has-dd ${active === "assessments" ? "active" : ""}`}>
+@@ -116,7 +116,7 @@ for (const p of _forLang) {
+       </div>
+     </nav>
+     <div class="nav-cta">
+-      <a href={lang === "nl" ? "/demo/" : H(routes.contact)} class="btn btn-primary">{nav.demo}</a>
++      <a href={demoPath(lang)} class="btn btn-primary">{nav.demo}</a>
+     </div>
+   </div>
+ </header>
+diff --git a/src/components/Home.astro b/src/components/Home.astro
+index 91849fa..eaa6309 100644
+--- a/src/components/Home.astro
++++ b/src/components/Home.astro
+@@ -1,6 +1,7 @@
+ ---
+ import Sterren from "./Sterren.astro";
+ import Datavisual from "./Datavisual.astro";
++import Hulpmiddelen from "./Hulpmiddelen.astro";
+ import Img from "./Img.astro";
+ // Gedeelde homepage-component. Wordt per taal gevuld via `c` (content) + `lang`.
+ import { clients } from "../data/home.js";
+@@ -149,9 +150,10 @@ const faqLd = {
+ 
+ <LogoSlider />
+ 
++<Hulpmiddelen lang={lang} />
++
+ <section class="bg-soft">
+   <div class="wrap" style="display:block">
+-    {c.compare.eyebrow && <span class="eyebrow center">{c.compare.eyebrow}</span>}
+     <h2 class="section-title center">{c.compare.title}</h2>
+     <p class="lead center" style="margin:0 0 40px">{c.compare.lead}</p>
+     <div class="vs-grid">
+@@ -170,7 +172,6 @@ const faqLd = {
+ 
+ <section>
+   <div class="wrap" style="display:block">
+-    {c.why.eyebrow && <span class="eyebrow center">{c.why.eyebrow}</span>}
+     <h2 class="section-title center">{c.why.title}</h2>
+     <p class="lead center" style="margin:0 0 40px">{c.why.lead}</p>
+     <div class="value-grid">
+@@ -216,7 +217,6 @@ const faqLd = {
+ {c.casesTeaser && (
+ <section class="cases-teaser">
+   <div class="wrap" style="display:block">
+-    <span class="eyebrow center">{c.casesTeaser.eyebrow}</span>
+     <h2 class="section-title center">{c.casesTeaser.title}</h2>
+     <p class="lead center" style="margin:0 0 40px">{c.casesTeaser.lead}</p>
+     <div class="ct-grid">
+@@ -236,13 +236,12 @@ const faqLd = {
+ 
+ <section>
+   <div class="wrap" style="display:block">
+-    <span class="eyebrow center">{c.featured.eyebrow}</span>
+     <h2 class="section-title center">{c.featured.title}</h2>
+     <p class="lead center" style="margin:0 0 40px">{c.featured.lead}</p>
+     <div class="assess-grid">
+       {c.featured.items.map((a) => (
+         <a class="assess-card" href={lang === "nl" ? `/assessments/${a.slug}/` : assessHref}>
+-          <div class="assess-img"><Img src={a.image} alt={a.title} loading="lazy" /></div>
++          <div class="assess-img"><Img src={a.image} alt={a.title} width="981" height="1000" loading="lazy" /></div>
+           <div class="assess-body">
+             <h3>{a.title}</h3>
+             <p>{a.goal}</p>
+@@ -259,7 +258,6 @@ const faqLd = {
+ 
+ <section class="bg-soft">
+   <div class="wrap" style="display:block">
+-    <span class="eyebrow center">{c.how.eyebrow}</span>
+     <h2 class="section-title center">{c.how.title}</h2>
+     <p class="lead center" style="margin:0 0 44px">{c.how.lead}</p>
+     <div class="how-steps">
+@@ -286,7 +284,7 @@ const faqLd = {
+   <div class="wrap" style="display:block">
+     <div class="itc-bar">
+       <span class="itc-badge">
+-        <Img src="https://images.weserv.nl/?url=www.intestcom.org/images/logo.png&output=webp&w=560&we" alt="Logo International Test Commission" loading="lazy" onerror="this.parentNode.classList.add('is-txt');this.remove();" />
++        <Img src="https://images.weserv.nl/?url=www.intestcom.org/images/logo.png&output=webp&w=560&we" alt="Logo International Test Commission" width="560" height="152" loading="lazy" onerror="this.parentNode.classList.add('is-txt');this.remove();" />
+         <em>ITC</em>
+       </span>
+       <div class="itc-copy">
+@@ -300,7 +298,6 @@ const faqLd = {
+ 
+ <section class="blog">
+   <div class="wrap" style="display:block;max-width:900px">
+-    <div class="eyebrow center">{c.faqSection.eyebrow}</div>
+     <h2 class="section-title center">{c.faqSection.title}</h2>
+     <p class="lead center" style="margin-bottom:32px">{c.faqSection.lead}</p>
+     {c.faqs.map((f) => (
+@@ -314,7 +311,6 @@ const faqLd = {
+ 
+ <section class="cta">
+   <div class="wrap" style="display:block">
+-    <div class="eyebrow center">{c.ctaBand.eyebrow}</div>
+     <h2>{c.ctaBand.title}</h2>
+     <p>{c.ctaBand.text}</p>
+     <div class="btns">
+diff --git a/src/components/Hulpmiddelen.astro b/src/components/Hulpmiddelen.astro
+new file mode 100644
+index 0000000..720960e
+--- /dev/null
++++ b/src/components/Hulpmiddelen.astro
+@@ -0,0 +1,70 @@
++---
++/**
++ * Smalle band met de twee hulpmiddelen die nu diep in de site zitten:
++ * de testkiezer en de ROI-rekentool. Geen kaarten, alleen haarlijnen,
++ * zodat hij hoog op de pagina kan staan zonder een blok te worden.
++ */
++import Ico from "./Ico.astro";
++import { localizePath } from "../i18n/utils.js";
++const { lang = "nl" } = Astro.props;
++
++const T = {
++  nl: { lbl1: "Testkiezer", k1: "Welke test past bij jouw vraag?", t1: "Beantwoord vier vragen en je krijgt een onderbouwd voorstel.", c1: "Open de testkiezer",
++        lbl2: "Rekentool", k2: "Wat levert objectief selecteren op?", t2: "Reken je besparing door met je eigen aantallen en verloopcijfers.", c2: "Open de ROI-rekentool" },
++  en: { lbl1: "Test selector", k1: "Which assessment fits your question?", t1: "Answer four questions and get a grounded suggestion.", c1: "Open the test selector",
++        lbl2: "Calculator", k2: "What does objective selection deliver?", t2: "Work out your saving with your own headcount and turnover figures.", c2: "Open the ROI calculator" },
++  de: { lbl1: "Testauswahl", k1: "Welcher Test passt zu Ihrer Frage?", t1: "Vier Fragen beantworten und Sie erhalten einen fundierten Vorschlag.", c1: "Zur Testauswahl",
++        lbl2: "Rechner", k2: "Was bringt objektive Auswahl?", t2: "Rechnen Sie Ihre Ersparnis mit eigenen Zahlen durch.", c2: "Zum ROI-Rechner" },
++  fr: { lbl1: "Sélecteur", k1: "Quel test correspond à votre question ?", t1: "Répondez à quatre questions et recevez une proposition argumentée.", c1: "Ouvrir le sélecteur",
++        lbl2: "Calculateur", k2: "Que rapporte une sélection objective ?", t2: "Calculez votre gain avec vos propres effectifs et taux de rotation.", c2: "Ouvrir le calculateur ROI" },
++  es: { lbl1: "Selector", k1: "¿Qué test encaja con tu pregunta?", t1: "Responde cuatro preguntas y recibe una propuesta fundamentada.", c1: "Abrir el selector de tests",
++        lbl2: "Calculadora", k2: "¿Qué aporta una selección objetiva?", t2: "Calcula tu ahorro con tus propias cifras de plantilla y rotación.", c2: "Abrir la calculadora ROI" },
++  ro: { lbl1: "Selector", k1: "Ce test se potrivește întrebării tale?", t1: "Răspunde la patru întrebări și primești o propunere argumentată.", c1: "Deschide selectorul de teste",
++        lbl2: "Calculator", k2: "Ce aduce o selecție obiectivă?", t2: "Calculează economia cu propriile cifre de personal și fluctuație.", c2: "Deschide calculatorul ROI" },
++}[lang] || {};
++
++const testHref = localizePath("/testkiezer/", lang);
++const roiHref = localizePath("/roi-rekentool/", lang);
++---
++<section class="hulp">
++  <div class="wrap hulp-grid">
++    <a class="hulp-item" href={testHref}>
++      <span class="hulp-ic"><Ico name="vragenlijst" size={26} /></span>
++      <span class="hulp-txt">
++        <span class="hulp-lbl">{T.lbl1}</span>
++        <strong>{T.k1}</strong>
++        <span class="hulp-sub">{T.t1}</span>
++        <span class="hulp-cta">{T.c1} &rarr;</span>
++      </span>
++    </a>
++    <a class="hulp-item" href={roiHref}>
++      <span class="hulp-ic"><Ico name="groei" size={26} /></span>
++      <span class="hulp-txt">
++        <span class="hulp-lbl">{T.lbl2}</span>
++        <strong>{T.k2}</strong>
++        <span class="hulp-sub">{T.t2}</span>
++        <span class="hulp-cta">{T.c2} &rarr;</span>
++      </span>
++    </a>
++  </div>
++</section>
++
++<style>
++  .hulp { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 0; }
++  .hulp-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; }
++  .hulp-item { display: flex; gap: 16px; align-items: flex-start; padding: 26px 28px 26px 0; text-decoration: none; color: inherit; }
++  .hulp-item + .hulp-item { border-left: 1px solid var(--line); padding-left: 28px; }
++  .hulp-ic { flex: none; color: var(--navy); border-left: 2px solid var(--gold); padding-left: 12px; display: flex; }
++  .hulp-txt { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
++  .hulp-lbl { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .13em; text-transform: uppercase; color: var(--muted); }
++  .hulp-item strong { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: var(--navy); line-height: 1.25; }
++  .hulp-sub { color: var(--muted); font-size: 14.5px; line-height: 1.5; }
++  .hulp-cta { font-weight: 600; font-size: 14.5px; color: var(--blue); margin-top: 4px; }
++  .hulp-item:hover strong { color: var(--accent); }
++  .hulp-item:hover .hulp-cta { color: var(--accent); }
++  @media (max-width: 760px) {
++    .hulp-grid { grid-template-columns: minmax(0, 1fr); }
++    .hulp-item { padding: 22px 0; }
++    .hulp-item + .hulp-item { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; }
++  }
++</style>
+diff --git a/src/components/OnlineAssessments.astro b/src/components/OnlineAssessments.astro
+index ac359e4..3def5e7 100644
+--- a/src/components/OnlineAssessments.astro
++++ b/src/components/OnlineAssessments.astro
+@@ -92,7 +92,6 @@ const logos = [
+   <div class="wrap">
+     <div class="explain">
+       <div>
+-        <div class="eyebrow">{c.why.eyebrow}</div>
+         <h2 class="section-title">{c.why.title}</h2>
+         <p>{c.why.body}</p>
+       </div>
+@@ -105,7 +104,6 @@ const logos = [
+ 
+ <section style="background:var(--bg)">
+   <div class="wrap">
+-    <div class="eyebrow">{c.how.eyebrow}</div>
+     <h2 class="section-title">{c.how.title}</h2>
+     <p style="max-width:900px;color:var(--text);font-size:17px" set:html={c.how.body}></p>
+   </div>
+@@ -113,7 +111,6 @@ const logos = [
+ 
+ <section>
+   <div class="wrap">
+-    <div class="eyebrow">{c.clients.eyebrow}</div>
+     <h2 class="section-title">{c.clients.title}</h2>
+     <div class="logos">
+       {logos.map((l) => <Img src={l.src} alt={l.alt} title={l.alt} loading="lazy" />)}
+@@ -145,7 +142,6 @@ const logos = [
+       <Img src="/media/wp-content/uploads/2022/03/youtube-afbeelding2.png" alt={c.video.alt} loading="lazy" style="max-width:100%;height:auto;display:block;border-radius:var(--radius)" />
+       <span class="yt-play" aria-hidden="true"></span>
+     </button>
+-    <div class="eyebrow" style="margin-top:28px">{c.video.eyebrow}</div>
+     <h2 class="section-title">{c.video.title}</h2>
+     <p style="max-width:900px;color:var(--text);font-size:17px" set:html={c.video.body}></p>
+     <div class="btns" style="margin-top:8px"><a class="btn btn-primary" href={contactHref}>{c.video.cta}</a></div>
+@@ -154,7 +150,6 @@ const logos = [
+ 
+ <section style="background:var(--bg)">
+   <div class="wrap">
+-    <div class="eyebrow">{c.reviews.eyebrow}</div>
+     <h2 class="section-title">{c.reviews.title}</h2>
+     <p style="max-width:900px;color:var(--text);font-size:17px">{c.reviews.body}</p>
+     <div class="cards" style="margin-top:28px">
+diff --git a/src/components/Shop.astro b/src/components/Shop.astro
+index 67389c1..5ae9aad 100644
+--- a/src/components/Shop.astro
++++ b/src/components/Shop.astro
+@@ -371,7 +371,7 @@ const FAQ_DEFAULT = generalFaq(lang);
+   .cart-warn { color: #b3261e; background: #fdeceb; border: 1px solid #f6c9c5; border-radius: var(--radius-sm); padding: 8px 12px; font-size: 13px; font-weight: 600; margin: 0 0 10px; }
+ </style>
+ 
+-<script is:inline define:vars={{ L, ENRICH, LANG, IMGMAP: shopImages, SC: SHOP_CONTENT, FORM: FORMSPREE_ENDPOINT, VENDOR_LOGO, RQ: rq, FAQ_SEG, FAQ_DEFAULT, CATALOG: catalog, CHECKOUT_URL: afrekenenHref }}>
++<script is:inline define:vars={{ L, ENRICH, LANG, IMGMAP: shopImages, SC_URL: "/shop-products.json", FORM: FORMSPREE_ENDPOINT, VENDOR_LOGO, RQ: rq, FAQ_SEG, FAQ_DEFAULT, CATALOG: catalog, CHECKOUT_URL: afrekenenHref }}>
+   (function () {
+     var app = document.getElementById("shopApp");
+     if (!app) return;
+@@ -400,7 +400,11 @@ const FAQ_DEFAULT = generalFaq(lang);
+     function enrichHtml(p) { var d = enrichD(p); return "<p>" + esc(d.intro.replace("{name}", p.title)) + "</p><p>" + esc(d.body) + "</p><ul>" + d.bullets.map(function (b) { return "<li>" + esc(b) + "</li>"; }).join("") + "</ul>"; }
+     function enrichBullets() { var d = enrichD(); return "<ul>" + d.bullets.map(function (b) { return "<li>" + esc(b) + "</li>"; }).join("") + "</ul>"; }
+ 
+-    /* ---------- Echte productinhoud (van hrmforce.com) + logo per product ---------- */
++    /* ---------- Echte productinhoud (van hrmforce.com) + logo per product ----------
++       SC komt uit /shop-products.json en arriveert vlak na het renderen. Tot die
++       tijd valt elke tekst terug op de generieke beschrijving, dus de pagina is
++       meteen bruikbaar. */
++    var SC = null;
+     function scFor(p) { return (SC && SC[p.title]) || null; }
+     // Echte beschrijving (NL) uit SHOP_CONTENT; val terug op de generieke tekst.
+     function descOf(p) { var c = scFor(p); if (!c || !c.desc) return null; return (typeof c.desc === "string") ? c.desc : (c.desc[LANG] || c.desc.nl); }
+@@ -668,6 +672,14 @@ const FAQ_DEFAULT = generalFaq(lang);
+       fillSelect(fSegment, Object.keys(segSet));
+       fillSelect(fUitgever, Object.keys(uitSet));
+       render();
++      // Productteksten nakomen en daarna opnieuw tekenen.
++      try {
++        fetch(SC_URL).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
++          if (!d) return;
++          SC = d;
++          render();
++        }).catch(function () {});
++      } catch (e) {}
+       // Deeplink: /shop/?p=<handle> opent meteen het juiste product.
+       try {
+         var _pq = new URLSearchParams(location.search).get("p");
+diff --git a/src/components/Tarieven.astro b/src/components/Tarieven.astro
+index fc0e38a..ed76f2a 100644
+--- a/src/components/Tarieven.astro
++++ b/src/components/Tarieven.astro
+@@ -1,7 +1,8 @@
+ ---
+-import { localizePath } from "../i18n/utils.js";
++import { localizePath, demoPath } from "../i18n/utils.js";
+ const { t, lang } = Astro.props;
+ const contactHref = localizePath("/contact/", lang);
++const demoHref = demoPath(lang);
+ const overHref = localizePath("/over-ons/", lang);
+ const roiHref = localizePath("/roi-rekentool/", lang);
+ ---
+@@ -12,11 +13,10 @@ const roiHref = localizePath("/roi-rekentool/", lang);
+   <h1>{t.hero.title}</h1>
+   <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:760px;margin-top:12px" set:html={t.hero.intro}></p>
+   <p style="color:var(--gold);font-weight:700;font-size:14px;margin-top:12px">{t.hero.positioning}</p>
+-  <div class="btns" style="margin-top:18px"><a href={contactHref} class="btn btn-primary">{t.hero.cta}</a><a href={roiHref} class="btn btn-light">{t.hero.roiCta} &rarr;</a></div>
++  <div class="btns" style="margin-top:18px"><a href={demoHref} class="btn btn-primary">{t.hero.cta}</a><a href={roiHref} class="btn btn-light">{t.hero.roiCta} &rarr;</a></div>
+ </div></section>
+ 
+ <section class="bg-soft"><div class="wrap">
+-  <div class="eyebrow center">{t.fit.eyebrow}</div>
+   <h2 class="section-title center">{t.fit.title}</h2>
+   <div class="fit-helper" id="fitHelper" data-out={JSON.stringify(t.fit.out)}>
+     <span class="fit-q">{t.fit.q}</span>
+@@ -24,7 +24,7 @@ const roiHref = localizePath("/roi-rekentool/", lang);
+       {t.fit.tiers.map((label, i) => <button class={`fit-btn${i === 0 ? " is-active" : ""}`} data-tier={i}>{label}</button>)}
+     </div>
+     <p class="fit-out" id="fitOut"></p>
+-    <a href={contactHref} class="btn btn-primary" style="margin-top:6px">{t.fit.cta} &rarr;</a>
++    <a href={demoHref} class="btn btn-primary" style="margin-top:6px">{t.fit.cta} &rarr;</a>
+   </div>
+ </div></section>
+ 
+@@ -38,7 +38,7 @@ const roiHref = localizePath("/roi-rekentool/", lang);
+         <h3>{p.name}</h3>
+         <p class="price-tag">{p.priceFrom && <em class="from">{t.onb?.fromLabel || "vanaf"}</em>}{p.price}<span>{p.priceNote}</span></p>
+         <p class="price-desc">{p.tagline}</p>
+-        <a href={contactHref} class="btn btn-primary" style="width:100%;text-align:center">{p.cta}</a>
++        <a href={demoHref} class="btn btn-primary" style="width:100%;text-align:center">{p.cta}</a>
+         {p.groups.map((g) => (
+           <div class="price-group"><h4>{g.title}</h4><ul>{g.items.map((i) => <li>{i}</li>)}</ul></div>
+         ))}
+@@ -49,7 +49,6 @@ const roiHref = localizePath("/roi-rekentool/", lang);
+ </div></section>
+ 
+ <section class="bg-soft"><div class="wrap">
+-  <div class="eyebrow">{t.onb.eyebrow}</div>
+   <h2 class="section-title">{t.onb.title}</h2>
+   <div class="price-grid">
+     {t.onb.tiers.map((o) => (
+@@ -65,14 +64,12 @@ const roiHref = localizePath("/roi-rekentool/", lang);
+ </div></section>
+ 
+ <section><div class="wrap">
+-  <div class="eyebrow">{t.incl.eyebrow}</div>
+   <h2 class="section-title">{t.incl.title}</h2>
+   <ul class="incl-grid">{t.incl.items.map((i) => <li>{i}</li>)}</ul>
+ </div></section>
+ 
+ 
+ <section><div class="wrap">
+-  <div class="eyebrow">{t.faqSection.eyebrow}</div>
+   <h2 class="section-title">{t.faqSection.title}</h2>
+   <div style="max-width:820px">
+     {t.faqs.map((f) => (
+@@ -85,7 +82,7 @@ const roiHref = localizePath("/roi-rekentool/", lang);
+   <h2 style="color:#fff">{t.ctaBand.title}</h2>
+   <p style="color:rgba(255,255,255,.9);max-width:620px;margin:12px auto 0">{t.ctaBand.text}</p>
+   <div class="btns" style="justify-content:center;margin-top:20px">
+-    <a href={contactHref} class="btn btn-light">{t.ctaBand.primary}</a>
++    <a href={demoHref} class="btn btn-light">{t.ctaBand.primary}</a>
+     <a href={overHref} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.6)">{t.ctaBand.secondary}</a>
+   </div>
+   <p style="color:rgba(255,255,255,.9);margin-top:22px">
+diff --git a/src/components/WhitepaperDetail.astro b/src/components/WhitepaperDetail.astro
+index ab5f2a5..0c6866f 100644
+--- a/src/components/WhitepaperDetail.astro
++++ b/src/components/WhitepaperDetail.astro
+@@ -1,5 +1,5 @@
+ ---
+-import { localizePath } from "../i18n/utils.js";
++import { localizePath, demoPath } from "../i18n/utils.js";
+ import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../data/site-config.js";
+ const { wp, ui, lang } = Astro.props;
+ const d = wp.i18n[lang] ?? wp.i18n.nl;
+@@ -38,7 +38,7 @@ const wpHref = localizePath("/whitepapers/", lang);
+       </div>
+     ))}
+     <p style="padding:16px 20px;background:var(--bg-soft);border-radius:var(--radius)"><strong>{ui.takeawayLabel}:</strong> {d.takeaway}</p>
+-    <div style="margin-top:22px"><a href={wpHref} class="btn btn-ghost">← {ui.back}</a> <a href={localizePath("/contact/", lang)} class="btn btn-primary" style="margin-left:8px">{ui.form} →</a></div>
++    <div style="margin-top:22px"><a href={wpHref} class="btn btn-ghost">← {ui.back}</a> <a href={demoPath(lang)} class="btn btn-primary" style="margin-left:8px">{ui.form} →</a></div>
+   </div>
+ </div></section>
+ 
+diff --git a/src/data/tarieven-content.js b/src/data/tarieven-content.js
+index 64740e2..9d494cf 100644
+--- a/src/data/tarieven-content.js
++++ b/src/data/tarieven-content.js
+@@ -16,19 +16,19 @@ export const tarievenContent = {
+         { title: "Vragenlijsten", items: ["37 vragenlijsten", "Onbeperkt competentieprofielen", "50 competenties", "Big50 Personality", "360 Feedback"] },
+         { title: "Hrmforce portal", items: ["Standaard Look & Feel", "Volledig online", "Kandidatenbeheer", "Management reporting"] },
+         { title: "Support", items: ["Online kennisbank", "Training open inschrijving"] } ] },
+-      { name: "Advanced", tagline: "Onbeperkt gebruik van vragenlijsten. Jaarlijkse licentie op basis van het aantal medewerkers of consultants.", price: "Op aanvraag", priceNote: "jaarlicentie", featured: true, cta: "Plan een demo", groups: [
++      { name: "Advanced", tagline: "Onbeperkt gebruik van vragenlijsten. Jaarlijkse licentie op basis van het aantal medewerkers of consultants.", price: "€1,-", priceFrom: true, priceNote: "per medewerker per maand", featured: true, cta: "Plan een demo", groups: [
+         { title: "Vragenlijsten", items: ["37 vragenlijsten", "Maatwerk vragenlijst Onderwijs", "Maatwerk vragenlijst Zorg", "CanMeds vragenlijst", "Onderwijs competentietaal", "Onbeperkt competentieprofielen", "Big50 Personality", "360 Feedback + Extra open vragen"] },
+         { title: "HRM Tools", items: ["Analytics", "Recruitment", "BiLa"] },
+         { title: "Hrmforce portal", items: ["Dashboard", "Eigen bedrijfslogo", "Management Reporting", "Kandidatenbeheer", "Mass upload & Edit"] },
+         { title: "Support", items: ["Telefonische helpdesk", "Nieuwe talen", "Certificatietraining voor 1 deelnemer", "API (bestaande koppelingen)"] } ] },
+-      { name: "Pro", tagline: "Onbeperkt gebruik van vragenlijsten en alle hrmforce functionaliteiten. Jaarlijkse licentie op basis van het aantal medewerkers of consultants.", price: "Op aanvraag", priceNote: "jaarlicentie", featured: false, cta: "Plan een demo", groups: [
++      { name: "Pro", tagline: "Onbeperkt gebruik van vragenlijsten en alle hrmforce functionaliteiten. Jaarlijkse licentie op basis van het aantal medewerkers of consultants.", price: "€1,-", priceFrom: true, priceNote: "per medewerker per maand", featured: false, cta: "Plan een demo", groups: [
+         { title: "Vragenlijsten", items: ["Alle vragenlijsten", "Vragenlijsten op maat", "Extra open vragen", "Onbeperkt competentieprofielen", "Maatwerk competenties"] },
+         { title: "HRM Tools", items: ["Recruitment", "Development", "Employability", "Teamview", "Analytics", "Ontwikkelflow op maat"] },
+         { title: "Hrmforce portal", items: ["Dashboard+", "Eigen huisstijl in portal en rapportages", "Management Reporting", "Kandidatenbeheer", "Mass upload & Edit"] },
+         { title: "Support", items: ["Eigen accountmanager", "Direct toegang tot nieuwe functionaliteiten", "Maatwerk API", "Autosync", "Certificatietraining tot 8 deelnemers"] } ] },
+     ],
+     featuredBadge: "Meest gekozen",
+-    plansNote: "Prijzen pay-as-you-go variëren van €19,- tot €99,- per test. Jaarlicenties zijn gebaseerd op het aantal medewerkers of consultants; vraag een offerte aan voor een prijs op maat.",
++    plansNote: "Prijzen pay-as-you-go variëren van €19,- tot €99,- per test. Jaarlicenties starten vanaf €1,- per medewerker per maand en worden lager naarmate je organisatie groter is.",
+     compare: { eyebrow: "Vergelijken", title: "Pakketten vergelijken", featCol: "Advanced", featBadge: "Meest gekozen", head: ["Functionaliteit", "Pay-as-you-go", "Pro"], cta: "Vraag een offerte op maat aan", rows: [
+       { label: "Aantal vragenlijsten", pay: "37", adv: "37 + maatwerk", pro: "Alle + op maat" },
+       { label: "Big50 Personality & 360 Feedback", pay: true, adv: "+ extra open vragen", pro: "+ extra open vragen" },
+@@ -74,11 +74,11 @@ Object.assign(tarievenContent.en.fit, { eyebrow: "Which fits?", title: "Quickly
+ ], cta: "Book a demo" });
+ tarievenContent.en.plansTitle = { eyebrow: "Licences", title: "Our packages" };
+ tarievenContent.en.featuredBadge = "Most chosen";
+-tarievenContent.en.plansNote = "Pay-as-you-go prices range from €19 to €99 per test. Annual licences are based on the number of employees or consultants; request a quote for a tailored price.";
++tarievenContent.en.plansNote = "Pay-as-you-go prices range from €19 to €99 per test. Annual licences start at €1 per employee per month and drop as your organisation grows.";
+ tarievenContent.en.plans[0].tagline = "Pay per candidate per report. No fixed costs, buy as you need.";
+ tarievenContent.en.plans[0].priceNote = "per test"; tarievenContent.en.plans[0].cta = "Book a demo";
+-tarievenContent.en.plans[1].tagline = "Unlimited use of questionnaires. Annual licence based on the number of employees or consultants."; tarievenContent.en.plans[1].price = "On request"; tarievenContent.en.plans[1].priceNote = "annual licence"; tarievenContent.en.plans[1].cta = "Book a demo";
+-tarievenContent.en.plans[2].tagline = "Unlimited use of questionnaires and all hrmforce features. Annual licence based on the number of employees or consultants."; tarievenContent.en.plans[2].price = "On request"; tarievenContent.en.plans[2].priceNote = "annual licence"; tarievenContent.en.plans[2].cta = "Book a demo";
++tarievenContent.en.plans[1].tagline = "Unlimited use of questionnaires. Annual licence based on the number of employees or consultants."; tarievenContent.en.plans[1].price = "€1,-"; tarievenContent.en.plans[1].priceNote = "per employee per month"; tarievenContent.en.plans[1].cta = "Book a demo";
++tarievenContent.en.plans[2].tagline = "Unlimited use of questionnaires and all hrmforce features. Annual licence based on the number of employees or consultants."; tarievenContent.en.plans[2].price = "€1,-"; tarievenContent.en.plans[2].priceNote = "per employee per month"; tarievenContent.en.plans[2].cta = "Book a demo";
+ Object.assign(tarievenContent.en.compare, { eyebrow: "Compare", title: "Compare packages", featBadge: "Most chosen", head: ["Feature", "Pay-as-you-go", "Pro"], cta: "Request a tailored quote" });
+ tarievenContent.en.incl = { eyebrow: "Standard", title: "Every package includes", items: ["GDPR compliant", "2-step authentication", "Available in multiple languages", "Fully online", "Competency library", "Standard job profiles"] };
+ Object.assign(tarievenContent.en.onb, { eyebrow: "Implementation", title: "Onboarding has never been easier", note: "* One-off cost.", self: "Independence level", det: "Detail level", fromLabel: "from" });
+@@ -105,10 +105,10 @@ Object.assign(tarievenContent.de.fit, { eyebrow: "Was passt?", title: "Finden Si
+ ], cta: "Demo anfragen" });
+ tarievenContent.de.plansTitle = { eyebrow: "Lizenzen", title: "Unsere Pakete" };
+ tarievenContent.de.featuredBadge = "Am häufigsten gewählt";
+-tarievenContent.de.plansNote = "Pay-as-you-go-Preise liegen zwischen 19 € und 99 € pro Test. Jahreslizenzen richten sich nach der Anzahl der Mitarbeiter oder Berater; fordern Sie ein individuelles Angebot an.";
++tarievenContent.de.plansNote = "Pay-as-you-go-Preise liegen zwischen 19 € und 99 € pro Test. Jahreslizenzen beginnen bei 1 € pro Mitarbeiter pro Monat und sinken mit der Größe Ihrer Organisation.";
+ tarievenContent.de.plans[0].tagline = "Zahlen Sie pro Kandidat und Bericht. Keine Fixkosten, kaufen Sie nach Bedarf."; tarievenContent.de.plans[0].priceNote = "pro Test"; tarievenContent.de.plans[0].cta = "Demo anfragen";
+-tarievenContent.de.plans[1].tagline = "Unbegrenzte Nutzung der Fragebögen. Jahreslizenz nach Anzahl der Mitarbeiter oder Berater."; tarievenContent.de.plans[1].price = "Auf Anfrage"; tarievenContent.de.plans[1].priceNote = "Jahreslizenz"; tarievenContent.de.plans[1].cta = "Demo anfragen";
+-tarievenContent.de.plans[2].tagline = "Unbegrenzte Nutzung aller Fragebögen und Funktionen. Jahreslizenz nach Anzahl der Mitarbeiter oder Berater."; tarievenContent.de.plans[2].price = "Auf Anfrage"; tarievenContent.de.plans[2].priceNote = "Jahreslizenz"; tarievenContent.de.plans[2].cta = "Demo anfragen";
++tarievenContent.de.plans[1].tagline = "Unbegrenzte Nutzung der Fragebögen. Jahreslizenz nach Anzahl der Mitarbeiter oder Berater."; tarievenContent.de.plans[1].price = "€1,-"; tarievenContent.de.plans[1].priceNote = "pro Mitarbeiter pro Monat"; tarievenContent.de.plans[1].cta = "Demo anfragen";
++tarievenContent.de.plans[2].tagline = "Unbegrenzte Nutzung aller Fragebögen und Funktionen. Jahreslizenz nach Anzahl der Mitarbeiter oder Berater."; tarievenContent.de.plans[2].price = "€1,-"; tarievenContent.de.plans[2].priceNote = "pro Mitarbeiter pro Monat"; tarievenContent.de.plans[2].cta = "Demo anfragen";
+ Object.assign(tarievenContent.de.compare, { eyebrow: "Vergleichen", title: "Pakete vergleichen", featBadge: "Am häufigsten gewählt", head: ["Funktion", "Pay-as-you-go", "Pro"], cta: "Individuelles Angebot anfordern" });
+ tarievenContent.de.incl = { eyebrow: "Standard", title: "In jedem Paket enthalten", items: ["DSGVO-konform", "2-Faktor-Authentifizierung", "In mehreren Sprachen verfügbar", "Vollständig online", "Kompetenzbibliothek", "Standard-Stellenprofile"] };
+ Object.assign(tarievenContent.de.onb, { eyebrow: "Implementierung", title: "Onboarding war noch nie so einfach", note: "* Einmalige Kosten.", self: "Selbstständigkeit", det: "Detailgrad", fromLabel: "ab" });
+@@ -135,10 +135,10 @@ Object.assign(tarievenContent.fr.fit, { eyebrow: "Quelle formule ?", title: "Tro
+ ], cta: "Demander une démo" });
+ tarievenContent.fr.plansTitle = { eyebrow: "Licences", title: "Nos formules" };
+ tarievenContent.fr.featuredBadge = "Le plus choisi";
+-tarievenContent.fr.plansNote = "Les tarifs à l'unité vont de 19 € à 99 € par test. Les licences annuelles dépendent du nombre de collaborateurs ou de consultants ; demandez un devis sur mesure.";
++tarievenContent.fr.plansNote = "Les tarifs à l'unité vont de 19 € à 99 € par test. Les licences annuelles démarrent à 1 € par collaborateur et par mois, et baissent à mesure que votre organisation grandit.";
+ tarievenContent.fr.plans[0].tagline = "Payez par candidat et par rapport. Aucun coût fixe, achetez selon vos besoins."; tarievenContent.fr.plans[0].priceNote = "par test"; tarievenContent.fr.plans[0].cta = "Demander une démo";
+-tarievenContent.fr.plans[1].tagline = "Utilisation illimitée des questionnaires. Licence annuelle selon le nombre de collaborateurs ou consultants."; tarievenContent.fr.plans[1].price = "Sur demande"; tarievenContent.fr.plans[1].priceNote = "licence annuelle"; tarievenContent.fr.plans[1].cta = "Demander une démo";
+-tarievenContent.fr.plans[2].tagline = "Utilisation illimitée des questionnaires et de toutes les fonctionnalités. Licence annuelle selon le nombre de collaborateurs ou consultants."; tarievenContent.fr.plans[2].price = "Sur demande"; tarievenContent.fr.plans[2].priceNote = "licence annuelle"; tarievenContent.fr.plans[2].cta = "Demander une démo";
++tarievenContent.fr.plans[1].tagline = "Utilisation illimitée des questionnaires. Licence annuelle selon le nombre de collaborateurs ou consultants."; tarievenContent.fr.plans[1].price = "€1,-"; tarievenContent.fr.plans[1].priceNote = "par collaborateur et par mois"; tarievenContent.fr.plans[1].cta = "Demander une démo";
++tarievenContent.fr.plans[2].tagline = "Utilisation illimitée des questionnaires et de toutes les fonctionnalités. Licence annuelle selon le nombre de collaborateurs ou consultants."; tarievenContent.fr.plans[2].price = "€1,-"; tarievenContent.fr.plans[2].priceNote = "par collaborateur et par mois"; tarievenContent.fr.plans[2].cta = "Demander une démo";
+ Object.assign(tarievenContent.fr.compare, { eyebrow: "Comparer", title: "Comparer les formules", featBadge: "Le plus choisi", head: ["Fonctionnalité", "À l'unité", "Pro"], cta: "Demander un devis sur mesure" });
+ tarievenContent.fr.incl = { eyebrow: "Standard", title: "Chaque formule comprend", items: ["Conforme au RGPD", "Authentification en 2 étapes", "Disponible en plusieurs langues", "Entièrement en ligne", "Bibliothèque de compétences", "Profils de poste standard"] };
+ Object.assign(tarievenContent.fr.onb, { eyebrow: "Implémentation", title: "L'onboarding n'a jamais été aussi simple", note: "* Coût unique.", self: "Niveau d'autonomie", det: "Niveau de détail", fromLabel: "à partir de" });
+@@ -165,10 +165,10 @@ Object.assign(tarievenContent.es.fit, { eyebrow: "¿Qué encaja?", title: "Encue
+ ], cta: "Solicitar una demo" });
+ tarievenContent.es.plansTitle = { eyebrow: "Licencias", title: "Nuestros paquetes" };
+ tarievenContent.es.featuredBadge = "El más elegido";
+-tarievenContent.es.plansNote = "Los precios por uso van de 19 € a 99 € por test. Las licencias anuales se basan en el número de empleados o consultores; solicite un presupuesto a medida.";
++tarievenContent.es.plansNote = "Los precios por uso van de 19 € a 99 € por test. Las licencias anuales parten de 1 € por empleado al mes y bajan a medida que crece la organización.";
+ tarievenContent.es.plans[0].tagline = "Pague por candidato y por informe. Sin costes fijos, compre según necesite."; tarievenContent.es.plans[0].priceNote = "por test"; tarievenContent.es.plans[0].cta = "Solicitar una demo";
+-tarievenContent.es.plans[1].tagline = "Uso ilimitado de cuestionarios. Licencia anual según el número de empleados o consultores."; tarievenContent.es.plans[1].price = "Bajo solicitud"; tarievenContent.es.plans[1].priceNote = "licencia anual"; tarievenContent.es.plans[1].cta = "Solicitar una demo";
+-tarievenContent.es.plans[2].tagline = "Uso ilimitado de cuestionarios y de todas las funciones. Licencia anual según el número de empleados o consultores."; tarievenContent.es.plans[2].price = "Bajo solicitud"; tarievenContent.es.plans[2].priceNote = "licencia anual"; tarievenContent.es.plans[2].cta = "Solicitar una demo";
++tarievenContent.es.plans[1].tagline = "Uso ilimitado de cuestionarios. Licencia anual según el número de empleados o consultores."; tarievenContent.es.plans[1].price = "€1,-"; tarievenContent.es.plans[1].priceNote = "por empleado al mes"; tarievenContent.es.plans[1].cta = "Solicitar una demo";
++tarievenContent.es.plans[2].tagline = "Uso ilimitado de cuestionarios y de todas las funciones. Licencia anual según el número de empleados o consultores."; tarievenContent.es.plans[2].price = "€1,-"; tarievenContent.es.plans[2].priceNote = "por empleado al mes"; tarievenContent.es.plans[2].cta = "Solicitar una demo";
+ Object.assign(tarievenContent.es.compare, { eyebrow: "Comparar", title: "Comparar paquetes", featBadge: "El más elegido", head: ["Función", "Pago por uso", "Pro"], cta: "Solicitar un presupuesto a medida" });
+ tarievenContent.es.incl = { eyebrow: "Estándar", title: "Cada paquete incluye", items: ["Cumple el RGPD", "Autenticación en 2 pasos", "Disponible en varios idiomas", "Totalmente en línea", "Biblioteca de competencias", "Perfiles de puesto estándar"] };
+ Object.assign(tarievenContent.es.onb, { eyebrow: "Implementación", title: "Empezar nunca fue tan fácil", note: "* Coste único.", self: "Nivel de autonomía", det: "Nivel de detalle", fromLabel: "desde" });
+@@ -196,10 +196,10 @@ Object.assign(tarievenContent.ro.fit, { eyebrow: "Ce se potrivește?", title: "G
+ ], cta: "Solicitați o demonstrație" });
+ tarievenContent.ro.plansTitle = { eyebrow: "Licențe", title: "Pachetele noastre" };
+ tarievenContent.ro.featuredBadge = "Cel mai ales";
+-tarievenContent.ro.plansNote = "Prețurile per utilizare variază între 19 € și 99 € per test. Licențele anuale se bazează pe numărul de angajați sau consultanți; solicitați o ofertă personalizată.";
++tarievenContent.ro.plansNote = "Prețurile per utilizare variază între 19 € și 99 € per test. Licențele anuale pornesc de la 1 € per angajat pe lună și scad pe măsură ce organizația crește.";
+ tarievenContent.ro.plans[0].tagline = "Plătiți per candidat și per raport. Fără costuri fixe, cumpărați după nevoie."; tarievenContent.ro.plans[0].priceNote = "per test"; tarievenContent.ro.plans[0].cta = "Solicitați o demonstrație";
+-tarievenContent.ro.plans[1].tagline = "Utilizare nelimitată a chestionarelor. Licență anuală în funcție de numărul de angajați sau consultanți."; tarievenContent.ro.plans[1].price = "La cerere"; tarievenContent.ro.plans[1].priceNote = "licență anuală"; tarievenContent.ro.plans[1].cta = "Solicitați o demonstrație";
+-tarievenContent.ro.plans[2].tagline = "Utilizare nelimitată a chestionarelor și a tuturor funcțiilor. Licență anuală în funcție de numărul de angajați sau consultanți."; tarievenContent.ro.plans[2].price = "La cerere"; tarievenContent.ro.plans[2].priceNote = "licență anuală"; tarievenContent.ro.plans[2].cta = "Solicitați o demonstrație";
++tarievenContent.ro.plans[1].tagline = "Utilizare nelimitată a chestionarelor. Licență anuală în funcție de numărul de angajați sau consultanți."; tarievenContent.ro.plans[1].price = "€1,-"; tarievenContent.ro.plans[1].priceNote = "per angajat pe lună"; tarievenContent.ro.plans[1].cta = "Solicitați o demonstrație";
++tarievenContent.ro.plans[2].tagline = "Utilizare nelimitată a chestionarelor și a tuturor funcțiilor. Licență anuală în funcție de numărul de angajați sau consultanți."; tarievenContent.ro.plans[2].price = "€1,-"; tarievenContent.ro.plans[2].priceNote = "per angajat pe lună"; tarievenContent.ro.plans[2].cta = "Solicitați o demonstrație";
+ Object.assign(tarievenContent.ro.compare, { eyebrow: "Comparați", title: "Comparați pachetele", featBadge: "Cel mai ales", head: ["Funcție", "Per utilizare", "Pro"], cta: "Solicitați o ofertă personalizată" });
+ tarievenContent.ro.incl = { eyebrow: "Standard", title: "Fiecare pachet include", items: ["Conform GDPR", "Autentificare în 2 pași", "Disponibil în mai multe limbi", "Complet online", "Bibliotecă de competențe", "Profiluri de post standard"] };
+ Object.assign(tarievenContent.ro.onb, { eyebrow: "Implementare", title: "Onboarding-ul nu a fost niciodată mai simplu", note: "* Cost unic.", self: "Nivel de autonomie", det: "Nivel de detaliu", fromLabel: "de la" });
+diff --git a/src/i18n/utils.js b/src/i18n/utils.js
+index 75e04e0..a6021d5 100644
+--- a/src/i18n/utils.js
++++ b/src/i18n/utils.js
+@@ -19,6 +19,14 @@ export function useTranslations(lang) {
+ 
+ // Zet een NL-pad om naar het juiste pad voor de gekozen taal.
+ //   localizePath("/shop/", "de") => "/de/shop/"
++/**
++ * Waar de knop "gratis demo" heen moet. De aparte demopagina bestaat alleen in
++ * het Nederlands; andere talen houden de contactpagina.
++ */
++export function demoPath(lang) {
++  return lang === "nl" || !lang ? "/demo/" : localizePath("/contact/", lang);
++}
++
+ export function localizePath(path, lang) {
+   return lang === "nl" ? path : "/" + lang + path;
+ }
+diff --git a/src/layouts/Base.astro b/src/layouts/Base.astro
+index 4ace2fa..e01cfa4 100644
+--- a/src/layouts/Base.astro
++++ b/src/layouts/Base.astro
+@@ -1,5 +1,9 @@
+ ---
+ import "@fontsource-variable/archivo/wght.css";
++// De twee gezichten die op elke pagina meteen zichtbaar zijn, halen we vooraf op.
++// Zonder preload komt de eerste weergave in een systeemfont en springt de tekst daarna.
++import archivoWoff2 from "@fontsource-variable/archivo/files/archivo-latin-wght-normal.woff2?url";
++import plexWoff2 from "@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2?url";
+ import "@fontsource/ibm-plex-sans/400.css";
+ import "@fontsource/ibm-plex-sans/500.css";
+ import "@fontsource/ibm-plex-sans/600.css";
+@@ -10,7 +14,7 @@ import "@fontsource/ibm-plex-mono/600.css";
+ import "../styles/global.css";
+ import Header from "../components/Header.astro";
+ import Footer from "../components/Footer.astro";
+-import { getLangFromUrl, localizePath } from "../i18n/utils.js";
++import { getLangFromUrl, localizePath, demoPath } from "../i18n/utils.js";
+ import CookieConsent from "../components/CookieConsent.astro";
+ import { ANALYTICS, MARKETING, VERIFICATION } from "../data/site-config.js";
+ import { consentContent } from "../data/consent-content.js";
+@@ -87,6 +91,8 @@ const orgLd = {
+ <html lang={lang}>
+   <head>
+     <meta charset="UTF-8" />
++    <link rel="preload" href={archivoWoff2} as="font" type="font/woff2" crossorigin="anonymous" />
++    <link rel="preload" href={plexWoff2} as="font" type="font/woff2" crossorigin="anonymous" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <link rel="icon" type="image/png" sizes="32x32" href="/media/cropped-favicon-32x32.png" />
+     <link rel="icon" type="image/png" sizes="192x192" href="/media/cropped-favicon-192x192.png" />
+@@ -118,7 +124,7 @@ const orgLd = {
+     <slot />
+     <a
+       class="sticky-demo"
+-      href={lang === "nl" ? "/demo/" : localizePath("/contact/", lang)}
++      href={demoPath(lang)}
+       aria-label={stickyDemo.aria}
+     >
+       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+diff --git a/src/pages/[lang]/assessments/[slug].astro b/src/pages/[lang]/assessments/[slug].astro
+index b236700..2289a07 100644
+--- a/src/pages/[lang]/assessments/[slug].astro
++++ b/src/pages/[lang]/assessments/[slug].astro
+@@ -8,7 +8,7 @@ import { assessmentsI18n } from "../../../data/assessments-i18n.js";
+ import { detailUi } from "../../../data/assessment-detail-ui.js";
+ import { shopInfo, prijs } from "../../../data/assessment-shop.js";
+ import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../../data/site-config.js";
+-import { localizePath } from "../../../i18n/utils.js";
++import { localizePath, demoPath } from "../../../i18n/utils.js";
+ import { examplesFor } from "../../../data/assessment-examples.js";
+ import { extraFor } from "../../../data/assessment-detail-extra.js";
+ import { theoryFor } from "../../../data/assessment-theory.js";
+@@ -143,7 +143,7 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
+           </p>
+         )}
+         <div class="btns">
+-          <a href={localizePath("/contact/", lang)} class="btn btn-primary">{t.demo} &rarr;</a>
++          <a href={demoPath(lang)} class="btn btn-primary">{t.demo} &rarr;</a>
+           <a href={localizePath(shop.url, lang)} class="btn btn-light">
+             {shop.price ? t.orderLoose : t.inShop}
+           </a>
+@@ -245,7 +245,7 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
+         <div class="ostep"><span class="on">3</span><h4>{t.step3t}</h4><p>{t.step3b}</p></div>
+       </div>
+       <div style="margin-top:26px">
+-        <a href={localizePath("/contact/", lang)} class="btn btn-primary">{t.demoPlain}</a>
++        <a href={demoPath(lang)} class="btn btn-primary">{t.demoPlain}</a>
+         <a href={localizePath("/tarieven/", lang)} class="btn btn-ghost" style="margin-left:8px">{t.licenseOptions}</a>
+       </div>
+     </div>
+diff --git a/src/pages/advies/[slug].astro b/src/pages/advies/[slug].astro
+index 6e8fe4b..86560d5 100644
+--- a/src/pages/advies/[slug].astro
++++ b/src/pages/advies/[slug].astro
+@@ -1,7 +1,7 @@
+ ---
+ import Base from "../../layouts/Base.astro";
+ import { adviesDetail } from "../../data/advies-detail.js";
+-import { getLangFromUrl, localizePath } from "../../i18n/utils.js";
++import { getLangFromUrl, localizePath, demoPath } from "../../i18n/utils.js";
+ import LogoSlider from "../../components/LogoSlider.astro";
+ import ReviewSlider from "../../components/ReviewSlider.astro";
+ import SocialProof from "../../components/SocialProof.astro";
+@@ -30,7 +30,7 @@ const roles = a.roles || adviesRolesDefault;
+         <h1>{a.title}</h1>
+         {a.intro.map((p) => <p style="color:rgba(255,255,255,.85);font-size:17px;margin-bottom:14px">{p}</p>)}
+         <div class="btns">
+-          <a href={localizePath("/contact/", lang)} class="btn btn-primary">Plan een gratis kennismaking</a>
++          <a href={demoPath(lang)} class="btn btn-primary">Plan een gratis kennismaking</a>
+           <a href={localizePath("/tarieven/", lang)} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.45)">Bekijk tarieven</a>
+         </div>
+         <p class="cta-note">{a.cta}</p>
+@@ -52,7 +52,7 @@ const roles = a.roles || adviesRolesDefault;
+           {a.bullets && a.bullets.length > 0 && (
+             <ul class="traits">{a.bullets.map((b) => <li>{b}</li>)}</ul>
+           )}
+-          <a href={localizePath("/contact/", lang)} class="btn btn-primary" style="margin-top:14px">Plan een gratis kennismaking</a>
++          <a href={demoPath(lang)} class="btn btn-primary" style="margin-top:14px">Plan een gratis kennismaking</a>
+         </div>
+         <div class="pentagon">
+           {a.image
+@@ -73,7 +73,7 @@ const roles = a.roles || adviesRolesDefault;
+       <h2>Klaar om hier samen mee aan de slag te gaan?</h2>
+       <p>Plan een gratis kennismaking en ontdek hoe hrmforce jouw HR-vraagstuk concreet aanpakt.</p>
+       <div class="btns">
+-        <a href={localizePath("/contact/", lang)} class="btn btn-primary">Plan een gratis kennismaking</a>
++        <a href={demoPath(lang)} class="btn btn-primary">Plan een gratis kennismaking</a>
+         <a href={localizePath("/tarieven/", lang)} class="btn btn-light">Bekijk tarieven</a>
+       </div>
+     </div>
+diff --git a/src/pages/assessments/[slug].astro b/src/pages/assessments/[slug].astro
+index 5cae975..bb151ef 100644
+--- a/src/pages/assessments/[slug].astro
++++ b/src/pages/assessments/[slug].astro
+@@ -6,7 +6,7 @@ import Base from "../../layouts/Base.astro";
+ import { assessments } from "../../data/assessments.js";
+ import { shopInfo, prijs } from "../../data/assessment-shop.js";
+ import { FORMSPREE_ENDPOINT, CONTACT_EMAIL } from "../../data/site-config.js";
+-import { getLangFromUrl, localizePath } from "../../i18n/utils.js";
++import { getLangFromUrl, localizePath, demoPath } from "../../i18n/utils.js";
+ import { examplesFor } from "../../data/assessment-examples.js";
+ import { extraFor } from "../../data/assessment-detail-extra.js";
+ import { theoryFor } from "../../data/assessment-theory.js";
+@@ -138,7 +138,7 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
+           </p>
+         )}
+         <div class="btns">
+-          <a href={localizePath("/contact/", lang)} class="btn btn-primary">Plan een gratis demo &rarr;</a>
++          <a href={demoPath(lang)} class="btn btn-primary">Plan een gratis demo &rarr;</a>
+           <a href={localizePath(shop.url, lang)} class="btn btn-light">
+             {shop.price ? "Los bestellen" : "Bekijk in de shop"}
+           </a>
+@@ -223,7 +223,7 @@ const dvSoort = dvNorm || dvRijen.length < 3 ? "normverdeling" : "competentiepro
+         <div class="ostep"><span class="on">3</span><h4>Ontvang het rapport</h4><p>Zodra de vragenlijst is ingevuld, staat het heldere rapport klaar, direct bruikbaar in je gesprek of besluit.</p></div>
+       </div>
+       <div class="center" style="margin-top:26px">
+-        <a href={localizePath("/contact/", lang)} class="btn btn-primary">Plan een gratis demo</a>
++        <a href={demoPath(lang)} class="btn btn-primary">Plan een gratis demo</a>
+         <a href={localizePath("/tarieven/", lang)} class="btn btn-ghost" style="margin-left:8px">Bekijk de licentieopties</a>
+       </div>
+     </div>
+diff --git a/src/pages/contact.astro b/src/pages/contact.astro
+index c08a7f1..ff8e353 100644
+--- a/src/pages/contact.astro
++++ b/src/pages/contact.astro
+@@ -167,7 +167,7 @@ const offices = [
+       <h2>Klaar om hrmforce in actie te zien?</h2>
+       <p>Plan een vrijblijvende demo en ontdek in 30 minuten hoe onze assessments en talentmanagement-software jouw HR-proces versterken.</p>
+       <div class="btns">
+-        <a href="/contact/" class="btn btn-primary">Claim gratis demo</a>
++        <a href="/demo/" class="btn btn-primary">Claim gratis demo</a>
+         <a href="/online-assessments/" class="btn btn-light">Bekijk de assessments</a>
+       </div>
+     </div>
+diff --git a/src/pages/hrm-oplossingen/[slug].astro b/src/pages/hrm-oplossingen/[slug].astro
+index e2155a9..c9d39d8 100644
+--- a/src/pages/hrm-oplossingen/[slug].astro
++++ b/src/pages/hrm-oplossingen/[slug].astro
+@@ -2,7 +2,7 @@
+ import Img from "../../components/Img.astro";
+ import Base from "../../layouts/Base.astro";
+ import { oplossingen } from "../../data/oplossingen.js";
+-import { getLangFromUrl, localizePath } from "../../i18n/utils.js";
++import { getLangFromUrl, localizePath, demoPath } from "../../i18n/utils.js";
+ import LogoSlider from "../../components/LogoSlider.astro";
+ import SocialProof from "../../components/SocialProof.astro";
+ import ReviewSlider from "../../components/ReviewSlider.astro";
+@@ -28,7 +28,7 @@ const solutionsHref = localizePath("/hrm-oplossingen/", lang);
+         <h1>{o.title}</h1>
+         {o.intro.map((p) => <p style="color:rgba(255,255,255,.85);font-size:17px;margin-bottom:14px">{p}</p>)}
+         <div class="btns">
+-          <a href={localizePath("/contact/", lang)} class="btn btn-primary">{o.ctaBtn || "Plan een gratis demo"}</a>
++          <a href={demoPath(lang)} class="btn btn-primary">{o.ctaBtn || "Plan een gratis demo"}</a>
+           <a href={localizePath("/tarieven/", lang)} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.45)">Bekijk tarieven</a>
+         </div>
+         <p class="cta-note">{o.cta}</p>
+@@ -74,7 +74,7 @@ const solutionsHref = localizePath("/hrm-oplossingen/", lang);
+           {o.bullets && o.bullets.length > 0 && (
+             <ul class="traits">{o.bullets.map((b) => <li>{b}</li>)}</ul>
+           )}
+-          <a href={localizePath("/contact/", lang)} class="btn btn-primary" style="margin-top:14px">{o.ctaBtn || "Plan een gratis demo"}</a>
++          <a href={demoPath(lang)} class="btn btn-primary" style="margin-top:14px">{o.ctaBtn || "Plan een gratis demo"}</a>
+         </div>
+         <div class="pentagon">
+           {o.photo && <Img class="sol-photo" src={o.photo} alt={o.title} loading="lazy" />}
+@@ -93,7 +93,7 @@ const solutionsHref = localizePath("/hrm-oplossingen/", lang);
+       <h2>Benieuwd wat deze oplossing voor jouw organisatie kan doen?</h2>
+       <p>Plan een vrijblijvende demo en zie deze oplossing in actie, of bekijk direct de mogelijkheden en tarieven.</p>
+       <div class="btns">
+-        <a href={localizePath("/contact/", lang)} class="btn btn-primary">Plan een gratis demo</a>
++        <a href={demoPath(lang)} class="btn btn-primary">Plan een gratis demo</a>
+         <a href={localizePath("/tarieven/", lang)} class="btn btn-light">Bekijk tarieven</a>
+       </div>
+     </div>
+diff --git a/src/pages/shop-products.json.ts b/src/pages/shop-products.json.ts
+new file mode 100644
+index 0000000..1755a71
+--- /dev/null
++++ b/src/pages/shop-products.json.ts
+@@ -0,0 +1,15 @@
++// De productteksten van de shop als apart bestand. Ze stonden als 257 kB
++// inline script in elke shoppagina, wat de zwaarste pagina van de site opleverde.
++// De lijst met producten rendert nu meteen; deze teksten komen er vlak daarna bij.
++import { SHOP_CONTENT } from "../data/shop-products.js";
++
++export const prerender = true;
++
++export function GET() {
++  return new Response(JSON.stringify(SHOP_CONTENT), {
++    headers: {
++      "Content-Type": "application/json; charset=utf-8",
++      "Cache-Control": "public, max-age=3600",
++    },
++  });
++}
+-- 
+2.43.0
+

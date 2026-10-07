@@ -1,0 +1,10 @@
+---
+import Base from "../../layouts/Base.astro";
+import WhitepaperIndex from "../../components/WhitepaperIndex.astro";
+import { WP_UI } from "../../data/whitepapers-content.js";
+import { perTaal } from "../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const ui = WP_UI[lang];
+---
+<Base title={ui.idxMt} description={ui.idxMd} active=""><WhitepaperIndex ui={ui} lang={lang} /></Base>

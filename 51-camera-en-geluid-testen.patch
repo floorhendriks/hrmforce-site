@@ -1,0 +1,1556 @@
+From 484cdfca7d351240301088c175c21d33bc07a801 Mon Sep 17 00:00:00 2001
+From: Floor Hendriks <f.hendriks@hrmforce.com>
+Date: Fri, 2 Oct 2026 14:08:00 +0000
+Subject: [PATCH] Pagina om camera, microfoon en geluid vooraf te testen
+
+Kandidaten die een gesprek via Google Meet of Microsoft Teams hebben,
+kunnen op /voorbereiding/camera-en-geluid-testen/ in hun eigen browser
+controleren of camera, microfoon, speakers, browser en netwerk werken.
+De test draait volledig lokaal: er wordt niets opgenomen, verstuurd of
+bewaard. Daaronder staan twee korte stappenplannen voor Meet en Teams,
+met de kanttekening dat Meet geen testpagina heeft en de testoproep van
+Teams alleen in de bureaubladversie zit.
+
+De pagina staat in alle zes talen en is vanaf /voorbereiding/ te vinden.
+---
+ src/components/CameraTest.astro               | 539 ++++++++++++
+ src/components/Voorbereiding.astro            |  24 +
+ src/data/camera-test-content.js               | 802 ++++++++++++++++++
+ src/data/valid-paths.js                       |   2 +-
+ src/layouts/Base.astro                        |   1 +
+ .../camera-en-geluid-testen.astro             |   9 +
+ .../camera-en-geluid-testen.astro             |   9 +
+ .../camera-en-geluid-testen.astro             |   9 +
+ .../camera-en-geluid-testen.astro             |   9 +
+ .../camera-en-geluid-testen.astro             |   9 +
+ .../camera-en-geluid-testen.astro             |   9 +
+ 11 files changed, 1421 insertions(+), 1 deletion(-)
+ create mode 100644 src/components/CameraTest.astro
+ create mode 100644 src/data/camera-test-content.js
+ create mode 100644 src/pages/de/voorbereiding/camera-en-geluid-testen.astro
+ create mode 100644 src/pages/en/voorbereiding/camera-en-geluid-testen.astro
+ create mode 100644 src/pages/es/voorbereiding/camera-en-geluid-testen.astro
+ create mode 100644 src/pages/fr/voorbereiding/camera-en-geluid-testen.astro
+ create mode 100644 src/pages/ro/voorbereiding/camera-en-geluid-testen.astro
+ create mode 100644 src/pages/voorbereiding/camera-en-geluid-testen.astro
+
+diff --git a/src/components/CameraTest.astro b/src/components/CameraTest.astro
+new file mode 100644
+index 0000000..2abfdca
+--- /dev/null
++++ b/src/components/CameraTest.astro
+@@ -0,0 +1,539 @@
++---
++// Zelftest voor camera, microfoon, geluid, browser en netwerk. Alles draait in
++// de browser van de kandidaat: er wordt niets opgenomen, verstuurd of bewaard.
++import { localizePath } from "../i18n/utils.js";
++import { voorbereidingContent } from "../data/voorbereiding-content.js";
++const { t, lang } = Astro.props;
++const voorbereidingHref = localizePath("/voorbereiding/", lang);
++const contactHref = localizePath("/contact/", lang);
++const contact = (voorbereidingContent[lang] || voorbereidingContent.nl).contact;
++---
++<div class="crumb"><div class="wrap">
++  <a href={localizePath("/", lang)}>Home</a> › <a href={voorbereidingHref}>{(voorbereidingContent[lang] || voorbereidingContent.nl).crumb}</a> › <span>{t.crumb}</span>
++</div></div>
++
++<section class="ahero"><div class="wrap" style="display:block">
++  <div class="eyebrow">{t.hero.eyebrow}</div>
++  <h1>{t.hero.title}</h1>
++  <p class="ct-lead">{t.hero.lead}</p>
++</div></section>
++
++<section><div class="wrap" style="display:block">
++  <div class="ct-privacy">
++    <h2 class="ct-privacy-h">{t.privacy.title}</h2>
++    <ul class="ct-privacy-list">{t.privacy.items.map((i) => (<li>{i}</li>))}</ul>
++  </div>
++
++  <div class="ct-start">
++    <button type="button" id="ctStart" class="btn btn-primary">{t.start.button}</button>
++    <button type="button" id="ctStop" class="btn btn-ghost" hidden>{t.start.stop}</button>
++    <p class="ct-hint" id="ctStartHint">{t.start.hint}</p>
++  </div>
++
++  <div class="ct-grid">
++    <div class="ct-card">
++      <div class="ct-kop"><h3>{t.camera.title}</h3><span class="ct-st" id="ctCamSt" data-st="wacht">{t.resultaat.nietGetest}</span></div>
++      <div class="ct-video"><video id="ctVideo" playsinline autoplay muted></video><span class="ct-video-leeg" id="ctVideoLeeg">{t.camera.wacht}</span></div>
++      <p class="ct-msg" id="ctCamMsg">{t.camera.hint}</p>
++      <dl class="ct-feiten" id="ctCamFeiten" hidden>
++        <dt>{t.camera.apparaat}</dt><dd id="ctCamNaam">-</dd>
++        <dt>{t.camera.resolutie}</dt><dd id="ctCamRes">-</dd>
++      </dl>
++      <label class="ct-kies" id="ctCamKiesWrap" hidden>
++        <span>{t.camera.kies}</span>
++        <select id="ctCamKies"></select>
++      </label>
++    </div>
++
++    <div class="ct-card">
++      <div class="ct-kop"><h3>{t.mic.title}</h3><span class="ct-st" id="ctMicSt" data-st="wacht">{t.resultaat.nietGetest}</span></div>
++      <p class="ct-msg" id="ctMicMsg">{t.mic.hint}</p>
++      <div class="ct-meter" aria-hidden="true"><span id="ctMicBalk"></span></div>
++      <p class="ct-meter-label">{t.mic.niveau}</p>
++      <dl class="ct-feiten" id="ctMicFeiten" hidden>
++        <dt>{t.mic.apparaat}</dt><dd id="ctMicNaam">-</dd>
++      </dl>
++      <label class="ct-kies" id="ctMicKiesWrap" hidden>
++        <span>{t.mic.kies}</span>
++        <select id="ctMicKies"></select>
++      </label>
++    </div>
++
++    <div class="ct-card">
++      <div class="ct-kop"><h3>{t.speaker.title}</h3><span class="ct-st" id="ctGelSt" data-st="wacht">{t.resultaat.nietGetest}</span></div>
++      <p class="ct-msg" id="ctGelMsg">{t.speaker.hint}</p>
++      <button type="button" id="ctToon" class="btn btn-ghost btn-sm">{t.speaker.play}</button>
++      <div class="ct-vraag" id="ctGelVraag" hidden>
++        <p>{t.speaker.vraag}</p>
++        <div class="ct-vraag-knoppen">
++          <button type="button" class="btn btn-ghost btn-sm" id="ctGelJa">{t.speaker.ja}</button>
++          <button type="button" class="btn btn-ghost btn-sm" id="ctGelNee">{t.speaker.nee}</button>
++        </div>
++      </div>
++    </div>
++
++    <div class="ct-card">
++      <div class="ct-kop"><h3>{t.systeem.title}</h3><span class="ct-st" id="ctSysSt" data-st="wacht">{t.resultaat.nietGetest}</span></div>
++      <dl class="ct-feiten">
++        <dt>{t.systeem.browser}</dt><dd id="ctSysBrowser">-</dd>
++        <dt>{t.systeem.os}</dt><dd id="ctSysOs">-</dd>
++        <dt>{t.systeem.scherm}</dt><dd id="ctSysScherm">-</dd>
++        <dt>{t.systeem.verbinding}</dt><dd id="ctSysNet">-</dd>
++      </dl>
++      <p class="ct-msg" id="ctSysMsg"></p>
++    </div>
++
++    <div class="ct-card ct-card-net">
++      <div class="ct-kop"><h3>{t.netwerk.title}</h3><span class="ct-st" id="ctNetSt" data-st="wacht">{t.resultaat.nietGetest}</span></div>
++      <p class="ct-msg" id="ctNetMsg">{t.netwerk.hint}</p>
++    </div>
++
++    <div class="ct-card ct-card-res">
++      <div class="ct-kop"><h3>{t.resultaat.title}</h3></div>
++      <ul class="ct-res" id="ctRes"></ul>
++      <button type="button" id="ctKopieer" class="btn btn-ghost btn-sm">{t.resultaat.kopieer}</button>
++      <p class="ct-msg">{t.resultaat.hulp}</p>
++    </div>
++  </div>
++</div></section>
++
++<section class="bg-soft"><div class="wrap" style="display:block">
++  <div class="ct-gidsen">
++    <div class="ct-gids">
++      <h2>{t.meet.title}</h2>
++      <p>{t.meet.intro}</p>
++      <ol>{t.meet.stappen.map((s) => (<li>{s}</li>))}</ol>
++      <a class="ct-ext" href="https://meet.google.com/" target="_blank" rel="noopener noreferrer">{t.meet.linkLabel} &rarr;</a>
++    </div>
++    <div class="ct-gids">
++      <h2>{t.teams.title}</h2>
++      <p>{t.teams.intro}</p>
++      <ol>{t.teams.stappen.map((s) => (<li>{s}</li>))}</ol>
++      <p class="ct-note">{t.teams.note}</p>
++      <a class="ct-ext" href="https://teams.microsoft.com/" target="_blank" rel="noopener noreferrer">{t.teams.linkLabel} &rarr;</a>
++    </div>
++  </div>
++</div></section>
++
++<section><div class="wrap" style="display:block">
++  <h2 class="section-title">{t.tips.title}</h2>
++  <ul class="ct-tips">{t.tips.items.map((i) => (<li>{i}</li>))}</ul>
++  <div class="btns" style="margin-top:22px">
++    <a href={voorbereidingHref} class="btn btn-ghost">&larr; {t.terug}</a>
++  </div>
++</div></section>
++
++<section class="bg-soft"><div class="wrap">
++  <div class="eyebrow">{contact.eyebrow}</div>
++  <h2 class="section-title">{contact.title}</h2>
++  <p style="max-width:820px;color:var(--muted);margin-bottom:20px">{contact.intro}</p>
++  <ul class="ct-contact">
++    <li><strong>T:</strong> <a href="tel:+31888832188">+31 (0)88 88 321 88</a></li>
++    <li><strong>E:</strong> <a href="mailto:service@hrmforce.com">service@hrmforce.com</a></li>
++  </ul>
++  <div class="btns" style="margin-top:20px">
++    <a href={contactHref} class="btn btn-primary">{contact.cta}</a>
++  </div>
++</div></section>
++
++<style>
++  [hidden]{display:none !important}
++  .ct-lead{max-width:820px;color:#d7e2ef;font-size:17px;line-height:1.7;margin:10px 0 0}
++  .ct-privacy{max-width:820px;background:var(--tint,#EEF4FA);border:1px solid var(--line);border-radius:var(--radius);padding:18px 22px}
++  .ct-privacy-h{color:var(--navy);font-size:16px;font-weight:800;margin:0 0 10px}
++  .ct-privacy-list{margin:0;padding-left:20px;color:#343434;font-size:14.5px;line-height:1.65}
++  .ct-privacy-list li{margin:5px 0}
++  .ct-start{margin:24px 0 8px;display:flex;flex-wrap:wrap;align-items:center;gap:12px}
++  .ct-hint{color:var(--muted);font-size:14px;margin:0;flex:1 1 260px}
++  .ct-grid{display:grid;grid-template-columns:repeat(2,1fr);align-items:start;gap:16px;margin-top:20px}
++  .ct-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-xs)}
++  .ct-kop{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
++  .ct-kop h3{color:var(--navy);font-size:17px;font-weight:800;margin:0}
++  .ct-st{font-size:12.5px;font-weight:700;border-radius:999px;padding:3px 10px;white-space:nowrap}
++  .ct-st[data-st="wacht"]{background:#EEF1F4;color:#5b6773}
++  .ct-st[data-st="ok"]{background:#E6F4EA;color:#1E6B38}
++  .ct-st[data-st="fout"]{background:#FBEAE6;color:#A33B2A}
++  .ct-st[data-st="bezig"]{background:#FFF4D6;color:#7A5A00}
++  .ct-video{position:relative;background:#101820;border-radius:var(--radius-sm,8px);aspect-ratio:16/9;overflow:hidden;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
++  .ct-video video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:none}
++  .ct-video.aan video{display:block}
++  .ct-video.aan .ct-video-leeg{display:none}
++  .ct-video-leeg{color:#9fb0c0;font-size:14px;padding:0 16px;text-align:center}
++  .ct-msg{color:#343434;font-size:14.5px;line-height:1.6;margin:10px 0 0}
++  .ct-meter{height:14px;border-radius:999px;background:#EEF1F4;overflow:hidden;margin-top:12px}
++  .ct-meter span{display:block;height:100%;width:0;background:var(--blue,#4691CE);transition:width .08s linear}
++  .ct-meter-label{color:var(--muted);font-size:12.5px;margin:6px 0 0}
++  .ct-feiten{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:12px 0 0;font-size:14px}
++  .ct-feiten dt{color:var(--muted)}
++  .ct-feiten dd{margin:0;color:#343434;overflow-wrap:anywhere}
++  .ct-kies{display:block;margin-top:12px;font-size:13.5px;color:var(--muted)}
++  .ct-kies select{display:block;width:100%;margin-top:5px;padding:9px 11px;border:1px solid var(--line);border-radius:var(--radius-sm,8px);font:inherit;font-size:14px;background:#fff}
++  .btn-sm{padding:9px 16px;font-size:14px}
++  .ct-vraag{margin-top:14px}
++  .ct-vraag p{margin:0 0 8px;font-size:14.5px;color:#343434}
++  .ct-vraag-knoppen{display:flex;flex-wrap:wrap;gap:8px}
++  .ct-card-res,.ct-card-net{grid-column:1/-1}
++  .ct-res{list-style:none;margin:0 0 14px;padding:0;font-size:14.5px}
++  .ct-res :global(li){display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 14px;padding:9px 0;border-top:1px solid var(--line)}
++  .ct-res :global(li:first-child){border-top:0}
++  .ct-res :global(b){font-weight:600;color:#343434}
++  .ct-res :global(span){font-weight:700;text-align:right}
++  .ct-res :global(span[data-st="ok"]){color:#1E6B38}
++  .ct-res :global(span[data-st="fout"]){color:#A33B2A}
++  .ct-res :global(span[data-st="wacht"]),.ct-res :global(span[data-st="bezig"]){color:var(--muted)}
++  .ct-gidsen{display:grid;grid-template-columns:1fr 1fr;gap:20px}
++  .ct-gids{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px}
++  .ct-gids h2{color:var(--navy);font-size:19px;margin:0 0 10px}
++  .ct-gids p{color:#343434;font-size:15px;line-height:1.7;margin:0 0 12px}
++  .ct-gids ol{margin:0 0 14px 20px;padding:0;color:#343434;font-size:15px;line-height:1.7}
++  .ct-gids ol li{margin:7px 0}
++  .ct-note{color:var(--muted);font-size:14px}
++  .ct-ext{color:var(--blue);font-weight:700;font-size:14.5px;text-decoration:none}
++  .ct-tips{max-width:820px;margin:0;padding-left:20px;color:#343434;font-size:15.5px;line-height:1.75}
++  .ct-tips li{margin:8px 0}
++  .ct-contact{list-style:none;margin:0;padding:0;font-size:17px;line-height:2}
++  .ct-contact a{color:var(--blue,#4691CE)}
++  @media(max-width:860px){.ct-grid{grid-template-columns:1fr}.ct-gidsen{grid-template-columns:1fr}}
++</style>
++
++<script is:inline define:vars={{ T: t }}>
++  (function () {
++    var $ = function (id) { return document.getElementById(id); };
++    var startKnop = $("ctStart");
++    if (!startKnop) return;
++
++    var stroom = null, ctx = null, analyser = null, bron = null, lus = 0;
++    var video = $("ctVideo"), videoVak = video.parentNode;
++    var stand = { cam: "wacht", mic: "wacht", geluid: "wacht", sys: "wacht", net: "wacht" };
++    var feit = { cam: "", mic: "", browser: "", os: "", scherm: "", verbinding: "" };
++    var LABEL = { wacht: T.resultaat.nietGetest, ok: T.resultaat.okLabel, fout: T.resultaat.foutLabel, bezig: "..." };
++    var CHIP = { cam: "ctCamSt", mic: "ctMicSt", geluid: "ctGelSt", sys: "ctSysSt", net: "ctNetSt" };
++    var NAAM = { cam: T.camera.title, mic: T.mic.title, geluid: T.speaker.title, sys: T.systeem.title, net: T.netwerk.title };
++
++    function zet(sleutel, waarde, bericht, berichtId) {
++      stand[sleutel] = waarde;
++      var chip = $(CHIP[sleutel]);
++      if (chip) { chip.setAttribute("data-st", waarde); chip.textContent = LABEL[waarde] || ""; }
++      if (bericht != null && berichtId) { var p = $(berichtId); if (p) p.textContent = bericht; }
++      tekenResultaat();
++    }
++
++    function tekenResultaat() {
++      var ul = $("ctRes");
++      if (!ul) return;
++      ul.innerHTML = "";
++      ["cam", "mic", "geluid", "sys", "net"].forEach(function (k) {
++        var li = document.createElement("li");
++        var b = document.createElement("b");
++        b.textContent = NAAM[k];
++        var s = document.createElement("span");
++        s.setAttribute("data-st", stand[k]);
++        var extra = k === "cam" ? feit.cam : k === "mic" ? feit.mic : "";
++        s.textContent = (LABEL[stand[k]] || "") + (extra && stand[k] === "ok" ? " (" + extra + ")" : "");
++        li.appendChild(b); li.appendChild(s); ul.appendChild(li);
++      });
++    }
++
++    // ---- browser, apparaat en webview -------------------------------------
++    function browserInfo() {
++      var ua = navigator.userAgent, m;
++      if ((m = /Edg(?:iOS|A)?\/(\d+)/.exec(ua))) return { naam: "Microsoft Edge", versie: +m[1], min: 100 };
++      if ((m = /OPR\/(\d+)/.exec(ua)) || (m = /OPiOS\/(\d+)/.exec(ua))) return { naam: "Opera", versie: +m[1], min: 86 };
++      if ((m = /SamsungBrowser\/(\d+)/.exec(ua))) return { naam: "Samsung Internet", versie: +m[1], min: 16 };
++      if ((m = /(?:Firefox|FxiOS)\/(\d+)/.exec(ua))) return { naam: "Firefox", versie: +m[1], min: 100 };
++      if ((m = /CriOS\/(\d+)/.exec(ua))) return { naam: "Chrome", versie: +m[1], min: 100 };
++      if ((m = /Chrome\/(\d+)/.exec(ua))) return { naam: "Chrome", versie: +m[1], min: 100 };
++      if ((m = /Version\/(\d+)[\d.]*\s+(?:Mobile\/\S+\s+)?Safari/.exec(ua))) return { naam: "Safari", versie: +m[1], min: 15 };
++      return { naam: "", versie: 0, min: 0 };
++    }
++    function osInfo() {
++      var ua = navigator.userAgent, m;
++      if (/Windows NT 10/.test(ua)) return "Windows 10/11";
++      if (/Windows/.test(ua)) return "Windows";
++      if (/Android (\d+)/.test(ua)) return "Android " + /Android (\d+)/.exec(ua)[1];
++      if (/iPhone|iPod/.test(ua)) return "iOS" + ((m = /OS (\d+)_(\d+)/.exec(ua)) ? " " + m[1] + "." + m[2] : "");
++      if (/iPad/.test(ua)) return "iPadOS" + ((m = /OS (\d+)_(\d+)/.exec(ua)) ? " " + m[1] + "." + m[2] : "");
++      if (/CrOS/.test(ua)) return "ChromeOS";
++      if (/Mac OS X (\d+)[_.](\d+)/.test(ua)) { m = /Mac OS X (\d+)[_.](\d+)/.exec(ua); return "macOS " + m[1] + "." + m[2]; }
++      if (/Mac/.test(ua)) return "macOS";
++      if (/Linux/.test(ua)) return "Linux";
++      return T.systeem.onbekend;
++    }
++    function isWebview() {
++      var ua = navigator.userAgent;
++      if (/(FBAN|FBAV|FB_IAB|Instagram|Line\/|LinkedInApp|Twitter|Snapchat|Pinterest|MicroMessenger|WhatsApp|GSA\/|Outlook-)/i.test(ua)) return true;
++      if (/;\s*wv\)/.test(ua)) return true;
++      if (/iPhone|iPad|iPod/.test(ua) && !/Safari\//.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua)) return true;
++      return false;
++    }
++    function systeemCheck() {
++      var b = browserInfo();
++      feit.browser = b.naam ? b.naam + (b.versie ? " " + b.versie : "") : T.systeem.onbekend;
++      feit.os = osInfo();
++      feit.scherm = window.innerWidth + " x " + window.innerHeight;
++      var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
++      feit.verbinding = c && c.effectiveType ? c.effectiveType : (navigator.onLine ? "online" : "offline");
++      $("ctSysBrowser").textContent = feit.browser;
++      $("ctSysOs").textContent = feit.os;
++      $("ctSysScherm").textContent = feit.scherm;
++      $("ctSysNet").textContent = feit.verbinding;
++      if (!window.isSecureContext) { zet("sys", "fout", T.systeem.onveilig, "ctSysMsg"); return; }
++      if (isWebview()) { zet("sys", "fout", T.systeem.webview, "ctSysMsg"); return; }
++      if (b.min && b.versie && b.versie < b.min) { zet("sys", "fout", T.systeem.oud, "ctSysMsg"); return; }
++      zet("sys", "ok", T.systeem.ok, "ctSysMsg");
++    }
++
++    // ---- netwerk ----------------------------------------------------------
++    function netCheck() {
++      zet("net", "bezig", T.netwerk.bezig, "ctNetMsg");
++      if (!window.RTCPeerConnection) { zet("net", "fout", T.netwerk.fout, "ctNetMsg"); return; }
++      var servers = ["stun:stun.cloudflare.com:3478", "stun:stun.l.google.com:19302"];
++      var i = 0;
++      (function probeer() {
++        if (i >= servers.length) { zet("net", "fout", T.netwerk.fout, "ctNetMsg"); return; }
++        var pc, klaar = false, timer;
++        var af = function (gelukt) {
++          if (klaar) return;
++          klaar = true; clearTimeout(timer);
++          try { pc.close(); } catch (e) {}
++          if (gelukt) zet("net", "ok", T.netwerk.ok, "ctNetMsg");
++          else { i++; probeer(); }
++        };
++        try { pc = new RTCPeerConnection({ iceServers: [{ urls: servers[i] }] }); }
++        catch (e) { i++; return probeer(); }
++        pc.onicecandidate = function (ev) {
++          if (ev.candidate && / typ (srflx|prflx|relay)/.test(ev.candidate.candidate)) af(true);
++        };
++        try { pc.createDataChannel("hrmforce"); } catch (e) {}
++        pc.createOffer().then(function (o) { return pc.setLocalDescription(o); }).catch(function () { af(false); });
++        timer = setTimeout(function () { af(false); }, 6000);
++      })();
++    }
++
++    // ---- camera en microfoon ----------------------------------------------
++    function stopStroom() {
++      if (lus) { cancelAnimationFrame(lus); lus = 0; }
++      if (bron) { try { bron.disconnect(); } catch (e) {} bron = null; }
++      if (ctx) { try { ctx.close(); } catch (e) {} ctx = null; analyser = null; }
++      if (stroom) { stroom.getTracks().forEach(function (tr) { tr.stop(); }); stroom = null; }
++      video.srcObject = null;
++      videoVak.classList.remove("aan");
++      $("ctMicBalk").style.width = "0";
++    }
++
++    function foutTekst(err) {
++      var n = (err && err.name) || "";
++      if (n === "NotAllowedError" || n === "SecurityError") return { cam: T.camera.geweigerd, mic: T.mic.geweigerd };
++      if (n === "NotFoundError" || n === "OverconstrainedError") return { cam: T.camera.geen, mic: T.mic.geen };
++      if (n === "NotReadableError" || n === "AbortError") return { cam: T.camera.bezet, mic: T.camera.bezet };
++      return { cam: T.camera.fout, mic: T.camera.fout };
++    }
++
++    function vulKiezers() {
++      if (!navigator.mediaDevices.enumerateDevices) return;
++      navigator.mediaDevices.enumerateDevices().then(function (lijst) {
++        [["videoinput", "ctCamKies", "ctCamKiesWrap"], ["audioinput", "ctMicKies", "ctMicKiesWrap"]].forEach(function (rij) {
++          var apparaten = lijst.filter(function (d) { return d.kind === rij[0] && d.deviceId; });
++          var sel = $(rij[1]), wrap = $(rij[2]);
++          if (!sel) return;
++          var huidig = sel.value;
++          sel.innerHTML = "";
++          apparaten.forEach(function (d, n) {
++            var o = document.createElement("option");
++            o.value = d.deviceId;
++            o.textContent = d.label || (rij[0] === "videoinput" ? T.camera.title : T.mic.title) + " " + (n + 1);
++            sel.appendChild(o);
++          });
++          var actief = stroom && stroom.getTracks().filter(function (tr) {
++            return tr.kind === (rij[0] === "videoinput" ? "video" : "audio");
++          })[0];
++          var id = actief && actief.getSettings ? actief.getSettings().deviceId : "";
++          sel.value = id || huidig || (apparaten[0] && apparaten[0].deviceId) || "";
++          wrap.hidden = apparaten.length < 2;
++        });
++      }).catch(function () {});
++    }
++
++    function meetMic() {
++      if (!analyser) return;
++      var buf = new Uint8Array(analyser.fftSize);
++      var piek = 0, stilSinds = Date.now();
++      var tik = function () {
++        if (!analyser) return;
++        analyser.getByteTimeDomainData(buf);
++        var som = 0;
++        for (var i = 0; i < buf.length; i++) { var v = (buf[i] - 128) / 128; som += v * v; }
++        var rms = Math.sqrt(som / buf.length);
++        var pct = Math.min(100, Math.round(rms * 320));
++        $("ctMicBalk").style.width = pct + "%";
++        if (rms > 0.025) {
++          piek = Math.max(piek, rms);
++          if (stand.mic !== "ok") zet("mic", "ok", T.mic.ok, "ctMicMsg");
++        } else if (stand.mic !== "ok" && Date.now() - stilSinds > 4000) {
++          var p = $("ctMicMsg");
++          if (p && p.textContent !== T.mic.stil) p.textContent = T.mic.stil;
++        }
++        lus = requestAnimationFrame(tik);
++      };
++      lus = requestAnimationFrame(tik);
++    }
++
++    function start(camId, micId) {
++      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
++        zet("cam", "fout", T.systeem.webview, "ctCamMsg");
++        zet("mic", "fout", T.systeem.webview, "ctMicMsg");
++        return;
++      }
++      stopStroom();
++      startKnop.disabled = true;
++      startKnop.textContent = T.start.bezig;
++      var eisen = {
++        video: camId ? { deviceId: { exact: camId } } : { width: { ideal: 1280 }, height: { ideal: 720 } },
++        audio: micId ? { deviceId: { exact: micId } } : true,
++      };
++      navigator.mediaDevices.getUserMedia(eisen).then(function (s) {
++        stroom = s;
++        startKnop.hidden = true;
++        startKnop.disabled = false;
++        startKnop.textContent = T.start.opnieuw;
++        $("ctStop").hidden = false;
++        $("ctStartHint").textContent = "";
++
++        var vt = s.getVideoTracks()[0];
++        if (vt) {
++          video.srcObject = s;
++          video.play().catch(function () {});
++          videoVak.classList.add("aan");
++          var toonBeeld = function () {
++            var inst = vt.getSettings ? vt.getSettings() : {};
++            var br = video.videoWidth || inst.width || 0, ho = video.videoHeight || inst.height || 0;
++            feit.cam = br && ho ? br + "x" + ho : "";
++            $("ctCamNaam").textContent = vt.label || T.systeem.onbekend;
++            $("ctCamRes").textContent = feit.cam || T.systeem.onbekend;
++            $("ctCamFeiten").hidden = false;
++            zet("cam", br ? "ok" : "fout", br ? T.camera.hint : T.camera.fout, "ctCamMsg");
++          };
++          if (video.readyState >= 1) toonBeeld();
++          else video.addEventListener("loadedmetadata", toonBeeld, { once: true });
++        } else {
++          zet("cam", "fout", T.camera.geen, "ctCamMsg");
++        }
++
++        var at = s.getAudioTracks()[0];
++        if (at) {
++          feit.mic = at.label || "";
++          $("ctMicNaam").textContent = at.label || T.systeem.onbekend;
++          $("ctMicFeiten").hidden = false;
++          try {
++            ctx = new (window.AudioContext || window.webkitAudioContext)();
++            if (ctx.state === "suspended") ctx.resume();
++            analyser = ctx.createAnalyser();
++            analyser.fftSize = 1024;
++            bron = ctx.createMediaStreamSource(s);
++            bron.connect(analyser);
++            zet("mic", "bezig", T.mic.hint, "ctMicMsg");
++            meetMic();
++          } catch (e) {
++            zet("mic", "fout", T.camera.fout, "ctMicMsg");
++          }
++        } else {
++          zet("mic", "fout", T.mic.geen, "ctMicMsg");
++        }
++
++        vulKiezers();
++        if (stand.net === "wacht") netCheck();
++      }).catch(function (err) {
++        startKnop.disabled = false;
++        startKnop.textContent = T.start.opnieuw;
++        var tk = foutTekst(err);
++        zet("cam", "fout", tk.cam, "ctCamMsg");
++        zet("mic", "fout", tk.mic, "ctMicMsg");
++        if (stand.net === "wacht") netCheck();
++      });
++    }
++
++    startKnop.addEventListener("click", function () { start("", ""); });
++    $("ctStop").addEventListener("click", function () {
++      stopStroom();
++      $("ctStop").hidden = true;
++      startKnop.hidden = false;
++      $("ctCamKiesWrap").hidden = true;
++      $("ctMicKiesWrap").hidden = true;
++      zet("cam", "wacht", T.camera.hint, "ctCamMsg");
++      zet("mic", "wacht", T.mic.hint, "ctMicMsg");
++    });
++    $("ctCamKies").addEventListener("change", function () { start(this.value, $("ctMicKies").value); });
++    $("ctMicKies").addEventListener("change", function () { start($("ctCamKies").value, this.value); });
++
++    // ---- geluid -----------------------------------------------------------
++    var toonBezig = false;
++    $("ctToon").addEventListener("click", function () {
++      if (toonBezig) return;
++      var knop = this;
++      var tc;
++      try { tc = new (window.AudioContext || window.webkitAudioContext)(); }
++      catch (e) { zet("geluid", "fout", T.speaker.nok, "ctGelMsg"); return; }
++      toonBezig = true;
++      knop.disabled = true;
++      knop.textContent = T.speaker.bezig;
++      zet("geluid", "bezig", T.speaker.hint, "ctGelMsg");
++      var nu = tc.currentTime;
++      var osc = tc.createOscillator(), gain = tc.createGain();
++      osc.type = "sine";
++      osc.frequency.setValueAtTime(440, nu);
++      gain.gain.setValueAtTime(0.0001, nu);
++      gain.gain.exponentialRampToValueAtTime(0.22, nu + 0.12);
++      gain.gain.setValueAtTime(0.22, nu + 1.8);
++      gain.gain.exponentialRampToValueAtTime(0.0001, nu + 2);
++      osc.connect(gain); gain.connect(tc.destination);
++      osc.start(nu); osc.stop(nu + 2.05);
++      osc.onended = function () {
++        try { tc.close(); } catch (e) {}
++        toonBezig = false;
++        knop.disabled = false;
++        knop.textContent = T.speaker.play;
++        $("ctGelVraag").hidden = false;
++      };
++    });
++    $("ctGelJa").addEventListener("click", function () { zet("geluid", "ok", T.speaker.ok, "ctGelMsg"); $("ctGelVraag").hidden = true; });
++    $("ctGelNee").addEventListener("click", function () { zet("geluid", "fout", T.speaker.nok, "ctGelMsg"); $("ctGelVraag").hidden = true; });
++
++    // ---- resultaat kopiëren ------------------------------------------------
++    $("ctKopieer").addEventListener("click", function () {
++      var knop = this;
++      var regels = ["hrmforce " + T.hero.title, new Date().toLocaleString(), ""];
++      ["cam", "mic", "geluid", "net"].forEach(function (k) {
++        var extra = k === "cam" ? feit.cam : k === "mic" ? feit.mic : "";
++        regels.push(NAAM[k] + ": " + (LABEL[stand[k]] || "") + (extra && stand[k] === "ok" ? " (" + extra + ")" : ""));
++      });
++      regels.push(T.systeem.browser + ": " + feit.browser);
++      regels.push(T.systeem.os + ": " + feit.os);
++      regels.push(T.systeem.scherm + ": " + feit.scherm);
++      regels.push(T.systeem.verbinding + ": " + feit.verbinding);
++      regels.push("URL: " + location.href);
++      var tekst = regels.join("\n");
++      var klaar = function () {
++        knop.textContent = T.resultaat.gekopieerd;
++        setTimeout(function () { knop.textContent = T.resultaat.kopieer; }, 2500);
++      };
++      if (navigator.clipboard && navigator.clipboard.writeText) {
++        navigator.clipboard.writeText(tekst).then(klaar).catch(function () { vangnet(tekst, klaar); });
++      } else vangnet(tekst, klaar);
++    });
++    function vangnet(tekst, klaar) {
++      var ta = document.createElement("textarea");
++      ta.value = tekst;
++      ta.setAttribute("readonly", "");
++      ta.style.position = "fixed";
++      ta.style.left = "-9999px";
++      document.body.appendChild(ta);
++      ta.select();
++      try { document.execCommand("copy"); klaar(); } catch (e) {}
++      document.body.removeChild(ta);
++    }
++
++    window.addEventListener("pagehide", stopStroom);
++    systeemCheck();
++    tekenResultaat();
++  })();
++</script>
+diff --git a/src/components/Voorbereiding.astro b/src/components/Voorbereiding.astro
+index 74628ef..9ddc333 100644
+--- a/src/components/Voorbereiding.astro
++++ b/src/components/Voorbereiding.astro
+@@ -51,6 +51,16 @@ const otOnderdelen = Object.values(ONDERDELEN).map((o) => ({
+   naam: o.naam[lang] || o.naam.nl,
+   lead: o.lead[lang] || o.lead.nl,
+ }));
++const CT_UI = {
++  nl: { eyebrow: "Camera en geluid", title: "Test je camera en geluid vooraf", text: "Heb je een gesprek via Google Meet of Microsoft Teams? Test dan vooraf in je eigen browser of je camera, microfoon en speakers werken. Dat scheelt gedoe op het moment zelf.", cta: "Doe de test" },
++  en: { eyebrow: "Camera and sound", title: "Test your camera and sound beforehand", text: "Do you have a meeting in Google Meet or Microsoft Teams? Check in your own browser whether your camera, microphone and speakers work. That saves trouble at the start.", cta: "Take the test" },
++  de: { eyebrow: "Kamera und Ton", title: "Testen Sie Kamera und Ton vorab", text: "Haben Sie ein Gespräch über Google Meet oder Microsoft Teams? Prüfen Sie vorab im eigenen Browser, ob Kamera, Mikrofon und Lautsprecher funktionieren. Das erspart Ärger zu Beginn.", cta: "Zum Test" },
++  fr: { eyebrow: "Caméra et son", title: "Testez votre caméra et votre son à l'avance", text: "Vous avez un entretien sur Google Meet ou Microsoft Teams ? Vérifiez à l'avance dans votre navigateur si votre caméra, votre micro et vos haut-parleurs fonctionnent. Cela évite les soucis au démarrage.", cta: "Faire le test" },
++  es: { eyebrow: "Cámara y sonido", title: "Prueba tu cámara y tu sonido antes", text: "¿Tienes una entrevista por Google Meet o Microsoft Teams? Comprueba antes en tu navegador si tu cámara, tu micrófono y tus altavoces funcionan. Así evitas problemas al empezar.", cta: "Hacer la prueba" },
++  ro: { eyebrow: "Cameră și sunet", title: "Testează camera și sunetul din timp", text: "Ai o discuție pe Google Meet sau Microsoft Teams? Verifică din timp, în propriul browser, dacă funcționează camera, microfonul și boxele. Așa eviți bătăile de cap la început.", cta: "Fă testul" },
++};
++const ct = CT_UI[lang] || CT_UI.nl;
++const ctHref = localizePath("/voorbereiding/camera-en-geluid-testen/", lang);
+ const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voor deze zoekterm."}, en:{ph:"Search the preparation...", none:"Nothing found for this term."}, de:{ph:"In der Vorbereitung suchen...", none:"Nichts zu diesem Begriff gefunden."}, fr:{ph:"Rechercher dans la préparation...", none:"Rien trouvé pour ce terme."}, es:{ph:"Buscar en la preparación...", none:"No se encontró nada para este término."}, ro:{ph:"Caută în pregătire...", none:"Nimic găsit pentru acest termen."} }[lang] || {ph:"Zoek...", none:"Niets gevonden."};
+ ---
+ <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+@@ -59,6 +69,17 @@ const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voo
+   <h1>{t.hero.title}</h1>
+ </div></section>
+ 
++<section><div class="wrap" style="display:block">
++  <div class="ct-promo">
++    <div>
++      <div class="eyebrow">{ct.eyebrow}</div>
++      <h2 class="ct-promo-h">{ct.title}</h2>
++      <p class="ct-promo-p">{ct.text}</p>
++    </div>
++    <a href={ctHref} class="btn btn-primary">{ct.cta} &rarr;</a>
++  </div>
++</div></section>
++
+ <section><div class="wrap" style="display:block">
+   <input type="search" id="prepBodySearch" class="prep-search" placeholder={BODYUI.ph} aria-label={BODYUI.ph} />
+   <div class="kc-body" id="prepBody" set:html={sanitizeBodyLinks(t.body, lang, validPaths)}></div>
+@@ -128,6 +149,9 @@ const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voo
+   </div>
+ </div></section>
+ <style>
++  .ct-promo{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;max-width:920px;background:var(--tint,#EEF4FA);border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px}
++  .ct-promo-h{color:var(--navy);font-size:20px;margin:4px 0 8px}
++  .ct-promo-p{color:#343434;font-size:15px;line-height:1.7;margin:0;max-width:620px}
+   .kc-body{max-width:820px;line-height:1.7;color:#343434}
+   .kc-body :global(mark){background:var(--gold,#fcc11b);color:#1a1a1a;padding:0 2px;border-radius:2px}
+   .kc-body :global(h2){color:var(--navy,#0E468C);margin:28px 0 10px}
+diff --git a/src/data/camera-test-content.js b/src/data/camera-test-content.js
+new file mode 100644
+index 0000000..b840750
+--- /dev/null
++++ b/src/data/camera-test-content.js
+@@ -0,0 +1,802 @@
++// Teksten voor de pagina "Camera en geluid testen" onder /voorbereiding/.
++// De test draait volledig in de browser van de kandidaat: er wordt niets
++// opgenomen, verstuurd of bewaard. en/de/fr/es/ro zijn een eerste vertaalslag.
++export const cameraTestContent = {
++  nl: {
++    meta: {
++      title: "Camera en geluid testen voor je online assessment | Hrmforce",
++      description:
++        "Test in je eigen browser of je camera, microfoon en speakers werken voor een gesprek via Google Meet of Microsoft Teams. Er wordt niets opgenomen of bewaard.",
++    },
++    crumb: "Camera en geluid testen",
++    hero: {
++      eyebrow: "Voorbereiding",
++      title: "Test je camera en geluid",
++      lead: "Doe deze test op het apparaat waarop je het online assessment of het gesprek doet. Binnen een minuut weet je of je camera, microfoon en speakers doen wat ze moeten doen. Er wordt niets opgenomen, verstuurd of bewaard.",
++    },
++    privacy: {
++      title: "Wat er met je beeld en geluid gebeurt",
++      items: [
++        "Beeld en geluid blijven in je eigen browser. Er gaat niets naar hrmforce en er wordt niets opgeslagen.",
++        "Je browser vraagt om toestemming voor camera en microfoon. Die toestemming geldt alleen voor deze pagina.",
++        "Voor de netwerkcheck legt je browser kort contact met een STUN-server, net zoals Meet en Teams dat doen. Daar gaat geen beeld of geluid naartoe.",
++        "Druk je op stoppen of verlaat je de pagina, dan gaat het lampje van je camera weer uit.",
++      ],
++    },
++    start: {
++      button: "Start de test",
++      stop: "Stop de test",
++      opnieuw: "Test opnieuw",
++      hint: "Je browser vraagt zo om toestemming voor camera en microfoon. Kies toestaan.",
++      bezig: "Bezig met starten...",
++    },
++    camera: {
++      title: "Camera",
++      hint: "Zie je jezelf hieronder in beeld? Dan werkt je camera.",
++      ok: "Je camera werkt.",
++      wacht: "Nog niet getest.",
++      geen: "Er is geen camera gevonden. Koppel een webcam of gebruik een apparaat met een ingebouwde camera.",
++      geweigerd: "Je browser blokkeert de camera. Klik in de adresbalk op het slotje of het camera-icoon en zet de toegang aan. Daarna: test opnieuw.",
++      bezet: "De camera is al in gebruik door een ander programma. Stop Teams, Zoom of Meet en probeer het opnieuw.",
++      fout: "De camera kon niet starten.",
++      apparaat: "Apparaat",
++      resolutie: "Resolutie",
++      kies: "Andere camera",
++    },
++    mic: {
++      title: "Microfoon",
++      hint: "Zeg iets of tel hardop tot drie. De balk hoort mee te bewegen.",
++      ok: "We horen je.",
++      stil: "Nog niets gehoord. Praat wat harder of kies hieronder een andere microfoon.",
++      wacht: "Nog niet getest.",
++      geen: "Er is geen microfoon gevonden.",
++      geweigerd: "Je browser blokkeert de microfoon. Zet de toegang aan via het slotje in de adresbalk en test opnieuw.",
++      apparaat: "Apparaat",
++      kies: "Andere microfoon",
++      niveau: "Niveau",
++    },
++    speaker: {
++      title: "Geluid",
++      hint: "Zet je volume ongeveer halverwege en speel het testgeluid af. Je hoort een heldere toon van twee seconden.",
++      play: "Speel het testgeluid af",
++      bezig: "Het geluid speelt...",
++      vraag: "Hoorde je de toon?",
++      ja: "Ja, ik hoorde hem",
++      nee: "Nee, ik hoorde niets",
++      ok: "Je speakers werken.",
++      nok: "Controleer je volume, je koptelefoon en de geluidsuitgang van je apparaat. Kies in de instellingen van je systeem de speaker die je wilt gebruiken.",
++      wacht: "Nog niet getest.",
++    },
++    systeem: {
++      title: "Browser en apparaat",
++      browser: "Browser",
++      os: "Besturingssysteem",
++      scherm: "Scherm",
++      verbinding: "Verbinding",
++      onbekend: "Onbekend",
++      ok: "Je browser kan overweg met video-gesprekken.",
++      oud: "Deze browser is verouderd. Werk hem bij of gebruik Chrome, Edge, Firefox of Safari in een recente versie.",
++      webview: "Je hebt deze pagina geopend binnen een app, niet in een echte browser. In zo'n venster werken camera en microfoon vaak niet. Kopieer de link en open hem in Chrome, Edge of Safari.",
++      onveilig: "Deze pagina draait niet via https. Camera en microfoon werken dan niet.",
++    },
++    netwerk: {
++      title: "Netwerk",
++      hint: "Meet en Teams sturen beeld en geluid via UDP. Op een streng bedrijfsnetwerk of via een VPN wordt dat soms tegengehouden.",
++      bezig: "Bezig met de netwerkcheck...",
++      ok: "Je netwerk laat het videoverkeer door.",
++      fout: "Je netwerk houdt het verkeer tegen dat Meet en Teams gebruiken. Probeer een ander netwerk, bijvoorbeeld je eigen wifi of je telefoon als hotspot, of zet de VPN uit.",
++      wacht: "Nog niet getest.",
++    },
++    resultaat: {
++      title: "Jouw resultaat",
++      kopieer: "Kopieer het resultaat",
++      gekopieerd: "Gekopieerd",
++      hulp: "Loopt er iets mis en kom je er niet uit? Kopieer het resultaat en mail het naar service@hrmforce.com, dan kijken we met je mee.",
++      nietGetest: "niet getest",
++      okLabel: "werkt",
++      foutLabel: "let op",
++    },
++    meet: {
++      title: "Vooraf testen in Google Meet",
++      intro: "Google heeft geen losse testpagina. Je kunt wel zelf een vergadering starten en in het wachtscherm je beeld en geluid controleren. Daarvoor heb je een Google-account nodig.",
++      stappen: [
++        "Ga naar meet.google.com en log in met je Google-account.",
++        "Klik op Nieuwe vergadering en daarna op Direct een vergadering starten.",
++        "Je komt in het wachtscherm. Daar zie je jezelf in beeld en zie je of je microfoon uitslaat.",
++        "Klik op de drie puntjes en dan op Instellingen. Bij Audio kies je de juiste microfoon en speaker, bij Video de juiste camera.",
++        "Werkt alles, verlaat de vergadering dan weer. Je hoeft niemand uit te nodigen.",
++      ],
++      linkLabel: "Open meet.google.com",
++    },
++    teams: {
++      title: "Vooraf testen in Microsoft Teams",
++      intro: "Teams heeft een testoproep. Die zit in de bureaubladversie en vraagt om een Microsoft-account. In de webversie zit de testoproep niet.",
++      stappen: [
++        "Open de Teams-app en log in.",
++        "Klik rechtsboven op de drie puntjes naast je profielfoto en kies Instellingen.",
++        "Ga naar Apparaten en klik op Testoproep uitvoeren.",
++        "Je spreekt een kort bericht in en krijgt het meteen terug te horen. Daarna zie je per onderdeel of het werkt.",
++        "Hoor of zie je niets, kies dan bij Apparaten een andere microfoon, speaker of camera.",
++      ],
++      note: "Doe je het gesprek in je browser, dan is er geen testoproep. Open de vergaderlink een paar minuten voor de start en controleer beeld en geluid in het wachtscherm.",
++      linkLabel: "Open teams.microsoft.com",
++    },
++    tips: {
++      title: "Tips voor een rustig gesprek",
++      items: [
++        "Doe de test op het apparaat en in de ruimte waar je het gesprek voert. Een test op je telefoon zegt weinig over je laptop.",
++        "Gebruik een vaste internetverbinding of ga dicht bij je router zitten.",
++        "Zet programma's uit die de camera ook gebruiken. Twee programma's tegelijk op dezelfde camera werkt niet.",
++        "Een koptelefoon met microfoon voorkomt echo en galm.",
++        "Zorg dat het licht van voren komt. Zit je met een raam in je rug, dan word je een silhouet.",
++        "Doe de test een dag van tevoren. Dan is er nog tijd om iets op te lossen.",
++      ],
++    },
++    terug: "Terug naar de voorbereiding",
++  },
++
++  en: {
++    meta: {
++      title: "Test your camera and sound for your online assessment | Hrmforce",
++      description:
++        "Check in your own browser whether your camera, microphone and speakers work for a meeting in Google Meet or Microsoft Teams. Nothing is recorded or stored.",
++    },
++    crumb: "Test camera and sound",
++    hero: {
++      eyebrow: "Preparation",
++      title: "Test your camera and sound",
++      lead: "Run this test on the device you will use for the online assessment or the interview. Within a minute you know whether your camera, microphone and speakers do what they should. Nothing is recorded, sent or stored.",
++    },
++    privacy: {
++      title: "What happens with your video and audio",
++      items: [
++        "Video and audio stay inside your own browser. Nothing goes to hrmforce and nothing is stored.",
++        "Your browser asks permission for camera and microphone. That permission applies to this page only.",
++        "For the network check your browser briefly contacts a STUN server, exactly as Meet and Teams do. No video or audio goes there.",
++        "Press stop or leave the page and your camera light goes out again.",
++      ],
++    },
++    start: {
++      button: "Start the test",
++      stop: "Stop the test",
++      opnieuw: "Test again",
++      hint: "Your browser will ask permission for camera and microphone. Choose allow.",
++      bezig: "Starting...",
++    },
++    camera: {
++      title: "Camera",
++      hint: "Can you see yourself below? Then your camera works.",
++      ok: "Your camera works.",
++      wacht: "Not tested yet.",
++      geen: "No camera found. Connect a webcam or use a device with a built-in camera.",
++      geweigerd: "Your browser blocks the camera. Click the padlock or camera icon in the address bar and allow access, then test again.",
++      bezet: "The camera is already in use by another program. Close Teams, Zoom or Meet and try again.",
++      fout: "The camera could not start.",
++      apparaat: "Device",
++      resolutie: "Resolution",
++      kies: "Other camera",
++    },
++    mic: {
++      title: "Microphone",
++      hint: "Say something or count to three out loud. The bar should move along.",
++      ok: "We can hear you.",
++      stil: "Nothing heard yet. Speak a little louder or pick another microphone below.",
++      wacht: "Not tested yet.",
++      geen: "No microphone found.",
++      geweigerd: "Your browser blocks the microphone. Allow access via the padlock in the address bar and test again.",
++      apparaat: "Device",
++      kies: "Other microphone",
++      niveau: "Level",
++    },
++    speaker: {
++      title: "Sound",
++      hint: "Set your volume to about halfway and play the test tone. You will hear a clear tone of two seconds.",
++      play: "Play the test tone",
++      bezig: "Playing...",
++      vraag: "Did you hear the tone?",
++      ja: "Yes, I heard it",
++      nee: "No, I heard nothing",
++      ok: "Your speakers work.",
++      nok: "Check your volume, your headphones and the audio output of your device. Pick the speaker you want to use in your system settings.",
++      wacht: "Not tested yet.",
++    },
++    systeem: {
++      title: "Browser and device",
++      browser: "Browser",
++      os: "Operating system",
++      scherm: "Screen",
++      verbinding: "Connection",
++      onbekend: "Unknown",
++      ok: "Your browser can handle video meetings.",
++      oud: "This browser is out of date. Update it or use a recent version of Chrome, Edge, Firefox or Safari.",
++      webview: "You opened this page inside an app, not in a real browser. Camera and microphone often fail in such a window. Copy the link and open it in Chrome, Edge or Safari.",
++      onveilig: "This page is not running over https, so camera and microphone will not work.",
++    },
++    netwerk: {
++      title: "Network",
++      hint: "Meet and Teams send video and audio over UDP. A strict company network or a VPN sometimes blocks that.",
++      bezig: "Running the network check...",
++      ok: "Your network lets the video traffic through.",
++      fout: "Your network blocks the traffic that Meet and Teams use. Try another network, for example your own wifi or your phone as a hotspot, or turn off the VPN.",
++      wacht: "Not tested yet.",
++    },
++    resultaat: {
++      title: "Your result",
++      kopieer: "Copy the result",
++      gekopieerd: "Copied",
++      hulp: "Something not working and you cannot solve it? Copy the result and mail it to service@hrmforce.com and we will have a look with you.",
++      nietGetest: "not tested",
++      okLabel: "works",
++      foutLabel: "attention",
++    },
++    meet: {
++      title: "Testing in Google Meet beforehand",
++      intro: "Google has no separate test page. You can start a meeting yourself and check your video and audio in the waiting screen. You need a Google account for that.",
++      stappen: [
++        "Go to meet.google.com and sign in with your Google account.",
++        "Click New meeting and then Start an instant meeting.",
++        "You land in the waiting screen, where you see yourself and whether your microphone reacts.",
++        "Click the three dots and then Settings. Under Audio pick the right microphone and speaker, under Video the right camera.",
++        "If all is well, leave the meeting again. You do not have to invite anyone.",
++      ],
++      linkLabel: "Open meet.google.com",
++    },
++    teams: {
++      title: "Testing in Microsoft Teams beforehand",
++      intro: "Teams has a test call. It sits in the desktop version and asks for a Microsoft account. The web version has no test call.",
++      stappen: [
++        "Open the Teams app and sign in.",
++        "Click the three dots next to your profile picture at the top right and choose Settings.",
++        "Go to Devices and click Make a test call.",
++        "You record a short message and hear it played back straight away. After that you see per item whether it works.",
++        "If you hear or see nothing, pick another microphone, speaker or camera under Devices.",
++      ],
++      note: "Joining in your browser? Then there is no test call. Open the meeting link a few minutes before the start and check video and audio in the waiting screen.",
++      linkLabel: "Open teams.microsoft.com",
++    },
++    tips: {
++      title: "Tips for a calm meeting",
++      items: [
++        "Run the test on the device and in the room where you will have the meeting. A test on your phone says little about your laptop.",
++        "Use a wired internet connection or sit close to your router.",
++        "Turn off programs that also use the camera. Two programs on one camera does not work.",
++        "A headset with a microphone prevents echo.",
++        "Make sure the light comes from the front. With a window behind you, you turn into a silhouette.",
++        "Run the test a day in advance, so there is still time to fix something.",
++      ],
++    },
++    terug: "Back to the preparation page",
++  },
++
++  de: {
++    meta: {
++      title: "Kamera und Ton testen für Ihr Online-Assessment | Hrmforce",
++      description:
++        "Prüfen Sie im eigenen Browser, ob Kamera, Mikrofon und Lautsprecher für ein Gespräch über Google Meet oder Microsoft Teams funktionieren. Es wird nichts aufgezeichnet oder gespeichert.",
++    },
++    crumb: "Kamera und Ton testen",
++    hero: {
++      eyebrow: "Vorbereitung",
++      title: "Testen Sie Kamera und Ton",
++      lead: "Führen Sie diesen Test auf dem Gerät aus, mit dem Sie das Online-Assessment oder das Gespräch machen. In einer Minute wissen Sie, ob Kamera, Mikrofon und Lautsprecher tun, was sie sollen. Es wird nichts aufgezeichnet, gesendet oder gespeichert.",
++    },
++    privacy: {
++      title: "Was mit Bild und Ton geschieht",
++      items: [
++        "Bild und Ton bleiben in Ihrem eigenen Browser. Nichts geht an hrmforce, nichts wird gespeichert.",
++        "Ihr Browser fragt nach der Erlaubnis für Kamera und Mikrofon. Diese Erlaubnis gilt nur für diese Seite.",
++        "Für die Netzwerkprüfung nimmt Ihr Browser kurz Kontakt zu einem STUN-Server auf, genau wie Meet und Teams. Bild und Ton gehen dorthin nicht.",
++        "Drücken Sie auf Stopp oder verlassen Sie die Seite, geht das Licht Ihrer Kamera wieder aus.",
++      ],
++    },
++    start: {
++      button: "Test starten",
++      stop: "Test beenden",
++      opnieuw: "Erneut testen",
++      hint: "Ihr Browser fragt gleich nach der Erlaubnis für Kamera und Mikrofon. Wählen Sie zulassen.",
++      bezig: "Wird gestartet...",
++    },
++    camera: {
++      title: "Kamera",
++      hint: "Sehen Sie sich unten im Bild? Dann funktioniert Ihre Kamera.",
++      ok: "Ihre Kamera funktioniert.",
++      wacht: "Noch nicht getestet.",
++      geen: "Keine Kamera gefunden. Schließen Sie eine Webcam an oder nutzen Sie ein Gerät mit eingebauter Kamera.",
++      geweigerd: "Ihr Browser blockiert die Kamera. Klicken Sie in der Adressleiste auf das Schloss oder das Kamerasymbol, erlauben Sie den Zugriff und testen Sie erneut.",
++      bezet: "Die Kamera wird bereits von einem anderen Programm verwendet. Beenden Sie Teams, Zoom oder Meet und versuchen Sie es erneut.",
++      fout: "Die Kamera konnte nicht starten.",
++      apparaat: "Gerät",
++      resolutie: "Auflösung",
++      kies: "Andere Kamera",
++    },
++    mic: {
++      title: "Mikrofon",
++      hint: "Sagen Sie etwas oder zählen Sie laut bis drei. Der Balken sollte mitgehen.",
++      ok: "Wir hören Sie.",
++      stil: "Noch nichts gehört. Sprechen Sie lauter oder wählen Sie unten ein anderes Mikrofon.",
++      wacht: "Noch nicht getestet.",
++      geen: "Kein Mikrofon gefunden.",
++      geweigerd: "Ihr Browser blockiert das Mikrofon. Erlauben Sie den Zugriff über das Schloss in der Adressleiste und testen Sie erneut.",
++      apparaat: "Gerät",
++      kies: "Anderes Mikrofon",
++      niveau: "Pegel",
++    },
++    speaker: {
++      title: "Ton",
++      hint: "Stellen Sie die Lautstärke etwa auf die Hälfte und spielen Sie den Testton ab. Sie hören einen klaren Ton von zwei Sekunden.",
++      play: "Testton abspielen",
++      bezig: "Der Ton läuft...",
++      vraag: "Haben Sie den Ton gehört?",
++      ja: "Ja, gehört",
++      nee: "Nein, nichts gehört",
++      ok: "Ihre Lautsprecher funktionieren.",
++      nok: "Prüfen Sie Lautstärke, Kopfhörer und den Audioausgang Ihres Geräts. Wählen Sie in den Systemeinstellungen den gewünschten Lautsprecher.",
++      wacht: "Noch nicht getestet.",
++    },
++    systeem: {
++      title: "Browser und Gerät",
++      browser: "Browser",
++      os: "Betriebssystem",
++      scherm: "Bildschirm",
++      verbinding: "Verbindung",
++      onbekend: "Unbekannt",
++      ok: "Ihr Browser kommt mit Videogesprächen zurecht.",
++      oud: "Dieser Browser ist veraltet. Aktualisieren Sie ihn oder nutzen Sie eine aktuelle Version von Chrome, Edge, Firefox oder Safari.",
++      webview: "Sie haben diese Seite innerhalb einer App geöffnet, nicht in einem echten Browser. Dort funktionieren Kamera und Mikrofon oft nicht. Kopieren Sie den Link und öffnen Sie ihn in Chrome, Edge oder Safari.",
++      onveilig: "Diese Seite läuft nicht über https. Kamera und Mikrofon funktionieren dann nicht.",
++    },
++    netwerk: {
++      title: "Netzwerk",
++      hint: "Meet und Teams senden Bild und Ton über UDP. In einem strengen Firmennetz oder über ein VPN wird das manchmal blockiert.",
++      bezig: "Netzwerkprüfung läuft...",
++      ok: "Ihr Netzwerk lässt den Videoverkehr durch.",
++      fout: "Ihr Netzwerk blockiert den Verkehr, den Meet und Teams nutzen. Versuchen Sie ein anderes Netzwerk, zum Beispiel Ihr eigenes WLAN oder Ihr Telefon als Hotspot, oder schalten Sie das VPN aus.",
++      wacht: "Noch nicht getestet.",
++    },
++    resultaat: {
++      title: "Ihr Ergebnis",
++      kopieer: "Ergebnis kopieren",
++      gekopieerd: "Kopiert",
++      hulp: "Etwas funktioniert nicht und Sie kommen nicht weiter? Kopieren Sie das Ergebnis und senden Sie es an service@hrmforce.com, dann schauen wir mit Ihnen mit.",
++      nietGetest: "nicht getestet",
++      okLabel: "funktioniert",
++      foutLabel: "Achtung",
++    },
++    meet: {
++      title: "Vorab in Google Meet testen",
++      intro: "Google hat keine eigene Testseite. Sie können selbst eine Besprechung starten und im Wartebildschirm Bild und Ton prüfen. Dafür brauchen Sie ein Google-Konto.",
++      stappen: [
++        "Gehen Sie auf meet.google.com und melden Sie sich mit Ihrem Google-Konto an.",
++        "Klicken Sie auf Neue Besprechung und dann auf Sofortbesprechung starten.",
++        "Sie landen im Wartebildschirm. Dort sehen Sie sich selbst und ob Ihr Mikrofon ausschlägt.",
++        "Klicken Sie auf die drei Punkte und dann auf Einstellungen. Unter Audio wählen Sie Mikrofon und Lautsprecher, unter Video die Kamera.",
++        "Wenn alles läuft, verlassen Sie die Besprechung wieder. Sie müssen niemanden einladen.",
++      ],
++      linkLabel: "meet.google.com öffnen",
++    },
++    teams: {
++      title: "Vorab in Microsoft Teams testen",
++      intro: "Teams hat einen Testanruf. Er steckt in der Desktop-Version und verlangt ein Microsoft-Konto. In der Web-Version gibt es ihn nicht.",
++      stappen: [
++        "Öffnen Sie die Teams-App und melden Sie sich an.",
++        "Klicken Sie oben rechts auf die drei Punkte neben Ihrem Profilbild und wählen Sie Einstellungen.",
++        "Gehen Sie zu Geräte und klicken Sie auf Testanruf starten.",
++        "Sie sprechen eine kurze Nachricht und hören sie sofort zurück. Danach sehen Sie je Punkt, ob es funktioniert.",
++        "Hören oder sehen Sie nichts, wählen Sie unter Geräte ein anderes Mikrofon, einen anderen Lautsprecher oder eine andere Kamera.",
++      ],
++      note: "Nehmen Sie im Browser teil, gibt es keinen Testanruf. Öffnen Sie den Besprechungslink einige Minuten vor Beginn und prüfen Sie Bild und Ton im Wartebildschirm.",
++      linkLabel: "teams.microsoft.com öffnen",
++    },
++    tips: {
++      title: "Tipps für ein ruhiges Gespräch",
++      items: [
++        "Testen Sie auf dem Gerät und in dem Raum, wo das Gespräch stattfindet. Ein Test auf dem Telefon sagt wenig über Ihren Laptop.",
++        "Nutzen Sie eine Kabelverbindung oder setzen Sie sich nah an den Router.",
++        "Beenden Sie Programme, die die Kamera ebenfalls nutzen. Zwei Programme auf einer Kamera funktioniert nicht.",
++        "Ein Headset mit Mikrofon verhindert Echo.",
++        "Sorgen Sie dafür, dass das Licht von vorne kommt. Mit einem Fenster im Rücken werden Sie zur Silhouette.",
++        "Testen Sie einen Tag vorher. Dann bleibt noch Zeit, etwas zu lösen.",
++      ],
++    },
++    terug: "Zurück zur Vorbereitung",
++  },
++
++  fr: {
++    meta: {
++      title: "Tester votre caméra et votre son pour votre assessment en ligne | Hrmforce",
++      description:
++        "Vérifiez dans votre propre navigateur si votre caméra, votre micro et vos haut-parleurs fonctionnent pour un entretien sur Google Meet ou Microsoft Teams. Rien n'est enregistré ni conservé.",
++    },
++    crumb: "Tester la caméra et le son",
++    hero: {
++      eyebrow: "Préparation",
++      title: "Testez votre caméra et votre son",
++      lead: "Faites ce test sur l'appareil que vous utiliserez pour l'assessment en ligne ou l'entretien. En une minute, vous savez si votre caméra, votre micro et vos haut-parleurs font ce qu'ils doivent faire. Rien n'est enregistré, envoyé ni conservé.",
++    },
++    privacy: {
++      title: "Ce qui se passe avec votre image et votre son",
++      items: [
++        "L'image et le son restent dans votre navigateur. Rien ne part vers hrmforce et rien n'est conservé.",
++        "Votre navigateur demande l'autorisation pour la caméra et le micro. Cette autorisation vaut uniquement pour cette page.",
++        "Pour le test réseau, votre navigateur contacte brièvement un serveur STUN, comme le font Meet et Teams. Aucune image ni aucun son n'y est envoyé.",
++        "Dès que vous arrêtez le test ou quittez la page, le voyant de votre caméra s'éteint.",
++      ],
++    },
++    start: {
++      button: "Démarrer le test",
++      stop: "Arrêter le test",
++      opnieuw: "Tester à nouveau",
++      hint: "Votre navigateur va demander l'autorisation pour la caméra et le micro. Choisissez autoriser.",
++      bezig: "Démarrage...",
++    },
++    camera: {
++      title: "Caméra",
++      hint: "Vous voyez-vous ci-dessous ? Alors votre caméra fonctionne.",
++      ok: "Votre caméra fonctionne.",
++      wacht: "Pas encore testé.",
++      geen: "Aucune caméra trouvée. Branchez une webcam ou utilisez un appareil avec caméra intégrée.",
++      geweigerd: "Votre navigateur bloque la caméra. Cliquez sur le cadenas ou l'icône de caméra dans la barre d'adresse, autorisez l'accès, puis refaites le test.",
++      bezet: "La caméra est déjà utilisée par un autre programme. Quittez Teams, Zoom ou Meet et réessayez.",
++      fout: "La caméra n'a pas pu démarrer.",
++      apparaat: "Appareil",
++      resolutie: "Résolution",
++      kies: "Autre caméra",
++    },
++    mic: {
++      title: "Micro",
++      hint: "Dites quelque chose ou comptez jusqu'à trois à voix haute. La barre doit bouger.",
++      ok: "Nous vous entendons.",
++      stil: "Rien entendu pour l'instant. Parlez plus fort ou choisissez un autre micro ci-dessous.",
++      wacht: "Pas encore testé.",
++      geen: "Aucun micro trouvé.",
++      geweigerd: "Votre navigateur bloque le micro. Autorisez l'accès via le cadenas dans la barre d'adresse et refaites le test.",
++      apparaat: "Appareil",
++      kies: "Autre micro",
++      niveau: "Niveau",
++    },
++    speaker: {
++      title: "Son",
++      hint: "Mettez le volume à peu près à mi-course et lancez le son de test. Vous entendrez une tonalité claire de deux secondes.",
++      play: "Lancer le son de test",
++      bezig: "Le son est en cours...",
++      vraag: "Avez-vous entendu la tonalité ?",
++      ja: "Oui, je l'ai entendue",
++      nee: "Non, je n'ai rien entendu",
++      ok: "Vos haut-parleurs fonctionnent.",
++      nok: "Vérifiez le volume, votre casque et la sortie audio de votre appareil. Choisissez le haut-parleur voulu dans les réglages de votre système.",
++      wacht: "Pas encore testé.",
++    },
++    systeem: {
++      title: "Navigateur et appareil",
++      browser: "Navigateur",
++      os: "Système d'exploitation",
++      scherm: "Écran",
++      verbinding: "Connexion",
++      onbekend: "Inconnu",
++      ok: "Votre navigateur gère les entretiens vidéo.",
++      oud: "Ce navigateur est dépassé. Mettez-le à jour ou utilisez une version récente de Chrome, Edge, Firefox ou Safari.",
++      webview: "Vous avez ouvert cette page dans une application, pas dans un vrai navigateur. Dans cette fenêtre, la caméra et le micro échouent souvent. Copiez le lien et ouvrez-le dans Chrome, Edge ou Safari.",
++      onveilig: "Cette page ne tourne pas en https. La caméra et le micro ne fonctionneront pas.",
++    },
++    netwerk: {
++      title: "Réseau",
++      hint: "Meet et Teams envoient l'image et le son via UDP. Un réseau d'entreprise strict ou un VPN bloque parfois ce trafic.",
++      bezig: "Test du réseau en cours...",
++      ok: "Votre réseau laisse passer le trafic vidéo.",
++      fout: "Votre réseau bloque le trafic utilisé par Meet et Teams. Essayez un autre réseau, par exemple votre wifi personnel ou votre téléphone en partage de connexion, ou désactivez le VPN.",
++      wacht: "Pas encore testé.",
++    },
++    resultaat: {
++      title: "Votre résultat",
++      kopieer: "Copier le résultat",
++      gekopieerd: "Copié",
++      hulp: "Quelque chose ne marche pas et vous ne trouvez pas la solution ? Copiez le résultat et envoyez-le à service@hrmforce.com, nous regarderons avec vous.",
++      nietGetest: "pas testé",
++      okLabel: "fonctionne",
++      foutLabel: "attention",
++    },
++    meet: {
++      title: "Tester à l'avance dans Google Meet",
++      intro: "Google n'a pas de page de test séparée. Vous pouvez démarrer vous-même une réunion et vérifier image et son dans l'écran d'attente. Il vous faut un compte Google.",
++      stappen: [
++        "Allez sur meet.google.com et connectez-vous avec votre compte Google.",
++        "Cliquez sur Nouvelle réunion puis sur Démarrer une réunion instantanée.",
++        "Vous arrivez dans l'écran d'attente, où vous vous voyez et où vous voyez si votre micro réagit.",
++        "Cliquez sur les trois points puis sur Paramètres. Sous Audio, choisissez le micro et le haut-parleur, sous Vidéo la caméra.",
++        "Si tout marche, quittez la réunion. Vous n'avez besoin d'inviter personne.",
++      ],
++      linkLabel: "Ouvrir meet.google.com",
++    },
++    teams: {
++      title: "Tester à l'avance dans Microsoft Teams",
++      intro: "Teams propose un appel de test. Il se trouve dans la version bureau et demande un compte Microsoft. La version web n'en a pas.",
++      stappen: [
++        "Ouvrez l'application Teams et connectez-vous.",
++        "En haut à droite, cliquez sur les trois points à côté de votre photo de profil et choisissez Paramètres.",
++        "Allez dans Appareils et cliquez sur Effectuer un appel de test.",
++        "Vous enregistrez un court message et l'entendez aussitôt. Ensuite, vous voyez point par point ce qui fonctionne.",
++        "Si vous n'entendez ou ne voyez rien, choisissez un autre micro, haut-parleur ou caméra sous Appareils.",
++      ],
++      note: "Vous participez dans le navigateur ? Alors il n'y a pas d'appel de test. Ouvrez le lien de réunion quelques minutes avant le début et vérifiez image et son dans l'écran d'attente.",
++      linkLabel: "Ouvrir teams.microsoft.com",
++    },
++    tips: {
++      title: "Conseils pour un entretien serein",
++      items: [
++        "Faites le test sur l'appareil et dans la pièce de l'entretien. Un test sur votre téléphone dit peu de chose sur votre ordinateur portable.",
++        "Utilisez une connexion filaire ou installez-vous près de votre box.",
++        "Arrêtez les programmes qui utilisent aussi la caméra. Deux programmes sur une caméra, cela ne marche pas.",
++        "Un casque avec micro évite l'écho.",
++        "Faites en sorte que la lumière vienne de face. Avec une fenêtre dans le dos, vous devenez une silhouette.",
++        "Faites le test la veille. Il reste alors du temps pour résoudre un souci.",
++      ],
++    },
++    terug: "Retour à la préparation",
++  },
++
++  es: {
++    meta: {
++      title: "Prueba tu cámara y tu sonido para el assessment online | Hrmforce",
++      description:
++        "Comprueba en tu propio navegador si tu cámara, tu micrófono y tus altavoces funcionan para una entrevista por Google Meet o Microsoft Teams. No se graba ni se guarda nada.",
++    },
++    crumb: "Probar cámara y sonido",
++    hero: {
++      eyebrow: "Preparación",
++      title: "Prueba tu cámara y tu sonido",
++      lead: "Haz esta prueba en el dispositivo con el que harás el assessment online o la entrevista. En un minuto sabrás si tu cámara, tu micrófono y tus altavoces hacen lo que deben. No se graba, no se envía y no se guarda nada.",
++    },
++    privacy: {
++      title: "Qué pasa con tu imagen y tu sonido",
++      items: [
++        "La imagen y el sonido se quedan en tu propio navegador. Nada llega a hrmforce y nada se guarda.",
++        "Tu navegador pide permiso para la cámara y el micrófono. Ese permiso vale solo para esta página.",
++        "Para la prueba de red, tu navegador contacta brevemente con un servidor STUN, igual que hacen Meet y Teams. Allí no llega ninguna imagen ni ningún sonido.",
++        "Cuando detienes la prueba o sales de la página, la luz de tu cámara se apaga.",
++      ],
++    },
++    start: {
++      button: "Empezar la prueba",
++      stop: "Detener la prueba",
++      opnieuw: "Probar de nuevo",
++      hint: "Tu navegador te pedirá permiso para la cámara y el micrófono. Elige permitir.",
++      bezig: "Iniciando...",
++    },
++    camera: {
++      title: "Cámara",
++      hint: "¿Te ves abajo en pantalla? Entonces tu cámara funciona.",
++      ok: "Tu cámara funciona.",
++      wacht: "Todavía sin probar.",
++      geen: "No se ha encontrado ninguna cámara. Conecta una webcam o usa un dispositivo con cámara integrada.",
++      geweigerd: "Tu navegador bloquea la cámara. Haz clic en el candado o el icono de cámara en la barra de direcciones, permite el acceso y vuelve a probar.",
++      bezet: "Otro programa ya está usando la cámara. Cierra Teams, Zoom o Meet e inténtalo otra vez.",
++      fout: "La cámara no pudo iniciarse.",
++      apparaat: "Dispositivo",
++      resolutie: "Resolución",
++      kies: "Otra cámara",
++    },
++    mic: {
++      title: "Micrófono",
++      hint: "Di algo o cuenta hasta tres en voz alta. La barra debería moverse.",
++      ok: "Te oímos.",
++      stil: "Todavía no se oye nada. Habla más alto o elige otro micrófono abajo.",
++      wacht: "Todavía sin probar.",
++      geen: "No se ha encontrado ningún micrófono.",
++      geweigerd: "Tu navegador bloquea el micrófono. Permite el acceso con el candado de la barra de direcciones y vuelve a probar.",
++      apparaat: "Dispositivo",
++      kies: "Otro micrófono",
++      niveau: "Nivel",
++    },
++    speaker: {
++      title: "Sonido",
++      hint: "Pon el volumen más o menos a la mitad y reproduce el sonido de prueba. Oirás un tono claro de dos segundos.",
++      play: "Reproducir el sonido de prueba",
++      bezig: "Sonando...",
++      vraag: "¿Has oído el tono?",
++      ja: "Sí, lo he oído",
++      nee: "No, no he oído nada",
++      ok: "Tus altavoces funcionan.",
++      nok: "Revisa el volumen, los auriculares y la salida de audio de tu dispositivo. Elige el altavoz que quieras usar en los ajustes del sistema.",
++      wacht: "Todavía sin probar.",
++    },
++    systeem: {
++      title: "Navegador y dispositivo",
++      browser: "Navegador",
++      os: "Sistema operativo",
++      scherm: "Pantalla",
++      verbinding: "Conexión",
++      onbekend: "Desconocido",
++      ok: "Tu navegador puede con las videollamadas.",
++      oud: "Este navegador está anticuado. Actualízalo o usa una versión reciente de Chrome, Edge, Firefox o Safari.",
++      webview: "Has abierto esta página dentro de una aplicación, no en un navegador de verdad. En esa ventana la cámara y el micrófono fallan a menudo. Copia el enlace y ábrelo en Chrome, Edge o Safari.",
++      onveilig: "Esta página no va por https, así que la cámara y el micrófono no funcionarán.",
++    },
++    netwerk: {
++      title: "Red",
++      hint: "Meet y Teams envían imagen y sonido por UDP. Una red de empresa estricta o una VPN a veces lo bloquea.",
++      bezig: "Comprobando la red...",
++      ok: "Tu red deja pasar el tráfico de vídeo.",
++      fout: "Tu red bloquea el tráfico que usan Meet y Teams. Prueba otra red, por ejemplo tu propio wifi o tu teléfono como punto de acceso, o desactiva la VPN.",
++      wacht: "Todavía sin probar.",
++    },
++    resultaat: {
++      title: "Tu resultado",
++      kopieer: "Copiar el resultado",
++      gekopieerd: "Copiado",
++      hulp: "¿Algo falla y no lo resuelves? Copia el resultado y envíalo a service@hrmforce.com y lo miramos contigo.",
++      nietGetest: "sin probar",
++      okLabel: "funciona",
++      foutLabel: "atención",
++    },
++    meet: {
++      title: "Probar antes en Google Meet",
++      intro: "Google no tiene una página de prueba aparte. Puedes iniciar tú mismo una reunión y revisar imagen y sonido en la pantalla de espera. Para eso necesitas una cuenta de Google.",
++      stappen: [
++        "Ve a meet.google.com e inicia sesión con tu cuenta de Google.",
++        "Haz clic en Nueva reunión y después en Iniciar una reunión al instante.",
++        "Llegas a la pantalla de espera, donde te ves a ti mismo y ves si tu micrófono reacciona.",
++        "Haz clic en los tres puntos y luego en Configuración. En Audio elige el micrófono y el altavoz, en Vídeo la cámara.",
++        "Si todo va bien, sal de la reunión. No hace falta invitar a nadie.",
++      ],
++      linkLabel: "Abrir meet.google.com",
++    },
++    teams: {
++      title: "Probar antes en Microsoft Teams",
++      intro: "Teams tiene una llamada de prueba. Está en la versión de escritorio y pide una cuenta de Microsoft. La versión web no la tiene.",
++      stappen: [
++        "Abre la aplicación de Teams e inicia sesión.",
++        "Arriba a la derecha, haz clic en los tres puntos junto a tu foto de perfil y elige Configuración.",
++        "Ve a Dispositivos y haz clic en Hacer una llamada de prueba.",
++        "Grabas un mensaje corto y lo oyes al momento. Después ves punto por punto si funciona.",
++        "Si no oyes ni ves nada, elige otro micrófono, altavoz o cámara en Dispositivos.",
++      ],
++      note: "¿Participas desde el navegador? Entonces no hay llamada de prueba. Abre el enlace de la reunión unos minutos antes y revisa imagen y sonido en la pantalla de espera.",
++      linkLabel: "Abrir teams.microsoft.com",
++    },
++    tips: {
++      title: "Consejos para una entrevista tranquila",
++      items: [
++        "Haz la prueba en el dispositivo y en la sala donde tendrás la entrevista. Una prueba en el móvil dice poco de tu portátil.",
++        "Usa una conexión por cable o siéntate cerca del router.",
++        "Cierra los programas que también usan la cámara. Dos programas en una cámara no funciona.",
++        "Unos auriculares con micrófono evitan el eco.",
++        "Haz que la luz venga de frente. Con una ventana detrás te conviertes en una silueta.",
++        "Haz la prueba un día antes. Así queda tiempo para resolver algo.",
++      ],
++    },
++    terug: "Volver a la preparación",
++  },
++
++  ro: {
++    meta: {
++      title: "Testează camera și sunetul pentru assessment-ul online | Hrmforce",
++      description:
++        "Verifică în propriul browser dacă funcționează camera, microfonul și boxele pentru o discuție pe Google Meet sau Microsoft Teams. Nu se înregistrează și nu se păstrează nimic.",
++    },
++    crumb: "Testează camera și sunetul",
++    hero: {
++      eyebrow: "Pregătire",
++      title: "Testează camera și sunetul",
++      lead: "Fă acest test pe dispozitivul cu care vei susține assessment-ul online sau discuția. Într-un minut știi dacă microfonul, camera și boxele fac ce trebuie. Nu se înregistrează, nu se trimite și nu se păstrează nimic.",
++    },
++    privacy: {
++      title: "Ce se întâmplă cu imaginea și sunetul tău",
++      items: [
++        "Imaginea și sunetul rămân în propriul tău browser. Nimic nu ajunge la hrmforce și nimic nu se salvează.",
++        "Browserul îți cere permisiunea pentru cameră și microfon. Permisiunea este valabilă doar pentru această pagină.",
++        "Pentru verificarea rețelei, browserul contactează scurt un server STUN, exact ca Meet și Teams. Acolo nu ajunge nicio imagine și niciun sunet.",
++        "Când oprești testul sau părăsești pagina, ledul camerei se stinge din nou.",
++      ],
++    },
++    start: {
++      button: "Începe testul",
++      stop: "Oprește testul",
++      opnieuw: "Testează din nou",
++      hint: "Browserul îți va cere permisiunea pentru cameră și microfon. Alege permite.",
++      bezig: "Se pornește...",
++    },
++    camera: {
++      title: "Cameră",
++      hint: "Te vezi mai jos pe ecran? Atunci camera funcționează.",
++      ok: "Camera funcționează.",
++      wacht: "Încă netestat.",
++      geen: "Nu s-a găsit nicio cameră. Conectează o cameră web sau folosește un dispozitiv cu cameră încorporată.",
++      geweigerd: "Browserul blochează camera. Dă clic pe lacăt sau pe iconița camerei din bara de adrese, permite accesul și testează din nou.",
++      bezet: "Camera este deja folosită de alt program. Oprește Teams, Zoom sau Meet și încearcă din nou.",
++      fout: "Camera nu a putut porni.",
++      apparaat: "Dispozitiv",
++      resolutie: "Rezoluție",
++      kies: "Altă cameră",
++    },
++    mic: {
++      title: "Microfon",
++      hint: "Spune ceva sau numără cu voce tare până la trei. Bara trebuie să se miște.",
++      ok: "Te auzim.",
++      stil: "Încă nu se aude nimic. Vorbește mai tare sau alege mai jos alt microfon.",
++      wacht: "Încă netestat.",
++      geen: "Nu s-a găsit niciun microfon.",
++      geweigerd: "Browserul blochează microfonul. Permite accesul din lacătul barei de adrese și testează din nou.",
++      apparaat: "Dispozitiv",
++      kies: "Alt microfon",
++      niveau: "Nivel",
++    },
++    speaker: {
++      title: "Sunet",
++      hint: "Pune volumul cam la jumătate și redă sunetul de test. Vei auzi un ton clar de două secunde.",
++      play: "Redă sunetul de test",
++      bezig: "Sunetul rulează...",
++      vraag: "Ai auzit tonul?",
++      ja: "Da, l-am auzit",
++      nee: "Nu, nu am auzit nimic",
++      ok: "Boxele funcționează.",
++      nok: "Verifică volumul, căștile și ieșirea audio a dispozitivului. Alege din setările sistemului boxa pe care vrei să o folosești.",
++      wacht: "Încă netestat.",
++    },
++    systeem: {
++      title: "Browser și dispozitiv",
++      browser: "Browser",
++      os: "Sistem de operare",
++      scherm: "Ecran",
++      verbinding: "Conexiune",
++      onbekend: "Necunoscut",
++      ok: "Browserul tău face față discuțiilor video.",
++      oud: "Acest browser este învechit. Actualizează-l sau folosește o versiune recentă de Chrome, Edge, Firefox sau Safari.",
++      webview: "Ai deschis pagina în interiorul unei aplicații, nu într-un browser adevărat. Acolo camera și microfonul deseori nu merg. Copiază linkul și deschide-l în Chrome, Edge sau Safari.",
++      onveilig: "Această pagină nu rulează pe https, deci camera și microfonul nu vor funcționa.",
++    },
++    netwerk: {
++      title: "Rețea",
++      hint: "Meet și Teams trimit imaginea și sunetul prin UDP. O rețea de firmă strictă sau un VPN blochează uneori acest trafic.",
++      bezig: "Se verifică rețeaua...",
++      ok: "Rețeaua ta lasă traficul video să treacă.",
++      fout: "Rețeaua ta blochează traficul folosit de Meet și Teams. Încearcă altă rețea, de exemplu wifi-ul tău sau telefonul ca hotspot, ori oprește VPN-ul.",
++      wacht: "Încă netestat.",
++    },
++    resultaat: {
++      title: "Rezultatul tău",
++      kopieer: "Copiază rezultatul",
++      gekopieerd: "Copiat",
++      hulp: "Ceva nu merge și nu reușești să rezolvi? Copiază rezultatul și trimite-l la service@hrmforce.com, iar noi ne uităm împreună cu tine.",
++      nietGetest: "netestat",
++      okLabel: "funcționează",
++      foutLabel: "atenție",
++    },
++    meet: {
++      title: "Testare în avans în Google Meet",
++      intro: "Google nu are o pagină de test separată. Poți porni chiar tu o întâlnire și verifica imaginea și sunetul în ecranul de așteptare. Pentru asta îți trebuie un cont Google.",
++      stappen: [
++        "Intră pe meet.google.com și autentifică-te cu contul Google.",
++        "Dă clic pe Întâlnire nouă și apoi pe Începe o întâlnire instantanee.",
++        "Ajungi în ecranul de așteptare, unde te vezi pe tine și vezi dacă microfonul reacționează.",
++        "Dă clic pe cele trei puncte și apoi pe Setări. La Audio alegi microfonul și boxa, la Video camera.",
++        "Dacă totul merge, părăsește întâlnirea. Nu trebuie să inviți pe nimeni.",
++      ],
++      linkLabel: "Deschide meet.google.com",
++    },
++    teams: {
++      title: "Testare în avans în Microsoft Teams",
++      intro: "Teams are un apel de test. Se află în versiunea de desktop și cere un cont Microsoft. Versiunea web nu îl are.",
++      stappen: [
++        "Deschide aplicația Teams și autentifică-te.",
++        "Sus în dreapta dă clic pe cele trei puncte de lângă poza de profil și alege Setări.",
++        "Mergi la Dispozitive și dă clic pe Efectuează un apel de test.",
++        "Înregistrezi un mesaj scurt și îl auzi imediat. Apoi vezi, punct cu punct, ce funcționează.",
++        "Dacă nu auzi sau nu vezi nimic, alege la Dispozitive alt microfon, altă boxă sau altă cameră.",
++      ],
++      note: "Participi din browser? Atunci nu există apel de test. Deschide linkul întâlnirii cu câteva minute înainte și verifică imaginea și sunetul în ecranul de așteptare.",
++      linkLabel: "Deschide teams.microsoft.com",
++    },
++    tips: {
++      title: "Sfaturi pentru o discuție liniștită",
++      items: [
++        "Fă testul pe dispozitivul și în camera unde va avea loc discuția. Un test pe telefon spune puțin despre laptopul tău.",
++        "Folosește o conexiune prin cablu sau așază-te aproape de router.",
++        "Oprește programele care folosesc și ele camera. Două programe pe aceeași cameră nu merge.",
++        "O cască cu microfon previne ecoul.",
++        "Ai grijă ca lumina să vină din față. Cu fereastra în spate devii o siluetă.",
++        "Fă testul cu o zi înainte. Așa mai ai timp să rezolvi ceva.",
++      ],
++    },
++    terug: "Înapoi la pregătire",
++  },
++};
+diff --git a/src/data/valid-paths.js b/src/data/valid-paths.js
+index febcdc8..1f13fdd 100644
+--- a/src/data/valid-paths.js
++++ b/src/data/valid-paths.js
+@@ -26,7 +26,7 @@ try {
+ 
+ const STATIC = ["/","/%3Fpage_id=12073/","/%3Fpage_id=12199/","/%3Fpage_id=12326/","/%3Fpage_id=12390/","/%3Fpage_id=12401/","/%3Fpage_id=12532/","/%3Fpage_id=12631/","/%3Fpage_id=13499/","/%3Fpage_id=13540/","/%3Fpage_id=14534/","/%3Fpage_id=15495/","/%3Fpage_id=19506/","/%3Fpage_id=20413/","/%3Fpage_id=21104/","/%3Fpage_id=21979/","/%3Fpage_id=22199/","/%3Fpage_id=23609/","/%3Fpage_id=23955/","/%3Fpage_id=24624/","/%3Fpage_id=6325/","/%3Fpage_id=6397/","/%3Fpage_id=7219/","/%3Fpage_id=7960/","/%3Fpage_id=7962/","/%3Fpage_id=8355/","/%3Fpage_id=8358/","/%3Fpage_id=8361/","/%3Fpage_id=8364/","/%3Fpage_id=8392/","/%3Fpage_id=8394/","/%3Fpage_id=8396/","/%3Fpage_id=8564/","/%3Fpage_id=8578/","/%3Fpage_id=8613/","/%3Fpage_id=8638/","/%3Fpage_id=8649/","/%3Fpage_id=9790/","/advies/","/advies/certificatietraining/","/advies/loopbaan-assessment/","/advies/medezeggenschap/","/advies/team-training/","/advies/training-het-goede-gesprek/","/assessments/15pf/","/assessments/360-graden-feedback/","/assessments/ability-scan/","/assessments/appraisal/","/assessments/beroepskeuze-test/","/assessments/big-five/","/assessments/canmeds/","/assessments/coaching-screener-scan/","/assessments/cognitieve-test/","/assessments/communicatiestijlen-test/","/assessments/competentie-check/","/assessments/conflictstijlen-test/","/assessments/disc-test/","/assessments/drijfverentest/","/assessments/duurzame-inzetbaarheid-scan/","/assessments/exit-assessment/","/assessments/groepsrollen/","/assessments/intake-candidate/","/assessments/interesse-scan/","/assessments/job-profiler/","/assessments/lean-scan/","/assessments/leerstijlen/","/assessments/leiderschapstest/","/assessments/lencioni-teamdynamiek/","/assessments/levensloop-scan/","/assessments/loopbaanwaarden/","/assessments/mentale-veerkracht-scan/","/assessments/ontwikkelassessment/","/assessments/ontwikkelmatrix/","/assessments/pulse-survey/","/assessments/referentie-check/","/assessments/studiekeuzetest/","/assessments/teamanalyse/","/assessments/tevredenheidsonderzoek-medewerkers/","/assessments/typology/","/assessments/value-drives/","/assessments/verkoopvaardigheden/","/contact/","/demo/","/de/","/de/%3Fpage_id=12073/","/de/%3Fpage_id=12199/","/de/%3Fpage_id=12326/","/de/%3Fpage_id=12390/","/de/%3Fpage_id=12401/","/de/%3Fpage_id=12532/","/de/%3Fpage_id=12631/","/de/%3Fpage_id=13499/","/de/%3Fpage_id=13540/","/de/%3Fpage_id=15495/","/de/%3Fpage_id=18517/","/de/%3Fpage_id=19506/","/de/%3Fpage_id=20413/","/de/%3Fpage_id=21104/","/de/%3Fpage_id=21979/","/de/%3Fpage_id=22199/","/de/%3Fpage_id=23609/","/de/%3Fpage_id=23955/","/de/%3Fpage_id=6325/","/de/%3Fpage_id=6397/","/de/%3Fpage_id=7219/","/de/%3Fpage_id=7960/","/de/%3Fpage_id=7962/","/de/%3Fpage_id=8355/","/de/%3Fpage_id=8358/","/de/%3Fpage_id=8361/","/de/%3Fpage_id=8364/","/de/%3Fpage_id=8392/","/de/%3Fpage_id=8394/","/de/%3Fpage_id=8396/","/de/%3Fpage_id=8564/","/de/%3Fpage_id=8578/","/de/%3Fpage_id=8613/","/de/%3Fpage_id=8638/","/de/%3Fpage_id=8649/","/de/%3Fpage_id=9790/","/de/advies/","/de/assessments/15pf/","/de/assessments/360-graden-feedback/","/de/assessments/ability-scan/","/de/assessments/appraisal/","/de/assessments/beroepskeuze-test/","/de/assessments/big-five/","/de/assessments/canmeds/","/de/assessments/coaching-screener-scan/","/de/assessments/cognitieve-test/","/de/assessments/communicatiestijlen-test/","/de/assessments/competentie-check/","/de/assessments/conflictstijlen-test/","/de/assessments/disc-test/","/de/assessments/drijfverentest/","/de/assessments/duurzame-inzetbaarheid-scan/","/de/assessments/exit-assessment/","/de/assessments/groepsrollen/","/de/assessments/intake-candidate/","/de/assessments/interesse-scan/","/de/assessments/job-profiler/","/de/assessments/lean-scan/","/de/assessments/leerstijlen/","/de/assessments/leiderschapstest/","/de/assessments/lencioni-teamdynamiek/","/de/assessments/levensloop-scan/","/de/assessments/loopbaanwaarden/","/de/assessments/mentale-veerkracht-scan/","/de/assessments/ontwikkelassessment/","/de/assessments/ontwikkelmatrix/","/de/assessments/pulse-survey/","/de/assessments/referentie-check/","/de/assessments/studiekeuzetest/","/de/assessments/teamanalyse/","/de/assessments/tevredenheidsonderzoek-medewerkers/","/de/assessments/typology/","/de/assessments/value-drives/","/de/assessments/verkoopvaardigheden/","/de/contact/","/de/hrm-oplossingen/","/de/integraties/","/de/kenniscentrum/","/de/klantcases/","/de/over-ons/","/de/roi-rekentool/","/de/support/","/de/trust/","/de/voorbereiding/","/en/","/en/%3Fpage_id=12073/","/en/%3Fpage_id=12199/","/en/%3Fpage_id=12326/","/en/%3Fpage_id=12390/","/en/%3Fpage_id=12401/","/en/%3Fpage_id=12532/","/en/%3Fpage_id=12631/","/en/%3Fpage_id=13499/","/en/%3Fpage_id=13540/","/en/%3Fpage_id=15495/","/en/%3Fpage_id=15922/","/en/%3Fpage_id=16099/","/en/%3Fpage_id=17810/","/en/%3Fpage_id=19503/","/en/%3Fpage_id=19506/","/en/%3Fpage_id=20413/","/en/%3Fpage_id=21104/","/en/%3Fpage_id=21298/","/en/%3Fpage_id=21979/","/en/%3Fpage_id=22199/","/en/%3Fpage_id=23609/","/en/%3Fpage_id=23955/","/en/%3Fpage_id=6325/","/en/%3Fpage_id=6397/","/en/%3Fpage_id=7219/","/en/%3Fpage_id=7960/","/en/%3Fpage_id=7962/","/en/%3Fpage_id=8355/","/en/%3Fpage_id=8358/","/en/%3Fpage_id=8361/","/en/%3Fpage_id=8364/","/en/%3Fpage_id=8392/","/en/%3Fpage_id=8394/","/en/%3Fpage_id=8396/","/en/%3Fpage_id=8564/","/en/%3Fpage_id=8578/","/en/%3Fpage_id=8613/","/en/%3Fpage_id=8638/","/en/%3Fpage_id=8649/","/en/%3Fpage_id=9790/","/en/advies/","/en/assessments/15pf/","/en/assessments/360-graden-feedback/","/en/assessments/ability-scan/","/en/assessments/appraisal/","/en/assessments/beroepskeuze-test/","/en/assessments/big-five/","/en/assessments/canmeds/","/en/assessments/coaching-screener-scan/","/en/assessments/cognitieve-test/","/en/assessments/communicatiestijlen-test/","/en/assessments/competentie-check/","/en/assessments/conflictstijlen-test/","/en/assessments/disc-test/","/en/assessments/drijfverentest/","/en/assessments/duurzame-inzetbaarheid-scan/","/en/assessments/exit-assessment/","/en/assessments/groepsrollen/","/en/assessments/intake-candidate/","/en/assessments/interesse-scan/","/en/assessments/job-profiler/","/en/assessments/lean-scan/","/en/assessments/leerstijlen/","/en/assessments/leiderschapstest/","/en/assessments/lencioni-teamdynamiek/","/en/assessments/levensloop-scan/","/en/assessments/loopbaanwaarden/","/en/assessments/mentale-veerkracht-scan/","/en/assessments/ontwikkelassessment/","/en/assessments/ontwikkelmatrix/","/en/assessments/pulse-survey/","/en/assessments/referentie-check/","/en/assessments/studiekeuzetest/","/en/assessments/teamanalyse/","/en/assessments/tevredenheidsonderzoek-medewerkers/","/en/assessments/typology/","/en/assessments/value-drives/","/en/assessments/verkoopvaardigheden/","/en/contact/","/en/hrm-oplossingen/","/en/integraties/","/en/kenniscentrum/","/en/klantcases/","/en/over-ons/","/en/roi-rekentool/","/en/support/","/en/trust/","/en/voorbereiding/","/es/","/es/%3Fpage_id=12073/","/es/%3Fpage_id=12199/","/es/%3Fpage_id=12326/","/es/%3Fpage_id=12390/","/es/%3Fpage_id=12401/","/es/%3Fpage_id=12532/","/es/%3Fpage_id=12631/","/es/%3Fpage_id=13499/","/es/%3Fpage_id=13540/","/es/%3Fpage_id=15495/","/es/%3Fpage_id=18519/","/es/%3Fpage_id=19506/","/es/%3Fpage_id=20413/","/es/%3Fpage_id=21104/","/es/%3Fpage_id=21979/","/es/%3Fpage_id=22199/","/es/%3Fpage_id=23609/","/es/%3Fpage_id=23682/","/es/%3Fpage_id=23955/","/es/%3Fpage_id=6325/","/es/%3Fpage_id=6397/","/es/%3Fpage_id=7219/","/es/%3Fpage_id=7960/","/es/%3Fpage_id=7962/","/es/%3Fpage_id=8355/","/es/%3Fpage_id=8358/","/es/%3Fpage_id=8361/","/es/%3Fpage_id=8364/","/es/%3Fpage_id=8392/","/es/%3Fpage_id=8394/","/es/%3Fpage_id=8396/","/es/%3Fpage_id=8564/","/es/%3Fpage_id=8578/","/es/%3Fpage_id=8613/","/es/%3Fpage_id=8638/","/es/%3Fpage_id=8649/","/es/%3Fpage_id=9790/","/es/advies/","/es/assessments/15pf/","/es/assessments/360-graden-feedback/","/es/assessments/ability-scan/","/es/assessments/appraisal/","/es/assessments/beroepskeuze-test/","/es/assessments/big-five/","/es/assessments/canmeds/","/es/assessments/coaching-screener-scan/","/es/assessments/cognitieve-test/","/es/assessments/communicatiestijlen-test/","/es/assessments/competentie-check/","/es/assessments/conflictstijlen-test/","/es/assessments/disc-test/","/es/assessments/drijfverentest/","/es/assessments/duurzame-inzetbaarheid-scan/","/es/assessments/exit-assessment/","/es/assessments/groepsrollen/","/es/assessments/intake-candidate/","/es/assessments/interesse-scan/","/es/assessments/job-profiler/","/es/assessments/lean-scan/","/es/assessments/leerstijlen/","/es/assessments/leiderschapstest/","/es/assessments/lencioni-teamdynamiek/","/es/assessments/levensloop-scan/","/es/assessments/loopbaanwaarden/","/es/assessments/mentale-veerkracht-scan/","/es/assessments/ontwikkelassessment/","/es/assessments/ontwikkelmatrix/","/es/assessments/pulse-survey/","/es/assessments/referentie-check/","/es/assessments/studiekeuzetest/","/es/assessments/teamanalyse/","/es/assessments/tevredenheidsonderzoek-medewerkers/","/es/assessments/typology/","/es/assessments/value-drives/","/es/assessments/verkoopvaardigheden/","/es/contact/","/es/hrm-oplossingen/","/es/integraties/","/es/kenniscentrum/","/es/klantcases/","/es/online-assessments/","/es/over-ons/","/es/roi-rekentool/","/es/support/","/es/trust/","/es/voorbereiding/","/fr/","/fr/%3Fpage_id=12073/","/fr/%3Fpage_id=12199/","/fr/%3Fpage_id=12326/","/fr/%3Fpage_id=12390/","/fr/%3Fpage_id=12401/","/fr/%3Fpage_id=12532/","/fr/%3Fpage_id=12631/","/fr/%3Fpage_id=13499/","/fr/%3Fpage_id=13540/","/fr/%3Fpage_id=15495/","/fr/%3Fpage_id=18516/","/fr/%3Fpage_id=19506/","/fr/%3Fpage_id=20413/","/fr/%3Fpage_id=21104/","/fr/%3Fpage_id=21979/","/fr/%3Fpage_id=22199/","/fr/%3Fpage_id=23609/","/fr/%3Fpage_id=23955/","/fr/%3Fpage_id=6325/","/fr/%3Fpage_id=6397/","/fr/%3Fpage_id=7219/","/fr/%3Fpage_id=7960/","/fr/%3Fpage_id=7962/","/fr/%3Fpage_id=8355/","/fr/%3Fpage_id=8358/","/fr/%3Fpage_id=8361/","/fr/%3Fpage_id=8364/","/fr/%3Fpage_id=8392/","/fr/%3Fpage_id=8394/","/fr/%3Fpage_id=8396/","/fr/%3Fpage_id=8564/","/fr/%3Fpage_id=8578/","/fr/%3Fpage_id=8613/","/fr/%3Fpage_id=8638/","/fr/%3Fpage_id=8649/","/fr/%3Fpage_id=9790/","/fr/advies/","/fr/assessments/15pf/","/fr/assessments/360-graden-feedback/","/fr/assessments/ability-scan/","/fr/assessments/appraisal/","/fr/assessments/beroepskeuze-test/","/fr/assessments/big-five/","/fr/assessments/canmeds/","/fr/assessments/coaching-screener-scan/","/fr/assessments/cognitieve-test/","/fr/assessments/communicatiestijlen-test/","/fr/assessments/competentie-check/","/fr/assessments/conflictstijlen-test/","/fr/assessments/disc-test/","/fr/assessments/drijfverentest/","/fr/assessments/duurzame-inzetbaarheid-scan/","/fr/assessments/exit-assessment/","/fr/assessments/groepsrollen/","/fr/assessments/intake-candidate/","/fr/assessments/interesse-scan/","/fr/assessments/job-profiler/","/fr/assessments/lean-scan/","/fr/assessments/leerstijlen/","/fr/assessments/leiderschapstest/","/fr/assessments/lencioni-teamdynamiek/","/fr/assessments/levensloop-scan/","/fr/assessments/loopbaanwaarden/","/fr/assessments/mentale-veerkracht-scan/","/fr/assessments/ontwikkelassessment/","/fr/assessments/ontwikkelmatrix/","/fr/assessments/pulse-survey/","/fr/assessments/referentie-check/","/fr/assessments/studiekeuzetest/","/fr/assessments/teamanalyse/","/fr/assessments/tevredenheidsonderzoek-medewerkers/","/fr/assessments/typology/","/fr/assessments/value-drives/","/fr/assessments/verkoopvaardigheden/","/fr/contact/","/fr/hrm-oplossingen/","/fr/integraties/","/fr/kenniscentrum/","/fr/klantcases/","/fr/online-assessments/","/fr/over-ons/","/fr/roi-rekentool/","/fr/shop/","/fr/support/","/fr/trust/","/fr/voorbereiding/","/geschiktvoorzorg/","/geschiktvoorzorg/klantcases/","/geschiktvoorzorg/over-ons/","/hrm-oplossingen/","/inschrijfformulier-trainingen/","/integraties/","/kenniscentrum/","/kenniscentrum/burn-out-herkennen-bij-topperformers/","/kenniscentrum/intelligentietest-volwassenen/","/kenniscentrum/leiderschapsontwikkeling-data/","/kenniscentrum/matrigma-capaciteitentest/","/kenniscentrum/ontwikkelassessment-belangrijk/","/kenniscentrum/talent-management-system-software/","/klantcases/","/odion/","/oefen-assessment-maken/","/online-assessments/","/over-ons/","/partner/selier-van-duppen/","/ro/","/ro/%3Fpage_id=12073/","/ro/%3Fpage_id=12199/","/ro/%3Fpage_id=12326/","/ro/%3Fpage_id=12390/","/ro/%3Fpage_id=12401/","/ro/%3Fpage_id=12532/","/ro/%3Fpage_id=12631/","/ro/%3Fpage_id=13499/","/ro/%3Fpage_id=13540/","/ro/%3Fpage_id=15495/","/ro/%3Fpage_id=16875/","/ro/%3Fpage_id=18518/","/ro/%3Fpage_id=19506/","/ro/%3Fpage_id=20413/","/ro/%3Fpage_id=21104/","/ro/%3Fpage_id=21979/","/ro/%3Fpage_id=22199/","/ro/%3Fpage_id=23609/","/ro/%3Fpage_id=23955/","/ro/%3Fpage_id=6325/","/ro/%3Fpage_id=6397/","/ro/%3Fpage_id=7219/","/ro/%3Fpage_id=7960/","/ro/%3Fpage_id=7962/","/ro/%3Fpage_id=8355/","/ro/%3Fpage_id=8358/","/ro/%3Fpage_id=8361/","/ro/%3Fpage_id=8364/","/ro/%3Fpage_id=8392/","/ro/%3Fpage_id=8394/","/ro/%3Fpage_id=8396/","/ro/%3Fpage_id=8564/","/ro/%3Fpage_id=8578/","/ro/%3Fpage_id=8613/","/ro/%3Fpage_id=8638/","/ro/%3Fpage_id=8649/","/ro/%3Fpage_id=9790/","/ro/advies/","/ro/assessments/15pf/","/ro/assessments/360-graden-feedback/","/ro/assessments/ability-scan/","/ro/assessments/appraisal/","/ro/assessments/beroepskeuze-test/","/ro/assessments/big-five/","/ro/assessments/canmeds/","/ro/assessments/coaching-screener-scan/","/ro/assessments/cognitieve-test/","/ro/assessments/communicatiestijlen-test/","/ro/assessments/competentie-check/","/ro/assessments/conflictstijlen-test/","/ro/assessments/disc-test/","/ro/assessments/drijfverentest/","/ro/assessments/duurzame-inzetbaarheid-scan/","/ro/assessments/exit-assessment/","/ro/assessments/groepsrollen/","/ro/assessments/intake-candidate/","/ro/assessments/interesse-scan/","/ro/assessments/job-profiler/","/ro/assessments/lean-scan/","/ro/assessments/leerstijlen/","/ro/assessments/leiderschapstest/","/ro/assessments/lencioni-teamdynamiek/","/ro/assessments/levensloop-scan/","/ro/assessments/loopbaanwaarden/","/ro/assessments/mentale-veerkracht-scan/","/ro/assessments/ontwikkelassessment/","/ro/assessments/ontwikkelmatrix/","/ro/assessments/pulse-survey/","/ro/assessments/referentie-check/","/ro/assessments/studiekeuzetest/","/ro/assessments/teamanalyse/","/ro/assessments/tevredenheidsonderzoek-medewerkers/","/ro/assessments/typology/","/ro/assessments/value-drives/","/ro/assessments/verkoopvaardigheden/","/ro/contact/","/ro/hrm-oplossingen/","/ro/integraties/","/ro/kenniscentrum/","/ro/klantcases/","/ro/online-assessments/","/ro/over-ons/","/ro/roi-rekentool/","/ro/support/","/ro/trust/","/ro/voorbereiding/","/roi-rekentool/","/shop/","/support/","/trust/","/voorbereiding/"];
+ 
+-const EXTRA = ["/afrekenen/","/en/afrekenen/","/de/afrekenen/","/fr/afrekenen/","/es/afrekenen/","/ro/afrekenen/","/bestelling-gelukt/","/en/bestelling-gelukt/","/de/bestelling-gelukt/","/fr/bestelling-gelukt/","/es/bestelling-gelukt/","/ro/bestelling-gelukt/","/oefenen/big-five/","/oefenen/disc/","/oefenen/cognitieve-test/","/oefenen/drijfveren/","/en/oefenen/big-five/","/en/oefenen/disc/","/en/oefenen/cognitieve-test/","/en/oefenen/drijfveren/","/de/oefenen/big-five/","/de/oefenen/disc/","/de/oefenen/cognitieve-test/","/de/oefenen/drijfveren/","/fr/oefenen/big-five/","/fr/oefenen/disc/","/fr/oefenen/cognitieve-test/","/fr/oefenen/drijfveren/","/es/oefenen/big-five/","/es/oefenen/disc/","/es/oefenen/cognitieve-test/","/es/oefenen/drijfveren/","/ro/oefenen/big-five/","/ro/oefenen/disc/","/ro/oefenen/cognitieve-test/","/ro/oefenen/drijfveren/","/whitepapers/","/en/whitepapers/","/de/whitepapers/","/fr/whitepapers/","/es/whitepapers/","/ro/whitepapers/","/whitepapers/objectief-werven/","/whitepapers/beoordelen-naar-ontwikkelen/","/en/whitepapers/objectief-werven/","/en/whitepapers/beoordelen-naar-ontwikkelen/","/de/whitepapers/objectief-werven/","/de/whitepapers/beoordelen-naar-ontwikkelen/","/fr/whitepapers/objectief-werven/","/fr/whitepapers/beoordelen-naar-ontwikkelen/","/es/whitepapers/objectief-werven/","/es/whitepapers/beoordelen-naar-ontwikkelen/","/ro/whitepapers/objectief-werven/","/ro/whitepapers/beoordelen-naar-ontwikkelen/","/integraties/afas/","/integraties/nmbrs/","/integraties/visma/","/integraties/loket/","/integraties/recruitee/","/integraties/carerix/","/integraties/otys/","/en/integraties/afas/","/en/integraties/nmbrs/","/en/integraties/visma/","/en/integraties/loket/","/en/integraties/recruitee/","/en/integraties/carerix/","/en/integraties/otys/","/de/integraties/afas/","/de/integraties/nmbrs/","/de/integraties/visma/","/de/integraties/loket/","/de/integraties/recruitee/","/de/integraties/carerix/","/de/integraties/otys/","/fr/integraties/afas/","/fr/integraties/nmbrs/","/fr/integraties/visma/","/fr/integraties/loket/","/fr/integraties/recruitee/","/fr/integraties/carerix/","/fr/integraties/otys/","/es/integraties/afas/","/es/integraties/nmbrs/","/es/integraties/visma/","/es/integraties/loket/","/es/integraties/recruitee/","/es/integraties/carerix/","/es/integraties/otys/","/ro/integraties/afas/","/ro/integraties/nmbrs/","/ro/integraties/visma/","/ro/integraties/loket/","/ro/integraties/recruitee/","/ro/integraties/carerix/","/ro/integraties/otys/","/testkiezer/","/en/testkiezer/","/de/testkiezer/","/fr/testkiezer/","/es/testkiezer/","/ro/testkiezer/","/voor-kandidaten/","/en/voor-kandidaten/","/de/voor-kandidaten/","/fr/voor-kandidaten/","/es/voor-kandidaten/","/ro/voor-kandidaten/","/begrippenlijst/","/en/begrippenlijst/","/de/begrippenlijst/","/fr/begrippenlijst/","/es/begrippenlijst/","/ro/begrippenlijst/","/wetenschappelijke-verantwoording/","/en/wetenschappelijke-verantwoording/","/de/wetenschappelijke-verantwoording/","/fr/wetenschappelijke-verantwoording/","/es/wetenschappelijke-verantwoording/","/ro/wetenschappelijke-verantwoording/","/oefenen/leiderschap/","/oefenen/competenties/","/oefenen/studiekeuze/","/en/oefenen/leiderschap/","/en/oefenen/competenties/","/en/oefenen/studiekeuze/","/de/oefenen/leiderschap/","/de/oefenen/competenties/","/de/oefenen/studiekeuze/","/fr/oefenen/leiderschap/","/fr/oefenen/competenties/","/fr/oefenen/studiekeuze/","/es/oefenen/leiderschap/","/es/oefenen/competenties/","/es/oefenen/studiekeuze/","/ro/oefenen/leiderschap/","/ro/oefenen/competenties/","/ro/oefenen/studiekeuze/","/vergelijking/hogan/","/vergelijking/criteria/","/vergelijking/bryq/","/vergelijking/equalture/","/en/vergelijking/hogan/","/en/vergelijking/criteria/","/en/vergelijking/bryq/","/en/vergelijking/equalture/","/de/vergelijking/hogan/","/de/vergelijking/criteria/","/de/vergelijking/bryq/","/de/vergelijking/equalture/","/fr/vergelijking/hogan/","/fr/vergelijking/criteria/","/fr/vergelijking/bryq/","/fr/vergelijking/equalture/","/es/vergelijking/hogan/","/es/vergelijking/criteria/","/es/vergelijking/bryq/","/es/vergelijking/equalture/","/ro/vergelijking/hogan/","/ro/vergelijking/criteria/","/ro/vergelijking/bryq/","/ro/vergelijking/equalture/","/vergelijking/ixly/","/vergelijking/gitp/","/vergelijking/testgorilla/","/vergelijking/assessfirst/","/vergelijking/tma-method/","/en/vergelijking/ixly/","/en/vergelijking/gitp/","/en/vergelijking/testgorilla/","/en/vergelijking/assessfirst/","/en/vergelijking/tma-method/","/de/vergelijking/ixly/","/de/vergelijking/gitp/","/de/vergelijking/testgorilla/","/de/vergelijking/assessfirst/","/de/vergelijking/tma-method/","/fr/vergelijking/ixly/","/fr/vergelijking/gitp/","/fr/vergelijking/testgorilla/","/fr/vergelijking/assessfirst/","/fr/vergelijking/tma-method/","/es/vergelijking/ixly/","/es/vergelijking/gitp/","/es/vergelijking/testgorilla/","/es/vergelijking/assessfirst/","/es/vergelijking/tma-method/","/ro/vergelijking/ixly/","/ro/vergelijking/gitp/","/ro/vergelijking/testgorilla/","/ro/vergelijking/assessfirst/","/ro/vergelijking/tma-method/","/rondleiding/","/en/rondleiding/","/de/rondleiding/","/fr/rondleiding/","/es/rondleiding/","/ro/rondleiding/","/whitepapers/assessments-kiezen-gids/","/en/whitepapers/assessments-kiezen-gids/","/de/whitepapers/assessments-kiezen-gids/","/fr/whitepapers/assessments-kiezen-gids/","/es/whitepapers/assessments-kiezen-gids/","/ro/whitepapers/assessments-kiezen-gids/","/vergelijking/","/vergelijking/shl/","/vergelijking/thomas-international/","/en/vergelijking/","/en/vergelijking/shl/","/en/vergelijking/thomas-international/","/de/vergelijking/","/de/vergelijking/shl/","/de/vergelijking/thomas-international/","/fr/vergelijking/","/fr/vergelijking/shl/","/fr/vergelijking/thomas-international/","/es/vergelijking/","/es/vergelijking/shl/","/es/vergelijking/thomas-international/","/ro/vergelijking/","/ro/vergelijking/shl/","/ro/vergelijking/thomas-international/","/vacatures/","/en/vacatures/","/de/vacatures/","/fr/vacatures/","/es/vacatures/","/ro/vacatures/","/toepassingen/","/toepassingen/werving-en-selectie/","/toepassingen/ontwikkeling/","/toepassingen/leidinggevenden/","/toepassingen/jong-talent/","/en/toepassingen/","/en/toepassingen/werving-en-selectie/","/en/toepassingen/ontwikkeling/","/en/toepassingen/leidinggevenden/","/en/toepassingen/jong-talent/","/de/toepassingen/","/de/toepassingen/werving-en-selectie/","/de/toepassingen/ontwikkeling/","/de/toepassingen/leidinggevenden/","/de/toepassingen/jong-talent/","/fr/toepassingen/","/fr/toepassingen/werving-en-selectie/","/fr/toepassingen/ontwikkeling/","/fr/toepassingen/leidinggevenden/","/fr/toepassingen/jong-talent/","/es/toepassingen/","/es/toepassingen/werving-en-selectie/","/es/toepassingen/ontwikkeling/","/es/toepassingen/leidinggevenden/","/es/toepassingen/jong-talent/","/ro/toepassingen/","/ro/toepassingen/werving-en-selectie/","/ro/toepassingen/ontwikkeling/","/ro/toepassingen/leidinggevenden/","/ro/toepassingen/jong-talent/","/sectoren/zorg/","/sectoren/industrie/","/sectoren/overheid/","/sectoren/zakelijk/","/sectoren/retail/","/sectoren/ict/","/sectoren/bouw/","/sectoren/logistiek/","/sectoren/financieel/","/sectoren/nonprofit/","/sectoren/horeca/","/sectoren/agrofood/","/sectoren/energie/","/sectoren/uitzend/","/sectoren/transport/","/sectoren/telecom/","/sectoren/vastgoed/","/sectoren/onderwijs/","/en/sectoren/zorg/","/en/sectoren/onderwijs/","/en/sectoren/industrie/","/en/sectoren/overheid/","/en/sectoren/zakelijk/","/en/sectoren/retail/","/en/sectoren/ict/","/en/sectoren/bouw/","/en/sectoren/logistiek/","/en/sectoren/financieel/","/en/sectoren/nonprofit/","/en/sectoren/horeca/","/en/sectoren/agrofood/","/en/sectoren/energie/","/en/sectoren/uitzend/","/en/sectoren/transport/","/en/sectoren/telecom/","/en/sectoren/vastgoed/","/de/sectoren/zorg/","/de/sectoren/onderwijs/","/de/sectoren/industrie/","/de/sectoren/overheid/","/de/sectoren/zakelijk/","/de/sectoren/retail/","/de/sectoren/ict/","/de/sectoren/bouw/","/de/sectoren/logistiek/","/de/sectoren/financieel/","/de/sectoren/nonprofit/","/de/sectoren/horeca/","/de/sectoren/agrofood/","/de/sectoren/energie/","/de/sectoren/uitzend/","/de/sectoren/transport/","/de/sectoren/telecom/","/de/sectoren/vastgoed/","/fr/sectoren/zorg/","/fr/sectoren/onderwijs/","/fr/sectoren/industrie/","/fr/sectoren/overheid/","/fr/sectoren/zakelijk/","/fr/sectoren/retail/","/fr/sectoren/ict/","/fr/sectoren/bouw/","/fr/sectoren/logistiek/","/fr/sectoren/financieel/","/fr/sectoren/nonprofit/","/fr/sectoren/horeca/","/fr/sectoren/agrofood/","/fr/sectoren/energie/","/fr/sectoren/uitzend/","/fr/sectoren/transport/","/fr/sectoren/telecom/","/fr/sectoren/vastgoed/","/es/sectoren/zorg/","/es/sectoren/onderwijs/","/es/sectoren/industrie/","/es/sectoren/overheid/","/es/sectoren/zakelijk/","/es/sectoren/retail/","/es/sectoren/ict/","/es/sectoren/bouw/","/es/sectoren/logistiek/","/es/sectoren/financieel/","/es/sectoren/nonprofit/","/es/sectoren/horeca/","/es/sectoren/agrofood/","/es/sectoren/energie/","/es/sectoren/uitzend/","/es/sectoren/transport/","/es/sectoren/telecom/","/es/sectoren/vastgoed/","/ro/sectoren/zorg/","/ro/sectoren/onderwijs/","/ro/sectoren/industrie/","/ro/sectoren/overheid/","/ro/sectoren/zakelijk/","/ro/sectoren/retail/","/ro/sectoren/ict/","/ro/sectoren/bouw/","/ro/sectoren/logistiek/","/ro/sectoren/financieel/","/ro/sectoren/nonprofit/","/ro/sectoren/horeca/","/ro/sectoren/agrofood/","/ro/sectoren/energie/","/ro/sectoren/uitzend/","/ro/sectoren/transport/","/ro/sectoren/telecom/","/ro/sectoren/vastgoed/","/skills-framework/","/en/skills-framework/","/de/skills-framework/","/fr/skills-framework/","/es/skills-framework/","/ro/skills-framework/"];
++const EXTRA = ["/afrekenen/","/en/afrekenen/","/de/afrekenen/","/fr/afrekenen/","/es/afrekenen/","/ro/afrekenen/","/bestelling-gelukt/","/en/bestelling-gelukt/","/de/bestelling-gelukt/","/fr/bestelling-gelukt/","/es/bestelling-gelukt/","/ro/bestelling-gelukt/","/oefenen/big-five/","/oefenen/disc/","/oefenen/cognitieve-test/","/oefenen/drijfveren/","/en/oefenen/big-five/","/en/oefenen/disc/","/en/oefenen/cognitieve-test/","/en/oefenen/drijfveren/","/de/oefenen/big-five/","/de/oefenen/disc/","/de/oefenen/cognitieve-test/","/de/oefenen/drijfveren/","/fr/oefenen/big-five/","/fr/oefenen/disc/","/fr/oefenen/cognitieve-test/","/fr/oefenen/drijfveren/","/es/oefenen/big-five/","/es/oefenen/disc/","/es/oefenen/cognitieve-test/","/es/oefenen/drijfveren/","/ro/oefenen/big-five/","/ro/oefenen/disc/","/ro/oefenen/cognitieve-test/","/ro/oefenen/drijfveren/","/whitepapers/","/en/whitepapers/","/de/whitepapers/","/fr/whitepapers/","/es/whitepapers/","/ro/whitepapers/","/whitepapers/objectief-werven/","/whitepapers/beoordelen-naar-ontwikkelen/","/en/whitepapers/objectief-werven/","/en/whitepapers/beoordelen-naar-ontwikkelen/","/de/whitepapers/objectief-werven/","/de/whitepapers/beoordelen-naar-ontwikkelen/","/fr/whitepapers/objectief-werven/","/fr/whitepapers/beoordelen-naar-ontwikkelen/","/es/whitepapers/objectief-werven/","/es/whitepapers/beoordelen-naar-ontwikkelen/","/ro/whitepapers/objectief-werven/","/ro/whitepapers/beoordelen-naar-ontwikkelen/","/integraties/afas/","/integraties/nmbrs/","/integraties/visma/","/integraties/loket/","/integraties/recruitee/","/integraties/carerix/","/integraties/otys/","/en/integraties/afas/","/en/integraties/nmbrs/","/en/integraties/visma/","/en/integraties/loket/","/en/integraties/recruitee/","/en/integraties/carerix/","/en/integraties/otys/","/de/integraties/afas/","/de/integraties/nmbrs/","/de/integraties/visma/","/de/integraties/loket/","/de/integraties/recruitee/","/de/integraties/carerix/","/de/integraties/otys/","/fr/integraties/afas/","/fr/integraties/nmbrs/","/fr/integraties/visma/","/fr/integraties/loket/","/fr/integraties/recruitee/","/fr/integraties/carerix/","/fr/integraties/otys/","/es/integraties/afas/","/es/integraties/nmbrs/","/es/integraties/visma/","/es/integraties/loket/","/es/integraties/recruitee/","/es/integraties/carerix/","/es/integraties/otys/","/ro/integraties/afas/","/ro/integraties/nmbrs/","/ro/integraties/visma/","/ro/integraties/loket/","/ro/integraties/recruitee/","/ro/integraties/carerix/","/ro/integraties/otys/","/testkiezer/","/en/testkiezer/","/de/testkiezer/","/fr/testkiezer/","/es/testkiezer/","/ro/testkiezer/","/voor-kandidaten/","/en/voor-kandidaten/","/de/voor-kandidaten/","/fr/voor-kandidaten/","/es/voor-kandidaten/","/ro/voor-kandidaten/","/begrippenlijst/","/en/begrippenlijst/","/de/begrippenlijst/","/fr/begrippenlijst/","/es/begrippenlijst/","/ro/begrippenlijst/","/wetenschappelijke-verantwoording/","/en/wetenschappelijke-verantwoording/","/de/wetenschappelijke-verantwoording/","/fr/wetenschappelijke-verantwoording/","/es/wetenschappelijke-verantwoording/","/ro/wetenschappelijke-verantwoording/","/oefenen/leiderschap/","/oefenen/competenties/","/oefenen/studiekeuze/","/en/oefenen/leiderschap/","/en/oefenen/competenties/","/en/oefenen/studiekeuze/","/de/oefenen/leiderschap/","/de/oefenen/competenties/","/de/oefenen/studiekeuze/","/fr/oefenen/leiderschap/","/fr/oefenen/competenties/","/fr/oefenen/studiekeuze/","/es/oefenen/leiderschap/","/es/oefenen/competenties/","/es/oefenen/studiekeuze/","/ro/oefenen/leiderschap/","/ro/oefenen/competenties/","/ro/oefenen/studiekeuze/","/vergelijking/hogan/","/vergelijking/criteria/","/vergelijking/bryq/","/vergelijking/equalture/","/en/vergelijking/hogan/","/en/vergelijking/criteria/","/en/vergelijking/bryq/","/en/vergelijking/equalture/","/de/vergelijking/hogan/","/de/vergelijking/criteria/","/de/vergelijking/bryq/","/de/vergelijking/equalture/","/fr/vergelijking/hogan/","/fr/vergelijking/criteria/","/fr/vergelijking/bryq/","/fr/vergelijking/equalture/","/es/vergelijking/hogan/","/es/vergelijking/criteria/","/es/vergelijking/bryq/","/es/vergelijking/equalture/","/ro/vergelijking/hogan/","/ro/vergelijking/criteria/","/ro/vergelijking/bryq/","/ro/vergelijking/equalture/","/vergelijking/ixly/","/vergelijking/gitp/","/vergelijking/testgorilla/","/vergelijking/assessfirst/","/vergelijking/tma-method/","/en/vergelijking/ixly/","/en/vergelijking/gitp/","/en/vergelijking/testgorilla/","/en/vergelijking/assessfirst/","/en/vergelijking/tma-method/","/de/vergelijking/ixly/","/de/vergelijking/gitp/","/de/vergelijking/testgorilla/","/de/vergelijking/assessfirst/","/de/vergelijking/tma-method/","/fr/vergelijking/ixly/","/fr/vergelijking/gitp/","/fr/vergelijking/testgorilla/","/fr/vergelijking/assessfirst/","/fr/vergelijking/tma-method/","/es/vergelijking/ixly/","/es/vergelijking/gitp/","/es/vergelijking/testgorilla/","/es/vergelijking/assessfirst/","/es/vergelijking/tma-method/","/ro/vergelijking/ixly/","/ro/vergelijking/gitp/","/ro/vergelijking/testgorilla/","/ro/vergelijking/assessfirst/","/ro/vergelijking/tma-method/","/rondleiding/","/en/rondleiding/","/de/rondleiding/","/fr/rondleiding/","/es/rondleiding/","/ro/rondleiding/","/whitepapers/assessments-kiezen-gids/","/en/whitepapers/assessments-kiezen-gids/","/de/whitepapers/assessments-kiezen-gids/","/fr/whitepapers/assessments-kiezen-gids/","/es/whitepapers/assessments-kiezen-gids/","/ro/whitepapers/assessments-kiezen-gids/","/vergelijking/","/vergelijking/shl/","/vergelijking/thomas-international/","/en/vergelijking/","/en/vergelijking/shl/","/en/vergelijking/thomas-international/","/de/vergelijking/","/de/vergelijking/shl/","/de/vergelijking/thomas-international/","/fr/vergelijking/","/fr/vergelijking/shl/","/fr/vergelijking/thomas-international/","/es/vergelijking/","/es/vergelijking/shl/","/es/vergelijking/thomas-international/","/ro/vergelijking/","/ro/vergelijking/shl/","/ro/vergelijking/thomas-international/","/vacatures/","/en/vacatures/","/de/vacatures/","/fr/vacatures/","/es/vacatures/","/ro/vacatures/","/toepassingen/","/toepassingen/werving-en-selectie/","/toepassingen/ontwikkeling/","/toepassingen/leidinggevenden/","/toepassingen/jong-talent/","/en/toepassingen/","/en/toepassingen/werving-en-selectie/","/en/toepassingen/ontwikkeling/","/en/toepassingen/leidinggevenden/","/en/toepassingen/jong-talent/","/de/toepassingen/","/de/toepassingen/werving-en-selectie/","/de/toepassingen/ontwikkeling/","/de/toepassingen/leidinggevenden/","/de/toepassingen/jong-talent/","/fr/toepassingen/","/fr/toepassingen/werving-en-selectie/","/fr/toepassingen/ontwikkeling/","/fr/toepassingen/leidinggevenden/","/fr/toepassingen/jong-talent/","/es/toepassingen/","/es/toepassingen/werving-en-selectie/","/es/toepassingen/ontwikkeling/","/es/toepassingen/leidinggevenden/","/es/toepassingen/jong-talent/","/ro/toepassingen/","/ro/toepassingen/werving-en-selectie/","/ro/toepassingen/ontwikkeling/","/ro/toepassingen/leidinggevenden/","/ro/toepassingen/jong-talent/","/sectoren/zorg/","/sectoren/industrie/","/sectoren/overheid/","/sectoren/zakelijk/","/sectoren/retail/","/sectoren/ict/","/sectoren/bouw/","/sectoren/logistiek/","/sectoren/financieel/","/sectoren/nonprofit/","/sectoren/horeca/","/sectoren/agrofood/","/sectoren/energie/","/sectoren/uitzend/","/sectoren/transport/","/sectoren/telecom/","/sectoren/vastgoed/","/sectoren/onderwijs/","/en/sectoren/zorg/","/en/sectoren/onderwijs/","/en/sectoren/industrie/","/en/sectoren/overheid/","/en/sectoren/zakelijk/","/en/sectoren/retail/","/en/sectoren/ict/","/en/sectoren/bouw/","/en/sectoren/logistiek/","/en/sectoren/financieel/","/en/sectoren/nonprofit/","/en/sectoren/horeca/","/en/sectoren/agrofood/","/en/sectoren/energie/","/en/sectoren/uitzend/","/en/sectoren/transport/","/en/sectoren/telecom/","/en/sectoren/vastgoed/","/de/sectoren/zorg/","/de/sectoren/onderwijs/","/de/sectoren/industrie/","/de/sectoren/overheid/","/de/sectoren/zakelijk/","/de/sectoren/retail/","/de/sectoren/ict/","/de/sectoren/bouw/","/de/sectoren/logistiek/","/de/sectoren/financieel/","/de/sectoren/nonprofit/","/de/sectoren/horeca/","/de/sectoren/agrofood/","/de/sectoren/energie/","/de/sectoren/uitzend/","/de/sectoren/transport/","/de/sectoren/telecom/","/de/sectoren/vastgoed/","/fr/sectoren/zorg/","/fr/sectoren/onderwijs/","/fr/sectoren/industrie/","/fr/sectoren/overheid/","/fr/sectoren/zakelijk/","/fr/sectoren/retail/","/fr/sectoren/ict/","/fr/sectoren/bouw/","/fr/sectoren/logistiek/","/fr/sectoren/financieel/","/fr/sectoren/nonprofit/","/fr/sectoren/horeca/","/fr/sectoren/agrofood/","/fr/sectoren/energie/","/fr/sectoren/uitzend/","/fr/sectoren/transport/","/fr/sectoren/telecom/","/fr/sectoren/vastgoed/","/es/sectoren/zorg/","/es/sectoren/onderwijs/","/es/sectoren/industrie/","/es/sectoren/overheid/","/es/sectoren/zakelijk/","/es/sectoren/retail/","/es/sectoren/ict/","/es/sectoren/bouw/","/es/sectoren/logistiek/","/es/sectoren/financieel/","/es/sectoren/nonprofit/","/es/sectoren/horeca/","/es/sectoren/agrofood/","/es/sectoren/energie/","/es/sectoren/uitzend/","/es/sectoren/transport/","/es/sectoren/telecom/","/es/sectoren/vastgoed/","/ro/sectoren/zorg/","/ro/sectoren/onderwijs/","/ro/sectoren/industrie/","/ro/sectoren/overheid/","/ro/sectoren/zakelijk/","/ro/sectoren/retail/","/ro/sectoren/ict/","/ro/sectoren/bouw/","/ro/sectoren/logistiek/","/ro/sectoren/financieel/","/ro/sectoren/nonprofit/","/ro/sectoren/horeca/","/ro/sectoren/agrofood/","/ro/sectoren/energie/","/ro/sectoren/uitzend/","/ro/sectoren/transport/","/ro/sectoren/telecom/","/ro/sectoren/vastgoed/","/skills-framework/","/en/skills-framework/","/de/skills-framework/","/fr/skills-framework/","/es/skills-framework/","/ro/skills-framework/","/voorbereiding/camera-en-geluid-testen/","/en/voorbereiding/camera-en-geluid-testen/","/de/voorbereiding/camera-en-geluid-testen/","/fr/voorbereiding/camera-en-geluid-testen/","/es/voorbereiding/camera-en-geluid-testen/","/ro/voorbereiding/camera-en-geluid-testen/"];
+ 
+ // De oefentest: het overzicht en de vijf onderdelen, per taal.
+ import { ONDERDELEN } from "./oefentest-ui.js";
+diff --git a/src/layouts/Base.astro b/src/layouts/Base.astro
+index 65f4c88..5485a70 100644
+--- a/src/layouts/Base.astro
++++ b/src/layouts/Base.astro
+@@ -58,6 +58,7 @@ const RUBRIEK = {
+   whitepapers: { nl: "Whitepapers", en: "Whitepapers", de: "Whitepapers", fr: "Livres blancs", es: "Whitepapers", ro: "Whitepapers" },
+   vacatures: { nl: "Vacatures", en: "Vacancies", de: "Stellen", fr: "Offres", es: "Vacantes", ro: "Posturi" },
+   support: { nl: "Support", en: "Support", de: "Support", fr: "Assistance", es: "Soporte", ro: "Asistență" },
++  voorbereiding: { nl: "Voorbereiding", en: "Preparation", de: "Vorbereitung", fr: "Préparation", es: "Preparación", ro: "Pregătire" },
+   partner: { nl: "Partners", en: "Partners", de: "Partner", fr: "Partenaires", es: "Socios", ro: "Parteneri" },
+ };
+ const netjes = (seg) =>
+diff --git a/src/pages/de/voorbereiding/camera-en-geluid-testen.astro b/src/pages/de/voorbereiding/camera-en-geluid-testen.astro
+new file mode 100644
+index 0000000..a826aaa
+--- /dev/null
++++ b/src/pages/de/voorbereiding/camera-en-geluid-testen.astro
+@@ -0,0 +1,9 @@
++---
++import Base from "../../../layouts/Base.astro";
++import CameraTest from "../../../components/CameraTest.astro";
++import { cameraTestContent } from "../../../data/camera-test-content.js";
++const t = cameraTestContent.de;
++---
++<Base title={t.meta.title} description={t.meta.description} active="">
++  <CameraTest t={t} lang="de" />
++</Base>
+diff --git a/src/pages/en/voorbereiding/camera-en-geluid-testen.astro b/src/pages/en/voorbereiding/camera-en-geluid-testen.astro
+new file mode 100644
+index 0000000..85a723f
+--- /dev/null
++++ b/src/pages/en/voorbereiding/camera-en-geluid-testen.astro
+@@ -0,0 +1,9 @@
++---
++import Base from "../../../layouts/Base.astro";
++import CameraTest from "../../../components/CameraTest.astro";
++import { cameraTestContent } from "../../../data/camera-test-content.js";
++const t = cameraTestContent.en;
++---
++<Base title={t.meta.title} description={t.meta.description} active="">
++  <CameraTest t={t} lang="en" />
++</Base>
+diff --git a/src/pages/es/voorbereiding/camera-en-geluid-testen.astro b/src/pages/es/voorbereiding/camera-en-geluid-testen.astro
+new file mode 100644
+index 0000000..7871867
+--- /dev/null
++++ b/src/pages/es/voorbereiding/camera-en-geluid-testen.astro
+@@ -0,0 +1,9 @@
++---
++import Base from "../../../layouts/Base.astro";
++import CameraTest from "../../../components/CameraTest.astro";
++import { cameraTestContent } from "../../../data/camera-test-content.js";
++const t = cameraTestContent.es;
++---
++<Base title={t.meta.title} description={t.meta.description} active="">
++  <CameraTest t={t} lang="es" />
++</Base>
+diff --git a/src/pages/fr/voorbereiding/camera-en-geluid-testen.astro b/src/pages/fr/voorbereiding/camera-en-geluid-testen.astro
+new file mode 100644
+index 0000000..5cd4554
+--- /dev/null
++++ b/src/pages/fr/voorbereiding/camera-en-geluid-testen.astro
+@@ -0,0 +1,9 @@
++---
++import Base from "../../../layouts/Base.astro";
++import CameraTest from "../../../components/CameraTest.astro";
++import { cameraTestContent } from "../../../data/camera-test-content.js";
++const t = cameraTestContent.fr;
++---
++<Base title={t.meta.title} description={t.meta.description} active="">
++  <CameraTest t={t} lang="fr" />
++</Base>
+diff --git a/src/pages/ro/voorbereiding/camera-en-geluid-testen.astro b/src/pages/ro/voorbereiding/camera-en-geluid-testen.astro
+new file mode 100644
+index 0000000..e701891
+--- /dev/null
++++ b/src/pages/ro/voorbereiding/camera-en-geluid-testen.astro
+@@ -0,0 +1,9 @@
++---
++import Base from "../../../layouts/Base.astro";
++import CameraTest from "../../../components/CameraTest.astro";
++import { cameraTestContent } from "../../../data/camera-test-content.js";
++const t = cameraTestContent.ro;
++---
++<Base title={t.meta.title} description={t.meta.description} active="">
++  <CameraTest t={t} lang="ro" />
++</Base>
+diff --git a/src/pages/voorbereiding/camera-en-geluid-testen.astro b/src/pages/voorbereiding/camera-en-geluid-testen.astro
+new file mode 100644
+index 0000000..f69b17c
+--- /dev/null
++++ b/src/pages/voorbereiding/camera-en-geluid-testen.astro
+@@ -0,0 +1,9 @@
++---
++import Base from "../../layouts/Base.astro";
++import CameraTest from "../../components/CameraTest.astro";
++import { cameraTestContent } from "../../data/camera-test-content.js";
++const t = cameraTestContent.nl;
++---
++<Base title={t.meta.title} description={t.meta.description} active="">
++  <CameraTest t={t} lang="nl" />
++</Base>
+-- 
+2.43.0
+

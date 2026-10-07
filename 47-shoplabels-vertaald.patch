@@ -1,0 +1,135 @@
+From 7bb03d89d057d503fc889db7981030aac5abab0c Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Tue, 29 Sep 2026 09:26:45 +0000
+Subject: [PATCH] Filters en labeltjes in de webshop vertaald
+
+De segmenten en de stappen uit de HR-cyclus stonden op elke taalversie in
+het Nederlands, omdat ze rechtstreeks uit Shopify komen. De waarden
+blijven ongewijzigd, want daar filtert de code op; alleen wat de bezoeker
+leest is nu vertaald, in de dropdowns en op de labeltjes bij de producten.
+De lijst sorteert per taal op de vertaalde tekst.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Sf7k1QctmVjyXAngXypKFp
+---
+ src/components/Shop.astro | 16 ++++++++++----
+ src/data/shop-labels.js   | 45 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 57 insertions(+), 4 deletions(-)
+ create mode 100644 src/data/shop-labels.js
+
+diff --git a/src/components/Shop.astro b/src/components/Shop.astro
+index 952d552..340b71b 100644
+--- a/src/components/Shop.astro
++++ b/src/components/Shop.astro
+@@ -6,6 +6,7 @@ import { SHOP_CONTENT } from "../data/shop-products.js";
+ import catalog from "../data/shop-catalog.json";
+ import { faqFor, BY_SEGMENT, generalFaq } from "../data/shop-faq.js";
+ import { TRAINING_HANDLES, TRAINING_SEGMENT, TRAINING_BULLETS, TRAINING_FAQ } from "../data/shop-trainingen.js";
++import { shopLabels } from "../data/shop-labels.js";
+ 
+ const { t, lang } = Astro.props;
+ 
+@@ -141,6 +142,7 @@ const FAQ_SEG = {};
+ Object.keys(BY_SEGMENT).forEach((s) => { FAQ_SEG[s] = faqFor(s, lang); });
+ 
+ // Trainingen: eigen segment, eigen kenmerken en eigen vragen.
++const LABELS = shopLabels(lang);
+ const TRAIN = {
+   handles: TRAINING_HANDLES,
+   segment: TRAINING_SEGMENT,
+@@ -388,7 +390,7 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
+   .cart-warn { color: #b3261e; background: #fdeceb; border: 1px solid #f6c9c5; border-radius: var(--radius-sm); padding: 8px 12px; font-size: 13px; font-weight: 600; margin: 0 0 10px; }
+ </style>
+ 
+-<script is:inline define:vars={{ L, ENRICH, LANG, TRAIN, IMGMAP: shopImages, SC_URL: "/shop-products.json", VENDOR_LOGO, RQ: rq, FAQ_SEG, FAQ_DEFAULT, CATALOG: catalog, CHECKOUT_URL: afrekenenHref }}>
++<script is:inline define:vars={{ L, ENRICH, LANG, TRAIN, LABELS, IMGMAP: shopImages, SC_URL: "/shop-products.json", VENDOR_LOGO, RQ: rq, FAQ_SEG, FAQ_DEFAULT, CATALOG: catalog, CHECKOUT_URL: afrekenenHref }}>
+   (function () {
+     var app = document.getElementById("shopApp");
+     if (!app) return;
+@@ -411,7 +413,13 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
+     }
+     function nl(n) { var v = (Math.round(n * 100) / 100); return Number.isInteger(v) ? v.toString() + ",-" : v.toFixed(2).replace(".", ","); }
+     function money(a, c) { var n = parseFloat(a); return (c === "EUR" ? "€\u00a0" : (c + " ")) + nl(n); }
+-    function fillSelect(sel, values) { values.sort().forEach(function (v) { var o = document.createElement("option"); o.value = v; o.textContent = v; sel.appendChild(o); }); }
++    // De waarde blijft zoals Shopify hem levert; alleen het label wordt vertaald.
++    function label(v) { return (LABELS && LABELS[v]) || v; }
++    function fillSelect(sel, values) {
++      values.map(function (v) { return { v: v, t: label(v) }; })
++        .sort(function (a, b) { return a.t.localeCompare(b.t, LANG); })
++        .forEach(function (x) { var o = document.createElement("option"); o.value = x.v; o.textContent = x.t; sel.appendChild(o); });
++    }
+     function esc(s) { return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+     function enrichImg(p) { return (IMGMAP && IMGMAP[p.handle]) || (p.taxo.segment[0] && ENRICH.imgBySeg[p.taxo.segment[0]]) || ENRICH.defImg; }
+     function isTraining(p) { return !!(p && TRAIN.handles.indexOf(p.handle) > -1); }
+@@ -609,7 +617,7 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
+       if (_burl) { vd.className = "pm-brand"; vd.innerHTML = '<img src="' + _burl + '" alt="' + esc(_vn) + '" onerror="this.remove()">'; vd.hidden = false; }
+       else if (_vn) { vd.className = "pm-vendor"; vd.textContent = _vn; vd.hidden = false; }
+       else vd.hidden = true;
+-      document.getElementById("pmTags").innerHTML = p.taxo.cyclus.concat(p.taxo.segment).map(function (x) { return '<span class="sp-tag">' + esc(x) + "</span>"; }).join("");
++      document.getElementById("pmTags").innerHTML = p.taxo.cyclus.concat(p.taxo.segment).map(function (x) { return '<span class="sp-tag">' + esc(label(x)) + "</span>"; }).join("");
+       document.getElementById("pmDesc").innerHTML = descHtml(p);
+       var faqs = faqOf(p);
+       document.getElementById("pmFaq").innerHTML = faqs.map(function (f) { return '<details class="pm-faq-item"><summary>' + esc(f.q) + '</summary><p>' + esc(f.a) + "</p></details>"; }).join("");
+@@ -656,7 +664,7 @@ const MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…",
+         var okT = !term || p.title.toLowerCase().indexOf(term) > -1;
+         if (!(okC && okS && okU && okT)) return;
+         shown++;
+-        var chips = p.taxo.cyclus.concat(p.taxo.segment).slice(0, 3).map(function (x) { return '<span class="sp-tag">' + esc(x) + "</span>"; }).join("");
++        var chips = p.taxo.cyclus.concat(p.taxo.segment).slice(0, 3).map(function (x) { return '<span class="sp-tag">' + esc(label(x)) + "</span>"; }).join("");
+         // Echte img met loading="lazy": een CSS-achtergrond laadt altijd meteen,
+         // waardoor alle 87 productfoto's tegelijk binnenkwamen.
+         var img = '<img class="sp-foto" src="' + esc(enrichImg(p)) + '" alt="" width="400" height="172" loading="lazy" decoding="async">';
+diff --git a/src/data/shop-labels.js b/src/data/shop-labels.js
+new file mode 100644
+index 0000000..40656cc
+--- /dev/null
++++ b/src/data/shop-labels.js
+@@ -0,0 +1,45 @@
++/* Labels voor de filters en de labeltjes op de productkaarten in de webshop.
++   De waarden zelf komen uit Shopify en blijven Nederlands, want daar filtert de
++   code op. Alleen wat de bezoeker leest wordt vertaald. Staat een waarde hier
++   niet, dan blijft de oorspronkelijke tekst staan. */
++
++const l = (nl, en, de, fr, es, ro) => ({ nl, en, de, fr, es, ro });
++
++// Segmenten: het producttype uit Shopify.
++const SEGMENT = {
++  "360 Feedback": l("360 Feedback", "360 Feedback", "360-Feedback", "Feedback 360", "Feedback 360", "Feedback 360"),
++  "Gedrag": l("Gedrag", "Behaviour", "Verhalten", "Comportement", "Comportamiento", "Comportament"),
++  "Intelligentie": l("Intelligentie", "Intelligence", "Intelligenz", "Intelligence", "Inteligencia", "Inteligență"),
++  "Interesse": l("Interesse", "Interests", "Interessen", "Intérêts", "Intereses", "Interese"),
++  "Live assessment": l("Live assessment", "Live assessment", "Live-Assessment", "Assessment live", "Assessment presencial", "Assessment live"),
++  "Materialen": l("Materialen", "Materials", "Materialien", "Supports", "Materiales", "Materiale"),
++  "Motivatie": l("Motivatie", "Motivation", "Motivation", "Motivation", "Motivación", "Motivație"),
++  "Persoonlijkheid": l("Persoonlijkheid", "Personality", "Persönlichkeit", "Personnalité", "Personalidad", "Personalitate"),
++  "Simulaties": l("Simulaties", "Simulations", "Simulationen", "Simulations", "Simulaciones", "Simulări"),
++  "Training": l("Training", "Training", "Schulung", "Formation", "Formación", "Training"),
++  "Vaardigheden": l("Vaardigheden", "Skills", "Fähigkeiten", "Compétences", "Habilidades", "Competențe"),
++  "Voorselectie": l("Voorselectie", "Pre-selection", "Vorauswahl", "Présélection", "Preselección", "Preselecție"),
++};
++
++// Stappen in de HR-cyclus: de tags uit Shopify.
++const CYCLUS = {
++  "Beoordelen": l("Beoordelen", "Appraisal", "Beurteilung", "Évaluation", "Evaluación", "Evaluare"),
++  "Doorstroom": l("Doorstroom", "Progression", "Aufstieg", "Évolution interne", "Promoción interna", "Avansare"),
++  "Employability": l("Employability", "Employability", "Employability", "Employabilité", "Empleabilidad", "Angajabilitate"),
++  "Functioneren": l("Functioneren", "Performance", "Arbeitsleistung", "Performance", "Desempeño", "Performanță"),
++  "Mobiliteit": l("Mobiliteit", "Mobility", "Mobilität", "Mobilité", "Movilidad", "Mobilitate"),
++  "Ontwikkeling": l("Ontwikkeling", "Development", "Entwicklung", "Développement", "Desarrollo", "Dezvoltare"),
++  "Selectie": l("Selectie", "Selection", "Auswahl", "Sélection", "Selección", "Selecție"),
++  "Voorselectie": SEGMENT["Voorselectie"],
++};
++
++/* Alle labels voor een taal, als platte tabel {waarde: tekst}. Segment en
++   cyclus gebruiken dezelfde tabel, want Voorselectie komt in allebei voor met
++   dezelfde vertaling. */
++export function shopLabels(lang) {
++  const uit = {};
++  [CYCLUS, SEGMENT].forEach((groep) => {
++    Object.keys(groep).forEach((k) => { uit[k] = groep[k][lang] || groep[k].nl; });
++  });
++  return uit;
++}
+-- 
+2.43.0
+
