@@ -8,6 +8,7 @@
 import '../styles/hsf.css';
 import SiteBase from './Base.astro';
 import { useT, path, LOCALES, ROUTE_PREFIX } from '../lib/i18n';
+import { heeftRekenhulp } from '../lib/hsf-i18n';
 import { meta } from '../lib/hsf';
 
 interface Props {
@@ -27,12 +28,14 @@ const SITE = 'https://hrmforce.com';
 const ld = jsonld ? (Array.isArray(jsonld) ? jsonld : [jsonld]) : [];
 const isPrint = bodyClass.includes('hsf-print');
 
+// De rekenhulp staat alleen in het menu van de talen waarin hij bestaat,
+// zie src/lib/hsf-i18n.ts.
 const nav = [
   ['home', t('nav.home'), path(lang)],
   ['functions', t('nav.functions'), path(lang, 'functions')],
   ['skills', t('nav.skills'), path(lang, 'skills')],
   ['families', t('nav.families'), path(lang, 'families')],
-  ['match', t('nav.match'), path(lang, 'match')],
+  ...(heeftRekenhulp(lang) ? [['match', t('nav.match'), path(lang, 'match')]] : []),
   ['method', t('nav.method'), path(lang, 'method')],
 ] as const;
 ---

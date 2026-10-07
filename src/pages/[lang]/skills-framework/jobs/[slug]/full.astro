@@ -2,8 +2,10 @@
 import FunctionFull from '../../../../../views/FunctionFull.astro';
 import { functions, getFunction } from '../../../../../lib/hsf';
 import { PREFIXED } from '../../../../../i18n/utils.js';
+import { REKENHULP_TALEN } from '../../../../../lib/hsf-i18n';
 export async function getStaticPaths() {
-  return PREFIXED.flatMap((lang) =>
+  // Alleen de talen met een eigen vertaling van de dataset, zie hsf-i18n.ts.
+  return PREFIXED.filter((l) => REKENHULP_TALEN.includes(l)).flatMap((lang) =>
     functions
       .filter((f: any) => f.slug?.[lang])
       .map((f: any) => ({ params: { lang, slug: f.slug[lang] }, props: { id: f.id } }))

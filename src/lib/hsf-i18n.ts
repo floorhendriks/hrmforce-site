@@ -33,6 +33,17 @@ export const DATA_LANGS: string[] = Object.keys(languages);
 /** Talen die de dataset in de eigen taal hebben. De rest leest hem in het Engels. */
 export const VERTAALD: string[] = ['nl', 'en', ...Object.keys(MAPS).sort()];
 
+/**
+ * Talen met de rekenhulp en de volledige profielen.
+ *
+ * Dat zijn noindex-pagina's, 900 per taal, die alleen bestaan als naslag bij de
+ * functieprofielen. In een taal waarvoor de dataset niet vertaald is voegen ze
+ * niets toe, en Cloudflare Pages telt elk bestand mee tegen de limiet per site.
+ * Daarom alleen in de talen met een eigen vertaling van de dataset.
+ */
+export const REKENHULP_TALEN: string[] = VERTAALD;
+export const heeftRekenhulp = (lang: string): boolean => REKENHULP_TALEN.includes(lang);
+
 /** De taal waarin de datavelden gelezen moeten worden. */
 export const dlang = (lang: string): string => (DATA_LANGS.includes(lang) ? lang : 'en');
 

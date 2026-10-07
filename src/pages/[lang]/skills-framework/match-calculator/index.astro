@@ -1,8 +1,13 @@
 ---
 import MatchIndex from '../../../../views/MatchIndex.astro';
 import { altSection } from '../../../../lib/alt';
-import { perTaal } from "../../../../i18n/paden.js";
-export function getStaticPaths() { return perTaal(); }
+import { REKENHULP_TALEN } from '../../../../lib/hsf-i18n';
+import { PREFIXED } from '../../../../i18n/utils.js';
+// De rekenhulp bestaat alleen in de talen met een eigen vertaling van de
+// dataset, zie src/lib/hsf-i18n.ts.
+export function getStaticPaths() {
+  return PREFIXED.filter((l) => REKENHULP_TALEN.includes(l)).map((lang) => ({ params: { lang } }));
+}
 const { lang } = Astro.params;
 ---
 <MatchIndex lang={lang} alternates={altSection('match')} />

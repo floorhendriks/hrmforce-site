@@ -8,6 +8,7 @@ import InstrumentList from '../components/InstrumentList.astro';
 import DomainMix from '../components/DomainMix.astro';
 import LeadForm from '../components/LeadForm.astro';
 import { useT, path, SEG, useTf } from '../lib/i18n';
+import { heeftRekenhulp } from '../lib/hsf-i18n';
 import { familyById, functionsOfFamily, domainMix, meta } from '../lib/hsf';
 import { dlang } from '../lib/hsf-i18n';
 import { functieNaam } from '../lib/hsf-titels';
@@ -30,8 +31,11 @@ const seg = SEG[lang] ?? SEG.en;
  * src/data/downloads-manifest.json; ontbreekt er een, dan valt de link terug op de
  * printpagina, zodat er nooit een dode link op de site staat.
  */
-const hasPdf = hasDownload(lang, fn.slug[dl]);
-const pdf = hasPdf ? downloadUrl(lang, fn.slug[dl]) : path(lang, 'functions', fn.slug[dl], 'full');
+// Talen zonder eigen pdf-set krijgen de Engelse pdf. De dataset leest in die
+// talen toch in het Engels, dus de inhoud klopt. Bestaat die ook niet, dan de
+// printpagina.
+const pdfTaal = hasDownload(lang, fn.slug[dl]) ? lang : (hasDownload('en', fn.slug.en) ? 'en' : null);
+const pdf = pdfTaal ? downloadUrl(pdfTaal, pdfTaal === lang ? fn.slug[dl] : fn.slug.en) : path(lang, 'functions', fn.slug[dl], 'full');
 const title = titel(fnNaam, t('seo.job-profile-skills-and-competencies'));
 const desc = omschrijving(fn.summary[dl], tf('seo.job-desc-tail', { skills: fn.counts.skills, competencies: fn.counts.competencies }));
 const jsonld = [{
@@ -106,13 +110,15 @@ const jsonld = [{
 
     <aside class="hsf-sticky">
       <LeadForm lang={lang} fileUrl={pdf} fileName={`hrmforce-${fn.slug[dl]}.pdf`}
-                subject={fnNaam} subjectId={fn.id} isPdf={hasPdf} />
+                subject={fnNaam} subjectId={fn.id} isPdf={pdfTaal !== null} />
 
+      {heeftRekenhulp(lang) && (
       <div class="hsf-card" style="margin-top:1rem">
         <h3 style="margin-top:0;font-size:1rem">{t('fn.match')}</h3>
         <p class="hsf-small hsf-muted">{t('ui.enter-candidate-levels-and-see-the')}</p>
         <a class="hsf-btn ghost block" href={path(lang, 'match', fn.slug[dl])}>{t('fn.match')}</a>
       </div>
+      )}
 
       <div class="hsf-card" style="margin-top:1rem">
         <h3 style="margin-top:0;font-size:1rem">{t('fn.domainmix')}</h3>
