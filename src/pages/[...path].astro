@@ -11,6 +11,8 @@ import LogoSlider from "../components/LogoSlider.astro";
 import GratisTests from "../components/GratisTests.astro";
 import validPaths from "../data/valid-paths.js";
 import { DUBBELE_PADEN } from "../data/kenniscentrum-duplicaten.js";
+import { ADVIES_SLUGS } from "../data/advies-detail.js";
+import { OPLOSSING_SLUGS } from "../data/oplossingen.js";
 import { SANITY_INTEG, SANITY_KC, SANITY_RECI18N, SANITY_T, SANITY__descFallback, SANITY__sliderH } from "../data/component-teksten.js";
 
 // Gemigreerde kenniscentrum-artikelen uit WordPress. Elk artikel-document in
@@ -23,6 +25,15 @@ export async function getStaticPaths() {
   // Statische routes hebben voorrang; sluit paden uit die we nu als eigen
   // pagina bouwen (bijv. de sectoren-index) om dubbele routes te voorkomen.
   const OWN = new Set(["sectoren", "en/sectoren", "de/sectoren", "fr/sectoren", "es/sectoren", "ro/sectoren", "sectoren/onderwijs"]);
+  // De advies- en oplossingendetailpagina's bouwen we zelf, in elke taal, uit
+  // src/data/advies-detail.js en src/data/oplossingen.js. De oude
+  // Sanity-versies daarvan slaan we over, anders staat hetzelfde adres twee keer
+  // in de route-tabel.
+  for (const taal of ["", ...PREFIXED]) {
+    const voor = taal ? taal + "/" : "";
+    for (const slug of ADVIES_SLUGS) OWN.add(`${voor}advies/${slug}`);
+    for (const slug of OPLOSSING_SLUGS) OWN.add(`${voor}hrm-oplossingen/${slug}`);
+  }
   // Artikelen die twee adressen hebben. Het lege "Verplaatst"-adres bouwen we
   // niet meer; een terugvalpagina stuurt de bezoeker naar het echte artikel.
   // Migratieresten uit WordPress: paden als /?page_id=8355/. Het zijn dubbelen

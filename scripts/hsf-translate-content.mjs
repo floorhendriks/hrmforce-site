@@ -15,6 +15,7 @@
  *   node scripts/hsf-translate-content.mjs hr               # een taal
  *   node scripts/hsf-translate-content.mjs hr sr bg         # meerdere
  *   HSF_ESTIMATE=1 node scripts/hsf-translate-content.mjs hr
+ *   HSF_ONLY=oplossingen.js node scripts/hsf-translate-content.mjs hr   # alleen dit bestand
  *   HSF_TRANSLATE_MOCK=1 node scripts/hsf-translate-content.mjs hr
  *
  * De run is hervatbaar: wat al in het taalbestand staat wordt niet opnieuw
@@ -134,7 +135,13 @@ function brontakken(x, uit, diep = 0) {
 }
 
 const teksten = new Set();
+// Met HSF_ONLY beperk je de run tot een paar datafiles. Handig als er alleen
+// nieuwe teksten bijkomen: de brontalen hoeven dan niet de hele site opnieuw
+// vertaald te krijgen.
+//   HSF_ONLY=advies-detail.js,oplossingen.js node scripts/hsf-translate-content.mjs de
+const ONLY = (process.env.HSF_ONLY || '').split(',').map((s) => s.trim()).filter(Boolean);
 for (const f of (await readdir(DATA)).filter((f) => f.endsWith('.js')).sort()) {
+  if (ONLY.length && !ONLY.includes(f)) continue;
   let mod;
   try { mod = await import(pathToFileURL(join(DATA, f)).href); } catch { continue; }
   for (const w of Object.values(mod)) if (typeof w !== 'function') brontakken(w, teksten);

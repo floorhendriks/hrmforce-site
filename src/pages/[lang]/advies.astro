@@ -1,0 +1,12 @@
+---
+// De pagina Advies voor elke taal buiten het Nederlands.
+import AdviesHub from "../../components/AdviesHub.astro";
+import { PREFIXED } from "../../i18n/utils.js";
+
+export async function getStaticPaths() {
+  return PREFIXED.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+---
+<AdviesHub lang={lang} />

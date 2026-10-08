@@ -1,8 +1,13 @@
 // HRM-oplossingen detailpagina's (NL). Eén item per oplossing.
 // De template /hrm-oplossingen/[slug] maakt er een pagina van (zelfde patroon als de advies-detailpagina's).
 // Content overgenomen en samengevat van de originele hrmforce.com/hrm-oplossingen/<slug>/-pagina's.
+//
+// De tekst staat alleen in het Nederlands. vertaalAlles maakt er een kopie per
+// taal van met de vertalingen uit src/data/translations-content/<taal>.json.
 
-export const oplossingen = [
+import { vertaalAlles } from "./vertaal-inhoud.js";
+
+const OPLOSSINGEN_NL = [
   {
     slug: "matching",
     vergelijk: {
@@ -244,3 +249,11 @@ export const oplossingen = [
     },
   },
 ];
+
+// { nl: [...], en: [...], de: [...], ... } Gebruik oplossingenVoor(taal).
+export const oplossingen = vertaalAlles(OPLOSSINGEN_NL);
+
+export const oplossingenVoor = (taal) => oplossingen[taal] ?? oplossingen.en ?? oplossingen.nl;
+
+/** De slugs zijn in elke taal gelijk, zodat de URL overal hetzelfde is. */
+export const OPLOSSING_SLUGS = OPLOSSINGEN_NL.map((o) => o.slug);

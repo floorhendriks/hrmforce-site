@@ -1,0 +1,12 @@
+---
+// De pagina HRM oplossingen voor elke taal buiten het Nederlands.
+import OplossingenHub from "../../components/OplossingenHub.astro";
+import { PREFIXED } from "../../i18n/utils.js";
+
+export async function getStaticPaths() {
+  return PREFIXED.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+---
+<OplossingenHub lang={lang} />

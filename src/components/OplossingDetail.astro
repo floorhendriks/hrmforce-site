@@ -1,0 +1,138 @@
+---
+// Detailpagina van een HRM-oplossing, in elke taal dezelfde opbouw.
+import Img from "./Img.astro";
+import Base from "../layouts/Base.astro";
+import LogoSlider from "./LogoSlider.astro";
+import SocialProof from "./SocialProof.astro";
+import ReviewSlider from "./ReviewSlider.astro";
+import PlanBlock from "./PlanBlock.astro";
+import { oplossingUiVoor, planblokUiVoor } from "../data/detailpagina-ui.js";
+import { localizePath, demoPath } from "../i18n/utils.js";
+
+const { o } = Astro.props;
+const lang = Astro.props.lang || "nl";
+const t = oplossingUiVoor(lang);
+const pb = planblokUiVoor(lang);
+const solutionsHref = localizePath("/hrm-oplossingen/", lang);
+---
+<Base title={o.metaTitle} description={o.metaDescription} active="solutions">
+  <div class="crumb">
+    <div class="wrap"><a href={localizePath("/", lang)}>{t.home}</a> › <a href={solutionsHref}>{t.sectie}</a> › <span>{o.title}</span></div>
+  </div>
+
+  <section class="ahero">
+    <div class="wrap" style={o.image ? "display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center" : ""}>
+      <div>
+        <div class="eyebrow">{t.sectie}</div>
+        <h1>{o.title}</h1>
+        {o.intro.map((p) => <p style="color:rgba(255,255,255,.85);font-size:17px;margin-bottom:14px">{p}</p>)}
+        <div class="btns">
+          <a href={demoPath(lang)} class="btn btn-primary">{o.ctaBtn || t.demo}</a>
+          <a href={localizePath("/tarieven/", lang)} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.45)">{t.tarieven}</a>
+        </div>
+        <p class="cta-note">{o.cta}</p>
+      </div>
+      {o.image && (
+        <div class="ahero-media">
+          <Img src={o.image} alt={o.title} loading="lazy" />
+        </div>
+      )}
+    </div>
+  </section>
+
+<LogoSlider lang={lang} />
+
+<SocialProof lang={lang} tone="soft" />
+
+{o.vergelijk && (
+  <section>
+    <div class="wrap" style="display:block">
+      <h2 class="section-title">{o.vergelijk.title}</h2>
+      <p class="lead" style="max-width:720px;margin:0 0 30px">{o.vergelijk.lead}</p>
+      <div class="vsgrid">
+        <div class="vscard oud">
+          <h3>{o.vergelijk.oudTitle}</h3>
+          <ul>{o.vergelijk.oud.map((x) => <li>{x}</li>)}</ul>
+        </div>
+        <div class="vscard nieuw">
+          <h3>{o.vergelijk.nieuwTitle}</h3>
+          <ul>{o.vergelijk.nieuw.map((x) => <li>{x}</li>)}</ul>
+        </div>
+      </div>
+    </div>
+  </section>
+)}
+
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">{t.toelichting}</div>
+      <h2 class="section-title">{o.title}</h2>
+      <div class="explain">
+        <div>
+          {o.body.map((p) => <p>{p}</p>)}
+          {o.bullets && o.bullets.length > 0 && (
+            <ul class="traits">{o.bullets.map((b) => <li>{b}</li>)}</ul>
+          )}
+          <a href={demoPath(lang)} class="btn btn-primary" style="margin-top:14px">{o.ctaBtn || t.demo}</a>
+        </div>
+        <div class="pentagon">
+          {o.photo && <Img class="sol-photo" src={o.photo} alt={o.title} loading="lazy" />}
+          <p style="color:var(--muted);font-size:14px">{t.bijschrift}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <PlanBlock plan={o.plan} roles={o.roles} rolesEyebrow={pb.rolverdeling} hrmLabel={pb.hrm} orgLabel={pb.org} />
+
+  <ReviewSlider />
+
+  <section class="cta">
+    <div class="wrap">
+      <h2>{t.ctaTitel}</h2>
+      <p>{t.ctaLead}</p>
+      <div class="btns">
+        <a href={demoPath(lang)} class="btn btn-primary">{t.demo}</a>
+        <a href={localizePath("/tarieven/", lang)} class="btn btn-light">{t.tarieven}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .cta-note { color:#c4d2e6; font-size:13.5px; margin-top:12px; max-width:520px; }
+  .vsgrid { display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+  .vscard { border-radius:var(--radius); padding:28px 26px; border:1px solid var(--line); }
+  .vscard.oud { background:#fbfcfe; }
+  .vscard.nieuw { background:var(--navy); color:#fff; border:0; box-shadow:none; }
+  .vscard h3 { font-size:1.15rem; margin:0 0 16px; }
+  .vscard.oud h3 { color:var(--navy); }
+  .vscard.nieuw h3 { color:#fff; }
+  .vscard ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px; }
+  .vscard li { display:flex; gap:11px; align-items:flex-start; font-size:15px; line-height:1.5; }
+  .vscard.oud li { color:var(--muted); }
+  .vscard li::before { flex:none; width:22px; height:22px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; margin-top:1px; }
+  .vscard.oud li::before { content:"\2715"; background:#fdecec; color:#c0392b; }
+  .vscard.nieuw li::before { content:"\2713"; background:rgba(252,193,27,.22); color:var(--gold); }
+  @media (max-width:780px) { .vsgrid { grid-template-columns:1fr; } }
+  .pentagon .sol-photo {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    box-shadow:none;
+    border-bottom: 3px solid var(--gold);
+    display: block;
+  }
+  .ahero-media img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    box-shadow:none;
+    display: block;
+  }
+  @media (max-width: 860px) {
+    .ahero .wrap { grid-template-columns: 1fr !important; }
+    .ahero-media { order: -1; }
+  }
+</style>

@@ -2,7 +2,9 @@
 // software-/oplossingenpagina's (stappenplan + rolverdeling), zodat de
 // adviespagina's niet als losse blokken aanvoelen.
 
-export const adviesPlanDefault = {
+import { vertaalAlles, voorTaal } from "./vertaal-inhoud.js";
+
+const PLAN_NL = {
   eyebrow: "Stappenplan",
   title: "Zo verloopt een adviestraject bij hrmforce",
   lead: "Geen open eind en geen verrassingen. Je weet vooraf wat er gebeurt, wie wat doet en wat je krijgt.",
@@ -16,7 +18,7 @@ export const adviesPlanDefault = {
   outcome: "Het resultaat: een onderbouwd advies dat je intern kunt uitleggen, en een vervolgstap die past bij wat je organisatie aankan.",
 };
 
-export const adviesRolesDefault = {
+const ROLLEN_NL = {
   title: "Wat doet hrmforce, wat doe je zelf?",
   hrmforce: [
     "Traject ontwerpen en de instrumenten kiezen",
@@ -33,7 +35,7 @@ export const adviesRolesDefault = {
 };
 
 // Per traject een afwijkend stappenplan waar dat echt anders werkt.
-export const adviesPlanBySlug = {
+const PLAN_PER_SLUG_NL = {
   "certificatietraining": {
     eyebrow: "Stappenplan",
     title: "Van aanmelding tot gecertificeerd gebruiker",
@@ -62,6 +64,15 @@ export const adviesPlanBySlug = {
   },
 };
 
-export function adviesPlanFor(slug) {
-  return adviesPlanBySlug[slug] || adviesPlanDefault;
+// De tekst staat alleen in het Nederlands; vertaalAlles maakt er een kopie per
+// taal van met de vertalingen uit src/data/translations-content/<taal>.json.
+const PLAN = vertaalAlles({ standaard: PLAN_NL, rollen: ROLLEN_NL, perSlug: PLAN_PER_SLUG_NL });
+
+/** Het stappenplan bij een adviespagina, in de gevraagde taal. */
+export function adviesPlanFor(slug, taal = "nl") {
+  const a = voorTaal(PLAN, taal);
+  return a.perSlug[slug] || a.standaard;
 }
+
+/** De rolverdeling (wat doet hrmforce, wat doe je zelf) in de gevraagde taal. */
+export const adviesRollenVoor = (taal = "nl") => voorTaal(PLAN, taal).rollen;

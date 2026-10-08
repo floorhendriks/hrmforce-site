@@ -65,8 +65,15 @@ const PER_TAAL_ZELF = { sanityMatch: () => EN_ARTIKELEN };
 
 const BRONTALEN = new Set(["nl", "en", "de", "fr", "es", "ro"]);
 
-const NIEUWE_TALEN = Object.keys(VERTALINGEN)
+// Alle talen waarvoor een vertaalbestand bestaat, ook de brontalen.
+const ALLE_VERTAALTALEN = Object.keys(VERTALINGEN)
   .map((p) => p.slice("./translations-content/".length, -".json".length));
+
+// vulAan vult standaard alleen de talen buiten de brontalen aan. De teksten van
+// de brontalen staan met de hand in de bronbestanden; die mogen niet door een
+// machinevertaling worden overschreven. Bestanden waarvan de tekst alleen in
+// het Nederlands bestaat, gebruiken vertaalAlles onderaan dit bestand.
+const NIEUWE_TALEN = ALLE_VERTAALTALEN.filter((t) => !BRONTALEN.has(t));
 
 function kaart(taal) {
   const mod = VERTALINGEN[`./translations-content/${taal}.json`];
@@ -77,7 +84,8 @@ function kaart(taal) {
  *  naar de Engelse versie, net als in src/i18n/utils.js. */
 function linkVoorTaal(pad, taal) {
   if (ALLEEN_BRONTAAL.has(pad)) return "/en" + pad;
-  return LOKALISEERBAAR.has(pad) || /^\/assessments\/[^/]+\/$/.test(pad)
+  return LOKALISEERBAAR.has(pad) || /^\/assessments\/[^/]+\/$/.test(pad) ||
+    /^\/(?:advies|hrm-oplossingen)\/[^/]+\/$/.test(pad)
     ? "/" + taal + pad
     : pad;
 }
@@ -141,4 +149,30 @@ export function vulAan(x, talen = NIEUWE_TALEN, diep = 0, sleutel = "") {
   const uit = {};
   for (const [k, v] of Object.entries(x)) uit[k] = vulAan(v, talen, diep + 1, k);
   return uit;
+}
+
+/**
+ * Voor data die alleen in het Nederlands in de repo staat: geeft een kopie per
+ * taal terug, { nl, en, de, ... }. Elke taal met een vertaalbestand krijgt de
+ * vertaalde tekst. Een taal zonder vertaalbestand komt er niet in en valt in
+ * het paginasjabloon terug op het Engels, zodat er nooit een Nederlandse
+ * pagina onder een andere taal verschijnt.
+ *
+ * Buiten Vite (scripts/hsf-translate-content.mjs leest de datafiles met kaal
+ * node) blijft het bij { nl, en }, allebei de Nederlandse tekst. Zo herkent het
+ * vertaalscript dit als een taalblok en pakt het de bronteksten op.
+ */
+export function vertaalAlles(nl) {
+  const uit = { nl };
+  for (const taal of ALLE_VERTAALTALEN) {
+    const map = kaart(taal);
+    if (map) uit[taal] = zet(nl, taal, map);
+  }
+  if (uit.en === undefined) uit.en = nl;
+  return uit;
+}
+
+/** De juiste taalversie uit een blok van vertaalAlles, met Engels als terugval. */
+export function voorTaal(blok, taal) {
+  return blok?.[taal] ?? blok?.en ?? blok?.nl;
 }

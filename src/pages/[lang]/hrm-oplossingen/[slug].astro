@@ -1,0 +1,15 @@
+---
+// De detailpagina's van de HRM-oplossingen voor elke taal buiten het Nederlands.
+import OplossingDetail from "../../../components/OplossingDetail.astro";
+import { oplossingenVoor } from "../../../data/oplossingen.js";
+import { PREFIXED } from "../../../i18n/utils.js";
+
+export async function getStaticPaths() {
+  return PREFIXED.flatMap((lang) =>
+    oplossingenVoor(lang).map((o) => ({ params: { lang, slug: o.slug }, props: { o } })));
+}
+
+const { lang } = Astro.params;
+const { o } = Astro.props;
+---
+<OplossingDetail o={o} lang={lang} />

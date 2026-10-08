@@ -57,6 +57,14 @@ function isLocalizedAssessment(path) {
   return /^\/assessments\/[^/]+\/$/.test(path);
 }
 
+// De advies- en oplossingendetailpagina's worden ook in elke taal gebouwd, uit
+// src/data/advies-detail.js en src/data/oplossingen.js. De paar pagina's die
+// alleen uit Sanity komen staan in alleen-brontaal.js en worden hierboven al
+// naar het Engels gestuurd.
+function isLocalizedSectie(path) {
+  return /^\/(?:advies|hrm-oplossingen)\/[^/]+\/$/.test(path);
+}
+
 // Menu-/interne link: localiseert alleen als de doelpagina in die taal bestaat,
 // anders NL-fallback. Voorkomt 404's bij nog niet vertaalde pagina's.
 export function navHref(path, lang, validPaths) {
@@ -69,7 +77,7 @@ export function navHref(path, lang, validPaths) {
     const valid = validPaths instanceof Set ? validPaths : new Set(validPaths);
     return valid.has(target) ? target : path; // localiseer als vertaling bestaat, anders NL
   }
-  if (LOCALIZED_PAGES.has(path) || isLocalizedAssessment(path)) return target;
+  if (LOCALIZED_PAGES.has(path) || isLocalizedAssessment(path) || isLocalizedSectie(path)) return target;
   return path; // NL-fallback
 }
 

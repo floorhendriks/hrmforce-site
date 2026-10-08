@@ -3,14 +3,20 @@
 // Secties waarvoor een taal nog geen tekst heeft, worden overgeslagen; zodra
 // de vertaling in over-ons-content.js staat, verschijnt de sectie vanzelf.
 import Img from "./Img.astro";
+import { localizePath, PREFIXED } from "../i18n/utils.js";
 
 const { t } = Astro.props;
+// De taal komt van de pagina. Zonder taal valt alles terug op Nederlands.
+const lang = Astro.props.lang || "nl";
+// De brontalen hebben hun eigen links in de data staan, die hebben het
+// taalvoorvoegsel al. Alleen een pad zonder voorvoegsel krijgt het erbij.
+const link = (h) => (PREFIXED.includes(String(h).split("/")[1]) ? h : localizePath(h, lang));
 
 // Foto van de oprichter, taalonafhankelijk.
 const FOTO = "/media/team/floor-hendriks.webp";
 ---
 <div class="crumb">
-  <div class="wrap"><a href={t.homeHref}>Home</a> › <span>{t.crumb}</span></div>
+  <div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div>
 </div>
 
 <section class="ahero">
@@ -59,7 +65,7 @@ const FOTO = "/media/team/floor-hendriks.webp";
     <div class="cards" style="margin:28px 0">
       {t.software.domeinen.map((d) => (
         d.href
-          ? <a class="card" href={d.href} style="text-decoration:none;color:inherit;display:block"><h3>{d.h}</h3></a>
+          ? <a class="card" href={link(d.href)} style="text-decoration:none;color:inherit;display:block"><h3>{d.h}</h3></a>
           : <div class="card"><h3>{d.h}</h3></div>
       ))}
     </div>

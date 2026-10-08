@@ -105,13 +105,32 @@ Dat vult elke taal aan vanuit `src/data/translations-content/<taal>.json`. Zie
 `src/data/vertaal-inhoud.js` voor wat er precies gebeurt met links, slugs en
 plaatshouders.
 
+Staat de tekst alleen in het Nederlands, zoals bij de HRM-oplossingen en de
+adviespagina's, gebruik dan `vertaalAlles` in plaats van `vulAan`:
+
+```js
+export const oplossingen = vertaalAlles(OPLOSSINGEN_NL);
+export const oplossingenVoor = (taal) => oplossingen[taal] ?? oplossingen.en ?? oplossingen.nl;
+```
+
+Dat geeft `{ nl, en, de, ... }` terug: een kopie per taal waarvoor een
+vertaalbestand bestaat, met Engels als terugval. `vulAan` laat de brontalen met
+rust, `vertaalAlles` vult ze wel, want daar staat geen handgeschreven tekst voor.
+
+Komt er zo'n bestand bij, vertaal dan alleen dat bestand. Anders krijgen de
+brontalen de hele site opnieuw vertaald, en dat is ruim 350.000 tekens per taal:
+
+```
+HSF_ONLY=oplossingen.js,advies-detail.js node scripts/hsf-translate-content.mjs en de fr es ro pl da sv
+```
+
 Een pagina die niet in elke taal bestaat, hoort in `src/i18n/alleen-brontaal.js`.
 Een taal buiten de brontalen krijgt daar de **Engelse** versie, niet de
 Nederlandse: een Zweedse bezoeker heeft daar meer aan, en Engels bestaat voor
 al die pagina's. Dezelfde regel geldt voor het skills framework, de
 oefenbanken en het kenniscentrum.
 
-## Drie dingen die er telkens doorheen glippen
+## Vier dingen die er telkens doorheen glippen
 
 Deze zijn stuk voor stuk een keer live gegaan en moeten bij elke taal opnieuw
 gecontroleerd worden.
@@ -125,6 +144,14 @@ uitkomt.
 vertaalscript.** Dus geen `Astro.props.x ?? "Vertrouwd door 1.200+
 organisaties"` in een component. Zet de tekst in `src/data/` en geef de
 component de taal mee.
+
+**Een pagina uit het menu hoort in elke taal te bestaan.** Een menu-item naar
+het Engels laten wijzen of uit het menu halen is geen oplossing: de HRM-
+oplossingen en de adviespagina's horen vertaald te worden en in elke taal te
+staan. Ze komen daarom uit `src/data/oplossingen.js` en
+`src/data/advies-detail.js` en worden door de `[lang]`-routes gebouwd, niet uit
+Sanity gehaald. Alleen wat nergens in het menu staat, mag in
+`src/i18n/alleen-brontaal.js` blijven.
 
 **Het kenniscentrum vult zich met de Engelse artikelen** zolang een taal geen
 eigen artikelen in Sanity heeft. De links moeten dan naar `/en/kenniscentrum/`

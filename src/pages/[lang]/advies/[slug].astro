@@ -1,0 +1,15 @@
+---
+// De advies- en trainingsdetailpagina's voor elke taal buiten het Nederlands.
+import AdviesDetail from "../../../components/AdviesDetail.astro";
+import { adviesDetailVoor } from "../../../data/advies-detail.js";
+import { PREFIXED } from "../../../i18n/utils.js";
+
+export async function getStaticPaths() {
+  return PREFIXED.flatMap((lang) =>
+    adviesDetailVoor(lang).map((a) => ({ params: { lang, slug: a.slug }, props: { a } })));
+}
+
+const { lang } = Astro.params;
+const { a } = Astro.props;
+---
+<AdviesDetail a={a} lang={lang} />

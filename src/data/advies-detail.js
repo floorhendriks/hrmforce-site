@@ -1,8 +1,13 @@
 // Advies-detailpagina's (NL). Eén item per advies-/trainingsonderwerp.
 // De template /advies/[slug] maakt er een pagina van (zelfde patroon als de assessments).
 // Content overgenomen en samengevat van de originele hrmforce.com/advies/<slug>/-pagina's.
+//
+// De tekst staat alleen in het Nederlands. vertaalAlles maakt er een kopie per
+// taal van met de vertalingen uit src/data/translations-content/<taal>.json.
 
-export const adviesDetail = [
+import { vertaalAlles } from "./vertaal-inhoud.js";
+
+const ADVIES_NL = [
   {
     slug: "certificatietraining",
     image: "/media/stock/pexels-3184465.webp",
@@ -226,4 +231,64 @@ export const adviesDetail = [
     ],
     cta: "Plan een teamanalyse",
   },
+  {
+    slug: "competentie-management",
+    image: "/media/stock/pexels-3184465.webp",
+    title: "Competentiemanagement",
+    metaTitle: "Competentiemanagement | Visie vertalen naar competenties | hrmforce",
+    metaDescription:
+      "Visie en strategie vertaald naar competenties en functieprofielen, zodat er helderheid en structuur komt in alle functies. Onze adviseurs begeleiden de implementatie.",
+    intro: [
+      "Bij competentiemanagement vertaal je visie en strategie naar concrete doelstellingen per functie. Een zorgvuldige implementatie verdient zich terug in meer helderheid en structuur in alle functies.",
+      "Elke implementatie is maatwerk. hrmforce werkt meestal in drie fases: strategie bepalen, de HR-organisatie inrichten en de ontwikkelcyclus ontwerpen en invoeren.",
+    ],
+    body: [
+      "Bepalen van strategie. De directie vertaalt de organisatiestrategie naar een HR-strategie. Als basis gebruiken we wetenschappelijke principes van performancemanagement en competentiemanagement. Desgewenst bevragen we medewerkers over resultaatgerichtheid en over welke competenties aanwezig zijn of ontbreken. Uit de HR-strategie volgt een concrete planning.",
+      "Inrichten van de HR-organisatie. De HR-afdeling bedient de organisatie beter als haar inrichting past bij de organisatiestrategie en de HR-strategie. hrmforce adviseert daarover op basis van beproefde inrichtingsconcepten en HR-benchmarks.",
+      "Ontwerp en implementatie van de ontwikkelcyclus. Medewerkerontwikkeling loopt het hele jaar door en vraagt sturing van leidinggevenden. Met ontwikkelafspraken aan het begin van het jaar en doorlopende coaching vergroot je jaarlijks de inzetbaarheid van je medewerkers. Centrale vraag daarbij: beschikt de medewerker over de juiste competenties?",
+      "Daarnaast maken we het gesprek over gedrag concreet met het hrmforce competentieboek, een naslagwerk met 50 competenties, en met het competentiespel, dat laat zien wat er nodig is voor een volgende ontwikkelstap. Het spel speel je alleen, met een collega of leidinggevende, of met een heel team.",
+    ],
+    bullets: [
+      "Best practice-onderzoek binnen je organisatie, waarmee we samen het optimale competentieprofiel bepalen",
+      "Inrichten van een ontwikkelcyclus, met online meetinstrumenten of een compleet developmenttraject",
+      "Training van leidinggevenden in coachingsvaardigheden",
+      "Functieprofielen en competenties die in alle functies dezelfde taal spreken",
+      "Een naslagwerk met 50 competenties die gedrag meetbaar en bespreekbaar maken",
+    ],
+    cta: "Bepaal samen met een adviseur welke fase bij jouw organisatie past",
+  },
+  {
+    slug: "talent-management",
+    image: "/media/stock/pexels-1181533.webp",
+    title: "Talent management",
+    metaTitle: "Talent management | Talent herkennen, ontwikkelen en behouden | hrmforce",
+    metaDescription:
+      "Talent management regelt de in-, door- en uitstroom van talent op basis van de visie en doelen van je organisatie. hrmforce analyseert je processen en voert verbeteringen door.",
+    intro: [
+      "Talent management regelt de in-, door- en uitstroom van talent op basis van de visie en doelen van je organisatie. hrmforce analyseert daarvoor je processen en hulpmiddelen en voert verbeteringen door waar die het meeste opleveren.",
+      "De planning van strategisch talent management bestaat bij ons uit drie fases: talent identificeren, talent ontwikkelen en talent behouden.",
+    ],
+    body: [
+      "Pas je de 80-20 regel toe op recruitment, dan zorgt 20% van de aangeworven kandidaten voor 80% van de resultaten. Daarom richten organisaties hun werving op deze toptalenten. De huidige arbeidsmarkt maakt het daarbij nodig om talent binnen de organisatie te herkennen en te benutten, te managen, te motiveren en te behouden.",
+      "Identificeren van talent. Talent wordt doorgaans als vanzelfsprekend gezien. Medewerkers zijn zich er vaak niet van bewust en weten niet hoe hun talenten bijdragen aan het succes van de organisatie. Wil je het talent in je organisatie benutten, dan weet je eerst welk talent je in huis hebt. hrmforce biedt daarvoor verschillende meetinstrumenten.",
+      "Ontwikkelen van talent. Talenten komen onder andere voort uit de persoonlijkheid, intelligentie en werkstijl van een medewerker. Het herkennen van talent is geen garantie voor de ontwikkeling ervan. Met talent development ontwikkel je dat talent daadwerkelijk: we zetten daarvoor een development center, training en individuele loopbaanbegeleiding in. Onze adviseurs stellen het programma op maat samen.",
+      "Behoud van talent. Na het herkennen en ontwikkelen volgt de vraag hoe je het talent in je organisatie houdt. Breng de vaardigheden van een medewerker en de uitdagingen in het werk met elkaar in verhouding: daar is iemand het meest productief en komen sterke kanten tot hun recht. Je stelt een plan op dat specifiek op jouw organisatie is gericht, om talent nu en in de toekomst te behouden.",
+    ],
+    bullets: [
+      "Zicht op welk talent je al in huis hebt",
+      "Een ontwikkelprogramma op maat: development center, training en loopbaanbegeleiding",
+      "Loopbaanbeleid dat individuele en collectieve ambities verbindt",
+      "Een concreet plan om talent te behouden",
+      "In-, door- en uitstroom die aansluit op je organisatiedoelen",
+    ],
+    cta: "Zet vooraf op een rij welke functies het zwaarst wegen voor je resultaten",
+  },
 ];
+
+// { nl: [...], en: [...], de: [...], ... } Gebruik adviesDetailVoor(taal).
+export const adviesDetail = vertaalAlles(ADVIES_NL);
+
+export const adviesDetailVoor = (taal) => adviesDetail[taal] ?? adviesDetail.en ?? adviesDetail.nl;
+
+/** De slugs zijn in elke taal gelijk, zodat de URL overal hetzelfde is. */
+export const ADVIES_SLUGS = ADVIES_NL.map((a) => a.slug);

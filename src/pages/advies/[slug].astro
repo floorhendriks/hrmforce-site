@@ -1,85 +1,13 @@
 ---
-import Base from "../../layouts/Base.astro";
-import { adviesDetail } from "../../data/advies-detail.js";
-import { getLangFromUrl, localizePath, demoPath } from "../../i18n/utils.js";
-import LogoSlider from "../../components/LogoSlider.astro";
-import ReviewSlider from "../../components/ReviewSlider.astro";
-import SocialProof from "../../components/SocialProof.astro";
-import PlanBlock from "../../components/PlanBlock.astro";
-import { adviesPlanFor, adviesRolesDefault } from "../../data/advies-plan.js";
+// De Nederlandse detailpagina's; de andere talen lopen via
+// src/pages/[lang]/advies/[slug].astro.
+import AdviesDetail from "../../components/AdviesDetail.astro";
+import { adviesDetailVoor } from "../../data/advies-detail.js";
 
 export async function getStaticPaths() {
-  return adviesDetail.map((a) => ({ params: { slug: a.slug }, props: { a } }));
+  return adviesDetailVoor("nl").map((a) => ({ params: { slug: a.slug }, props: { a } }));
 }
 
-const lang = getLangFromUrl(Astro.url);
 const { a } = Astro.props;
-const adviesHref = localizePath("/advies/", lang);
-const plan = adviesPlanFor(a.slug);
-const roles = a.roles || adviesRolesDefault;
 ---
-<Base title={a.metaTitle} description={a.metaDescription} active="advice">
-  <div class="crumb">
-    <div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={adviesHref}>Advies</a> › <span>{a.title}</span></div>
-  </div>
-
-  <section class="ahero">
-    <div class="wrap">
-      <div>
-        <div class="eyebrow">Advies</div>
-        <h1>{a.title}</h1>
-        {a.intro.map((p) => <p style="color:rgba(255,255,255,.85);font-size:17px;margin-bottom:14px">{p}</p>)}
-        <div class="btns">
-          <a href={demoPath(lang)} class="btn btn-primary">Plan een gratis kennismaking</a>
-          <a href={localizePath("/tarieven/", lang)} class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.45)">Bekijk tarieven</a>
-        </div>
-        <p class="cta-note">{a.cta}</p>
-      </div>
-    </div>
-  </section>
-
-  <LogoSlider heading="Vertrouwd door 1.200+ organisaties" />
-
-  <SocialProof lang={lang} tone="soft" />
-
-  <section>
-    <div class="wrap">
-      <div class="eyebrow">Toelichting</div>
-      <h2 class="section-title">{a.title}</h2>
-      <div class="explain">
-        <div>
-          {a.body.map((p) => <p>{p}</p>)}
-          {a.bullets && a.bullets.length > 0 && (
-            <ul class="traits">{a.bullets.map((b) => <li>{b}</li>)}</ul>
-          )}
-          <a href={demoPath(lang)} class="btn btn-primary" style="margin-top:14px">Plan een gratis kennismaking</a>
-        </div>
-        <div class="pentagon">
-          {a.image
-            ? <img src={a.image} alt={a.title} loading="lazy" style="width:100%;border-radius:var(--radius);display:block;box-shadow:var(--shadow);aspect-ratio:4/3;object-fit:cover" />
-            : <div class="ring"></div>}
-          <p style="color:var(--muted);font-size:14px;margin-top:12px">Wij stellen samen met jou een traject op maat samen dat past bij jouw vraagstuk.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <PlanBlock plan={plan} roles={roles} />
-
-  <ReviewSlider headingKey="clients" />
-
-  <section class="cta">
-    <div class="wrap">
-      <h2>Klaar om hier samen mee aan de slag te gaan?</h2>
-      <p>Plan een gratis kennismaking en ontdek hoe hrmforce jouw HR-vraagstuk concreet aanpakt.</p>
-      <div class="btns">
-        <a href={demoPath(lang)} class="btn btn-primary">Plan een gratis kennismaking</a>
-        <a href={localizePath("/tarieven/", lang)} class="btn btn-light">Bekijk tarieven</a>
-      </div>
-    </div>
-  </section>
-</Base>
-
-<style>
-  .cta-note { color:#c4d2e6; font-size:13.5px; margin-top:12px; max-width:520px; }
-</style>
+<AdviesDetail a={a} lang="nl" />

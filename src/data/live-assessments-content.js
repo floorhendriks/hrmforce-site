@@ -28,7 +28,7 @@ export const LA_OPTIONS = [
     },
   },
   {
-    key: "selectie-assessment", href: "/advies/selectie-assessment/", nlOnly: true,
+    key: "selectie-assessment", href: "/advies/selectie-assessment/",
     title: { nl: "Selectie Assessment", en: "Selection Assessment", de: "Auswahl-Assessment", fr: "Évaluation de sélection", es: "Assessment de selección", ro: "Assessment de selecție" },
     desc: {
       nl: "Onderbouw je selectiebeslissing en verhoog de kans op productieve, passende medewerkers.",
@@ -40,7 +40,7 @@ export const LA_OPTIONS = [
     },
   },
   {
-    key: "ontwikkel-assessment", href: "/advies/ontwikkel-assessment/", nlOnly: true,
+    key: "ontwikkel-assessment", href: "/advies/ontwikkel-assessment/",
     title: { nl: "Ontwikkel Assessment / Potentieelbeoordeling", en: "Development Assessment / Potential review", de: "Entwicklungs-Assessment / Potenzialbeurteilung", fr: "Évaluation de développement / Potentiel", es: "Assessment de desarrollo / Evaluación de potencial", ro: "Assessment de dezvoltare / Evaluarea potențialului" },
     desc: {
       nl: "Breng ontwikkelpotentieel in kaart en geef gerichte richting aan groei en loopbaan.",
@@ -52,7 +52,7 @@ export const LA_OPTIONS = [
     },
   },
   {
-    key: "loopbaan-assessment", href: "/advies/loopbaan-assessment/", nlOnly: true,
+    key: "loopbaan-assessment", href: "/advies/loopbaan-assessment/",
     title: { nl: "Loopbaan Assessment", en: "Career Assessment", de: "Laufbahn-Assessment", fr: "Évaluation de carrière", es: "Assessment de carrera", ro: "Assessment de carieră" },
     desc: {
       nl: "Gericht op de vraag 'wat wil ik?': van interesses en drijfveren naar passende loopbaankeuzes.",
@@ -64,7 +64,7 @@ export const LA_OPTIONS = [
     },
   },
   {
-    key: "executive-assessment", href: "/advies/executive-assessment/", nlOnly: true,
+    key: "executive-assessment", href: "/advies/executive-assessment/",
     title: { nl: "Executive Assessment", en: "Executive Assessment", de: "Executive Assessment", fr: "Executive Assessment", es: "Executive Assessment", ro: "Executive Assessment" },
     desc: {
       nl: "Diepgaand assessment op maat voor management- en directiefuncties, met persoonlijke terugkoppeling.",
@@ -76,7 +76,7 @@ export const LA_OPTIONS = [
     },
   },
   {
-    key: "teamanalyse", href: "/advies/teamanalyse/", nlOnly: true,
+    key: "teamanalyse", href: "/advies/teamanalyse/",
     title: { nl: "Teamanalyse / Groepsassessment", en: "Team analysis / Group assessment", de: "Teamanalyse / Gruppen-Assessment", fr: "Analyse d'équipe / Évaluation de groupe", es: "Análisis de equipo / Assessment grupal", ro: "Analiză de echipă / Assessment de grup" },
     desc: {
       nl: "Maak talenten en ontwikkelpunten van een team zichtbaar en versterk de samenwerking.",
@@ -92,7 +92,7 @@ export const LA_OPTIONS = [
 export function liveAssessmentsFor(lang) {
   const ui = LA_UI[lang] || LA_UI.nl;
   const L = (o) => o[lang] || o.nl;
-  return { ui, options: LA_OPTIONS.map((o) => ({ key: o.key, href: o.href, nlOnly: !!o.nlOnly, title: L(o.title), desc: L(o.desc) })) };
+  return { ui, options: LA_OPTIONS.map((o) => ({ key: o.key, href: o.href, title: L(o.title), desc: L(o.desc) })) };
 }
 
 // Talen zonder eigen tekst in dit bestand worden aangevuld uit

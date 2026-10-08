@@ -34,12 +34,25 @@ import { VRAGENLIJSTEN } from "./oefenvragenlijst.js";
 import { DUBBELE_ARTIKELEN } from "./kenniscentrum-duplicaten.js";
 import { languages, BRONTALEN } from "../i18n/ui.js";
 import { ALLEEN_BRONTAAL } from "../i18n/alleen-brontaal.js";
+import { ADVIES_SLUGS } from "./advies-detail.js";
+import { OPLOSSING_SLUGS } from "./oplossingen.js";
 const OEFEN = Object.keys(languages).flatMap((t) => {
   const basis = t === "nl" ? "/oefentest/" : `/${t}/oefentest/`;
   return [basis,
     ...Object.values(ONDERDELEN).filter((o) => o.slug[t]).map((o) => `${basis}${o.slug[t]}/`),
     ...Object.values(VRAGENLIJSTEN).filter((o) => o.slug[t]).map((o) => `${basis}${o.slug[t]}/`)];
 });
+
+// De adviespagina's en de HRM-oplossingen komen uit src/data/advies-detail.js en
+// src/data/oplossingen.js en worden in elke taal gebouwd. De paden leiden we
+// hier van die data af, zodat de lijst klopt zodra er een onderwerp bijkomt.
+const SECTIEPADEN = [
+  "/advies/", "/hrm-oplossingen/",
+  ...ADVIES_SLUGS.map((s) => `/advies/${s}/`),
+  ...OPLOSSING_SLUGS.map((s) => `/hrm-oplossingen/${s}/`),
+];
+const SECTIES = Object.keys(languages).flatMap((t) =>
+  SECTIEPADEN.map((p) => (t === "nl" ? p : `/${t}${p}`)));
 
 // Talen zonder eigen tekst in de repo (pl, da, sv, ...) worden door de
 // [lang]-routes gebouwd uit dezelfde data als de brontalen. Hun paden leiden we
@@ -72,7 +85,7 @@ function afgeleidePaden(bestaand) {
 const VERVALLEN = new Set(Object.keys(DUBBELE_ARTIKELEN));
 
 const BRON = Array.from(
-  new Set([...STATIC, ...EXTRA, ...OEFEN, ...sanityPaths])
+  new Set([...STATIC, ...EXTRA, ...OEFEN, ...SECTIES, ...sanityPaths])
 ).filter((p) => !VERVALLEN.has(p));
 
 export default Array.from(new Set([...BRON, ...afgeleidePaden(BRON)]));

@@ -8,5 +8,5 @@ const { lang } = Astro.params;
 const t = overOnsContent[lang];
 ---
 <Base title={t.meta.title} description={t.meta.description} active="about">
-  <OverOns t={t} />
+  <OverOns t={t} lang={lang} />
 </Base>
