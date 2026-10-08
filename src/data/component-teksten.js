@@ -650,3 +650,17 @@ export const SHOP_ENRICH_DESC = {
   ro: { intro: "{name} este o evaluare online de la hrmforce: fundamentată științific, se completează direct online și este utilizabilă imediat.", body: "Primești un raport clar și practic, pe care îl poți folosi imediat pentru selecție, dezvoltare sau discuții de echipă. Chestionarul este disponibil în mai multe limbi și se completează de obicei în 10-20 de minute.", bullets: ["Instrument validat științific", "Online, raport pe e-mail", "Disponibil în mai multe limbi", "Achiziție individuală, fără abonament"] },
 };
 Object.assign(SHOP_ENRICH_DESC, vulAan(SHOP_ENRICH_DESC));
+
+// De segmentnamen in het filter op /assessment-overzicht. De waarde in de
+// <option> blijft de Nederlandse naam, want daar filtert de pagina op; alleen
+// het label gaat mee in de vertaling. Zonder dit stond het filter in elke taal
+// in het Nederlands, ook in het Pools, Deens en Zweeds.
+export const SEGMENT_NAMEN = {
+  nl: { "360 & Gedrag": "360 & Gedrag", "Capaciteiten": "Capaciteiten", "Drijfveren": "Drijfveren", "Gedrag": "Gedrag", "Interesse": "Interesse", "Ontwikkeling": "Ontwikkeling", "Persoonlijkheid": "Persoonlijkheid", "Vaardigheden": "Vaardigheden" },
+  en: { "360 & Gedrag": "360 & Behaviour", "Capaciteiten": "Abilities", "Drijfveren": "Drivers", "Gedrag": "Behaviour", "Interesse": "Interests", "Ontwikkeling": "Development", "Persoonlijkheid": "Personality", "Vaardigheden": "Skills" },
+  de: { "360 & Gedrag": "360 & Verhalten", "Capaciteiten": "Fähigkeiten", "Drijfveren": "Motive", "Gedrag": "Verhalten", "Interesse": "Interessen", "Ontwikkeling": "Entwicklung", "Persoonlijkheid": "Persönlichkeit", "Vaardigheden": "Fertigkeiten" },
+  fr: { "360 & Gedrag": "360 & Comportement", "Capaciteiten": "Aptitudes", "Drijfveren": "Motivations", "Gedrag": "Comportement", "Interesse": "Intérêts", "Ontwikkeling": "Développement", "Persoonlijkheid": "Personnalité", "Vaardigheden": "Compétences" },
+  es: { "360 & Gedrag": "360 y Comportamiento", "Capaciteiten": "Aptitudes", "Drijfveren": "Motivaciones", "Gedrag": "Comportamiento", "Interesse": "Intereses", "Ontwikkeling": "Desarrollo", "Persoonlijkheid": "Personalidad", "Vaardigheden": "Habilidades" },
+  ro: { "360 & Gedrag": "360 & Comportament", "Capaciteiten": "Aptitudini", "Drijfveren": "Motivații", "Gedrag": "Comportament", "Interesse": "Interese", "Ontwikkeling": "Dezvoltare", "Persoonlijkheid": "Personalitate", "Vaardigheden": "Abilități" },
+};
+Object.assign(SEGMENT_NAMEN, vulAan(SEGMENT_NAMEN));

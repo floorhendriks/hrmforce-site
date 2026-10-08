@@ -4010,7 +4010,7 @@
  "Gelukt. Je oefenvragen zijn onderweg naar je mailbox.": "Det lykkedes. Dine øvelsesopgaver er på vej til din e-mail.",
  "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar oefenen@hrmforce.com.": "Der opstod en fejl under afsendelsen. Prøv igen, eller send en e-mail til oefenen@hrmforce.com.",
  "Vier kleuren, een eerste beeld van je persoonlijkheid in een paar minuten. Je krijgt de uitslag direct te zien.": "Fire farver, et første indtryk af din personlighed på få minutter. Du får resultatet at se med det samme.",
- "Capaciteiten": "Kompetencer",
+ "Capaciteiten": "Evner",
  "Vijf onderdelen met goede en foute antwoorden. Je krijgt per ronde 25 willekeurige vragen en daarna per vraag de toelichting.": "Fem afsnit med rigtige og forkerte svar. Du får 25 tilfældige spørgsmål pr. runde og derefter en forklaring til hvert spørgsmål.",
  "Zes zelfrapportagelijsten. Hier zijn geen goede of foute antwoorden; je krijgt een profielschets in plaats van een score.": "Seks selvrapporteringsskemaer. Her er der ingen rigtige eller forkerte svar; du får en profilbeskrivelse i stedet for en score.",
  "Meer voorbereiding": "Mere forberedelse",
@@ -4679,5 +4679,6 @@
  "Online oefen je verder op {url}. Je krijgt daar elke ronde een nieuwe set vragen, met na afloop per vraag het juiste antwoord en een toelichting.": "Du kan øve dig yderligere online på {url}. Der får du hvert gennemløb et nyt sæt spørgsmål, og bagefter får du det rigtige svar og en forklaring til hvert spørgsmål.",
  "Het document bevat voorbeeldvragen. Ze komen niet uit de echte vragenlijst en je antwoorden worden niet bewaard.": "Dokumentet indeholder eksempelspørgsmål. De stammer ikke fra det egentlige spørgeskema, og dine svar gemmes ikke.",
  "Onze assessments zijn beschikbaar in 29 taalversies, van Nederlands, Engels, Duits, Frans en Spaans tot Pools, Tsjechisch, Zweeds, Deens, Turks, Grieks, Oekraiens en de Baltische talen. De kandidaat kiest zelf de gewenste taal bij aanvang, zodat taal geen belemmering vormt voor een eerlijke meting.": "Vores vurderinger findes i 29 sprogversioner, fra hollandsk, engelsk, tysk, fransk og spansk til polsk, tjekkisk, svensk, dansk, tyrkisk, græsk, ukrainsk og de baltiske sprog. Kandidaten vælger selv det ønskede sprog ved testens start, så sproget ikke udgør en hindring for en retfærdig vurdering.",
- "Taal kandidaat": "Kandidatens sprog"
+ "Taal kandidaat": "Kandidatens sprog",
+ "360 & Gedrag": "360 & Adfærd"
 }

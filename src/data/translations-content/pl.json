@@ -31,7 +31,7 @@
  "Positieve faalangst": "Pozytywny lęk przed porażką",
  "Idealen": "Ideale",
  "Onafhankelijkheid": "Niezależność",
- "Ontwikkeling": "Opracowanie",
+ "Ontwikkeling": "Rozwój",
  "Promotie": "Promocja",
  "Sociale interactie": "Interakcje społeczne",
  "Status": "Status",
@@ -1707,7 +1707,7 @@
  "Sparren?": "Chcieliby Państwo omówić tę kwestię?",
  "Ontdek wat past bij jouw situatie": "Dowiedz się, co najlepiej pasuje do Państwa sytuacji",
  "Laat je gegevens achter, dan denken we vrijblijvend mee over de juiste aanpak.": "Prosimy o podanie swoich danych, a my bez żadnych zobowiązań pomożemy Państwu w wyborze odpowiedniego rozwiązania.",
- "Interesse": "Zainteresowanie",
+ "Interesse": "Zainteresowania",
  "Werk e-mail": "Adres e-mail służbowy",
  "Toepassingen en sectoren | Assessments van hrmforce": "Zastosowania i sektory | Testy firmy hrmforce",
  "Ontdek hoe je assessments inzet voor werving, ontwikkeling, leiderschap en jong talent, en per sector zoals zorg, onderwijs en industrie.": "Dowiedz się, jak wykorzystać testy psychometryczne w rekrutacji, rozwoju zawodowym, zarządzaniu oraz w pracy z młodymi talentami, a także w poszczególnych sektorach, takich jak opieka zdrowotna, edukacja i przemysł.",
@@ -4010,7 +4010,7 @@
  "Gelukt. Je oefenvragen zijn onderweg naar je mailbox.": "Udało się. Pytania ćwiczeniowe zostały wysłane na Państwa skrzynkę e-mailową.",
  "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar oefenen@hrmforce.com.": "Wystąpił błąd podczas wysyłania. Proszę spróbować ponownie lub wysłać wiadomość e-mail na adres oefenen@hrmforce.com.",
  "Vier kleuren, een eerste beeld van je persoonlijkheid in een paar minuten. Je krijgt de uitslag direct te zien.": "Cztery kolory, wstępny obraz Państwa osobowości w ciągu kilku minut. Wyniki zostaną Państwu przedstawione natychmiast.",
- "Capaciteiten": "Możliwości",
+ "Capaciteiten": "Zdolności poznawcze",
  "Vijf onderdelen met goede en foute antwoorden. Je krijgt per ronde 25 willekeurige vragen en daarna per vraag de toelichting.": "Pięć modułów zawierających prawidłowe i błędne odpowiedzi. W każdej rundzie otrzymują Państwo 25 losowo wybranych pytań, a następnie wyjaśnienie każdego z nich.",
  "Zes zelfrapportagelijsten. Hier zijn geen goede of foute antwoorden; je krijgt een profielschets in plaats van een score.": "Sześć kwestionariuszy samooceny. Nie ma tu dobrych ani złych odpowiedzi; zamiast wyniku otrzymują Państwo opis profilu.",
  "Meer voorbereiding": "Więcej informacji na temat przygotowań",
@@ -4679,5 +4679,6 @@
  "Online oefen je verder op {url}. Je krijgt daar elke ronde een nieuwe set vragen, met na afloop per vraag het juiste antwoord en een toelichting.": "Można kontynuować ćwiczenia online na stronie {url}. W każdej rundzie otrzymają Państwo nowy zestaw pytań, a po jej zakończeniu – prawidłową odpowiedź na każde pytanie wraz z objaśnieniem.",
  "Het document bevat voorbeeldvragen. Ze komen niet uit de echte vragenlijst en je antwoorden worden niet bewaard.": "Dokument zawiera przykładowe pytania. Nie pochodzą one z rzeczywistego kwestionariusza, a Państwa odpowiedzi nie zostaną zapisane.",
  "Onze assessments zijn beschikbaar in 29 taalversies, van Nederlands, Engels, Duits, Frans en Spaans tot Pools, Tsjechisch, Zweeds, Deens, Turks, Grieks, Oekraiens en de Baltische talen. De kandidaat kiest zelf de gewenste taal bij aanvang, zodat taal geen belemmering vormt voor een eerlijke meting.": "Nasze testy są dostępne w 29 wersjach językowych, od holenderskiego, angielskiego, niemieckiego, francuskiego i hiszpańskiego po polski, czeski, szwedzki, duński, turecki, grecki, ukraiński oraz języki bałtyckie. Kandydat sam wybiera preferowany język na początku testu, dzięki czemu język nie stanowi przeszkody w przeprowadzeniu rzetelnej oceny.",
- "Taal kandidaat": "Język kandydata"
+ "Taal kandidaat": "Język kandydata",
+ "360 & Gedrag": "360 & Zachowanie"
 }

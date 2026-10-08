@@ -4,8 +4,9 @@ import validPaths from "../data/valid-paths.js";
 import { shopMap } from "../data/assessment-shop.js";
 import { TESTHUBS } from "../data/testhubs.js";
 import { THEMAPAGINAS } from "../data/themapaginas.js";
-import { ASSOVER_HUB_UI } from "../data/component-teksten.js";
+import { ASSOVER_HUB_UI, SEGMENT_NAMEN } from "../data/component-teksten.js";
 const { c, lang } = Astro.props;
+const segNaam = SEGMENT_NAMEN[lang] || SEGMENT_NAMEN.nl;
 const contactHref = localizePath("/contact/", lang);
 const demoHref = demoPath(lang);
 // NL linkt naar de root-detailpagina; andere talen naar de gelokaliseerde
@@ -64,7 +65,7 @@ const hubLinks = [...Object.values(TESTHUBS), ...Object.values(THEMAPAGINAS)]
         <label class="sr-only" for="segsel">{c.ui.segmentLabel}</label>
         <select id="segsel">
           <option value="">{c.ui.allSegments}</option>
-          {allSegments.map((s) => <option value={s}>{s}</option>)}
+          {allSegments.map((s) => <option value={s}>{segNaam[s] ?? s}</option>)}
         </select>
         <label class="sr-only" for="uitsel">{c.ui.uitgeverLabel}</label>
         <select id="uitsel">

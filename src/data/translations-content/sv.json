@@ -4010,7 +4010,7 @@
  "Gelukt. Je oefenvragen zijn onderweg naar je mailbox.": "Det gick bra. Dina övningsfrågor är på väg till din e-post.",
  "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar oefenen@hrmforce.com.": "Något gick fel vid avsändningen. Försök igen eller skicka ett e-postmeddelande till oefenen@hrmforce.com.",
  "Vier kleuren, een eerste beeld van je persoonlijkheid in een paar minuten. Je krijgt de uitslag direct te zien.": "Fyra färger, en första bild av din personlighet på några minuter. Du får se resultatet direkt.",
- "Capaciteiten": "Kompetenser",
+ "Capaciteiten": "Förmågor",
  "Vijf onderdelen met goede en foute antwoorden. Je krijgt per ronde 25 willekeurige vragen en daarna per vraag de toelichting.": "Fem delar med rätta och felaktiga svar. Du får 25 slumpmässiga frågor per omgång och därefter en förklaring till varje fråga.",
  "Zes zelfrapportagelijsten. Hier zijn geen goede of foute antwoorden; je krijgt een profielschets in plaats van een score.": "Sex självrapporteringsformulär. Här finns inga rätta eller felaktiga svar; du får en profilbeskrivning istället för ett poängtal.",
  "Meer voorbereiding": "Mer förberedelser",
@@ -4110,7 +4110,7 @@
  "Materialen": "Material",
  "Motivatie": "Motivering",
  "Simulaties": "Simuleringar",
- "Vaardigheden": "Kompetenser",
+ "Vaardigheden": "Färdigheter",
  "Certificatietraining | Gecertificeerd hrmforce-gebruiker worden | hrmforce": "Certifieringsutbildning | Bli certifierad användare avhrmforce| hrmforce",
  "Gebruikers voorbereiden op de praktijk rond de implementatie en het gebruik van hrmforce en de vragenlijsten. Word gecertificeerd hrmforce-gebruiker.": "Förbered användarna på hur implementeringen och användningen av hrmforce och frågeformulären fungerar i praktiken. Bli certifierad användare av hrmforce.",
  "Voor een deel van de vragenlijsten en oplossingen van hrmforce is een training nodig. Laat je vooraf informeren over hoe je de instrumenten inzet. Zeker bij persoonlijkheidsvragenlijsten is een training op maat aan te raden.": "För en del av frågeformulären och lösningarna på hrmforce krävs en utbildning. Se till att du i förväg får information om hur du använder verktygen. Särskilt när det gäller personlighetsfrågeformulär rekommenderas en skräddarsydd utbildning.",
@@ -4679,5 +4679,6 @@
  "Online oefen je verder op {url}. Je krijgt daar elke ronde een nieuwe set vragen, met na afloop per vraag het juiste antwoord en een toelichting.": "Du kan öva vidare online på {url}. Där får du en ny uppsättning frågor för varje omgång, och efteråt visas det rätta svaret och en förklaring till varje fråga.",
  "Het document bevat voorbeeldvragen. Ze komen niet uit de echte vragenlijst en je antwoorden worden niet bewaard.": "Dokumentet innehåller exempelfrågor. De kommer inte från det riktiga frågeformuläret och dina svar sparas inte.",
  "Onze assessments zijn beschikbaar in 29 taalversies, van Nederlands, Engels, Duits, Frans en Spaans tot Pools, Tsjechisch, Zweeds, Deens, Turks, Grieks, Oekraiens en de Baltische talen. De kandidaat kiest zelf de gewenste taal bij aanvang, zodat taal geen belemmering vormt voor een eerlijke meting.": "Våra tester finns tillgängliga i 29 språkversioner, från nederländska, engelska, tyska, franska och spanska till polska, tjeckiska, svenska, danska, turkiska, grekiska, ukrainska och de baltiska språken. Kandidaten väljer själv önskat språk vid testets början, så att språket inte utgör ett hinder för en rättvis utvärdering.",
- "Taal kandidaat": "Kandidatens språk"
+ "Taal kandidaat": "Kandidatens språk",
+ "360 & Gedrag": "360 & Beteende"
 }
