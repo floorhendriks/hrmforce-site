@@ -69,10 +69,10 @@ const BRONTALEN = new Set(["nl", "en", "de", "fr", "es", "ro"]);
 const ALLE_VERTAALTALEN = Object.keys(VERTALINGEN)
   .map((p) => p.slice("./translations-content/".length, -".json".length));
 
-// vulAan vult standaard alleen de talen buiten de brontalen aan. De teksten van
-// de brontalen staan met de hand in de bronbestanden; die mogen niet door een
-// machinevertaling worden overschreven. Bestanden waarvan de tekst alleen in
-// het Nederlands bestaat, gebruiken vertaalAlles onderaan dit bestand.
+// De talen buiten de brontalen. vulBlok gebruikt deze lijst voor slugs en
+// andere technische waarden: een brontaal mag daar niets bij krijgen, want dan
+// zou er een pagina onder een nieuw adres verschijnen. Tekst gaat wel naar elke
+// taal die nog niet in het blok staat; handgeschreven tekst blijft voorgaan.
 const NIEUWE_TALEN = ALLE_VERTAALTALEN.filter((t) => !BRONTALEN.has(t));
 
 function kaart(taal) {
@@ -123,8 +123,11 @@ function vulBlok(blok, talen, sleutel = "") {
   const technisch = GEEN_TEKST.has(sleutel);
   const bron = technisch ? (blok.en ?? blok.nl) : (blok.nl ?? blok.en);
   if (bron === undefined) return blok;
+  // Een ontbrekende brontaal mag wel tekst krijgen, maar geen slug: dat zou een
+  // pagina onder een nieuw adres laten verschijnen.
+  const doelen = technisch ? talen.filter((t) => !BRONTALEN.has(t)) : talen;
   const uit = { ...blok };
-  for (const taal of talen) {
+  for (const taal of doelen) {
     if (uit[taal] !== undefined) continue;
     if (technisch) { uit[taal] = bron; continue; }
     const map = kaart(taal);
@@ -139,10 +142,16 @@ function vulBlok(blok, talen, sleutel = "") {
  * TESTHUBS.<hub>.i18n. Een taal die al in het bestand staat, blijft zoals hij is.
  * Zonder vertaalbestanden geeft dit de data onveranderd terug.
  *
+ * Ook een brontaal die helemaal in het blok ontbreekt wordt gevuld. Een blok met
+ * alleen nl en en gaf in het Duits, Frans, Spaans en Roemeens anders de
+ * Nederlandse tekst, want het paginasjabloon valt terug op nl. Dat gold onder
+ * meer voor de logoslider op 212 pagina's per taal. Staat een brontaal wel in
+ * het blok, dan blijft die met rust: handgeschreven tekst gaat voor.
+ *
  * @param {object} x        de data uit het contentbestand
  * @param {string[]} talen  standaard elke taal waarvoor een vertaalbestand bestaat
  */
-export function vulAan(x, talen = NIEUWE_TALEN, diep = 0, sleutel = "") {
+export function vulAan(x, talen = ALLE_VERTAALTALEN, diep = 0, sleutel = "") {
   if (!talen.length || !x || typeof x !== "object" || diep > 8) return x;
   if (isTaalblok(x)) return vulBlok(x, talen, sleutel);
   if (Array.isArray(x)) return x.map((v) => vulAan(v, talen, diep + 1, sleutel));
@@ -162,6 +171,40 @@ export function vulAan(x, talen = NIEUWE_TALEN, diep = 0, sleutel = "") {
  * node) blijft het bij { nl, en }, allebei de Nederlandse tekst. Zo herkent het
  * vertaalscript dit als een taalblok en pakt het de bronteksten op.
  */
+/**
+ * Vult de resten van een taal die als kopie van het Nederlands begon.
+ *
+ * Sommige bestanden bouwen een brontaal op met clone(nl) en overschrijven daarna
+ * veld voor veld. Wat niet is overschreven blijft Nederlands, en vulAan komt er
+ * niet aan omdat de taal zelf wel bestaat. Dat gold voor de hele prijstabel op
+ * /tarieven in het Duits, Frans, Spaans en Roemeens.
+ *
+ * Deze functie loopt het blok langs en vervangt elke tekst die nog letterlijk
+ * gelijk is aan de Nederlandse, mits er een vertaling voor bestaat. Alles wat al
+ * met de hand is vertaald blijft staan.
+ */
+export function vulRest(blok, nl, taal) {
+  const map = kaart(taal);
+  if (!map || !blok) return blok;
+  const loop = (x, bron, sleutel = "", diep = 0) => {
+    if (diep > 8) return x;
+    if (typeof x === "string") {
+      if (x !== bron || GEEN_TEKST.has(sleutel)) return x;
+      return zet(x, taal, map);
+    }
+    if (Array.isArray(x)) {
+      return Array.isArray(bron) ? x.map((v, i) => loop(v, bron[i], sleutel, diep + 1)) : x;
+    }
+    if (x && typeof x === "object" && bron && typeof bron === "object") {
+      const uit = {};
+      for (const [k, v] of Object.entries(x)) uit[k] = loop(v, bron[k], k, diep + 1);
+      return uit;
+    }
+    return x;
+  };
+  return loop(blok, nl);
+}
+
 export function vertaalAlles(nl) {
   const uit = { nl };
   for (const taal of ALLE_VERTAALTALEN) {

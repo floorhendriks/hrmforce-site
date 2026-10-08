@@ -70,6 +70,17 @@ const GUARD = new RegExp([...BESCHERMD].sort((a, b) => b.length - a.length).map(
 const PLAATSHOUDER = /\{[a-zA-Z][a-zA-Z0-9_]*\}/g;
 const bescherm = (s) => s.replace(GUARD, (m) => `<x>${m}</x>`).replace(PLAATSHOUDER, (m) => `<x>${m}</x>`);
 const ontdoe = (s) => s.replace(/<\/?x>/g, '');
+
+/**
+ * DeepL krijgt de tekst met tag_handling: html en geeft die met
+ * HTML-entiteiten terug: "l&#x27;enseignement", "Costa &amp; McCrae",
+ * "&lt; 100 medewerkers". De datafiles bevatten gewone tekst, die Astro zelf
+ * nog een keer escapet, en dan staat "l&#x27;enseignement" letterlijk op de
+ * pagina. Vandaar dat de entiteiten hier terug worden gezet.
+ */
+const ENTITEITEN = [[/&#x27;|&#39;/g, "'"], [/&quot;/g, '"'], [/&euml;/g, '\u00eb'],
+  [/&lt;/g, '<'], [/&gt;/g, '>'], [/&nbsp;/g, '\u00a0'], [/&amp;/g, '&']];
+const ontentiteit = (s) => ENTITEITEN.reduce((t, [re, c]) => t.replace(re, c), s);
 /**
  * DeepL plakt een beschermd woord soms vast aan het vorige woord: "wNIP",
  * "denBig Five". Staat er een kleine letter direct voor een merknaam die met
@@ -190,7 +201,7 @@ for (const taal of TARGETS) {
   for (let i = 0; i < todo.length; i += 40) {
     const groep = todo.slice(i, i + 40);
     const terug = await deepl(groep.map((t) => bescherm(bronklaar(t))), taal);
-    groep.forEach((bron, j) => { uit[bron] = herstelSpatie(ontquote(ontdoe(terug[j]))); });
+    groep.forEach((bron, j) => { uit[bron] = herstelSpatie(ontentiteit(ontquote(ontdoe(terug[j])))); });
     process.stdout.write(`  ${Math.min(i + 40, todo.length)}/${todo.length}\r`);
   }
   // Teksten waarin een merknaam verdween, blijven Nederlands staan: beter geen

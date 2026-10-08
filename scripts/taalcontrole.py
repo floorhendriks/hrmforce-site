@@ -240,6 +240,45 @@ if os.path.isdir(DIST):
         if n: print("   %d bestanden onder %s niet meegeteld; die komen uit R2" % (n, d))
     if totaal > 19000: let("dicht bij de limiet van het gratis plan")
 
+# -------------------------------------- 8. Nederlands in de andere brontalen
+kop(8, "Tekst die Nederlands bleef terwijl er een vertaling voor is")
+if not os.path.isdir(DIST):
+    fout("%s bestaat niet" % DIST)
+else:
+    ANDERE = [t for t in ("en", "de", "fr", "es", "ro") if os.path.isdir(os.path.join(DIST, t))]
+    kaarten = {}
+    for t in ANDERE:
+        pad = "src/data/translations-content/%s.json" % t
+        kaarten[t] = json.load(open(pad, encoding="utf-8")) if os.path.exists(pad) else {}
+    perTekst = collections.defaultdict(lambda: collections.defaultdict(set))
+    eerste = ANDERE[0]
+    for wortel, _, files in os.walk(os.path.join(DIST, eerste)):
+        for f in files:
+            if f != "index.html": continue
+            rel = os.path.relpath(os.path.join(wortel, f), os.path.join(DIST, eerste))
+            nlp = os.path.join(DIST, rel)
+            if not os.path.exists(nlp): continue
+            nlset = set(x for x in zichtbaar(nlp) if 6 < len(x) < 400 and re.search(r"[a-z]{4}", x))
+            if not nlset: continue
+            for taal in ANDERE:
+                tp = os.path.join(DIST, taal, rel)
+                if not os.path.exists(tp): continue
+                vert = kaarten[taal]
+                for x in zichtbaar(tp):
+                    # staat er Nederlands terwijl het vertaalbestand een andere
+                    # tekst kent, dan komt die tekst niet door de vertaallaag
+                    if x in nlset and vert.get(x) and vert[x] != x:
+                        perTekst[x][taal].add(rel)
+    if perTekst:
+        rijen = sorted(perTekst.items(), key=lambda kv: -sum(len(v) for v in kv[1].values()))
+        let("%d teksten staan in het Nederlands op een pagina waarvoor wel een "
+            "vertaling bestaat:" % len(rijen))
+        for tekst, per in rijen[:12]:
+            print("          [%4d pagina's in %s] %s"
+                  % (sum(len(v) for v in per.values()), ",".join(sorted(per)), tekst[:68]))
+    else:
+        ok("elke tekst met een vertaling wordt ook vertaald getoond")
+
 print("\n%s  %d fout, %d aandachtspunt%s" % (
     "NIET IN ORDE" if fouten else "IN ORDE", len(fouten), len(waarschuwingen),
     "" if len(waarschuwingen) == 1 else "en"))

@@ -129,6 +129,12 @@ zelfstandig naamwoord, geen zin, en daar maakt DeepL soms een opdracht van
 WorkplaceBig Five"). `herstelSpatie()` in het script vangt dat af, maar
 controleer het resultaat.
 
+**HTML-entiteiten.** DeepL krijgt de tekst met `tag_handling: html` en geeft die
+met entiteiten terug: `l&#x27;enseignement`, `Costa &amp; McCrae`, `&lt; 100
+medewerkers`. Astro escapet dat nog een keer, waardoor `l&#x27;enseignement`
+letterlijk op de pagina stond. `ontentiteit()` in het script zet ze sinds patch
+89 terug; de 309 bestaande gevallen zijn hersteld.
+
 Een handmatige correctie zet je rechtstreeks in
 `src/data/translations-content/<taal>.json` en draai daarna stap 7 opnieuw.
 
@@ -139,11 +145,17 @@ npx astro build
 python3 scripts/taalcontrole.py <taal>
 ```
 
-Het controlescript loopt zeven dingen na: de twee lijsten uit stap 2 en 3, het
+Het controlescript loopt acht dingen na: de twee lijsten uit stap 2 en 3, het
 vertaalbestand, de mailteksten, de taalnamen, Nederlandse resttekst op de
-pagina's, kapotte interne links en het bestandsaantal. Een FOUT moet weg, een
-aandachtspunt lees je na. Adressen, boektitels en literatuurverwijzingen horen
-gelijk te zijn aan het Nederlands, lopende zinnen niet.
+pagina's, kapotte interne links, het bestandsaantal, en tot slot tekst die
+Nederlands bleef terwijl er wel een vertaling voor bestaat. Een FOUT moet weg,
+een aandachtspunt lees je na. Adressen, boektitels en literatuurverwijzingen
+horen gelijk te zijn aan het Nederlands, lopende zinnen niet.
+
+Controle 8 kijkt naar alle brontalen tegelijk, niet alleen naar de taal die je
+meegeeft. Die vangt het omgekeerde probleem: niet een nieuwe taal die Nederlands
+blijft, maar Duits, Frans, Spaans of Roemeens. Zie de regel over een ontbrekende
+brontaal in het naslagdeel.
 
 Daarnaast één controle die het script niet kan doen:
 
@@ -182,6 +194,27 @@ de praktijk gaat het telkens om een van deze vier:
 | een `const` die niet geëxporteerd is | het script leest alleen de exports van een datafile | exporteer hem |
 | een functie per taal, `nl: (naam) => ...` | het script leest tekst, geen functies | tekst met plaatshouders, `"Beste {naam},"` |
 | een hardgecodeerde standaardtekst, `Astro.props.x ?? "Vertrouwd door 1.200+ organisaties"` | staat niet in een taalblok | `src/data/`, en geef de component de taal mee |
+
+**Een brontaal die helemaal in een blok ontbreekt, krijgt nu wel tekst.** Een
+blok met alleen `nl` en `en` gaf in het Duits, Frans, Spaans en Roemeens de
+Nederlandse tekst, want het paginasjabloon valt terug op `nl`. Dat gold onder
+meer voor de logoslider op 212 pagina's per taal. `vulAan` vult sinds patch 89
+elke taal aan die nog niet in het blok staat, ook een brontaal. Staat een
+brontaal wel in het blok, dan blijft die met rust: handgeschreven tekst gaat
+voor. Slugs zijn uitgezonderd, want een slug erbij betekent een pagina onder een
+nieuw adres.
+
+**Een taal die als kopie van het Nederlands begint, vult `vulAan` niet aan.**
+Sommige bestanden doen `tarievenContent.de = clone(tarievenContent.nl)` en
+overschrijven daarna veld voor veld. Wat niet is overschreven blijft Nederlands,
+en `vulAan` slaat de taal over omdat die bestaat. Voeg in zo'n bestand `vulRest`
+toe, vóór de aanroep van `vulAan`:
+
+```js
+for (const taal of ["en", "de", "fr", "es", "ro"]) {
+  tarievenContent[taal] = vulRest(tarievenContent[taal], tarievenContent.nl, taal);
+}
+```
 
 **Een sleutelnaam uit `GEEN_TEKST` krijgt geen vertaling.** In
 `src/data/vertaal-inhoud.js` staat een lijst sleutels waarvan de waarde geen

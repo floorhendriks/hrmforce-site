@@ -1,6 +1,6 @@
 // Tarieven-content per taal, gebruikt door src/components/Tarieven.astro.
 // NL = leidend. DE/FR/ES/RO zijn een eerste vertaalslag, laat nakijken door een native speaker.
-import { vulAan } from "./vertaal-inhoud.js";
+import { vulAan, vulRest } from "./vertaal-inhoud.js";
 
 export const tarievenContent = {
   nl: {
@@ -216,6 +216,13 @@ tarievenContent.ro.faqs = [
   { q: "Cât costă?", a: "Costurile variază în funcție de nevoi și amploare. Oferim modele flexibile: plată per evaluare sau licență anuală în funcție de numărul de angajați." },
 ];
 tarievenContent.ro.ctaBand = { title: "Aveți altă întrebare?", text: "Echipa noastră vă stă la dispoziție. Solicitați o ofertă sau o demonstrație și adaptăm soluția la situația dvs.", primary: "Contactați-ne", secondary: "Mai multe despre hrmforce", hours: "Consilierii noștri sunt disponibili de luni până vineri, între 08:00 și 18:00." };
+
+// De brontalen beginnen hierboven als clone(nl) en worden daarna veld voor veld
+// overschreven. Wat niet is overschreven, zoals de hele vergelijkingstabel en de
+// onboardingstappen, bleef Nederlands. vulRest haalt daar alsnog de vertaling bij.
+for (const taal of ["en", "de", "fr", "es", "ro"]) {
+  tarievenContent[taal] = vulRest(tarievenContent[taal], tarievenContent.nl, taal);
+}
 
 // Talen zonder eigen tekst in dit bestand worden aangevuld uit
 // src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
