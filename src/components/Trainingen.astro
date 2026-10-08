@@ -6,6 +6,16 @@ import { trainingenFor, TR_LOCATIE } from "../data/trainingen-content.js";
 
 const lang = getLangFromUrl(Astro.url);
 const t = trainingenFor(lang);
+// De datum staat als Nederlandse tekst in de data ("18 mrt 2027"). Voor de
+// andere talen schrijven we hem uit het ISO-veld, in de opmaak van die taal.
+const DATUM_LOCALE = { nl: "nl-NL", en: "en-GB", de: "de-DE", fr: "fr-FR", es: "es-ES", ro: "ro-RO", pl: "pl-PL", da: "da-DK", sv: "sv-SE" };
+const datumVan = (r) => {
+  if (lang === "nl" || !r.iso) return r.datum;
+  try {
+    return new Date(r.iso + "T12:00:00Z").toLocaleDateString(DATUM_LOCALE[lang] || "en-GB",
+      { day: "numeric", month: "short", year: "numeric" });
+  } catch (e) { return r.datum; }
+};
 const homeHref = localizePath("/", lang);
 const adviesHref = localizePath("/advies/", lang);
 const contactHref = localizePath("/contact/", lang);
@@ -98,7 +108,7 @@ const eventLd = t.kalender.map((r) => ({
         <tbody>
           {t.kalender.map((r) => (
             <tr>
-              <td><strong>{r.datum}</strong><br /><span class="kal-sub">{r.tijd}</span></td>
+              <td><strong>{datumVan(r)}</strong><br /><span class="kal-sub">{r.tijd}</span></td>
               <td>{r.soort}</td>
               <td>{r.max}</td>
               <td class="kal-sub">{r.locatie}</td>

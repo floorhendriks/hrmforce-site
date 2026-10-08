@@ -2,6 +2,7 @@
 import { localizePath, localizeExisting, navHref } from "../i18n/utils.js";
 import validPaths from "../data/valid-paths.js";
 import { OEFEN_UI } from "../data/oefentests.js";
+import { OEFEN_CRUMB } from "../data/component-teksten.js";
 import { examplesFor } from "../data/assessment-examples.js";
 import { CONTACT_EMAIL } from "../data/site-config.js";
 import OefenAanvraagForm from "./OefenAanvraagForm.astro";
@@ -16,7 +17,7 @@ const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList", 
   { "@type": "ListItem", position: 2, name: d.name, item: _canon },
 ] };
 ---
-<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={localizePath("/online-assessments/", lang)}>Online assessments</a> › <span>{d.hero}</span></div></div>
+<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <a href={localizePath("/online-assessments/", lang)}>{OEFEN_CRUMB[lang] || OEFEN_CRUMB.nl}</a> › <span>{d.hero}</span></div></div>
 
 <section class="ahero"><div class="wrap" style="display:block">
   <div class="eyebrow">{ui.prep}</div>

@@ -1,4 +1,5 @@
 ---
+import { DATAVISUAL_T } from "../data/component-teksten.js";
 import Sterren from "./Sterren.astro";
 import Datavisual from "./Datavisual.astro";
 import Hulpmiddelen from "./Hulpmiddelen.astro";
@@ -162,7 +163,7 @@ const faqLd = {
       <p class="outcome-sub">{c.outcome.sub}</p>
       {c.outcome.note && <p class="outcome-note">{c.outcome.note}</p>}
     </div>
-    <Datavisual soort="normverdeling" tone="donker" titel={c.outcome.visual || "Zo leest een score in de normgroep"} />
+    <Datavisual lang={lang} soort="normverdeling" tone="donker" titel={c.outcome.visual || (DATAVISUAL_T[lang] || DATAVISUAL_T.nl).homeTitel} />
   </div>
 </section>
 

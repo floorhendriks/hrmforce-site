@@ -28,7 +28,8 @@ const LOGOS = [
 ];
 // De taal komt van de aanroeper; zonder taal valt alles terug op Nederlands.
 const t = LOGOSLIDER_T[Astro.props.lang] || LOGOSLIDER_T.nl;
-const heading = Astro.props.heading ?? t.kop;
+// null betekent "geen kop"; ?? zou daar de standaardkop van maken.
+const heading = Astro.props.heading === null ? null : (Astro.props.heading ?? t.kop);
 const note = Astro.props.note ?? t.noot;
 const logos = Astro.props.logos ?? LOGOS;
 const showNote = Astro.props.note !== null;

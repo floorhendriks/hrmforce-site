@@ -3,12 +3,19 @@
 import { localizePath, localizeExisting, demoPath } from "../i18n/utils.js";
 import validPaths from "../data/valid-paths.js";
 import { assessments } from "../data/assessments.js";
+import { ovContent } from "../data/overzicht-content.js";
 const { c, lang } = Astro.props;
 const casesHref = localizeExisting("/klantcases/", lang, validPaths);
 const sectorHref = localizeExisting(`/sectoren/${c.sectorKey}/`, lang, validPaths);
 const demoHref = demoPath(lang);
+// De titel in de taal van de pagina. ovContent heeft per taal een eigen lijst;
+// assessments.js is Nederlands en is alleen de terugval.
+const TITELS = Object.fromEntries(
+  ((ovContent[lang] || ovContent.nl).items || []).map((i) => [i.slug, i.title])
+);
 const titelVan = (pad) => {
   const slug = pad.split("/").filter(Boolean).pop();
+  if (TITELS[slug]) return TITELS[slug];
   const a = assessments.find((x) => x.slug === slug);
   return a ? a.title : slug.replace(/-/g, " ");
 };

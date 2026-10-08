@@ -507,6 +507,33 @@ export const BASE_DATUM_LOCALE = { nl: "nl-NL", en: "en-GB", de: "de-DE", fr: "f
 
 // De rubrieken in het kruimelpad. Stonden eerder in src/layouts/Base.astro en
 // waren daardoor onzichtbaar voor het vertaalscript.
+// Bijschriften en beschrijvingen bij de tekeningen (Datavisual). Stonden eerder
+// in het component zelf en waren daardoor onzichtbaar voor het vertaalscript.
+export const OEFEN_CRUMB = { nl: "Online assessments", en: "Online assessments", de: "Online-Assessments", fr: "Évaluations en ligne", es: "Evaluaciones online", ro: "Evaluări online" };
+
+export const DATAVISUAL_T = {
+  nl: {
+    normverdeling: "Percentielscore binnen de normgroep, n = 2.480",
+    competentieprofiel: "Score per dimensie op een vijfpuntsschaal",
+    negenbox: "71 medewerkers, ingedeeld naar prestatie en potentieel",
+    matchscore: "Gewogen match op zeven competenties en twee capaciteitentests",
+    altNorm: "Normaalverdeling met de score van een kandidaat op percentiel 86",
+    altNegenbox: "Negenbox met de verdeling van 71 medewerkers over prestatie en potentieel",
+    altMatch: "Matchscore van 88 procent tussen kandidaat en functieprofiel",
+    homeTitel: "Zo leest een score in de normgroep",
+  },
+  en: {
+    normverdeling: "Percentile score within the norm group, n = 2,480",
+    competentieprofiel: "Score per dimension on a five-point scale",
+    negenbox: "71 employees, plotted by performance and potential",
+    matchscore: "Weighted match on seven competencies and two ability tests",
+    altNorm: "Normal distribution with a candidate's score at the 86th percentile",
+    altNegenbox: "Nine-box with 71 employees plotted by performance and potential",
+    altMatch: "Match score of 88 percent between candidate and job profile",
+    homeTitel: "How to read a score within the norm group",
+  },
+};
+
 export const BASE_RUBRIEK = {
   assessments: { nl: "Assessments", en: "Assessments", de: "Assessments", fr: "Évaluations", es: "Evaluaciones", ro: "Evaluări" },
   kenniscentrum: { nl: "Kenniscentrum", en: "Knowledge centre", de: "Wissenszentrum", fr: "Centre de connaissances", es: "Centro de conocimiento", ro: "Centru de cunoștințe" },
@@ -606,3 +633,5 @@ Object.assign(ASSESSD_MC_OK, vulAan(ASSESSD_MC_OK));
 Object.assign(ASSESSD_MC_FOUT, vulAan(ASSESSD_MC_FOUT));
 Object.assign(ASSESSD_MC_MENS, vulAan(ASSESSD_MC_MENS));
 Object.assign(ASSESSD_MC_BEZIG, vulAan(ASSESSD_MC_BEZIG));
+Object.assign(DATAVISUAL_T, vulAan(DATAVISUAL_T));
+Object.assign(OEFEN_CRUMB, vulAan(OEFEN_CRUMB));

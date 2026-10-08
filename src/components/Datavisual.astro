@@ -1,4 +1,5 @@
 ---
+import { DATAVISUAL_T } from "../data/component-teksten.js";
 /**
  * Eigen datavisuals in de hrmforce-icoonstijl: rechte hoeken, haarlijnen,
  * één kleur plus goud voor de waarde die ertoe doet. Geen stockbeeld.
@@ -51,17 +52,12 @@ const CB = TOP + comps.length * RIJ - 10;   // onderkant van het raster
 const cellen = [[1,3],[2,9],[3,4],[4,7],[5,22],[6,11],[7,2],[8,8],[9,5]];
 
 // Standaard voetnoot per soort, zodat een tekening nooit zonder uitleg staat
-const BIJ = {
-  normverdeling: "Percentielscore binnen de normgroep, n = 2.480",
-  competentieprofiel: "Score per dimensie op een vijfpuntsschaal",
-  negenbox: "71 medewerkers, ingedeeld naar prestatie en potentieel",
-  matchscore: "Gewogen match op zeven competenties en twee capaciteitentests",
-};
+const BIJ = DATAVISUAL_T[Astro.props.lang] || DATAVISUAL_T.nl;
 const bijTxt = bij || BIJ[soort] || "";
 ---
 <figure class={`dv dv-${tone} ${cls}`.trim()}>
   {soort === "normverdeling" && (
-    <svg viewBox="0 0 500 232" role="img" aria-label="Normaalverdeling met de score van een kandidaat op percentiel 86">
+    <svg viewBox="0 0 500 232" role="img" aria-label={BIJ.altNorm}>
       <g class="dv-grid">
         {asLabels.map(([z]) => <line x1={MID + z * SD} y1="34" x2={MID + z * SD} y2={BASE} />)}
         <line x1={X0} y1={BASE} x2={X1} y2={BASE} class="dv-as" />
@@ -98,7 +94,7 @@ const bijTxt = bij || BIJ[soort] || "";
   )}
 
   {soort === "negenbox" && (
-    <svg viewBox="0 0 500 232" role="img" aria-label="Negenbox met de verdeling van 71 medewerkers over prestatie en potentieel">
+    <svg viewBox="0 0 500 232" role="img" aria-label={BIJ.altNegenbox}>
       <g class="dv-grid">
         {[0,1,2,3].map((i) => <line x1={150 + i * 90} y1="20" x2={150 + i * 90} y2="200" />)}
         {[0,1,2,3].map((i) => <line x1="150" y1={20 + i * 60} x2="420" y2={20 + i * 60} />)}
@@ -120,7 +116,7 @@ const bijTxt = bij || BIJ[soort] || "";
   )}
 
   {soort === "matchscore" && (
-    <svg viewBox="0 0 500 130" role="img" aria-label="Matchscore van 88 procent tussen kandidaat en functieprofiel">
+    <svg viewBox="0 0 500 130" role="img" aria-label={BIJ.altMatch}>
       <text x="10" y="42" class="dv-groot">88%</text>
       <text x="118" y="42" class="dv-rij">match met het functieprofiel</text>
       <rect x="10" y="70" width="480" height="20" class="dv-spoor" />

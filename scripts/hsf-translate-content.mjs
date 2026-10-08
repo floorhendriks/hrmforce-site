@@ -46,7 +46,12 @@ const FORMEEL = new Set(['de', 'fr', 'es', 'it', 'pt', 'pl', 'nl', 'ru', 'ja']);
 const CONTEXT = 'Website copy of a Dutch provider of online psychometric assessments and HR software.';
 const BESCHERMD = ['hrmforce', 'Big Fifty', 'Ability Scan', 'Skills Framework', 'OPQ32', 'PAPI 3',
   'Connector Ability', 'Reflector', 'Logiks', 'Talogy 360', 'Verify', 'DISC', '15PF', 'Big Five',
-  'NIP', 'AVG', 'GDPR', 'SHL', 'GITP', 'Cubiks', 'Pulse Survey'];
+  'NIP', 'GDPR', 'SHL', 'GITP', 'Cubiks', 'Pulse Survey'];
+// AVG is de Nederlandse naam van de privacywet. Een Deense of Poolse bezoeker
+// kent die naam niet; internationaal heet hij GDPR. We vervangen hem daarom in
+// de brontekst voordat DeepL hem ziet.
+const BRONVERVANG = [[/\bAVG\b/g, 'GDPR']];
+const bronklaar = (t) => BRONVERVANG.reduce((s2, [r, v]) => s2.replace(r, v), t);
 // Sleutels waarvan de waarde geen zin is maar een pad, bestandsnaam of code.
 const GEEN_TEKST = new Set(['slug', 'href', 'url', 'src', 'icon', 'key', 'id', 'beeld', 'img', 'image', 'telHref', 'mail', 'tel', 'locale', 'lang', 'code', 'hreflang', 'sanityMatch']);
 
@@ -174,7 +179,7 @@ for (const taal of TARGETS) {
   const uit = { ...bestaand };
   for (let i = 0; i < todo.length; i += 40) {
     const groep = todo.slice(i, i + 40);
-    const terug = await deepl(groep.map(bescherm), taal);
+    const terug = await deepl(groep.map((t) => bescherm(bronklaar(t))), taal);
     groep.forEach((bron, j) => { uit[bron] = ontquote(ontdoe(terug[j])); });
     process.stdout.write(`  ${Math.min(i + 40, todo.length)}/${todo.length}\r`);
   }
