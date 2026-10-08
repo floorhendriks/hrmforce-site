@@ -157,7 +157,8 @@ svg's en de hashes in `_astro/`, anders verschilt alles.
 per site toe, op een betaald plan 100.000 (met `PAGES_WRANGLER_MAJOR_VERSION=4`
 in de projectinstellingen). Een taal zonder eigen skills-frameworkdataset kost
 ongeveer 175 bestanden, met die dataset ongeveer 2.700. Het controlescript telt
-mee.
+mee en laat `dist/downloads/` buiten de telling: die functieprofiel-pdf's staan
+in `.gitignore` en komen uit R2, maar liggen in de Codespace wel op schijf.
 
 ## 13 en 14. Vastleggen en na de deploy
 

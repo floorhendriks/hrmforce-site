@@ -225,8 +225,19 @@ if os.path.isdir(DIST):
     else:
         ok("elke interne link houdt de bezoeker in zijn taal")
 
-    totaal = sum(1 for _, _, fs in os.walk(DIST) for _ in fs)
-    print("   %d bestanden in %s (gratis plan: 20.000, betaald: 100.000)" % (totaal, DIST))
+    # Wat een function uitserveert gaat niet mee naar Cloudflare. De
+    # functieprofiel-pdf's staan in .gitignore en komen uit R2, maar liggen in
+    # de Codespace wel op schijf; zonder deze aftrek telt dat 900 te veel.
+    totaal, overgeslagen = 0, collections.Counter()
+    for wortel, _, fs in os.walk(DIST):
+        rel = "/" + os.path.relpath(wortel, DIST).replace(os.sep, "/").lstrip(".").lstrip("/")
+        hoort_bij = next((d for d in dynamisch if rel.startswith(d.rstrip("/"))), None)
+        if hoort_bij: overgeslagen[hoort_bij] += len(fs)
+        else: totaal += len(fs)
+    print("   %d bestanden gaan mee naar Cloudflare (gratis plan: 20.000, "
+          "betaald: 100.000)" % totaal)
+    for d, n in sorted(overgeslagen.items()):
+        if n: print("   %d bestanden onder %s niet meegeteld; die komen uit R2" % (n, d))
     if totaal > 19000: let("dicht bij de limiet van het gratis plan")
 
 print("\n%s  %d fout, %d aandachtspunt%s" % (
