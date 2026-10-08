@@ -14,6 +14,9 @@ const methods = Object.entries((meta as any).assessment_methods);
 const stds = Object.entries((meta as any).standards);
 const title = `${t('meth.title')} | ${t('framework')}`;
 const desc = t('seo.how-the-hrmforce-skills-framework-is');
+import { localizePath } from "../i18n/utils.js";
+const contactHref = localizePath("/contact/", lang);
+
 ---
 <Base lang={lang} title={title} description={desc} active="method" alternates={alternates}>
   <Crumbs items={[{ label: t('nav.home'), href: path(lang) }, { label: t('meth.title') }]} />
@@ -124,6 +127,6 @@ const desc = t('seo.how-the-hrmforce-skills-framework-is');
   <div class="hsf-card tint" style="margin-top:2rem">
     <h3 style="margin-top:0">{t('cta.contact')}</h3>
     <p class="hsf-small">{t('cta.contact.sub')}</p>
-    <a class="hsf-btn" href="/contact/">{t('cta.contact')}</a>
+    <a class="hsf-btn" href={contactHref}>{t('cta.contact')}</a>
   </div>
 </Base>

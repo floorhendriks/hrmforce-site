@@ -9,6 +9,13 @@
 # Elke exacte regel heeft daarnaast een statische terugvalpagina in public/,
 # aangemaakt met npm run hsf:redirects. Eerste match wint.
 
+# Het skills framework bestaat alleen in de brontalen. De Poolse, Deense en
+# Zweedse kopieen stonden er in het Engels onder een eigen adres; die zijn eruit
+# en wijzen nu naar de Engelse versie.
+/pl/skills-framework/* /en/skills-framework/:splat 301
+/da/skills-framework/* /en/skills-framework/:splat 301
+/sv/skills-framework/* /en/skills-framework/:splat 301
+
 # De oefentest had eerst één onderdeel onder een naam die de lading niet dekte;
 # die zes adressen wijzen nu naar de rekenopgaven.
 /oefentest/numeriek-redeneren/ /oefentest/rekenopgaven/ 301

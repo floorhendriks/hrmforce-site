@@ -1,5 +1,5 @@
 ---
-import { localizePath, navHref } from "../i18n/utils.js";
+import { localizePath, localizeExisting, navHref } from "../i18n/utils.js";
 import validPaths from "../data/valid-paths.js";
 import { OEFEN_UI } from "../data/oefentests.js";
 import { examplesFor } from "../data/assessment-examples.js";
@@ -57,7 +57,7 @@ const _crumbLd = { "@context": "https://schema.org", "@type": "BreadcrumbList", 
     <p class="lead" style="margin-bottom:36px">{ui.formLead} {d.name}.</p></div>
   <OefenAanvraagForm lang={lang} onderdeel={o.slug} titel={d.name} bron="oefenen" klasse="formcard"
     knop={ui.submit} placeholder={ui.email} />
-  <p style="text-align:center;margin-top:20px"><a href="/oefen-assessment-maken/" style="color:var(--blue);font-weight:600">{ui.full} →</a></p>
+  <p style="text-align:center;margin-top:20px"><a href={localizeExisting("/oefen-assessment-maken/", lang, validPaths)} style="color:var(--blue);font-weight:600">{ui.full} →</a></p>
 </div></section>
 
 <style>

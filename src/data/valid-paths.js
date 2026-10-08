@@ -30,10 +30,12 @@ const EXTRA = ["/afrekenen/","/en/afrekenen/","/de/afrekenen/","/fr/afrekenen/",
 
 // De oefentest: het overzicht en de vijf onderdelen, per taal.
 import { ONDERDELEN } from "./oefentest-ui.js";
+import { TESTHUBS } from "./testhubs.js";
+import { THEMAPAGINAS } from "./themapaginas.js";
 import { VRAGENLIJSTEN } from "./oefenvragenlijst.js";
 import { DUBBELE_ARTIKELEN } from "./kenniscentrum-duplicaten.js";
 import { languages, BRONTALEN } from "../i18n/ui.js";
-import { ALLEEN_BRONTAAL } from "../i18n/alleen-brontaal.js";
+import { alleenBrontaal } from "../i18n/alleen-brontaal.js";
 import { ADVIES_SLUGS } from "./advies-detail.js";
 import { OPLOSSING_SLUGS } from "./oplossingen.js";
 const OEFEN = Object.keys(languages).flatMap((t) => {
@@ -42,6 +44,15 @@ const OEFEN = Object.keys(languages).flatMap((t) => {
     ...Object.values(ONDERDELEN).filter((o) => o.slug[t]).map((o) => `${basis}${o.slug[t]}/`),
     ...Object.values(VRAGENLIJSTEN).filter((o) => o.slug[t]).map((o) => `${basis}${o.slug[t]}/`)];
 });
+
+// De testhubs en themapagina's hebben een eigen slug per taal: de Nederlandse
+// /persoonlijkheidstest/ heet in het Deens /da/personality-test/. De afleiding
+// verderop kan die niet vinden, want die zoekt hetzelfde pad in elke brontaal.
+// Vandaar dezelfde lus als in src/pages/[lang]/[hub].astro.
+const HUBS = [...Object.values(TESTHUBS), ...Object.values(THEMAPAGINAS)].flatMap((h) =>
+  Object.keys(languages)
+    .filter((t) => h.slug?.[t] && h.i18n?.[t])
+    .map((t) => (t === "nl" ? "/" : `/${t}/`) + h.slug[t] + "/"));
 
 // De adviespagina's en de HRM-oplossingen komen uit src/data/advies-detail.js en
 // src/data/oplossingen.js en worden in elke taal gebouwd. De paden leiden we
@@ -73,7 +84,7 @@ function afgeleidePaden(bestaand) {
     // Artikelen staan in Sanity en bestaan alleen in de brontalen; het
     // overzicht /kenniscentrum/ wordt wel in elke taal gebouwd.
     .filter((b) => b === "/kenniscentrum/" || !b.startsWith("/kenniscentrum/"))
-    .filter((b) => !ALLEEN_BRONTAAL.has(b))
+    .filter((b) => !alleenBrontaal(b))
     .filter((b) => !b.startsWith("/vacatures/") || b === "/vacatures/")
     .filter((b) => BRONTALEN.filter((t) => t !== "nl").every((t) => aanwezig.has("/" + t + b)));
   return NIEUWE_TALEN.flatMap((t) => basis.map((b) => "/" + t + b));
@@ -85,7 +96,7 @@ function afgeleidePaden(bestaand) {
 const VERVALLEN = new Set(Object.keys(DUBBELE_ARTIKELEN));
 
 const BRON = Array.from(
-  new Set([...STATIC, ...EXTRA, ...OEFEN, ...SECTIES, ...sanityPaths])
+  new Set([...STATIC, ...EXTRA, ...OEFEN, ...SECTIES, ...HUBS, ...sanityPaths])
 ).filter((p) => !VERVALLEN.has(p));
 
 export default Array.from(new Set([...BRON, ...afgeleidePaden(BRON)]));

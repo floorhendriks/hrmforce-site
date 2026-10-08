@@ -414,9 +414,9 @@ export function documentenPerGroep(lang = "nl") {
   }).filter((g) => g.docs.length);
 }
 
-// Waar de bezoeker heen kan voor het instrument zelf. Een themapagina of
-// testhub die in deze taal niet bestaat, valt terug op de Nederlandse versie,
-// zodat er nooit een dood adres in de lijst staat.
+// Waar de bezoeker heen kan voor het instrument zelf. Bestaat die pagina in
+// deze taal niet, dan komt er geen link; een link naar de Nederlandse versie
+// zou een Deense bezoeker op een Nederlandse pagina zetten.
 function groepHref(ref, lang) {
   if (!ref) return "";
   if (ref.assessment) {
@@ -426,7 +426,7 @@ function groepHref(ref, lang) {
   const bron = ref.thema ? THEMAPAGINAS[ref.thema] : TESTHUBS[ref.hub];
   if (!bron) return "";
   const slug = (bron.slug || {})[lang];
-  if (!slug) return `/${(bron.slug || {}).nl}/`;
+  if (!slug || !(bron.i18n || {})[lang]) return "";
   return lang === "nl" ? `/${slug}/` : `/${lang}/${slug}/`;
 }
 

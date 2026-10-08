@@ -9,10 +9,17 @@ import { documentenVoor } from "../data/instrument-documenten.js";
 const { t, lang, kaarten = [] } = Astro.props;
 const demoHref = demoPath(lang);
 const tarievenHref = localizeExisting("/tarieven/", lang, validPaths);
+// Een link die in deze taal alleen naar de Nederlandse pagina kan wijzen, laten
+// we weg: een Deense bezoeker hoort niet op een Nederlandse pagina uit te komen.
+// Het Engels mag wel, dat is de afgesproken terugval.
+const bruikbaar = (h) =>
+  !!h && (lang === "nl" || h.startsWith("/" + lang + "/") || h.startsWith("/en/"));
 const links = kaarten.map((p) => localizeExisting(p, lang, validPaths));
-const onderbouwingHref = t.onderbouwing && t.onderbouwing.link
+const toonKaart = (i) => bruikbaar(links[i]);
+const _ob = t.onderbouwing && t.onderbouwing.link
   ? localizeExisting(t.onderbouwing.link.href, lang, validPaths)
   : null;
+const onderbouwingHref = bruikbaar(_ob) ? _ob : null;
 const faqLd = t.faq && t.faq.items && t.faq.items.length
   ? {
       "@context": "https://schema.org",
@@ -59,8 +66,8 @@ const docs = documentenVoor(Astro.url.pathname);
   <h2 class="section-title">{t.tests.title}</h2>
   <p class="tp-sub">{t.tests.intro}</p>
   <div class="tp-kaarten">
-    {t.tests.kaarten.map((k, i) => (
-      <a class="tp-kaart" href={links[i] || "#"}>
+    {t.tests.kaarten.map((k, i) => (toonKaart(i) &&
+      <a class="tp-kaart" href={links[i]}>
         <span class="tp-kaart-t">{k.t}</span>
         <span class="tp-kaart-d">{k.d}</span>
         <span class="tp-kaart-c">{t.tests.cta} &rarr;</span>

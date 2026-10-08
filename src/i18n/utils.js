@@ -1,7 +1,7 @@
 // Helpers voor meertaligheid.
 import { ui, defaultLang, languages, BRONTALEN } from "./ui.js";
 import { variantenVoor } from "../data/slugvarianten.js";
-import { ALLEEN_BRONTAAL } from "./alleen-brontaal.js";
+import { alleenBrontaal } from "./alleen-brontaal.js";
 
 // Talen met een eigen URL-prefix (Nederlands staat op de root). Volgt
 // languages in ui.js, zodat een nieuwe taal maar op een plek wordt gezet.
@@ -36,7 +36,7 @@ export function localizePath(path, lang) {
   // Engelse versie. Een Zweedse bezoeker heeft daar meer aan dan aan de
   // Nederlandse, en Engels bestaat voor al die pagina's. Zie
   // src/i18n/alleen-brontaal.js.
-  if (!BRONTALEN.includes(lang) && ALLEEN_BRONTAAL.has(path)) return "/en" + path;
+  if (!BRONTALEN.includes(lang) && alleenBrontaal(path)) return "/en" + path;
   return "/" + lang + path;
 }
 
@@ -81,18 +81,32 @@ export function navHref(path, lang, validPaths) {
   return path; // NL-fallback
 }
 
+// Pagina's die alleen in het Nederlands bestaan, maar waarvoor elke taal een
+// gelijkwaardige pagina heeft. Een Deense bezoeker komt zo niet op een
+// Nederlandse pagina uit.
+export const NL_VERVANGERS = {
+  "/oefen-assessment-maken/": "/oefentest/",
+};
+
 // Zet een bestaand (mogelijk NL) pad om naar de huidige taal als die versie
 // bestaat; anders de NL-basis. Voor kaart-/lijstlinks in componenten.
 export function localizeExisting(path, lang, validPaths) {
   if (!path || lang === "nl") return path;
   const valid = validPaths instanceof Set ? validPaths : new Set(validPaths);
   const seg = path.split("/")[1];
-  const base = PREFIXED.includes(seg) ? path.slice(seg.length + 1) || "/" : path;
+  let base = PREFIXED.includes(seg) ? path.slice(seg.length + 1) || "/" : path;
+  // Bestaat de pagina alleen in het Nederlands, dan de gelijkwaardige pagina.
+  if (NL_VERVANGERS[base] && valid.has("/" + lang + NL_VERVANGERS[base])) base = NL_VERVANGERS[base];
   // Pagina's met een eigen slug per taal: /persoonlijkheidstest/ heet in het
   // Zweeds /sv/personality-test/. Zonder deze stap viel die link terug op het
   // Nederlands, terwijl de vertaling gewoon bestaat.
   const variant = variantenVoor(base);
   if (variant && variant[lang] && valid.has(variant[lang])) return variant[lang];
+  // Pagina's die alleen in de brontalen bestaan meteen naar het Engels.
+  if (!BRONTALEN.includes(lang) && alleenBrontaal(base)) {
+    const en = "/en" + base;
+    if (valid.has(en)) return en;
+  }
   const localized = "/" + lang + base;
   if (valid.has(localized)) return localized;
   // Bestaat de pagina alleen in de brontalen, dan het Engels in plaats van het
@@ -134,13 +148,7 @@ export function sanitizeBodyLinks(html, lang, validPaths) {
   const kcFallback = localizePath("/kenniscentrum/", lang);
   // Zet een (geldig) pad om naar de huidige taal als die versie bestaat,
   // anders NL-basis. Voorkomt dat body-links naar NL blijven wijzen.
-  const loc = (p) => {
-    if (lang === "nl") return p;
-    const seg = p.split("/")[1];
-    const base = PREFIXED.includes(seg) ? p.slice(seg.length + 1) || "/" : p;
-    const localized = "/" + lang + base;
-    return valid.has(localized) ? localized : base;
-  };
+  const loc = (p) => (lang === "nl" ? p : localizeExisting(p, lang, valid));
   return html.replace(/href="(\/[^"]*)"/g, (m, raw) => {
     if (raw.startsWith("//")) return m; // protocol-relatief/extern
     // e-mailadres per ongeluk als pad (bv. /contact/service@x.com) => mailto

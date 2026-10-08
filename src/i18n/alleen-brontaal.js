@@ -17,3 +17,13 @@ export const ALLEEN_BRONTAAL = new Set([
   "/demo/", "/gratis-kleurentest/", "/sectoren/zorg-specialisten-ifms/",
   "/support/algemene-voorwaarden/", "/support/privacy-statement/",
 ]);
+
+// Het skills framework wordt alleen in de brontalen gebouwd. De dataset staat
+// in het Engels, dus een Poolse of Deense kopie zou dezelfde Engelse tekst
+// onder een tweede adres zetten: 829 pagina's per taal, zonder dat een bezoeker
+// er iets aan heeft. Een taal buiten de brontalen krijgt daarom de Engelse
+// versie.
+export function alleenBrontaal(pad) {
+  if (!pad) return false;
+  return ALLEEN_BRONTAAL.has(pad) || pad === "/skills-framework/" || pad.startsWith("/skills-framework/");
+}

@@ -2,11 +2,11 @@
 import MatchIndex from '../../../../views/MatchIndex.astro';
 import { altSection } from '../../../../lib/alt';
 import { REKENHULP_TALEN } from '../../../../lib/hsf-i18n';
-import { PREFIXED } from '../../../../i18n/utils.js';
+import { HSF_PREFIXED } from '../../../../i18n/paden.js';
 // De rekenhulp bestaat alleen in de talen met een eigen vertaling van de
 // dataset, zie src/lib/hsf-i18n.ts.
 export function getStaticPaths() {
-  return PREFIXED.filter((l) => REKENHULP_TALEN.includes(l)).map((lang) => ({ params: { lang } }));
+  return HSF_PREFIXED.filter((l) => REKENHULP_TALEN.includes(l)).map((lang) => ({ params: { lang } }));
 }
 const { lang } = Astro.params;
 ---

@@ -27,15 +27,15 @@ const allUitgevers = [...new Set(items.map((i) => i.uitgever).filter(Boolean))].
 // komt uit de datamodule en niet uit navHref.
 const HUB_UI = ASSOVER_HUB_UI;
 const hubUi = HUB_UI[lang] || HUB_UI.nl;
-const hubLinks = [...Object.values(TESTHUBS), ...Object.values(THEMAPAGINAS)].map((h) => {
-  const taal = h.i18n[lang] ? lang : "nl";
-  const slug = h.slug[taal];
-  return {
-    href: (taal === "nl" ? "/" : "/" + taal + "/") + slug + "/",
-    titel: h.i18n[taal].hero.title,
-    lead: h.i18n[taal].crumb,
-  };
-});
+// Een hub die deze taal niet kent laten we weg. Hem naar het Nederlands laten
+// wijzen zou een Deense bezoeker op een Nederlandse pagina zetten.
+const hubLinks = [...Object.values(TESTHUBS), ...Object.values(THEMAPAGINAS)]
+  .filter((h) => h.i18n[lang] && h.slug[lang])
+  .map((h) => ({
+    href: (lang === "nl" ? "/" : "/" + lang + "/") + h.slug[lang] + "/",
+    titel: h.i18n[lang].hero.title,
+    lead: h.i18n[lang].crumb,
+  }));
 ---
 <div class="crumb">
   <div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{c.crumb}</span></div>

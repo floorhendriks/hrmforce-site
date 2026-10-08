@@ -2,9 +2,9 @@
 import SkillPage from '../../../../views/SkillPage.astro';
 import { skills } from '../../../../lib/hsf';
 import { altItem } from '../../../../lib/alt';
-import { PREFIXED } from '../../../../i18n/utils.js';
+import { HSF_PREFIXED } from '../../../../i18n/paden.js';
 export async function getStaticPaths() {
-  return PREFIXED.flatMap((lang) =>
+  return HSF_PREFIXED.flatMap((lang) =>
     skills
       .filter((s: any) => s.slug?.[lang])
       .map((s: any) => ({ params: { lang, slug: s.slug[lang] }, props: { sk: s } }))

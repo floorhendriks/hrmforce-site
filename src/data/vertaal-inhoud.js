@@ -21,7 +21,7 @@
 // Dit bestand importeert met opzet niets uit de andere datafiles. Die
 // importeren het namelijk zelf, en een kring van imports breekt de build.
 // src/i18n/alleen-brontaal.js importeert zelf niets en kan dus wel.
-import { ALLEEN_BRONTAAL } from "../i18n/alleen-brontaal.js";
+import { alleenBrontaal } from "../i18n/alleen-brontaal.js";
 
 // Vite zet deze aanroep tijdens de bouw om in een vaste lijst. Buiten Vite,
 // zoals in scripts/hsf-translate-content.mjs dat de datafiles met kaal node
@@ -83,7 +83,7 @@ function kaart(taal) {
 /** /shop/ wordt /hr/shop/. Pagina's die alleen in de brontalen bestaan gaan
  *  naar de Engelse versie, net als in src/i18n/utils.js. */
 function linkVoorTaal(pad, taal) {
-  if (ALLEEN_BRONTAAL.has(pad)) return "/en" + pad;
+  if (alleenBrontaal(pad)) return "/en" + pad;
   return LOKALISEERBAAR.has(pad) || /^\/assessments\/[^/]+\/$/.test(pad) ||
     /^\/(?:advies|hrm-oplossingen)\/[^/]+\/$/.test(pad)
     ? "/" + taal + pad

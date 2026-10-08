@@ -11,6 +11,8 @@ import Sterren from "./Sterren.astro";
 import AanvraagSoort from "./AanvraagSoort.astro";
 import Mensencheck from "./Mensencheck.astro";
 import { KANTOREN, HOOFDKANTOOR } from "../data/contact-content.js";
+import { localizeExisting } from "../i18n/utils.js";
+import validPaths from "../data/valid-paths.js";
 
 const { t, lang } = Astro.props;
 const js = t.melding;
@@ -83,7 +85,7 @@ const js = t.melding;
         <button type="submit" class="btn btn-primary">{t.formulier.verstuur}</button>
         <p class="privacy-note">
           {t.privacy.tekst}
-          <a href={t.privacy.href}>{t.privacy.link}</a>.
+          <a href={localizeExisting(t.privacy.href, lang, validPaths)}>{t.privacy.link}</a>.
         </p>
       </form>
       <div class="person-card"><img src="/media/team/floor-hendriks.webp" alt={t.persoon.alt} width="72" height="72" loading="lazy" /><div><strong>{t.persoon.titel}</strong><span>{t.persoon.tekst}</span><span class="person-name">{t.persoon.naam}</span></div></div>
@@ -116,8 +118,8 @@ const js = t.melding;
     <h2>{t.cta.titel}</h2>
     <p>{t.cta.tekst}</p>
     <div class="btns">
-      <a href={t.cta.knop1.href} class="btn btn-primary">{t.cta.knop1.label}</a>
-      <a href={t.cta.knop2.href} class="btn btn-light">{t.cta.knop2.label}</a>
+      <a href={localizeExisting(t.cta.knop1.href, lang, validPaths)} class="btn btn-primary">{t.cta.knop1.label}</a>
+      <a href={localizeExisting(t.cta.knop2.href, lang, validPaths)} class="btn btn-light">{t.cta.knop2.label}</a>
     </div>
   </div>
 </section>

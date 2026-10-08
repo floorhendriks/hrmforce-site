@@ -35,6 +35,9 @@ const stats = [
   [c.constructs, t('count.constructs')], [c.anchors, t('count.anchors')],
   [c.families, t('count.families')],
 ];
+import { localizePath } from "../i18n/utils.js";
+const contactHref = localizePath("/contact/", lang);
+
 ---
 <Base lang={lang} title={title} description={desc} active="home" alternates={alternates} jsonld={jsonld}>
   <section slot="hero" class="hsf-hero">
@@ -84,6 +87,6 @@ const stats = [
   <div class="hsf-card tint" style="margin-top:2.5rem">
     <h3 style="margin-top:0">{t('cta.contact')}</h3>
     <p class="hsf-small">{t('cta.contact.sub')}</p>
-    <a class="hsf-btn" href="/contact/">{t('cta.contact')}</a>
+    <a class="hsf-btn" href={contactHref}>{t('cta.contact')}</a>
   </div>
 </Base>

@@ -9,13 +9,21 @@
  * Voor een derde taal vult de fallback het Engels in totdat de data is uitgebreid.
  */
 import en from '../i18n/en.json';
-import { languages, defaultLang } from '../i18n/ui.js';
+import { BRONTALEN, languages, defaultLang } from '../i18n/ui.js';
 
 // De woordenlijsten worden op buildtijd ingelezen. Een nieuw bestand
 // src/i18n/<taal>.json doet vanzelf mee; wat er niet in staat valt terug op en.
 const WOORDEN = import.meta.glob('../i18n/*.json', { eager: true, import: 'default' }) as Record<string, Record<string, string>>;
 
 export const LOCALES = Object.keys(languages);
+
+/**
+ * Het skills framework bestaat alleen in de brontalen. De dataset staat in het
+ * Engels; een kopie onder een Pools of Deens adres zou dezelfde Engelse tekst
+ * een tweede keer publiceren en 829 bestanden per taal kosten. Zie
+ * src/i18n/alleen-brontaal.js, daar gaan de links naar het Engels.
+ */
+export const HSF_LOCALES = LOCALES.filter((l) => BRONTALEN.includes(l));
 export type Locale = string;
 export const DEFAULT_LOCALE: string = defaultLang;
 

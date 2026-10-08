@@ -1,8 +1,8 @@
 ---
 import FunctionIndex from '../../../../views/FunctionIndex.astro';
 import { altSection } from '../../../../lib/alt';
-import { perTaal } from "../../../../i18n/paden.js";
-export function getStaticPaths() { return perTaal(); }
+import { perHsfTaal } from "../../../../i18n/paden.js";
+export function getStaticPaths() { return perHsfTaal(); }
 const { lang } = Astro.params;
 ---
 <FunctionIndex lang={lang} alternates={altSection('functions')} />
