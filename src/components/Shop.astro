@@ -29,7 +29,9 @@ const PX = (i) => `/media/stock/pexels-${i}.webp`;
 const ENRICH = {
   imgBySeg: { "Persoonlijkheid": PX(3184418), "Capaciteiten": PX(3184338), "Gedrag": PX(3183197), "360 & Gedrag": PX(3183197), "Drijfveren": PX(1181533), "Interesse": PX(2422293), "Vaardigheden": PX(1367271) },
   defImg: PX(3184291),
-  desc: SHOP_ENRICH_DESC,
+  // Alleen de eigen taal: anders staat de omschrijving in negen talen in de
+  // bron van elke shoppagina, dus ook Nederlands onder een Poolse url.
+  desc: SHOP_ENRICH_DESC[lang] || SHOP_ENRICH_DESC.nl,
 };
 const LANG = lang;
 // Taalnamen voor de besteltekst, uit dezelfde lijst als de taalkeuze
@@ -363,7 +365,7 @@ const MC_BEZIG = SHOP_MC_BEZIG;
     function esc(s) { return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
     function enrichImg(p) { return (IMGMAP && IMGMAP[p.handle]) || (p.taxo.segment[0] && ENRICH.imgBySeg[p.taxo.segment[0]]) || ENRICH.defImg; }
     function isTraining(p) { return !!(p && TRAIN.handles.indexOf(p.handle) > -1); }
-    function enrichD(p) { return ENRICH.desc[LANG] || ENRICH.desc.nl; }
+    function enrichD(p) { return ENRICH.desc; }
     function enrichText(p) { return enrichD(p).intro.replace("{name}", p.title); }
     function enrichHtml(p) { var d = enrichD(p); return "<p>" + esc(d.intro.replace("{name}", p.title)) + "</p><p>" + esc(d.body) + "</p>" + enrichBullets(p); }
     function bulletsOf(p) { return isTraining(p) ? TRAIN.bullets : enrichD(p).bullets; }
@@ -449,7 +451,7 @@ const MC_BEZIG = SHOP_MC_BEZIG;
       var vN = attrVal(l, "Kandidaat " + n + " - Naam"), vE = attrVal(l, "Kandidaat " + n + " - E-mail"), vL = attrVal(l, "Kandidaat " + n + " - Taal"), vV = attrVal(l, "Kandidaat " + n + " - Niveau");
       var lo = '<option value="">' + esc(C.pick) + "</option>" + C.langs.map(function (o) { return '<option value="' + o[0] + '"' + (vL === o[0] ? " selected" : "") + ">" + esc(o[1]) + "</option>"; }).join("");
       var vo = '<option value="">' + esc(C.pick) + "</option>" + C.levels.map(function (o) { return '<option value="' + o[0] + '"' + (vV === o[0] ? " selected" : "") + ">" + esc(o[1]) + "</option>"; }).join("");
-      return '<div class="cand" data-line="' + l.lineId + '" data-idx="' + i + '">' + (l.qty > 1 ? '<div class="cand-h">' + esc(C.heading) + " " + n + "</div>" : "") + '<input class="cand-name" type="text" placeholder="' + esc(C.name) + '" value="' + esc(vN) + '"><input class="cand-mail" type="email" placeholder="' + esc(C.email) + '" value="' + esc(vE) + '"><div class="cand-row"><select class="cand-lang" aria-label="' + esc(C.lang) + '">' + lo + '</select><select class="cand-level" aria-label="' + esc(C.level) + '">' + vo + "</select></div></div>";
+      return '<div class="cand" data-line="' + l.lineId + '" data-idx="' + i + '">' + (l.qty > 1 ? '<div class="cand-h">' + esc(C.heading) + " " + n + "</div>" : "") + '<input class="cand-name" type="text" placeholder="' + esc(C.name) + '" value="' + esc(vN) + '"><input class="cand-mail" type="email" placeholder="' + esc(C.email) + '" value="' + esc(vE) + '"><div class="cand-row"><select class="cand-lang" aria-label="' + esc(C.taalLabel) + '">' + lo + '</select><select class="cand-level" aria-label="' + esc(C.level) + '">' + vo + "</select></div></div>";
     }
     function scheduleSave(lineId) { clearTimeout(saveTimers[lineId]); saveTimers[lineId] = setTimeout(function () { saveLineCandidates(lineId); }, 700); }
     function saveLineCandidates(lineId) {

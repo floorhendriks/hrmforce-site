@@ -6,7 +6,7 @@ export const PARTICULIER_EXTRA = {
   "da": {
     "onderwerp": "Din forespørgsel til hrmforce",
     "aanhefNaam": "Kære {naam},",
-    "aanhef": "Kære,",
+    "aanhef": "Hej,",
     "dank": "Tak for din henvendelse via hrmforce.com.",
     "shop": "Du har angivet, at du ønsker at tage en test for dig selv. Enkelte tests kan du bestille direkte i vores webshop. Du modtager spørgeskemaet via e-mail og din rapport, så snart du er færdig.",
     "kleuren": "Vil du gerne prøve det gratis først? Så tag den gratis farvetest:",
@@ -15,9 +15,9 @@ export const PARTICULIER_EXTRA = {
     "groet": "Med venlig hilsen,"
   },
   "pl": {
-    "onderwerp": "Państwa zapytanie prosimy kierować na adres hrmforce",
-    "aanhefNaam": "Szanowny Panie {naam},",
-    "aanhef": "Szanowni Państwo,",
+    "onderwerp": "Twoje zgłoszenie w hrmforce",
+    "aanhefNaam": "Dzień dobry {naam},",
+    "aanhef": "Dzień dobry,",
     "dank": "Dziękujemy za zgłoszenie przesłane na adres hrmforce.com.",
     "shop": "Wskazał Pan/Pani, że pragnie Pan/Pani wykonać test dla siebie. Pojedyncze testy można zamówić bezpośrednio w naszym sklepie internetowym. Kwestionariusz otrzyma Pan/Pani pocztą elektroniczną, a raport – zaraz po zakończeniu testu.",
     "kleuren": "Czy chciałby Pan/Pani najpierw bezpłatnie zapoznać się z naszą ofertą? W takim razie prosimy o wypełnienie bezpłatnego testu kolorów:",
@@ -27,8 +27,8 @@ export const PARTICULIER_EXTRA = {
   },
   "sv": {
     "onderwerp": "Din förfrågan till hrmforce",
-    "aanhefNaam": "Kära {naam},",
-    "aanhef": "Bäste,",
+    "aanhefNaam": "Hej {naam},",
+    "aanhef": "Hej,",
     "dank": "Tack för din förfrågan via hrmforce.com.",
     "shop": "Du angav att du vill göra ett test för dig själv. Enskilda tester beställer du direkt i vår webbshop. Du får frågeformuläret via e-post och din rapport så snart du är klar.",
     "kleuren": "Vill du först prova på utan kostnad? Gör då det kostnadsfria färgtestet:",
@@ -52,9 +52,9 @@ export const OEFEN_EXTRA = {
   },
   "pl": {
     "onderwerp": "Pytania ćwiczeniowe",
-    "onderwerpVoor": "Pytania ćwiczeniowe dotyczące strony {titel}",
-    "halloNaam": "Witam, {naam},",
-    "hallo": "Witam,",
+    "onderwerpVoor": "Pytania ćwiczeniowe: {titel}",
+    "halloNaam": "Dzień dobry {naam},",
+    "hallo": "Dzień dobry,",
     "met": "W załączniku znajdą Państwo zestaw przykładowych pytań. Dzięki temu będą Państwo wiedzieć z wyprzedzeniem, jak wyglądają pytania i czego mogą się Państwo spodziewać.",
     "zonder": "Dziękujemy za zgłoszenie. Dokument dotyczący tego modułu nie jest jeszcze dostępny, ale można wykonać ćwiczenia online.",
     "online": "Można kontynuować ćwiczenia online na stronie {url}. W każdej rundzie otrzymają Państwo nowy zestaw pytań, a po jej zakończeniu – prawidłową odpowiedź na każde pytanie wraz z objaśnieniem.",
@@ -69,7 +69,7 @@ export const OEFEN_EXTRA = {
     "met": "I bilagan hittar du en uppsättning övningsfrågor. På så sätt vet du i förväg hur frågorna ser ut och vad du kan förvänta dig.",
     "zonder": "Tack för din förfrågan. Det finns ännu inget dokument tillgängligt för detta avsnitt, men du kan öva online.",
     "online": "Du kan öva vidare online på {url}. Där får du en ny uppsättning frågor för varje omgång, och efteråt visas det rätta svaret och en förklaring till varje fråga.",
-    "let": "Dokumentet innehåller exempelfrågor. De kommer inte från den riktiga frågeformuläret och dina svar sparas inte.",
+    "let": "Dokumentet innehåller exempelfrågor. De kommer inte från det riktiga frågeformuläret och dina svar sparas inte.",
     "groet": "Med vänliga hälsningar,"
   }
 };
