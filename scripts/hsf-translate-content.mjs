@@ -70,6 +70,16 @@ const GUARD = new RegExp([...BESCHERMD].sort((a, b) => b.length - a.length).map(
 const PLAATSHOUDER = /\{[a-zA-Z][a-zA-Z0-9_]*\}/g;
 const bescherm = (s) => s.replace(GUARD, (m) => `<x>${m}</x>`).replace(PLAATSHOUDER, (m) => `<x>${m}</x>`);
 const ontdoe = (s) => s.replace(/<\/?x>/g, '');
+/**
+ * DeepL plakt een beschermd woord soms vast aan het vorige woord: "wNIP",
+ * "denBig Five". Staat er een kleine letter direct voor een merknaam die met
+ * een hoofdletter begint, dan hoort daar een spatie.
+ */
+const MET_HOOFDLETTER = BESCHERMD.filter((p) => /^[A-Z0-9]/.test(p))
+  .sort((a, b) => b.length - a.length);
+const SPATIEGAT = new RegExp('([a-z\u00e0-\u00ff])(' + MET_HOOFDLETTER.map(esc).join('|') + ')', 'g');
+const herstelSpatie = (s) => s.replace(SPATIEGAT, '$1 $2');
+
 /** DeepL zet soms aanhalingstekens om een beschermd stuk. Die halen we eraf. */
 function ontquote(s) {
   let uit = s;
@@ -180,7 +190,7 @@ for (const taal of TARGETS) {
   for (let i = 0; i < todo.length; i += 40) {
     const groep = todo.slice(i, i + 40);
     const terug = await deepl(groep.map((t) => bescherm(bronklaar(t))), taal);
-    groep.forEach((bron, j) => { uit[bron] = ontquote(ontdoe(terug[j])); });
+    groep.forEach((bron, j) => { uit[bron] = herstelSpatie(ontquote(ontdoe(terug[j]))); });
     process.stdout.write(`  ${Math.min(i + 40, todo.length)}/${todo.length}\r`);
   }
   // Teksten waarin een merknaam verdween, blijven Nederlands staan: beter geen

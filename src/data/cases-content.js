@@ -254,13 +254,27 @@ export const CASES = [
 export const caseSlug = (c) => `${c.theme}-${c.sector}-${c.size}`;
 
 // Titel van een losse casepagina, per taal opgebouwd uit thema, sector en omvang.
-const CASE_TITEL = {
-  nl: (thema, sector, omvang) => `${thema} in de sector ${sector.toLowerCase()}, ${omvang.toLowerCase()}`,
-  en: (thema, sector, omvang) => `${thema} in ${sector.toLowerCase()}, ${omvang.toLowerCase()}`,
-  de: (thema, sector, omvang) => `${thema} in der Branche ${sector}, ${omvang.toLowerCase()}`,
-  fr: (thema, sector, omvang) => `${thema} dans le secteur ${sector.toLowerCase()}, ${omvang.toLowerCase()}`,
-  es: (thema, sector, omvang) => `${thema} en el sector ${sector.toLowerCase()}, ${omvang.toLowerCase()}`,
-  ro: (thema, sector, omvang) => `${thema} în sectorul ${sector.toLowerCase()}, ${omvang.toLowerCase()}`,
+// Als tekst met plaatshouders en niet als functie: een functie slaat het
+// vertaalscript over, waardoor een Poolse titel "Selekcja in de sector
+// logistyka" werd. De plaatshouders blijven bij het vertalen staan.
+// Geexporteerd, anders ziet het vertaalscript deze tekst niet staan.
+export const CASE_TITEL = {
+  nl: "{thema} in de sector {sector}, {omvang}",
+  en: "{thema} in {sector}, {omvang}",
+  de: "{thema} in der Branche {sector}, {omvang}",
+  fr: "{thema} dans le secteur {sector}, {omvang}",
+  es: "{thema} en el sector {sector}, {omvang}",
+  ro: "{thema} în sectorul {sector}, {omvang}",
+};
+
+// Duits schrijft zelfstandige naamwoorden met een hoofdletter; de andere talen
+// schrijven de sector en de omvang klein.
+const caseTitel = (lang, thema, sector, omvang) => {
+  const klein = (t) => (lang === "de" ? t : t.toLowerCase());
+  return String(CASE_TITEL[lang] || CASE_TITEL.nl)
+    .replace("{thema}", thema)
+    .replace("{sector}", klein(sector))
+    .replace("{omvang}", klein(omvang));
 };
 
 // Teksten die alleen op de losse casepagina staan.
@@ -291,7 +305,7 @@ export function caseFor(slug, lang) {
   const thema = L(CASE_THEMES[c.theme]);
   const sector = L(CASE_SECTORS[c.sector]);
   const omvang = L(CASE_SIZES[c.size]);
-  const titel = (CASE_TITEL[lang] || CASE_TITEL.nl)(thema, sector, omvang);
+  const titel = caseTitel(lang, thema, sector, omvang);
   return {
     slug, thema, sector, omvang, titel,
     themeKey: c.theme, sectorKey: c.sector,
@@ -356,3 +370,4 @@ Object.assign(CASE_SECTORS, vulAan(CASE_SECTORS));
 Object.assign(CASE_SIZES, vulAan(CASE_SIZES));
 Object.assign(CASE_THEMES, vulAan(CASE_THEMES));
 Object.assign(CASE_UI, vulAan(CASE_UI));
+Object.assign(CASE_TITEL, vulAan(CASE_TITEL));
