@@ -137,7 +137,7 @@ const TRAIN = {
 };
 const FAQ_DEFAULT = generalFaq(lang);
 import Mensencheck from "./Mensencheck.astro";
-import { SHOP_CAND_I18N, SHOP_CART_I18N, SHOP_DOCS_T, SHOP_MC_BEZIG, SHOP_MC_FOUT, SHOP_MC_MENS, SHOP_MC_OK, SHOP_REQ_I18N } from "../data/component-teksten.js";
+import { SHOP_REQ_KANDIDAAT, SHOP_CAND_I18N, SHOP_CART_I18N, SHOP_DOCS_T, SHOP_MC_BEZIG, SHOP_MC_FOUT, SHOP_MC_MENS, SHOP_MC_OK, SHOP_REQ_I18N } from "../data/component-teksten.js";
 const MC_OK = SHOP_MC_OK;
 const MC_FOUT = SHOP_MC_FOUT;
 const MC_MENS = SHOP_MC_MENS;
@@ -384,7 +384,7 @@ const MC_BEZIG = SHOP_MC_BEZIG;
   .cart-warn { color: #b3261e; background: #fdeceb; border: 1px solid #f6c9c5; border-radius: var(--radius-sm); padding: 8px 12px; font-size: 13px; font-weight: 600; margin: 0 0 10px; }
 </style>
 
-<script is:inline define:vars={{ L, ENRICH, LANG, TRAIN, LABELS, IMGMAP: shopImages, SC_URL: "/shop-products.json", VENDOR_LOGO, RQ: rq, FAQ_SEG, FAQ_DEFAULT, DOCS, DOCS_TITEL: docsTitel, CATALOG: catalog, CHECKOUT_URL: afrekenenHref }}>
+<script is:inline define:vars={{ L, ENRICH, LANG, REQKAND: SHOP_REQ_KANDIDAAT, TRAIN, LABELS, IMGMAP: shopImages, SC_URL: "/shop-products.json", VENDOR_LOGO, RQ: rq, FAQ_SEG, FAQ_DEFAULT, DOCS, DOCS_TITEL: docsTitel, CATALOG: catalog, CHECKOUT_URL: afrekenenHref }}>
   (function () {
     var app = document.getElementById("shopApp");
     if (!app) return;
@@ -540,7 +540,7 @@ const MC_BEZIG = SHOP_MC_BEZIG;
 
     var checkoutBtn = document.getElementById("cartCheckout");
     var warnEl = document.getElementById("cartWarn");
-    var REQMSG = { nl: "Vul voor elke kandidaat naam en een geldig e-mailadres in.", en: "Enter a name and a valid email for every candidate.", de: "Bitte für jeden Kandidaten Namen und eine gültige E-Mail-Adresse eingeben.", fr: "Saisissez un nom et un e-mail valide pour chaque candidat.", es: "Introduce nombre y un correo válido para cada candidato.", ro: "Introduceți nume și un e-mail valid pentru fiecare candidat." };
+    var REQMSG = REQKAND;
     function validEmail(s) { s = (s || "").trim(); var at = s.indexOf("@"); return at > 0 && s.indexOf(".", at) > at + 1 && s.indexOf(" ") < 0; }
     function collectAttrs(lineId) {
       var groups = [].slice.call(linesEl.querySelectorAll(".cand")).filter(function (g) { return g.getAttribute("data-line") === lineId; });

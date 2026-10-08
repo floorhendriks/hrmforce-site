@@ -1,4 +1,5 @@
 ---
+import { SECTOR_VOORBEELD } from "../data/component-teksten.js";
 import LogoSlider from "./LogoSlider.astro";
 import { getLangFromUrl, localizePath, demoPath } from "../i18n/utils.js";
 import { sectorsFor } from "../data/sectoren-content.js";
@@ -7,7 +8,7 @@ import { LOGOSLIDER_T } from "../data/component-teksten.js";
 
 const lang = getLangFromUrl(Astro.url);
 const { ui, sectors } = sectorsFor(lang);
-const _exLabel = { nl: "Voorbeeld", en: "Example", de: "Beispiel", fr: "Exemple", es: "Ejemplo", ro: "Exemplu" }[lang] || "Voorbeeld";
+const _exLabel = SECTOR_VOORBEELD[lang] || SECTOR_VOORBEELD.nl;
 const contactHref = localizePath("/contact/", lang);
 const assessHref = localizePath("/assessment-overzicht/", lang);
 ---

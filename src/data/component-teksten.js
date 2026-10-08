@@ -498,7 +498,44 @@ export const ASSESSL_MC_OK = { nl: "Bedankt. We nemen zo snel mogelijk contact m
 export const ASSESSL_MC_FOUT = { nl: "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.", en: "Something went wrong while sending. Please try again or email service@hrmforce.com.", de: "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.", fr: "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.", es: "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.", ro: "A apărut o eroare la trimitere. Încearcă din nou sau scrie la service@hrmforce.com." };
 export const ASSESSL_MC_MENS = { nl: "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.", en: "We could not confirm that you are human. Tick the box and try again.", de: "Wir konnten nicht feststellen, dass Sie ein Mensch sind. Bitte das Kästchen anklicken und erneut versuchen.", fr: "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez.", es: "No hemos podido confirmar que eres una persona. Marca la casilla e inténtalo de nuevo.", ro: "Nu am putut confirma că ești o persoană. Bifează căsuța și încearcă din nou." };
 export const ASSESSL_MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…", fr: "Envoi…", es: "Enviando…", ro: "Se trimite…" };
-export const BASE_LOCALE_MAP = { nl: "nl_NL", en: "en_US", de: "de_DE", fr: "fr_FR", es: "es_ES", ro: "ro_RO" };
+// Taalcodes, geen tekst: hier staat elke taal met de hand in. Via de
+// vertaallaag zou een nieuwe taal "nl_NL" krijgen, en dan klopt og:locale niet.
+export const BASE_LOCALE_MAP = { nl: "nl_NL", en: "en_US", de: "de_DE", fr: "fr_FR", es: "es_ES", ro: "ro_RO", pl: "pl_PL", da: "da_DK", sv: "sv_SE" };
+
+// Hetzelfde, in de vorm die toLocaleDateString wil (artikelpagina's).
+export const BASE_DATUM_LOCALE = { nl: "nl-NL", en: "en-GB", de: "de-DE", fr: "fr-FR", es: "es-ES", ro: "ro-RO", pl: "pl-PL", da: "da-DK", sv: "sv-SE" };
+
+// De rubrieken in het kruimelpad. Stonden eerder in src/layouts/Base.astro en
+// waren daardoor onzichtbaar voor het vertaalscript.
+export const BASE_RUBRIEK = {
+  assessments: { nl: "Assessments", en: "Assessments", de: "Assessments", fr: "Évaluations", es: "Evaluaciones", ro: "Evaluări" },
+  kenniscentrum: { nl: "Kenniscentrum", en: "Knowledge centre", de: "Wissenszentrum", fr: "Centre de connaissances", es: "Centro de conocimiento", ro: "Centru de cunoștințe" },
+  "hrm-oplossingen": { nl: "HRM-oplossingen", en: "HR solutions", de: "HR-Lösungen", fr: "Solutions RH", es: "Soluciones RR. HH.", ro: "Soluții HR" },
+  advies: { nl: "Advies", en: "Advice", de: "Beratung", fr: "Conseil", es: "Asesoramiento", ro: "Consultanță" },
+  integraties: { nl: "Integraties", en: "Integrations", de: "Anbindungen", fr: "Intégrations", es: "Integraciones", ro: "Integrări" },
+  vergelijking: { nl: "Vergelijken", en: "Compare", de: "Vergleichen", fr: "Comparer", es: "Comparar", ro: "Comparați" },
+  oefenen: { nl: "Oefenen", en: "Practise", de: "Üben", fr: "S'entraîner", es: "Practicar", ro: "Exersați" },
+  sectoren: { nl: "Sectoren", en: "Sectors", de: "Branchen", fr: "Secteurs", es: "Sectores", ro: "Sectoare" },
+  toepassingen: { nl: "Toepassingen", en: "Use cases", de: "Anwendungen", fr: "Cas d'usage", es: "Casos de uso", ro: "Aplicații" },
+  whitepapers: { nl: "Whitepapers", en: "Whitepapers", de: "Whitepapers", fr: "Livres blancs", es: "Whitepapers", ro: "Whitepapers" },
+  vacatures: { nl: "Vacatures", en: "Vacancies", de: "Stellen", fr: "Offres", es: "Vacantes", ro: "Posturi" },
+  support: { nl: "Support", en: "Support", de: "Support", fr: "Assistance", es: "Soporte", ro: "Asistență" },
+  voorbereiding: { nl: "Voorbereiding", en: "Preparation", de: "Vorbereitung", fr: "Préparation", es: "Preparación", ro: "Pregătire" },
+  partner: { nl: "Partners", en: "Partners", de: "Partner", fr: "Partenaires", es: "Socios", ro: "Parteneri" },
+};
+
+// Losse labels die eerder in een component stonden.
+export const FOOTER_TOUR = { nl: "Rondleiding", en: "Product tour", de: "Produkttour", fr: "Visite du produit", es: "Tour del producto", ro: "Tur al produsului" };
+export const FOOTER_VERGELIJK = { nl: "Vergelijken", en: "Compare", de: "Vergleichen", fr: "Comparer", es: "Comparar", ro: "Comparație" };
+export const FOOTER_TOEPASSINGEN = { nl: "Toepassingen", en: "Use cases", de: "Anwendungen", fr: "Cas d'usage", es: "Casos de uso", ro: "Aplicații" };
+export const SECTOR_VOORBEELD = { nl: "Voorbeeld", en: "Example", de: "Beispiel", fr: "Exemple", es: "Ejemplo", ro: "Exemplu" };
+export const INTEG_POPULAIR = { nl: "Populaire koppelingen", en: "Popular integrations", de: "Beliebte Anbindungen", fr: "Intégrations populaires", es: "Integraciones populares", ro: "Integrări populare" };
+export const TRUST_BEOORDEELD = { nl: "Beoordeeld op", en: "Reviewed on", de: "Bewertet auf", fr: "Évalué sur", es: "Valorado en", ro: "Evaluat pe" };
+export const SHOP_REQ_KANDIDAAT = { nl: "Vul voor elke kandidaat naam en een geldig e-mailadres in.", en: "Enter a name and a valid email for every candidate.", de: "Bitte für jeden Kandidaten Namen und eine gültige E-Mail-Adresse eingeben.", fr: "Saisissez un nom et un e-mail valide pour chaque candidat.", es: "Introduce nombre y un correo válido para cada candidato.", ro: "Introduceți nume și un e-mail valid pentru fiecare candidat." };
+export const ASSESSD_MC_OK = { nl: "Bedankt. We nemen zo snel mogelijk contact met je op.", en: "Thank you. We will get in touch as soon as we can.", de: "Danke. Wir melden uns so schnell wie möglich.", fr: "Merci. Nous vous recontactons au plus vite.", es: "Gracias. Nos pondremos en contacto lo antes posible.", ro: "Mulțumim. Vă contactăm cât mai curând." };
+export const ASSESSD_MC_FOUT = { nl: "Er ging iets mis bij het versturen. Probeer het nog eens of mail naar service@hrmforce.com.", en: "Something went wrong while sending. Please try again or email service@hrmforce.com.", de: "Beim Senden ist etwas schiefgelaufen. Bitte erneut versuchen oder an service@hrmforce.com mailen.", fr: "Une erreur est survenue lors de l'envoi. Réessayez ou écrivez à service@hrmforce.com.", es: "Algo salió mal al enviar. Inténtalo de nuevo o escribe a service@hrmforce.com.", ro: "A apărut o eroare la trimitere. Încercați din nou sau scrieți la service@hrmforce.com." };
+export const ASSESSD_MC_MENS = { nl: "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en probeer het opnieuw.", en: "We could not confirm that you are human. Tick the box and try again.", de: "Wir konnten nicht bestätigen, dass Sie ein Mensch sind. Bitte das Kästchen anhaken und erneut versuchen.", fr: "Nous n'avons pas pu confirmer que vous êtes humain. Cochez la case et réessayez.", es: "No pudimos confirmar que eres una persona. Marca la casilla e inténtalo de nuevo.", ro: "Nu am putut confirma că sunteți o persoană. Bifați căsuța și încercați din nou." };
+export const ASSESSD_MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…", fr: "Envoi…", es: "Enviando…", ro: "Se trimite…" };
 
 // Talen zonder eigen tekst hierboven worden aangevuld uit
 // src/data/translations-content/<taal>.json. Zie vertaal-inhoud.js.
@@ -557,3 +594,15 @@ Object.assign(ASSESSL_MC_FOUT, vulAan(ASSESSL_MC_FOUT));
 Object.assign(ASSESSL_MC_MENS, vulAan(ASSESSL_MC_MENS));
 Object.assign(ASSESSL_MC_BEZIG, vulAan(ASSESSL_MC_BEZIG));
 Object.assign(BASE_LOCALE_MAP, vulAan(BASE_LOCALE_MAP));
+Object.assign(BASE_RUBRIEK, vulAan(BASE_RUBRIEK));
+Object.assign(FOOTER_TOUR, vulAan(FOOTER_TOUR));
+Object.assign(FOOTER_VERGELIJK, vulAan(FOOTER_VERGELIJK));
+Object.assign(FOOTER_TOEPASSINGEN, vulAan(FOOTER_TOEPASSINGEN));
+Object.assign(SECTOR_VOORBEELD, vulAan(SECTOR_VOORBEELD));
+Object.assign(INTEG_POPULAIR, vulAan(INTEG_POPULAIR));
+Object.assign(TRUST_BEOORDEELD, vulAan(TRUST_BEOORDEELD));
+Object.assign(SHOP_REQ_KANDIDAAT, vulAan(SHOP_REQ_KANDIDAAT));
+Object.assign(ASSESSD_MC_OK, vulAan(ASSESSD_MC_OK));
+Object.assign(ASSESSD_MC_FOUT, vulAan(ASSESSD_MC_FOUT));
+Object.assign(ASSESSD_MC_MENS, vulAan(ASSESSD_MC_MENS));
+Object.assign(ASSESSD_MC_BEZIG, vulAan(ASSESSD_MC_BEZIG));

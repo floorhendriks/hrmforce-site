@@ -1,4 +1,5 @@
 ---
+import { BASE_DATUM_LOCALE } from "../data/component-teksten.js";
 import { webpHtml, altAanvullen } from "../lib/beeld.js";
 import { titel, omschrijving, kortZin } from "../lib/meta.js";
 import { herstelLinks } from "../data/link-onderhoud.js";
@@ -261,7 +262,7 @@ const KC = SANITY_KC;
 const K = KC[lang] || KC.nl;
 const kcHref = localizePath("/kenniscentrum/", lang);
 const overHref = localizePath("/over-ons/", lang);
-const LOC = { nl: "nl-NL", en: "en-GB", de: "de-DE", fr: "fr-FR", es: "es-ES", ro: "ro-RO" }[lang] || "nl-NL";
+const LOC = BASE_DATUM_LOCALE[lang] || BASE_DATUM_LOCALE.nl;
 const dateLabel = article.date ? new Date(article.date).toLocaleDateString(LOC, { day: "numeric", month: "long", year: "numeric" }) : "";
 
 const cut = body.indexOf("</h2>");

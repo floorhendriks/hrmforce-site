@@ -140,10 +140,17 @@ const teksten = new Set();
 // vertaald te krijgen.
 //   HSF_ONLY=advies-detail.js,oplossingen.js node scripts/hsf-translate-content.mjs de
 const ONLY = (process.env.HSF_ONLY || '').split(',').map((s) => s.trim()).filter(Boolean);
-for (const f of (await readdir(DATA)).filter((f) => f.endsWith('.js')).sort()) {
+// src/i18n/ui.js hoort er ook bij: daar staan de menu-, voettekst- en
+// knopteksten. Die stonden eerder niet in de vertaalronde, waardoor een nieuwe
+// taal in de voettekst Nederlands bleef.
+const BESTANDEN = [
+  ...(await readdir(DATA)).filter((f) => f.endsWith('.js')).sort().map((f) => [DATA, f]),
+  [join(ROOT, 'src', 'i18n'), 'ui.js'],
+];
+for (const [map, f] of BESTANDEN) {
   if (ONLY.length && !ONLY.includes(f)) continue;
   let mod;
-  try { mod = await import(pathToFileURL(join(DATA, f)).href); } catch { continue; }
+  try { mod = await import(pathToFileURL(join(map, f)).href); } catch { continue; }
   for (const w of Object.values(mod)) if (typeof w !== 'function') brontakken(w, teksten);
 }
 const alle = [...teksten];

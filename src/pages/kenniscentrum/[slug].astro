@@ -1,4 +1,5 @@
 ---
+import { BASE_DATUM_LOCALE } from "../../data/component-teksten.js";
 import Base from "../../layouts/Base.astro";
 import { posts as localPosts } from "../../data/blog.js";
 import { getLangFromUrl, localizePath, navHref } from "../../i18n/utils.js";
@@ -52,7 +53,7 @@ const relArticles = (allPosts||[])
 const RL = {nl:{a:"Gerelateerde assessments",art:"Verder lezen",view:"Bekijk assessment",read:"Lees artikel"},en:{a:"Related assessments",art:"Read more",view:"View assessment",read:"Read article"},de:{a:"Verwandte Assessments",art:"Weiterlesen",view:"Assessment ansehen",read:"Artikel lesen"},fr:{a:"Assessments liés",art:"Lire plus",view:"Voir l'assessment",read:"Lire l'article"},es:{a:"Evaluaciones relacionadas",art:"Leer más",view:"Ver evaluación",read:"Leer artículo"},ro:{a:"Evaluări conexe",art:"Citește mai mult",view:"Vezi evaluarea",read:"Citește articolul"}}[lang] || {a:"Gerelateerde assessments",art:"Verder lezen",view:"Bekijk assessment",read:"Lees artikel"};
 const KC_ALLE = KCSLUG_KC_ALLE;
 const KC = KC_ALLE[lang] ?? KC_ALLE.nl;
-const LOC = { nl: "nl-NL", en: "en-GB", de: "de-DE", fr: "fr-FR", es: "es-ES", ro: "ro-RO" }[lang] || "nl-NL";
+const LOC = BASE_DATUM_LOCALE[lang] || BASE_DATUM_LOCALE.nl;
 const dateLabel = p.date ? new Date(p.date).toLocaleDateString(LOC, { day: "numeric", month: "long", year: "numeric" }) : "";
 const _wc = `${p.excerpt || ""} ${(p.body || []).join(" ")}`.split(/\s+/).filter(Boolean).length;
 const readMin = Math.max(2, Math.round(_wc / 200));

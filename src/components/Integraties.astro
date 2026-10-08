@@ -1,4 +1,5 @@
 ---
+import { INTEG_POPULAIR } from "../data/component-teksten.js";
 import Img from "./Img.astro";
 import Ico from "./Ico.astro";
 import { localizePath, demoPath } from "../i18n/utils.js";
@@ -8,7 +9,7 @@ const demoHref = demoPath(lang);
 const tarievenHref = localizePath("/tarieven/", lang);
 import { PARTNERS, PARTNER_CAT_ORDER, PARTNER_CATS, PARTNER_UI } from "../data/partners.js";
 import { INT_SYSTEMS } from "../data/integraties-detail.js";
-const intSysHeading = {nl:"Populaire koppelingen",en:"Popular integrations",de:"Beliebte Anbindungen",fr:"Intégrations populaires",es:"Integraciones populares",ro:"Integrări populare"}[lang] || "Populaire koppelingen";
+const intSysHeading = INTEG_POPULAIR[lang] || INTEG_POPULAIR.nl;
 const pui = PARTNER_UI[lang] || PARTNER_UI.nl;
 const pcats = PARTNER_CATS[lang] || PARTNER_CATS.nl;
 ---

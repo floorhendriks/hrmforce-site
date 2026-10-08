@@ -2,13 +2,15 @@
 import { routes } from "../i18n/ui.js";
 import { getLangFromUrl, useTranslations, navHref } from "../i18n/utils.js";
 import validPaths from "../data/valid-paths.js";
+import { FOOTER_TOEPASSINGEN, FOOTER_TOUR, FOOTER_VERGELIJK } from "../data/component-teksten.js";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const year = new Date().getFullYear();
 const L = (p) => navHref(p, lang, validPaths);
-const _tourLabel = {nl:"Rondleiding",en:"Product tour",de:"Produkttour",fr:"Visite du produit",es:"Tour del producto",ro:"Tur al produsului"}[lang] || "Rondleiding";
-const _compareLabel = {nl:"Vergelijken",en:"Compare",de:"Vergleichen",fr:"Comparer",es:"Comparar",ro:"Comparație"}[lang] || "Vergelijken";
+const _tourLabel = FOOTER_TOUR[lang] || FOOTER_TOUR.nl;
+const _compareLabel = FOOTER_VERGELIJK[lang] || FOOTER_VERGELIJK.nl;
+const _toepassingenLabel = FOOTER_TOEPASSINGEN[lang] || FOOTER_TOEPASSINGEN.nl;
 ---
 <footer>
   <div class="wrap">
@@ -37,7 +39,7 @@ const _compareLabel = {nl:"Vergelijken",en:"Compare",de:"Vergleichen",fr:"Compar
           <li><a href={L(routes.about)}>{t("footer.about")}</a></li>
           <li><a href={L("/partners/")}>{t("footer.partners")}</a></li>
           <li><a href={L("/tarieven/")}>{t("footer.pricing")}</a></li>
-          <li><a href={L("/toepassingen/")}>Toepassingen</a></li>
+          <li><a href={L("/toepassingen/")}>{_toepassingenLabel}</a></li>
           <li><a href={L("/vergelijking/")}>{_compareLabel}</a></li>
           <li><a href={L("/klantcases/")}>{t("footer.cases")}</a></li>
           <li><a href={L("/integraties/")}>{t("footer.integrations")}</a></li>

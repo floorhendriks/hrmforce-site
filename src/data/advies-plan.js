@@ -66,13 +66,15 @@ const PLAN_PER_SLUG_NL = {
 
 // De tekst staat alleen in het Nederlands; vertaalAlles maakt er een kopie per
 // taal van met de vertalingen uit src/data/translations-content/<taal>.json.
-const PLAN = vertaalAlles({ standaard: PLAN_NL, rollen: ROLLEN_NL, perSlug: PLAN_PER_SLUG_NL });
+// Geexporteerd, anders ziet scripts/hsf-translate-content.mjs deze teksten niet:
+// dat script loopt alleen de exports van een datafile langs.
+export const adviesPlan = vertaalAlles({ standaard: PLAN_NL, rollen: ROLLEN_NL, perSlug: PLAN_PER_SLUG_NL });
 
 /** Het stappenplan bij een adviespagina, in de gevraagde taal. */
 export function adviesPlanFor(slug, taal = "nl") {
-  const a = voorTaal(PLAN, taal);
+  const a = voorTaal(adviesPlan, taal);
   return a.perSlug[slug] || a.standaard;
 }
 
 /** De rolverdeling (wat doet hrmforce, wat doe je zelf) in de gevraagde taal. */
-export const adviesRollenVoor = (taal = "nl") => voorTaal(PLAN, taal).rollen;
+export const adviesRollenVoor = (taal = "nl") => voorTaal(adviesPlan, taal).rollen;

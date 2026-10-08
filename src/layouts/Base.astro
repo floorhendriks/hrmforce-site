@@ -25,7 +25,7 @@ const ALLE_TALEN = Object.keys(languages);
 import { consentContent } from "../data/consent-content.js";
 import { variantenVoor } from "../data/slugvarianten.js";
 import { kortZin } from "../lib/meta.js";
-import { BASE_EXIT_INTENT, BASE_LOCALE_MAP, BASE_STICKY_DEMO } from "../data/component-teksten.js";
+import { BASE_EXIT_INTENT, BASE_LOCALE_MAP, BASE_RUBRIEK, BASE_STICKY_DEMO } from "../data/component-teksten.js";
 
 const {
   title = "hrmforce",
@@ -58,22 +58,7 @@ const paginaOmschrijving = kortZin(description, 155);
 // Kruimelpad als BreadcrumbList. Google toont dat pad in het zoekresultaat in
 // plaats van de kale URL. Opgebouwd uit het pad zelf, zodat elke pagina met een
 // map erboven het krijgt en niet alleen de artikelen.
-const RUBRIEK = {
-  assessments: { nl: "Assessments", en: "Assessments", de: "Assessments", fr: "Évaluations", es: "Evaluaciones", ro: "Evaluări" },
-  kenniscentrum: { nl: "Kenniscentrum", en: "Knowledge centre", de: "Wissenszentrum", fr: "Centre de connaissances", es: "Centro de conocimiento", ro: "Centru de cunoștințe" },
-  "hrm-oplossingen": { nl: "HRM-oplossingen", en: "HR solutions", de: "HR-Lösungen", fr: "Solutions RH", es: "Soluciones RR. HH.", ro: "Soluții HR" },
-  advies: { nl: "Advies", en: "Advice", de: "Beratung", fr: "Conseil", es: "Asesoramiento", ro: "Consultanță" },
-  integraties: { nl: "Integraties", en: "Integrations", de: "Anbindungen", fr: "Intégrations", es: "Integraciones", ro: "Integrări" },
-  vergelijking: { nl: "Vergelijken", en: "Compare", de: "Vergleichen", fr: "Comparer", es: "Comparar", ro: "Comparați" },
-  oefenen: { nl: "Oefenen", en: "Practise", de: "Üben", fr: "S'entraîner", es: "Practicar", ro: "Exersați" },
-  sectoren: { nl: "Sectoren", en: "Sectors", de: "Branchen", fr: "Secteurs", es: "Sectores", ro: "Sectoare" },
-  toepassingen: { nl: "Toepassingen", en: "Use cases", de: "Anwendungen", fr: "Cas d'usage", es: "Casos de uso", ro: "Aplicații" },
-  whitepapers: { nl: "Whitepapers", en: "Whitepapers", de: "Whitepapers", fr: "Livres blancs", es: "Whitepapers", ro: "Whitepapers" },
-  vacatures: { nl: "Vacatures", en: "Vacancies", de: "Stellen", fr: "Offres", es: "Vacantes", ro: "Posturi" },
-  support: { nl: "Support", en: "Support", de: "Support", fr: "Assistance", es: "Soporte", ro: "Asistență" },
-  voorbereiding: { nl: "Voorbereiding", en: "Preparation", de: "Vorbereitung", fr: "Préparation", es: "Preparación", ro: "Pregătire" },
-  partner: { nl: "Partners", en: "Partners", de: "Partner", fr: "Partenaires", es: "Socios", ro: "Parteneri" },
-};
+const RUBRIEK = BASE_RUBRIEK;
 // Een padsegment leesbaar maken voor het kruimelpad. De merknaam houdt zijn
 // kleine letter, ook als hij vooraan staat.
 const netjes = (seg) => {
