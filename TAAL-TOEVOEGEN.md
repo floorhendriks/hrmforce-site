@@ -165,3 +165,20 @@ van de nieuwe taal langs en tel de links die naar een pad zonder taalvoorvoegsel
 wijzen. Laat de taalwisselaar buiten beschouwing, die hoort naar elke taal te
 verwijzen. Wat overblijft is een link die de bezoeker in het Nederlands laat
 belanden.
+
+## Twee valkuilen uit patch 81
+
+**Data die door vertaalAlles gaat moet ook geexporteerd zijn.** Het
+vertaalscript leest alleen de exports van een datafile. Een `const` die binnen
+het bestand blijft, komt niet in de vertaalronde en blijft Nederlands. Dat
+overkwam het stappenplan op de adviespagina's.
+
+**src/i18n/ui.js hoort bij de vertaalronde.** Daar staan de menu-, voettekst-
+en knopteksten. Het script scant sinds patch 81 ook die map; daarvoor bleef de
+voettekst in een nieuwe taal Nederlands.
+
+Controleer na elke vertaalronde ook de woorden die DeepL onvertaald teruggaf:
+
+    python3 -c "import json; d=json.load(open('src/data/translations-content/da.json')); print([k for k,v in d.items() if k==v and len(k)>5 and ' ' not in k])"
+
+Merk- en vragenlijstnamen horen daar thuis, Nederlandse woorden niet.
