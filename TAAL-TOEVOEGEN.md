@@ -16,7 +16,7 @@ vergeten en een keer live gegaan; de uitleg per stap staat eronder.
 [ ]  5  Vertaalronde 2: skills framework   HSF_LANGS=<taal> node scripts/hsf-translate-ui.mjs
 [ ]  6  Vertaalronde 3: oefenbanken        (optioneel)
 [ ]  7  Mailteksten weggeschreven          node scripts/genereer-mailteksten.mjs
-[ ]  8  De vertaling nagekeken met de hand (taalnamen, aanhef, onderwerp)
+[ ]  8  De vertaling nagekeken met de hand (korte labels, taalnamen, aanhef)
 [ ]  9  npx astro build
 [ ] 10  python3 scripts/taalcontrole.py <taal>      geen FOUT meer over
 [ ] 11  De bestaande talen vergeleken met de vorige bouw
@@ -106,7 +106,21 @@ die de mailteksten raakt, dus ook als je alleen een zin in de mail aanpast.
 ## 8. De vertaling nakijken met de hand
 
 DeepL levert goed werk op lopende zinnen en struikelt voorspelbaar over korte
-losse woorden en over aanhef. Loop deze vier na voordat je bouwt:
+losse woorden en over aanhef. Een hele zin heeft context, een label van twee
+woorden niet. Loop deze punten na voordat je bouwt:
+
+**Korte labels met een tweede betekenis.** Dit is de grootste groep. "Basic
+inrichting" werd "Grundlegende Gestaltung", "Mise en page de base" en "Diseño
+básico": vormgeving in plaats van configuratie. "Lets" werd het Engelse "let's",
+"Capaciteiten" werd "mogelijkheden" en "Ontwikkeling" werd "uitwerking". Loop na
+elke ronde de labels van onder de tien tekens tot ongeveer veertig na, dus de
+prijstabel, de filters, de segmentnamen en de menu-items. Lopende zinnen hoef je
+niet woord voor woord te lezen.
+
+**De segmentnamen in het filter.** `SEGMENT_NAMEN` in
+`src/data/component-teksten.js`. Let op het verschil tussen Capaciteiten
+(cognitieve vermogens) en Vaardigheden (skills); DeepL maakt daar in de helft
+van de talen hetzelfde woord van.
 
 **De 29 taalnamen in de taalkeuze.** `SHOP_CAND_I18N` in
 `src/data/component-teksten.js` noemt elke testtaal bij naam. "Lets" las DeepL
@@ -194,6 +208,7 @@ de praktijk gaat het telkens om een van deze vier:
 | een `const` die niet geëxporteerd is | het script leest alleen de exports van een datafile | exporteer hem |
 | een functie per taal, `nl: (naam) => ...` | het script leest tekst, geen functies | tekst met plaatshouders, `"Beste {naam},"` |
 | een hardgecodeerde standaardtekst, `Astro.props.x ?? "Vertrouwd door 1.200+ organisaties"` | staat niet in een taalblok | `src/data/`, en geef de component de taal mee |
+| een waarde uit externe data, zoals het segment van een product uit de shopcatalogus | staat in geen enkel taalblok, dus de vertaallaag ziet hem nooit | een eigen taalblok met die waarde als sleutel, zie `SEGMENT_NAMEN` |
 
 **Een brontaal die helemaal in een blok ontbreekt, krijgt nu wel tekst.** Een
 blok met alleen `nl` en `en` gaf in het Duits, Frans, Spaans en Roemeens de
@@ -277,6 +292,22 @@ herschrijven.
 onder een vreemd voorvoegsel, dus dubbele inhoud, en het kostte 829 van de
 1.002 bestanden die een taal opleverde. De links wijzen naar `/en/`, de oude
 adressen staan in `_redirects`.
+
+**Een label dat uit externe data komt, vertaalt niets.** Het segmentfilter op
+`/assessment-overzicht` leidde zijn opties af uit de shopcatalogus en stond
+daardoor in elke taal in het Nederlands, ook in het Pools, Deens en Zweeds. De
+oplossing is een eigen taalblok met de Nederlandse waarde als sleutel:
+
+```js
+export const SEGMENT_NAMEN = {
+  nl: { "Capaciteiten": "Capaciteiten", ... },
+  en: { "Capaciteiten": "Abilities", ... },
+};
+```
+
+De waarde in de `<option>` blijft de Nederlandse, want daar filtert de pagina op;
+alleen het label gaat mee in de vertaling. Hetzelfde geldt voor elke lijst die
+uit de shopcatalogus, uit Sanity of uit een koppeling komt.
 
 **De productomschrijving in de shop gaat per taal mee, niet alle talen.**
 `src/components/Shop.astro` geeft `SHOP_ENRICH_DESC[lang]` door, niet het hele
