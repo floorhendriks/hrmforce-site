@@ -29,7 +29,7 @@ export async function onRequestPost(context) {
 
   const lines = Array.isArray(body.lines) ? body.lines : [];
   const b = body.billing || {};
-  const locale = ["nl", "en", "de", "fr", "es", "ro"].indexOf(body.locale) > -1 ? body.locale : "nl";
+  const locale = ["nl", "en", "de", "fr", "es", "ro", "pl", "da", "sv"].indexOf(body.locale) > -1 ? body.locale : "nl";
 
   if (!lines.length) return json({ error: "empty_cart" }, 400);
   if (!b.company || !b.contact || !validEmail(b.email) || !b.country || !b.street || !b.city || !b.postal)

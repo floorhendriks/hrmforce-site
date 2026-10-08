@@ -4,10 +4,19 @@
 // daarnaast automatisch de doorverwijzing naar de webshop, in de taal van de
 // pagina waarop is aangevraagd.
 import { sendMail } from "../_lib/mail.js";
-import { PARTICULIER_MAIL } from "../../src/data/aanvraag-tekst.js";
+import { PARTICULIER_MAIL, particulierMail } from "../../src/data/aanvraag-tekst.js";
+import { PARTICULIER_EXTRA } from "../_lib/mailteksten.js";
 import { controleerMens, TECHNISCH } from "../_lib/mens.js";
 
-const TALEN = ["nl", "en", "de", "fr", "es", "ro"];
+// Alle talen waarin de site staat. Een aanvrager uit een taal die hier niet
+// in staat krijgt de Nederlandse mail.
+const TALEN = ["nl", "en", "de", "fr", "es", "ro", "pl", "da", "sv"];
+
+// De brontalen staan in aanvraag-tekst.js zelf, de rest komt uit de
+// vertaalbestanden via scripts/genereer-mailteksten.mjs.
+for (const [taal, blok] of Object.entries(PARTICULIER_EXTRA)) {
+  if (!PARTICULIER_MAIL[taal]) PARTICULIER_MAIL[taal] = blok;
+}
 const schoon = (s, max) => String(s == null ? "" : s).replace(/[\r\n\t]+/g, " ").trim().slice(0, max);
 const mailOk = (s) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s);
 
@@ -88,7 +97,7 @@ export async function onRequestPost({ request, env }) {
   } catch { /* de aanvrager krijgt zijn mail hoe dan ook nog */ }
 
   if (soort === "particulier") {
-    const m = (PARTICULIER_MAIL[taal] || PARTICULIER_MAIL.nl)(naam);
+    const m = particulierMail(taal, naam);
     try {
       await sendMail(env, {
         from: van,

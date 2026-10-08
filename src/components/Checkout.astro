@@ -1,8 +1,12 @@
 ---
 import { CHECKOUT_I18N, EU_COUNTRIES } from "../data/checkout-i18n.js";
+import { SHOP_CAND_I18N } from "../data/component-teksten.js";
 import { localizePath } from "../i18n/utils.js";
 const { lang } = Astro.props;
 const c = CHECKOUT_I18N[lang] || CHECKOUT_I18N.nl;
+// De taalnamen komen uit dezelfde lijst als de keuze in de winkelwagen,
+// zodat een nieuwe testtaal maar op een plek hoeft te worden bijgezet.
+const langNames = Object.fromEntries((SHOP_CAND_I18N[lang] || SHOP_CAND_I18N.nl).langs);
 const shopHref = localizePath("/shop/", lang);
 // Landen: NL + Nederland eerst, dan overige EU alfabetisch, dan "buiten EU".
 const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[1]));
@@ -175,11 +179,11 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
   }
 </style>
 
-<script is:inline define:vars={{ C: c, LANG: lang, EU: EU_COUNTRIES, SHOP: shopHref }}>
+<script is:inline define:vars={{ C: c, LANG: lang, EU: EU_COUNTRIES, SHOP: shopHref, LANGNAMES: langNames }}>
   (function () {
     var CART_LS = "hrmforce_cart_v2";
     var euCodes = Object.keys(EU);
-    var LANGNAME = { nl: "Nederlands", en: "Engels", de: "Duits", fr: "Frans", es: "Spaans", ro: "Roemeens" };
+    var LANGNAME = LANGNAMES;
     var LEVELNAME = { operational: "Operational", bachelor: "Bachelor", master: "Master" };
     function money(n) { return "€" + (Math.round(n * 100) / 100).toFixed(2).replace(".", ","); }
     function esc(s) { return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }

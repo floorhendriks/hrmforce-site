@@ -1,10 +1,11 @@
-// FAQ voor shop + assessmentpagina's: 10 algemene + segment-specifieke vragen, in 6 talen.
+// FAQ voor shop + assessmentpagina's: 10 algemene + segment-specifieke vragen.
+// Zes brontalen; de overige talen komen uit de vertaalbestanden.
 import { vulAan } from "./vertaal-inhoud.js";
 
 export const GENERAL = {
   nl: [
     { q:"Hoe lang duurt een online assessment?", a:"De meeste assessments duren 15 tot 45 minuten. De exacte tijd hangt af van het type test en het aantal onderdelen; je kunt in je eigen tempo werken en ziet vooraf een indicatie van de duur." },
-    { q:"In welke talen kan ik de test afnemen?", a:"Onze assessments zijn beschikbaar in het Nederlands, Engels, Duits, Frans, Spaans en Roemeens. De kandidaat kiest zelf de gewenste taal bij aanvang, zodat taal geen belemmering vormt voor een eerlijke meting." },
+    { q:"In welke talen kan ik de test afnemen?", a:"Onze assessments zijn beschikbaar in 29 taalversies, van Nederlands, Engels, Duits, Frans en Spaans tot Pools, Tsjechisch, Zweeds, Deens, Turks, Grieks, Oekraiens en de Baltische talen. De kandidaat kiest zelf de gewenste taal bij aanvang, zodat taal geen belemmering vormt voor een eerlijke meting." },
     { q:"Wat krijg ik als resultaat en hoe ziet het rapport eruit?", a:"Na afronding ontvang je een overzichtelijk rapport met scores, grafieken en een heldere toelichting per dimensie. Het rapport bevat concrete inzichten en, waar relevant, aanbevelingen voor selectie of ontwikkeling." },
     { q:"Zijn de tests wetenschappelijk gevalideerd?", a:"Ja. Onze instrumenten zijn ontwikkeld op basis van gevestigde psychologische modellen en zijn gevalideerd via normonderzoek. We onderbouwen constructvaliditeit en criteriumvaliditeit met periodiek geactualiseerde data." },
     { q:"Hoe betrouwbaar zijn de resultaten?", a:"De tests hebben hoge betrouwbaarheidscoefficienten (interne consistentie en test-hertest). Dit betekent dat de scores stabiel en consistent zijn en een solide basis vormen voor beslissingen." },
@@ -16,7 +17,7 @@ export const GENERAL = {
   ],
   en: [
     { q:"How long does an online assessment take?", a:"Most assessments take 15 to 45 minutes. The exact time depends on the test type and number of sections; you work at your own pace and see an indication of the duration beforehand." },
-    { q:"In which languages can I take the test?", a:"Our assessments are available in Dutch, English, German, French, Spanish and Romanian. Candidates choose their preferred language at the start, so language never gets in the way of a fair measurement." },
+    { q:"In which languages can I take the test?", a:"Our assessments are available in 29 language versions, from Dutch, English, German, French and Spanish to Polish, Czech, Swedish, Danish, Turkish, Greek, Ukrainian and the Baltic languages. Candidates choose their preferred language at the start, so language never gets in the way of a fair measurement." },
     { q:"What results do I get and what does the report look like?", a:"After completion you receive a clear report with scores, charts and a plain explanation per dimension. The report includes concrete insights and, where relevant, recommendations for selection or development." },
     { q:"Are the tests scientifically validated?", a:"Yes. Our instruments are built on established psychological models and validated through norming studies. We support construct and criterion validity with periodically updated data." },
     { q:"How reliable are the results?", a:"The tests have high reliability coefficients (internal consistency and test-retest). This means the scores are stable and consistent and provide a solid basis for decisions." },
@@ -28,7 +29,7 @@ export const GENERAL = {
   ],
   de: [
     { q:"Wie lange dauert ein Online-Assessment?", a:"Die meisten Assessments dauern 15 bis 45 Minuten. Die genaue Zeit haengt vom Testtyp und der Anzahl der Teile ab; Sie arbeiten in Ihrem eigenen Tempo und sehen vorab eine Zeitangabe." },
-    { q:"In welchen Sprachen kann ich den Test durchfuehren?", a:"Unsere Assessments sind auf Niederlaendisch, Englisch, Deutsch, Franzoesisch, Spanisch und Rumaenisch verfuegbar. Der Kandidat waehlt zu Beginn die gewuenschte Sprache, damit Sprache eine faire Messung nicht behindert." },
+    { q:"In welchen Sprachen kann ich den Test durchfuehren?", a:"Unsere Assessments sind in 29 Sprachversionen verfuegbar, von Niederlaendisch, Englisch, Deutsch, Franzoesisch und Spanisch bis Polnisch, Tschechisch, Schwedisch, Daenisch, Tuerkisch, Griechisch, Ukrainisch und den baltischen Sprachen. Der Kandidat waehlt zu Beginn die gewuenschte Sprache, damit Sprache eine faire Messung nicht behindert." },
     { q:"Welches Ergebnis erhalte ich und wie sieht der Bericht aus?", a:"Nach Abschluss erhalten Sie einen uebersichtlichen Bericht mit Werten, Grafiken und einer klaren Erlaeuterung je Dimension. Der Bericht enthaelt konkrete Erkenntnisse und, wo sinnvoll, Empfehlungen fuer Auswahl oder Entwicklung." },
     { q:"Sind die Tests wissenschaftlich validiert?", a:"Ja. Unsere Instrumente basieren auf etablierten psychologischen Modellen und wurden durch Normstudien validiert. Konstrukt- und Kriteriumsvaliditaet belegen wir mit regelmaessig aktualisierten Daten." },
     { q:"Wie zuverlaessig sind die Ergebnisse?", a:"Die Tests haben hohe Reliabilitaetskoeffizienten (interne Konsistenz und Test-Retest). Das bedeutet, die Werte sind stabil und konsistent und bilden eine solide Grundlage fuer Entscheidungen." },
@@ -40,7 +41,7 @@ export const GENERAL = {
   ],
   fr: [
     { q:"Combien de temps dure une evaluation en ligne?", a:"La plupart des evaluations durent de 15 a 45 minutes. La duree exacte depend du type de test et du nombre de parties; vous travaillez a votre rythme et voyez une estimation de la duree au prealable." },
-    { q:"Dans quelles langues puis-je passer le test?", a:"Nos evaluations sont disponibles en neerlandais, anglais, allemand, francais, espagnol et roumain. Le candidat choisit la langue souhaitee au debut, afin que la langue ne nuise pas a une mesure equitable." },
+    { q:"Dans quelles langues puis-je passer le test?", a:"Nos evaluations sont disponibles en 29 versions linguistiques, du neerlandais, de l'anglais, de l'allemand, du francais et de l'espagnol jusqu'au polonais, au tcheque, au suedois, au danois, au turc, au grec, a l'ukrainien et aux langues baltes. Le candidat choisit la langue souhaitee au debut, afin que la langue ne nuise pas a une mesure equitable." },
     { q:"Quel resultat vais-je obtenir et a quoi ressemble le rapport?", a:"A l'issue du test, vous recevez un rapport clair avec des scores, des graphiques et une explication limpide par dimension. Le rapport contient des enseignements concrets et, le cas echeant, des recommandations pour la selection ou le developpement." },
     { q:"Les tests sont-ils valides scientifiquement?", a:"Oui. Nos instruments reposent sur des modeles psychologiques etablis et sont valides par des etudes d'etalonnage. Nous documentons la validite de construit et de critere avec des donnees regulierement actualisees." },
     { q:"Quelle est la fiabilite des resultats?", a:"Les tests presentent des coefficients de fiabilite eleves (coherence interne et test-retest). Les scores sont donc stables et coherents et constituent une base solide pour les decisions." },
@@ -52,7 +53,7 @@ export const GENERAL = {
   ],
   es: [
     { q:"Cuanto dura una evaluacion en linea?", a:"La mayoria de las evaluaciones duran entre 15 y 45 minutos. El tiempo exacto depende del tipo de test y del numero de partes; trabajas a tu propio ritmo y ves una indicacion de la duracion de antemano." },
-    { q:"En que idiomas puedo realizar el test?", a:"Nuestras evaluaciones estan disponibles en neerlandes, ingles, aleman, frances, espanol y rumano. El candidato elige el idioma deseado al inicio, para que el idioma no impida una medicion justa." },
+    { q:"En que idiomas puedo realizar el test?", a:"Nuestras evaluaciones estan disponibles en 29 versiones de idioma, desde neerlandes, ingles, aleman, frances y espanol hasta polaco, checo, sueco, danes, turco, griego, ucraniano y las lenguas balticas. El candidato elige el idioma deseado al inicio, para que el idioma no impida una medicion justa." },
     { q:"Que resultado obtengo y como es el informe?", a:"Al finalizar recibes un informe claro con puntuaciones, graficos y una explicacion sencilla por dimension. El informe incluye conclusiones concretas y, cuando procede, recomendaciones para la seleccion o el desarrollo." },
     { q:"Estan los tests validados cientificamente?", a:"Si. Nuestros instrumentos se basan en modelos psicologicos consolidados y estan validados mediante estudios de baremacion. Respaldamos la validez de constructo y de criterio con datos actualizados periodicamente." },
     { q:"Que fiabilidad tienen los resultados?", a:"Los tests tienen coeficientes de fiabilidad altos (consistencia interna y test-retest). Esto significa que las puntuaciones son estables y coherentes y ofrecen una base solida para tomar decisiones." },
@@ -64,7 +65,7 @@ export const GENERAL = {
   ],
   ro: [
     { q:"Cat dureaza o evaluare online?", a:"Majoritatea evaluarilor dureaza intre 15 si 45 de minute. Timpul exact depinde de tipul testului si de numarul de sectiuni; lucrezi in ritmul propriu si vezi in prealabil o estimare a duratei." },
-    { q:"In ce limbi pot sustine testul?", a:"Evaluarile noastre sunt disponibile in olandeza, engleza, germana, franceza, spaniola si romana. Candidatul isi alege limba dorita la inceput, astfel incat limba sa nu impiedice o masurare corecta." },
+    { q:"In ce limbi pot sustine testul?", a:"Evaluarile noastre sunt disponibile in 29 de versiuni lingvistice, de la olandeza, engleza, germana, franceza si spaniola pana la poloneza, ceha, suedeza, daneza, turca, greaca, ucraineana si limbile baltice. Candidatul isi alege limba dorita la inceput, astfel incat limba sa nu impiedice o masurare corecta." },
     { q:"Ce rezultat primesc si cum arata raportul?", a:"Dupa finalizare primesti un raport clar cu scoruri, grafice si o explicatie simpla pentru fiecare dimensiune. Raportul contine concluzii concrete si, unde este relevant, recomandari pentru selectie sau dezvoltare." },
     { q:"Testele sunt validate stiintific?", a:"Da. Instrumentele noastre se bazeaza pe modele psihologice consacrate si sunt validate prin studii de etalonare. Sustinem validitatea de construct si de criteriu cu date actualizate periodic." },
     { q:"Cat de fiabile sunt rezultatele?", a:"Testele au coeficienti de fidelitate ridicati (consistenta interna si test-retest). Aceasta inseamna ca scorurile sunt stabile si consecvente si ofera o baza solida pentru decizii." },

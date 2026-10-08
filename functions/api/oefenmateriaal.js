@@ -3,10 +3,22 @@
 // De documenten staan als PDF in public/media/oefenvragen.
 import { sendMail } from "../_lib/mail.js";
 import { controleerMens } from "../_lib/mens.js";
+import { OEFEN_MAIL, oefenMail } from "../../src/data/oefenmail-tekst.js";
+import { OEFEN_EXTRA } from "../_lib/mailteksten.js";
 
 const schoon = (s, max) => String(s == null ? "" : s).replace(/[\r\n\t]+/g, " ").trim().slice(0, max);
 const mailOk = (s) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s);
-const TALEN = ["nl", "en", "de", "fr", "es", "ro"];
+// Alle talen waarin de site staat.
+const TALEN = ["nl", "en", "de", "fr", "es", "ro", "pl", "da", "sv"];
+// De oefendocumenten bestaan alleen in de brontalen. Een taal daarbuiten
+// krijgt de Engelse pdf, met de begeleidende mail wel in de eigen taal.
+const DOCTALEN = ["nl", "en", "de", "fr", "es", "ro"];
+
+// De brontalen staan in oefenmail-tekst.js zelf, de rest komt uit de
+// vertaalbestanden via scripts/genereer-mailteksten.mjs.
+for (const [taal, blok] of Object.entries(OEFEN_EXTRA)) {
+  if (!OEFEN_MAIL[taal]) OEFEN_MAIL[taal] = blok;
+}
 
 // assessment- of oefenslug -> document. Wat hier niet in staat krijgt de
 // verwijzing naar de online oefentest, zonder bijlage.
@@ -21,62 +33,6 @@ const DOCUMENT = {
   "cognitieve-test": "cognitieve-test", "ability-scan": "cognitieve-test",
 };
 
-const T = {
-  nl: {
-    onderwerp: (n) => `Je oefenvragen${n ? " voor " + n : ""}`,
-    hallo: (n) => (n ? `Hallo ${n},` : "Hallo,"),
-    met: "In de bijlage vind je een set oefenvragen. Zo weet je vooraf hoe de vragen eruitzien en wat je te wachten staat.",
-    zonder: "Bedankt voor je aanvraag. Voor dit onderdeel is nog geen document beschikbaar, maar online oefenen kan wel.",
-    online: (u) => `Online oefen je verder op ${u}. Je krijgt daar elke ronde een nieuwe set vragen, met na afloop per vraag het juiste antwoord en een toelichting.`,
-    let: "Het document bevat voorbeeldvragen. Ze komen niet uit de echte vragenlijst en je antwoorden worden niet bewaard.",
-    groet: "Met vriendelijke groet,\nhrmforce\nhrmforce.com",
-  },
-  en: {
-    onderwerp: (n) => `Your practice questions${n ? " for " + n : ""}`,
-    hallo: (n) => (n ? `Hello ${n},` : "Hello,"),
-    met: "Attached you will find a set of practice questions, so you know in advance what the questions look like and what to expect.",
-    zonder: "Thank you for your request. There is no document for this component yet, but you can practise online.",
-    online: (u) => `You can practise online at ${u}. Every round gives you a new set of questions, with the correct answer and an explanation per question afterwards.`,
-    let: "The document holds example questions. They do not come from the real questionnaire and your answers are not stored.",
-    groet: "Kind regards,\nhrmforce\nhrmforce.com",
-  },
-  de: {
-    onderwerp: (n) => `Ihre Übungsfragen${n ? " für " + n : ""}`,
-    hallo: (n) => (n ? `Hallo ${n},` : "Hallo,"),
-    met: "Im Anhang finden Sie eine Reihe von Übungsfragen. So wissen Sie vorab, wie die Fragen aussehen und was Sie erwartet.",
-    zonder: "Danke für Ihre Anfrage. Für diesen Teil gibt es noch kein Dokument, online üben ist aber möglich.",
-    online: (u) => `Online üben Sie weiter auf ${u}. Dort erhalten Sie je Runde einen neuen Fragensatz, danach je Frage die richtige Antwort und eine Erläuterung.`,
-    let: "Das Dokument enthält Beispielfragen. Sie stammen nicht aus dem echten Fragebogen und Ihre Antworten werden nicht gespeichert.",
-    groet: "Mit freundlichen Grüßen,\nhrmforce\nhrmforce.com",
-  },
-  fr: {
-    onderwerp: (n) => `Vos questions d'entraînement${n ? " pour " + n : ""}`,
-    hallo: (n) => (n ? `Bonjour ${n},` : "Bonjour,"),
-    met: "Vous trouverez en pièce jointe une série de questions d'entraînement, pour savoir à l'avance à quoi ressemblent les questions.",
-    zonder: "Merci pour votre demande. Il n'existe pas encore de document pour cette partie, mais vous pouvez vous entraîner en ligne.",
-    online: (u) => `Vous pouvez vous entraîner en ligne sur ${u}. Chaque série est différente, avec la bonne réponse et une explication par question à la fin.`,
-    let: "Le document contient des exemples de questions. Elles ne proviennent pas du vrai questionnaire et vos réponses ne sont pas conservées.",
-    groet: "Cordialement,\nhrmforce\nhrmforce.com",
-  },
-  es: {
-    onderwerp: (n) => `Tus preguntas de práctica${n ? " para " + n : ""}`,
-    hallo: (n) => (n ? `Hola ${n}:` : "Hola:"),
-    met: "Adjunto encontrarás un conjunto de preguntas de práctica, para saber de antemano cómo son las preguntas y qué esperar.",
-    zonder: "Gracias por tu solicitud. Para esta parte todavía no hay documento, pero sí puedes practicar en línea.",
-    online: (u) => `Puedes practicar en línea en ${u}. Cada ronda te da un conjunto nuevo de preguntas y, al final, la respuesta correcta y una explicación.`,
-    let: "El documento contiene preguntas de ejemplo. No proceden del cuestionario real y tus respuestas no se guardan.",
-    groet: "Un saludo,\nhrmforce\nhrmforce.com",
-  },
-  ro: {
-    onderwerp: (n) => `Întrebările tale de exersare${n ? " pentru " + n : ""}`,
-    hallo: (n) => (n ? `Bună ${n},` : "Bună,"),
-    met: "În atașament găsești un set de întrebări de exersare, ca să știi dinainte cum arată întrebările și la ce să te aștepți.",
-    zonder: "Mulțumim pentru solicitare. Pentru această parte încă nu există un document, dar poți exersa online.",
-    online: (u) => `Online exersezi pe ${u}. Fiecare rundă îți dă un set nou de întrebări, iar la final răspunsul corect și o explicație pentru fiecare.`,
-    let: "Documentul conține întrebări exemplu. Ele nu provin din chestionarul real, iar răspunsurile tale nu sunt păstrate.",
-    groet: "Cu stimă,\nhrmforce\nhrmforce.com",
-  },
-};
 
 export async function onRequestPost({ request, env }) {
   let body = {};
@@ -98,7 +54,6 @@ export async function onRequestPost({ request, env }) {
   const mens = await controleerMens(env, body, request);
   if (!mens.ok) return json({ error: "geen_mens", reden: mens.reden }, 422);
 
-  const t = T[taal];
   const doc = DOCUMENT[onderdeel];
   const origin = new URL(request.url).origin;
   const oefenUrl = taal === "nl" ? `${origin}/oefentest/` : `${origin}/${taal}/oefentest/`;
@@ -106,25 +61,16 @@ export async function onRequestPost({ request, env }) {
   const bijlagen = [];
   if (doc) {
     try {
-      const r = await fetch(`${origin}/media/oefenvragen/${doc}-${taal}.pdf`);
+      const docTaal = DOCTALEN.includes(taal) ? taal : "en";
+      const r = await fetch(`${origin}/media/oefenvragen/${doc}-${docTaal}.pdf`);
       if (r.ok) {
         const buf = new Uint8Array(await r.arrayBuffer());
-        if (buf.length > 1000) bijlagen.push({ filename: `hrmforce-oefenvragen-${doc}-${taal}.pdf`, content: buf });
+        if (buf.length > 1000) bijlagen.push({ filename: `hrmforce-oefenvragen-${doc}-${docTaal}.pdf`, content: buf });
       }
     } catch { /* zonder bijlage versturen is beter dan niets versturen */ }
   }
 
-  const regels = [
-    t.hallo(naam),
-    "",
-    bijlagen.length ? t.met : t.zonder,
-    "",
-    t.online(oefenUrl),
-    "",
-    t.let,
-    "",
-    t.groet,
-  ];
+  const m = oefenMail(taal, { naam, titel, url: oefenUrl, metBijlage: bijlagen.length > 0 });
 
   const naar = (env && env.PRACTICE_EMAIL_TO) || "oefenen@hrmforce.com";
   const van = (env && env.PRACTICE_EMAIL_FROM) || "service@hrmforce.com";
@@ -133,8 +79,8 @@ export async function onRequestPost({ request, env }) {
       from: van,
       to: [email],
       cc: [naar],
-      subject: t.onderwerp(titel),
-      text: regels.join("\n"),
+      subject: m.onderwerp,
+      text: m.tekst,
       attachments: bijlagen,
     });
   } catch (e) {

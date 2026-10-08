@@ -38,6 +38,21 @@ HSF_LANGS=<taal> node scripts/hsf-translate-ui.mjs
 #    Zonder deze ronde komen de oefenvragen in het Engels.
 ```
 
+```bash
+# 4. de automatische mails naar de edge schrijven  (gratis, geen DeepL)
+node scripts/genereer-mailteksten.mjs
+```
+
+Ronde 4 hoort bij elke vertaalronde. De mails die `functions/api/aanvraag.js` en
+`functions/api/oefenmateriaal.js` versturen draaien in een Cloudflare Pages
+Function, en daar bestaat `import.meta.glob` niet. Zonder deze stap houdt een
+nieuwe taal de Nederlandse mail. Het script schrijft `functions/_lib/mailteksten.js`;
+dat bestand gaat mee in de commit.
+
+Vergeet in diezelfde commit niet de nieuwe taal bij te zetten in de lijst `TALEN`
+in `functions/api/aanvraag.js` en `functions/api/oefenmateriaal.js`, en in de
+lijst `locale` in `functions/api/checkout.js`.
+
 Alle scripts zijn hervatbaar: wat al vertaald is wordt overgeslagen. Met
 `HSF_ESTIMATE=1` zie je vooraf wat een ronde kost, met `HSF_TRANSLATE_MOCK=1`
 draai je hem zonder DeepL.
