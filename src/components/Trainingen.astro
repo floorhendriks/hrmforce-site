@@ -25,11 +25,25 @@ const cardHref = (nlHref) => (lang === "nl" ? nlHref : contactHref);
 // Event-schema voor de certificatietrainingen die nog komen. Zonder data staat
 // er niets in de broncode, want een lege lijst evenementen helpt niemand.
 const kalenderUrl = new URL(localizePath("/advies/trainingen/", lang) + "#kalender", Astro.site || "https://hrmforce.com").href;
+const siteBase = Astro.site || "https://hrmforce.com";
+// Afbeeldingen voor de rich result: de trainingsfoto van deze pagina en het
+// algemene deelbeeld van 1200 bij 630.
+const eventImages = [
+  new URL("/media/wp-content/uploads/2020/12/ass-afb2.webp", siteBase).href,
+  new URL("/media/stock/og-hrmforce.jpg", siteBase).href,
+];
+// De trainers van hrmforce. Staat er bij een datum een veld trainer in de
+// kalenderdata, dan komt alleen die naam in de schema.
+const TRAINERS = ["Floor", "Ardine", "Michael"];
+const hrmforceOrg = { "@type": "Organization", name: "hrmforce", url: "https://hrmforce.com/" };
+const performerVan = (r) =>
+  (r.trainer ? [r.trainer] : TRAINERS).map((name) => ({ "@type": "Person", name, worksFor: hrmforceOrg }));
 const eventLd = t.kalender.map((r) => ({
   "@context": "https://schema.org",
   "@type": "EducationEvent",
   name: `${r.soort} hrmforce`,
   description: t.certP,
+  image: eventImages,
   startDate: r.start,
   endDate: r.eind,
   eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
@@ -47,7 +61,8 @@ const eventLd = t.kalender.map((r) => ({
       addressCountry: TR_LOCATIE.land,
     },
   },
-  organizer: { "@type": "Organization", name: "hrmforce", url: "https://hrmforce.com/" },
+  organizer: hrmforceOrg,
+  performer: performerVan(r),
   offers: {
     "@type": "Offer",
     price: r.bedrag,
