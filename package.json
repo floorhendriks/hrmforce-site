@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
+    "prebuild": "node scripts/gen-redirect-tabel.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "hsf:pdf": "node scripts/hsf-build-pdfs.mjs",
@@ -15,6 +16,7 @@
     "hsf:manifest": "node scripts/hsf-build-downloads-manifest.mjs",
     "hsf:upload": "bash scripts/hsf-upload-downloads.sh",
     "hsf:redirects": "node scripts/hsf-build-redirect-fallbacks.mjs",
+    "redirects": "node scripts/gen-redirect-tabel.mjs --controleer",
     "hsf:omslagen": "node scripts/hsf-build-kc-covers.mjs",
     "hsf:media": "node scripts/hsf-optimaliseer-media.mjs",
     "hsf:links": "node scripts/hsf-controleer-links.mjs",

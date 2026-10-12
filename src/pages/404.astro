@@ -18,10 +18,9 @@ import Base from "../layouts/Base.astro";
 </Base>
 
 <script is:inline>
-  // Vangnet voor oude WordPress-adressen. De wildcardregels in _redirects
-  // vallen soms weg, omdat Cloudflare Pages maar een deel van dat bestand
-  // toepast. Herkennen we hier een oud patroon, dan sturen we alsnog door
-  // naar de juiste plek in plaats van deze pagina te tonen.
+  // Vangnet voor oude WordPress-adressen. De echte 301's doet
+  // functions/_middleware.js; dit vangt alleen nog iets op als die Function
+  // niet draait (bijvoorbeeld als het dagelijkse Functions-tegoed op is).
   (function () {
     var p = location.pathname;
     var naar = null;

@@ -1,5 +1,33 @@
 {
   "version": 1,
-  "include": ["/", "/api/*", "/downloads/*"],
-  "exclude": []
+  "include": [
+    "/*"
+  ],
+  "exclude": [
+    "/_astro/*",
+    "/media/*",
+    "/hsf-data/*",
+    "/mockups/*",
+    "/skills-framework/*",
+    "/en/skills-framework/*",
+    "/de/skills-framework/*",
+    "/fr/skills-framework/*",
+    "/es/skills-framework/*",
+    "/ro/skills-framework/*",
+    "/robots.txt",
+    "/sitemap-index.xml",
+    "/sitemap-0.xml",
+    "/henry-widget.js",
+    "/shop-products.json",
+    "/404.html",
+    "/zoekindex-nl.json",
+    "/zoekindex-en.json",
+    "/zoekindex-de.json",
+    "/zoekindex-fr.json",
+    "/zoekindex-es.json",
+    "/zoekindex-ro.json",
+    "/zoekindex-pl.json",
+    "/zoekindex-da.json",
+    "/zoekindex-sv.json"
+  ]
 }

@@ -1,13 +1,18 @@
 # 301-redirects van de oude WordPress-site naar de nieuwe site.
-# Cloudflare Pages past maar een deel van dit bestand toe en negeert de rest stil.
-# De volgorde is dus prioriteitsvolgorde:
-#  1. afbeeldingen en wildcards, die kunnen geen terugvalpagina hebben
-#  2. paden waar ook een echte pagina staat, daar zou de redirect anders wegvallen
-#  3. de oude productpagina's naar hun assessmentpagina
-#  4. de overige losse regels
-#  5. /winkel* als vangnet, voor producten die hier niet bij naam staan
-# Elke exacte regel heeft daarnaast een statische terugvalpagina in public/,
-# aangemaakt met npm run hsf:redirects. Eerste match wint.
+#
+# Dit bestand stond eerst als public/_redirects in de site. Cloudflare Pages paste
+# daarvan alleen de eerste 100 regels toe (gemeten op 12-10-2026) en negeerde de
+# rest stil, waardoor Search Console bijna 400 oude adressen als 404 meldde.
+# Nu voert functions/_middleware.js alle regels uit. Na een wijziging hier:
+#   npm run redirects   (zet dit bestand om naar functions/_lib/redirect-tabel.js)
+# De build draait dat ook zelf (prebuild).
+#
+# Werking:
+#  - exacte regels gelden altijd, ook als er op dat pad een pagina staat
+#  - wildcardregels (met *) gelden alleen als het pad anders een 404 geeft, dus
+#    een wildcard kan nooit een echte pagina van de nieuwe site overschrijven
+#  - eerste match wint; ketens worden bij het omzetten platgeslagen
+#  - code 410 betekent: definitief weg
 
 # Het skills framework bestaat alleen in de brontalen. De Poolse, Deense en
 # Zweedse kopieen stonden er in het Engels onder een eigen adres; die zijn eruit
@@ -930,3 +935,12 @@
 /en/kenniscentrum/personality/big-five-personality-model/ /en/kenniscentrum/big-five-persoonlijkheidsmodel/ 301
 /en/kenniscentrum/the-bila-conversation-has-to-be-relevant-for-employees/ /en/kenniscentrum/bila-gesprek/ 301
 /de/partner/ /de/partners/ 301
+
+# Search Console 12-10-2026: adressen die nog als 404 gemeld werden en door geen
+# regel of patroon werden gedekt.
+/de/assessments/entwicklung/fuehrerscheinpruefung/ /de/assessment-overzicht/ 301
+/es/advies/advies_categorieen/* /es/advies/ 301
+/es/educacion/ /es/sectoren/onderwijs/ 301
+/es/incorporacion/ /es/hrm-oplossingen/matching/ 301
+/es/seleccion/ /es/hrm-oplossingen/matching/ 301
+/roduct/big-fifty-personality/ /assessments/big-five/ 301

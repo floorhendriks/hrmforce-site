@@ -1,4 +1,4 @@
-// Bouwt een statische terugvalpagina voor elke exacte regel in public/_redirects.
+// Bouwt een statische terugvalpagina voor elke exacte regel in src/data/redirects.txt.
 //
 // Waarom: Cloudflare Pages past maar een deel van _redirects toe en negeert de rest
 // zonder foutmelding of bouwfout. Waar de grens ligt is niet voorspelbaar gebleken.
@@ -17,7 +17,7 @@ const paden = new Set(JSON.parse(fs.readFileSync("src/data/valid-paths.json", "u
 const bestaat = (p) => paden.has(p) || paden.has(p.replace(/\/$/, ""));
 
 const regels = fs
-  .readFileSync("public/_redirects", "utf8")
+  .readFileSync("src/data/redirects.txt", "utf8")
   .split("\n")
   .map((r) => r.trim())
   .filter((r) => r && !r.startsWith("#"))
