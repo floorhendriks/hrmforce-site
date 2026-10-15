@@ -20,7 +20,7 @@
 
 import { EXACT, WILD } from "./redirect-tabel.js";
 
-const TALEN = ["en", "de", "fr", "es", "ro"];
+const TALEN = ["en", "de", "fr", "es", "ro", "pl", "da", "sv"];
 
 const decode = (p) => {
   try {
@@ -56,7 +56,10 @@ export function exacteRedirect(pathname) {
   return null;
 }
 
-const WP_WEG = /^\/(wp-admin|wp-includes|wp-json|wp-content\/(plugins|themes|cache|upgrade|uploads\/complianz))(\/|$)|^\/(xmlrpc\.php|wp-login\.php|wp-cron\.php)$/i;
+// /lead en de formulier-API's nemen alleen POST aan; een GET (van Google) is geen
+// pagina. /upload/ bevatte videofragmenten van de oude site.
+export const ALLEEN_POST = /^\/(lead|api\/aanvraag|api\/oefentest|api\/oefenmateriaal|api\/korting|api\/assessor-ondertekenen)\/?$/;
+const WP_WEG = /^\/upload\/|^\/(wp-admin|wp-includes|wp-json|wp-content\/(plugins|themes|cache|upgrade|uploads\/complianz))(\/|$)|^\/(xmlrpc\.php|wp-login\.php|wp-cron\.php)$/i;
 const GONE = { naar: null, code: 410 };
 
 // Een pad oplossen tot een bestaande bestemming: exacte regel, bestaande pagina,
@@ -74,7 +77,8 @@ export async function terugvalRedirect(pathname, bestaat, diepte = 0) {
   const p = normaliseer(pathname);
   const taal = taalVan(p);
 
-  if (WP_WEG.test(p)) return GONE;
+  if (WP_WEG.test(p) || ALLEEN_POST.test(p)) return GONE;
+  if (p.includes("*")) return { naar: metTaal(taal, "/"), code: 301 };
 
   // Oude uploads: de bestanden die we bewaard hebben staan onder /media/.
   // Een pdf die er niet meer is, gaat naar de documentenpagina; de rest is weg.
@@ -87,7 +91,8 @@ export async function terugvalRedirect(pathname, bestaat, diepte = 0) {
 
   // /iets/feed/ en /iets/feed/atom/ -> /iets/ (of waar /iets/ zelf heen moet)
   const feed = p.match(/^(.*?\/)feed(\/[a-z0-9-]*)?\/?$/i);
-  if (feed) return oplossen(feed[1], bestaat, diepte);
+  // Lukt dat niet (de rubriek bestaat niet meer), dan is de feed definitief weg.
+  if (feed) return (await oplossen(feed[1], bestaat, diepte)) || GONE;
 
   // WordPress-paginering: /iets/page/3/ -> /iets/
   const pag = p.match(/^(.*?\/)page\/\d+\/?$/i);
@@ -125,6 +130,35 @@ export async function terugvalRedirect(pathname, bestaat, diepte = 0) {
       if (await bestaat(kandidaat)) return { naar: kandidaat, code: 301 };
     }
     return { naar: metTaal(taal, "/kenniscentrum/"), code: 301 };
+  }
+
+  // Assessments: de map zelf bestaat alleen in het Nederlands; in de andere talen
+  // gaat hij naar het overzicht. Een oude categoriemap (/de/assessments/entwicklung/
+  // test-der-lernstile/) of een slug die niet meer bestaat gaat naar de pagina met
+  // dezelfde slug zonder map, anders naar het overzicht.
+  const am = p.match(/^(?:\/[a-z]{2})?\/assessments(?:\/(.+?))?\/?$/);
+  if (am) {
+    const delen = (am[1] || "").split("/").filter(Boolean);
+    if (delen.length > 1) {
+      const kandidaat = metTaal(taal, `/assessments/${delen[delen.length - 1]}/`);
+      const e = exacteRedirect(kandidaat);
+      if (e) return e;
+      if (await bestaat(kandidaat)) return { naar: kandidaat, code: 301 };
+    }
+    return { naar: metTaal(taal, "/assessment-overzicht/"), code: 301 };
+  }
+
+  // Kenniscentrum onder zijn oude, vertaalde namen.
+  if (/^(?:\/[a-z]{2})?\/(knowledge-?center|wissenszentrum|centre-de-connaissances|centro-de-conocimiento|centru-de-cuno[sș]tin[tț]e)\/?$/i.test(p))
+    return { naar: metTaal(taal, "/kenniscentrum/"), code: 301 };
+
+  // Pools, Deens en Zweeds hebben minder pagina's. Bestaat het pad in het Engels,
+  // dan daarheen, anders naar de startpagina van die taal.
+  if (["pl", "da", "sv"].includes(taal)) {
+    const en = "/en" + p.slice(3);
+    const e = exacteRedirect(en);
+    if (e) return e;
+    if (await bestaat(en)) return { naar: en, code: 301 };
   }
 
   // De oefenmap heeft alleen subpagina's; de map zelf gaat naar de voorbereiding.

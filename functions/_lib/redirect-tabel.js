@@ -773,7 +773,15 @@ export const EXACT = {"/oefentest/numeriek-redeneren/":["/oefentest/rekenopgaven
 "/es/educacion/":["/es/sectoren/onderwijs/",301],
 "/es/incorporacion/":["/es/hrm-oplossingen/matching/",301],
 "/es/seleccion/":["/es/hrm-oplossingen/matching/",301],
-"/roduct/big-fifty-personality/":["/assessments/big-five/",301]};
+"/roduct/big-fifty-personality/":["/assessments/big-five/",301],
+"/en/assessments/development-matrix/":["/en/assessments/ontwikkelmatrix/",301],
+"/en/assessments/career-interest/":["/en/assessments/interesse-scan/",301],
+"/de/assessments/entwicklung/test-der-lernstile/":["/de/assessments/leerstijlen/",301],
+"/voorwaarden/":["/support/algemene-voorwaarden/",301],
+"/fr/logiciel-rh-fr/":["/fr/hrm-oplossingen/",301],
+"/fr/logiciel-rh/":["/fr/hrm-oplossingen/",301],
+"/en/hr-software-en/":["/en/hrm-oplossingen/",301],
+"/en/hr-software/":["/en/hrm-oplossingen/",301]};
 export const WILD = [["/pl/skills-framework/","/en/skills-framework/:splat",301],
 ["/da/skills-framework/","/en/skills-framework/:splat",301],
 ["/sv/skills-framework/","/en/skills-framework/:splat",301],

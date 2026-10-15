@@ -18,6 +18,12 @@ const _adres = {
   postalCode: "1096 DS",
   addressCountry: "NL",
 };
+// Salarisindicatie voor alle vacatures: 3.000 tot 12.000 euro per maand.
+const _salaris = {
+  "@type": "MonetaryAmount",
+  currency: "EUR",
+  value: { "@type": "QuantitativeValue", minValue: 3000, maxValue: 12000, unitText: "MONTH" },
+};
 const _jobsLd = (t.jobs || []).map((j, i) => ({
   "@context": "https://schema.org",
   "@type": "JobPosting",
@@ -28,6 +34,7 @@ const _jobsLd = (t.jobs || []).map((j, i) => ({
   hiringOrganization: { "@type": "Organization", name: "hrmforce", sameAs: "https://hrmforce.com/" },
   directApply: false,
   validThrough: _validThrough,
+  baseSalary: _salaris,
   applicantLocationRequirements: { "@type": "Country", name: i === 0 ? "Netherlands" : "Worldwide" },
   jobLocationType: i === 0 ? undefined : "TELECOMMUTE",
   jobLocation: i === 0 ? { "@type": "Place", address: _adres } : undefined,

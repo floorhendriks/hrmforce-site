@@ -1,10 +1,9 @@
 User-agent: *
 Allow: /
 
-# Deze adressen nemen alleen POST aan. Google haalde ze met GET op en meldde
-# ze daarna als 404 in Search Console.
-Disallow: /api/
-Disallow: /lead
+# /api/ en /lead staan hier bewust NIET meer in. Geblokkeerd bleven ze als
+# "Indexed, though blocked by robots.txt" in Search Console staan. Nu geven ze een
+# X-Robots-Tag: noindex (functions/_middleware.js), zodat Google ze uit de index haalt.
 
 # Interne adressen van Cloudflare, geen pagina's van de site.
 Disallow: /cdn-cgi/
