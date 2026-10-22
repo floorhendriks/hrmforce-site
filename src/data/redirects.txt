@@ -954,3 +954,11 @@
 /fr/logiciel-rh/ /fr/hrm-oplossingen/ 301
 /en/hr-software-en/ /en/hrm-oplossingen/ 301
 /en/hr-software/ /en/hrm-oplossingen/ 301
+
+# Search Console 22-10-2026: de laatste vijf 404's uit de derde validatieronde.
+/de/kapazitaeten/ /de/assessments/cognitieve-test/ 301
+/es/capacidades/ /es/assessments/cognitieve-test/ 301
+/de/kompetenzen/ /de/kenniscentrum/ 301
+/de/neuigkeiten/ /de/kenniscentrum/ 301
+/ro/produs/big-fifty-personality/ /ro/assessments/big-five/ 301
+/ro/produs/* /ro/shop/ 301

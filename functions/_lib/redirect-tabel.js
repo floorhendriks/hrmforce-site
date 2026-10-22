@@ -781,7 +781,12 @@ export const EXACT = {"/oefentest/numeriek-redeneren/":["/oefentest/rekenopgaven
 "/fr/logiciel-rh-fr/":["/fr/hrm-oplossingen/",301],
 "/fr/logiciel-rh/":["/fr/hrm-oplossingen/",301],
 "/en/hr-software-en/":["/en/hrm-oplossingen/",301],
-"/en/hr-software/":["/en/hrm-oplossingen/",301]};
+"/en/hr-software/":["/en/hrm-oplossingen/",301],
+"/de/kapazitaeten/":["/de/assessments/cognitieve-test/",301],
+"/es/capacidades/":["/es/assessments/cognitieve-test/",301],
+"/de/kompetenzen/":["/de/kenniscentrum/",301],
+"/de/neuigkeiten/":["/de/kenniscentrum/",301],
+"/ro/produs/big-fifty-personality/":["/ro/assessments/big-five/",301]};
 export const WILD = [["/pl/skills-framework/","/en/skills-framework/:splat",301],
 ["/da/skills-framework/","/en/skills-framework/:splat",301],
 ["/sv/skills-framework/","/en/skills-framework/:splat",301],
@@ -868,4 +873,5 @@ export const WILD = [["/pl/skills-framework/","/en/skills-framework/:splat",301]
 ["/wp-content/plugins/","/",410],
 ["/wp-content/uploads/complianz/","/",410],
 ["/winkel","/shop/",301],
-["/es/advies/advies_categorieen/","/es/advies/",301]];
+["/es/advies/advies_categorieen/","/es/advies/",301],
+["/ro/produs/","/ro/shop/",301]];

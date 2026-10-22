@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# Patch 95 voor hrmforce-site: de laatste vijf 404's uit Search Console (22-10-2026).
+#
+#   bash toepassen-95.sh
+#
+# Van de 278 adressen in de 404-validatie gaven er nog vijf een echte 404. Die
+# krijgen nu een 301: /de/kapazitaeten/, /es/capacidades/, /de/kompetenzen/,
+# /de/neuigkeiten/ en /ro/produs/ (de oude Roemeense productpagina's).
+set -euo pipefail
+cd "$(dirname "$0")"
+[ -f functions/_middleware.js ] || { echo "Draai dit vanuit de hoofdmap van hrmforce-site."; exit 1; }
+
+cat > /tmp/95.b64 <<'B64EOF'
+ZGlmZiAtLWdpdCBhL2Z1bmN0aW9ucy9fbGliL3JlZGlyZWN0LXRhYmVsLmpzIGIvZnVuY3Rpb25z
+L19saWIvcmVkaXJlY3QtdGFiZWwuanMKaW5kZXggZjYxOWJlMC4uODMxYzMwZSAxMDA2NDQKLS0t
+IGEvZnVuY3Rpb25zL19saWIvcmVkaXJlY3QtdGFiZWwuanMKKysrIGIvZnVuY3Rpb25zL19saWIv
+cmVkaXJlY3QtdGFiZWwuanMKQEAgLTc4MSw3ICs3ODEsMTIgQEAgZXhwb3J0IGNvbnN0IEVYQUNU
+ID0geyIvb2VmZW50ZXN0L251bWVyaWVrLXJlZGVuZXJlbi8iOlsiL29lZmVudGVzdC9yZWtlbm9w
+Z2F2ZW4KICIvZnIvbG9naWNpZWwtcmgtZnIvIjpbIi9mci9ocm0tb3Bsb3NzaW5nZW4vIiwzMDFd
+LAogIi9mci9sb2dpY2llbC1yaC8iOlsiL2ZyL2hybS1vcGxvc3Npbmdlbi8iLDMwMV0sCiAiL2Vu
+L2hyLXNvZnR3YXJlLWVuLyI6WyIvZW4vaHJtLW9wbG9zc2luZ2VuLyIsMzAxXSwKLSIvZW4vaHIt
+c29mdHdhcmUvIjpbIi9lbi9ocm0tb3Bsb3NzaW5nZW4vIiwzMDFdfTsKKyIvZW4vaHItc29mdHdh
+cmUvIjpbIi9lbi9ocm0tb3Bsb3NzaW5nZW4vIiwzMDFdLAorIi9kZS9rYXBheml0YWV0ZW4vIjpb
+Ii9kZS9hc3Nlc3NtZW50cy9jb2duaXRpZXZlLXRlc3QvIiwzMDFdLAorIi9lcy9jYXBhY2lkYWRl
+cy8iOlsiL2VzL2Fzc2Vzc21lbnRzL2NvZ25pdGlldmUtdGVzdC8iLDMwMV0sCisiL2RlL2tvbXBl
+dGVuemVuLyI6WyIvZGUva2VubmlzY2VudHJ1bS8iLDMwMV0sCisiL2RlL25ldWlna2VpdGVuLyI6
+WyIvZGUva2VubmlzY2VudHJ1bS8iLDMwMV0sCisiL3JvL3Byb2R1cy9iaWctZmlmdHktcGVyc29u
+YWxpdHkvIjpbIi9yby9hc3Nlc3NtZW50cy9iaWctZml2ZS8iLDMwMV19OwogZXhwb3J0IGNvbnN0
+IFdJTEQgPSBbWyIvcGwvc2tpbGxzLWZyYW1ld29yay8iLCIvZW4vc2tpbGxzLWZyYW1ld29yay86
+c3BsYXQiLDMwMV0sCiBbIi9kYS9za2lsbHMtZnJhbWV3b3JrLyIsIi9lbi9za2lsbHMtZnJhbWV3
+b3JrLzpzcGxhdCIsMzAxXSwKIFsiL3N2L3NraWxscy1mcmFtZXdvcmsvIiwiL2VuL3NraWxscy1m
+cmFtZXdvcmsvOnNwbGF0IiwzMDFdLApAQCAtODY4LDQgKzg3Myw1IEBAIGV4cG9ydCBjb25zdCBX
+SUxEID0gW1siL3BsL3NraWxscy1mcmFtZXdvcmsvIiwiL2VuL3NraWxscy1mcmFtZXdvcmsvOnNw
+bGF0IiwzMDFdCiBbIi93cC1jb250ZW50L3BsdWdpbnMvIiwiLyIsNDEwXSwKIFsiL3dwLWNvbnRl
+bnQvdXBsb2Fkcy9jb21wbGlhbnovIiwiLyIsNDEwXSwKIFsiL3dpbmtlbCIsIi9zaG9wLyIsMzAx
+XSwKLVsiL2VzL2Fkdmllcy9hZHZpZXNfY2F0ZWdvcmllZW4vIiwiL2VzL2Fkdmllcy8iLDMwMV1d
+OworWyIvZXMvYWR2aWVzL2Fkdmllc19jYXRlZ29yaWVlbi8iLCIvZXMvYWR2aWVzLyIsMzAxXSwK
+K1siL3JvL3Byb2R1cy8iLCIvcm8vc2hvcC8iLDMwMV1dOwpkaWZmIC0tZ2l0IGEvc3JjL2RhdGEv
+cmVkaXJlY3RzLnR4dCBiL3NyYy9kYXRhL3JlZGlyZWN0cy50eHQKaW5kZXggODgzYjI4NC4uYWM5
+N2UzZSAxMDA2NDQKLS0tIGEvc3JjL2RhdGEvcmVkaXJlY3RzLnR4dAorKysgYi9zcmMvZGF0YS9y
+ZWRpcmVjdHMudHh0CkBAIC05NTQsMyArOTU0LDExIEBACiAvZnIvbG9naWNpZWwtcmgvIC9mci9o
+cm0tb3Bsb3NzaW5nZW4vIDMwMQogL2VuL2hyLXNvZnR3YXJlLWVuLyAvZW4vaHJtLW9wbG9zc2lu
+Z2VuLyAzMDEKIC9lbi9oci1zb2Z0d2FyZS8gL2VuL2hybS1vcGxvc3Npbmdlbi8gMzAxCisKKyMg
+U2VhcmNoIENvbnNvbGUgMjItMTAtMjAyNjogZGUgbGFhdHN0ZSB2aWpmIDQwNCdzIHVpdCBkZSBk
+ZXJkZSB2YWxpZGF0aWVyb25kZS4KKy9kZS9rYXBheml0YWV0ZW4vIC9kZS9hc3Nlc3NtZW50cy9j
+b2duaXRpZXZlLXRlc3QvIDMwMQorL2VzL2NhcGFjaWRhZGVzLyAvZXMvYXNzZXNzbWVudHMvY29n
+bml0aWV2ZS10ZXN0LyAzMDEKKy9kZS9rb21wZXRlbnplbi8gL2RlL2tlbm5pc2NlbnRydW0vIDMw
+MQorL2RlL25ldWlna2VpdGVuLyAvZGUva2VubmlzY2VudHJ1bS8gMzAxCisvcm8vcHJvZHVzL2Jp
+Zy1maWZ0eS1wZXJzb25hbGl0eS8gL3JvL2Fzc2Vzc21lbnRzL2JpZy1maXZlLyAzMDEKKy9yby9w
+cm9kdXMvKiAvcm8vc2hvcC8gMzAxCg==
+B64EOF
+base64 -d /tmp/95.b64 > /tmp/95.patch
+if grep -q "^/de/kapazitaeten/" src/data/redirects.txt; then
+  echo "De patch stond er al in, alleen het vastleggen nog."
+else
+  git apply /tmp/95.patch
+fi
+rm -f /tmp/95.b64 /tmp/95.patch
+git add -A
+git commit -q -F - <<'MSGEOF'
+Laatste vijf 404's uit Search Console doorverwezen
+
+Van de 278 adressen in de derde 404-validatie gaven er nog vijf een echte
+404: /de/kapazitaeten/, /es/capacidades/, /de/kompetenzen/, /de/neuigkeiten/
+en /ro/produs/. Die gaan nu met een 301 naar de cognitieve test, het
+kenniscentrum en de Roemeense shop.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01BQNchWSRvp5DScXNViWJzv
+MSGEOF
+git push
+echo "Klaar. Patch 95 staat op main."
