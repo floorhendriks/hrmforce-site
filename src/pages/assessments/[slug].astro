@@ -1,4 +1,5 @@
 ---
+import { SAMENGEVOEGD } from "../../i18n/utils.js";
 import { ASSESSD_MC_BEZIG, ASSESSD_MC_FOUT, ASSESSD_MC_MENS, ASSESSD_MC_OK } from "../../data/component-teksten.js";
 import Datavisual from "../../components/Datavisual.astro";
 import Sterren from "../../components/Sterren.astro";
@@ -27,7 +28,12 @@ import LogoSlider from "../../components/LogoSlider.astro";
 // Alle assessments komen uit het lokale databestand (36 stuks), zodat álle
 // detailpagina's gegenereerd worden ongeacht de Sanity-inhoud.
 export async function getStaticPaths() {
-  return assessments.map((a) => ({ params: { slug: a.slug }, props: { a } }));
+  // De cognitieve test en de Ability Scan zijn hetzelfde instrument. De Ability
+  // Scan-pagina trekt het meeste verkeer en blijft; /assessments/ability-scan/
+  // stuurt met een 301 door (src/data/redirects.txt).
+  return assessments
+    .filter((a) => !SAMENGEVOEGD.has(a.slug))
+    .map((a) => ({ params: { slug: a.slug }, props: { a } }));
 }
 
 const lang = getLangFromUrl(Astro.url);
@@ -338,7 +344,7 @@ const MC_BEZIG = ASSESSD_MC_BEZIG;
       <div class="center">
         <div class="eyebrow">Aanvragen</div>
         <h2 class="section-title">{a.title} aanvragen</h2>
-        <p class="lead" style="margin-bottom:36px">Vul het formulier in en krijg binnen 24 uur toegang.</p>
+        <p class="lead" style="margin-bottom:36px">Vul het formulier in. Binnen 24 uur neemt een adviseur contact met je op om een demo in te plannen.</p>
       </div>
       <form class="formcard" action="/api/aanvraag" method="POST" data-mensform data-ok={MC_OK["nl"] || MC_OK.nl} data-fout={MC_FOUT["nl"] || MC_FOUT.nl} data-mensfout={MC_MENS["nl"] || MC_MENS.nl} data-bezig={MC_BEZIG["nl"] || MC_BEZIG.nl}>
         <div class="frow">

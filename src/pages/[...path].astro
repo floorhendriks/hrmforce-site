@@ -10,6 +10,8 @@ import { shopInfo } from "../data/assessment-shop.js";
 import { localizePath, sanitizeBodyLinks, PREFIXED } from "../i18n/utils.js";
 import LogoSlider from "../components/LogoSlider.astro";
 import GratisTests from "../components/GratisTests.astro";
+import VoorkeursbronKnop from "../components/VoorkeursbronKnop.astro";
+import { ONDERDELEN } from "../data/oefentest-ui.js";
 import validPaths from "../data/valid-paths.js";
 import { DUBBELE_PADEN } from "../data/kenniscentrum-duplicaten.js";
 import { ADVIES_SLUGS } from "../data/advies-detail.js";
@@ -69,6 +71,41 @@ const lang = PREFIXED.includes(seg) ? seg : "nl";
 
 // De kleurentest is de drukstbezochte gratis test. Wie hem doet, krijgt
 // daaronder de elf andere gratis tests te zien in plaats van een doodlopend eind.
+// De wekelijkse updates (201 per taal) waren op de oude site noindex en leveren
+// vrijwel geen klikken op. Ze blijven bereikbaar, maar Google hoeft ze niet te
+// indexeren; astro.config.mjs houdt ze ook uit de sitemap.
+const isWekelijkseUpdate = /(^|\/)kenniscentrum\/wekelijkse-update\//.test((article.path || "").replace(/^\/+/, ""));
+
+// Kennisbankartikelen (zonder de wekelijkse updates) krijgen onder de tekst de
+// knop om hrmforce als voorkeursbron in Google toe te voegen.
+const isKennisbank = /(^|\/)kenniscentrum\//.test((article.path || "").replace(/^\/+/, "")) && !isWekelijkseUpdate;
+
+// Artikelen over intelligentie en capaciteitentests krijgen na de inleiding een
+// blok "Oefen eerst" met twee gratis oefentests. De ingebouwde oefentestjes van
+// de oude site zijn bij de migratie verdwenen.
+const OEFEN_ARTIKELEN = new Set([
+  "kenniscentrum/capaciteiten/intelligentietest-volwassenen",
+  "kenniscentrum/ontwikkeling/matrigma",
+  "kenniscentrum/gemiddeld-iq",
+  "kenniscentrum/mbti",
+]);
+const _basisPad = (article.path || "").replace(/^\/+|\/+$/g, "").replace(/^(en|de|fr|es|ro)\//, "");
+const OEFEN_T = {
+  nl: { h: "Oefen eerst", p: "Doe gratis een oefentest met vragen in de stijl van een capaciteitentest.", tag: "Gratis oefentest" },
+  en: { h: "Practise first", p: "Take a free practice test with questions in the style of an aptitude test.", tag: "Free practice test" },
+  de: { h: "Erst üben", p: "Machen Sie einen kostenlosen Übungstest mit Fragen im Stil eines Fähigkeitstests.", tag: "Kostenloser Übungstest" },
+  fr: { h: "Entraînez-vous d'abord", p: "Faites un test d'entraînement gratuit avec des questions dans le style d'un test d'aptitudes.", tag: "Test d'entraînement gratuit" },
+  es: { h: "Practica primero", p: "Haz un test de práctica gratuito con preguntas al estilo de un test de aptitudes.", tag: "Test de práctica gratuito" },
+  ro: { h: "Exersează mai întâi", p: "Fă gratuit un test de exersare cu întrebări în stilul unui test de aptitudini.", tag: "Test de exersare gratuit" },
+};
+const oefenBlok = OEFEN_ARTIKELEN.has(_basisPad)
+  ? (() => {
+      const ot = OEFEN_T[lang] || OEFEN_T.nl;
+      const knop = (k) => `<a class="btn btn-primary" href="${localizePath(`/oefentest/${ONDERDELEN[k].slug[lang] || ONDERDELEN[k].slug.nl}/`, lang)}">${ONDERDELEN[k].naam[lang] || ONDERDELEN[k].naam.nl} &rarr;</a>`;
+      return `<div class="kc-oefen"><div class="ctx-tag">${ot.tag}</div><h3>${ot.h}</h3><p>${ot.p}</p><div class="kc-oefen-knoppen">${knop("abstract")}${knop("numeriek")}</div></div>`;
+    })()
+  : "";
+
 const toonGratisTests = /(^|\/)gratis-kleurentest\/?$/.test("/" + (article.path || "").replace(/^\/+/, ""));
 
 // Meest relevante assessment kiezen op basis van de titel (themabuckets).
@@ -265,11 +302,15 @@ const overHref = localizePath("/over-ons/", lang);
 const LOC = BASE_DATUM_LOCALE[lang] || BASE_DATUM_LOCALE.nl;
 const dateLabel = article.date ? new Date(article.date).toLocaleDateString(LOC, { day: "numeric", month: "long", year: "numeric" }) : "";
 
+if (oefenBlok) {
+  const _eersteKop = body.search(/<h2[\s>]/i);
+  body = _eersteKop > 0 ? body.slice(0, _eersteKop) + oefenBlok + body.slice(_eersteKop) : oefenBlok + body;
+}
 const cut = body.indexOf("</h2>");
 const bodyTop = cut !== -1 ? body.slice(0, cut + 5) : body;
 const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
 ---
-<Base title={titel(article.title)} description={omschrijving(metaDesc)}>
+<Base title={titel(article.title)} description={omschrijving(metaDesc)} noindex={isWekelijkseUpdate}>
   {videoLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(videoLd)} />}
   <script type="application/ld+json" is:inline set:html={JSON.stringify(_articleLd)}></script>
   <div class="crumb">
@@ -327,6 +368,8 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
       )}
 
       {bodyBottom && <div class="kc-body" set:html={bodyBottom}></div>}
+
+      {isKennisbank && <VoorkeursbronKnop lang={lang} />}
 
       <aside class="kc-author">
         <img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="76" height="76" loading="lazy" />
@@ -410,6 +453,12 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
   .kc-ctx .ctx-btn:hover { background: var(--accent-hover); }
   @media (max-width: 620px) { .kc-ctx { flex-direction: column; align-items: flex-start; } .kc-ctx .ctx-btn { width: 100%; text-align: center; } }
 
+  .kc-body :global(.kc-oefen) { background: var(--bg); border: 1px solid var(--line); border-left: 3px solid var(--gold); border-radius: var(--radius); padding: 20px 24px; margin: 24px 0 28px; }
+  .kc-body :global(.kc-oefen .ctx-tag) { font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .6px; color: var(--blue); }
+  .kc-body :global(.kc-oefen h3) { margin: 4px 0 6px; }
+  .kc-body :global(.kc-oefen p) { margin: 0 0 14px; color: var(--muted); font-size: 15px; }
+  .kc-body :global(.kc-oefen-knoppen) { display: flex; flex-wrap: wrap; gap: 10px; }
+  .kc-body :global(.kc-oefen-knoppen a) { color: #fff; text-decoration: none; }
   .kc-integ { display:flex; gap:20px; align-items:center; justify-content:space-between; flex-wrap:wrap; background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:22px 26px; margin:24px 0; box-shadow:var(--shadow-xs); }
   .kc-integ h3 { color:var(--navy); font-size:1.15rem; margin:6px 0 6px; }
   .kc-integ p { color:var(--muted); font-size:14.5px; margin:0; max-width:640px; }

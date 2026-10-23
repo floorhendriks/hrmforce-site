@@ -289,7 +289,7 @@ export const CASE_PAGINA_UI = {
 
 // Instrumenten per thema, als interne links op de casepagina.
 export const CASE_INSTRUMENTEN = {
-  selectie: ["/assessments/big-five/", "/assessments/cognitieve-test/", "/assessments/competentie-check/"],
+  selectie: ["/assessments/big-five/", "/assessments/ability-scan/", "/assessments/competentie-check/"],
   werving: ["/assessments/job-profiler/", "/assessments/big-five/", "/assessments/ability-scan/"],
   ontwikkeling: ["/assessments/ontwikkelassessment/", "/assessments/360-graden-feedback/", "/assessments/drijfverentest/"],
   gesprekscyclus: ["/assessments/appraisal/", "/assessments/competentie-check/", "/assessments/360-graden-feedback/"],

@@ -1,0 +1,29 @@
+---
+// Knop "Voeg hrmforce toe als voorkeursbron" onder kennisbankartikelen.
+// Google toont artikelen van een voorkeursbron vaker bij nieuwsresultaten en in
+// AI-overzichten. Documentatie:
+// https://developers.google.com/search/docs/appearance/preferred-sources
+// De knop bestaat in het Nederlands en Engels; de overige talen krijgen de
+// Engelse knop met een eigen tekst erboven.
+const { lang = "nl" } = Astro.props;
+const TEKST = {
+  nl: { h: "Volg hrmforce in Google", p: "Voeg hrmforce toe als voorkeursbron. Google toont onze artikelen dan eerder bij nieuwsresultaten en in AI-antwoorden." },
+  en: { h: "Follow hrmforce on Google", p: "Add hrmforce as a preferred source. Google will then show our articles sooner in news results and AI answers." },
+  de: { h: "Folgen Sie hrmforce in Google", p: "Fügen Sie hrmforce als bevorzugte Quelle hinzu. Google zeigt unsere Artikel dann früher in Nachrichtenergebnissen und KI-Antworten." },
+  fr: { h: "Suivez hrmforce sur Google", p: "Ajoutez hrmforce comme source préférée. Google affichera alors nos articles plus tôt dans les actualités et les réponses IA." },
+  es: { h: "Sigue a hrmforce en Google", p: "Añade hrmforce como fuente preferida. Google mostrará antes nuestros artículos en las noticias y en las respuestas de IA." },
+  ro: { h: "Urmărește hrmforce în Google", p: "Adaugă hrmforce ca sursă preferată. Google îți va afișa mai repede articolele noastre în știri și în răspunsurile AI." },
+};
+const t = TEKST[lang] || TEKST.en;
+const knopTaal = lang === "nl" ? "nl" : "en";
+---
+<script is:inline async src="https://news.google.com/swg/js/v1/publisher.js"></script>
+<div class="vkb">
+  <p><b>{t.h}</b><br />{t.p}</p>
+  <div google-add-preferred-source-btn data-lang={knopTaal}></div>
+</div>
+<style>
+  .vkb { margin: 2.5em 0 1.5em; padding: 20px 24px; border: 1px solid var(--line, #e3e6ea); border-radius: var(--radius, 0); background: var(--bg, #f7f9fb); text-align: center; }
+  .vkb p { margin: 0 0 12px; color: var(--muted); font-size: 15px; line-height: 1.55; }
+  .vkb b { color: var(--navy); font-size: 1.02rem; }
+</style>

@@ -297,7 +297,7 @@ export const TESTHUBS = {
   capaciteiten: {
     key: "capaciteiten",
     slug: { nl: "capaciteitentest", en: "aptitude-test", de: "leistungstest", fr: "test-d-aptitude", es: "test-de-aptitudes", ro: "test-de-aptitudini" },
-    kaarten: ["/assessments/cognitieve-test/", "/assessments/ability-scan/", "/oefentest/"],
+    kaarten: [null, "/assessments/ability-scan/", "/oefentest/"],
     i18n: {
       nl: {
         meta: { title: "Capaciteitentest: wat meet hij en hoe oefen je ermee? | hrmforce", description: "Uitleg over de capaciteitentest: welke onderdelen je kunt verwachten, wat een score betekent en waar je gratis mee oefent." },

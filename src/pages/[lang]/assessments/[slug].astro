@@ -1,4 +1,5 @@
 ---
+import { SAMENGEVOEGD } from "../../../i18n/utils.js";
 import Datavisual from "../../../components/Datavisual.astro";
 import Sterren from "../../../components/Sterren.astro";
 import Img from "../../../components/Img.astro";
@@ -44,6 +45,7 @@ export async function getStaticPaths() {
     }
     const pool = (arts || []).filter((p) => p.path && p.title).map((p) => ({ title: p.title, path: p.path, excerpt: excerpt(p.body), words: new Set(kw(p.title)) }));
     for (const base of assessments) {
+      if (SAMENGEVOEGD.has(base.slug)) continue;
       const tr = assessmentsI18n[lang]?.[base.slug];
       if (!tr) continue;
       const merged = {

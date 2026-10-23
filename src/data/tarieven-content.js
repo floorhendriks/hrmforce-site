@@ -14,7 +14,7 @@ export const tarievenContent = {
     ], cta: "Plan een demo" },
     plansTitle: { eyebrow: "Licenties", title: "Onze pakketten" },
     plans: [
-      { name: "Pay-as-you-go", tagline: "Betaal per kandidaat per rapportage. Geen vaste kosten, maar koop in naar behoefte.", price: "€19,-", priceFrom: true, priceNote: "per test", featured: false, cta: "Plan een demo", groups: [
+      { name: "Pay-as-you-go", tagline: "Betaal per kandidaat per rapportage. Geen vaste kosten, maar koop in naar behoefte.", price: "€34,-", priceFrom: true, priceNote: "per test", featured: false, cta: "Plan een demo", groups: [
         { title: "Vragenlijsten", items: ["37 vragenlijsten", "Onbeperkt competentieprofielen", "50 competenties", "Big50 Personality", "360 Feedback"] },
         { title: "hrmforce portal", items: ["Standaard Look & Feel", "Volledig online", "Kandidatenbeheer", "Management reporting"] },
         { title: "Support", items: ["Online kennisbank", "Training open inschrijving"] } ] },
@@ -23,14 +23,14 @@ export const tarievenContent = {
         { title: "HRM Tools", items: ["Analytics", "Recruitment", "BiLa"] },
         { title: "hrmforce portal", items: ["Dashboard", "Eigen bedrijfslogo", "Management Reporting", "Kandidatenbeheer", "Mass upload & Edit"] },
         { title: "Support", items: ["Telefonische helpdesk", "Nieuwe talen", "Certificatietraining voor 1 deelnemer", "API (bestaande koppelingen)"] } ] },
-      { name: "Pro", tagline: "Onbeperkt gebruik van vragenlijsten en alle hrmforce functionaliteiten. Jaarlijkse licentie op basis van het aantal medewerkers of consultants.", price: "€1,-", priceFrom: true, priceNote: "per medewerker per maand", featured: false, cta: "Plan een demo", groups: [
+      { name: "Pro", tagline: "Onbeperkt gebruik van vragenlijsten en alle hrmforce functionaliteiten. Jaarlijkse licentie op basis van het aantal medewerkers of consultants.", price: "€1,-", priceFrom: true, priceNote: "per medewerker per maand, afhankelijk van de gekozen modules", featured: false, cta: "Plan een demo", groups: [
         { title: "Vragenlijsten", items: ["Alle vragenlijsten", "Vragenlijsten op maat", "Extra open vragen", "Onbeperkt competentieprofielen", "Maatwerk competenties"] },
         { title: "HRM Tools", items: ["Recruitment", "Development", "Employability", "Teamview", "Analytics", "Ontwikkelflow op maat"] },
         { title: "hrmforce portal", items: ["Dashboard+", "Eigen huisstijl in portal en rapportages", "Management Reporting", "Kandidatenbeheer", "Mass upload & Edit"] },
         { title: "Support", items: ["Eigen accountmanager", "Direct toegang tot nieuwe functionaliteiten", "Maatwerk API", "Autosync", "Certificatietraining tot 8 deelnemers"] } ] },
     ],
     featuredBadge: "Meest gekozen",
-    plansNote: "Prijzen pay-as-you-go variëren van €19,- tot €99,- per test. Jaarlicenties starten vanaf €1,- per medewerker per maand en worden lager naarmate je organisatie groter is.",
+    plansNote: "Prijzen pay-as-you-go variëren van €34,- tot €423,- per test. Jaarlicenties starten vanaf €1,- per medewerker per maand en worden lager naarmate je organisatie groter is.",
     compare: { eyebrow: "Vergelijken", title: "Pakketten vergelijken", featCol: "Advanced", featBadge: "Meest gekozen", head: ["Functionaliteit", "Pay-as-you-go", "Pro"], cta: "Vraag een offerte op maat aan", rows: [
       { label: "Aantal vragenlijsten", pay: "37", adv: "37 + maatwerk", pro: "Alle + op maat" },
       { label: "Big50 Personality & 360 Feedback", pay: true, adv: "+ extra open vragen", pro: "+ extra open vragen" },
@@ -76,11 +76,11 @@ Object.assign(tarievenContent.en.fit, { eyebrow: "Which fits?", title: "Quickly 
 ], cta: "Book a demo" });
 tarievenContent.en.plansTitle = { eyebrow: "Licences", title: "Our packages" };
 tarievenContent.en.featuredBadge = "Most chosen";
-tarievenContent.en.plansNote = "Pay-as-you-go prices range from €19 to €99 per test. Annual licences start at €1 per employee per month and drop as your organisation grows.";
+tarievenContent.en.plansNote = "Pay-as-you-go prices range from €34 to €423 per test. Annual licences start at €1 per employee per month and drop as your organisation grows.";
 tarievenContent.en.plans[0].tagline = "Pay per candidate per report. No fixed costs, buy as you need.";
 tarievenContent.en.plans[0].priceNote = "per test"; tarievenContent.en.plans[0].cta = "Book a demo";
 tarievenContent.en.plans[1].tagline = "Unlimited use of questionnaires. Annual licence based on the number of employees or consultants."; tarievenContent.en.plans[1].price = "€1,-"; tarievenContent.en.plans[1].priceNote = "per employee per month"; tarievenContent.en.plans[1].cta = "Book a demo";
-tarievenContent.en.plans[2].tagline = "Unlimited use of questionnaires and all hrmforce features. Annual licence based on the number of employees or consultants."; tarievenContent.en.plans[2].price = "€1,-"; tarievenContent.en.plans[2].priceNote = "per employee per month"; tarievenContent.en.plans[2].cta = "Book a demo";
+tarievenContent.en.plans[2].tagline = "Unlimited use of questionnaires and all hrmforce features. Annual licence based on the number of employees or consultants."; tarievenContent.en.plans[2].price = "€1,-"; tarievenContent.en.plans[2].priceNote = "per employee per month, depending on the modules you choose"; tarievenContent.en.plans[2].cta = "Book a demo";
 Object.assign(tarievenContent.en.compare, { eyebrow: "Compare", title: "Compare packages", featBadge: "Most chosen", head: ["Feature", "Pay-as-you-go", "Pro"], cta: "Request a tailored quote" });
 tarievenContent.en.incl = { eyebrow: "Standard", title: "Every package includes", items: ["GDPR compliant", "2-step authentication", "Available in multiple languages", "Fully online", "Competency library", "Standard job profiles"] };
 Object.assign(tarievenContent.en.onb, { eyebrow: "Implementation", title: "Onboarding has never been easier", note: "* One-off cost.", self: "Independence level", det: "Detail level", fromLabel: "from" });
@@ -107,10 +107,10 @@ Object.assign(tarievenContent.de.fit, { eyebrow: "Was passt?", title: "Finden Si
 ], cta: "Demo anfragen" });
 tarievenContent.de.plansTitle = { eyebrow: "Lizenzen", title: "Unsere Pakete" };
 tarievenContent.de.featuredBadge = "Am häufigsten gewählt";
-tarievenContent.de.plansNote = "Pay-as-you-go-Preise liegen zwischen 19 € und 99 € pro Test. Jahreslizenzen beginnen bei 1 € pro Mitarbeiter pro Monat und sinken mit der Größe Ihrer Organisation.";
+tarievenContent.de.plansNote = "Pay-as-you-go-Preise liegen zwischen 34 € und 423 € pro Test. Jahreslizenzen beginnen bei 1 € pro Mitarbeiter pro Monat und sinken mit der Größe Ihrer Organisation.";
 tarievenContent.de.plans[0].tagline = "Zahlen Sie pro Kandidat und Bericht. Keine Fixkosten, kaufen Sie nach Bedarf."; tarievenContent.de.plans[0].priceNote = "pro Test"; tarievenContent.de.plans[0].cta = "Demo anfragen";
 tarievenContent.de.plans[1].tagline = "Unbegrenzte Nutzung der Fragebögen. Jahreslizenz nach Anzahl der Mitarbeiter oder Berater."; tarievenContent.de.plans[1].price = "€1,-"; tarievenContent.de.plans[1].priceNote = "pro Mitarbeiter pro Monat"; tarievenContent.de.plans[1].cta = "Demo anfragen";
-tarievenContent.de.plans[2].tagline = "Unbegrenzte Nutzung aller Fragebögen und Funktionen. Jahreslizenz nach Anzahl der Mitarbeiter oder Berater."; tarievenContent.de.plans[2].price = "€1,-"; tarievenContent.de.plans[2].priceNote = "pro Mitarbeiter pro Monat"; tarievenContent.de.plans[2].cta = "Demo anfragen";
+tarievenContent.de.plans[2].tagline = "Unbegrenzte Nutzung aller Fragebögen und Funktionen. Jahreslizenz nach Anzahl der Mitarbeiter oder Berater."; tarievenContent.de.plans[2].price = "€1,-"; tarievenContent.de.plans[2].priceNote = "pro Mitarbeiter pro Monat, abhängig von den gewählten Modulen"; tarievenContent.de.plans[2].cta = "Demo anfragen";
 Object.assign(tarievenContent.de.compare, { eyebrow: "Vergleichen", title: "Pakete vergleichen", featBadge: "Am häufigsten gewählt", head: ["Funktion", "Pay-as-you-go", "Pro"], cta: "Individuelles Angebot anfordern" });
 tarievenContent.de.incl = { eyebrow: "Standard", title: "In jedem Paket enthalten", items: ["DSGVO-konform", "2-Faktor-Authentifizierung", "In mehreren Sprachen verfügbar", "Vollständig online", "Kompetenzbibliothek", "Standard-Stellenprofile"] };
 Object.assign(tarievenContent.de.onb, { eyebrow: "Implementierung", title: "Onboarding war noch nie so einfach", note: "* Einmalige Kosten.", self: "Selbstständigkeit", det: "Detailgrad", fromLabel: "ab" });
@@ -137,10 +137,10 @@ Object.assign(tarievenContent.fr.fit, { eyebrow: "Quelle formule ?", title: "Tro
 ], cta: "Demander une démo" });
 tarievenContent.fr.plansTitle = { eyebrow: "Licences", title: "Nos formules" };
 tarievenContent.fr.featuredBadge = "Le plus choisi";
-tarievenContent.fr.plansNote = "Les tarifs à l'unité vont de 19 € à 99 € par test. Les licences annuelles démarrent à 1 € par collaborateur et par mois, et baissent à mesure que votre organisation grandit.";
+tarievenContent.fr.plansNote = "Les tarifs à l'unité vont de 34 € à 423 € par test. Les licences annuelles démarrent à 1 € par collaborateur et par mois, et baissent à mesure que votre organisation grandit.";
 tarievenContent.fr.plans[0].tagline = "Payez par candidat et par rapport. Aucun coût fixe, achetez selon vos besoins."; tarievenContent.fr.plans[0].priceNote = "par test"; tarievenContent.fr.plans[0].cta = "Demander une démo";
 tarievenContent.fr.plans[1].tagline = "Utilisation illimitée des questionnaires. Licence annuelle selon le nombre de collaborateurs ou consultants."; tarievenContent.fr.plans[1].price = "€1,-"; tarievenContent.fr.plans[1].priceNote = "par collaborateur et par mois"; tarievenContent.fr.plans[1].cta = "Demander une démo";
-tarievenContent.fr.plans[2].tagline = "Utilisation illimitée des questionnaires et de toutes les fonctionnalités. Licence annuelle selon le nombre de collaborateurs ou consultants."; tarievenContent.fr.plans[2].price = "€1,-"; tarievenContent.fr.plans[2].priceNote = "par collaborateur et par mois"; tarievenContent.fr.plans[2].cta = "Demander une démo";
+tarievenContent.fr.plans[2].tagline = "Utilisation illimitée des questionnaires et de toutes les fonctionnalités. Licence annuelle selon le nombre de collaborateurs ou consultants."; tarievenContent.fr.plans[2].price = "€1,-"; tarievenContent.fr.plans[2].priceNote = "par collaborateur et par mois, selon les modules choisis"; tarievenContent.fr.plans[2].cta = "Demander une démo";
 Object.assign(tarievenContent.fr.compare, { eyebrow: "Comparer", title: "Comparer les formules", featBadge: "Le plus choisi", head: ["Fonctionnalité", "À l'unité", "Pro"], cta: "Demander un devis sur mesure" });
 tarievenContent.fr.incl = { eyebrow: "Standard", title: "Chaque formule comprend", items: ["Conforme au RGPD", "Authentification en 2 étapes", "Disponible en plusieurs langues", "Entièrement en ligne", "Bibliothèque de compétences", "Profils de poste standard"] };
 Object.assign(tarievenContent.fr.onb, { eyebrow: "Implémentation", title: "L'onboarding n'a jamais été aussi simple", note: "* Coût unique.", self: "Niveau d'autonomie", det: "Niveau de détail", fromLabel: "à partir de" });
@@ -167,10 +167,10 @@ Object.assign(tarievenContent.es.fit, { eyebrow: "¿Qué encaja?", title: "Encue
 ], cta: "Solicitar una demo" });
 tarievenContent.es.plansTitle = { eyebrow: "Licencias", title: "Nuestros paquetes" };
 tarievenContent.es.featuredBadge = "El más elegido";
-tarievenContent.es.plansNote = "Los precios por uso van de 19 € a 99 € por test. Las licencias anuales parten de 1 € por empleado al mes y bajan a medida que crece la organización.";
+tarievenContent.es.plansNote = "Los precios por uso van de 34 € a 423 € por test. Las licencias anuales parten de 1 € por empleado al mes y bajan a medida que crece la organización.";
 tarievenContent.es.plans[0].tagline = "Pague por candidato y por informe. Sin costes fijos, compre según necesite."; tarievenContent.es.plans[0].priceNote = "por test"; tarievenContent.es.plans[0].cta = "Solicitar una demo";
 tarievenContent.es.plans[1].tagline = "Uso ilimitado de cuestionarios. Licencia anual según el número de empleados o consultores."; tarievenContent.es.plans[1].price = "€1,-"; tarievenContent.es.plans[1].priceNote = "por empleado al mes"; tarievenContent.es.plans[1].cta = "Solicitar una demo";
-tarievenContent.es.plans[2].tagline = "Uso ilimitado de cuestionarios y de todas las funciones. Licencia anual según el número de empleados o consultores."; tarievenContent.es.plans[2].price = "€1,-"; tarievenContent.es.plans[2].priceNote = "por empleado al mes"; tarievenContent.es.plans[2].cta = "Solicitar una demo";
+tarievenContent.es.plans[2].tagline = "Uso ilimitado de cuestionarios y de todas las funciones. Licencia anual según el número de empleados o consultores."; tarievenContent.es.plans[2].price = "€1,-"; tarievenContent.es.plans[2].priceNote = "por empleado al mes, según los módulos elegidos"; tarievenContent.es.plans[2].cta = "Solicitar una demo";
 Object.assign(tarievenContent.es.compare, { eyebrow: "Comparar", title: "Comparar paquetes", featBadge: "El más elegido", head: ["Función", "Pago por uso", "Pro"], cta: "Solicitar un presupuesto a medida" });
 tarievenContent.es.incl = { eyebrow: "Estándar", title: "Cada paquete incluye", items: ["Cumple el RGPD", "Autenticación en 2 pasos", "Disponible en varios idiomas", "Totalmente en línea", "Biblioteca de competencias", "Perfiles de puesto estándar"] };
 Object.assign(tarievenContent.es.onb, { eyebrow: "Implementación", title: "Empezar nunca fue tan fácil", note: "* Coste único.", self: "Nivel de autonomía", det: "Nivel de detalle", fromLabel: "desde" });
@@ -198,10 +198,10 @@ Object.assign(tarievenContent.ro.fit, { eyebrow: "Ce se potrivește?", title: "G
 ], cta: "Solicitați o demonstrație" });
 tarievenContent.ro.plansTitle = { eyebrow: "Licențe", title: "Pachetele noastre" };
 tarievenContent.ro.featuredBadge = "Cel mai ales";
-tarievenContent.ro.plansNote = "Prețurile per utilizare variază între 19 € și 99 € per test. Licențele anuale pornesc de la 1 € per angajat pe lună și scad pe măsură ce organizația crește.";
+tarievenContent.ro.plansNote = "Prețurile per utilizare variază între 34 € și 423 € per test. Licențele anuale pornesc de la 1 € per angajat pe lună și scad pe măsură ce organizația crește.";
 tarievenContent.ro.plans[0].tagline = "Plătiți per candidat și per raport. Fără costuri fixe, cumpărați după nevoie."; tarievenContent.ro.plans[0].priceNote = "per test"; tarievenContent.ro.plans[0].cta = "Solicitați o demonstrație";
 tarievenContent.ro.plans[1].tagline = "Utilizare nelimitată a chestionarelor. Licență anuală în funcție de numărul de angajați sau consultanți."; tarievenContent.ro.plans[1].price = "€1,-"; tarievenContent.ro.plans[1].priceNote = "per angajat pe lună"; tarievenContent.ro.plans[1].cta = "Solicitați o demonstrație";
-tarievenContent.ro.plans[2].tagline = "Utilizare nelimitată a chestionarelor și a tuturor funcțiilor. Licență anuală în funcție de numărul de angajați sau consultanți."; tarievenContent.ro.plans[2].price = "€1,-"; tarievenContent.ro.plans[2].priceNote = "per angajat pe lună"; tarievenContent.ro.plans[2].cta = "Solicitați o demonstrație";
+tarievenContent.ro.plans[2].tagline = "Utilizare nelimitată a chestionarelor și a tuturor funcțiilor. Licență anuală în funcție de numărul de angajați sau consultanți."; tarievenContent.ro.plans[2].price = "€1,-"; tarievenContent.ro.plans[2].priceNote = "per angajat pe lună, în funcție de modulele alese"; tarievenContent.ro.plans[2].cta = "Solicitați o demonstrație";
 Object.assign(tarievenContent.ro.compare, { eyebrow: "Comparați", title: "Comparați pachetele", featBadge: "Cel mai ales", head: ["Funcție", "Per utilizare", "Pro"], cta: "Solicitați o ofertă personalizată" });
 tarievenContent.ro.incl = { eyebrow: "Standard", title: "Fiecare pachet include", items: ["Conform GDPR", "Autentificare în 2 pași", "Disponibil în mai multe limbi", "Complet online", "Bibliotecă de competențe", "Profiluri de post standard"] };
 Object.assign(tarievenContent.ro.onb, { eyebrow: "Implementare", title: "Onboarding-ul nu a fost niciodată mai simplu", note: "* Cost unic.", self: "Nivel de autonomie", det: "Nivel de detaliu", fromLabel: "de la" });

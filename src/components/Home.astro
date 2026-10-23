@@ -193,7 +193,7 @@ const faqLd = {
     <p class="lead center" style="margin:0 0 40px">{c.featured.lead}</p>
     <div class="assess-grid">
       {c.featured.items.map((a) => (
-        <a class="assess-card" href={lang === "nl" ? `/assessments/${a.slug}/` : assessHref}>
+        <a class="assess-card" href={lang === "nl" ? localizePath(`/assessments/${a.slug}/`, "nl") : assessHref}>
           <div class="assess-img"><Img src={a.image} alt={a.title} width="981" height="1000" loading="lazy" /></div>
           <div class="assess-body">
             <h3>{a.title}</h3>

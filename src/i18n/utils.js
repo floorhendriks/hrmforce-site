@@ -30,7 +30,16 @@ export function demoPath(lang) {
   return lang === "nl" || !lang ? "/demo/" : localizePath("/contact/", lang);
 }
 
+// Assessmentpagina's die zijn samengevoegd met een andere pagina. Links naar het
+// oude adres gaan meteen naar de pagina die blijft, zonder omweg via een 301.
+export const SAMENGEVOEGD = new Map([["cognitieve-test", "ability-scan"]]);
+const samengevoegd = (path) =>
+  typeof path === "string"
+    ? path.replace(/\/assessments\/([a-z0-9-]+)\//, (m, slug) => (SAMENGEVOEGD.has(slug) ? `/assessments/${SAMENGEVOEGD.get(slug)}/` : m))
+    : path;
+
 export function localizePath(path, lang) {
+  path = samengevoegd(path);
   if (lang === "nl" || !lang) return path;
   // Bestaat de pagina alleen in de brontalen, dan krijgt een taal daarbuiten de
   // Engelse versie. Een Zweedse bezoeker heeft daar meer aan dan aan de
@@ -68,6 +77,7 @@ function isLocalizedSectie(path) {
 // Menu-/interne link: localiseert alleen als de doelpagina in die taal bestaat,
 // anders NL-fallback. Voorkomt 404's bij nog niet vertaalde pagina's.
 export function navHref(path, lang, validPaths) {
+  path = samengevoegd(path);
   if (lang === "nl") return path;
   // localizePath stuurt pagina's die alleen in de brontalen bestaan naar de
   // Engelse versie. Die bestaat zeker, dus daar is verder niets te controleren.
@@ -91,6 +101,7 @@ export const NL_VERVANGERS = {
 // Zet een bestaand (mogelijk NL) pad om naar de huidige taal als die versie
 // bestaat; anders de NL-basis. Voor kaart-/lijstlinks in componenten.
 export function localizeExisting(path, lang, validPaths) {
+  path = samengevoegd(path);
   if (!path || lang === "nl") return path;
   const valid = validPaths instanceof Set ? validPaths : new Set(validPaths);
   const seg = path.split("/")[1];
@@ -118,7 +129,8 @@ export function localizeExisting(path, lang, validPaths) {
 // Hernoemde assessment-slugs (oude WordPress-slug -> nieuwe slug).
 const ASSESS_SLUG_MAP = {
   "big-fifty": "big-five",
-  "cognitieve-capaciteitentest": "cognitieve-test",
+  "cognitieve-capaciteitentest": "ability-scan",
+  "cognitieve-test": "ability-scan",
   "motivation": "drijfverentest",
 };
 // Sectie-hoofdpagina's voor een nette fallback per rubriek.
@@ -162,6 +174,7 @@ export function sanitizeBodyLinks(html, lang, validPaths) {
     const last = path.split("/").pop();
     if (last && last.includes(".")) return m;
     if (!path.endsWith("/")) path += "/";
+    path = samengevoegd(path);
     if (valid.has(path)) return `href="${loc(path)}${hash}"`; // geldig -> naar juiste taal
     // remap: /assessment/ (enkelvoud) => /assessments/
     let cand = path.replace(new RegExp("^(/(?:" + PREFIXED.join("|") + "))?/assessment/"), "$1/assessments/");

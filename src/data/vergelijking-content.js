@@ -25,11 +25,11 @@ export const VERG_UI = {
   "guideText": "Niet zeker welke test of aanbieder past? Gebruik de testkiezer of lees de complete gids.",
   "guideBtn": "Naar de testkiezer",
   "guideBtn2": "Lees de keuzegids",
-  "faqs": [{ q:"Waarom hrmforce kiezen boven een andere aanbieder?", a:"hrmforce is een compleet platform (werving, ontwikkeling én teams) met transparante prijzen, afname in 14 talen, AVG-conforme EU-data en zonder verplichte certificering. Voor veel organisaties is dat completer en voordeliger dan losse tools of enterprise-only aanbieders." },{ q:"Is hrmforce voordeliger dan grote internationale aanbieders?", a:"Vaak wel: je neemt los af via de shop of tegen een vaste jaarprijs via een eigen portal, zonder verplicht enterprise-contract. Zo betaal je voor wat je gebruikt." },{ q:"In welke talen kan ik de assessments afnemen?", a:"In maximaal 14 talen, handig bij internationale of meertalige teams." },{ q:"Zijn de tests wetenschappelijk gevalideerd?", a:"Ja. De instrumenten zijn ontwikkeld en gecontroleerd door NIP-geregistreerde psychologen en gebaseerd op erkende modellen." },{ q:"Hoe kies ik de juiste test of aanbieder?", a:"Bepaal eerst je doel (selecteren, ontwikkelen of teams versterken). De testkiezer helpt je in een paar klikken; de keuzegids geeft een compleet afwegingskader." }],
+  "faqs": [{ q:"Waarom hrmforce kiezen boven een andere aanbieder?", a:"hrmforce is een compleet platform (werving, ontwikkeling én teams) met transparante prijzen, afname in 29 taalversies, AVG-conforme EU-data en zonder verplichte certificering. Voor veel organisaties is dat completer en voordeliger dan losse tools of enterprise-only aanbieders." },{ q:"Is hrmforce voordeliger dan grote internationale aanbieders?", a:"Vaak wel: je neemt los af via de shop of tegen een vaste jaarprijs via een eigen portal, zonder verplicht enterprise-contract. Zo betaal je voor wat je gebruikt." },{ q:"In welke talen kan ik de assessments afnemen?", a:"In maximaal 29 taalversies, handig bij internationale of meertalige teams." },{ q:"Zijn de tests wetenschappelijk gevalideerd?", a:"Ja. De instrumenten zijn ontwikkeld en gecontroleerd door NIP-geregistreerde psychologen en gebaseerd op erkende modellen." },{ q:"Hoe kies ik de juiste test of aanbieder?", a:"Bepaal eerst je doel (selecteren, ontwikkelen of teams versterken). De testkiezer helpt je in een paar klikken; de keuzegids geeft een compleet afwegingskader." }],
 
   "edgeTitle": "Waarom organisaties voor hrmforce kiezen",
   "verdict": "Zoek je compleetheid, meertaligheid en transparante prijzen, dan is hrmforce vaak beter passend en voordeliger dan losse tools of enterprise-only aanbieders.",
-  "edges": ["Compleet platform, geen losse tool: werving, ontwikkeling én teams in één omgeving.","Transparante prijzen: los afnemen via de shop of een vaste jaarprijs, zonder verplicht enterprise-contract.","In 14 talen af te nemen, breder dan de meeste aanbieders.","AVG-proof met dataverwerking binnen de EU.","Geen verplichte certificering; persoonlijke begeleiding is inbegrepen.","Koppelingen met Nederlandse HR-systemen (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
+  "edges": ["Compleet platform, geen losse tool: werving, ontwikkeling én teams in één omgeving.","Transparante prijzen: los afnemen via de shop of een vaste jaarprijs, zonder verplicht enterprise-contract.","In 29 taalversies af te nemen, breder dan de meeste aanbieders.","AVG-proof met dataverwerking binnen de EU.","Geen verplichte certificering; persoonlijke begeleiding is inbegrepen.","Koppelingen met Nederlandse HR-systemen (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
 
   "metaT": "hrmforce vergelijken | Alternatief voor assessment-aanbieders",
   "metaD": "Op zoek naar een assessment-aanbieder? Zie hoe hrmforce zich onderscheidt: meertalig, AVG-proof, wetenschappelijk gevalideerd en flexibel af te nemen.",
@@ -45,7 +45,7 @@ export const VERG_UI = {
    ],
    [
     "Meertalig afnemen",
-    "Assessments beschikbaar in 14 talen, ideaal voor internationale teams."
+    "Assessments beschikbaar in 29 taalversies, ideaal voor internationale teams."
    ],
    [
     "AVG-proof, EU-data",
@@ -78,11 +78,11 @@ export const VERG_UI = {
   "guideText": "Not sure which test or provider fits? Use the test chooser or read the complete guide.",
   "guideBtn": "Go to the test chooser",
   "guideBtn2": "Read the choosing guide",
-  "faqs": [{ q:"Why choose hrmforce over another provider?", a:"hrmforce is a complete platform (recruitment, development and teams) with transparent pricing, delivery in 14 languages, GDPR-compliant EU data and no mandatory certification. For many organisations that is more complete and better value than single-point tools or enterprise-only providers." },{ q:"Is hrmforce better value than large international providers?", a:"Often yes: you order per unit via the shop or at a fixed annual price via your own portal, without a mandatory enterprise contract. So you pay for what you use." },{ q:"In which languages can I administer the assessments?", a:"In up to 14 languages, handy for international or multilingual teams." },{ q:"Are the tests scientifically validated?", a:"Yes. The instruments are developed and checked by registered (NIP) psychologists and based on recognised models." },{ q:"How do I choose the right test or provider?", a:"First define your goal (selecting, developing or strengthening teams). The test chooser helps in a few clicks; the choosing guide gives a complete framework." }],
+  "faqs": [{ q:"Why choose hrmforce over another provider?", a:"hrmforce is a complete platform (recruitment, development and teams) with transparent pricing, delivery in 29 language versions, GDPR-compliant EU data and no mandatory certification. For many organisations that is more complete and better value than single-point tools or enterprise-only providers." },{ q:"Is hrmforce better value than large international providers?", a:"Often yes: you order per unit via the shop or at a fixed annual price via your own portal, without a mandatory enterprise contract. So you pay for what you use." },{ q:"In which languages can I administer the assessments?", a:"In up to 29 language versions, handy for international or multilingual teams." },{ q:"Are the tests scientifically validated?", a:"Yes. The instruments are developed and checked by registered (NIP) psychologists and based on recognised models." },{ q:"How do I choose the right test or provider?", a:"First define your goal (selecting, developing or strengthening teams). The test chooser helps in a few clicks; the choosing guide gives a complete framework." }],
 
   "edgeTitle": "Why organisations choose hrmforce",
   "verdict": "If you want completeness, multilingual delivery and transparent pricing, hrmforce is often a better fit and better value than single-point tools or enterprise-only providers.",
-  "edges": ["A complete platform, not a single tool: recruitment, development and teams in one place.","Transparent pricing: order per unit via the shop or a fixed annual price, without a mandatory enterprise contract.","Delivered in 14 languages, broader than most providers.","GDPR-proof with data processing within the EU.","No mandatory certification; personal guidance is included.","Connectors with Dutch HR systems (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
+  "edges": ["A complete platform, not a single tool: recruitment, development and teams in one place.","Transparent pricing: order per unit via the shop or a fixed annual price, without a mandatory enterprise contract.","Delivered in 29 language versions, broader than most providers.","GDPR-proof with data processing within the EU.","No mandatory certification; personal guidance is included.","Connectors with Dutch HR systems (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
 
   "metaT": "Compare hrmforce | Alternative to assessment providers",
   "metaD": "Looking for an assessment provider? See how hrmforce stands out: multilingual, GDPR-proof, scientifically validated and flexible to deploy.",
@@ -98,7 +98,7 @@ export const VERG_UI = {
    ],
    [
     "Multilingual delivery",
-    "Assessments available in 14 languages, ideal for international teams."
+    "Assessments available in 29 language versions, ideal for international teams."
    ],
    [
     "GDPR-proof, EU data",
@@ -131,11 +131,11 @@ export const VERG_UI = {
   "guideText": "Unsicher, welcher Test oder Anbieter passt? Nutzen Sie den Testfinder oder lesen Sie den kompletten Leitfaden.",
   "guideBtn": "Zum Testfinder",
   "guideBtn2": "Auswahl-Leitfaden lesen",
-  "faqs": [{ q:"Warum hrmforce statt eines anderen Anbieters wählen?", a:"hrmforce ist eine komplette Plattform (Recruiting, Entwicklung und Teams) mit transparenten Preisen, Durchführung in 14 Sprachen, DSGVO-konformen EU-Daten und ohne verpflichtende Zertifizierung. Für viele Organisationen ist das vollständiger und günstiger als Einzeltools oder reine Enterprise-Anbieter." },{ q:"Ist hrmforce günstiger als große internationale Anbieter?", a:"Oft ja: Sie kaufen einzeln über den Shop oder zum festen Jahrespreis über ein eigenes Portal, ohne verpflichtenden Enterprise-Vertrag. So zahlen Sie für das, was Sie nutzen." },{ q:"In welchen Sprachen kann ich die Assessments durchführen?", a:"In bis zu 14 Sprachen, praktisch bei internationalen oder mehrsprachigen Teams." },{ q:"Sind die Tests wissenschaftlich validiert?", a:"Ja. Die Instrumente werden von registrierten (NIP) Psychologen entwickelt und geprüft und basieren auf anerkannten Modellen." },{ q:"Wie wähle ich den richtigen Test oder Anbieter?", a:"Definieren Sie zuerst Ihr Ziel (Auswahl, Entwicklung oder Teamstärkung). Der Testfinder hilft in wenigen Klicks; der Auswahl-Leitfaden bietet einen kompletten Rahmen." }],
+  "faqs": [{ q:"Warum hrmforce statt eines anderen Anbieters wählen?", a:"hrmforce ist eine komplette Plattform (Recruiting, Entwicklung und Teams) mit transparenten Preisen, Durchführung in 29 Sprachversionen, DSGVO-konformen EU-Daten und ohne verpflichtende Zertifizierung. Für viele Organisationen ist das vollständiger und günstiger als Einzeltools oder reine Enterprise-Anbieter." },{ q:"Ist hrmforce günstiger als große internationale Anbieter?", a:"Oft ja: Sie kaufen einzeln über den Shop oder zum festen Jahrespreis über ein eigenes Portal, ohne verpflichtenden Enterprise-Vertrag. So zahlen Sie für das, was Sie nutzen." },{ q:"In welchen Sprachen kann ich die Assessments durchführen?", a:"In bis zu 29 Sprachversionen, praktisch bei internationalen oder mehrsprachigen Teams." },{ q:"Sind die Tests wissenschaftlich validiert?", a:"Ja. Die Instrumente werden von registrierten (NIP) Psychologen entwickelt und geprüft und basieren auf anerkannten Modellen." },{ q:"Wie wähle ich den richtigen Test oder Anbieter?", a:"Definieren Sie zuerst Ihr Ziel (Auswahl, Entwicklung oder Teamstärkung). Der Testfinder hilft in wenigen Klicks; der Auswahl-Leitfaden bietet einen kompletten Rahmen." }],
 
   "edgeTitle": "Warum Organisationen sich für hrmforce entscheiden",
   "verdict": "Wenn Sie Vollständigkeit, mehrsprachige Durchführung und transparente Preise suchen, passt hrmforce oft besser und ist günstiger als Einzeltools oder reine Enterprise-Anbieter.",
-  "edges": ["Eine komplette Plattform, kein Einzeltool: Recruiting, Entwicklung und Teams an einem Ort.","Transparente Preise: einzeln über den Shop oder zum festen Jahrespreis, ohne verpflichtenden Enterprise-Vertrag.","In 14 Sprachen durchführbar, breiter als die meisten Anbieter.","DSGVO-konform mit Datenverarbeitung innerhalb der EU.","Keine verpflichtende Zertifizierung; persönliche Begleitung inklusive.","Anbindungen an niederländische HR-Systeme (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
+  "edges": ["Eine komplette Plattform, kein Einzeltool: Recruiting, Entwicklung und Teams an einem Ort.","Transparente Preise: einzeln über den Shop oder zum festen Jahrespreis, ohne verpflichtenden Enterprise-Vertrag.","In 29 Sprachversionen durchführbar, breiter als die meisten Anbieter.","DSGVO-konform mit Datenverarbeitung innerhalb der EU.","Keine verpflichtende Zertifizierung; persönliche Begleitung inklusive.","Anbindungen an niederländische HR-Systeme (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
 
   "metaT": "hrmforce vergleichen | Alternative zu Assessment-Anbietern",
   "metaD": "Auf der Suche nach einem Assessment-Anbieter? Sehen Sie, wie sich hrmforce abhebt: mehrsprachig, DSGVO-konform, wissenschaftlich validiert und flexibel einsetzbar.",
@@ -151,7 +151,7 @@ export const VERG_UI = {
    ],
    [
     "Mehrsprachige Durchführung",
-    "Assessments in 14 Sprachen verfügbar, ideal für internationale Teams."
+    "Assessments in 29 Sprachversionen verfügbar, ideal für internationale Teams."
    ],
    [
     "DSGVO-konform, EU-Daten",
@@ -184,11 +184,11 @@ export const VERG_UI = {
   "guideText": "Vous ne savez pas quel test ou fournisseur convient ? Utilisez le sélecteur de test ou lisez le guide complet.",
   "guideBtn": "Vers le sélecteur de test",
   "guideBtn2": "Lire le guide de choix",
-  "faqs": [{ q:"Pourquoi choisir hrmforce plutôt qu'un autre fournisseur ?", a:"hrmforce est une plateforme complète (recrutement, développement et équipes) avec des prix transparents, une passation en 14 langues, des données UE conformes au RGPD et sans certification obligatoire. Pour beaucoup d'organisations, c'est plus complet et plus avantageux que des outils ponctuels ou des fournisseurs réservés aux grands comptes." },{ q:"hrmforce est-il plus avantageux que les grands fournisseurs internationaux ?", a:"Souvent oui : vous commandez à l'unité via la boutique ou à prix annuel fixe via votre propre portail, sans contrat entreprise obligatoire. Vous payez ce que vous utilisez." },{ q:"Dans quelles langues puis-je administrer les assessments ?", a:"Jusqu'à 14 langues, pratique pour des équipes internationales ou multilingues." },{ q:"Les tests sont-ils validés scientifiquement ?", a:"Oui. Les instruments sont développés et contrôlés par des psychologues enregistrés (NIP) et basés sur des modèles reconnus." },{ q:"Comment choisir le bon test ou fournisseur ?", a:"Définissez d'abord votre objectif (sélectionner, développer ou renforcer les équipes). Le sélecteur de test aide en quelques clics ; le guide de choix fournit un cadre complet." }],
+  "faqs": [{ q:"Pourquoi choisir hrmforce plutôt qu'un autre fournisseur ?", a:"hrmforce est une plateforme complète (recrutement, développement et équipes) avec des prix transparents, une passation en 29 versions linguistiques, des données UE conformes au RGPD et sans certification obligatoire. Pour beaucoup d'organisations, c'est plus complet et plus avantageux que des outils ponctuels ou des fournisseurs réservés aux grands comptes." },{ q:"hrmforce est-il plus avantageux que les grands fournisseurs internationaux ?", a:"Souvent oui : vous commandez à l'unité via la boutique ou à prix annuel fixe via votre propre portail, sans contrat entreprise obligatoire. Vous payez ce que vous utilisez." },{ q:"Dans quelles langues puis-je administrer les assessments ?", a:"Jusqu'à 29 versions linguistiques, pratique pour des équipes internationales ou multilingues." },{ q:"Les tests sont-ils validés scientifiquement ?", a:"Oui. Les instruments sont développés et contrôlés par des psychologues enregistrés (NIP) et basés sur des modèles reconnus." },{ q:"Comment choisir le bon test ou fournisseur ?", a:"Définissez d'abord votre objectif (sélectionner, développer ou renforcer les équipes). Le sélecteur de test aide en quelques clics ; le guide de choix fournit un cadre complet." }],
 
   "edgeTitle": "Pourquoi les organisations choisissent hrmforce",
   "verdict": "Si vous recherchez la complétude, la passation multilingue et des prix transparents, hrmforce est souvent plus adapté et plus avantageux que les outils ponctuels ou les fournisseurs réservés aux grands comptes.",
-  "edges": ["Une plateforme complète, pas un simple outil : recrutement, développement et équipes au même endroit.","Prix transparents : à l'unité via la boutique ou à prix annuel fixe, sans contrat entreprise obligatoire.","Disponible en 14 langues, plus large que la plupart des fournisseurs.","Conforme au RGPD, traitement des données au sein de l'UE.","Pas de certification obligatoire ; accompagnement personnel inclus.","Connexions aux systèmes RH néerlandais (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
+  "edges": ["Une plateforme complète, pas un simple outil : recrutement, développement et équipes au même endroit.","Prix transparents : à l'unité via la boutique ou à prix annuel fixe, sans contrat entreprise obligatoire.","Disponible en 29 versions linguistiques, plus large que la plupart des fournisseurs.","Conforme au RGPD, traitement des données au sein de l'UE.","Pas de certification obligatoire ; accompagnement personnel inclus.","Connexions aux systèmes RH néerlandais (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
 
   "metaT": "Comparer hrmforce | Alternative aux fournisseurs d'assessments",
   "metaD": "À la recherche d'un fournisseur d'assessments ? Découvrez ce qui distingue hrmforce : multilingue, conforme au RGPD, validé scientifiquement et flexible.",
@@ -204,7 +204,7 @@ export const VERG_UI = {
    ],
    [
     "Passation multilingue",
-    "Assessments disponibles en 14 langues, idéal pour les équipes internationales."
+    "Assessments disponibles en 29 versions linguistiques, idéal pour les équipes internationales."
    ],
    [
     "Conforme RGPD, données UE",
@@ -237,11 +237,11 @@ export const VERG_UI = {
   "guideText": "¿No sabes qué test o proveedor encaja? Usa el selector de test o lee la guía completa.",
   "guideBtn": "Ir al selector de test",
   "guideBtn2": "Leer la guía de elección",
-  "faqs": [{ q:"¿Por qué elegir hrmforce frente a otro proveedor?", a:"hrmforce es una plataforma completa (selección, desarrollo y equipos) con precios transparentes, aplicación en 14 idiomas, datos en la UE conformes al RGPD y sin certificación obligatoria. Para muchas organizaciones es más completo y económico que herramientas puntuales o proveedores solo para grandes empresas." },{ q:"¿Es hrmforce más económico que los grandes proveedores internacionales?", a:"A menudo sí: pides por unidad en la tienda o a precio anual fijo con tu propio portal, sin contrato enterprise obligatorio. Pagas por lo que usas." },{ q:"¿En qué idiomas puedo aplicar las evaluaciones?", a:"Hasta en 14 idiomas, útil para equipos internacionales o multilingües." },{ q:"¿Los tests están validados científicamente?", a:"Sí. Los instrumentos los desarrollan y revisan psicólogos registrados (NIP) y se basan en modelos reconocidos." },{ q:"¿Cómo elijo el test o proveedor adecuado?", a:"Primero define tu objetivo (seleccionar, desarrollar o reforzar equipos). El selector de test ayuda en pocos clics; la guía de elección ofrece un marco completo." }],
+  "faqs": [{ q:"¿Por qué elegir hrmforce frente a otro proveedor?", a:"hrmforce es una plataforma completa (selección, desarrollo y equipos) con precios transparentes, aplicación en 29 versiones de idioma, datos en la UE conformes al RGPD y sin certificación obligatoria. Para muchas organizaciones es más completo y económico que herramientas puntuales o proveedores solo para grandes empresas." },{ q:"¿Es hrmforce más económico que los grandes proveedores internacionales?", a:"A menudo sí: pides por unidad en la tienda o a precio anual fijo con tu propio portal, sin contrato enterprise obligatorio. Pagas por lo que usas." },{ q:"¿En qué idiomas puedo aplicar las evaluaciones?", a:"Hasta en 29 versiones de idioma, útil para equipos internacionales o multilingües." },{ q:"¿Los tests están validados científicamente?", a:"Sí. Los instrumentos los desarrollan y revisan psicólogos registrados (NIP) y se basan en modelos reconocidos." },{ q:"¿Cómo elijo el test o proveedor adecuado?", a:"Primero define tu objetivo (seleccionar, desarrollar o reforzar equipos). El selector de test ayuda en pocos clics; la guía de elección ofrece un marco completo." }],
 
   "edgeTitle": "Por qué las organizaciones eligen hrmforce",
   "verdict": "Si buscas integridad, aplicación multilingüe y precios transparentes, hrmforce suele encajar mejor y ser más económico que las herramientas puntuales o los proveedores solo para grandes empresas.",
-  "edges": ["Una plataforma completa, no una herramienta suelta: selección, desarrollo y equipos en un solo lugar.","Precios transparentes: por unidad en la tienda o precio anual fijo, sin contrato enterprise obligatorio.","Disponible en 14 idiomas, más amplia que la mayoría de proveedores.","Conforme al RGPD, con tratamiento de datos dentro de la UE.","Sin certificación obligatoria; acompañamiento personal incluido.","Conexiones con sistemas de RR. HH. neerlandeses (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
+  "edges": ["Una plataforma completa, no una herramienta suelta: selección, desarrollo y equipos en un solo lugar.","Precios transparentes: por unidad en la tienda o precio anual fijo, sin contrato enterprise obligatorio.","Disponible en 29 versiones de idioma, más amplia que la mayoría de proveedores.","Conforme al RGPD, con tratamiento de datos dentro de la UE.","Sin certificación obligatoria; acompañamiento personal incluido.","Conexiones con sistemas de RR. HH. neerlandeses (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
 
   "metaT": "Comparar hrmforce | Alternativa a proveedores de evaluaciones",
   "metaD": "¿Buscas un proveedor de evaluaciones? Descubre qué distingue a hrmforce: multilingüe, conforme al RGPD, validado científicamente y flexible.",
@@ -257,7 +257,7 @@ export const VERG_UI = {
    ],
    [
     "Aplicación multilingüe",
-    "Evaluaciones disponibles en 14 idiomas, ideal para equipos internacionales."
+    "Evaluaciones disponibles en 29 versiones de idioma, ideal para equipos internacionales."
    ],
    [
     "Conforme al RGPD, datos en la UE",
@@ -290,11 +290,11 @@ export const VERG_UI = {
   "guideText": "Nu ești sigur ce test sau furnizor se potrivește? Folosește selectorul de teste sau citește ghidul complet.",
   "guideBtn": "Spre selectorul de teste",
   "guideBtn2": "Citește ghidul de alegere",
-  "faqs": [{ q:"De ce să alegi hrmforce în locul altui furnizor?", a:"hrmforce este o platformă completă (recrutare, dezvoltare și echipe) cu prețuri transparente, administrare în 14 limbi, date în UE conforme GDPR și fără certificare obligatorie. Pentru multe organizații e mai completă și mai avantajoasă decât instrumentele punctuale sau furnizorii doar pentru enterprise." },{ q:"Este hrmforce mai avantajos decât marii furnizori internaționali?", a:"Adesea da: comanzi per unitate prin magazin sau la preț anual fix prin propriul portal, fără contract enterprise obligatoriu. Plătești pentru ce folosești." },{ q:"În ce limbi pot administra evaluările?", a:"În până la 14 limbi, util pentru echipe internaționale sau multilingve." },{ q:"Testele sunt validate științific?", a:"Da. Instrumentele sunt dezvoltate și verificate de psihologi înregistrați (NIP) și bazate pe modele recunoscute." },{ q:"Cum aleg testul sau furnizorul potrivit?", a:"Întâi definește-ți obiectivul (selecție, dezvoltare sau întărirea echipelor). Selectorul de teste ajută în câteva clicuri; ghidul de alegere oferă un cadru complet." }],
+  "faqs": [{ q:"De ce să alegi hrmforce în locul altui furnizor?", a:"hrmforce este o platformă completă (recrutare, dezvoltare și echipe) cu prețuri transparente, administrare în 29 versiuni lingvistice, date în UE conforme GDPR și fără certificare obligatorie. Pentru multe organizații e mai completă și mai avantajoasă decât instrumentele punctuale sau furnizorii doar pentru enterprise." },{ q:"Este hrmforce mai avantajos decât marii furnizori internaționali?", a:"Adesea da: comanzi per unitate prin magazin sau la preț anual fix prin propriul portal, fără contract enterprise obligatoriu. Plătești pentru ce folosești." },{ q:"În ce limbi pot administra evaluările?", a:"În până la 29 versiuni lingvistice, util pentru echipe internaționale sau multilingve." },{ q:"Testele sunt validate științific?", a:"Da. Instrumentele sunt dezvoltate și verificate de psihologi înregistrați (NIP) și bazate pe modele recunoscute." },{ q:"Cum aleg testul sau furnizorul potrivit?", a:"Întâi definește-ți obiectivul (selecție, dezvoltare sau întărirea echipelor). Selectorul de teste ajută în câteva clicuri; ghidul de alegere oferă un cadru complet." }],
 
   "edgeTitle": "De ce aleg organizațiile hrmforce",
   "verdict": "Dacă vrei completitudine, administrare multilingvă și prețuri transparente, hrmforce se potrivește adesea mai bine și este mai avantajos decât instrumentele punctuale sau furnizorii doar pentru enterprise.",
-  "edges": ["O platformă completă, nu un simplu instrument: recrutare, dezvoltare și echipe într-un singur loc.","Prețuri transparente: per unitate prin magazin sau preț anual fix, fără contract enterprise obligatoriu.","Disponibilă în 14 limbi, mai largă decât majoritatea furnizorilor.","Conformă GDPR, cu prelucrarea datelor în UE.","Fără certificare obligatorie; îndrumare personală inclusă.","Conexiuni cu sisteme HR neerlandeze (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
+  "edges": ["O platformă completă, nu un simplu instrument: recrutare, dezvoltare și echipe într-un singur loc.","Prețuri transparente: per unitate prin magazin sau preț anual fix, fără contract enterprise obligatoriu.","Disponibilă în 29 versiuni lingvistice, mai largă decât majoritatea furnizorilor.","Conformă GDPR, cu prelucrarea datelor în UE.","Fără certificare obligatorie; îndrumare personală inclusă.","Conexiuni cu sisteme HR neerlandeze (AFAS, Nmbrs, Visma, Loket, Recruitee, Carerix, OTYS)."],
 
   "metaT": "Compară hrmforce | Alternativă la furnizorii de evaluări",
   "metaD": "Cauți un furnizor de evaluări? Vezi ce diferențiază hrmforce: multilingv, conform GDPR, validat științific și flexibil.",
@@ -310,7 +310,7 @@ export const VERG_UI = {
    ],
    [
     "Administrare multilingvă",
-    "Evaluări disponibile în 14 limbi, ideal pentru echipe internaționale."
+    "Evaluări disponibile în 29 versiuni lingvistice, ideal pentru echipe internaționale."
    ],
    [
     "Conform GDPR, date în UE",
@@ -364,12 +364,12 @@ export const COMPETITORS = {
  "ixly": {
   "name": "Ixly",
   "intro": {
-   "nl": "Ixly is een Nederlandse uitgever van online psychologische tests en vragenlijsten. hrmforce biedt naast wetenschappelijk gevalideerde tests een compleet talentmanagement-platform: 36+ assessments, een shop en eigen portal, 14 talen en koppelingen met Nederlandse HR-systemen.",
-   "en": "Ixly is a Dutch publisher of online psychological tests and questionnaires. Alongside scientifically validated tests, hrmforce offers a complete talent-management platform: 36+ assessments, a shop and own portal, 14 languages and connectors to Dutch HR systems.",
-   "de": "Ixly ist ein niederländischer Anbieter von psychologischen Online-Tests und Fragebögen. Neben wissenschaftlich validierten Tests bietet hrmforce eine komplette Talentmanagement-Plattform: 36+ Assessments, Shop und eigenes Portal, 14 Sprachen und Anbindungen an niederländische HR-Systeme.",
-   "fr": "Ixly est un éditeur néerlandais de tests psychologiques et de questionnaires en ligne. Outre des tests validés scientifiquement, hrmforce propose une plateforme complète de gestion des talents : 36+ assessments, une boutique et un portail propre, 14 langues et des connexions aux systèmes RH néerlandais.",
-   "es": "Ixly es un editor neerlandés de tests psicológicos y cuestionarios online. Además de tests validados científicamente, hrmforce ofrece una plataforma completa de gestión del talento: 36+ evaluaciones, una tienda y un portal propio, 14 idiomas y conexiones con sistemas de RR. HH. neerlandeses.",
-   "ro": "Ixly este un editor neerlandez de teste psihologice și chestionare online. Pe lângă teste validate științific, hrmforce oferă o platformă completă de management al talentelor: 36+ evaluări, un magazin și un portal propriu, 14 limbi și conexiuni cu sisteme HR neerlandeze."
+   "nl": "Ixly is een Nederlandse uitgever van online psychologische tests en vragenlijsten. hrmforce biedt naast wetenschappelijk gevalideerde tests een compleet talentmanagement-platform: 36+ assessments, een shop en eigen portal, 29 taalversies en koppelingen met Nederlandse HR-systemen.",
+   "en": "Ixly is a Dutch publisher of online psychological tests and questionnaires. Alongside scientifically validated tests, hrmforce offers a complete talent-management platform: 36+ assessments, a shop and own portal, 29 language versions and connectors to Dutch HR systems.",
+   "de": "Ixly ist ein niederländischer Anbieter von psychologischen Online-Tests und Fragebögen. Neben wissenschaftlich validierten Tests bietet hrmforce eine komplette Talentmanagement-Plattform: 36+ Assessments, Shop und eigenes Portal, 29 Sprachversionen und Anbindungen an niederländische HR-Systeme.",
+   "fr": "Ixly est un éditeur néerlandais de tests psychologiques et de questionnaires en ligne. Outre des tests validés scientifiquement, hrmforce propose une plateforme complète de gestion des talents : 36+ assessments, une boutique et un portail propre, 29 versions linguistiques et des connexions aux systèmes RH néerlandais.",
+   "es": "Ixly es un editor neerlandés de tests psicológicos y cuestionarios online. Además de tests validados científicamente, hrmforce ofrece una plataforma completa de gestión del talento: 36+ evaluaciones, una tienda y un portal propio, 29 versiones de idioma y conexiones con sistemas de RR. HH. neerlandeses.",
+   "ro": "Ixly este un editor neerlandez de teste psihologice și chestionare online. Pe lângă teste validate științific, hrmforce oferă o platformă completă de management al talentelor: 36+ evaluări, un magazin și un portal propriu, 29 versiuni lingvistice și conexiuni cu sisteme HR neerlandeze."
   }
  },
  "gitp": {
@@ -397,12 +397,12 @@ export const COMPETITORS = {
  "assessfirst": {
   "name": "AssessFirst",
   "intro": {
-   "nl": "AssessFirst is een internationaal, op AI en gedrag gericht assessmentplatform. hrmforce biedt wetenschappelijk gevalideerde instrumenten met transparante, direct bruikbare rapportage, 14 talen, EU-datahosting en koppelingen met Nederlandse HR-systemen.",
-   "en": "AssessFirst is an international, AI- and behaviour-focused assessment platform. hrmforce offers scientifically validated instruments with transparent, directly usable reporting, 14 languages, EU data hosting and connectors to Dutch HR systems.",
-   "de": "AssessFirst ist eine internationale, auf KI und Verhalten ausgerichtete Assessment-Plattform. hrmforce bietet wissenschaftlich validierte Instrumente mit transparenter, direkt nutzbarer Berichterstattung, 14 Sprachen, EU-Datenhosting und Anbindungen an niederländische HR-Systeme.",
-   "fr": "AssessFirst est une plateforme d'assessment internationale axée sur l'IA et le comportement. hrmforce propose des instruments validés scientifiquement avec un reporting transparent et directement exploitable, 14 langues, hébergement des données dans l'UE et connexions aux systèmes RH néerlandais.",
-   "es": "AssessFirst es una plataforma de evaluación internacional centrada en la IA y el comportamiento. hrmforce ofrece instrumentos validados científicamente con informes transparentes y directamente utilizables, 14 idiomas, alojamiento de datos en la UE y conexiones con sistemas de RR. HH. neerlandeses.",
-   "ro": "AssessFirst este o platformă de evaluare internațională axată pe AI și comportament. hrmforce oferă instrumente validate științific cu raportare transparentă și direct utilizabilă, 14 limbi, găzduirea datelor în UE și conexiuni cu sisteme HR neerlandeze."
+   "nl": "AssessFirst is een internationaal, op AI en gedrag gericht assessmentplatform. hrmforce biedt wetenschappelijk gevalideerde instrumenten met transparante, direct bruikbare rapportage, 29 taalversies, EU-datahosting en koppelingen met Nederlandse HR-systemen.",
+   "en": "AssessFirst is an international, AI- and behaviour-focused assessment platform. hrmforce offers scientifically validated instruments with transparent, directly usable reporting, 29 language versions, EU data hosting and connectors to Dutch HR systems.",
+   "de": "AssessFirst ist eine internationale, auf KI und Verhalten ausgerichtete Assessment-Plattform. hrmforce bietet wissenschaftlich validierte Instrumente mit transparenter, direkt nutzbarer Berichterstattung, 29 Sprachversionen, EU-Datenhosting und Anbindungen an niederländische HR-Systeme.",
+   "fr": "AssessFirst est une plateforme d'assessment internationale axée sur l'IA et le comportement. hrmforce propose des instruments validés scientifiquement avec un reporting transparent et directement exploitable, 29 versions linguistiques, hébergement des données dans l'UE et connexions aux systèmes RH néerlandais.",
+   "es": "AssessFirst es una plataforma de evaluación internacional centrada en la IA y el comportamiento. hrmforce ofrece instrumentos validados científicamente con informes transparentes y directamente utilizables, 29 versiones de idioma, alojamiento de datos en la UE y conexiones con sistemas de RR. HH. neerlandeses.",
+   "ro": "AssessFirst este o platformă de evaluare internațională axată pe AI și comportament. hrmforce oferă instrumente validate științific cu raportare transparentă și direct utilizabilă, 29 versiuni lingvistice, găzduirea datelor în UE și conexiuni cu sisteme HR neerlandeze."
   }
  },
  "tma-method": {
@@ -430,23 +430,23 @@ export const COMPETITORS = {
  "criteria": {
   "name": "Criteria",
   "intro": {
-   "nl": "Criteria is een internationaal assessmentplatform met capaciteiten- en persoonlijkheidstests. hrmforce biedt een completer talentmanagement-platform met shop en eigen portal, 14 talen, AVG-conforme EU-data en koppelingen met Nederlandse HR-systemen.",
-   "en": "Criteria is an international assessment platform with cognitive-ability and personality tests. hrmforce offers a more complete talent-management platform with shop and own portal, 14 languages, GDPR-compliant EU data and connectors to Dutch HR systems.",
-   "de": "Criteria ist eine internationale Assessment-Plattform mit Fähigkeits- und Persönlichkeitstests. hrmforce bietet eine vollständigere Talentmanagement-Plattform mit Shop und eigenem Portal, 14 Sprachen, DSGVO-konformen EU-Daten und Anbindungen an niederländische HR-Systeme.",
-   "fr": "Criteria est une plateforme d'assessment internationale proposant des tests d'aptitude et de personnalité. hrmforce propose une plateforme de gestion des talents plus complète avec boutique et portail propre, 14 langues, données UE conformes au RGPD et connexions aux systèmes RH néerlandais.",
-   "es": "Criteria es una plataforma de evaluación internacional con tests de aptitud y personalidad. hrmforce ofrece una plataforma de gestión del talento más completa con tienda y portal propio, 14 idiomas, datos en la UE conformes al RGPD y conexiones con sistemas de RR. HH. neerlandeses.",
-   "ro": "Criteria este o platformă internațională de evaluare cu teste de aptitudini și personalitate. hrmforce oferă o platformă de management al talentelor mai completă, cu magazin și portal propriu, 14 limbi, date în UE conforme GDPR și conexiuni cu sisteme HR neerlandeze."
+   "nl": "Criteria is een internationaal assessmentplatform met capaciteiten- en persoonlijkheidstests. hrmforce biedt een completer talentmanagement-platform met shop en eigen portal, 29 taalversies, AVG-conforme EU-data en koppelingen met Nederlandse HR-systemen.",
+   "en": "Criteria is an international assessment platform with cognitive-ability and personality tests. hrmforce offers a more complete talent-management platform with shop and own portal, 29 language versions, GDPR-compliant EU data and connectors to Dutch HR systems.",
+   "de": "Criteria ist eine internationale Assessment-Plattform mit Fähigkeits- und Persönlichkeitstests. hrmforce bietet eine vollständigere Talentmanagement-Plattform mit Shop und eigenem Portal, 29 Sprachversionen, DSGVO-konformen EU-Daten und Anbindungen an niederländische HR-Systeme.",
+   "fr": "Criteria est une plateforme d'assessment internationale proposant des tests d'aptitude et de personnalité. hrmforce propose une plateforme de gestion des talents plus complète avec boutique et portail propre, 29 versions linguistiques, données UE conformes au RGPD et connexions aux systèmes RH néerlandais.",
+   "es": "Criteria es una plataforma de evaluación internacional con tests de aptitud y personalidad. hrmforce ofrece una plataforma de gestión del talento más completa con tienda y portal propio, 29 versiones de idioma, datos en la UE conformes al RGPD y conexiones con sistemas de RR. HH. neerlandeses.",
+   "ro": "Criteria este o platformă internațională de evaluare cu teste de aptitudini și personalitate. hrmforce oferă o platformă de management al talentelor mai completă, cu magazin și portal propriu, 29 versiuni lingvistice, date în UE conforme GDPR și conexiuni cu sisteme HR neerlandeze."
   }
  },
  "bryq": {
   "name": "Bryq",
   "intro": {
-   "nl": "Bryq is een internationaal, sterk op AI en skills gericht assessmentplatform. hrmforce biedt wetenschappelijk gevalideerde psychometrie met NIP-psychologen, transparante rapportage, 14 talen en EU-datahosting, plus een compleet HR-cyclus-platform.",
-   "en": "Bryq is an international, strongly AI- and skills-focused assessment platform. hrmforce offers scientifically validated psychometrics with registered (NIP) psychologists, transparent reporting, 14 languages and EU data hosting, plus a complete HR-cycle platform.",
-   "de": "Bryq ist eine internationale, stark auf KI und Skills ausgerichtete Assessment-Plattform. hrmforce bietet wissenschaftlich validierte Psychometrie mit registrierten (NIP) Psychologen, transparente Berichte, 14 Sprachen und EU-Datenhosting sowie eine komplette HR-Zyklus-Plattform.",
-   "fr": "Bryq est une plateforme d'assessment internationale fortement axée sur l'IA et les compétences. hrmforce propose une psychométrie validée scientifiquement avec des psychologues enregistrés (NIP), un reporting transparent, 14 langues et un hébergement des données dans l'UE, ainsi qu'une plateforme complète de cycle RH.",
-   "es": "Bryq es una plataforma de evaluación internacional muy centrada en la IA y las habilidades. hrmforce ofrece psicometría validada científicamente con psicólogos registrados (NIP), informes transparentes, 14 idiomas y alojamiento de datos en la UE, además de una plataforma completa del ciclo de RR. HH.",
-   "ro": "Bryq este o platformă internațională de evaluare puternic axată pe AI și competențe. hrmforce oferă psihometrie validată științific cu psihologi înregistrați (NIP), raportare transparentă, 14 limbi și găzduirea datelor în UE, plus o platformă completă a ciclului HR."
+   "nl": "Bryq is een internationaal, sterk op AI en skills gericht assessmentplatform. hrmforce biedt wetenschappelijk gevalideerde psychometrie met NIP-psychologen, transparante rapportage, 29 taalversies en EU-datahosting, plus een compleet HR-cyclus-platform.",
+   "en": "Bryq is an international, strongly AI- and skills-focused assessment platform. hrmforce offers scientifically validated psychometrics with registered (NIP) psychologists, transparent reporting, 29 language versions and EU data hosting, plus a complete HR-cycle platform.",
+   "de": "Bryq ist eine internationale, stark auf KI und Skills ausgerichtete Assessment-Plattform. hrmforce bietet wissenschaftlich validierte Psychometrie mit registrierten (NIP) Psychologen, transparente Berichte, 29 Sprachversionen und EU-Datenhosting sowie eine komplette HR-Zyklus-Plattform.",
+   "fr": "Bryq est une plateforme d'assessment internationale fortement axée sur l'IA et les compétences. hrmforce propose une psychométrie validée scientifiquement avec des psychologues enregistrés (NIP), un reporting transparent, 29 versions linguistiques et un hébergement des données dans l'UE, ainsi qu'une plateforme complète de cycle RH.",
+   "es": "Bryq es una plataforma de evaluación internacional muy centrada en la IA y las habilidades. hrmforce ofrece psicometría validada científicamente con psicólogos registrados (NIP), informes transparentes, 29 versiones de idioma y alojamiento de datos en la UE, además de una plataforma completa del ciclo de RR. HH.",
+   "ro": "Bryq este o platformă internațională de evaluare puternic axată pe AI și competențe. hrmforce oferă psihometrie validată științific cu psihologi înregistrați (NIP), raportare transparentă, 29 versiuni lingvistice și găzduirea datelor în UE, plus o platformă completă a ciclului HR."
   }
  },
  "equalture": {

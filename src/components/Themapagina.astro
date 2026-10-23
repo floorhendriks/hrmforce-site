@@ -14,8 +14,10 @@ const tarievenHref = localizeExisting("/tarieven/", lang, validPaths);
 // Het Engels mag wel, dat is de afgesproken terugval.
 const bruikbaar = (h) =>
   !!h && (lang === "nl" || h.startsWith("/" + lang + "/") || h.startsWith("/en/"));
-const links = kaarten.map((p) => localizeExisting(p, lang, validPaths));
-const toonKaart = (i) => bruikbaar(links[i]);
+// Een lege plek (null) in kaarten verbergt die kaart, bijvoorbeeld als de pagina
+// erachter is samengevoegd met een andere kaart in hetzelfde rijtje.
+const links = kaarten.map((p) => (p ? localizeExisting(p, lang, validPaths) : null));
+const toonKaart = (i) => !!kaarten[i] && bruikbaar(links[i]);
 const _ob = t.onderbouwing && t.onderbouwing.link
   ? localizeExisting(t.onderbouwing.link.href, lang, validPaths)
   : null;

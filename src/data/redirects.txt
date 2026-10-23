@@ -14,6 +14,19 @@
 #  - eerste match wint; ketens worden bij het omzetten platgeslagen
 #  - code 410 betekent: definitief weg
 
+# De cognitieve test en de Ability Scan zijn hetzelfde instrument (Dion, 23-10-2026).
+# De Ability Scan-pagina trok het meeste verkeer en blijft (Search Console, drie
+# maanden: 32 tegen 9 klikken, alle talen samen).
+/assessments/cognitieve-test/ /assessments/ability-scan/ 301
+/en/assessments/cognitieve-test/ /en/assessments/ability-scan/ 301
+/de/assessments/cognitieve-test/ /de/assessments/ability-scan/ 301
+/fr/assessments/cognitieve-test/ /fr/assessments/ability-scan/ 301
+/es/assessments/cognitieve-test/ /es/assessments/ability-scan/ 301
+/ro/assessments/cognitieve-test/ /ro/assessments/ability-scan/ 301
+/pl/assessments/cognitieve-test/ /pl/assessments/ability-scan/ 301
+/da/assessments/cognitieve-test/ /da/assessments/ability-scan/ 301
+/sv/assessments/cognitieve-test/ /sv/assessments/ability-scan/ 301
+
 # Het skills framework bestaat alleen in de brontalen. De Poolse, Deense en
 # Zweedse kopieen stonden er in het Engels onder een eigen adres; die zijn eruit
 # en wijzen nu naar de Engelse versie.
@@ -766,7 +779,7 @@
 /winkel/segment/intelligentie/logiks-verbal/ /assessments/cognitieve-test/ 301
 /winkel/segment/interesse/interesse-scan/ /assessments/interesse-scan/ 301
 /winkel/segment/motivatie/motivation/ /assessments/drijfverentest/ 301
-/winkel/segment/persoonlijkheid/facet5/ /assessments/big-five/ 301
+/winkel/segment/persoonlijkheid/facet5/ /persoonlijkheidstest/ 301
 /winkel/segment/persoonlijkheid/leadership/ /assessments/leiderschapstest/ 301
 /winkel/segment/persoonlijkheid/learning-styles/ /assessments/leerstijlen/ 301
 /winkel/segment/persoonlijkheid/reflector-big-five-leadership/ /assessments/leiderschapstest/ 301

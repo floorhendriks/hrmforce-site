@@ -97,6 +97,9 @@ const VERVALLEN = new Set(Object.keys(DUBBELE_ARTIKELEN));
 
 const BRON = Array.from(
   new Set([...STATIC, ...EXTRA, ...OEFEN, ...SECTIES, ...HUBS, ...sanityPaths])
-).filter((p) => !VERVALLEN.has(p));
+)
+  .filter((p) => !VERVALLEN.has(p))
+  // Samengevoegde assessmentpagina's (zie SAMENGEVOEGD in src/i18n/utils.js).
+  .filter((p) => !/\/assessments\/cognitieve-test\/$/.test(p));
 
 export default Array.from(new Set([...BRON, ...afgeleidePaden(BRON)]));

@@ -1,6 +1,7 @@
 ---
 import { BASE_DATUM_LOCALE } from "../../data/component-teksten.js";
 import Base from "../../layouts/Base.astro";
+import VoorkeursbronKnop from "../../components/VoorkeursbronKnop.astro";
 import { posts as localPosts } from "../../data/blog.js";
 import { getLangFromUrl, localizePath, navHref } from "../../i18n/utils.js";
 import { assessments } from "../../data/assessments.js";
@@ -92,6 +93,7 @@ const _articleLd = {
   <section><div class="wrap" style="max-width:760px">
     <p class="lead" style="margin-bottom:24px">{p.excerpt}</p>
     {(p.body || []).map((para) => <p style="margin-bottom:16px;font-size:17px;color:var(--text)">{para}</p>)}
+    <VoorkeursbronKnop lang={lang} />
     <aside class="kc-author">
       <img src="/media/team/floor-hendriks.webp" alt="Floor Hendriks, hrmforce" width="76" height="76" loading="lazy" />
       <div>
