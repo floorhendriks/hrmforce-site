@@ -208,8 +208,16 @@ const orgLd = {
          alleen als GA4 is geladen (na statistieken-toestemming). -->
     <script is:inline define:vars={{ lang, exitIntent }}>
       (function () {
+        // Clarity krijgt dezelfde gebeurtenissen, zodat je opnames kunt filteren
+        // op bijvoorbeeld "generate_lead". Bij een aanvraag krijgt de sessie
+        // voorrang bij het bewaren van de opname (upgrade).
+        function clarityEv(name, upgrade) {
+          if (!window.clarity) return;
+          try { window.clarity("event", name); if (upgrade) window.clarity("upgrade", name); } catch (e) {}
+        }
         function ev(name, params) {
           if (window.gtag) window.gtag("event", name, params || {});
+          clarityEv(name, name === "generate_lead");
           if (window.lintrk) try { window.lintrk("track", {}); } catch(e){}
         }
         // Google Ads-conversie. Vuurt alleen als de bezoeker marketing-cookies
@@ -269,7 +277,9 @@ const orgLd = {
 
           var isDemo = /demo/i.test(subj) || location.pathname.indexOf("/demo/") > -1 || f.id === "contactForm";
           var isAssessment = !!assessment || /assessment/i.test(subj) || /^(\/[a-z]{2})?\/assessments\//.test(location.pathname);
-          adsConversion(isDemo ? "demo" : (isAssessment ? "assessment" : "demo"));
+          var soortAanvraag = isDemo ? "demo" : (isAssessment ? "assessment" : "demo");
+          clarityEv(soortAanvraag === "demo" ? "aanvraag_demo" : "aanvraag_assessment", true);
+          adsConversion(soortAanvraag);
         });
         document.addEventListener("click", function (e) {
           var a = e.target.closest && e.target.closest("a"); if (!a) return;

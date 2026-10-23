@@ -54,6 +54,9 @@ const S = { h1: s.h1, lead: s.lead, h1Wacht: s.h1Wacht, leadWacht: s.leadWacht, 
         value: bedrag,
         currency: valuta,
       });
+      if (window.clarity) {
+        try { window.clarity("event", "purchase"); window.clarity("upgrade", "purchase"); } catch (e) {}
+      }
       var a = window.hrmAds;
       if (a && a.purchase) {
         window.gtag("event", "conversion", {

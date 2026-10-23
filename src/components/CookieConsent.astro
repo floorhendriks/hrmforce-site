@@ -133,12 +133,40 @@ const mkt = cat.marketing ?? {};
       gtag("config", adsId);
       window.hrmAds = { demo: adsDemoLabel || "", assessment: adsAssessmentLabel || "", purchase: adsPurchaseLabel || "" };
     }
-    function loadClarity() {
+    // Paginatype voor de filters in Clarity, afgeleid uit het pad zonder taal.
+    function paginaType() {
+      var p = location.pathname.replace(/^\/(en|de|fr|es|ro|pl|da|sv)(?=\/)/, "");
+      if (p === "/" || p === "") return "home";
+      var m = p.match(/^\/([^/]+)/);
+      var s = m ? m[1] : "overig";
+      var groepen = {
+        "assessments": "assessment", "online-assessments": "assessment", "assessment-overzicht": "assessment",
+        "kenniscentrum": "kennisbank", "oefentest": "oefentest", "oefenen": "oefentest",
+        "tarieven": "tarieven", "shop": "shop", "afrekenen": "shop", "bestelling-gelukt": "shop",
+        "demo": "demo", "contact": "contact", "hrm-oplossingen": "oplossing", "advies": "advies",
+        "skills-framework": "skills-framework", "sectoren": "sector", "vergelijking": "vergelijking",
+      };
+      return groepen[s] || s;
+    }
+    // Microsoft Clarity. Laadt pas na toestemming voor statistieken. Clarity
+    // vraagt voor bezoekers uit de EER een expliciet toestemmingssignaal
+    // (Consent API v2); dat sturen we mee, ook als de keuze later verandert.
+    function clarityConsent(c) {
+      if (!window.clarity) return;
+      window.clarity("consentv2", {
+        analytics_Storage: c.statistics ? "granted" : "denied",
+        ad_Storage: c.marketing ? "granted" : "denied",
+      });
+    }
+    function loadClarity(c) {
       if (clarityLoaded || !clarityId) return;
       clarityLoaded = true;
       (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
         t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
         var y2=l.getElementsByTagName(r)[0];y2.parentNode.insertBefore(t,y2);})(window,document,"clarity","script",clarityId);
+      clarityConsent(c);
+      window.clarity("set", "taal", lang || "nl");
+      window.clarity("set", "paginatype", paginaType());
     }
     function loadLinkedIn() {
       if (linkedinLoaded || !linkedinId) return;
@@ -176,7 +204,8 @@ const mkt = cat.marketing ?? {};
       });
       if (c.statistics && gtmId) loadGTM();
       if (c.statistics && ga4Id && !gtmId) loadGA4();
-      if (c.statistics && clarityId) loadClarity();
+      if (c.statistics && clarityId) loadClarity(c);
+      else if (clarityLoaded) clarityConsent(c);
       if (c.marketing && linkedinId) loadLinkedIn();
       if (c.marketing && adsId && !gtmId) loadAds();
     }

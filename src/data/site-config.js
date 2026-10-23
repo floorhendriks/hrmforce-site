@@ -29,8 +29,9 @@ export const ANALYTICS = { GA4_ID: "G-7EZ2R7NG4J", GTM_ID: "" };
 
 // Marketing- en analytics-tags. Laden uitsluitend na cookie-toestemming
 // (LinkedIn = categorie 'marketing', Clarity = categorie 'statistieken').
-// LinkedIn Insight partner-ID komt van de oude site. Clarity-ID nog invullen
-// (clarity.microsoft.com → project → Install manually → het 10-teken ID).
+// LinkedIn Insight partner-ID komt van de oude site. Clarity krijgt na het laden
+// het toestemmingssignaal (consentv2), de tags taal en paginatype en de
+// gebeurtenissen uit Base.astro en Bedankt.astro.
 export const MARKETING = {
   LINKEDIN_PARTNER_ID: "8219026",
   CLARITY_ID: "yezxhal0q8", // Clarity-project "hrmforce"
