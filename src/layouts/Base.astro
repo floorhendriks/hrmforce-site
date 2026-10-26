@@ -34,9 +34,13 @@ const {
   noindex = false,
   crumbs = true,   // uit zetten waar de pagina zelf al een BreadcrumbList levert
   image = "/media/stock/og-hrmforce.jpg",
+  titelExact = false, // titel precies zo tonen, ook boven de 60 tekens (handmatig gekozen SEO-titel)
 } = Astro.props;
 
 const lang = getLangFromUrl(Astro.url);
+// Op telefoon valt de Henry-chatbubbel over formulieren en testvragen. Op de
+// demo-, oefen- en testpagina's verbergen we hem daar.
+const geenChatMobiel = /^\/(?:[a-z]{2}\/)?(?:demo|oefentest|oefenen|gratis-kleurentest|voorbereiding\/camera-en-geluid-testen)(?:\/|$)/.test(Astro.url.pathname);
 const consentT = consentContent[lang] ?? consentContent.nl;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://hrmforce.com");
 
@@ -47,7 +51,7 @@ const titelKort = (t) => {
   const v = String(t || "").trim();
   return v.length > 60 ? v.replace(/\s*\|\s*hrmforce\s*$/i, "").trim() : v;
 };
-const paginaTitel = titelKort(title);
+const paginaTitel = titelExact ? String(title).trim() : titelKort(title);
 
 // Omschrijving: Google toont er ongeveer 155 tekens van. Wat langer is wordt
 // midden in een zin afgekapt, en dat kost kliks. Hier gebeurt het centraal, op
@@ -181,7 +185,7 @@ const orgLd = {
     <script type="application/ld+json" is:inline set:html={JSON.stringify({"@context":"https://schema.org","@type":"WebSite",name:"hrmforce",url:"https://hrmforce.com/",potentialAction:{"@type":"SearchAction",target:{"@type":"EntryPoint",urlTemplate:"https://hrmforce.com/kenniscentrum/?q={search_term_string}"},"query-input":"required name=search_term_string"}})}></script>
     <slot name="head" />
   </head>
-  <body>
+  <body class={geenChatMobiel ? "geen-chat-mobiel" : undefined}>
     <Header active={active} />
     <slot />
     <a
@@ -339,7 +343,12 @@ const orgLd = {
       #hf-lm .hf-lm-dismiss{display:block;margin:14px auto 0;background:none;border:none;color:#8b9bb0;font-size:13.5px;cursor:pointer;text-decoration:underline}
       #hf-lm .hf-lm-x{position:absolute;top:12px;right:14px;background:none;border:none;font-size:26px;line-height:1;color:#9aa9b8;cursor:pointer}
       @media(max-width:1023px){#hf-lm{display:none}}
-      @media (max-width: 720px) { #hrmforce-chatbot { bottom: 20px !important; right: 14px !important; } }
+      @media (max-width: 720px) {
+        #hrmforce-chatbot { bottom: 14px !important; right: 10px !important; }
+        /* Kleinere bubbel, zodat hij minder tekst en velden afdekt */
+        #hrmforce-chatbot #hrmf-bubble { width: 44px !important; height: 44px !important; border-width: 1.5px !important; }
+        body.geen-chat-mobiel #hrmforce-chatbot { display: none !important; }
+      }
     </style>
   </body>
 </html>

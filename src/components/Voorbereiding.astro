@@ -43,6 +43,12 @@ const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voo
 </div></section>
 
 <section><div class="wrap" style="display:block">
+  <input type="search" id="prepBodySearch" class="prep-search" placeholder={BODYUI.ph} aria-label={BODYUI.ph} />
+  <div class="kc-body" id="prepBody" set:html={sanitizeBodyLinks(t.body, lang, validPaths)}></div>
+  <p class="prep-none" id="prepBodyNone" hidden>{BODYUI.none}</p>
+</div></section>
+
+<section><div class="wrap" style="display:block">
   <div class="ct-promo">
     <div>
       <div class="eyebrow">{ct.eyebrow}</div>
@@ -51,12 +57,6 @@ const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voo
     </div>
     <a href={ctHref} class="btn btn-primary">{ct.cta} &rarr;</a>
   </div>
-</div></section>
-
-<section><div class="wrap" style="display:block">
-  <input type="search" id="prepBodySearch" class="prep-search" placeholder={BODYUI.ph} aria-label={BODYUI.ph} />
-  <div class="kc-body" id="prepBody" set:html={sanitizeBodyLinks(t.body, lang, validPaths)}></div>
-  <p class="prep-none" id="prepBodyNone" hidden>{BODYUI.none}</p>
 </div></section>
 
 <section class="bg-soft"><div class="wrap" style="display:block">

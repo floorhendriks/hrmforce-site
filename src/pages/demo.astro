@@ -11,7 +11,7 @@ import Mensencheck from "../components/Mensencheck.astro";
 ---
 <Base
   title="Gratis demo aanvragen | hrmforce"
-  description="Vraag een gratis demo van hrmforce aan. Drie velden, binnen 24 uur reactie van een HR-specialist. Vrijblijvend en zonder verkoopdruk."
+  description="Vraag een gratis demo van hrmforce aan. Drie velden en één keuze, binnen 24 uur reactie van een HR-specialist. Vrijblijvend en zonder verkoopdruk."
   active=""
 >
   <section class="dm">
@@ -37,7 +37,7 @@ import Mensencheck from "../components/Mensencheck.astro";
 
       <div class="dm-card">
         <h2>Vraag je demo aan</h2>
-        <p class="dm-sub">Drie velden, dat is alles. We reageren binnen 24 uur op werkdagen.</p>
+        <p class="dm-sub">Drie velden en één keuze, dat is alles. We reageren binnen 24 uur op werkdagen.</p>
         <form class="dm-form" id="demoForm" action="/api/aanvraag" method="POST">
           <input type="hidden" name="onderwerp" value="Demo-aanvraag via /demo/" />
           <label for="dm-naam">Naam</label>

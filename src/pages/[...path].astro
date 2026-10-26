@@ -315,7 +315,7 @@ const cut = body.indexOf("</h2>");
 const bodyTop = cut !== -1 ? body.slice(0, cut + 5) : body;
 const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
 ---
-<Base title={titel(article.title)} description={omschrijving(metaDesc)} noindex={isWekelijkseUpdate}>
+<Base title={_artikel.seoTitle || titel(article.title)} titelExact={!!_artikel.seoTitle} description={omschrijving(metaDesc)} noindex={isWekelijkseUpdate}>
   {videoLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(videoLd)} />}
   <script type="application/ld+json" is:inline set:html={JSON.stringify(_articleLd)}></script>
   <div class="crumb">
