@@ -42,7 +42,6 @@ export const EXACT = {"/assessments/cognitieve-test/":["/assessments/ability-sca
 "/kenniscentrum/onderwijs/werkdruk-onderwijs/":["/kenniscentrum/werkdruk-onderwijs/",301],
 "/kenniscentrum/ontwikkeling/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/":["/kenniscentrum/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/",301],
 "/kenniscentrum/ontwikkeling/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/":["/kenniscentrum/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/",301],
-"/kenniscentrum/ontwikkeling/piramide-van-lencioni/":["/assessments/lencioni-teamdynamiek/",301],
 "/kenniscentrum/intelligentietest-volwassenen/":["/kenniscentrum/capaciteiten/intelligentietest-volwassenen/",301],
 "/kenniscentrum/ontwikkelassessment-belangrijk/":["/kenniscentrum/ontwikkeling/ontwikkelassessment-belangrijk/",301],
 "/kenniscentrum/matrigma-capaciteitentest/":["/kenniscentrum/ontwikkeling/matrigma/",301],

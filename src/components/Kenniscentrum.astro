@@ -7,6 +7,7 @@ import validPaths from "../data/valid-paths.js";
 import { omslagUrl } from "../lib/kc-omslag.js";
 import { merknaam } from "../lib/merknaam.js";
 import { DUBBELE_ARTIKELEN } from "../data/kenniscentrum-duplicaten.js";
+import { metEigenArtikelen } from "../data/eigen-artikelen.js";
 
 const { t, lang } = Astro.props;
 
@@ -23,9 +24,14 @@ const client = createClient({
 // Nederlandse versie van maken, en dan leest een Zweedse bezoeker Nederlands.
 const eigenArtikelen = BRONTALEN.includes(lang);
 const artikelHref = (pad) => (eigenArtikelen ? localizeExisting(pad, lang, validPaths) : pad);
-const _raw = await client.fetch(
-  `*[_type == "article" && defined(path) && defined(body) && (${t.sanityMatch})] | order(date desc){title, path, date, body}`
-);
+// Eigen artikelen (src/data/eigen-artikelen.js) zijn Nederlandstalig en komen
+// alleen in het Nederlandse overzicht.
+const _raw = metEigenArtikelen(
+  await client.fetch(
+    `*[_type == "article" && defined(path) && defined(body) && (${t.sanityMatch})] | order(date desc){title, path, date, body}`
+  ),
+  (e) => lang === "nl" && e.title
+).sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
 // Artikelen die onder twee adressen stonden komen hier maar een keer in het
 // overzicht: het adres dat blijft. Zie kenniscentrum-duplicaten.js.
 const _vervallen = new Set(Object.keys(DUBBELE_ARTIKELEN));

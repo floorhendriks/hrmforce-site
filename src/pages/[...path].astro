@@ -14,6 +14,7 @@ import VoorkeursbronKnop from "../components/VoorkeursbronKnop.astro";
 import { ONDERDELEN } from "../data/oefentest-ui.js";
 import validPaths from "../data/valid-paths.js";
 import { DUBBELE_PADEN } from "../data/kenniscentrum-duplicaten.js";
+import { metEigenArtikelen } from "../data/eigen-artikelen.js";
 import { ADVIES_SLUGS } from "../data/advies-detail.js";
 import { OPLOSSING_SLUGS } from "../data/oplossingen.js";
 import { SANITY_INTEG, SANITY_KC, SANITY_RECI18N, SANITY_T, SANITY__descFallback, SANITY__sliderH } from "../data/component-teksten.js";
@@ -22,9 +23,10 @@ import { SANITY_INTEG, SANITY_KC, SANITY_RECI18N, SANITY_T, SANITY__descFallback
 // Sanity heeft een volledig 'path'; deze catch-all route rendert ze op dat pad.
 export async function getStaticPaths() {
   const client = createClient({ projectId: "hqo56w28", dataset: "production", apiVersion: "2024-01-01", useCdn: false });
-  const arts = await client.fetch(
+  // Artikelen uit src/data/eigen-artikelen.js gaan voor op Sanity.
+  const arts = metEigenArtikelen(await client.fetch(
     `*[_type == "article" && defined(path) && defined(body)]{path, title, body, date}`
-  );
+  ));
   // Statische routes hebben voorrang; sluit paden uit die we nu als eigen
   // pagina bouwen (bijv. de sectoren-index) om dubbele routes te voorkomen.
   const OWN = new Set(["sectoren", "en/sectoren", "de/sectoren", "fr/sectoren", "es/sectoren", "ro/sectoren", "sectoren/onderwijs"]);
@@ -231,7 +233,8 @@ const _plain = body
   .trim();
 // De eerste hele zinnen van het artikel, zonder beletselteken: een
 // omschrijving die midden in een zin ophoudt kost kliks in de zoekresultaten.
-const recSlug = pickAssessment(article.title, _plain);
+// geenAanbeveling (src/data/eigen-artikelen.js): het artikel heeft een eigen CTA.
+const recSlug = _artikel.geenAanbeveling ? null : pickAssessment(article.title, _plain);
 const rec = recSlug ? REC[recSlug] : null;
 const recShop = recSlug ? shopInfo(recSlug) : null;
 const recHref = recSlug ? localizePath(`/assessments/${recSlug}/`, lang) : allHref;
@@ -245,6 +248,8 @@ if (metaDesc.length < 60) metaDesc = `${article.title}. ${_descFallback}`;
 // Deelt dit artikel zijn openingszin met andere delen uit dezelfde serie, dan
 // zet de titel ervoor. Anders krijgen meerdere pagina's dezelfde beschrijving.
 if (article.gedeeldeIntro) metaDesc = kortZin(`${article.title}. ${metaDesc}`, 170);
+// Een eigen omschrijving (src/data/eigen-artikelen.js) gaat voor.
+if (_artikel.description) metaDesc = _artikel.description;
 
 // Video in de body: markeren als VideoObject, zodat Google er een
 // videoresultaat van kan maken met een voorbeeldafbeelding.

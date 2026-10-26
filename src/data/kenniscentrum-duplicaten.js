@@ -22,8 +22,6 @@ export const DUBBELE_ARTIKELEN = {
     "/kenniscentrum/krachtige-talentontwikkeling-begint-met-onbekend-talent-verkennen/",
   "/kenniscentrum/ontwikkeling/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/":
     "/kenniscentrum/lessen-voor-een-goede-hr-vlootschouw-met-ontwikkelaanpak/",
-  "/kenniscentrum/ontwikkeling/piramide-van-lencioni/":
-    "/assessments/lencioni-teamdynamiek/",
 
   // Opnieuw geschreven artikelen onder een kort adres. Het oude adres houdt de
   // posities, dus daar blijft het artikel staan.
