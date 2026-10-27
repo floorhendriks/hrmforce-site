@@ -37,7 +37,7 @@ export const products = [
   { name: "Personality for Professionals Inventory (PfPI)", price: 238.0, vendor: "Pearson", segment: "Persoonlijkheid", phase: "Selectie" },
   { name: "SOSIE 2nd Generation", price: 238.0, vendor: "Pearson", segment: "Persoonlijkheid", phase: "Selectie" },
   { name: "Watson Glaser test", price: 118.0, vendor: "Pearson", segment: "Intelligentie", phase: "Selectie" },
-  { name: "Facet5", price: 290.0, vendor: "hrmforce", segment: "Persoonlijkheid", phase: "Selectie" },
+  { name: "Facet5", price: 380.0, vendor: "hrmforce", segment: "Persoonlijkheid", phase: "Selectie" },
   { name: "Reflector Big Five Personality", price: 267.0, vendor: "hrmforce", segment: "Persoonlijkheid", phase: "Selectie" },
   { name: "Reflector Big Five Leadership", price: 423.0, vendor: "hrmforce", segment: "Persoonlijkheid", phase: "Ontwikkeling" },
   { name: "Reflector 360", price: 313.0, vendor: "hrmforce", segment: "360 Feedback", phase: "Ontwikkeling" },
