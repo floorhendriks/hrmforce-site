@@ -974,3 +974,8 @@
 /de/neuigkeiten/ /de/kenniscentrum/ 301
 /ro/produs/big-fifty-personality/ /ro/assessments/big-five/ 301
 /ro/produs/* /ro/shop/ 301
+
+# Search Console 29-10-2026: laatste drie echte 404's uit de 404-validatie.
+/advies/overzicht/training-certificatietraining-hrmforce/ /advies/certificatietraining/ 301
+/beoordeling/ /kenniscentrum/ 301
+/de/motivation-de/ /de/assessments/drijfverentest/ 301

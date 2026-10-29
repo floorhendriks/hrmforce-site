@@ -794,7 +794,10 @@ export const EXACT = {"/assessments/cognitieve-test/":["/assessments/ability-sca
 "/es/capacidades/":["/es/assessments/ability-scan/",301],
 "/de/kompetenzen/":["/de/kenniscentrum/",301],
 "/de/neuigkeiten/":["/de/kenniscentrum/",301],
-"/ro/produs/big-fifty-personality/":["/ro/assessments/big-five/",301]};
+"/ro/produs/big-fifty-personality/":["/ro/assessments/big-five/",301],
+"/advies/overzicht/training-certificatietraining-hrmforce/":["/advies/certificatietraining/",301],
+"/beoordeling/":["/kenniscentrum/",301],
+"/de/motivation-de/":["/de/assessments/drijfverentest/",301]};
 export const WILD = [["/pl/skills-framework/","/en/skills-framework/:splat",301],
 ["/da/skills-framework/","/en/skills-framework/:splat",301],
 ["/sv/skills-framework/","/en/skills-framework/:splat",301],
