@@ -16,7 +16,7 @@ export const voorbereidingContent = {
 <h2>Voorbereiden op een assessment</h2>
 <p>Wat kun je verwachten voorafgaand, tijdens en na afloop van een <a href="/assessment-overzicht/">assessment</a> bij hrmforce? Mocht je na het lezen van deze pagina nog vragen hebben, neem dan gerust <a href="/contact/">contact</a> op met een van onze adviseurs of via de chat op de website.</p>
 <p>Wil je eerst nog even oefenen voordat je het assessment gaat maken? We hebben een speciaal oefen-assessment ontwikkeld zodat je kunt ervaren hoe het werkt en zo perfect voorbereid bent. Succes!</p>
-<p><a class="btn btn-primary" href="/oefen-assessment-maken/">Oefen-assessment maken</a> <a class="btn btn-ghost" href="/demo/">Assessment voor je organisatie? Plan een demo</a></p>
+<p><a class="btn btn-primary" href="/oefen-assessment-maken/">Oefen-assessment maken</a> <a class="btn btn-ghost" style="color:var(--blue);border-color:var(--blue)" href="/demo/">Assessment voor je organisatie? Plan een demo</a></p>
 <h3>Wat levert een assessment op?</h3>
 <p>Na het maken van een assessment krijg je inzicht in je talenten, wat je drijfveren zijn in je werk en waar jouw ontwikkelpotentieel ligt. Een assessment geeft je een genuanceerd inzicht in je kwaliteiten. Assessments kunnen bestaan uit online testen en vragenlijsten.</p>
 <p>Een assessment geeft meer zekerheid over de kwaliteiten en het ontwikkelpotentieel van de kandidaat door middel van een genuanceerd inzicht. Opdrachtgevers krijgen op deze wijze een overzichtelijke beschrijving van de deelnemer. Assessments kunnen ingezet worden in verschillende fases en afdelingen binnen organisaties, voor onder andere selectie, onboarding en doorstroming.</p>
