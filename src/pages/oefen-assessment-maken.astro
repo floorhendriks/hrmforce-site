@@ -17,7 +17,7 @@ const oefenUrl = "https://assessment.hrmforce.com/AbilitySampleDetails.aspx?Lang
       Wil je eerst oefenen voordat je een assessment gaat maken? Doe dan dit gratis oefen assessment. Zo weet je wat je kunt verwachten en ben je optimaal voorbereid.
     </p>
     <div class="btns" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px">
-      <a href={oefenUrl} class="btn btn-primary" target="_blank" rel="noopener">Start het oefen assessment</a>
+      <a href={oefenUrl} data-ev="oefen_assessment_start" class="btn btn-primary" target="_blank" rel="noopener">Start het oefen assessment</a>
     </div>
   </div></section>
 
@@ -28,7 +28,7 @@ const oefenUrl = "https://assessment.hrmforce.com/AbilitySampleDetails.aspx?Lang
       <div>
         <p>Een assessment maken kan spannend zijn, zeker als je niet weet wat je te wachten staat. Met dit gratis oefen assessment ervaar je vooraf hoe de vragen zijn opgebouwd en hoe het maken van een test werkt.</p>
         <p>Door te oefenen raak je vertrouwd met de vraagvormen en de tijdsdruk. Zo kun je je tijdens het echte assessment volledig richten op de inhoud in plaats van op de techniek.</p>
-        <a href={oefenUrl} class="btn btn-primary" target="_blank" rel="noopener" style="margin-top:8px">Naar het oefen assessment</a>
+        <a href={oefenUrl} data-ev="oefen_assessment_start" class="btn btn-primary" target="_blank" rel="noopener" style="margin-top:8px">Naar het oefen assessment</a>
       </div>
       <div class="pentagon">
         <ul class="traits" style="text-align:left">
@@ -43,4 +43,12 @@ const oefenUrl = "https://assessment.hrmforce.com/AbilitySampleDetails.aspx?Lang
       Kom je er niet uit of heb je vragen over je assessment? <a href="/contact/" style="color:var(--blue);font-weight:600">Neem contact met ons op</a> of bekijk de <a href="/support/" style="color:var(--blue);font-weight:600">support-pagina</a>.
     </p>
   </div></section>
+<script is:inline>
+  document.querySelectorAll("[data-ev]").forEach(function (a) {
+    a.addEventListener("click", function () {
+      var n = a.getAttribute("data-ev");
+      try { if (window.gtag) window.gtag("event", n, { link_url: a.href }); if (window.clarity) window.clarity("event", n); } catch (e) {}
+    });
+  });
+</script>
 </Base>

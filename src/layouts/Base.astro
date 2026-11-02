@@ -305,6 +305,7 @@ const orgLd = {
         function mark(){ try { sessionStorage.setItem(KEY, "1"); } catch(e){} }
         function build(){
           if (shown() || window.innerWidth < 1024) return;
+          if (/(^|\/)(demo|gratis-kleurentest)\/?$/.test(location.pathname)) return;
           var o = document.createElement("div"); o.id = "hf-lm"; o.setAttribute("role","dialog"); o.setAttribute("aria-label", t.t);
           o.innerHTML = '<div class="hf-lm-card"><button class="hf-lm-x" aria-label="Sluiten">&times;</button>'+
             '<div class="hf-lm-eyebrow">hrmforce</div><h3>'+t.t+'</h3><p>'+t.b+'</p>'+
@@ -316,8 +317,8 @@ const orgLd = {
           o.querySelector(".hf-lm-x").addEventListener("click", close);
           o.querySelector(".hf-lm-dismiss").addEventListener("click", close);
           o.addEventListener("click", function(e){ if (e.target === o) close(); });
-          o.querySelector(".hf-lm-cta").addEventListener("click", function(){ ev("lead_magnet_click", { source: "exit_intent" }); mark(); });
-          ev("lead_magnet_view", { source: "exit_intent" });
+          o.querySelector(".hf-lm-cta").addEventListener("click", function(){ ev("lead_magnet_click", { popup: "exit_intent" }); mark(); });
+          ev("lead_magnet_view", { popup: "exit_intent" });
         }
         var armed = false;
         setTimeout(function(){ armed = true; }, 6000);
