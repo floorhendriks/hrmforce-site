@@ -449,6 +449,17 @@ export const COMPETITORS = {
    "ro": "Bryq este o platformă internațională de evaluare puternic axată pe AI și competențe. hrmforce oferă psihometrie validată științific cu psihologi înregistrați (NIP), raportare transparentă, 29 versiuni lingvistice și găzduirea datelor în UE, plus o platformă completă a ciclului HR."
   }
  },
+ "selection-lab": {
+  "name": "Selection Lab",
+  "intro": {
+   "nl": "Selection Lab is een Nederlands assessmentplatform uit Amsterdam met onder meer een adaptieve intelligentietest, een Big Five-vragenlijst en een AI-chatbot voor de eerste screening, vooral gericht op werving. hrmforce biedt daarnaast instrumenten voor ontwikkeling en teams, 29 taalversies, transparante prijzen via de shop en koppelingen met Nederlandse HR-systemen.",
+   "en": "Selection Lab is a Dutch assessment platform from Amsterdam offering, among other things, an adaptive intelligence test, a Big Five questionnaire and an AI chatbot for initial screening, mainly aimed at recruitment. hrmforce also offers instruments for development and teams, 29 language versions, transparent pricing in the shop and integrations with Dutch HR systems.",
+   "de": "Selection Lab ist eine niederländische Assessment-Plattform aus Amsterdam mit unter anderem einem adaptiven Intelligenztest, einem Big-Five-Fragebogen und einem KI-Chatbot für die Vorauswahl, vor allem für die Personalgewinnung. hrmforce bietet zusätzlich Instrumente für Entwicklung und Teams, 29 Sprachversionen, transparente Preise im Shop und Anbindungen an HR-Systeme.",
+   "fr": "Selection Lab est une plateforme d'évaluation néerlandaise basée à Amsterdam, proposant notamment un test d'intelligence adaptatif, un questionnaire Big Five et un chatbot IA pour la présélection, surtout pour le recrutement. hrmforce propose en plus des outils pour le développement et les équipes, 29 versions linguistiques, des prix transparents dans la boutique et des intégrations avec des systèmes RH.",
+   "es": "Selection Lab es una plataforma de evaluación neerlandesa de Ámsterdam que ofrece, entre otros, un test de inteligencia adaptativo, un cuestionario Big Five y un chatbot de IA para la preselección, sobre todo para la selección de personal. hrmforce ofrece además instrumentos para el desarrollo y los equipos, 29 versiones lingüísticas, precios transparentes en la tienda e integraciones con sistemas de RR. HH.",
+   "ro": "Selection Lab este o platformă olandeză de evaluare din Amsterdam care oferă, printre altele, un test de inteligență adaptiv, un chestionar Big Five și un chatbot AI pentru preselecție, în special pentru recrutare. hrmforce oferă în plus instrumente pentru dezvoltare și echipe, 29 de versiuni lingvistice, prețuri transparente în magazin și integrări cu sisteme HR."
+  }
+ },
  "equalture": {
   "name": "Equalture",
   "intro": {

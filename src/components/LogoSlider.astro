@@ -35,10 +35,12 @@ const logos = Astro.props.logos ?? LOGOS;
 const showNote = Astro.props.note !== null;
 const base = "/media/wp-content/uploads/";
 const track = logos.concat(logos);
+const _lang = Astro.props.lang || "nl";
+const _casesHref = _lang === "nl" ? "/klantcases/" : `/${_lang}/klantcases/`;
 ---
 <section class="logoslider">
   <div class="wrap">
-    { heading && <p class="ls-h">{heading}</p> }
+    { heading && <p class="ls-h"><a href={_casesHref} style="color:inherit;text-decoration:none">{heading} <span aria-hidden="true">&rarr;</span></a></p> }
     <div class="ls-viewport" aria-label={t.alt}>
       <div class="ls-track">
         { track.map((l) => (

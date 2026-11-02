@@ -34,7 +34,7 @@ const _toepassingenLabel = FOOTER_TOEPASSINGEN[lang] || FOOTER_TOEPASSINGEN.nl;
         </ul>
       </div>
       <div>
-        <h4>{t("footer.more")}</h4>
+        <h4><a href={L(routes.about)} style="color:inherit;text-decoration:none">{t("footer.more")}</a></h4>
         <ul>
           <li><a href={L(routes.about)}>{t("footer.about")}</a></li>
           <li><a href={L("/partners/")}>{t("footer.partners")}</a></li>
