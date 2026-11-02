@@ -38,10 +38,13 @@ const TRAINERS = ["Floor", "Ardine", "Michael"];
 const hrmforceOrg = { "@type": "Organization", name: "hrmforce", url: "https://hrmforce.com/" };
 const performerVan = (r) =>
   (r.trainer ? [r.trainer] : TRAINERS).map((name) => ({ "@type": "Person", name, worksFor: hrmforceOrg }));
+// De kalender noemt de training bij zijn Nederlandse naam; op de pagina en in
+// het schema staat de naam in de taal van de pagina.
+const soortNaam = (r) => (r.soort === "Certificatietraining" ? t.certEyebrow : r.soort);
 const eventLd = t.kalender.map((r) => ({
   "@context": "https://schema.org",
   "@type": "EducationEvent",
-  name: `${r.soort} hrmforce`,
+  name: `${soortNaam(r)} hrmforce`,
   description: t.certP,
   image: eventImages,
   startDate: r.start,
@@ -124,7 +127,7 @@ const eventLd = t.kalender.map((r) => ({
           {t.kalender.map((r) => (
             <tr>
               <td><strong>{datumVan(r)}</strong><br /><span class="kal-sub">{r.tijd}</span></td>
-              <td>{r.soort}</td>
+              <td>{soortNaam(r)}</td>
               <td>{r.max}</td>
               <td class="kal-sub">{r.locatie}</td>
               <td><strong>{r.prijs}</strong></td>

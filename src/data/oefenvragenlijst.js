@@ -312,6 +312,33 @@ export const VL_META = {
     omschrijving: (n) =>
       `Fă gratuit testul ${n} online. 25 de afirmații, fără răspunsuri corecte sau greșite, și o schiță de profil imediat după ce termini.`,
   },
+  // Functies gaan niet door de vertaallaag; de talen buiten de brontalen staan
+  // daarom met de hand.
+  pl: {
+    titel: (n) => `${n}: darmowy test online | hrmforce`,
+    omschrijving: (n) =>
+      `Wykonaj za darmo test online ${n}. 25 stwierdzeń, bez dobrych i złych odpowiedzi, a zaraz po zakończeniu zarys profilu na ekranie.`,
+  },
+  da: {
+    titel: (n) => `${n}: gratis onlinetest | hrmforce`,
+    omschrijving: (n) =>
+      `Tag onlinetesten ${n} gratis. 25 udsagn, ingen rigtige eller forkerte svar og en profilskitse på skærmen, så snart du er færdig.`,
+  },
+  sv: {
+    titel: (n) => `${n}: gratis onlinetest | hrmforce`,
+    omschrijving: (n) =>
+      `Gör onlinetestet ${n} gratis. 25 påståenden, inga rätta eller felaktiga svar och en profilskiss på skärmen direkt när du är klar.`,
+  },
+  it: {
+    titel: (n) => `${n}: test online gratuito | hrmforce`,
+    omschrijving: (n) =>
+      `Faccia gratis il test online ${n}. 25 affermazioni, nessuna risposta giusta o sbagliata e un profilo sintetico sullo schermo appena ha finito.`,
+  },
+  pt: {
+    titel: (n) => `${n}: teste online gratuito | hrmforce`,
+    omschrijving: (n) =>
+      `Faça gratuitamente o teste online ${n}. 25 afirmações, sem respostas certas ou erradas, e um esboço de perfil no ecrã assim que terminar.`,
+  },
 };
 
 /* Na de profielschets wil een deel van de bezoekers verder. Per vragenlijst

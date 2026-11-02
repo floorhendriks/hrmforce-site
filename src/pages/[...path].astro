@@ -17,7 +17,7 @@ import { DUBBELE_PADEN } from "../data/kenniscentrum-duplicaten.js";
 import { metEigenArtikelen } from "../data/eigen-artikelen.js";
 import { ADVIES_SLUGS } from "../data/advies-detail.js";
 import { OPLOSSING_SLUGS } from "../data/oplossingen.js";
-import { SANITY_INTEG, SANITY_KC, SANITY_RECI18N, SANITY_T, SANITY__descFallback, SANITY__sliderH } from "../data/component-teksten.js";
+import { BASE_RUBRIEK, SANITY_INTEG, SANITY_KC, SANITY_RECI18N, SANITY_T, SANITY__descFallback, SANITY__sliderH } from "../data/component-teksten.js";
 
 // Gemigreerde kenniscentrum-artikelen uit WordPress. Elk artikel-document in
 // Sanity heeft een volledig 'path'; deze catch-all route rendert ze op dat pad.
@@ -350,7 +350,7 @@ const bodyBottom = cut !== -1 ? body.slice(cut + 5) : "";
       {isPartners && (
         <div class="kc-integ">
           <div>
-            <div class="ctx-tag">Integraties</div>
+            <div class="ctx-tag">{BASE_RUBRIEK.integraties[lang] ?? BASE_RUBRIEK.integraties.en}</div>
             <h3>{INT.title}</h3>
             <p>{INT.text}</p>
           </div>

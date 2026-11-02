@@ -170,6 +170,33 @@ export const OT_META = {
     omschrijving: (n) =>
       `Exersează gratuit ${n.toLowerCase()}. Primești 25 de întrebări dintr-o bancă de 250 și apoi, la fiecare, răspunsul corect cu explicație.`,
   },
+  // De titel is een functie en gaat dus niet door de vertaallaag: elke taal
+  // buiten de brontalen staat hier daarom met de hand.
+  pl: {
+    titel: (n) => `${n}: darmowy test próbny | hrmforce`,
+    omschrijving: (n) =>
+      `Ćwicz za darmo: ${n.toLowerCase()}. Dostajesz 25 pytań z puli 250, a po zakończeniu poprawną odpowiedź z wyjaśnieniem do każdego pytania.`,
+  },
+  da: {
+    titel: (n) => `${n}: gratis øvetest | hrmforce`,
+    omschrijving: (n) =>
+      `Øv dig gratis i ${n.toLowerCase()}. Du får 25 spørgsmål fra en bank på 250 og bagefter det rigtige svar med en forklaring til hvert spørgsmål.`,
+  },
+  sv: {
+    titel: (n) => `${n}: gratis övningstest | hrmforce`,
+    omschrijving: (n) =>
+      `Öva gratis på ${n.toLowerCase()}. Du får 25 frågor från en bank med 250 och efteråt rätt svar med en förklaring till varje fråga.`,
+  },
+  it: {
+    titel: (n) => `${n}: test di prova gratuito | hrmforce`,
+    omschrijving: (n) =>
+      `Si eserciti gratis con ${n.toLowerCase()}. Riceve 25 domande da una banca di 250 e alla fine la risposta corretta con la spiegazione di ogni domanda.`,
+  },
+  pt: {
+    titel: (n) => `${n}: teste de treino gratuito | hrmforce`,
+    omschrijving: (n) =>
+      `Pratique gratuitamente ${n.toLowerCase()}. Recebe 25 perguntas de um banco de 250 e, no final, a resposta correta com explicação para cada pergunta.`,
+  },
 };
 
 /* Na de uitslag wil een deel van de bezoekers weten wat er beroepsmatig

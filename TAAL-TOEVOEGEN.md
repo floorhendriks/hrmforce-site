@@ -252,6 +252,13 @@ for (const taal of ["en", "de", "fr", "es", "ro"]) {
 }
 ```
 
+**Een titel als functie gaat niet door de vertaallaag.** `OT_META` in
+`src/data/oefentest-ui.js` en `VL_META` in `src/data/oefenvragenlijst.js`
+bouwen de paginatitel met een functie (`titel: (n) => ...`). Het vertaalscript
+slaat functies over, dus een nieuwe taal kreeg daar de Nederlandse titel
+("Ciągi liczbowe oefenen, gratis oefentest"). Zet in beide blokken een eigen
+regel voor de nieuwe taal.
+
 **Een sleutelnaam uit `GEEN_TEKST` krijgt geen vertaling.** In
 `src/data/vertaal-inhoud.js` staat een lijst sleutels waarvan de waarde geen
 tekst is maar een pad of een code: `slug`, `href`, `url`, `src`, `icon`, `key`,
