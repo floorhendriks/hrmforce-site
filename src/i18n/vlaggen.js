@@ -29,6 +29,9 @@ export const VLAGGEN = {
   pl: b(["#FFFFFF", "#DC143C"]),
   da: kruis("#C8102E", "#FFFFFF"),
   sv: kruis("#006AA7", "#FECC00"),
+  it: v(["#009246", "#FFFFFF", "#CE2B37"]),
+  // Portugal: groen-rood in de verhouding 2:3, zonder wapen.
+  pt: `<rect width="24" height="16" fill="#DA291C"/><rect width="9.6" height="16" fill="#046A38"/>`,
   // Spanje: rood-geel-rood in de verhouding 1:2:1.
   es: `<rect width="24" height="16" fill="#AA151B"/><rect y="4" width="24" height="8" fill="#F1BF00"/>`,
   // Vereenvoudigde Union Jack: de diagonalen zonder de versprongen helften.

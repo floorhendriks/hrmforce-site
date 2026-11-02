@@ -502,10 +502,10 @@ export const ASSESSL_MC_MENS = { nl: "We konden niet vaststellen dat je een mens
 export const ASSESSL_MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…", fr: "Envoi…", es: "Enviando…", ro: "Se trimite…" };
 // Taalcodes, geen tekst: hier staat elke taal met de hand in. Via de
 // vertaallaag zou een nieuwe taal "nl_NL" krijgen, en dan klopt og:locale niet.
-export const BASE_LOCALE_MAP = { nl: "nl_NL", en: "en_US", de: "de_DE", fr: "fr_FR", es: "es_ES", ro: "ro_RO", pl: "pl_PL", da: "da_DK", sv: "sv_SE" };
+export const BASE_LOCALE_MAP = { nl: "nl_NL", en: "en_US", de: "de_DE", fr: "fr_FR", es: "es_ES", ro: "ro_RO", pl: "pl_PL", da: "da_DK", sv: "sv_SE", it: "it_IT", pt: "pt_PT" };
 
 // Hetzelfde, in de vorm die toLocaleDateString wil (artikelpagina's).
-export const BASE_DATUM_LOCALE = { nl: "nl-NL", en: "en-GB", de: "de-DE", fr: "fr-FR", es: "es-ES", ro: "ro-RO", pl: "pl-PL", da: "da-DK", sv: "sv-SE" };
+export const BASE_DATUM_LOCALE = { nl: "nl-NL", en: "en-GB", de: "de-DE", fr: "fr-FR", es: "es-ES", ro: "ro-RO", pl: "pl-PL", da: "da-DK", sv: "sv-SE", it: "it-IT", pt: "pt-PT" };
 
 // De rubrieken in het kruimelpad. Stonden eerder in src/layouts/Base.astro en
 // waren daardoor onzichtbaar voor het vertaalscript.

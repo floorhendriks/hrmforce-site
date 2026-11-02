@@ -1,0 +1,46 @@
+
+1. Staat de taal in src/i18n/ui.js
+   ok  languages bevat pt (11 talen in totaal)
+   ok  taalInfo heeft een eigen naam voor pt
+
+2. Staat de taal in de drie lijsten onder functions/
+   ok  functions/api/aanvraag.js kent pt
+   ok  functions/api/oefenmateriaal.js kent pt
+   ok  functions/api/checkout.js kent pt
+
+3. Het vertaalbestand
+   ok  src/data/translations-content/pt.json met 4679 zinnen
+   ok  geen onvertaalde zinnen
+   let op  102 losse woorden zijn gelijk gebleven; merk- en vragenlijstnamen horen hier thuis, Nederlandse woorden niet:
+           software, 15PF, AFAS, Ability Scan, Agility, Autonomy, Autosync, BASIC +, BiLa, Big Five, Big50 Personality, CanMeds, Carerix, Coaching, Coaching Screener Scan, Coaching Screener Scan | hrmforce, Connector Ability, DISC, DSI, Dashboard+, Developability, Doorstroom, E-Assessment, E-mail, Eric H.
+
+4. De automatische mails buiten de brontalen
+   ok  de mailteksten staan vertaald in functions/_lib/mailteksten.js
+
+5. De 29 taalnamen in de taalkeuze
+   ok  alle 29 taalnamen hebben een eigen vertaling
+
+6. Nederlandse tekst op de pagina's van pt
+   let op  1 zinnen staan letterlijk gelijk aan het Nederlands (158 pagina's bekeken). Loop ze na: adressen, boektitels en literatuurverwijzingen horen gelijk te zijn, lopende zinnen niet:
+          [1 pagina's] De nieuwe assessmentgids (het psychologisch onderzoek)
+
+7. Links en bestandsaantal
+   ok  geen kapotte interne links
+   ok  elke interne link houdt de bezoeker in zijn taal
+   15717 bestanden gaan mee naar Cloudflare (gratis plan: 20.000, betaald: 100.000)
+   900 bestanden onder /downloads/ niet meegeteld; die komen uit R2
+
+8. Tekst die Nederlands bleef terwijl er een vertaling voor is
+   let op  10 teksten staan in het Nederlands op een pagina waarvoor wel een vertaling bestaat:
+          [2039 pagina's in en,es,fr,ro] Trust & security
+          [1530 pagina's in en,es,ro] Whitepapers
+          [ 511 pagina's in es,fr,ro] Support
+          [  44 pagina's in de] Online assessments
+          [   5 pagina's in de,en,es,fr,ro] Certificatietraining
+          [   5 pagina's in fr,ro] Competentiecheck
+          [   5 pagina's in de,en,es,fr,ro] Integraties
+          [   4 pagina's in de,es,fr,ro] 360 Feedback
+          [   3 pagina's in es,fr,ro] Analytics
+          [   1 pagina's in ro] HR Analytics
+
+IN ORDE  0 fout, 3 aandachtspunten

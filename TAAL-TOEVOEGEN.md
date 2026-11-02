@@ -78,6 +78,27 @@ HSF_LANGS=<taal> node scripts/hsf-translate-ui.mjs
 #    Zonder deze ronde komen de oefenvragen in het Engels.
 ```
 
+De oefenbanken gaan niet door DeepL. Ze komen uit de generatoren in
+`scripts/hsf-oefenbank-*.mjs` en `scripts/hsf-vragenlijst-*.mjs`, waar elke
+zin en elk woordpaar met de hand in elke taal staat; losse woorden zonder
+context gaan bij DeepL mis, en een analogie moet in de taal zelf kloppen. Een
+nieuwe taal krijgt daar een extra argument per regel en een eigen blok per
+sjabloon. Zet de code ook in `TALEN` van `hsf-oefenbank-lib.mjs` en
+`hsf-build-oefenbank.mjs`, en de getalnotatie in `SCHEIDING`. Daarna:
+
+```bash
+node scripts/hsf-build-oefenbank.mjs
+```
+
+Korte labels die DeepL voorspelbaar fout doet (taalnamen, segmentnamen,
+aanhef, onderwerp, de labels uit de prijstabel) kun je vooraf met de hand in
+`src/data/translations-content/<taal>.json` zetten. Het vertaalscript slaat
+bestaande sleutels over, dus die blijven staan. Zo is het bij Italiaans en
+Portugees gedaan.
+
+Portugees vertaalt naar de variant van Portugal (`PT-PT`); DeepL kent geen
+Portugees zonder variant meer. De koppeling staat in beide vertaalscripts.
+
 Alle scripts zijn hervatbaar: wat al vertaald is wordt overgeslagen. Met
 `HSF_ESTIMATE=1` zie je vooraf wat een ronde kost, met `HSF_TRANSLATE_MOCK=1`
 draai je hem zonder DeepL.

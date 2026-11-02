@@ -14,6 +14,17 @@ export const PARTICULIER_EXTRA = {
     "zakelijk": "Handler din forespørgsel alligevel om et team eller en organisation? Så svar på denne e-mail eller ring til Floor Hendriks på {tel}. Så finder vi sammen ud af, hvad der passer bedst.",
     "groet": "Med venlig hilsen,"
   },
+  "it": {
+    "onderwerp": "La sua richiesta a hrmforce",
+    "aanhefNaam": "Gentile {naam},",
+    "aanhef": "Buongiorno,",
+    "dank": "La ringraziamo per la richiesta inviata tramite hrmforce.com.",
+    "shop": "Ha indicato di voler effettuare un test per conto proprio. I singoli test possono essere ordinati direttamente nel nostro negozio online. Riceverà il questionario via e-mail e il suo rapporto non appena avrà completato il test.",
+    "kleuren": "Desidera prima fare una prova gratuita? Allora compili il test dei colori gratuito:",
+    "oefen": "È possibile anche esercitarsi. In questa pagina sono riportate domande di esercitazione per ciascuna sezione, seguite dalla risposta corretta e da una spiegazione:",
+    "zakelijk": "La Sua richiesta riguarda piuttosto un team o un’organizzazione? In tal caso, La preghiamo di rispondere a questa e-mail oppure di contattare Floor Hendriks al numero {tel}. Valuteremo insieme la soluzione più adatta.",
+    "groet": "Cordiali saluti,"
+  },
   "pl": {
     "onderwerp": "Twoje zgłoszenie w hrmforce",
     "aanhefNaam": "Dzień dobry {naam},",
@@ -24,6 +35,17 @@ export const PARTICULIER_EXTRA = {
     "oefen": "Można również poćwiczyć. Na tej stronie znajdują się pytania ćwiczeniowe podzielone na poszczególne części, a po ich rozwiązaniu podano prawidłową odpowiedź wraz z objaśnieniem:",
     "zakelijk": "Czy Państwa zapytanie dotyczy jednak zespołu lub organizacji? W takim razie prosimy o odpowiedź na niniejszą wiadomość e-mail lub kontakt telefoniczny z Floor Hendriks pod numerem {tel}. Wspólnie ustalimy, jakie rozwiązanie będzie odpowiednie.",
     "groet": "Z poważaniem,"
+  },
+  "pt": {
+    "onderwerp": "O seu pedido à hrmforce",
+    "aanhefNaam": "Olá {naam},",
+    "aanhef": "Olá,",
+    "dank": "Agradecemos o seu pedido através do site hrmforce.com.",
+    "shop": "Indicou que pretende realizar um teste para si próprio. Pode encomendar testes avulsos diretamente na nossa loja online. Receberá o questionário por e-mail e o seu relatório assim que terminar.",
+    "kleuren": "Gostaria de conhecer o nosso serviço gratuitamente? Então, faça o teste de cores gratuito:",
+    "oefen": "Também é possível praticar. Nesta página encontram-se questões de treino por secção, seguidas da resposta correta e de uma explicação:",
+    "zakelijk": "A sua solicitação diz respeito, afinal, a uma equipa ou a uma organização? Nesse caso, responda a este e-mail ou contacte Floor Hendriks através do número {tel}. Analisaremos então em conjunto qual a solução mais adequada.",
+    "groet": "Com os melhores cumprimentos,"
   },
   "sv": {
     "onderwerp": "Din förfrågan till hrmforce",
@@ -50,6 +72,17 @@ export const OEFEN_EXTRA = {
     "let": "Dokumentet indeholder eksempelspørgsmål. De stammer ikke fra det egentlige spørgeskema, og dine svar gemmes ikke.",
     "groet": "Med venlig hilsen,"
   },
+  "it": {
+    "onderwerp": "Le sue domande di esercitazione",
+    "onderwerpVoor": "Le sue domande di esercitazione per {titel}",
+    "halloNaam": "Buongiorno {naam},",
+    "hallo": "Buongiorno,",
+    "met": "In allegato troverete una serie di domande di esercitazione. In questo modo potrete rendervi conto in anticipo di come sono strutturate le domande e di cosa vi aspetta.",
+    "zonder": "Grazie per la Sua richiesta. Per questa sezione non è ancora disponibile alcun documento, ma è possibile esercitarsi online.",
+    "online": "Potrà continuare a esercitarsi online all’indirizzo {url}. Ad ogni sessione riceverà una nuova serie di domande, al termine della quale le verrà fornita la risposta corretta per ciascuna domanda, accompagnata da una spiegazione.",
+    "let": "Il documento contiene domande di esempio. Esse non provengono dal questionario vero e proprio e le Sue risposte non verranno salvate.",
+    "groet": "Cordiali saluti,"
+  },
   "pl": {
     "onderwerp": "Pytania ćwiczeniowe",
     "onderwerpVoor": "Pytania ćwiczeniowe: {titel}",
@@ -60,6 +93,17 @@ export const OEFEN_EXTRA = {
     "online": "Można kontynuować ćwiczenia online na stronie {url}. W każdej rundzie otrzymają Państwo nowy zestaw pytań, a po jej zakończeniu – prawidłową odpowiedź na każde pytanie wraz z objaśnieniem.",
     "let": "Dokument zawiera przykładowe pytania. Nie pochodzą one z rzeczywistego kwestionariusza, a Państwa odpowiedzi nie zostaną zapisane.",
     "groet": "Z poważaniem,"
+  },
+  "pt": {
+    "onderwerp": "As suas perguntas de treino",
+    "onderwerpVoor": "As suas perguntas de treino para {titel}",
+    "halloNaam": "Olá {naam},",
+    "hallo": "Olá,",
+    "met": "Em anexo, encontrará um conjunto de perguntas de treino. Desta forma, saberá antecipadamente como são as perguntas e o que o espera.",
+    "zonder": "Agradecemos o seu pedido. Ainda não está disponível nenhum documento para esta secção, mas já pode praticar online.",
+    "online": "Pode continuar a praticar online em {url}. A cada ronda, receberá um novo conjunto de perguntas e, no final, a resposta correta e uma explicação para cada uma delas.",
+    "let": "O documento contém perguntas de exemplo. Estas não fazem parte do questionário real e as suas respostas não serão guardadas.",
+    "groet": "Com os melhores cumprimentos,"
   },
   "sv": {
     "onderwerp": "Dina övningsfrågor",

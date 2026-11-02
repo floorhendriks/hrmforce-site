@@ -20,6 +20,7 @@ export const tussen = (r, a, b) => a + Math.floor(r() * (b - a + 1));
 const SCHEIDING = {
   nl: { dec: ",", dui: "." }, de: { dec: ",", dui: "." }, fr: { dec: ",", dui: " " },
   es: { dec: ",", dui: "." }, ro: { dec: ",", dui: "." }, en: { dec: ".", dui: "," },
+  it: { dec: ",", dui: "." }, pt: { dec: ",", dui: " " },
 };
 export function getal(n, taal, decimalen = 0) {
   const s = SCHEIDING[taal] || SCHEIDING.nl;
@@ -41,7 +42,7 @@ export function opties(juist, afleiders, toon) {
 
 /** Bouwt het itemobject in alle talen. `bouw` levert per taal {vraag, uitleg}. */
 export function item(id, soort, bouw, waarden, juistIndex, toon) {
-  const TALEN = ["nl", "en", "de", "fr", "es", "ro"];
+  const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt"];
   const tekst = {};
   for (const t of TALEN) tekst[t] = bouw(t);
   return {

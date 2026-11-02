@@ -29,7 +29,7 @@ export async function onRequestPost(context) {
 
   const lines = Array.isArray(body.lines) ? body.lines : [];
   const b = body.billing || {};
-  const locale = ["nl", "en", "de", "fr", "es", "ro", "pl", "da", "sv"].indexOf(body.locale) > -1 ? body.locale : "nl";
+  const locale = ["nl", "en", "de", "fr", "es", "ro", "pl", "da", "sv", "it", "pt"].indexOf(body.locale) > -1 ? body.locale : "nl";
 
   if (!lines.length) return json({ error: "empty_cart" }, 400);
   if (!b.company || !b.contact || !validEmail(b.email) || !b.country || !b.street || !b.city || !b.postal)
@@ -122,7 +122,7 @@ export async function onRequestPost(context) {
     description: description.slice(0, 255),
     redirectUrl,
     webhookUrl,
-    locale: { nl: "nl_NL", en: "en_GB", de: "de_DE", fr: "fr_FR", es: "es_ES", ro: "en_GB" }[locale],
+    locale: { nl: "nl_NL", en: "en_GB", de: "de_DE", fr: "fr_FR", es: "es_ES", ro: "en_GB", pl: "pl_PL", da: "da_DK", sv: "sv_SE", it: "it_IT", pt: "pt_PT" }[locale],
     metadata: { orderId, email: b.email, company: b.company, total: eur(priced.totalCents) },
   };
 

@@ -8,7 +8,7 @@ const lang = getLangFromUrl(Astro.url);
 const t = trainingenFor(lang);
 // De datum staat als Nederlandse tekst in de data ("18 mrt 2027"). Voor de
 // andere talen schrijven we hem uit het ISO-veld, in de opmaak van die taal.
-const DATUM_LOCALE = { nl: "nl-NL", en: "en-GB", de: "de-DE", fr: "fr-FR", es: "es-ES", ro: "ro-RO", pl: "pl-PL", da: "da-DK", sv: "sv-SE" };
+const DATUM_LOCALE = { nl: "nl-NL", en: "en-GB", de: "de-DE", fr: "fr-FR", es: "es-ES", ro: "ro-RO", pl: "pl-PL", da: "da-DK", sv: "sv-SE", it: "it-IT", pt: "pt-PT" };
 const datumVan = (r) => {
   if (lang === "nl" || !r.iso) return r.datum;
   try {

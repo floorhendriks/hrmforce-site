@@ -4,7 +4,7 @@
 // stap één te ver of te kort nemen, de bewerkingen omdraaien.
 import { rng, tussen, kies } from "./hsf-oefenbank-lib.mjs";
 
-const TALEN = ["nl", "en", "de", "fr", "es", "ro"];
+const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt"];
 
 const VRAAG = {
   nl: "Selecteer het getal dat logischerwijs volgt op de reeks.",
@@ -13,6 +13,8 @@ const VRAAG = {
   fr: "Sélectionnez le nombre qui poursuit logiquement la série.",
   es: "Selecciona el número que continúa lógicamente la serie.",
   ro: "Selectează numărul care continuă logic șirul.",
+  it: "Selezionare il numero che continua logicamente la serie.",
+  pt: "Selecione o número que continua logicamente a série.",
 };
 
 // Bouwstenen voor de toelichting, per taal. De cijfers komen uit het item.
@@ -94,6 +96,32 @@ const T = {
     afwisselend: (a, b, u) => `Operațiile alternează: ${a} și ${b}. Acum este rândul lui ${a}, deci urmează ${u}.`,
     kwadraat: (u) => `Șirul este format din pătrate perfecte. Următorul pătrat este ${u}.`,
     deelMaal: (a, b, u) => `${a} și ${b} se aplică pe rând. Acum urmează ${b}, adică ${u}.`,
+  },
+  it: {
+    verschilToe: (d, r, u) => `La differenza tra due numeri consecutivi aumenta ogni volta di ${d}: ${r}. Dopo l'ultimo numero viene ${u}.`,
+    verschilAf: (d, r, u) => `La differenza tra due numeri consecutivi diminuisce ogni volta di ${d}: ${r}. Dopo l'ultimo numero viene ${u}.`,
+    verschilMaal: (k, r, u) => `La differenza viene moltiplicata ogni volta per ${k}: ${r}. Il passo successivo è ${u}.`,
+    maal: (k, u) => `Ogni numero è il precedente moltiplicato per ${k}, quindi segue ${u}.`,
+    plus: (k, u) => `Ogni numero supera il precedente di ${k}, quindi segue ${u}.`,
+    som: (a, b, u) => `Ogni numero è la somma dei due precedenti: ${a} + ${b} = ${u}.`,
+    maalPlus: (k, b, u) => `Ogni numero è il precedente moltiplicato per ${k} più ${b}, quindi segue ${u}.`,
+    twee: (a, b, u) => `Due serie si alternano. Le posizioni dispari avanzano di ${a}, quelle pari di ${b}. Il numero richiesto appartiene alla serie che avanza di ${u}.`,
+    afwisselend: (a, b, u) => `Le operazioni si alternano: ${a} e ${b}. Ora tocca a ${a}, quindi segue ${u}.`,
+    kwadraat: (u) => `La serie è formata da quadrati. Il quadrato successivo è ${u}.`,
+    deelMaal: (a, b, u) => `${a} e ${b} si applicano a turno. Ora tocca a ${b}, quindi ${u}.`,
+  },
+  pt: {
+    verschilToe: (d, r, u) => `A diferença entre dois números consecutivos aumenta ${d} de cada vez: ${r}. Depois do último número vem ${u}.`,
+    verschilAf: (d, r, u) => `A diferença entre dois números consecutivos diminui ${d} de cada vez: ${r}. Depois do último número vem ${u}.`,
+    verschilMaal: (k, r, u) => `A diferença é multiplicada por ${k} de cada vez: ${r}. O passo seguinte é ${u}.`,
+    maal: (k, u) => `Cada número é o anterior multiplicado por ${k}, por isso segue-se ${u}.`,
+    plus: (k, u) => `Cada número é mais ${k} do que o anterior, por isso segue-se ${u}.`,
+    som: (a, b, u) => `Cada número é a soma dos dois anteriores: ${a} + ${b} = ${u}.`,
+    maalPlus: (k, b, u) => `Cada número é o anterior multiplicado por ${k} mais ${b}, por isso segue-se ${u}.`,
+    twee: (a, b, u) => `Há duas séries intercaladas. As posições ímpares avançam ${a}, as pares ${b}. O número pedido pertence à série que avança ${u}.`,
+    afwisselend: (a, b, u) => `As operações alternam: ${a} e ${b}. Agora é a vez de ${a}, por isso segue-se ${u}.`,
+    kwadraat: (u) => `A série é formada por quadrados. O quadrado seguinte é ${u}.`,
+    deelMaal: (a, b, u) => `${a} e ${b} aplicam-se à vez. Agora segue-se ${b}, ou seja ${u}.`,
   },
 };
 

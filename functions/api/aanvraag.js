@@ -10,7 +10,7 @@ import { controleerMens, TECHNISCH } from "../_lib/mens.js";
 
 // Alle talen waarin de site staat. Een aanvrager uit een taal die hier niet
 // in staat krijgt de Nederlandse mail.
-const TALEN = ["nl", "en", "de", "fr", "es", "ro", "pl", "da", "sv"];
+const TALEN = ["nl", "en", "de", "fr", "es", "ro", "pl", "da", "sv", "it", "pt"];
 
 // De brontalen staan in aanvraag-tekst.js zelf, de rest komt uit de
 // vertaalbestanden via scripts/genereer-mailteksten.mjs.

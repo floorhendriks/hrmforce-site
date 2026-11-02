@@ -5,7 +5,7 @@
 import { rng, tussen, schud } from "./hsf-oefenbank-lib.mjs";
 
 
-const TALEN = ["nl", "en", "de", "fr", "es", "ro"];
+const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt"];
 const NAVY = "#0E468C";
 const GOUD = "#fcc11b";
 const LIJN = "#c9d4e4";
@@ -19,6 +19,8 @@ const VRAAG_A = {
   fr: "Quelle figure est identique à celle du haut, mais tournée ?",
   es: "¿Qué figura es la misma que la de arriba, solo que girada?",
   ro: "Care figură este aceeași cu cea de sus, doar rotită?",
+  it: "Quale figura è uguale a quella in alto, solo ruotata?",
+  pt: "Que figura é igual à de cima, apenas rodada?",
 };
 
 const UITLEG_A = {
@@ -28,6 +30,8 @@ const UITLEG_A = {
   fr: (g) => `Seule cette figure est l'originale tournée de ${g} degrés. Les quatre autres sont des images miroir ou ont un bloc déplacé.`,
   es: (g) => `Solo esta figura es la original girada ${g} grados. Las otras cuatro son imágenes reflejadas o tienen un bloque en otro sitio.`,
   ro: (g) => `Doar această figură este cea originală, rotită cu ${g} grade. Celelalte patru sunt imagini în oglindă sau au un bloc mutat.`,
+  it: (g) => `Solo questa figura è l'originale ruotata di ${g} gradi. Le altre quattro sono immagini speculari o hanno un blocco in un'altra posizione.`,
+  pt: (g) => `Só esta figura é a original rodada ${g} graus. As outras quatro são imagens espelhadas ou têm um bloco noutra posição.`,
 };
 
 const N = 4;
@@ -135,6 +139,8 @@ const VRAAG_R = {
   fr: "Quel cube peut-on plier à partir de ce patron ?",
   es: "¿Qué cubo se puede plegar con este desarrollo?",
   ro: "Ce cub se poate plia din această desfășurare?",
+  it: "Quale cubo si può piegare da questo sviluppo?",
+  pt: "Que cubo se pode dobrar a partir desta planificação?",
 };
 
 const TEKENS = {
@@ -144,6 +150,8 @@ const TEKENS = {
   fr: ["cercle", "triangle", "carré", "croix", "étoile", "barre"],
   es: ["círculo", "triángulo", "cuadrado", "cruz", "estrella", "barra"],
   ro: ["cerc", "triunghi", "pătrat", "cruce", "stea", "bară"],
+  it: ["cerchio", "triangolo", "quadrato", "croce", "stella", "barra"],
+  pt: ["círculo", "triângulo", "quadrado", "cruz", "estrela", "barra"],
 };
 
 const UITLEG_R = {
@@ -153,6 +161,8 @@ const UITLEG_R = {
   fr: (f, r2, u) => `En pliant le patron, ${f}, ${r2} et ${u} se rejoignent à un même coin, dans cet ordre. Sur les quatre autres cubes, des faces opposées se retrouvent côte à côte, ou l'ordre de rotation est inversé.`,
   es: (f, r2, u) => `Al plegar el desarrollo, ${f}, ${r2} y ${u} coinciden en una misma esquina, en este orden. En los otros cuatro cubos hay caras contiguas que en realidad son opuestas, o el orden de giro es el contrario.`,
   ro: (f, r2, u) => `Dacă plieți desfășurarea, ${f}, ${r2} și ${u} se întâlnesc într-un colț, în această ordine. La ceilalți patru cubi apar alăturate fețe care pe cub sunt opuse, sau ordinea de rotație este greșită.`,
+  it: (f, r2, u) => `Piegando lo sviluppo, ${f}, ${r2} e ${u} si incontrano in uno stesso angolo, in quest'ordine. Negli altri quattro cubi compaiono affiancate facce che sul cubo sono opposte, oppure l'ordine di rotazione è invertito.`,
+  pt: (f, r2, u) => `Ao dobrar a planificação, ${f}, ${r2} e ${u} encontram-se no mesmo vértice, por esta ordem. Nos outros quatro cubos aparecem lado a lado faces que no cubo são opostas, ou a ordem de rotação está invertida.`,
 };
 
 // De 24 standen van een kubus, opgebouwd uit drie basisdraaiingen.

@@ -13,6 +13,8 @@ const T = {
       fr: (p) => `Une équipe a traité ${getal(p.a,"fr")} demandes le trimestre dernier et ${getal(p.b,"fr")} ce trimestre. De quel pourcentage cela a-t-il augmenté ?`,
       es: (p) => `Un equipo tramitó ${getal(p.a,"es")} solicitudes el trimestre pasado y ${getal(p.b,"es")} este trimestre. ¿En qué porcentaje ha aumentado?`,
       ro: (p) => `O echipă a procesat ${getal(p.a,"ro")} cereri trimestrul trecut și ${getal(p.b,"ro")} în acest trimestru. Cu ce procent a crescut?`,
+      it: (p) => `Un team ha gestito ${getal(p.a,"it")} richieste lo scorso trimestre e ${getal(p.b,"it")} in questo trimestre. Di che percentuale sono aumentate?`,
+      pt: (p) => `Uma equipa tratou ${getal(p.a,"pt")} pedidos no trimestre passado e ${getal(p.b,"pt")} neste trimestre. Em que percentagem aumentou?`,
     },
     uitleg: {
       nl: (p,j) => `Verschil is ${getal(p.b-p.a,"nl")}. Deel door het oude aantal: ${getal(p.b-p.a,"nl")} / ${getal(p.a,"nl")} = ${procent(j,"nl",1)}.`,
@@ -21,6 +23,8 @@ const T = {
       fr: (p,j) => `La différence est de ${getal(p.b-p.a,"fr")}. Divisez par l'ancien chiffre : ${getal(p.b-p.a,"fr")} / ${getal(p.a,"fr")} = ${procent(j,"fr",1)}.`,
       es: (p,j) => `La diferencia es ${getal(p.b-p.a,"es")}. Divide entre la cifra anterior: ${getal(p.b-p.a,"es")} / ${getal(p.a,"es")} = ${procent(j,"es",1)}.`,
       ro: (p,j) => `Diferența este ${getal(p.b-p.a,"ro")}. Împărțiți la valoarea veche: ${getal(p.b-p.a,"ro")} / ${getal(p.a,"ro")} = ${procent(j,"ro",1)}.`,
+      it: (p,j) => `La differenza è ${getal(p.b-p.a,"it")}. Dividere per il valore precedente: ${getal(p.b-p.a,"it")} / ${getal(p.a,"it")} = ${procent(j,"it",1)}.`,
+      pt: (p,j) => `A diferença é ${getal(p.b-p.a,"pt")}. Divida pelo valor anterior: ${getal(p.b-p.a,"pt")} / ${getal(p.a,"pt")} = ${procent(j,"pt",1)}.`,
     },
     maak(r) {
       const a = tussen(r, 120, 900) * 2;
@@ -45,6 +49,8 @@ const T = {
       fr: (p) => `Sur ${getal(p.tot,"fr")} candidats, ${getal(p.deel,"fr")} ont passé le premier tour. Quelle part cela représente-t-il ?`,
       es: (p) => `De ${getal(p.tot,"es")} candidatos, ${getal(p.deel,"es")} pasaron la primera ronda. ¿Qué parte supone?`,
       ro: (p) => `Din ${getal(p.tot,"ro")} candidați, ${getal(p.deel,"ro")} au trecut de prima rundă. Ce parte reprezintă?`,
+      it: (p) => `Su ${getal(p.tot,"it")} candidati, ${getal(p.deel,"it")} hanno superato il primo turno. Che quota rappresentano?`,
+      pt: (p) => `De ${getal(p.tot,"pt")} candidatos, ${getal(p.deel,"pt")} passaram a primeira fase. Que parte representam?`,
     },
     uitleg: {
       nl: (p,j) => `${getal(p.deel,"nl")} / ${getal(p.tot,"nl")} = ${procent(j,"nl",1)}.`,
@@ -53,6 +59,8 @@ const T = {
       fr: (p,j) => `${getal(p.deel,"fr")} / ${getal(p.tot,"fr")} = ${procent(j,"fr",1)}.`,
       es: (p,j) => `${getal(p.deel,"es")} / ${getal(p.tot,"es")} = ${procent(j,"es",1)}.`,
       ro: (p,j) => `${getal(p.deel,"ro")} / ${getal(p.tot,"ro")} = ${procent(j,"ro",1)}.`,
+      it: (p,j) => `${getal(p.deel,"it")} / ${getal(p.tot,"it")} = ${procent(j,"it",1)}.`,
+      pt: (p,j) => `${getal(p.deel,"pt")} / ${getal(p.tot,"pt")} = ${procent(j,"pt",1)}.`,
     },
     maak(r) {
       const tot = tussen(r, 15, 90) * 20;
@@ -77,6 +85,8 @@ const T = {
       fr: (p) => `Le fournisseur A demande ${euro(p.pa,"fr")} pour ${getal(p.qa,"fr")} licences, le fournisseur B ${euro(p.pb,"fr")} pour ${getal(p.qb,"fr")}. Quel est l'écart par licence ?`,
       es: (p) => `El proveedor A cobra ${euro(p.pa,"es")} por ${getal(p.qa,"es")} licencias y el proveedor B ${euro(p.pb,"es")} por ${getal(p.qb,"es")}. ¿Cuál es la diferencia por licencia?`,
       ro: (p) => `Furnizorul A cere ${euro(p.pa,"ro")} pentru ${getal(p.qa,"ro")} licențe, furnizorul B ${euro(p.pb,"ro")} pentru ${getal(p.qb,"ro")}. Care este diferența per licență?`,
+      it: (p) => `Il fornitore A chiede ${euro(p.pa,"it")} per ${getal(p.qa,"it")} licenze, il fornitore B ${euro(p.pb,"it")} per ${getal(p.qb,"it")}. Qual è la differenza per licenza?`,
+      pt: (p) => `O fornecedor A pede ${euro(p.pa,"pt")} por ${getal(p.qa,"pt")} licenças, o fornecedor B ${euro(p.pb,"pt")} por ${getal(p.qb,"pt")}. Qual é a diferença por licença?`,
     },
     uitleg: {
       nl: (p,j) => `A: ${euro(p.pa/p.qa,"nl",2)} per stuk. B: ${euro(p.pb/p.qb,"nl",2)}. Verschil ${euro(j,"nl",2)}.`,
@@ -85,6 +95,8 @@ const T = {
       fr: (p,j) => `A : ${euro(p.pa/p.qa,"fr",2)} l'unité. B : ${euro(p.pb/p.qb,"fr",2)}. Écart ${euro(j,"fr",2)}.`,
       es: (p,j) => `A: ${euro(p.pa/p.qa,"es",2)} por unidad. B: ${euro(p.pb/p.qb,"es",2)}. Diferencia ${euro(j,"es",2)}.`,
       ro: (p,j) => `A: ${euro(p.pa/p.qa,"ro",2)} bucata. B: ${euro(p.pb/p.qb,"ro",2)}. Diferență ${euro(j,"ro",2)}.`,
+      it: (p,j) => `A: ${euro(p.pa/p.qa,"it",2)} l'una. B: ${euro(p.pb/p.qb,"it",2)}. Differenza ${euro(j,"it",2)}.`,
+      pt: (p,j) => `A: ${euro(p.pa/p.qa,"pt",2)} cada. B: ${euro(p.pb/p.qb,"pt",2)}. Diferença ${euro(j,"pt",2)}.`,
     },
     maak(r) {
       const qa = kies(r, [20, 25, 40, 50, 80, 100]);
@@ -110,6 +122,8 @@ const T = {
       fr: (p) => `Quatre sites ont obtenu ${p.r.map(x=>getal(x,"fr")).join(", ")}. La moyenne des cinq sites est de ${getal(p.gem,"fr")}. Quel est le score du cinquième ?`,
       es: (p) => `Cuatro sedes obtuvieron ${p.r.map(x=>getal(x,"es")).join(", ")}. La media de las cinco sedes es ${getal(p.gem,"es")}. ¿Cuánto obtuvo la quinta?`,
       ro: (p) => `Patru locații au obținut ${p.r.map(x=>getal(x,"ro")).join(", ")}. Media celor cinci locații este ${getal(p.gem,"ro")}. Cât a obținut a cincea?`,
+      it: (p) => `Quattro sedi hanno ottenuto ${p.r.map(x=>getal(x,"it")).join(", ")}. La media delle cinque sedi è ${getal(p.gem,"it")}. Quanto ha ottenuto la quinta?`,
+      pt: (p) => `Quatro filiais obtiveram ${p.r.map(x=>getal(x,"pt")).join(", ")}. A média das cinco filiais é ${getal(p.gem,"pt")}. Quanto obteve a quinta?`,
     },
     uitleg: {
       nl: (p,j) => `Vijf keer ${getal(p.gem,"nl")} is ${getal(p.gem*5,"nl")}. Daar de vier bekende vanaf: ${getal(p.gem*5,"nl")} - ${getal(p.som,"nl")} = ${getal(j,"nl")}.`,
@@ -118,6 +132,8 @@ const T = {
       fr: (p,j) => `Cinq fois ${getal(p.gem,"fr")} font ${getal(p.gem*5,"fr")}. Retirez les quatre connus : ${getal(p.gem*5,"fr")} - ${getal(p.som,"fr")} = ${getal(j,"fr")}.`,
       es: (p,j) => `Cinco veces ${getal(p.gem,"es")} son ${getal(p.gem*5,"es")}. Resta las cuatro conocidas: ${getal(p.gem*5,"es")} - ${getal(p.som,"es")} = ${getal(j,"es")}.`,
       ro: (p,j) => `De cinci ori ${getal(p.gem,"ro")} înseamnă ${getal(p.gem*5,"ro")}. Scădeți cele patru cunoscute: ${getal(p.gem*5,"ro")} - ${getal(p.som,"ro")} = ${getal(j,"ro")}.`,
+      it: (p,j) => `Cinque volte ${getal(p.gem,"it")} fa ${getal(p.gem*5,"it")}. Sottrarre i quattro valori noti: ${getal(p.gem*5,"it")} - ${getal(p.som,"it")} = ${getal(j,"it")}.`,
+      pt: (p,j) => `Cinco vezes ${getal(p.gem,"pt")} dá ${getal(p.gem*5,"pt")}. Subtraia os quatro valores conhecidos: ${getal(p.gem*5,"pt")} - ${getal(p.som,"pt")} = ${getal(j,"pt")}.`,
     },
     maak(r) {
       const r4 = Array.from({ length: 4 }, () => tussen(r, 55, 95));
@@ -140,6 +156,8 @@ const T = {
       fr: (p) => `Un client achète ${getal(p.n,"fr")} évaluations à ${euro(p.prijs,"fr")} avec ${procent(p.k,"fr")} de remise. Combien paie-t-il ?`,
       es: (p) => `Un cliente compra ${getal(p.n,"es")} evaluaciones de ${euro(p.prijs,"es")} con un ${procent(p.k,"es")} de descuento. ¿Cuánto paga?`,
       ro: (p) => `Un client cumpără ${getal(p.n,"ro")} evaluări a ${euro(p.prijs,"ro")} cu ${procent(p.k,"ro")} reducere. Cât plătește?`,
+      it: (p) => `Un cliente acquista ${getal(p.n,"it")} assessment a ${euro(p.prijs,"it")} con uno sconto del ${procent(p.k,"it")}. Quanto paga?`,
+      pt: (p) => `Um cliente compra ${getal(p.n,"pt")} avaliações a ${euro(p.prijs,"pt")} com ${procent(p.k,"pt")} de desconto. Quanto paga?`,
     },
     uitleg: {
       nl: (p,j) => `${getal(p.n,"nl")} x ${euro(p.prijs,"nl")} = ${euro(p.n*p.prijs,"nl")}. Daarvan ${procent(100-p.k,"nl")}: ${euro(j,"nl")}.`,
@@ -148,6 +166,8 @@ const T = {
       fr: (p,j) => `${getal(p.n,"fr")} x ${euro(p.prijs,"fr")} = ${euro(p.n*p.prijs,"fr")}. Soit ${procent(100-p.k,"fr")} : ${euro(j,"fr")}.`,
       es: (p,j) => `${getal(p.n,"es")} x ${euro(p.prijs,"es")} = ${euro(p.n*p.prijs,"es")}. De eso, ${procent(100-p.k,"es")}: ${euro(j,"es")}.`,
       ro: (p,j) => `${getal(p.n,"ro")} x ${euro(p.prijs,"ro")} = ${euro(p.n*p.prijs,"ro")}. Din care ${procent(100-p.k,"ro")}: ${euro(j,"ro")}.`,
+      it: (p,j) => `${getal(p.n,"it")} x ${euro(p.prijs,"it")} = ${euro(p.n*p.prijs,"it")}. Il ${procent(100-p.k,"it")} di questo importo: ${euro(j,"it")}.`,
+      pt: (p,j) => `${getal(p.n,"pt")} x ${euro(p.prijs,"pt")} = ${euro(p.n*p.prijs,"pt")}. ${procent(100-p.k,"pt")} desse valor: ${euro(j,"pt")}.`,
     },
     maak(r) {
       const n = kies(r, [12, 15, 20, 24, 25, 30, 40, 50]);
@@ -169,6 +189,8 @@ const T = {
       fr: (p) => `Un budget de ${euro(p.tot,"fr")} est réparti selon le rapport ${p.a}:${p.b}:${p.c}. Combien revient à la plus grande part ?`,
       es: (p) => `Un presupuesto de ${euro(p.tot,"es")} se reparte en la proporción ${p.a}:${p.b}:${p.c}. ¿Cuánto corresponde a la parte mayor?`,
       ro: (p) => `Un buget de ${euro(p.tot,"ro")} se împarte în raportul ${p.a}:${p.b}:${p.c}. Cât revine celei mai mari părți?`,
+      it: (p) => `Un budget di ${euro(p.tot,"it")} viene ripartito nel rapporto ${p.a}:${p.b}:${p.c}. Quanto spetta alla parte più grande?`,
+      pt: (p) => `Um orçamento de ${euro(p.tot,"pt")} é repartido na proporção ${p.a}:${p.b}:${p.c}. Quanto cabe à parte maior?`,
     },
     uitleg: {
       nl: (p,j) => `Samen ${p.a+p.b+p.c} delen. Eén deel is ${euro(p.tot/(p.a+p.b+p.c),"nl")}, maal ${Math.max(p.a,p.b,p.c)} is ${euro(j,"nl")}.`,
@@ -177,6 +199,8 @@ const T = {
       fr: (p,j) => `${p.a+p.b+p.c} parts au total. Une part vaut ${euro(p.tot/(p.a+p.b+p.c),"fr")}, fois ${Math.max(p.a,p.b,p.c)} donne ${euro(j,"fr")}.`,
       es: (p,j) => `${p.a+p.b+p.c} partes en total. Una parte es ${euro(p.tot/(p.a+p.b+p.c),"es")}, por ${Math.max(p.a,p.b,p.c)} da ${euro(j,"es")}.`,
       ro: (p,j) => `${p.a+p.b+p.c} părți în total. O parte este ${euro(p.tot/(p.a+p.b+p.c),"ro")}, ori ${Math.max(p.a,p.b,p.c)} dă ${euro(j,"ro")}.`,
+      it: (p,j) => `${p.a+p.b+p.c} parti in totale. Una parte vale ${euro(p.tot/(p.a+p.b+p.c),"it")}, per ${Math.max(p.a,p.b,p.c)} fa ${euro(j,"it")}.`,
+      pt: (p,j) => `${p.a+p.b+p.c} partes no total. Uma parte vale ${euro(p.tot/(p.a+p.b+p.c),"pt")}, vezes ${Math.max(p.a,p.b,p.c)} dá ${euro(j,"pt")}.`,
     },
     maak(r) {
       const a = tussen(r, 1, 3), b = tussen(r, 2, 5), c = tussen(r, 3, 7);
@@ -198,6 +222,8 @@ const T = {
       fr: (p) => `${getal(p.m,"fr")} évaluateurs traitent ${getal(p.n,"fr")} rapports en ${getal(p.u,"fr")} heures. Combien d'heures faut-il pour ${getal(p.n2,"fr")} rapports au même rythme ?`,
       es: (p) => `${getal(p.m,"es")} revisores procesan ${getal(p.n,"es")} informes en ${getal(p.u,"es")} horas. ¿Cuántas horas llevan ${getal(p.n2,"es")} informes al mismo ritmo?`,
       ro: (p) => `${getal(p.m,"ro")} evaluatori procesează ${getal(p.n,"ro")} rapoarte în ${getal(p.u,"ro")} ore. Câte ore durează ${getal(p.n2,"ro")} rapoarte în același ritm?`,
+      it: (p) => `${getal(p.m,"it")} valutatori elaborano ${getal(p.n,"it")} report in ${getal(p.u,"it")} ore. Quante ore servono per ${getal(p.n2,"it")} report allo stesso ritmo?`,
+      pt: (p) => `${getal(p.m,"pt")} avaliadores processam ${getal(p.n,"pt")} relatórios em ${getal(p.u,"pt")} horas. Quantas horas demoram ${getal(p.n2,"pt")} relatórios ao mesmo ritmo?`,
     },
     uitleg: {
       nl: (p,j) => `Per uur ${getal(p.n/p.u,"nl",1)} rapporten. ${getal(p.n2,"nl")} / ${getal(p.n/p.u,"nl",1)} = ${getal(j,"nl",1)} uur.`,
@@ -206,6 +232,8 @@ const T = {
       fr: (p,j) => `${getal(p.n/p.u,"fr",1)} rapports par heure. ${getal(p.n2,"fr")} / ${getal(p.n/p.u,"fr",1)} = ${getal(j,"fr",1)} heures.`,
       es: (p,j) => `${getal(p.n/p.u,"es",1)} informes por hora. ${getal(p.n2,"es")} / ${getal(p.n/p.u,"es",1)} = ${getal(j,"es",1)} horas.`,
       ro: (p,j) => `${getal(p.n/p.u,"ro",1)} rapoarte pe oră. ${getal(p.n2,"ro")} / ${getal(p.n/p.u,"ro",1)} = ${getal(j,"ro",1)} ore.`,
+      it: (p,j) => `${getal(p.n/p.u,"it",1)} report all'ora. ${getal(p.n2,"it")} / ${getal(p.n/p.u,"it",1)} = ${getal(j,"it",1)} ore.`,
+      pt: (p,j) => `${getal(p.n/p.u,"pt",1)} relatórios por hora. ${getal(p.n2,"pt")} / ${getal(p.n/p.u,"pt",1)} = ${getal(j,"pt",1)} horas.`,
     },
     maak(r) {
       const m = tussen(r, 2, 6), u = kies(r, [4, 5, 6, 8]);
@@ -228,6 +256,8 @@ const T = {
       fr: (p) => `Un tarif a augmenté de ${procent(p.k,"fr")} pour atteindre ${euro(p.na,"fr")}. Quel était le tarif auparavant ?`,
       es: (p) => `Una tarifa subió un ${procent(p.k,"es")} hasta ${euro(p.na,"es")}. ¿Cuál era antes?`,
       ro: (p) => `Un tarif a crescut cu ${procent(p.k,"ro")} până la ${euro(p.na,"ro")}. Cât era înainte?`,
+      it: (p) => `Una tariffa è aumentata del ${procent(p.k,"it")} fino a ${euro(p.na,"it")}. Quanto era prima?`,
+      pt: (p) => `Uma tarifa aumentou ${procent(p.k,"pt")} para ${euro(p.na,"pt")}. Quanto era antes?`,
     },
     uitleg: {
       nl: (p,j) => `Deel door ${getal(1+p.k/100,"nl",3)}, niet aftrekken: ${euro(p.na,"nl")} / ${getal(1+p.k/100,"nl",3)} = ${euro(j,"nl",2)}.`,
@@ -236,6 +266,8 @@ const T = {
       fr: (p,j) => `Divisez par ${getal(1+p.k/100,"fr",3)}, ne soustrayez pas : ${euro(p.na,"fr")} / ${getal(1+p.k/100,"fr",3)} = ${euro(j,"fr",2)}.`,
       es: (p,j) => `Divide entre ${getal(1+p.k/100,"es",3)}, no restes: ${euro(p.na,"es")} / ${getal(1+p.k/100,"es",3)} = ${euro(j,"es",2)}.`,
       ro: (p,j) => `Împărțiți la ${getal(1+p.k/100,"ro",3)}, nu scădeți: ${euro(p.na,"ro")} / ${getal(1+p.k/100,"ro",3)} = ${euro(j,"ro",2)}.`,
+      it: (p,j) => `Dividere per ${getal(1+p.k/100,"it",3)}, non sottrarre: ${euro(p.na,"it")} / ${getal(1+p.k/100,"it",3)} = ${euro(j,"it",2)}.`,
+      pt: (p,j) => `Divida por ${getal(1+p.k/100,"pt",3)}, não subtraia: ${euro(p.na,"pt")} / ${getal(1+p.k/100,"pt",3)} = ${euro(j,"pt",2)}.`,
     },
     maak(r) {
       const voor = kies(r, [80, 95, 120, 140, 160, 180, 220, 250]);

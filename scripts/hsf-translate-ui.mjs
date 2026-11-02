@@ -115,7 +115,8 @@ async function deepl(texts, lang, { xml = false } = {}) {
   const body = new URLSearchParams();
   for (const t of texts) body.append('text', t);
   body.append('source_lang', 'EN');
-  body.append('target_lang', lang.toUpperCase());
+  // DeepL kent Portugees alleen als variant; hrmforce schrijft voor Portugal.
+  body.append('target_lang', { pt: 'PT-PT' }[lang] || lang.toUpperCase());
   body.append('preserve_formatting', '1');
   body.append('context', CONTEXT);
   if (FORMAL.has(lang)) body.append('formality', 'prefer_more');
