@@ -89,7 +89,10 @@ const ontentiteit = (s) => ENTITEITEN.reduce((t, [re, c]) => t.replace(re, c), s
 const MET_HOOFDLETTER = BESCHERMD.filter((p) => /^[A-Z0-9]/.test(p))
   .sort((a, b) => b.length - a.length);
 const SPATIEGAT = new RegExp('([a-z\u00e0-\u00ff])(' + MET_HOOFDLETTER.map(esc).join('|') + ')', 'g');
-const herstelSpatie = (s) => s.replace(SPATIEGAT, '$1 $2');
+// DeepL plakt ook de kleine merknaam soms vast aan het woord ervoor
+// ("Platshrmforce"). Een letter direct voor hrmforce is nooit goed.
+const KLEIN_GAT = /(\p{L})(hrmforce)/gu;
+const herstelSpatie = (s) => s.replace(SPATIEGAT, '$1 $2').replace(KLEIN_GAT, '$1 $2');
 
 /** DeepL zet soms aanhalingstekens om een beschermd stuk. Die halen we eraf. */
 function ontquote(s) {
