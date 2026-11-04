@@ -1,0 +1,14 @@
+---
+// Factuurinstructie voor leveranciers in elke taal. Een taal zonder eigen
+// tekst valt terug op het Engels, nooit op het Nederlands.
+import Base from "../../layouts/Base.astro";
+import Facturen from "../../components/Facturen.astro";
+import { facturenContent } from "../../data/facturen-content.js";
+import { perTaal } from "../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const t = facturenContent[lang] ?? facturenContent.en;
+---
+<Base title={t.meta.title} description={t.meta.description} noindex={true} titelExact={true}>
+  <Facturen t={t} lang={lang} />
+</Base>

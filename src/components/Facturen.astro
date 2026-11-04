@@ -1,0 +1,181 @@
+---
+// Factuurinstructie voor leveranciers (/invoices/ en /<taal>/invoices/).
+// Tekst: src/data/facturen-content.js. Vaste gegevens: FACTUURGEGEVENS.
+import { localizePath } from "../i18n/utils.js";
+import { FACTUURGEGEVENS as G, FACTUUR_ANKERS as A } from "../data/facturen-content.js";
+const { t, lang } = Astro.props;
+
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const tel = lang === "nl" ? G.telNl : G.telInt;
+const link = (adres) => `<a href="mailto:${adres}">${adres}</a>`;
+// Plaatshouders uit de tekst vervangen door links en vaste waarden.
+const vul = (s) => esc(s)
+  .replace(/\{mail\}/g, link(G.mail))
+  .replace(/\{finance\}/g, link(G.finance))
+  .replace(/\{tel\}/g, `<a href="tel:${G.telHref}" class="fi-nowrap">${tel}</a>`)
+  .replace(/\{btw\}/g, `<span class="fi-nowrap">${G.btw}</span>`);
+
+const secties = [
+  t.submit.title, t.billing.title, t.required.title, t.vat.title,
+  t.payment.title, t.credit.title, t.questions.title,
+].map((titel, i) => ({ id: A[i], titel, nr: String(i + 1).padStart(2, "0") }));
+
+const rijen = [
+  { label: t.billing.name, waarde: G.naam },
+  { label: t.billing.address, waarde: `${G.straat}, ${G.postcode}, ${t.billing.country}` },
+  { label: t.billing.vat, waarde: G.btw },
+  { label: t.billing.coc, waarde: G.kvk },
+  { label: t.billing.email, waarde: G.mail },
+];
+---
+<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+
+<section class="ahero"><div class="wrap">
+  <div>
+    <div class="eyebrow">{t.hero.eyebrow}</div>
+    <h1>{t.hero.title}</h1>
+    <p class="fi-intro">{t.hero.intro}</p>
+  </div>
+  <div class="fi-mailkaart">
+    <p class="fi-label">{t.mail.label}</p>
+    <div class="fi-mailrij">
+      <a class="fi-mail" href={`mailto:${G.mail}`}>{G.mail}</a>
+      <button type="button" class="fi-kopie fi-kopie-licht" data-kopie={G.mail} data-klaar={t.mail.copied}>{t.mail.copy}</button>
+    </div>
+    <p class="fi-noot">{t.mail.note}</p>
+  </div>
+</div></section>
+
+<section class="fi"><div class="wrap fi-raster">
+  <nav class="fi-toc" aria-label={t.toc}>
+    <div class="eyebrow">{t.toc}</div>
+    <ol>
+      {secties.map((s) => <li><a href={`#${s.id}`}><span>{s.nr}</span>{s.titel}</a></li>)}
+    </ol>
+  </nav>
+
+  <div class="fi-inhoud">
+    <section id={secties[0].id} class="fi-blok">
+      <h2><span class="fi-nr">{secties[0].nr}</span>{secties[0].titel}</h2>
+      <ul class="fi-lijst">{t.submit.items.map((x) => <li set:html={vul(x)} />)}</ul>
+    </section>
+
+    <section id={secties[1].id} class="fi-blok">
+      <h2><span class="fi-nr">{secties[1].nr}</span>{secties[1].titel}</h2>
+      <table class="fi-tabel fi-tabel-kopie">
+        <thead><tr><th scope="col">{t.billing.head[0]}</th><th scope="col">{t.billing.head[1]}</th><th><span class="fi-sr">{t.mail.copy}</span></th></tr></thead>
+        <tbody>
+          {rijen.map((r) => (
+            <tr>
+              <td>{r.label}</td>
+              <td class="fi-waarde">{r.waarde}</td>
+              <td class="fi-knopcel"><button type="button" class="fi-kopie" data-kopie={r.waarde} data-klaar={t.mail.copied} aria-label={`${t.mail.copy}: ${r.label}`}>{t.mail.copy}</button></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    <section id={secties[2].id} class="fi-blok">
+      <h2><span class="fi-nr">{secties[2].nr}</span>{secties[2].titel}</h2>
+      <ol class="fi-genummerd">{t.required.items.map((x) => <li set:html={vul(x)} />)}</ol>
+    </section>
+
+    <section id={secties[3].id} class="fi-blok">
+      <h2><span class="fi-nr">{secties[3].nr}</span>{secties[3].titel}</h2>
+      <table class="fi-tabel">
+        <thead><tr><th scope="col">{t.vat.head[0]}</th><th scope="col">{t.vat.head[1]}</th></tr></thead>
+        <tbody>{t.vat.rows.map(([waar, wat]) => <tr><td>{waar}</td><td set:html={vul(wat)} /></tr>)}</tbody>
+      </table>
+    </section>
+
+    <section id={secties[4].id} class="fi-blok">
+      <h2><span class="fi-nr">{secties[4].nr}</span>{secties[4].titel}</h2>
+      <ul class="fi-lijst">{t.payment.items.map((x) => <li set:html={vul(x)} />)}</ul>
+    </section>
+
+    <section id={secties[5].id} class="fi-blok">
+      <h2><span class="fi-nr">{secties[5].nr}</span>{secties[5].titel}</h2>
+      <p set:html={vul(t.credit.text)} />
+    </section>
+
+    <section id={secties[6].id} class="fi-blok">
+      <h2><span class="fi-nr">{secties[6].nr}</span>{secties[6].titel}</h2>
+      <p set:html={vul(t.questions.text)} />
+    </section>
+  </div>
+</div></section>
+
+<script>
+  // Kopieerknoppen voor het factuuradres en de tenaamstelling.
+  document.querySelectorAll<HTMLButtonElement>(".fi-kopie").forEach((knop) => {
+    const tekst = knop.textContent;
+    knop.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(knop.dataset.kopie || "");
+        knop.textContent = knop.dataset.klaar || tekst;
+        knop.classList.add("is-klaar");
+        setTimeout(() => { knop.textContent = tekst; knop.classList.remove("is-klaar"); }, 1800);
+      } catch { /* geen klembord: de tekst blijft gewoon selecteerbaar */ }
+    });
+  });
+</script>
+
+<style>
+  .fi-intro { color: rgba(255,255,255,.85); font-size: 17px; max-width: 620px; }
+  .fi-mailkaart { background: #fff; color: var(--text); padding: 26px 28px; border-left: 3px solid var(--gold); }
+  .fi-label { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-bottom: 10px; }
+  .fi-mailrij { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .fi-mail { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.25rem, 1rem + 1.2vw, 1.6rem); color: var(--navy); letter-spacing: -.01em; word-break: break-all; }
+  .fi-mail:hover { color: var(--blue); }
+  .fi-noot { color: var(--muted); font-size: 14.5px; margin-top: 14px; }
+
+  .fi { padding-top: clamp(40px, 5vw, 64px); }
+  .fi-raster { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 56px; align-items: start; }
+  .fi-toc { position: sticky; top: 96px; border-top: 1px solid var(--line); padding-top: 16px; }
+  .fi-toc ol { list-style: none; padding: 0; margin: 0; }
+  .fi-toc li { margin: 0; }
+  .fi-toc a { display: flex; gap: 10px; padding: 7px 0; font-size: 14.5px; color: var(--navy); border-bottom: 1px solid var(--line); }
+  .fi-toc a:hover { color: var(--blue); }
+  .fi-toc a span { font-family: var(--font-mono); color: var(--muted); font-size: 12.5px; padding-top: 2px; }
+
+  .fi-blok { padding: 0 0 36px; margin-bottom: 36px; border-bottom: 1px solid var(--line); scroll-margin-top: 96px; }
+  .fi-blok:last-child { border-bottom: 0; margin-bottom: 0; }
+  .fi-blok h2 { display: flex; align-items: baseline; gap: 14px; font-size: clamp(1.3rem, 1.1rem + .8vw, 1.6rem); color: var(--navy); margin-bottom: 16px; }
+  .fi-nr { font-family: var(--font-mono); font-size: 13px; font-weight: 500; color: var(--blue); border-left: 2px solid var(--gold); padding-left: 8px; }
+  .fi-blok p, .fi-blok li { font-size: 16px; line-height: 1.65; }
+  .fi-blok :global(a) { color: var(--blue); text-decoration: underline; text-underline-offset: 2px; }
+
+  .fi-lijst { list-style: none; padding: 0; margin: 0; }
+  .fi-lijst li { position: relative; padding: 0 0 10px 26px; }
+  .fi-lijst li:before { content: ""; position: absolute; left: 0; top: .5em; width: 14px; height: 14px; background: var(--navy); -webkit-mask: var(--mark-vink) center / contain no-repeat; mask: var(--mark-vink) center / contain no-repeat; }
+
+  .fi-genummerd { list-style: none; padding: 0; margin: 0; counter-reset: fi; }
+  .fi-genummerd li { counter-increment: fi; display: grid; grid-template-columns: 34px minmax(0, 1fr); padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .fi-genummerd li:before { content: counter(fi, decimal-leading-zero); font-family: var(--font-mono); font-size: 13px; color: var(--muted); padding-top: 3px; }
+
+  .fi-tabel { margin: 4px 0 0; }
+  .fi-tabel th { background: var(--navy); color: #fff; font-weight: 600; font-size: 14px; }
+  .fi-tabel tbody tr:nth-child(even) td { background: var(--bg); }
+  .fi-tabel td:first-child { color: var(--muted); width: 34%; }
+  .fi-waarde { font-family: var(--font-mono); font-size: 14.5px; color: var(--navy); }
+  .fi-knopcel { width: 1%; white-space: nowrap; text-align: right; }
+
+  .fi-kopie { font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--navy); background: #fff; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); padding: 5px 10px; cursor: pointer; }
+  .fi-kopie:hover { border-color: var(--navy); }
+  .fi-kopie.is-klaar { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .fi-blok :global(.fi-nowrap) { white-space: nowrap; }
+  .fi-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+  @media (max-width: 880px) {
+    .fi-raster { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+    .fi-toc { position: static; }
+  }
+  @media (max-width: 560px) {
+    .fi-tabel th, .fi-tabel td { padding: 10px 8px; }
+    .fi-tabel td:first-child { width: auto; }
+    .fi-waarde { font-size: 13.5px; word-break: break-word; }
+    .fi-knopcel { display: none; }
+    .fi-tabel-kopie th:last-child { display: none; }
+  }
+</style>

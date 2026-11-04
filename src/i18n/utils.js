@@ -56,7 +56,7 @@ export const LOCALIZED_PAGES = new Set([
   "/", "/online-assessments/", "/hrm-oplossingen/", "/advies/", "/over-ons/",
   "/contact/", "/shop/", "/assessment-overzicht/", "/tarieven/", "/roi-rekentool/",
   "/klantcases/", "/kenniscentrum/", "/trust/", "/integraties/", "/voorbereiding/",
-  "/support/", "/support/f-a-q/", "/wetenschappelijke-verantwoording/", "/begrippenlijst/", "/voor-kandidaten/", "/testkiezer/", "/whitepapers/", "/toepassingen/", "/vacatures/", "/vergelijking/", "/rondleiding/", "/afrekenen/", "/bestelling-gelukt/", "/documenten/",
+  "/support/", "/support/f-a-q/", "/wetenschappelijke-verantwoording/", "/begrippenlijst/", "/voor-kandidaten/", "/testkiezer/", "/whitepapers/", "/toepassingen/", "/vacatures/", "/vergelijking/", "/rondleiding/", "/afrekenen/", "/bestelling-gelukt/", "/documenten/", "/invoices/",
   // Deze twee adviespagina's worden wel in elke taal gebouwd.
   "/advies/assessments/", "/advies/trainingen/",
 ]);

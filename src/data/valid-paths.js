@@ -98,8 +98,11 @@ function afgeleidePaden(bestaand) {
 // niet naar verwijzen. Zie kenniscentrum-duplicaten.js.
 const VERVALLEN = new Set(Object.keys(DUBBELE_ARTIKELEN));
 
+// De factuurinstructie voor leveranciers bestaat in elke taal onder /invoices/.
+const FACTUREN = Object.keys(languages).map((t) => (t === "nl" ? "/invoices/" : `/${t}/invoices/`));
+
 const BRON = Array.from(
-  new Set([...STATIC, ...EXTRA, ...OEFEN, ...SECTIES, ...HUBS, ...sanityPaths])
+  new Set([...STATIC, ...EXTRA, ...OEFEN, ...SECTIES, ...HUBS, ...FACTUREN, ...sanityPaths])
 )
   .filter((p) => !VERVALLEN.has(p))
   // Samengevoegde assessmentpagina's (zie SAMENGEVOEGD in src/i18n/utils.js).

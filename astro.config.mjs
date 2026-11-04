@@ -11,7 +11,8 @@ export default defineConfig({
       // ze als "verzonden URL met noindex". Het gaat om de volledige profielen van
       // het skills framework (Nederlands: /volledig/, overige talen: /full/), de
       // matchcalculator per functie, de bevestigingspagina's na een bestelling en
-      // de verborgen ondertekenpagina voor assessoren en de wekelijkse updates in
+      // de verborgen ondertekenpagina voor assessoren, de factuurinstructie voor
+      // leveranciers (/invoices/) en de wekelijkse updates in
       // het kenniscentrum (1.206 pagina's in zes talen, op de oude site ook noindex).
       //
       // De matchcalculator is een rekenhulp, geen tekstpagina. Met 450 functies
@@ -21,7 +22,7 @@ export default defineConfig({
       filter: (page) =>
         !/\/skills-framework\/(jobs\/[^/]+\/full|functies\/[^/]+\/volledig)\/?$/.test(page) &&
         !/\/skills-framework\/(match-calculator|matchcalculator)\/[^/]+\/?$/.test(page) &&
-        !/\/(bestelling-gelukt|afrekenen)\/?$/.test(page) &&
+        !/\/(bestelling-gelukt|afrekenen|invoices)\/?$/.test(page) &&
         !/\/assessor\//.test(page) &&
         !/\/kenniscentrum\/wekelijkse-update\//.test(page),
     }),

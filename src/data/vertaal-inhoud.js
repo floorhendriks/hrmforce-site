@@ -43,7 +43,7 @@ const LOKALISEERBAAR = new Set([
   "/klantcases/", "/kenniscentrum/", "/trust/", "/integraties/", "/voorbereiding/",
   "/support/", "/support/f-a-q/", "/wetenschappelijke-verantwoording/", "/begrippenlijst/",
   "/voor-kandidaten/", "/testkiezer/", "/whitepapers/", "/toepassingen/", "/vacatures/",
-  "/vergelijking/", "/rondleiding/", "/afrekenen/", "/bestelling-gelukt/", "/documenten/",
+  "/vergelijking/", "/rondleiding/", "/afrekenen/", "/bestelling-gelukt/", "/documenten/", "/invoices/",
 ]);
 
 // Sleutels waarvan de waarde geen zin is maar een pad, een bestandsnaam of een code.

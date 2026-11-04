@@ -1,0 +1,11 @@
+---
+// Factuurinstructie voor leveranciers. Staat op noindex: de pagina is voor
+// leveranciers die de link van ons krijgen, niet voor zoekverkeer.
+import Base from "../layouts/Base.astro";
+import Facturen from "../components/Facturen.astro";
+import { facturenContent } from "../data/facturen-content.js";
+const t = facturenContent.nl;
+---
+<Base title={t.meta.title} description={t.meta.description} noindex={true} titelExact={true}>
+  <Facturen t={t} lang="nl" />
+</Base>

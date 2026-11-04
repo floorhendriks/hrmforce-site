@@ -159,6 +159,15 @@ loopt niet. Kies per taal de neutrale zakelijke aanhef.
 zelfstandig naamwoord, geen zin, en daar maakt DeepL soms een opdracht van
 ("Prosimy kierować na adres hrmforce"). Lees beide onderwerpen na.
 
+**De btw-termen in de factuurinstructie.** `/invoices/` komt uit
+`src/data/facturen-content.js` en gaat vanzelf mee in vertaalronde 1. Kijk in de
+rij "Ander EU-land" na dat "btw verlegd" de wettelijke term van die taal is en
+geen letterlijke vertaling: "odwrotne obciążenie", "omvendt betalingspligt",
+"omvänd skattskyldighet", "inversione contabile", "autoliquidação". De
+"VAT reverse charge"-zinnen blijven Engels. Adres, btw-nummer, KvK-nummer en
+mailadressen staan buiten de taalblokken in `FACTUURGEGEVENS` en gaan niet
+door DeepL.
+
 **Vastgeplakte merknamen.** Het vertaalscript zet beschermde namen tussen
 `<x>`-tags, en DeepL plakt die soms aan het vorige woord ("wNIP", "modelu
 WorkplaceBig Five"). `herstelSpatie()` in het script vangt dat af, maar
