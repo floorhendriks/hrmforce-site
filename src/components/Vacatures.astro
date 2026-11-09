@@ -6,40 +6,48 @@ const { lang = "nl" } = Astro.props;
 const t = VAC[lang] || VAC.nl;
 const mailto = "mailto:service@hrmforce.com";
 const _canon = new URL(Astro.url.pathname, "https://hrmforce.com").href;
-const _posted = "2026-01-06";
-// Google vraagt om een einddatum; zonder loopt een vacature na ~30 dagen uit de
-// resultaten. Een jaar na plaatsing, daarna verlengen of de vacature sluiten.
-const _validThrough = "2026-12-31T23:59:59+01:00";
-const _adres = {
-  "@type": "PostalAddress",
-  streetAddress: "Solitudolaan 396",
-  addressLocality: "Amsterdam",
-  addressRegion: "Noord-Holland",
-  postalCode: "1096 DS",
-  addressCountry: "NL",
-};
+// Plaatsingsdatum per vacature. Google vraagt om een einddatum; zonder loopt
+// een vacature na ~30 dagen uit de resultaten. Een jaar na plaatsing, daarna
+// verlengen of de vacature sluiten. De vacature met regio's (Latijns-Amerika en
+// Spanje) is van 06-01-2026, de Europese Value Added Reseller van 09-11-2026.
+const _datum = (j) => j.regio
+  ? { posted: "2026-01-06", tot: "2026-12-31T23:59:59+01:00" }
+  : { posted: "2026-11-09", tot: "2027-11-09T23:59:59+01:00" };
 // Salarisindicatie voor alle vacatures: 3.000 tot 12.000 euro per maand.
 const _salaris = {
   "@type": "MonetaryAmount",
   currency: "EUR",
   value: { "@type": "QuantitativeValue", minValue: 3000, maxValue: 12000, unitText: "MONTH" },
 };
-const _jobsLd = (t.jobs || []).map((j, i) => ({
+// Volledige vacaturetekst als HTML voor de JobPosting, zodat Google meer ziet dan de samenvatting.
+const _esc = (x) => String(x).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const _tag = (n, x) => "<" + n + ">" + x + "<" + "/" + n + ">";
+function _volledig(j) {
+  const delen = [_tag("p", _esc(j.desc))];
+  for (const b of j.body || []) {
+    delen.push(_tag("h3", _esc(b.h)));
+    for (const p of b.p || []) delen.push(_tag("p", _esc(p)));
+    if (b.items) delen.push(_tag("ul", b.items.map((i) => _tag("li", _esc(i))).join("")));
+  }
+  return delen.join("");
+}
+// Alle vacatures zijn zelfstandige partnerrollen op afstand.
+const _jobsLd = (t.jobs || []).map((j) => ({
   "@context": "https://schema.org",
   "@type": "JobPosting",
   title: j.title,
-  description: j.desc,
-  datePosted: _posted,
-  employmentType: i === 0 ? "INTERN" : "CONTRACTOR",
+  description: _volledig(j),
+  datePosted: _datum(j).posted,
+  employmentType: "CONTRACTOR",
   hiringOrganization: { "@type": "Organization", name: "hrmforce", sameAs: "https://hrmforce.com/" },
   directApply: false,
-  validThrough: _validThrough,
+  validThrough: _datum(j).tot,
   baseSalary: _salaris,
-  applicantLocationRequirements: { "@type": "Country", name: i === 0 ? "Netherlands" : "Worldwide" },
-  jobLocationType: i === 0 ? undefined : "TELECOMMUTE",
-  jobLocation: i === 0 ? { "@type": "Place", address: _adres } : undefined,
+  applicantLocationRequirements: { "@type": "Country", name: "Worldwide" },
+  jobLocationType: "TELECOMMUTE",
   url: _canon,
 }));
+
 ---
 {_jobsLd.map((ld) => (<script type="application/ld+json" is:inline set:html={JSON.stringify(ld)}></script>))}
 <div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> &rsaquo; <span>{t.crumb}</span></div></div>
@@ -52,7 +60,7 @@ const _jobsLd = (t.jobs || []).map((j, i) => ({
 
 <section><div class="wrap" style="max-width:900px">
   <div class="vac-list">
-    {t.jobs.map((j, i) => (
+    {t.jobs.map((j) => (
       <div class="vac-card">
         <div class="vac-head">
           <div>
@@ -63,7 +71,19 @@ const _jobsLd = (t.jobs || []).map((j, i) => ({
           <a href={mailto} class="btn btn-primary vac-apply">{t.applyCta} &rarr;</a>
         </div>
         <p class="vac-desc">{j.desc}</p>
-        {i === 1 && (
+        {j.body && (
+          <details class="vac-more">
+            <summary>{t.viewCta}</summary>
+            {j.body.map((b) => (
+              <div class="vac-sec">
+                <h3>{b.h}</h3>
+                {b.p.map((p) => <p>{p}</p>)}
+                {b.items && <ul>{b.items.map((it) => <li>{it}</li>)}</ul>}
+              </div>
+            ))}
+          </details>
+        )}
+        {j.regio && (
           <div class="vac-regions">
             <span class="vac-regions-lbl">{t.regionsLabel}:</span>
             {REGIONS.map((r) => <span class="vac-chip">{r}</span>)}
@@ -93,5 +113,10 @@ const _jobsLd = (t.jobs || []).map((j, i) => ({
   .vac-regions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
   .vac-regions-lbl{color:var(--muted);font-size:13px;font-weight:700;margin-right:2px}
   .vac-chip{background:var(--navy);color:#fff;font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:var(--radius-pill)}
+  .vac-more{margin-top:14px}
+  .vac-more summary{cursor:pointer;color:var(--navy);font-weight:700;font-size:15px}
+  .vac-sec h3{color:var(--navy);font-size:1.05rem;margin:20px 0 6px}
+  .vac-sec p,.vac-sec li{color:var(--text);font-size:15.5px;line-height:1.6;margin:0 0 8px}
+  .vac-sec ul{margin:0 0 8px;padding-left:20px}
   @media(max-width:620px){.vac-apply{width:100%}}
 </style>
