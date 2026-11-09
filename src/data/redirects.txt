@@ -979,3 +979,9 @@
 /advies/overzicht/training-certificatietraining-hrmforce/ /advies/certificatietraining/ 301
 /beoordeling/ /kenniscentrum/ 301
 /de/motivation-de/ /de/assessments/drijfverentest/ 301
+
+# Search Console 09-11-2026: de laatste drie 404's uit de vierde validatieronde.
+/ro/personalitate/ /ro/test-de-personalitate/ 301
+/ro/politica/ /ro/kenniscentrum/ 301
+/producto/360-graden-feedback/ /es/assessments/360-graden-feedback/ 301
+/producto/* /es/shop/ 301

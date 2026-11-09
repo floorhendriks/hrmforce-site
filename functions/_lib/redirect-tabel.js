@@ -797,7 +797,10 @@ export const EXACT = {"/assessments/cognitieve-test/":["/assessments/ability-sca
 "/ro/produs/big-fifty-personality/":["/ro/assessments/big-five/",301],
 "/advies/overzicht/training-certificatietraining-hrmforce/":["/advies/certificatietraining/",301],
 "/beoordeling/":["/kenniscentrum/",301],
-"/de/motivation-de/":["/de/assessments/drijfverentest/",301]};
+"/de/motivation-de/":["/de/assessments/drijfverentest/",301],
+"/ro/personalitate/":["/ro/test-de-personalitate/",301],
+"/ro/politica/":["/ro/kenniscentrum/",301],
+"/producto/360-graden-feedback/":["/es/assessments/360-graden-feedback/",301]};
 export const WILD = [["/pl/skills-framework/","/en/skills-framework/:splat",301],
 ["/da/skills-framework/","/en/skills-framework/:splat",301],
 ["/sv/skills-framework/","/en/skills-framework/:splat",301],
@@ -885,4 +888,5 @@ export const WILD = [["/pl/skills-framework/","/en/skills-framework/:splat",301]
 ["/wp-content/uploads/complianz/","/",410],
 ["/winkel","/shop/",301],
 ["/es/advies/advies_categorieen/","/es/advies/",301],
-["/ro/produs/","/ro/shop/",301]];
+["/ro/produs/","/ro/shop/",301],
+["/producto/","/es/shop/",301]];
