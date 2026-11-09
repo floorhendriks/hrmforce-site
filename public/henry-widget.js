@@ -1083,7 +1083,7 @@
    in. Onafhankelijk van de rest van de widget. */
 (function () {
   var MSG = {
-    nl: { t: "Vraag het aan Henry", q: "Kan ik je helpen de juiste test te kiezen?", c: "Stel je vraag" },
+    nl: { t: "Vraag het aan Henry", q: "Werk je in HR? Ik help je de juiste assessment voor je organisatie te kiezen.", c: "Stel je vraag" },
     en: { t: "Ask Henry", q: "Can I help you choose the right test?", c: "Ask your question" },
     de: { t: "Fragen Sie Henry", q: "Kann ich Ihnen bei der Testauswahl helfen?", c: "Stellen Sie Ihre Frage" },
     fr: { t: "Demandez à Henry", q: "Puis-je vous aider à choisir le bon test ?", c: "Posez votre question" },
@@ -1099,6 +1099,8 @@
 
   function start() {
     if (seen()) return;
+    // B2B-109: geen teaser op de kleurentest en in het kenniscentrum (werd daar vooral weggeklikt).
+    if (/\/(gratis-kleurentest|kenniscentrum)(\/|$)/.test(location.pathname)) return;
     var root = document.getElementById("hrmforce-chatbot");
     var bubble = document.getElementById("hrmf-bubble");
     if (!root || !bubble) { return setTimeout(start, 1000); }

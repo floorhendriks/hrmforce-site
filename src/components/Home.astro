@@ -69,7 +69,7 @@ const faqLd = {
   <div class="wrap">
     <div>
       <span class="eyebrow">{c.hero.eyebrow}</span>
-      <h1>{c.hero.h1pre}<em>{c.hero.h1em}</em>{c.hero.h1post}</h1>
+      <h1><a href={demoHref} class="hero-h1-link">{c.hero.h1pre}<em>{c.hero.h1em}</em>{c.hero.h1post}</a></h1>
       <p class="sub">{c.hero.sub}</p>
       <div class="hero-btns">
         <a class="btn btn-primary" href={demoHref}>{c.hero.ctaPrimary} →</a>
@@ -498,4 +498,10 @@ const faqLd = {
   .cta-google .cg-txt b { font-size:16px; font-weight:800; }
   .cta-google .cg-txt em { font-style:normal; font-weight:500; color:#cfe0f5; }
   @media (max-width:520px) { .cta-google { flex-direction:column; gap:4px; text-align:center; border-radius:var(--radius); } }
+</style>
+
+<style>
+/* B2B-109 */
+.hero-h1-link{color:inherit;text-decoration:none}
+.hero-h1-link:hover{color:inherit}
 </style>

@@ -276,12 +276,19 @@ const orgLd = {
           var subj = d.onderwerp || "";
           var assessment = d.onderdeel || "";
           var params = { form: naam, subject: subj, type: "lead" };
+        // B2B-109: soort aanvraag (zakelijk/particulier) uit het formulier lezen.
+        var klant = "";
+        try { var _s = f.querySelector && f.querySelector("input[name=soort]:checked"); klant = _s ? _s.value : ""; } catch (e2) {}
+        params.klant = klant || "onbekend";
           if (assessment) params.assessment = assessment;
           ev("generate_lead", params);
 
           var isDemo = /demo/i.test(subj) || location.pathname.indexOf("/demo/") > -1 || f.id === "contactForm";
           var isAssessment = !!assessment || /assessment/i.test(subj) || /^(\/[a-z]{2})?\/assessments\//.test(location.pathname);
           var soortAanvraag = isDemo ? "demo" : (isAssessment ? "assessment" : "demo");
+        // B2B-109: particulieren tellen niet als Ads-conversie; zakelijke demo's krijgen een eigen event.
+        if (klant === "particulier") { ev("lead_particulier", { form: naam, subject: subj }); clarityEv("aanvraag_particulier", false); return; }
+        if (soortAanvraag === "demo") ev("demo_zakelijk", { form: naam, subject: subj });
           clarityEv(soortAanvraag === "demo" ? "aanvraag_demo" : "aanvraag_assessment", true);
           adsConversion(soortAanvraag);
         });
