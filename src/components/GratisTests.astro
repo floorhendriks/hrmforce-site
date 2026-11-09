@@ -4,7 +4,7 @@
    de overzichtspagina, zodat bezoekers die er één doen de rest ook zien. */
 import { ONDERDELEN } from "../data/oefentest-ui.js";
 import { VRAGENLIJSTEN } from "../data/oefenvragenlijst.js";
-import { localizePath } from "../i18n/utils.js";
+import { localizePath, demoPath } from "../i18n/utils.js"; // B2B-110 demoPath
 import { GRATIS_TEKST } from "../data/component-teksten.js";
 
 const { lang = "nl", huidig = "" } = Astro.props;
@@ -12,6 +12,15 @@ const { lang = "nl", huidig = "" } = Astro.props;
 const TEKST = GRATIS_TEKST;
 
 const tk = TEKST[lang] || TEKST.nl;
+// B2B-110: zakelijke vervolgstap, alleen op de kleurentestpagina
+const B2B110_KT = {
+  nl: { eye: "Voor werkgevers", kop: "Kleurentypen inzetten voor je team?", tekst: "Met hrmforce gebruik je de Typology-vragenlijst bij selectie, teamontwikkeling en coaching, met een uitgebreid rapport per kandidaat of medewerker. Bekijk in 30 minuten hoe het werkt.", knop: "Plan een gratis demo" },
+  en: { eye: "For employers", kop: "Using colour types for your team?", tekst: "With hrmforce you use the Typology questionnaire for selection, team development and coaching, with a detailed report for every candidate or employee. See how it works in 30 minutes.", knop: "Book a free demo" },
+  de: { eye: "Für Arbeitgeber", kop: "Farbtypen für Ihr Team nutzen?", tekst: "Mit hrmforce setzen Sie den Typology-Fragebogen bei Auswahl, Teamentwicklung und Coaching ein, mit einem ausführlichen Bericht pro Kandidat oder Mitarbeitenden. In 30 Minuten sehen Sie, wie es funktioniert.", knop: "Kostenlose Demo planen" },
+};
+const b2b110 = B2B110_KT[lang] || B2B110_KT.en;
+const b2b110Pad = (s) => (s || "").replace(/\/+$/, "");
+const b2b110Toon = huidig === "kleuren" || b2b110Pad(Astro.url.pathname) === b2b110Pad(localizePath("/gratis-kleurentest/", lang));
 const basis = localizePath("/oefentest/", lang);
 
 const kaarten = [
@@ -36,6 +45,18 @@ const kaarten = [
 ].filter((k) => k.sleutel !== huidig);
 ---
 
+{b2b110Toon && (
+<section class="b2b110-kt"><div class="wrap" style="display:block">
+  <div class="b2b110-box">
+    <div>
+      <div class="eyebrow">{b2b110.eye}</div>
+      <h2 class="section-title">{b2b110.kop}</h2>
+      <p>{b2b110.tekst}</p>
+    </div>
+    <a href={demoPath(lang)} class="btn btn-primary" data-b2b="kleurentest">{b2b110.knop} &rarr;</a>
+  </div>
+</div></section>
+)}
 <section class="bg-soft gt-sectie"><div class="wrap" style="display:block">
   <div class="eyebrow">{tk.kop}</div>
   <h2 class="section-title">{tk.kop}</h2>
@@ -62,4 +83,12 @@ const kaarten = [
   .gt-cta { color:var(--blue); font-weight:700; font-size:13.5px; margin-top:auto; padding-top:4px; }
   @media (max-width:980px) { .gt-grid { grid-template-columns:repeat(2,1fr); } }
   @media (max-width:640px) { .gt-grid { grid-template-columns:1fr; } }
+</style>
+
+<style>
+/* B2B-110 kleurentest */
+.b2b110-kt{padding-top:36px;padding-bottom:10px}
+.b2b110-box{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 28px;background:#fff;border:1px solid var(--line);border-left:6px solid var(--accent, #E8692C);border-radius:var(--radius);padding:24px 28px}
+.b2b110-box p{max-width:720px;margin:6px 0 0;color:var(--muted)}
+.b2b110-box .section-title{margin:4px 0 0}
 </style>

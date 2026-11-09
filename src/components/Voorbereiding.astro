@@ -7,6 +7,13 @@ import { VOORB_BOOK_UI, VOORB_CT_UI, VOORB_OT_BLOK, VOORB_PREP_UI } from "../dat
 const { t, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
 const demoHref = demoPath(lang);
+// B2B-110: werkgevers direct naar de demo
+const B2B110_T = {
+  nl: { tekst: "Werk je in HR en zoek je assessments voor je organisatie?", knop: "Plan een gratis demo" },
+  en: { tekst: "Working in HR and looking for assessments for your organisation?", knop: "Book a free demo" },
+  de: { tekst: "Sie arbeiten im HR-Bereich und suchen Assessments für Ihre Organisation?", knop: "Kostenlose Demo planen" },
+};
+const B2B110 = B2B110_T[lang] || B2B110_T.en;
 const PREP_UI = VOORB_PREP_UI;
 const prep = PREP_UI[lang] || PREP_UI.nl;
 const prepTests = oefentests.map((o) => ({ slug: o.slug, name: (o.i18n[lang] || o.i18n.nl).name })).sort((a, b) => a.name.localeCompare(b.name));
@@ -40,6 +47,7 @@ const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voo
 <section class="ahero"><div class="wrap" style="display:block">
   <div class="eyebrow">{t.hero.eyebrow}</div>
   <h1>{t.hero.title}</h1>
+  <div class="b2b-hero-strip"><span>{B2B110.tekst}</span> <a href={demoHref} class="btn btn-primary" data-b2b="voorbereiding">{B2B110.knop} &rarr;</a></div>
 </div></section>
 
 <section><div class="wrap" style="display:block">
@@ -222,3 +230,9 @@ const BODYUI = { nl: {ph:"Zoek in de voorbereiding...", none:"Niets gevonden voo
     inp.addEventListener("input", run);
   })();
 </script>
+
+<style>
+/* B2B-110 voorbereiding */
+.b2b-hero-strip{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;margin-top:16px;font-weight:600}
+.b2b-hero-strip span{color:inherit}
+</style>
