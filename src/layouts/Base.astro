@@ -229,10 +229,20 @@ const orgLd = {
         // echte aanvraag: "Demo Aangevraagd" voor demo- en contactformulieren,
         // "Assessment Aangevraagd" voor een assessmentaanvraag. Het opvragen van
         // voorbeeldvragen is een zachte lead en telt niet als Ads-conversie.
-        function adsConversion(kind) {
+        function adsConversion(kind, form) {
           var a = window.hrmAds; if (!a || !window.gtag) return;
           var label = kind === "assessment" ? a.assessment : a.demo;
           if (!label) return;
+          // Enhanced conversions: e-mail en telefoon uit het formulier gaan
+          // gehasht mee, zodat Google meer conversies aan een klik koppelt.
+          try {
+            var q = function (sel) { var el = form && form.querySelector && form.querySelector(sel); return el && el.value ? String(el.value).trim() : ""; };
+            var ud = {};
+            var mail = q("[name=email]"); if (mail) ud.email = mail.toLowerCase();
+            var tel = q("[name=telefoon]") || q("[name=phone]") || q("[type=tel]");
+            if (tel) { tel = tel.replace(/[^0-9+]/g, ""); if (/^0[1-9]/.test(tel)) tel = "+31" + tel.slice(1); else if (/^00/.test(tel)) tel = "+" + tel.slice(2); ud.phone_number = tel; }
+            if (ud.email || ud.phone_number) window.gtag("set", "user_data", ud);
+          } catch (e3) {}
           var payload = { send_to: label };
           if (kind === "assessment") { payload.value = 1.0; payload.currency = "EUR"; }
           window.gtag("event", "conversion", payload);
@@ -290,7 +300,7 @@ const orgLd = {
         if (klant === "particulier") { ev("lead_particulier", { form: naam, subject: subj }); clarityEv("aanvraag_particulier", false); return; }
         if (soortAanvraag === "demo") ev("demo_zakelijk", { form: naam, subject: subj });
           clarityEv(soortAanvraag === "demo" ? "aanvraag_demo" : "aanvraag_assessment", true);
-          adsConversion(soortAanvraag);
+          adsConversion(soortAanvraag, f);
         });
         document.addEventListener("click", function (e) {
           var a = e.target.closest && e.target.closest("a"); if (!a) return;
