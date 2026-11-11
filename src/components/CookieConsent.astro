@@ -130,7 +130,7 @@ const mkt = cat.marketing ?? {};
         document.head.appendChild(s);
         gtag("js", new Date());
       }
-      gtag("config", adsId);
+      gtag("config", adsId, { allow_enhanced_conversions: true });
       window.hrmAds = { demo: adsDemoLabel || "", assessment: adsAssessmentLabel || "", purchase: adsPurchaseLabel || "" };
     }
     // Paginatype voor de filters in Clarity, afgeleid uit het pad zonder taal.
