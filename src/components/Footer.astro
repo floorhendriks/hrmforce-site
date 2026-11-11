@@ -28,6 +28,7 @@ const _toepassingenLabel = FOOTER_TOEPASSINGEN[lang] || FOOTER_TOEPASSINGEN.nl;
           <li><a href={L("/rondleiding/")}>{_tourLabel}</a></li>
           <li><a href={L("/voor-kandidaten/")}>{t("footer.candidates")}</a></li>
           <li><a href={L("/kenniscentrum/")}>{t("footer.knowledge")}</a></li>
+          {lang === "nl" && <li><a href="/nieuwsbrief/">Nieuwsbrief</a></li>}
           <li><a href={L("/whitepapers/")}>{t("footer.whitepapers")}</a></li>
           <li><a href={L("/advies/")}>{t("footer.training")}</a></li>
           <li><a href={L(routes.shop)}>{t("nav.shop")}</a></li>

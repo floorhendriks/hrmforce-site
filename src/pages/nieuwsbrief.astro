@@ -1,0 +1,146 @@
+---
+// Inschrijfpagina voor de nieuwsbrief. Alleen Nederlands: de nieuwsbrief
+// verschijnt in het Nederlands. Het formulier post naar /api/nieuwsbrief; de
+// CRM op live.hrmforce.com stuurt de bevestigingsmail en stuurt na de klik
+// terug naar deze pagina met ?bevestigd=1 (of ?bevestigd=verlopen).
+import Base from "../layouts/Base.astro";
+import Mensencheck from "../components/Mensencheck.astro";
+---
+<Base
+  title="Nieuwsbrief hrmforce | Assessments en HR-onderzoek"
+  description="Schrijf je in voor de maandelijkse nieuwsbrief van hrmforce: een actueel HR-thema met cijfers uit onderzoek, vragen voor je team en de vragenlijst die erbij past."
+  active=""
+>
+  <div class="crumb"><div class="wrap"><a href="/">Home</a> › <span>Nieuwsbrief</span></div></div>
+
+  <section class="ahero"><div class="wrap" style="display:block">
+    <div class="eyebrow">Nieuwsbrief</div>
+    <h1>De nieuwsbrief van hrmforce</h1>
+    <p style="color:#dbe6f5;font-size:19px;max-width:760px;margin-top:8px">
+      Eén keer per maand een actueel HR-thema, uitgewerkt met cijfers uit onderzoek en de vragenlijst van hrmforce die erbij past. Voor HR-professionals, leidinggevenden, recruiters en adviseurs.
+    </p>
+  </div></section>
+
+  <section class="formsec"><div class="wrap">
+    <div class="nb-status ok" id="nb-bevestigd" hidden>
+      Je inschrijving is bevestigd. De volgende nieuwsbrief komt in je inbox.
+    </div>
+    <div class="nb-status fout" id="nb-verlopen" hidden>
+      Deze bevestigingslink is verlopen of al gebruikt. Vul het formulier opnieuw in, dan ontvang je een nieuwe link.
+    </div>
+
+    <div class="nb-grid">
+      <div class="nb-tekst">
+        <h2>Wat er in de nieuwsbrief staat</h2>
+        <p>Elke editie draait om één thema dat op dat moment speelt bij werkgevers en teams. Bij dat thema krijg je:</p>
+        <ul>
+          <li>cijfers uit actueel onderzoek, met de bron erbij;</li>
+          <li>vragen die je direct in je team of met je leidinggevenden kunt bespreken;</li>
+          <li>de vragenlijst van hrmforce die bij het thema past, en wat het rapport laat zien;</li>
+          <li>een inzicht uit de praktijk van assessments en teamgesprekken.</li>
+        </ul>
+
+        <div class="nb-voorbeeld">
+          <div class="nb-label">Voorbeeld: november 2026</div>
+          <h3>Week van de Werkstress</h3>
+          <p>
+            Uit de Nationale Enquête Arbeidsomstandigheden van TNO en CBS blijkt dat de helft van de werknemers met hoge taakeisen ook weinig invloed heeft op het eigen werk. De nieuwsbrief gaf vijf vragen voor het teamoverleg en liet zien hoe de <a href="/assessments/teamanalyse/">Teamanalyse</a> de beelden van leidinggevende en teamleden naast elkaar legt.
+          </p>
+        </div>
+
+        <h2>Zo werkt de inschrijving</h2>
+        <p>
+          Na het invullen ontvang je een e-mail met een bevestigingslink. Pas na die klik sta je op de lijst. Afmelden kan met één klik onderaan elke nieuwsbrief. Je gegevens gebruiken we alleen voor de nieuwsbrief, zie ook het <a href="/support/privacy-statement/">privacy statement</a>.
+        </p>
+      </div>
+
+      <form id="nb-form" class="formcard nb-form" action="/api/nieuwsbrief" method="POST" novalidate>
+        <h2 style="margin-top:0">Inschrijven</h2>
+        <div class="fg"><label for="nb-voornaam">Voornaam *</label><input type="text" id="nb-voornaam" name="voornaam" required autocomplete="given-name" maxlength="80" /></div>
+        <div class="fg"><label for="nb-email">E-mailadres *</label><input type="email" id="nb-email" name="email" required autocomplete="email" maxlength="160" /></div>
+        <div class="fg"><label for="nb-organisatie">Organisatie</label><input type="text" id="nb-organisatie" name="organisatie" autocomplete="organization" maxlength="120" /></div>
+        <Mensencheck lang="nl" />
+        <button type="submit" class="btn btn-primary">Inschrijven</button>
+        <p class="nb-melding" id="nb-melding" role="status" aria-live="polite" hidden></p>
+        <p style="color:var(--muted);font-size:13px;margin-top:14px">
+          Je ontvangt eerst een bevestigingsmail. Met je inschrijving ontvang je de maandelijkse nieuwsbrief van hrmforce; afmelden kan onderaan elke nieuwsbrief.
+        </p>
+      </form>
+    </div>
+  </div></section>
+
+  <style>
+    .nb-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 48px); align-items: start; }
+    .nb-grid .formcard { max-width: none; margin: 0; }
+    .nb-tekst h2 { margin: 0 0 12px; }
+    .nb-tekst h2 + p { margin-top: 0; }
+    .nb-tekst ul { margin: 0 0 24px; padding-left: 20px; }
+    .nb-tekst li { margin: 6px 0; }
+    .nb-tekst > h2:not(:first-child) { margin-top: 32px; }
+    .nb-voorbeeld { background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--blue); border-radius: var(--radius); padding: 20px 22px; }
+    .nb-voorbeeld h3 { margin: 4px 0 8px; font-size: 20px; }
+    .nb-voorbeeld p { margin: 0; }
+    .nb-label { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+    .nb-form .fg input { width: 100%; }
+    .nb-status { max-width: none; margin: 0 0 24px; padding: 14px 16px; border-radius: var(--radius); font-weight: 600; }
+    .nb-status.ok { background: #eaf7ec; color: #1b6b2a; }
+    .nb-status.fout { background: #fdecea; color: #a12; }
+    .nb-melding { margin: 14px 0 0; padding: 12px 14px; border-radius: var(--radius); font-size: 14px; line-height: 1.5; }
+    .nb-melding.ok { background: #eaf7ec; color: #1b6b2a; }
+    .nb-melding.fout { background: #fdecea; color: #a12; }
+    @media (max-width: 860px) { .nb-grid { grid-template-columns: 1fr; } }
+  </style>
+
+  <script>
+    (function () {
+      const p = new URLSearchParams(location.search);
+      const b = p.get("bevestigd");
+      if (b === "1") document.getElementById("nb-bevestigd").hidden = false;
+      if (b === "verlopen") document.getElementById("nb-verlopen").hidden = false;
+
+      const form = document.getElementById("nb-form");
+      const melding = document.getElementById("nb-melding");
+      if (!form || !melding) return;
+      const knop = form.querySelector("button[type=submit]");
+      const toon = (soort, tekst) => { melding.hidden = false; melding.className = "nb-melding " + soort; melding.textContent = tekst; };
+
+      form.addEventListener("submit", async (ev) => {
+        if (ev.defaultPrevented) return;
+        ev.preventDefault();
+        const voornaam = form.voornaam.value.trim();
+        const email = form.email.value.trim();
+        if (!voornaam || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+          toon("fout", "Vul je voornaam en een geldig e-mailadres in.");
+          return;
+        }
+        knop.disabled = true;
+        const oud = knop.textContent;
+        knop.textContent = "Verzenden…";
+        try {
+          const r = await fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
+          const uit = await r.json().catch(() => ({}));
+          if (uit && uit.ok) {
+            const tekst = uit.status === "already"
+              ? "Je staat al ingeschreven met " + email + ". De volgende nieuwsbrief komt vanzelf in je inbox."
+              : uit.status === "handmatig"
+                ? "Je aanmelding is binnen. De bevestigingsmail volgt zo snel mogelijk."
+                : "Check je inbox. Er is een bevestigingsmail gestuurd naar " + email + ". Klik op de link in die mail om je inschrijving af te ronden. Geen mail gezien? Kijk dan even in je spammap.";
+            toon("ok", tekst);
+            form.reset();
+            try { (window.dataLayer = window.dataLayer || []).push({ event: "nieuwsbrief_inschrijving" }); } catch (e) {}
+          } else if (uit && uit.error === "geen_mens") {
+            toon("fout", "We konden niet vaststellen dat je een mens bent. Vink het vakje aan en verstuur het formulier opnieuw.");
+          } else if (uit && uit.error === "invalid") {
+            toon("fout", "Vul je voornaam en een geldig e-mailadres in.");
+          } else {
+            toon("fout", "Dat lukte nu niet. Vul het formulier over een paar minuten opnieuw in, of mail naar service@hrmforce.com.");
+          }
+        } catch (e) {
+          toon("fout", "Dat lukte nu niet. Vul het formulier over een paar minuten opnieuw in, of mail naar service@hrmforce.com.");
+        }
+        knop.disabled = false;
+        knop.textContent = oud;
+      });
+    })();
+  </script>
+</Base>

@@ -7,6 +7,7 @@ import { sendMail } from "../_lib/mail.js";
 import { PARTICULIER_MAIL, particulierMail } from "../../src/data/aanvraag-tekst.js";
 import { PARTICULIER_EXTRA } from "../_lib/mailteksten.js";
 import { controleerMens, TECHNISCH } from "../_lib/mens.js";
+import { aanmeldenNieuwsbrief } from "../_lib/nieuwsbrief.js";
 
 // Alle talen waarin de site staat. Een aanvrager uit een taal die hier niet
 // in staat krijgt de Nederlandse mail.
@@ -51,6 +52,22 @@ export async function onRequestPost({ request, env }) {
   const mens = await controleerMens(env, body, request);
   if (!mens.ok) return json({ error: "geen_mens", reden: mens.reden }, 422);
 
+  // Vinkje "Houd mij op de hoogte" (downloadformulier functieprofielen): de
+  // aanmelding gaat naar de CRM, die de bevestigingsmail stuurt. Pas na de
+  // klik staat iemand op de lijst.
+  let nieuwsbrief = "";
+  const nbVink = String(body.newsletter || body.nieuwsbrief || "").toLowerCase();
+  if (nbVink === "on" || nbVink === "1" || nbVink === "true" || nbVink === "ja") {
+    const voornaam = EERSTE(body, ["voornaam", "firstname", "nombre", "prenume", "vorname"], 80)
+      || (naam.split(" ")[0] || "");
+    try {
+      const nb = await aanmeldenNieuwsbrief(env, {
+        email, voornaam, organisatie: bedrijf, taal, bron: `hrmforce.com ${bron}`,
+      }, request);
+      nieuwsbrief = nb.ok ? `aangemeld (${nb.status})` : "aanmelding mislukt";
+    } catch { nieuwsbrief = "aanmelding mislukt"; }
+  }
+
   const naarIntern = (env && env.REQUEST_EMAIL_TO) || "service@hrmforce.com";
   const ccIntern = (env && env.REQUEST_EMAIL_CC) || "f.hendriks@hrmforce.com";
   const van = (env && env.REQUEST_EMAIL_FROM) || "service@hrmforce.com";
@@ -64,6 +81,7 @@ export async function onRequestPost({ request, env }) {
     `Taal:       ${taal}`,
     `Formulier:  ${bron}`,
     onderwerp ? `Onderwerp:  ${onderwerp}` : "",
+    nieuwsbrief ? `Nieuwsbrief:${" " + nieuwsbrief}` : "",
     "",
     "Bericht:",
     bericht || "-",
@@ -74,7 +92,8 @@ export async function onRequestPost({ request, env }) {
     "achternaam", "surname", "apellido", "nume", "email", "e-mail", "correo",
     "bedrijf", "company", "organisatie", "empresa", "firma", "entreprise", "companie",
     "telefoon", "phone", "tel", "telefono", "telefon",
-    "bericht", "message", "vraag", "mensaje", "nachricht", "mesaj", "subject", "asunto", "betreff", "sujet", "subiect"]);
+    "bericht", "message", "vraag", "mensaje", "nachricht", "mesaj", "subject", "asunto", "betreff", "sujet", "subiect",
+    "newsletter", "nieuwsbrief"]);
   const overig = Object.entries(body)
     .filter(([k, v]) => !gebruikt.has(k) && !TECHNISCH.has(k) && String(v).trim() !== "")
     .map(([k, v]) => `${k}: ${schoon(v, 500)}`);
