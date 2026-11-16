@@ -1,0 +1,12 @@
+---
+import Base from "../../layouts/Base.astro";
+import Werkgevers from "../../components/Werkgevers.astro";
+import { werkgeversContent } from "../../data/werkgevers-content.js";
+import { perTaal } from "../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const t = werkgeversContent[lang] || werkgeversContent.nl;
+---
+<Base title={t.meta.title} description={t.meta.description} active="solutions">
+  <Werkgevers t={t} lang={lang} />
+</Base>

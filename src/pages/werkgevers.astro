@@ -1,0 +1,9 @@
+---
+import Base from "../layouts/Base.astro";
+import Werkgevers from "../components/Werkgevers.astro";
+import { werkgeversContent } from "../data/werkgevers-content.js";
+const t = werkgeversContent.nl;
+---
+<Base title={t.meta.title} description={t.meta.description} active="solutions">
+  <Werkgevers t={t} lang="nl" />
+</Base>

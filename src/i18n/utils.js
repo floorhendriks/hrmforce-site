@@ -53,7 +53,7 @@ export function localizePath(path, lang) {
 // een taalprefix krijgen; andere paden vallen terug op de NL-versie zodat er
 // nooit een 404 ontstaat bij taalwissel.
 export const LOCALIZED_PAGES = new Set([
-  "/", "/online-assessments/", "/hrm-oplossingen/", "/advies/", "/over-ons/",
+  "/", "/online-assessments/", "/werkgevers/", "/hrm-oplossingen/", "/advies/", "/over-ons/",
   "/contact/", "/shop/", "/assessment-overzicht/", "/tarieven/", "/roi-rekentool/",
   "/klantcases/", "/kenniscentrum/", "/trust/", "/integraties/", "/voorbereiding/",
   "/support/", "/support/f-a-q/", "/wetenschappelijke-verantwoording/", "/begrippenlijst/", "/voor-kandidaten/", "/testkiezer/", "/whitepapers/", "/toepassingen/", "/vacatures/", "/vergelijking/", "/rondleiding/", "/afrekenen/", "/bestelling-gelukt/", "/documenten/", "/invoices/",
