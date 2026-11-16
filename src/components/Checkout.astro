@@ -365,6 +365,15 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
           city: form.elements["city"].value.trim(), reference: form.elements["reference"].value.trim(),
         },
         kortingscode: korting ? korting.code : "",
+        ga: (function () {
+          try {
+            var c = JSON.parse(localStorage.getItem("hrmforce_cookie_consent") || "null");
+            if (!c || !c.statistics) return null;
+            var m = document.cookie.match(/(?:^|; )_ga=GA\d\.\d\.(\d+\.\d+)/);
+            var s = document.cookie.match(/(?:^|; )_ga_7EZ2R7NG4J=GS\d\.\d\.s?(\d+)/);
+            return m ? { cid: m[1], sid: s ? s[1] : "", test: localStorage.getItem("hrm_test") === "1" } : null;
+          } catch (e) { return null; }
+        })(),
         vatHint: { mode: v.mode, rate: v.rate },
       };
 

@@ -86,7 +86,7 @@ export async function onRequestPost(context) {
         orderId, orderRecord.created, "open", locale, b.email, b.company, b.contact, b.phone || "",
         b.country, b.vat || "", b.street, b.postal, b.city, b.reference || "",
         priced.subtotalCents, priced.vatCents, priced.totalCents, priced.vatMode, "EUR", null,
-        JSON.stringify({ items: priced.items, korting: orderRecord.korting })
+        JSON.stringify({ items: priced.items, korting: orderRecord.korting, ga: gaVanKlant(body.ga) })
       ).run();
     } catch (e) {
       // Opslag mislukt: log en ga door (betaling blijft mogelijk, webhook valt terug op metadata).
@@ -158,4 +158,13 @@ export async function onRequestPost(context) {
 // GET geeft een nette melding (voor debuggen).
 export async function onRequestGet() {
   return json({ ok: true, endpoint: "checkout", method: "POST" });
+}
+
+// GA4-client-id en sessie-id van de koper (alleen meegestuurd als die statistiekcookies
+// heeft toegestaan). De webhook gebruikt ze om de aankoop aan het juiste bezoek te koppelen.
+function gaVanKlant(g) {
+  if (!g || typeof g !== "object") return null;
+  const cid = String(g.cid || ""), sid = String(g.sid || "");
+  if (!/^\d{1,12}\.\d{9,11}$/.test(cid)) return null;
+  return { cid, sid: /^\d{9,11}$/.test(sid) ? sid : "", test: g.test === true };
 }

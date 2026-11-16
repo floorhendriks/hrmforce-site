@@ -82,6 +82,11 @@ export async function onRequestPost(context) {
     return new Response("ok", { status: 200 });
   }
 
+  // Aankoop naar GA4 (Measurement Protocol), eenmalig bij de overgang naar betaald.
+  if (row.status !== "paid") {
+    try { await gaAankoop(env, row, pay); } catch (e) { console.log("ga4_mp_failed", String(e.message || e)); }
+  }
+
   // Betaald: eenmalig mailen.
   const order = rowToOrder({ ...row, status: "paid", paid_at: paidAt });
   let mailNote = "";
@@ -125,4 +130,31 @@ export async function onRequestPost(context) {
 
 export async function onRequestGet() {
   return new Response(JSON.stringify({ ok: true, endpoint: "mollie-webhook", method: "POST" }), { headers: { "Content-Type": "application/json" } });
+}
+
+// Stuurt een betaalde bestelling als purchase naar GA4. Alleen met client-id (dus met
+// toestemming voor statistiekcookies) en niet voor testbestellingen. Bedrag incl. btw,
+// gelijk aan de Ads-conversie op de bedankpagina.
+async function gaAankoop(env, row, pay) {
+  const secret = env.GA4_API_SECRET;
+  if (!secret) { console.log("ga4_mp_skipped_no_secret"); return; }
+  let ga = null;
+  try { ga = (JSON.parse(row.items_json || "{}") || {}).ga || null; } catch (e) {}
+  if (!ga || !ga.cid || ga.test) { console.log("ga4_mp_skipped_no_consent_or_test"); return; }
+  const mid = env.GA4_MEASUREMENT_ID || "G-7EZ2R7NG4J";
+  const params = {
+    transaction_id: row.id,
+    value: Math.round(row.total_cents || 0) / 100,
+    currency: row.currency || "EUR",
+    engagement_time_msec: 1,
+  };
+  if (ga.sid) params.session_id = ga.sid;
+  if (pay && pay.method) params.payment_type = String(pay.method);
+  const url = "https://www.google-analytics.com/mp/collect?measurement_id=" + encodeURIComponent(mid) + "&api_secret=" + encodeURIComponent(secret);
+  const r = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ client_id: ga.cid, events: [{ name: "purchase", params }] }),
+  });
+  console.log("ga4_mp", r.status);
 }

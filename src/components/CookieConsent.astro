@@ -76,6 +76,14 @@ const mkt = cat.marketing ?? {};
 <script is:inline define:vars={{ ga4Id, gtmId, linkedinId, clarityId, adsId, adsDemoLabel, adsAssessmentLabel, adsPurchaseLabel, lang }}>
   (function () {
     var STORAGE_KEY = "hrmforce_cookie_consent";
+    // Testverkeer: ?test=1 zet een vlag in deze browser, ?test=0 haalt hem weg.
+    // Met de vlag telt GA4 het bezoek als intern en gaan er geen Ads-conversies uit.
+    try {
+      var tq = new URLSearchParams(location.search).get("test");
+      if (tq === "1") localStorage.setItem("hrm_test", "1");
+      if (tq === "0") localStorage.removeItem("hrm_test");
+      window.hrmTest = localStorage.getItem("hrm_test") === "1";
+    } catch (e) { window.hrmTest = false; }
     var VERSION = 1;
 
     // --- 1) Consent Mode v2: standaard alles geweigerd ---
@@ -100,7 +108,7 @@ const mkt = cat.marketing ?? {};
       s.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(ga4Id);
       document.head.appendChild(s);
       gtag("js", new Date());
-      gtag("config", ga4Id, { anonymize_ip: true });
+      gtag("config", ga4Id, window.hrmTest ? { anonymize_ip: true, traffic_type: "internal" } : { anonymize_ip: true });
     }
 
     // Google Tag Manager. Alleen als GTM_ID is ingevuld; dan laden we GA4 en Ads

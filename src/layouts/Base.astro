@@ -230,7 +230,7 @@ const orgLd = {
         // "Assessment Aangevraagd" voor een assessmentaanvraag. Het opvragen van
         // voorbeeldvragen is een zachte lead en telt niet als Ads-conversie.
         function adsConversion(kind, form) {
-          var a = window.hrmAds; if (!a || !window.gtag) return;
+          var a = window.hrmAds; if (!a || !window.gtag || window.hrmTest) return;
           var label = kind === "assessment" ? a.assessment : a.demo;
           if (!label) return;
           // Enhanced conversions: e-mail en telefoon uit het formulier gaan

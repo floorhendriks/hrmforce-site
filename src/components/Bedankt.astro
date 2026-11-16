@@ -49,11 +49,9 @@ const S = { h1: s.h1, lead: s.lead, h1Wacht: s.h1Wacht, leadWacht: s.leadWacht, 
       try { if (localStorage.getItem(sleutel)) return; localStorage.setItem(sleutel, "1"); } catch (e) {}
       var bedrag = uit && typeof uit.bedrag === "number" ? uit.bedrag : undefined;
       var valuta = (uit && uit.valuta) || "EUR";
-      window.gtag("event", "purchase", {
-        transaction_id: id,
-        value: bedrag,
-        currency: valuta,
-      });
+      /* De purchase naar GA4 gaat sinds patch 118 vanaf de server (mollie-webhook),
+         ook bij een overboeking. Hier alleen Clarity en de Ads-conversie. */
+      try { if (localStorage.getItem("hrm_test") === "1") return; } catch (e) {}
       if (window.clarity) {
         try { window.clarity("event", "purchase"); window.clarity("upgrade", "purchase"); } catch (e) {}
       }
@@ -76,6 +74,8 @@ const S = { h1: s.h1, lead: s.lead, h1Wacht: s.h1Wacht, leadWacht: s.leadWacht, 
          niet betaald. Daarom eerst de status opvragen en dan pas de juiste
          tekst en knop tonen. Komt er geen antwoord, dan blijft de pagina staan
          zoals hij was. */
+      var poging = 0;
+      (function controleer() {
       fetch("/api/order-status?order=" + encodeURIComponent(id))
         .then(function (r) { return r.json(); })
         .then(function (uit) {
@@ -91,6 +91,7 @@ const S = { h1: s.h1, lead: s.lead, h1Wacht: s.h1Wacht, leadWacht: s.leadWacht, 
           }
           if (st === "pending" || st === "open" || !st || st === "onbekend") {
             if (vink) vink.style.background = "#037ACB";
+            if (poging++ < 8) setTimeout(controleer, 3000);
           } else {
             if (kop) kop.textContent = S.h1Mis;
             if (lead) lead.textContent = S.leadMis;
@@ -98,6 +99,7 @@ const S = { h1: s.h1, lead: s.lead, h1Wacht: s.h1Wacht, leadWacht: s.leadWacht, 
           }
         })
         .catch(function () {});
+      })();
     }
   })();
 </script>
