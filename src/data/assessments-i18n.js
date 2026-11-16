@@ -494,8 +494,8 @@ export const assessmentsI18n = {
     },
     "typology": {
       title: "Typology",
-      metaTitle: "Typology test | Discover your colour type in minutes",
-      metaDescription: "Take the Jung-based Typology test and discover your behavioural style in about 10 minutes using four colour types.",
+      metaTitle: "Typology test | Jung colour types for selection and teams | hrmforce",
+      metaDescription: "Typology questionnaire based on Jung: map behavioural styles with four colour types in about 10 minutes, for selection, team development and coaching.",
       phase: "Development → performance → appraisal",
       goal: "Giving insight into the type of employee, based on how someone deals with dominance (influence versus collaboration) and emotion (feeling versus reason).",
       time: "10 minutes", form: "Per situation, indicate which behaviour fits best.",

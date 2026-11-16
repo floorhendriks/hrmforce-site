@@ -449,6 +449,17 @@ export const COMPETITORS = {
    "ro": "Bryq este o platformă internațională de evaluare puternic axată pe AI și competențe. hrmforce oferă psihometrie validată științific cu psihologi înregistrați (NIP), raportare transparentă, 29 versiuni lingvistice și găzduirea datelor în UE, plus o platformă completă a ciclului HR."
   }
  },
+ "hellotest": {
+  "name": "Hellotest",
+  "intro": {
+   "nl": "Hellotest is een Nederlandse oefensite waar sollicitanten zich voorbereiden op capaciteitentests en assessments van andere testleveranciers. Het is zelf geen testleverancier voor werkgevers. hrmforce levert de gevalideerde tests en assessments die werkgevers inzetten bij selectie en ontwikkeling, en biedt kandidaten daarnaast gratis oefentests en een gratis oefen-assessment.",
+   "en": "Hellotest is a Dutch practice site where job applicants prepare for aptitude tests and assessments from other test publishers. It is not a test publisher for employers itself. hrmforce supplies the validated tests and assessments that employers use for selection and development, and also offers candidates free practice tests and a free practice assessment.",
+   "de": "Hellotest ist eine niederländische Übungsseite, auf der sich Bewerber auf Eignungstests und Assessments anderer Testanbieter vorbereiten. Selbst ist es kein Testanbieter für Arbeitgeber. hrmforce liefert die validierten Tests und Assessments, die Arbeitgeber für Auswahl und Entwicklung einsetzen, und bietet Kandidaten zusätzlich kostenlose Übungstests und ein kostenloses Übungs-Assessment.",
+   "fr": "Hellotest est un site néerlandais d'entraînement où les candidats se préparent aux tests d'aptitude et aux assessments d'autres éditeurs. Ce n'est pas lui-même un éditeur de tests pour les employeurs. hrmforce fournit les tests et assessments validés que les employeurs utilisent pour la sélection et le développement, et propose aussi aux candidats des tests d'entraînement et un assessment d'entraînement gratuits.",
+   "es": "Hellotest es un sitio neerlandés de práctica donde los candidatos se preparan para pruebas de aptitud y assessments de otros proveedores. No es en sí un proveedor de pruebas para empleadores. hrmforce suministra las pruebas y los assessments validados que los empleadores usan en selección y desarrollo, y ofrece además a los candidatos pruebas de práctica y un assessment de práctica gratuitos.",
+   "ro": "Hellotest este un site olandez de exersare unde candidații se pregătesc pentru testele de aptitudini și evaluările altor furnizori. Nu este el însuși un furnizor de teste pentru angajatori. hrmforce furnizează testele și evaluările validate pe care angajatorii le folosesc în selecție și dezvoltare și oferă candidaților și teste de exersare gratuite și o evaluare de exersare gratuită."
+  }
+ },
  "selection-lab": {
   "name": "Selection Lab",
   "intro": {
