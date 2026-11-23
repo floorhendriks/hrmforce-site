@@ -4,8 +4,20 @@
    altijd. De keuze staat standaard op zakelijk, zodat niemand hem per ongeluk
    leeg laat. */
 import { SOORT_UI } from "../data/aanvraag-tekst.js";
+import { navHref } from "../i18n/utils.js";
+import validPaths from "../data/valid-paths.js";
 const { lang = "nl", bron = "" } = Astro.props;
 const u = SOORT_UI[lang] || SOORT_UI.nl;
+// Patch 119: particulieren direct naar de shop.
+const SHOP_T = {
+  nl: { t: "Bestel je als particulier? Dan kun je direct terecht in onze shop, zonder op een mail te wachten.", k: "Direct naar de shop" },
+  en: { t: "Ordering as an individual? You can go straight to our shop, no need to wait for an email.", k: "Go to the shop" },
+  de: { t: "Bestellen Sie als Privatperson? Dann geht es direkt zu unserem Shop, ohne auf eine E-Mail zu warten.", k: "Direkt zum Shop" },
+  fr: { t: "Vous commandez en tant que particulier ? Rendez-vous directement dans notre boutique.", k: "Aller à la boutique" },
+  es: { t: "¿Pide como particular? Puede ir directamente a nuestra tienda.", k: "Ir a la tienda" },
+};
+const st = SHOP_T[lang] || SHOP_T.en;
+const shopHref = navHref("/shop/", lang, validPaths);
 ---
 <input type="hidden" name="taal" value={lang} />
 <input type="hidden" name="bron" value={bron} />
@@ -20,6 +32,27 @@ const u = SOORT_UI[lang] || SOORT_UI.nl;
     <span>{u.particulier}</span>
   </label>
 </fieldset>
+<div class="as-shop" hidden data-shop={shopHref}>
+<p>{st.t}</p>
+<a class="btn btn-primary" href={shopHref}>{st.k} &rarr;</a>
+</div>
+<script is:inline>
+(function () {
+  if (window.__hrmAsShop) return; window.__hrmAsShop = true;
+  function panel(f) { return f && f.querySelector ? f.querySelector(".as-shop") : null; }
+  function isPart(f) { var r = f && f.querySelector && f.querySelector("input[name=soort]:checked"); return !!(r && r.value === "particulier"); }
+  document.addEventListener("change", function (e) {
+    var el = e.target; if (!el || el.name !== "soort") return;
+    var f = el.closest("form") || el.closest(".as-veld").parentElement; var p = panel(f);
+    if (p) p.hidden = !isPart(f);
+  });
+  document.addEventListener("hrm:aanvraag-gelukt", function (e) {
+    var f = (e && e.detail && e.detail.form) || null; if (!isPart(f)) return;
+    var p = panel(f); var url = p ? p.getAttribute("data-shop") : "/shop/";
+    setTimeout(function () { location.href = url; }, 2500);
+  });
+})();
+</script>
 
 <style is:global>
   .as-veld { border: 0; margin: 0 0 14px; padding: 0; }
@@ -28,5 +61,7 @@ const u = SOORT_UI[lang] || SOORT_UI.nl;
   .as-veld .as-optie:hover { border-color: var(--blue); }
   .as-veld .as-optie input[type="radio"] { width: 16px; height: 16px; min-width: 16px; margin: 0; flex: none; accent-color: var(--navy); }
   .as-veld .as-optie span { display: inline; margin: 0; }
-  .as-veld .as-optie:has(input:checked) { border-color: var(--navy); background: #eef3fa; color: var(--navy); font-weight: 600; }
+  .as-shop { background: #eef3fa; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 14px; }
+.as-shop p { margin: 0 0 10px; font-size: 14.5px; color: var(--navy); }
+.as-veld .as-optie:has(input:checked) { border-color: var(--navy); background: #eef3fa; color: var(--navy); font-weight: 600; }
 </style>

@@ -207,7 +207,7 @@ const orgLd = {
     </script>
     <CookieConsent lang={lang} ga4Id={ANALYTICS.GA4_ID} gtmId={ANALYTICS.GTM_ID} linkedinId={MARKETING.LINKEDIN_PARTNER_ID} clarityId={MARKETING.CLARITY_ID} adsId={MARKETING.GOOGLE_ADS_ID} adsDemoLabel={MARKETING.GOOGLE_ADS_DEMO_LABEL} adsAssessmentLabel={MARKETING.GOOGLE_ADS_ASSESSMENT_LABEL} adsPurchaseLabel={MARKETING.GOOGLE_ADS_PURCHASE_LABEL} t={consentT} />
     <!-- Henry chatbot -->
-    <script is:inline>(function(){var d=false;function l(){if(d)return;d=true;var s=document.createElement("script");s.src="/henry-widget.js";document.body.appendChild(s);}["pointerdown","keydown","scroll","touchstart"].forEach(function(e){addEventListener(e,l,{once:true,passive:true});});setTimeout(l,8000);})();</script>
+    <script is:inline>(function(){var d=false;function l(){if(d)return;d=true;var s=document.createElement("script");s.src="/henry-widget.js";document.body.appendChild(s);}if(/^\/(?:[a-z]{2}\/)?gratis-kleurentest(?:\/|$)/.test(location.pathname)){/* patch 119: Henry pas na de uitslag */addEventListener("message",function(e){try{var x=e.data;var s=typeof x==="string"?x:JSON.stringify(x||"");if(/uitslag|result|klaar|finished|complete/i.test(s))l();}catch(er){}});document.addEventListener("hrm:kleurentest-uitslag",l);setTimeout(l,180000);return;}["pointerdown","keydown","scroll","touchstart"].forEach(function(e){addEventListener(e,l,{once:true,passive:true});});setTimeout(l,8000);})();</script>
     <!-- Conversie-tracking (GA4-events) + exit-intent lead magnet. Events sturen
          alleen als GA4 is geladen (na statistieken-toestemming). -->
     <script is:inline define:vars={{ lang, exitIntent }}>
@@ -298,7 +298,9 @@ const orgLd = {
           var soortAanvraag = isDemo ? "demo" : (isAssessment ? "assessment" : "demo");
         // B2B-109: particulieren tellen niet als Ads-conversie; zakelijke demo's krijgen een eigen event.
         if (klant === "particulier") { ev("lead_particulier", { form: naam, subject: subj }); clarityEv("aanvraag_particulier", false); return; }
-        if (soortAanvraag === "demo") ev("demo_zakelijk", { form: naam, subject: subj });
+        // Patch 119: demo_zakelijk alleen bij een echte demo- of contactaanvraag.
+    if (isDemo) ev("demo_zakelijk", { form: naam, subject: subj });
+    else ev("lead_zakelijk", { form: naam, subject: subj, soort: soortAanvraag });
           clarityEv(soortAanvraag === "demo" ? "aanvraag_demo" : "aanvraag_assessment", true);
           adsConversion(soortAanvraag, f);
         });
@@ -322,7 +324,8 @@ const orgLd = {
         function mark(){ try { sessionStorage.setItem(KEY, "1"); } catch(e){} }
         function build(){
           if (shown() || window.innerWidth < 1024) return;
-          if (/(^|\/)(demo|gratis-kleurentest)\/?$/.test(location.pathname)) return;
+          // Patch 119: alleen nog op de kennisbank (besluit Floor, 16 nov).
+    if (!/^(\/[a-z]{2})?\/kenniscentrum\//.test(location.pathname)) return;
           var o = document.createElement("div"); o.id = "hf-lm"; o.setAttribute("role","dialog"); o.setAttribute("aria-label", t.t);
           o.innerHTML = '<div class="hf-lm-card"><button class="hf-lm-x" aria-label="Sluiten">&times;</button>'+
             '<div class="hf-lm-eyebrow">hrmforce</div><h3>'+t.t+'</h3><p>'+t.b+'</p>'+

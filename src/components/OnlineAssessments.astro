@@ -6,6 +6,10 @@ const { c, lang } = Astro.props;
 const contactHref = localizePath("/contact/", lang);
 const demoHref = demoPath(lang);
 const overzichtHref = localizePath("/assessment-overzicht/", lang);
+// Patch 119: interne link naar de B2B-pagina, ankertekst met 'online assessment'.
+const werkgeversHref = navHref("/werkgevers/", lang, validPaths);
+const WG = { nl: "Voor werkgevers: online assessment bij selectie en ontwikkeling", en: "For employers: online assessment for selection and development", de: "Für Arbeitgeber: Online-Assessment für Auswahl und Entwicklung" };
+const werkgeversLabel = WG[lang] || WG.en;
 // NL linkt naar de root-detailpagina; andere talen naar /<lang>/assessments/<slug>/.
 const cardHref = (slug) => navHref(`/assessments/${slug}/`, lang, validPaths);
 
@@ -86,7 +90,7 @@ const logos = [
     <div class="eyebrow">{c.hero.eyebrow}</div>
     <h1>{c.hero.title}</h1>
     <p style="color:#c4d2e6;font-size:19px;max-width:840px;margin-top:8px">{c.hero.intro}</p>
-    <div class="btns"><a class="btn btn-primary" href={overzichtHref}>{c.hero.cta}</a></div>
+    <div class="btns"><a class="btn btn-primary" href={overzichtHref}>{c.hero.cta}</a> <a class="btn btn-light" href={werkgeversHref}>{werkgeversLabel}</a></div>
   </div>
 </section>
 

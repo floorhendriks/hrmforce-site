@@ -20,6 +20,15 @@ for (const [taal, blok] of Object.entries(PARTICULIER_EXTRA)) {
 }
 const schoon = (s, max) => String(s == null ? "" : s).replace(/[\r\n\t]+/g, " ").trim().slice(0, max);
 const mailOk = (s) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s);
+// Patch 119: wegwerpadressen. Zulke aanvragen krijgen een normaal antwoord,
+// maar er gaat geen mail uit (spam zoals 18 nov via micropaste.com).
+const WEGWERP = new Set(["micropaste.com", "mailinator.com", "guerrillamail.com", "guerrillamail.net",
+  "sharklasers.com", "10minutemail.com", "10minutemail.net", "yopmail.com", "yopmail.fr", "temp-mail.org",
+  "tempmail.com", "tempmail.dev", "tempmailo.com", "trashmail.com", "trashmail.de", "dispostable.com",
+  "maildrop.cc", "getnada.com", "nada.email", "mohmal.com", "emailondeck.com", "throwawaymail.com",
+  "fakeinbox.com", "mintemail.com", "spamgourmet.com", "mailnesia.com", "moakt.com", "tmpmail.org",
+  "tmpmail.net", "burnermail.io", "inboxkitten.com", "1secmail.com", "1secmail.org", "1secmail.net"]);
+const wegwerp = (s) => WEGWERP.has(String(s).split("@").pop().toLowerCase());
 
 // De formulieren gebruiken per taal andere veldnamen; hier lopen ze samen.
 const EERSTE = (b, namen, max = 120) => {
@@ -48,6 +57,7 @@ export async function onRequestPost({ request, env }) {
   if (!TALEN.includes(taal)) taal = "nl";
 
   if (!mailOk(email)) return json({ error: "invalid_email" }, 400);
+  if (wegwerp(email)) { console.log("aanvraag_wegwerp_genegeerd"); return json({ ok: true, soort }); }
 
   const mens = await controleerMens(env, body, request);
   if (!mens.ok) return json({ error: "geen_mens", reden: mens.reden }, 422);
