@@ -609,7 +609,7 @@ export const THEMAPAGINAS = {
       nl: {
         meta: { title: "PAPI 3: wat de vragenlijst meet en welke varianten er zijn | hrmforce", description: "PAPI 3 brengt werkgerelateerde voorkeuren in kaart via behoeften en rollen. Het verschil tussen 3-N en 3-I, waarvoor je hem inzet en waar je hem bestelt." },
         crumb: "PAPI 3",
-        hero: { eyebrow: "PAPI 3", title: "PAPI 3", lead: "PAPI 3 is de werkgerelateerde persoonlijkheidsvragenlijst van Cubiks. Hieronder lees je wat hij meet, wat het verschil is tussen de twee varianten en waar je hem bestelt." },
+        hero: { eyebrow: "PAPI 3", title: "PAPI 3", lead: "PAPI 3 is de werkgerelateerde persoonlijkheidsvragenlijst van Talogy Cubiks. Hieronder lees je wat hij meet, wat het verschil is tussen de twee varianten en waar je hem bestelt." },
         intro: [
           "PAPI kijkt naar wat iemand in het werk nodig heeft en welke rol diegene daarin oppakt. Dat levert een beeld op van werkstijl: hoe iemand taken aanpakt, hoe diegene zich tot anderen verhoudt en waar diegene energie uit haalt.",
           "De vragenlijst wordt gebruikt voor selectie, ontwikkeling en coaching. Het rapport is opgezet als gespreksdocument, dus de uitkomsten zijn bedoeld om samen door te nemen.",
@@ -621,7 +621,7 @@ export const THEMAPAGINAS = {
           { t: "Wat hij niet meet", d: "Capaciteiten en kennis. Daarvoor zet je een capaciteitentest en een interview in." },
         ] },
         tests: { title: "Bestellen en verder lezen", intro: "PAPI 3 bestel je in de shop. Daarnaast de pagina's waar dit onderwerp aan raakt.", cta: "Bekijken", kaarten: [
-          { t: "Naar de shop", d: "Daar staan PAPI 3-i, PAPI 3-n en PAPI Factors, met de actuele prijzen." },
+          { t: "Naar de shop", d: "Daar staan PAPI 3-i, PAPI 3-n, PAPI 3+ en PAPI Factors, met de actuele prijzen." },
           { t: "Persoonlijkheidstest", d: "Wat een persoonlijkheidstest meet en welke vragenlijsten er verder zijn." },
           { t: "Normgroepen", d: "Waarom een score pas betekenis krijgt naast een vergelijkingsgroep." },
           { t: "Assessment-overzicht", d: "Alle instrumenten op een rij, per fase van de loopbaan." },
@@ -646,7 +646,7 @@ export const THEMAPAGINAS = {
       en: {
         meta: { title: "PAPI 3: what the questionnaire measures and which versions exist | hrmforce", description: "PAPI 3 maps work-related preferences through needs and roles. The difference between 3-N and 3-I, what you use it for and where to order it." },
         crumb: "PAPI 3",
-        hero: { eyebrow: "PAPI 3", title: "PAPI 3", lead: "PAPI 3 is the work-related personality questionnaire from Cubiks. Below you read what it measures, the difference between the two versions and where to order it." },
+        hero: { eyebrow: "PAPI 3", title: "PAPI 3", lead: "PAPI 3 is the work-related personality questionnaire from Talogy Cubiks. Below you read what it measures, the difference between the two versions and where to order it." },
         intro: [
           "PAPI looks at what someone needs in their work and which role they take in it. That gives a picture of working style: how someone approaches tasks, how they relate to others and where they get their energy.",
           "The questionnaire is used for selection, development and coaching. The report is set up as a conversation document, so the outcomes are meant to be gone through together.",
@@ -658,7 +658,7 @@ export const THEMAPAGINAS = {
           { t: "What it does not measure", d: "Aptitude and knowledge. For those you use an aptitude test and an interview." },
         ] },
         tests: { title: "Ordering and reading on", intro: "PAPI 3 is ordered in the shop. Alongside that, the pages this subject touches.", cta: "View", kaarten: [
-          { t: "To the shop", d: "There you find PAPI 3-i, PAPI 3-n and PAPI Factors, with current prices." },
+          { t: "To the shop", d: "There you find PAPI 3-i, PAPI 3-n, PAPI 3+ and PAPI Factors, with current prices." },
           { t: "Personality test", d: "What a personality test measures and which other questionnaires exist." },
           { t: "Norm groups", d: "Why a score only means something next to a comparison group." },
           { t: "Assessment overview", d: "All instruments in a row, per career stage." },

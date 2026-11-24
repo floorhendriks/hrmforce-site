@@ -437,32 +437,32 @@ export const BASE_EXIT_INTENT = {
 export const DOCOVER_T = {
   nl: {
     crumb: "Documenten", eyebrow: "Documentatie", h1: "Documenten van de uitgevers",
-    lead: "Brochures, voorbeeldrapporten, handleidingen en veelgestelde vragen bij de instrumenten die hrmforce afneemt bij SHL, GITP en Cubiks. {aantal} documenten, direct te openen, zonder formulier.",
+    lead: "Brochures, voorbeeldrapporten, handleidingen en veelgestelde vragen bij de instrumenten die hrmforce afneemt bij SHL, GITP en Talogy Cubiks. {aantal} documenten, direct te openen, zonder formulier.",
     naar: "Naar de testpagina", cta: "Liever advies over wat bij je vraag past?", ctaLink: "Neem contact op",
   },
   en: {
     crumb: "Documents", eyebrow: "Documentation", h1: "Documents from the publishers",
-    lead: "Brochures, sample reports, manuals and frequently asked questions for the instruments hrmforce sources from SHL, GITP and Cubiks. {aantal} documents, open them straight away, no form.",
+    lead: "Brochures, sample reports, manuals and frequently asked questions for the instruments hrmforce sources from SHL, GITP and Talogy Cubiks. {aantal} documents, open them straight away, no form.",
     naar: "To the test page", cta: "Prefer advice on what fits your question?", ctaLink: "Get in touch",
   },
   de: {
     crumb: "Dokumente", eyebrow: "Dokumentation", h1: "Dokumente der Herausgeber",
-    lead: "Broschüren, Musterberichte, Handbücher und häufige Fragen zu den Verfahren, die hrmforce bei SHL, GITP und Cubiks bezieht. {aantal} Dokumente, direkt zu öffnen, ohne Formular.",
+    lead: "Broschüren, Musterberichte, Handbücher und häufige Fragen zu den Verfahren, die hrmforce bei SHL, GITP und Talogy Cubiks bezieht. {aantal} Dokumente, direkt zu öffnen, ohne Formular.",
     naar: "Zur Testseite", cta: "Lieber Beratung, was zu Ihrer Frage passt?", ctaLink: "Kontakt aufnehmen",
   },
   fr: {
     crumb: "Documents", eyebrow: "Documentation", h1: "Documents des éditeurs",
-    lead: "Brochures, rapports types, manuels et questions fréquentes sur les outils que hrmforce se procure auprès de SHL, GITP et Cubiks. {aantal} documents, consultables tout de suite, sans formulaire.",
+    lead: "Brochures, rapports types, manuels et questions fréquentes sur les outils que hrmforce se procure auprès de SHL, GITP et Talogy Cubiks. {aantal} documents, consultables tout de suite, sans formulaire.",
     naar: "Vers la page du test", cta: "Vous préférez un conseil sur ce qui convient ?", ctaLink: "Nous contacter",
   },
   es: {
     crumb: "Documentos", eyebrow: "Documentación", h1: "Documentos de las editoriales",
-    lead: "Folletos, informes de muestra, manuales y preguntas frecuentes de los instrumentos que hrmforce obtiene de SHL, GITP y Cubiks. {aantal} documentos, para abrir al momento, sin formulario.",
+    lead: "Folletos, informes de muestra, manuales y preguntas frecuentes de los instrumentos que hrmforce obtiene de SHL, GITP y Talogy Cubiks. {aantal} documentos, para abrir al momento, sin formulario.",
     naar: "A la página del test", cta: "¿Prefieres asesoramiento sobre qué encaja?", ctaLink: "Contactar",
   },
   ro: {
     crumb: "Documente", eyebrow: "Documentație", h1: "Documente de la editori",
-    lead: "Broșuri, rapoarte model, manuale și întrebări frecvente pentru instrumentele pe care hrmforce le ia de la SHL, GITP și Cubiks. {aantal} documente, deschise pe loc, fără formular.",
+    lead: "Broșuri, rapoarte model, manuale și întrebări frecvente pentru instrumentele pe care hrmforce le ia de la SHL, GITP și Talogy Cubiks. {aantal} documente, deschise pe loc, fără formular.",
     naar: "Spre pagina testului", cta: "Preferi un sfat despre ce ți se potrivește?", ctaLink: "Contactează-ne",
   },
 };

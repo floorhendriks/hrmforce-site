@@ -1,4 +1,4 @@
-// Volledige productcatalogus van de hrmforce-shop (91 producten).
+// Volledige productcatalogus van de hrmforce-shop (92 producten).
 // Prijzen excl. btw, in euro. Velden taal-onafhankelijk; vertaalde
 // productteksten beheer je in Shopify (Markets/Translate).
 export const products = [
@@ -63,15 +63,16 @@ export const products = [
   { name: "DSI", price: 85.0, vendor: "SHL", segment: "Persoonlijkheid", phase: "Ontwikkeling" },
   { name: "Development Action Planner", price: 253.0, vendor: "SHL", segment: "Materialen", phase: "Ontwikkeling" },
   { name: "Assessment Support Rapport", price: 291.0, vendor: "hrmforce", segment: "Persoonlijkheid", phase: "Selectie" },
-  { name: "Logiks Verbal", price: 84.0, vendor: "Cubiks", segment: "Intelligentie", phase: "Selectie" },
-  { name: "Logiks Numerical", price: 84.0, vendor: "Cubiks", segment: "Intelligentie", phase: "Selectie" },
-  { name: "Logiks General Advanced", price: 84.0, vendor: "Cubiks", segment: "Intelligentie", phase: "Selectie" },
-  { name: "Logiks General Intermediate", price: 84.0, vendor: "Cubiks", segment: "Intelligentie", phase: "Selectie" },
-  { name: "Logiks Abstract", price: 84.0, vendor: "Cubiks", segment: "Intelligentie", phase: "Selectie" },
-  { name: "PAPI Factors", price: 84.0, vendor: "Cubiks", segment: "Persoonlijkheid", phase: "Selectie" },
-  { name: "PAPI 3-n", price: 153.0, vendor: "Cubiks", segment: "Persoonlijkheid", phase: "Selectie" },
-  { name: "PAPI 3-i", price: 153.0, vendor: "Cubiks", segment: "Persoonlijkheid", phase: "Selectie" },
-  { name: "Talogy 360", price: 242.0, vendor: "Talogy", segment: "360 Feedback", phase: "Ontwikkeling" },
+  { name: "Logiks Verbal", price: 84.0, vendor: "Talogy Cubiks", segment: "Intelligentie", phase: "Selectie" },
+  { name: "Logiks Numerical", price: 84.0, vendor: "Talogy Cubiks", segment: "Intelligentie", phase: "Selectie" },
+  { name: "Logiks General Advanced", price: 84.0, vendor: "Talogy Cubiks", segment: "Intelligentie", phase: "Selectie" },
+  { name: "Logiks General Intermediate", price: 84.0, vendor: "Talogy Cubiks", segment: "Intelligentie", phase: "Selectie" },
+  { name: "Logiks Abstract", price: 84.0, vendor: "Talogy Cubiks", segment: "Intelligentie", phase: "Selectie" },
+  { name: "PAPI Factors", price: 84.0, vendor: "Talogy Cubiks", segment: "Persoonlijkheid", phase: "Selectie" },
+  { name: "PAPI 3-n", price: 153.0, vendor: "Talogy Cubiks", segment: "Persoonlijkheid", phase: "Selectie" },
+  { name: "PAPI 3+", price: 153.0, vendor: "Talogy Cubiks", segment: "Persoonlijkheid", phase: "Selectie" },
+  { name: "PAPI 3-i", price: 153.0, vendor: "Talogy Cubiks", segment: "Persoonlijkheid", phase: "Selectie" },
+  { name: "Talogy 360", price: 242.0, vendor: "Talogy Cubiks", segment: "360 Feedback", phase: "Ontwikkeling" },
   { name: "Certificatietraining", price: 595.0, vendor: "hrmforce", segment: "Materialen", phase: "Ontwikkeling" },
   { name: "Executive Assessment", price: 2805.0, vendor: "hrmforce", segment: "Live assessment", phase: "Selectie" },
   { name: "Management Assessment", price: 1955.0, vendor: "hrmforce", segment: "Live assessment", phase: "Selectie" },

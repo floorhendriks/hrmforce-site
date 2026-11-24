@@ -1,6 +1,6 @@
 // Documenten bij de instrumenten die hrmforce verkoopt maar niet zelf uitgeeft:
 // OPQ32, Verify en DSI van SHL, PAPI 3, Logiks, Teamrollen en Talogy 360 van
-// Cubiks, en Reflector en Connector Ability van GITP, voorheen PiCompany.
+// Talogy Cubiks, en Reflector en Connector Ability van GITP, voorheen PiCompany.
 //
 // Brochures, voorbeeldrapportages, handleidingen en veelgestelde vragen van de
 // uitgever zelf. Ze staan onder public/media en zijn zonder formulier te openen,
@@ -20,27 +20,27 @@
 export const DOC_META = {
   nl: {
     title: "Documenten van de uitgevers | hrmforce",
-    description: "Brochures, voorbeeldrapporten en handleidingen van SHL, GITP en Cubiks bij OPQ32, Verify, Connector Ability, Reflector, Logiks, PAPI 3 en Talogy 360.",
+    description: "Brochures, voorbeeldrapporten en handleidingen van SHL, GITP en Talogy Cubiks bij OPQ32, Verify, Connector Ability, Reflector, Logiks, PAPI 3 en Talogy 360.",
   },
   en: {
     title: "Documents from the publishers | hrmforce",
-    description: "Brochures, sample reports and manuals from SHL, GITP and Cubiks for OPQ32, Verify, Connector Ability, Reflector, Logiks, PAPI 3 and Talogy 360.",
+    description: "Brochures, sample reports and manuals from SHL, GITP and Talogy Cubiks for OPQ32, Verify, Connector Ability, Reflector, Logiks, PAPI 3 and Talogy 360.",
   },
   de: {
     title: "Dokumente der Herausgeber | hrmforce",
-    description: "Broschüren, Musterberichte und Handbücher von SHL, GITP und Cubiks zu OPQ32, Verify, Connector Ability, Reflector, Logiks, PAPI 3 und Talogy 360.",
+    description: "Broschüren, Musterberichte und Handbücher von SHL, GITP und Talogy Cubiks zu OPQ32, Verify, Connector Ability, Reflector, Logiks, PAPI 3 und Talogy 360.",
   },
   fr: {
     title: "Documents des éditeurs | hrmforce",
-    description: "Brochures, rapports types et manuels de SHL, GITP et Cubiks pour OPQ32, Verify, Connector Ability, Reflector, Logiks, PAPI 3 et Talogy 360.",
+    description: "Brochures, rapports types et manuels de SHL, GITP et Talogy Cubiks pour OPQ32, Verify, Connector Ability, Reflector, Logiks, PAPI 3 et Talogy 360.",
   },
   es: {
     title: "Documentos de las editoriales | hrmforce",
-    description: "Folletos, informes de muestra y manuales de SHL, GITP y Cubiks para OPQ32, Verify, Connector Ability, Reflector, Logiks, PAPI 3 y Talogy 360.",
+    description: "Folletos, informes de muestra y manuales de SHL, GITP y Talogy Cubiks para OPQ32, Verify, Connector Ability, Reflector, Logiks, PAPI 3 y Talogy 360.",
   },
   ro: {
     title: "Documente de la editori | hrmforce",
-    description: "Broșuri, rapoarte model și manuale de la SHL, GITP și Cubiks pentru OPQ32, Verify, Connector Ability, Reflector, Logiks, PAPI 3 și Talogy 360.",
+    description: "Broșuri, rapoarte model și manuale de la SHL, GITP și Talogy Cubiks pentru OPQ32, Verify, Connector Ability, Reflector, Logiks, PAPI 3 și Talogy 360.",
   },
 };
 
@@ -222,43 +222,43 @@ export const DOCS = {
     titel: { nl: "Voorbeeldrapport Reflector 360", en: "Sample report Reflector 360" },
   },
   "papi3-brochure": {
-    href: "/media/documenten/cubiks/papi-3-brochure.pdf", bron: "Cubiks", taal: "NL", mb: 1.1,
+    href: "/media/documenten/cubiks/papi-3-brochure.pdf", bron: "Talogy Cubiks", taal: "NL", mb: 1.1,
     titel: { nl: "PAPI 3 brochure", en: "PAPI 3 brochure" },
   },
   "logiks-brochure": {
-    href: "/media/documenten/cubiks/logiks-brochure.pdf", bron: "Cubiks", taal: "NL", mb: 0.2,
+    href: "/media/documenten/cubiks/logiks-brochure.pdf", bron: "Talogy Cubiks", taal: "NL", mb: 0.2,
     titel: { nl: "Logiks brochure", en: "Logiks brochure" },
   },
   "logiks-abstract": {
-    href: "/media/documenten/cubiks/logiks-abstract-voorbeeldrapport.pdf", bron: "Cubiks", taal: "NL", mb: 0.2,
+    href: "/media/documenten/cubiks/logiks-abstract-voorbeeldrapport.pdf", bron: "Talogy Cubiks", taal: "NL", mb: 0.2,
     titel: { nl: "Voorbeeldrapport Logiks Abstract", en: "Sample report Logiks Abstract" },
   },
   "logiks-general": {
-    href: "/media/documenten/cubiks/logiks-general-voorbeeldrapport.pdf", bron: "Cubiks", taal: "NL", mb: 0.2,
+    href: "/media/documenten/cubiks/logiks-general-voorbeeldrapport.pdf", bron: "Talogy Cubiks", taal: "NL", mb: 0.2,
     titel: { nl: "Voorbeeldrapport Logiks General", en: "Sample report Logiks General" },
   },
   "logiks-numeriek": {
-    href: "/media/documenten/cubiks/logiks-numeriek-voorbeeldrapport.pdf", bron: "Cubiks", taal: "NL", mb: 0.2,
+    href: "/media/documenten/cubiks/logiks-numeriek-voorbeeldrapport.pdf", bron: "Talogy Cubiks", taal: "NL", mb: 0.2,
     titel: { nl: "Voorbeeldrapport Logiks Numeriek", en: "Sample report Logiks Numerical" },
   },
   "logiks-verbaal": {
-    href: "/media/documenten/cubiks/logiks-verbaal-voorbeeldrapport.pdf", bron: "Cubiks", taal: "NL", mb: 0.2,
+    href: "/media/documenten/cubiks/logiks-verbaal-voorbeeldrapport.pdf", bron: "Talogy Cubiks", taal: "NL", mb: 0.2,
     titel: { nl: "Voorbeeldrapport Logiks Verbaal", en: "Sample report Logiks Verbal" },
   },
   "talogy360-brochure": {
-    href: "/media/documenten/cubiks/talogy-360-brochure.pdf", bron: "Cubiks", taal: "NL", mb: 0.7,
+    href: "/media/documenten/cubiks/talogy-360-brochure.pdf", bron: "Talogy Cubiks", taal: "NL", mb: 0.7,
     titel: { nl: "Talogy 360 brochure", en: "Talogy 360 brochure" },
   },
   "talogy360-leiderschap": {
-    href: "/media/documenten/cubiks/talogy-360-leiderschap-brochure.pdf", bron: "Cubiks", taal: "NL", mb: 0.3,
+    href: "/media/documenten/cubiks/talogy-360-leiderschap-brochure.pdf", bron: "Talogy Cubiks", taal: "NL", mb: 0.3,
     titel: { nl: "Talogy 360 voor leiderschap", en: "Talogy 360 for leadership" },
   },
   "teamrollen-flyer": {
-    href: "/media/documenten/cubiks/teamrollen-flyer.pdf", bron: "Cubiks", taal: "NL", mb: 0.3,
+    href: "/media/documenten/cubiks/teamrollen-flyer.pdf", bron: "Talogy Cubiks", taal: "NL", mb: 0.3,
     titel: { nl: "Teamrollenvragenlijst in het kort", en: "Team roles questionnaire at a glance" },
   },
   "teamrollen-voorbeeldrapport": {
-    href: "/media/documenten/cubiks/teamrollen-voorbeeldrapport.pdf", bron: "Cubiks", taal: "NL", mb: 0.2,
+    href: "/media/documenten/cubiks/teamrollen-voorbeeldrapport.pdf", bron: "Talogy Cubiks", taal: "NL", mb: 0.2,
     titel: { nl: "Voorbeeldrapport Teamrollenvragenlijst", en: "Sample report Team roles questionnaire" },
   },
 };
@@ -302,6 +302,7 @@ export const PER_PRODUCT = {
   "Verify Checking": ["verify-flyer", "verify-voorbeelditems", "verify-normgroepen", "verify-handleiding"],
   "PAPI 3-i": ["papi3-brochure"],
   "PAPI 3-n": ["papi3-brochure"],
+  "PAPI 3+": ["papi3-brochure"],
   "PAPI Factors": ["papi3-brochure"],
   "Logiks Abstract": ["logiks-abstract", "logiks-brochure"],
   "Logiks General Advanced": ["logiks-general", "logiks-brochure"],
@@ -373,16 +374,16 @@ export const GROEPEN = [
   { sleutel: "reflector", bron: "GITP", ref: { hub: "persoonlijkheid" },
     naam: { nl: "Reflector Big Five Personality", en: "Reflector Big Five Personality" },
     lead: { nl: "Persoonlijkheidsvragenlijst op basis van het Workplace Big Five model.", en: "Personality questionnaire based on the Workplace Big Five model." } },
-  { sleutel: "logiks", bron: "Cubiks", ref: { hub: "capaciteiten" },
+  { sleutel: "logiks", bron: "Talogy Cubiks", ref: { hub: "capaciteiten" },
     naam: { nl: "Logiks", en: "Logiks" },
     lead: { nl: "Korte capaciteitentests, los of als samengestelde batterij.", en: "Short ability tests, separately or as a combined battery." } },
-  { sleutel: "papi3", bron: "Cubiks", ref: { thema: "papi3" },
+  { sleutel: "papi3", bron: "Talogy Cubiks", ref: { thema: "papi3" },
     naam: { nl: "PAPI 3", en: "PAPI 3" },
-    lead: { nl: "Persoonlijkheidsvragenlijst van Cubiks, in een normatieve en een ipsatieve vorm.", en: "Cubiks personality questionnaire, in a normative and an ipsative form." } },
-  { sleutel: "talogy360", bron: "Cubiks", ref: { assessment: "360-graden-feedback" },
+    lead: { nl: "Persoonlijkheidsvragenlijst van Talogy Cubiks, in een normatieve en een ipsatieve vorm.", en: "Talogy Cubiks personality questionnaire, in a normative and an ipsative form." } },
+  { sleutel: "talogy360", bron: "Talogy Cubiks", ref: { assessment: "360-graden-feedback" },
     naam: { nl: "Talogy 360", en: "Talogy 360" },
-    lead: { nl: "360 graden feedback van Cubiks, met een variant voor leiderschap.", en: "360 degree feedback from Cubiks, with a leadership variant." } },
-  { sleutel: "teamrollen", bron: "Cubiks", ref: { hub: "teamrollen" },
+    lead: { nl: "360 graden feedback van Talogy Cubiks, met een variant voor leiderschap.", en: "360 degree feedback from Talogy Cubiks, with a leadership variant." } },
+  { sleutel: "teamrollen", bron: "Talogy Cubiks", ref: { hub: "teamrollen" },
     naam: { nl: "Teamrollenvragenlijst", en: "Team roles questionnaire" },
     lead: { nl: "Welke rol iemand in een team pakt en welke rollen in het team ontbreken.", en: "Which role someone takes in a team and which roles the team lacks." } },
   { sleutel: "normgroepen", bron: "", ref: { thema: "normgroepen" },
