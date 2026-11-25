@@ -12,7 +12,7 @@ import { LEIDERSCHAP } from "./hsf-vragenlijst-leiderschap.mjs";
 import { COMPETENTIES } from "./hsf-vragenlijst-competenties.mjs";
 import { STUDIEKEUZE } from "./hsf-vragenlijst-studiekeuze.mjs";
 
-const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu", "lt", "bg", "sk", "sl", "et", "lv", "hr", "sr", "ru"];
+const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu", "lt", "bg", "sk", "sl", "et", "lv", "hr", "sr", "ru", "pl", "da", "sv"];
 const MAP = "src/data/oefenbank";
 
 const ONDERDELEN = {

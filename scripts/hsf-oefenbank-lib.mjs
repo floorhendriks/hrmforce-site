@@ -33,6 +33,7 @@ const SCHEIDING = {
   hr: { dec: ",", dui: "." },
   sr: { dec: ",", dui: "." },
   ru: { dec: ",", dui: " " },
+  pl: { dec: ",", dui: " " }, da: { dec: ",", dui: "." }, sv: { dec: ",", dui: " " },
 };
 export function getal(n, taal, decimalen = 0) {
   const s = SCHEIDING[taal] || SCHEIDING.nl;
@@ -43,9 +44,9 @@ export function getal(n, taal, decimalen = 0) {
 }
 export const euro = (n, taal, d = 0) => "€ " + getal(n, taal, d);
 // Turks zet het procentteken vooraan (%12); Fins, Noors, Tsjechisch, Litouws, Slowaaks,
-// Sloveens, Kroatisch en Russisch met een spatie (12 %).
+// Sloveens, Kroatisch, Russisch, Deens en Zweeds met een spatie (12 %).
 export const procent = (n, taal, d = 0) =>
-  taal === "tr" ? "%" + getal(n, taal, d) : ["fi", "nb", "cs", "lt", "sk", "sl", "hr", "ru"].includes(taal) ? getal(n, taal, d) + "\u00a0%" : getal(n, taal, d) + "%";
+  taal === "tr" ? "%" + getal(n, taal, d) : ["fi", "nb", "cs", "lt", "sk", "sl", "hr", "ru", "da", "sv"].includes(taal) ? getal(n, taal, d) + "\u00a0%" : getal(n, taal, d) + "%";
 
 /** Unieke, gesorteerde antwoordopties; het juiste antwoord komt op een vaste
  *  plek te staan afhankelijk van de itemsleutel, niet steeds op dezelfde. */
@@ -57,7 +58,7 @@ export function opties(juist, afleiders, toon) {
 
 /** Bouwt het itemobject in alle talen. `bouw` levert per taal {vraag, uitleg}. */
 export function item(id, soort, bouw, waarden, juistIndex, toon) {
-  const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu", "lt", "bg", "sk", "sl", "et", "lv", "hr", "sr", "ru"];
+  const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu", "lt", "bg", "sk", "sl", "et", "lv", "hr", "sr", "ru", "pl", "da", "sv"];
   const tekst = {};
   for (const t of TALEN) tekst[t] = bouw(t);
   return {

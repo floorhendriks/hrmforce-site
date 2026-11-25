@@ -5,7 +5,7 @@
 import { rng, tussen, schud } from "./hsf-oefenbank-lib.mjs";
 
 
-const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu", "lt", "bg", "sk", "sl", "et", "lv", "hr", "sr", "ru"];
+const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu", "lt", "bg", "sk", "sl", "et", "lv", "hr", "sr", "ru", "pl", "da", "sv"];
 const NAVY = "#0E468C";
 const GOUD = "#fcc11b";
 const LIJN = "#c9d4e4";
@@ -37,6 +37,9 @@ const VRAAG_A = {
   hr: "Koji je lik isti kao gornji, samo zakrenut?",
   sr: "Koja figura je ista kao gornja, samo zarotirana?",
   ru: "Какая фигура такая же, как верхняя, только повёрнутая?",
+  pl: "Która figura jest taka sama jak górna, tylko obrócona?",
+  da: "Hvilken figur er den samme som den øverste, bare drejet?",
+  sv: "Vilken figur är samma som den översta, bara roterad?",
 };
 
 const UITLEG_A = {
@@ -64,6 +67,9 @@ const UITLEG_A = {
   hr: (g) => `Samo je ovaj lik izvornik zakrenut za ${g}°. Ostala četiri su zrcalna ili imaju jedan blok na drugom mjestu.`,
   sr: (g) => `Samo je ova figura original zarotiran za ${g}°. Ostale četiri su preslikane ili imaju jedan blok na drugom mestu.`,
   ru: (g) => `Только эта фигура является оригиналом, повёрнутым на ${g}°. Остальные четыре зеркальные или в них один блок стоит в другом месте.`,
+  pl: (g) => `Tylko ta figura jest oryginałem obróconym o ${g}°. Pozostałe cztery są lustrzanymi odbiciami albo mają jeden klocek w innym miejscu.`,
+  da: (g) => `Kun denne figur er originalen drejet ${g}°. De fire andre er spejlvendte eller har en klods et andet sted.`,
+  sv: (g) => `Bara den här figuren är originalet roterat ${g}°. De fyra andra är spegelvända eller har en kloss på ett annat ställe.`,
 };
 
 const N = 4;
@@ -189,6 +195,9 @@ const VRAAG_R = {
   hr: "Koja se kocka može složiti od ove mreže?",
   sr: "Koja kocka može da se složi od ove mreže?",
   ru: "Какой куб можно сложить из этой развёртки?",
+  pl: "Którą kostkę można złożyć z tej siatki?",
+  da: "Hvilken terning kan foldes af denne udfoldning?",
+  sv: "Vilken kub kan vikas av den här utvikningen?",
 };
 
 const TEKENS = {
@@ -216,6 +225,9 @@ const TEKENS = {
   hr: ["krug", "trokut", "kvadrat", "križ", "zvijezda", "traka"],
   sr: ["krug", "trougao", "kvadrat", "krst", "zvezda", "traka"],
   ru: ["круг", "треугольник", "квадрат", "крест", "звезда", "полоса"],
+  pl: ["koło", "trójkąt", "kwadrat", "krzyż", "gwiazda", "pasek"],
+  da: ["cirkel", "trekant", "firkant", "kryds", "stjerne", "streg"],
+  sv: ["cirkel", "triangel", "kvadrat", "kryss", "stjärna", "streck"],
 };
 
 const UITLEG_R = {
@@ -243,6 +255,9 @@ const UITLEG_R = {
   hr: (f, r2, u) => `Kada se mreža složi, ${f}, ${r2} i ${u} susreću se u istom kutu upravo ovim redoslijedom. Na ostalim četirima kockama jedna do druge stoje strane koje su na kocki nasuprotne, ili je redoslijed okretanja pogrešan.`,
   sr: (f, r2, u) => `Kada se mreža složi, ${f}, ${r2} i ${u} sastaju se u istom uglu baš ovim redosledom. Na ostale četiri kocke jedna do druge stoje strane koje su na kocki naspramne, ili je redosled okretanja pogrešan.`,
   ru: (f, r2, u) => `Если сложить развёртку, ${f}, ${r2} и ${u} сходятся в одном углу именно в таком порядке. На остальных четырёх кубах рядом стоят грани, которые на кубе противоположны, или порядок вращения неверный.`,
+  pl: (f, r2, u) => `Po złożeniu siatki ${f}, ${r2} i ${u} spotykają się w jednym narożniku właśnie w tej kolejności. Na pozostałych czterech kostkach obok siebie stoją ściany, które na kostce są przeciwległe, albo kolejność obrotu jest odwrotna.`,
+  da: (f, r2, u) => `Når udfoldningen foldes, mødes ${f}, ${r2} og ${u} i samme hjørne i netop denne rækkefølge. På de fire andre terninger står sider ved siden af hinanden, som på terningen er modsatte, eller rotationsrækkefølgen er forkert.`,
+  sv: (f, r2, u) => `När utvikningen viks möts ${f}, ${r2} och ${u} i samma hörn i just den här ordningen. På de fyra andra kuberna står sidor bredvid varandra som är motsatta på kuben, eller så är rotationsordningen fel.`,
 };
 
 // De 24 standen van een kubus, opgebouwd uit drie basisdraaiingen.

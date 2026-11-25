@@ -4,7 +4,7 @@
 // stap één te ver of te kort nemen, de bewerkingen omdraaien.
 import { rng, tussen, kies } from "./hsf-oefenbank-lib.mjs";
 
-const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu", "lt", "bg", "sk", "sl", "et", "lv", "hr", "sr", "ru"];
+const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu", "lt", "bg", "sk", "sl", "et", "lv", "hr", "sr", "ru", "pl", "da", "sv"];
 
 const VRAAG = {
   nl: "Selecteer het getal dat logischerwijs volgt op de reeks.",
@@ -31,6 +31,9 @@ const VRAAG = {
   hr: "Odaberite broj koji logično nastavlja niz.",
   sr: "Izaberite broj koji logično nastavlja niz.",
   ru: "Выберите число, которое логично продолжает ряд.",
+  pl: "Wybierz liczbę, która logicznie kontynuuje ciąg.",
+  da: "Vælg det tal, der logisk fortsætter rækken.",
+  sv: "Välj det tal som logiskt fortsätter serien.",
 };
 
 // Bouwstenen voor de toelichting, per taal. De cijfers komen uit het item.
@@ -346,6 +349,45 @@ const T = {
     afwisselend: (a, b, u) => `Действия чередуются: ${a} и ${b}. Сейчас очередь ${a}, поэтому дальше идёт ${u}.`,
     kwadraat: (u) => `Ряд состоит из квадратов чисел. Следующий квадрат ${u}.`,
     deelMaal: (a, b, u) => `${a} и ${b} применяются по очереди. Сейчас очередь ${b}, то есть ${u}.`,
+  },
+  pl: {
+    verschilToe: (d, r, u) => `Różnica między dwiema kolejnymi liczbami za każdym razem rośnie o ${d}: ${r}. Po ostatniej liczbie następuje ${u}.`,
+    verschilAf: (d, r, u) => `Różnica między dwiema kolejnymi liczbami za każdym razem maleje o ${d}: ${r}. Po ostatniej liczbie następuje ${u}.`,
+    verschilMaal: (k, r, u) => `Różnica za każdym razem jest mnożona przez ${k}: ${r}. Następny krok to ${u}.`,
+    maal: (k, u) => `Każda liczba to poprzednia pomnożona przez ${k}, więc następna to ${u}.`,
+    plus: (k, u) => `Każda liczba jest o ${k} większa od poprzedniej, więc następna to ${u}.`,
+    som: (a, b, u) => `Każda liczba jest sumą dwóch poprzednich: ${a} + ${b} = ${u}.`,
+    maalPlus: (k, b, u) => `Każda liczba to poprzednia pomnożona przez ${k} plus ${b}, więc następna to ${u}.`,
+    twee: (a, b, u) => `Przeplatają się dwa ciągi. Miejsca nieparzyste rosną o ${a}, parzyste o ${b}. Szukana liczba należy do ciągu, który rośnie o ${u}.`,
+    afwisselend: (a, b, u) => `Działania występują na zmianę: ${a} i ${b}. Teraz kolej na ${a}, więc następna to ${u}.`,
+    kwadraat: (u) => `Ciąg składa się z kwadratów liczb. Następny kwadrat to ${u}.`,
+    deelMaal: (a, b, u) => `${a} i ${b} stosuje się na zmianę. Teraz kolej na ${b}, czyli ${u}.`,
+  },
+  da: {
+    verschilToe: (d, r, u) => `Forskellen mellem to tal i træk vokser hver gang med ${d}: ${r}. Efter det sidste tal kommer ${u}.`,
+    verschilAf: (d, r, u) => `Forskellen mellem to tal i træk falder hver gang med ${d}: ${r}. Efter det sidste tal kommer ${u}.`,
+    verschilMaal: (k, r, u) => `Forskellen ganges hver gang med ${k}: ${r}. Næste trin er ${u}.`,
+    maal: (k, u) => `Hvert tal er det forrige ganget med ${k}, så det næste er ${u}.`,
+    plus: (k, u) => `Hvert tal er ${k} større end det forrige, så det næste er ${u}.`,
+    som: (a, b, u) => `Hvert tal er summen af de to forrige: ${a} + ${b} = ${u}.`,
+    maalPlus: (k, b, u) => `Hvert tal er det forrige ganget med ${k} plus ${b}, så det næste er ${u}.`,
+    twee: (a, b, u) => `To rækker skifter. De ulige pladser vokser med ${a}, de lige med ${b}. Det søgte tal hører til rækken, der vokser med ${u}.`,
+    afwisselend: (a, b, u) => `Regneoperationerne skifter: ${a} og ${b}. Nu er det ${a}, så det næste er ${u}.`,
+    kwadraat: (u) => `Rækken består af kvadrattal. Det næste kvadrat er ${u}.`,
+    deelMaal: (a, b, u) => `${a} og ${b} bruges på skift. Nu er det ${b}, altså ${u}.`,
+  },
+  sv: {
+    verschilToe: (d, r, u) => `Skillnaden mellan två tal i följd ökar varje gång med ${d}: ${r}. Efter det sista talet kommer ${u}.`,
+    verschilAf: (d, r, u) => `Skillnaden mellan två tal i följd minskar varje gång med ${d}: ${r}. Efter det sista talet kommer ${u}.`,
+    verschilMaal: (k, r, u) => `Skillnaden multipliceras varje gång med ${k}: ${r}. Nästa steg är ${u}.`,
+    maal: (k, u) => `Varje tal är det föregående gånger ${k}, så nästa är ${u}.`,
+    plus: (k, u) => `Varje tal är ${k} större än det föregående, så nästa är ${u}.`,
+    som: (a, b, u) => `Varje tal är summan av de två föregående: ${a} + ${b} = ${u}.`,
+    maalPlus: (k, b, u) => `Varje tal är det föregående gånger ${k} plus ${b}, så nästa är ${u}.`,
+    twee: (a, b, u) => `Två serier växlar. De udda platserna ökar med ${a}, de jämna med ${b}. Det sökta talet hör till serien som ökar med ${u}.`,
+    afwisselend: (a, b, u) => `Räknesätten växlar: ${a} och ${b}. Nu är det ${a}, så nästa är ${u}.`,
+    kwadraat: (u) => `Serien består av kvadrattal. Nästa kvadrat är ${u}.`,
+    deelMaal: (a, b, u) => `${a} och ${b} används växelvis. Nu är det ${b}, alltså ${u}.`,
   },
 };
 

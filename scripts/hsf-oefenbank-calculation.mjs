@@ -31,6 +31,9 @@ const T = {
       hr: (p) => `Broj zahtjeva koje je tim obradio: prošlog tromjesečja ${getal(p.a,"hr")}, ovog tromjesečja ${getal(p.b,"hr")}. Za koliko je posto broj porastao?`,
       sr: (p) => `Broj zahteva koje je tim obradio: prošlog kvartala ${getal(p.a,"sr")}, ovog kvartala ${getal(p.b,"sr")}. Za koliko procenata je broj porastao?`,
       ru: (p) => `Число заявок, обработанных командой: в прошлом квартале ${getal(p.a,"ru")}, в этом квартале ${getal(p.b,"ru")}. На сколько процентов оно выросло?`,
+      pl: (p) => `Liczba zgłoszeń obsłużonych przez zespół: w poprzednim kwartale ${getal(p.a,"pl")}, w tym kwartale ${getal(p.b,"pl")}. O ile procent wzrosła?`,
+      da: (p) => `Et team behandlede ${getal(p.a,"da")} henvendelser sidste kvartal og ${getal(p.b,"da")} dette kvartal. Hvor mange procent steg det?`,
+      sv: (p) => `Ett team hanterade ${getal(p.a,"sv")} ärenden förra kvartalet och ${getal(p.b,"sv")} det här kvartalet. Med hur många procent ökade det?`,
     },
     uitleg: {
       nl: (p,j) => `Verschil is ${getal(p.b-p.a,"nl")}. Deel door het oude aantal: ${getal(p.b-p.a,"nl")} / ${getal(p.a,"nl")} = ${procent(j,"nl",1)}.`,
@@ -57,6 +60,9 @@ const T = {
       hr: (p,j) => `Razlika je ${getal(p.b-p.a,"hr")}. Podijelite s prethodnom vrijednošću: ${getal(p.b-p.a,"hr")} / ${getal(p.a,"hr")} = ${procent(j,"hr",1)}.`,
       sr: (p,j) => `Razlika je ${getal(p.b-p.a,"sr")}. Podelite prethodnom vrednošću: ${getal(p.b-p.a,"sr")} / ${getal(p.a,"sr")} = ${procent(j,"sr",1)}.`,
       ru: (p,j) => `Разница составляет ${getal(p.b-p.a,"ru")}. Разделите на прежнее значение: ${getal(p.b-p.a,"ru")} / ${getal(p.a,"ru")} = ${procent(j,"ru",1)}.`,
+      pl: (p,j) => `Różnica wynosi ${getal(p.b-p.a,"pl")}. Podziel przez poprzednią wartość: ${getal(p.b-p.a,"pl")} / ${getal(p.a,"pl")} = ${procent(j,"pl",1)}.`,
+      da: (p,j) => `Forskellen er ${getal(p.b-p.a,"da")}. Del med den tidligere værdi: ${getal(p.b-p.a,"da")} / ${getal(p.a,"da")} = ${procent(j,"da",1)}.`,
+      sv: (p,j) => `Skillnaden är ${getal(p.b-p.a,"sv")}. Dela med det tidigare värdet: ${getal(p.b-p.a,"sv")} / ${getal(p.a,"sv")} = ${procent(j,"sv",1)}.`,
     },
     maak(r) {
       const a = tussen(r, 120, 900) * 2;
@@ -99,6 +105,9 @@ const T = {
       hr: (p) => `Broj kandidata: ${getal(p.tot,"hr")}. Prvi krug prošlo je njih ${getal(p.deel,"hr")}. Koliki je to udio?`,
       sr: (p) => `Broj kandidata: ${getal(p.tot,"sr")}. Prvi krug je prošlo njih ${getal(p.deel,"sr")}. Koliki je to udeo?`,
       ru: (p) => `Число кандидатов: ${getal(p.tot,"ru")}. Первый этап прошли ${getal(p.deel,"ru")} из них. Какую долю это составляет?`,
+      pl: (p) => `Liczba kandydatów: ${getal(p.tot,"pl")}. Pierwszy etap przeszło z nich: ${getal(p.deel,"pl")}. Jaki to odsetek?`,
+      da: (p) => `Af ${getal(p.tot,"da")} kandidater gik ${getal(p.deel,"da")} videre fra første runde. Hvor stor en andel er det?`,
+      sv: (p) => `Av ${getal(p.tot,"sv")} kandidater gick ${getal(p.deel,"sv")} vidare från första omgången. Hur stor andel är det?`,
     },
     uitleg: {
       nl: (p,j) => `${getal(p.deel,"nl")} / ${getal(p.tot,"nl")} = ${procent(j,"nl",1)}.`,
@@ -125,6 +134,9 @@ const T = {
       hr: (p,j) => `${getal(p.deel,"hr")} / ${getal(p.tot,"hr")} = ${procent(j,"hr",1)}.`,
       sr: (p,j) => `${getal(p.deel,"sr")} / ${getal(p.tot,"sr")} = ${procent(j,"sr",1)}.`,
       ru: (p,j) => `${getal(p.deel,"ru")} / ${getal(p.tot,"ru")} = ${procent(j,"ru",1)}.`,
+      pl: (p,j) => `${getal(p.deel,"pl")} / ${getal(p.tot,"pl")} = ${procent(j,"pl",1)}.`,
+      da: (p,j) => `${getal(p.deel,"da")} / ${getal(p.tot,"da")} = ${procent(j,"da",1)}.`,
+      sv: (p,j) => `${getal(p.deel,"sv")} / ${getal(p.tot,"sv")} = ${procent(j,"sv",1)}.`,
     },
     maak(r) {
       const tot = tussen(r, 15, 90) * 20;
@@ -167,6 +179,9 @@ const T = {
       hr: (p) => `Dobavljač A traži ${euro(p.pa,"hr")} za licence (${getal(p.qa,"hr")} kom.), dobavljač B ${euro(p.pb,"hr")} (${getal(p.qb,"hr")} kom.). Kolika je razlika po licenci?`,
       sr: (p) => `Dobavljač A traži ${euro(p.pa,"sr")} za licence (${getal(p.qa,"sr")} kom.), dobavljač B ${euro(p.pb,"sr")} (${getal(p.qb,"sr")} kom.). Kolika je razlika po licenci?`,
       ru: (p) => `Поставщик А берёт ${euro(p.pa,"ru")} за лицензии (${getal(p.qa,"ru")} шт.), поставщик Б ${euro(p.pb,"ru")} (${getal(p.qb,"ru")} шт.). Какова разница в цене одной лицензии?`,
+      pl: (p) => `Dostawca A chce ${euro(p.pa,"pl")} za licencje (${getal(p.qa,"pl")} szt.), dostawca B ${euro(p.pb,"pl")} (${getal(p.qb,"pl")} szt.). Jaka jest różnica na jednej licencji?`,
+      da: (p) => `Leverandør A tager ${euro(p.pa,"da")} for ${getal(p.qa,"da")} licenser, leverandør B ${euro(p.pb,"da")} for ${getal(p.qb,"da")}. Hvad er forskellen pr. licens?`,
+      sv: (p) => `Leverantör A tar ${euro(p.pa,"sv")} för ${getal(p.qa,"sv")} licenser, leverantör B ${euro(p.pb,"sv")} för ${getal(p.qb,"sv")}. Vad är skillnaden per licens?`,
     },
     uitleg: {
       nl: (p,j) => `A: ${euro(p.pa/p.qa,"nl",2)} per stuk. B: ${euro(p.pb/p.qb,"nl",2)}. Verschil ${euro(j,"nl",2)}.`,
@@ -193,6 +208,9 @@ const T = {
       hr: (p,j) => `A: ${euro(p.pa/p.qa,"hr",2)} po komadu. B: ${euro(p.pb/p.qb,"hr",2)}. Razlika ${euro(j,"hr",2)}.`,
       sr: (p,j) => `A: ${euro(p.pa/p.qa,"sr",2)} po komadu. B: ${euro(p.pb/p.qb,"sr",2)}. Razlika ${euro(j,"sr",2)}.`,
       ru: (p,j) => `А: ${euro(p.pa/p.qa,"ru",2)} за штуку. Б: ${euro(p.pb/p.qb,"ru",2)}. Разница ${euro(j,"ru",2)}.`,
+      pl: (p,j) => `A: ${euro(p.pa/p.qa,"pl",2)} za sztukę. B: ${euro(p.pb/p.qb,"pl",2)}. Różnica ${euro(j,"pl",2)}.`,
+      da: (p,j) => `A: ${euro(p.pa/p.qa,"da",2)} pr. stk. B: ${euro(p.pb/p.qb,"da",2)}. Forskel ${euro(j,"da",2)}.`,
+      sv: (p,j) => `A: ${euro(p.pa/p.qa,"sv",2)} per st. B: ${euro(p.pb/p.qb,"sv",2)}. Skillnad ${euro(j,"sv",2)}.`,
     },
     maak(r) {
       const qa = kies(r, [20, 25, 40, 50, 80, 100]);
@@ -236,6 +254,9 @@ const T = {
       hr: (p) => `Rezultati četiriju poslovnica su ${p.r.map(x=>getal(x,"hr")).join(", ")}. Prosjek svih pet poslovnica je ${getal(p.gem,"hr")}. Koliki je rezultat pete?`,
       sr: (p) => `Rezultati četiri filijale su ${p.r.map(x=>getal(x,"sr")).join(", ")}. Prosek svih pet filijala je ${getal(p.gem,"sr")}. Koliki je rezultat pete?`,
       ru: (p) => `Результаты четырёх филиалов: ${p.r.map(x=>getal(x,"ru")).join(", ")}. Среднее по всем пяти филиалам равно ${getal(p.gem,"ru")}. Каков результат пятого?`,
+      pl: (p) => `Wyniki czterech oddziałów: ${p.r.map(x=>getal(x,"pl")).join("; ")}. Średnia wszystkich pięciu oddziałów wynosi ${getal(p.gem,"pl")}. Jaki wynik miał piąty?`,
+      da: (p) => `Fire afdelinger fik ${p.r.map(x=>getal(x,"da")).join("; ")}. Gennemsnittet for alle fem afdelinger er ${getal(p.gem,"da")}. Hvad fik den femte?`,
+      sv: (p) => `Fyra filialer fick ${p.r.map(x=>getal(x,"sv")).join("; ")}. Genomsnittet för alla fem filialerna är ${getal(p.gem,"sv")}. Vad fick den femte?`,
     },
     uitleg: {
       nl: (p,j) => `Vijf keer ${getal(p.gem,"nl")} is ${getal(p.gem*5,"nl")}. Daar de vier bekende vanaf: ${getal(p.gem*5,"nl")} - ${getal(p.som,"nl")} = ${getal(j,"nl")}.`,
@@ -262,6 +283,9 @@ const T = {
       hr: (p,j) => `Pet puta ${getal(p.gem,"hr")} je ${getal(p.gem*5,"hr")}. Oduzmite četiri poznate vrijednosti: ${getal(p.gem*5,"hr")} - ${getal(p.som,"hr")} = ${getal(j,"hr")}.`,
       sr: (p,j) => `Pet puta ${getal(p.gem,"sr")} je ${getal(p.gem*5,"sr")}. Oduzmite četiri poznate vrednosti: ${getal(p.gem*5,"sr")} - ${getal(p.som,"sr")} = ${getal(j,"sr")}.`,
       ru: (p,j) => `Пять раз по ${getal(p.gem,"ru")} дают ${getal(p.gem*5,"ru")}. Вычтите четыре известных значения: ${getal(p.gem*5,"ru")} - ${getal(p.som,"ru")} = ${getal(j,"ru")}.`,
+      pl: (p,j) => `Pięć razy ${getal(p.gem,"pl")} to ${getal(p.gem*5,"pl")}. Odejmij cztery znane wartości: ${getal(p.gem*5,"pl")} - ${getal(p.som,"pl")} = ${getal(j,"pl")}.`,
+      da: (p,j) => `Fem gange ${getal(p.gem,"da")} er ${getal(p.gem*5,"da")}. Træk de fire kendte værdier fra: ${getal(p.gem*5,"da")} - ${getal(p.som,"da")} = ${getal(j,"da")}.`,
+      sv: (p,j) => `Fem gånger ${getal(p.gem,"sv")} är ${getal(p.gem*5,"sv")}. Dra av de fyra kända värdena: ${getal(p.gem*5,"sv")} - ${getal(p.som,"sv")} = ${getal(j,"sv")}.`,
     },
     maak(r) {
       const r4 = Array.from({ length: 4 }, () => tussen(r, 55, 95));
@@ -302,6 +326,9 @@ const T = {
       hr: (p) => `Klijent kupuje procjene (${getal(p.n,"hr")} kom.) po ${euro(p.prijs,"hr")} uz popust od ${procent(p.k,"hr")}. Koliko plaća?`,
       sr: (p) => `Klijent kupuje procene (${getal(p.n,"sr")} kom.) po ${euro(p.prijs,"sr")} uz popust od ${procent(p.k,"sr")}. Koliko plaća?`,
       ru: (p) => `Клиент покупает оценки (${getal(p.n,"ru")} шт.) по ${euro(p.prijs,"ru")} за штуку со скидкой ${procent(p.k,"ru")}. Сколько он заплатит?`,
+      pl: (p) => `Klient kupuje oceny (${getal(p.n,"pl")} szt.) po ${euro(p.prijs,"pl")} z rabatem ${procent(p.k,"pl")}. Ile zapłaci?`,
+      da: (p) => `En kunde køber ${getal(p.n,"da")} tests à ${euro(p.prijs,"da")} med ${procent(p.k,"da")} rabat. Hvad betaler kunden?`,
+      sv: (p) => `En kund köper ${getal(p.n,"sv")} tester à ${euro(p.prijs,"sv")} med ${procent(p.k,"sv")} rabatt. Vad betalar kunden?`,
     },
     uitleg: {
       nl: (p,j) => `${getal(p.n,"nl")} x ${euro(p.prijs,"nl")} = ${euro(p.n*p.prijs,"nl")}. Daarvan ${procent(100-p.k,"nl")}: ${euro(j,"nl")}.`,
@@ -328,6 +355,9 @@ const T = {
       hr: (p,j) => `${getal(p.n,"hr")} x ${euro(p.prijs,"hr")} = ${euro(p.n*p.prijs,"hr")}. Od toga ${procent(100-p.k,"hr")}: ${euro(j,"hr")}.`,
       sr: (p,j) => `${getal(p.n,"sr")} x ${euro(p.prijs,"sr")} = ${euro(p.n*p.prijs,"sr")}. Od toga ${procent(100-p.k,"sr")}: ${euro(j,"sr")}.`,
       ru: (p,j) => `${getal(p.n,"ru")} x ${euro(p.prijs,"ru")} = ${euro(p.n*p.prijs,"ru")}. От этой суммы ${procent(100-p.k,"ru")}: ${euro(j,"ru")}.`,
+      pl: (p,j) => `${getal(p.n,"pl")} x ${euro(p.prijs,"pl")} = ${euro(p.n*p.prijs,"pl")}. Z tego ${procent(100-p.k,"pl")}: ${euro(j,"pl")}.`,
+      da: (p,j) => `${getal(p.n,"da")} x ${euro(p.prijs,"da")} = ${euro(p.n*p.prijs,"da")}. ${procent(100-p.k,"da")} af det: ${euro(j,"da")}.`,
+      sv: (p,j) => `${getal(p.n,"sv")} x ${euro(p.prijs,"sv")} = ${euro(p.n*p.prijs,"sv")}. ${procent(100-p.k,"sv")} av det: ${euro(j,"sv")}.`,
     },
     maak(r) {
       const n = kies(r, [12, 15, 20, 24, 25, 30, 40, 50]);
@@ -367,6 +397,9 @@ const T = {
       hr: (p) => `Proračun od ${euro(p.tot,"hr")} dijeli se u omjeru ${p.a}:${p.b}:${p.c}. Koliko dobiva najveći dio?`,
       sr: (p) => `Budžet od ${euro(p.tot,"sr")} deli se u odnosu ${p.a}:${p.b}:${p.c}. Koliko dobija najveći deo?`,
       ru: (p) => `Бюджет ${euro(p.tot,"ru")} делится в пропорции ${p.a}:${p.b}:${p.c}. Сколько приходится на самую большую часть?`,
+      pl: (p) => `Budżet w wysokości ${euro(p.tot,"pl")} dzieli się w proporcji ${p.a}:${p.b}:${p.c}. Ile przypada na największą część?`,
+      da: (p) => `Et budget på ${euro(p.tot,"da")} fordeles i forholdet ${p.a}:${p.b}:${p.c}. Hvor meget får den største del?`,
+      sv: (p) => `En budget på ${euro(p.tot,"sv")} fördelas i förhållandet ${p.a}:${p.b}:${p.c}. Hur mycket får den största delen?`,
     },
     uitleg: {
       nl: (p,j) => `Samen ${p.a+p.b+p.c} delen. Eén deel is ${euro(p.tot/(p.a+p.b+p.c),"nl")}, maal ${Math.max(p.a,p.b,p.c)} is ${euro(j,"nl")}.`,
@@ -393,6 +426,9 @@ const T = {
       hr: (p,j) => `Ukupno dijelova: ${p.a+p.b+p.c}. Jedan dio je ${euro(p.tot/(p.a+p.b+p.c),"hr")}, puta ${Math.max(p.a,p.b,p.c)} je ${euro(j,"hr")}.`,
       sr: (p,j) => `Ukupno delova: ${p.a+p.b+p.c}. Jedan deo je ${euro(p.tot/(p.a+p.b+p.c),"sr")}, puta ${Math.max(p.a,p.b,p.c)} je ${euro(j,"sr")}.`,
       ru: (p,j) => `Всего частей: ${p.a+p.b+p.c}. Одна часть равна ${euro(p.tot/(p.a+p.b+p.c),"ru")}, умноженная на ${Math.max(p.a,p.b,p.c)}, это ${euro(j,"ru")}.`,
+      pl: (p,j) => `Łączna liczba części: ${p.a+p.b+p.c}. Jedna część to ${euro(p.tot/(p.a+p.b+p.c),"pl")}, razy ${Math.max(p.a,p.b,p.c)} daje ${euro(j,"pl")}.`,
+      da: (p,j) => `${p.a+p.b+p.c} dele i alt. Én del er ${euro(p.tot/(p.a+p.b+p.c),"da")}, gange ${Math.max(p.a,p.b,p.c)} giver ${euro(j,"da")}.`,
+      sv: (p,j) => `${p.a+p.b+p.c} delar totalt. En del är ${euro(p.tot/(p.a+p.b+p.c),"sv")}, gånger ${Math.max(p.a,p.b,p.c)} blir ${euro(j,"sv")}.`,
     },
     maak(r) {
       const a = tussen(r, 1, 3), b = tussen(r, 2, 5), c = tussen(r, 3, 7);
@@ -432,6 +468,9 @@ const T = {
       hr: (p) => `Ocjenjivači (${getal(p.m,"hr")} osoba) obrađuju izvješća (${getal(p.n,"hr")} kom.) za ${getal(p.u,"hr")} h. Koliko sati traje obrada ${getal(p.n2,"hr")} kom. istim tempom?`,
       sr: (p) => `Ocenjivači (${getal(p.m,"sr")} osoba) obrađuju izveštaje (${getal(p.n,"sr")} kom.) za ${getal(p.u,"sr")} h. Koliko sati traje obrada ${getal(p.n2,"sr")} kom. istim tempom?`,
       ru: (p) => `Оценщики (${getal(p.m,"ru")} чел.) обрабатывают отчёты (${getal(p.n,"ru")} шт.) за ${getal(p.u,"ru")} ч. Сколько часов уйдёт на ${getal(p.n2,"ru")} шт. в том же темпе?`,
+      pl: (p) => `Oceniający (${getal(p.m,"pl")} os.) opracowują raporty (${getal(p.n,"pl")} szt.) w ${getal(p.u,"pl")} h. Ile godzin zajmie ${getal(p.n2,"pl")} szt. w tym samym tempie?`,
+      da: (p) => `${getal(p.m,"da")} bedømmere behandler ${getal(p.n,"da")} rapporter på ${getal(p.u,"da")} timer. Hvor mange timer tager ${getal(p.n2,"da")} rapporter i samme tempo?`,
+      sv: (p) => `${getal(p.m,"sv")} bedömare behandlar ${getal(p.n,"sv")} rapporter på ${getal(p.u,"sv")} timmar. Hur många timmar tar ${getal(p.n2,"sv")} rapporter i samma takt?`,
     },
     uitleg: {
       nl: (p,j) => `Per uur ${getal(p.n/p.u,"nl",1)} rapporten. ${getal(p.n2,"nl")} / ${getal(p.n/p.u,"nl",1)} = ${getal(j,"nl",1)} uur.`,
@@ -458,6 +497,9 @@ const T = {
       hr: (p,j) => `Po satu: ${getal(p.n/p.u,"hr",1)} kom. ${getal(p.n2,"hr")} / ${getal(p.n/p.u,"hr",1)} = ${getal(j,"hr",1)} h.`,
       sr: (p,j) => `Po satu: ${getal(p.n/p.u,"sr",1)} kom. ${getal(p.n2,"sr")} / ${getal(p.n/p.u,"sr",1)} = ${getal(j,"sr",1)} h.`,
       ru: (p,j) => `В час: ${getal(p.n/p.u,"ru",1)} шт. ${getal(p.n2,"ru")} / ${getal(p.n/p.u,"ru",1)} = ${getal(j,"ru",1)} ч.`,
+      pl: (p,j) => `Na godzinę: ${getal(p.n/p.u,"pl",1)} szt. ${getal(p.n2,"pl")} / ${getal(p.n/p.u,"pl",1)} = ${getal(j,"pl",1)} h.`,
+      da: (p,j) => `${getal(p.n/p.u,"da",1)} rapporter i timen. ${getal(p.n2,"da")} / ${getal(p.n/p.u,"da",1)} = ${getal(j,"da",1)} timer.`,
+      sv: (p,j) => `${getal(p.n/p.u,"sv",1)} rapporter i timmen. ${getal(p.n2,"sv")} / ${getal(p.n/p.u,"sv",1)} = ${getal(j,"sv",1)} timmar.`,
     },
     maak(r) {
       const m = tussen(r, 2, 6), u = kies(r, [4, 5, 6, 8]);
@@ -498,6 +540,9 @@ const T = {
       hr: (p) => `Tarifa je porasla za ${procent(p.k,"hr")} na ${euro(p.na,"hr")}. Kolika je bila prije?`,
       sr: (p) => `Tarifa je porasla za ${procent(p.k,"sr")} na ${euro(p.na,"sr")}. Kolika je bila pre toga?`,
       ru: (p) => `Тариф вырос на ${procent(p.k,"ru")} до ${euro(p.na,"ru")}. Каким он был раньше?`,
+      pl: (p) => `Stawka wzrosła o ${procent(p.k,"pl")} do ${euro(p.na,"pl")}. Ile wynosiła wcześniej?`,
+      da: (p) => `En pris steg med ${procent(p.k,"da")} til ${euro(p.na,"da")}. Hvad var den før?`,
+      sv: (p) => `Ett pris steg med ${procent(p.k,"sv")} till ${euro(p.na,"sv")}. Vad var det innan?`,
     },
     uitleg: {
       nl: (p,j) => `Deel door ${getal(1+p.k/100,"nl",3)}, niet aftrekken: ${euro(p.na,"nl")} / ${getal(1+p.k/100,"nl",3)} = ${euro(j,"nl",2)}.`,
@@ -524,6 +569,9 @@ const T = {
       hr: (p,j) => `Podijelite s ${getal(1+p.k/100,"hr",3)}, ne oduzimajte: ${euro(p.na,"hr")} / ${getal(1+p.k/100,"hr",3)} = ${euro(j,"hr",2)}.`,
       sr: (p,j) => `Podelite sa ${getal(1+p.k/100,"sr",3)}, ne oduzimajte: ${euro(p.na,"sr")} / ${getal(1+p.k/100,"sr",3)} = ${euro(j,"sr",2)}.`,
       ru: (p,j) => `Разделите на ${getal(1+p.k/100,"ru",3)}, а не вычитайте: ${euro(p.na,"ru")} / ${getal(1+p.k/100,"ru",3)} = ${euro(j,"ru",2)}.`,
+      pl: (p,j) => `Podziel przez ${getal(1+p.k/100,"pl",3)}, nie odejmuj: ${euro(p.na,"pl")} / ${getal(1+p.k/100,"pl",3)} = ${euro(j,"pl",2)}.`,
+      da: (p,j) => `Del med ${getal(1+p.k/100,"da",3)}, træk ikke fra: ${euro(p.na,"da")} / ${getal(1+p.k/100,"da",3)} = ${euro(j,"da",2)}.`,
+      sv: (p,j) => `Dela med ${getal(1+p.k/100,"sv",3)}, dra inte av: ${euro(p.na,"sv")} / ${getal(1+p.k/100,"sv",3)} = ${euro(j,"sv",2)}.`,
     },
     maak(r) {
       const voor = kies(r, [80, 95, 120, 140, 160, 180, 220, 250]);
