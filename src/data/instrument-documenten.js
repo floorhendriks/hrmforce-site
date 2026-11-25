@@ -225,6 +225,18 @@ export const DOCS = {
     href: "/media/documenten/cubiks/papi-3-brochure.pdf", bron: "Talogy Cubiks", taal: "NL", mb: 1.1,
     titel: { nl: "PAPI 3 brochure", en: "PAPI 3 brochure" },
   },
+  "papi3-plus-factsheet": {
+    href: "/media/documenten/cubiks/papi-3-plus-factsheet.pdf", bron: "Talogy Cubiks", taal: "EN", mb: 0.5,
+    titel: { nl: "PAPI 3+ factsheet", en: "PAPI 3+ factsheet" },
+  },
+  "papi3-plus-matchrapport-nl": {
+    href: "/media/documenten/cubiks/papi-3-plus-competentie-matchrapport-nl.pdf", bron: "Talogy Cubiks", taal: "NL", mb: 0.4,
+    titel: { nl: "Voorbeeldrapport PAPI 3+ Competentie matchrapport", en: "Sample report PAPI 3+ Competency Fit Report (Dutch)" },
+  },
+  "papi3-plus-fitreport-sales-en": {
+    href: "/media/documenten/cubiks/papi-3-plus-competency-fit-report-sales-en.pdf", bron: "Talogy Cubiks", taal: "EN", mb: 0.3,
+    titel: { nl: "Voorbeeldrapport PAPI 3+ Competency Fit Report Sales", en: "Sample report PAPI 3+ Competency Fit Report, Sales" },
+  },
   "logiks-brochure": {
     href: "/media/documenten/cubiks/logiks-brochure.pdf", bron: "Talogy Cubiks", taal: "NL", mb: 0.2,
     titel: { nl: "Logiks brochure", en: "Logiks brochure" },
@@ -269,7 +281,7 @@ const lijst = (...ids) => ids.map((id) => DOCS[id]).filter(Boolean);
 // themapaginas.js en testhubs.js.
 export const PER_PAGINA = {
   opq32: lijst("opq32-brochure", "opq32-rapportkeuze", "opq32-persoonlijk", "opq32-profiel", "opq32-managerplus", "opq32-leiderschap", "opq32-rollen", "opq32-ei", "opq32-managementcompetenties", "opq32-ontwikkelplan", "opq32-leren", "opq32-sales-factsheet", "opq32-ucr", "opq32-teamimpact", "opq32-bps"),
-  papi3: lijst("papi3-brochure"),
+  papi3: lijst("papi3-brochure", "papi3-plus-factsheet", "papi3-plus-matchrapport-nl", "papi3-plus-fitreport-sales-en"),
   persoonlijkheid: lijst("reflector-kandidaatbrochure", "reflector-voorbeeldrapport", "reflector-leaflet", "reflector-achtergrond", "reflector-faq", "opq32-brochure", "opq32-persoonlijk", "papi3-brochure", "dsi-flyer", "dsi-voorbeeldrapport"),
   capaciteiten: lijst("connector-instructie", "connector-voorbeeldrapport-mbo", "connector-voorbeeldrapport-ma", "connector-multinorm", "connector-faq", "connector-achtergrond", "connector-normgroepen", "connector-dyslexie", "connector-handleiding", "connector-elearning", "verify-overzicht", "verify-voorbeeldrapport", "verify-voorbeelditems", "verify-normgroepen", "verify-flyer", "verify-handleiding", "logiks-brochure", "logiks-abstract", "logiks-general", "logiks-numeriek", "logiks-verbaal"),
   teamrollen: lijst("teamrollen-flyer", "teamrollen-voorbeeldrapport", "opq32-teamimpact"),
@@ -302,7 +314,7 @@ export const PER_PRODUCT = {
   "Verify Checking": ["verify-flyer", "verify-voorbeelditems", "verify-normgroepen", "verify-handleiding"],
   "PAPI 3-i": ["papi3-brochure"],
   "PAPI 3-n": ["papi3-brochure"],
-  "PAPI 3+": ["papi3-brochure"],
+  "PAPI 3+": ["papi3-plus-factsheet", "papi3-plus-matchrapport-nl", "papi3-plus-fitreport-sales-en", "papi3-brochure"],
   "PAPI Factors": ["papi3-brochure"],
   "Logiks Abstract": ["logiks-abstract", "logiks-brochure"],
   "Logiks General Advanced": ["logiks-general", "logiks-brochure"],
