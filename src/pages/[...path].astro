@@ -17,6 +17,9 @@ import { DUBBELE_PADEN } from "../data/kenniscentrum-duplicaten.js";
 import { metEigenArtikelen } from "../data/eigen-artikelen.js";
 import { ADVIES_SLUGS } from "../data/advies-detail.js";
 import { OPLOSSING_SLUGS } from "../data/oplossingen.js";
+import { SANITY_PAGINAS } from "../data/sanity-paginas.js";
+import { VERTAALNOOT } from "../data/sanity-noot.js";
+import { BRONTALEN } from "../i18n/ui.js";
 import { BASE_RUBRIEK, SANITY_INTEG, SANITY_KC, SANITY_RECI18N, SANITY_T, SANITY__descFallback, SANITY__sliderH } from "../data/component-teksten.js";
 
 // Gemigreerde kenniscentrum-artikelen uit WordPress. Elk artikel-document in
@@ -27,6 +30,26 @@ export async function getStaticPaths() {
   const arts = metEigenArtikelen(await client.fetch(
     `*[_type == "article" && defined(path) && defined(body)]{path, title, body, date}`
   ));
+  // Sanity-pagina's die ook buiten de brontalen worden gebouwd (patch 127): de
+  // tekst komt uit src/data/sanity-paginas.js, vertaald via de vertaalbestanden.
+  // Ontbreekt een vertaling, dan de Engelse tekst in plaats van de Nederlandse.
+  // De kleurentest-iframe krijgt het Engelse adres, want de test zelf bestaat
+  // alleen in de brontalen.
+  const JURIDISCH = new Set(["/support/algemene-voorwaarden/", "/support/privacy-statement/"]);
+  for (const [pad, d] of Object.entries(SANITY_PAGINAS)) {
+    const enIframe = (d.body.en.match(/<iframe[^>]+src="([^"]+)"/) || [])[1];
+    for (const t of PREFIXED.filter((x) => !BRONTALEN.includes(x))) {
+      const vertaald = d.body[t] && d.body[t] !== d.body.nl;
+      let body = vertaald ? d.body[t] : d.body.en;
+      if (enIframe) body = body.replace(/(<iframe[^>]+src=")[^"]+(")/, `$1${enIframe}$2`);
+      if (JURIDISCH.has(pad) && vertaald) {
+        const noot = VERTAALNOOT[t] && VERTAALNOOT[t] !== VERTAALNOOT.nl ? VERTAALNOOT[t] : VERTAALNOOT.en;
+        body = `<p><em>${noot}</em></p>\n` + body;
+      }
+      const titel = d.title[t] && d.title[t] !== d.title.nl ? d.title[t] : d.title.en;
+      arts.push({ path: `/${t}${pad}`, title: titel, body, date: d.date });
+    }
+  }
   // Statische routes hebben voorrang; sluit paden uit die we nu als eigen
   // pagina bouwen (bijv. de sectoren-index) om dubbele routes te voorkomen.
   const OWN = new Set(["sectoren", "en/sectoren", "de/sectoren", "fr/sectoren", "es/sectoren", "ro/sectoren", "sectoren/onderwijs"]);

@@ -96,9 +96,8 @@ Object.assign(SOORT_UI, vulAan(SOORT_UI));
 // functions/_lib/mailteksten.js, want daar bestaat import.meta.glob niet.
 const BRON = ["nl", "en", "de", "fr", "es", "ro"];
 
-// De gratis kleurentest bestaat alleen in de brontalen. Andere talen krijgen de
-// Engelse pagina, net als de taalwisselaar op de site doet.
-const KLEURENTEST = (t) => `https://hrmforce.com/${BRON.includes(t) ? (t === "nl" ? "" : t + "/") : "en/"}gratis-kleurentest/`;
+// De pagina met de gratis kleurentest bestaat sinds patch 127 in elke taal.
+const KLEURENTEST = (t) => `https://hrmforce.com/${t === "nl" ? "" : t + "/"}gratis-kleurentest/`;
 const PAGINA = (t, pad) => `https://hrmforce.com/${t === "nl" ? "" : t + "/"}${pad}/`;
 
 /**

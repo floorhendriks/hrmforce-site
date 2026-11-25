@@ -96,10 +96,11 @@ const LOCALE_MAP = BASE_LOCALE_MAP;
 const ogLocale = LOCALE_MAP[lang] || "nl_NL";
 const STICKY_DEMO = BASE_STICKY_DEMO;
 const stickyDemo = STICKY_DEMO[lang] || STICKY_DEMO.nl;
-// De exit-intent met de kleurentest verschijnt alleen in de brontalen, want
-// alleen daar bestaat die test (zie src/i18n/alleen-brontaal.js). Een pop-up
-// die een Poolse bezoeker naar een Nederlandse pagina stuurt helpt niemand.
-const exitIntent = BRONTALEN.includes(lang) ? BASE_EXIT_INTENT[lang] : null;
+// De exit-intent met de kleurentest. Sinds patch 127 bestaat de pagina met de
+// kleurentest in elke taal; een taal buiten de brontalen krijgt het eigen adres.
+const exitIntent = BASE_EXIT_INTENT[lang]
+  ? { ...BASE_EXIT_INTENT[lang], ...(BRONTALEN.includes(lang) ? {} : { u: `/${lang}/gratis-kleurentest/` }) }
+  : null;
 
 // hreflang: alternatieve taalversies. Niet meer uit een handmatige lijst, maar
 // uit de paden die de build echt oplevert. Zo krijgt elke pagina die in meerdere

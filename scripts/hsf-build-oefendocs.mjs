@@ -3,12 +3,44 @@
 // De inhoud komt uit dezelfde banken als de online oefentest, zodat document
 // en website hetzelfde materiaal laten zien.
 import { readFile, writeFile, mkdir } from "node:fs/promises";
-import { DOC } from "./hsf-oefendoc-tekst.mjs";
+import { DOC_TEKST, DOC_BETEKENIS, DOC_TESTNAAM } from "../src/data/oefendoc-tekst.js";
+import { languages } from "../src/i18n/ui.js";
+import { existsSync, readFileSync } from "node:fs";
 import { VRAGENLIJSTEN, VL_UI } from "../src/data/oefenvragenlijst.js";
 import { ONDERDELEN, OT_UI } from "../src/data/oefentest-ui.js";
 import { beeldSvg } from "../src/lib/oefenfiguur.js";
 
-const TALEN = ["nl", "en", "de", "fr", "es", "ro"];
+// Alle talen van de site. De brontalen staan met de hand in de data; de andere
+// talen halen hun tekst uit src/data/translations-content/<taal>.json, net als
+// vulAan tijdens de Astro-bouw. Ontbreekt een vertaling, dan Engels.
+const TALEN = Object.keys(languages);
+const BRON = new Set(["nl", "en", "de", "fr", "es", "ro"]);
+const KAARTEN = {};
+function kaart(taal) {
+  if (!(taal in KAARTEN)) {
+    const pad = `src/data/translations-content/${taal}.json`;
+    KAARTEN[taal] = existsSync(pad) ? JSON.parse(readFileSync(pad, "utf8")) : {};
+  }
+  return KAARTEN[taal];
+}
+/** Tekst in deze taal uit een taalblok { nl, en, ... }; ook voor arrays en objecten. */
+function tl(blok, taal) {
+  if (blok[taal] !== undefined) return blok[taal];
+  const m = kaart(taal);
+  const zet = (nl, en) => {
+    if (typeof nl === "string") return m[nl] ?? en;
+    if (Array.isArray(nl)) return nl.map((x, i) => zet(x, en?.[i]));
+    if (nl && typeof nl === "object") return Object.fromEntries(Object.keys(nl).map((k) => [k, zet(nl[k], en?.[k])]));
+    return nl;
+  };
+  return zet(blok.nl, blok.en);
+}
+/** De documentteksten met {n} ingevuld als functie, zoals de sjablonen die verwachten. */
+const DOC = Object.fromEntries(TALEN.map((t) => {
+  const d = tl(DOC_TEKST, t);
+  const f = (s) => (n) => s.replaceAll("{n}", n);
+  return [t, { ...d, onderVl: f(d.onderVl), onderTest: f(d.onderTest), waaromVl: f(d.waaromVl), waaromTest: f(d.waaromTest), meetLead: f(d.meetLead) }];
+}));
 const UIT = "public/media/oefenvragen";
 const BANK = "src/data/oefenbank";
 
@@ -110,21 +142,15 @@ function pagina(inhoud, logo) {
 function htmlVragenlijst(slug, sleutel, taal, bank, logo) {
   const d = DOC[taal];
   const v = VRAGENLIJSTEN[sleutel];
-  const ui = VL_UI[taal];
-  const naam = v.naam[taal];
+  const ui = tl(VL_UI, taal);
+  const naam = tl(v.naam, taal);
   const dims = v.dimensies;
   const gekozen = kiesGespreid(bank, 25, dims.length, 20260926);
-  const betekenis = [
-    { nl: "Deze uitspraak past helemaal niet bij mij.", en: "This statement does not fit me at all.", de: "Diese Aussage passt gar nicht zu mir.", fr: "Cette affirmation ne me correspond pas du tout.", es: "Esta afirmación no encaja conmigo en absoluto.", ro: "Această afirmație nu mi se potrivește deloc." },
-    { nl: "Deze uitspraak past niet zo bij mij.", en: "This statement does not really fit me.", de: "Diese Aussage passt eher nicht zu mir.", fr: "Cette affirmation ne me correspond pas vraiment.", es: "Esta afirmación no encaja mucho conmigo.", ro: "Această afirmație nu prea mi se potrivește." },
-    { nl: "Ik zit hier echt tussenin.", en: "I genuinely sit in between here.", de: "Hier liege ich wirklich dazwischen.", fr: "Je suis vraiment entre les deux.", es: "Aquí estoy realmente en medio.", ro: "Aici sunt chiar la mijloc." },
-    { nl: "Deze uitspraak past wel bij mij.", en: "This statement does fit me.", de: "Diese Aussage passt zu mir.", fr: "Cette affirmation me correspond.", es: "Esta afirmación sí encaja conmigo.", ro: "Această afirmație mi se potrivește." },
-    { nl: "Deze uitspraak past helemaal bij mij.", en: "This statement fits me completely.", de: "Diese Aussage passt voll und ganz zu mir.", fr: "Cette affirmation me correspond tout à fait.", es: "Esta afirmación encaja del todo conmigo.", ro: "Această afirmație mi se potrivește pe deplin." },
-  ];
-  const schaalRijen = ui.schaal.map((s, i) => `<tr><td>${esc(s)}</td><td>${esc(betekenis[i][taal])}</td></tr>`).join("");
+  const betekenis = DOC_BETEKENIS;
+  const schaalRijen = ui.schaal.map((s, i) => `<tr><td>${esc(s)}</td><td>${esc(tl(betekenis[i], taal))}</td></tr>`).join("");
   const vraagRijen = gekozen.map((s, i) =>
     `<tr><td class="n">${i + 1}</td><td class="u">${esc(s.q)}</td>${ui.schaal.map(() => `<td class="s"><i></i></td>`).join("")}</tr>`).join("");
-  const dimKaarten = dims.map((x) => `<div><b>${esc(x.naam[taal])}</b><span>${esc(x.hoog[taal])}</span></div>`).join("");
+  const dimKaarten = dims.map((x) => `<div><b>${esc(tl(x.naam, taal))}</b><span>${esc(tl(x.hoog, taal))}</span></div>`).join("");
 
   return pagina(`
   <h1>${esc(d.onderVl(naam))}</h1>
@@ -159,7 +185,7 @@ function htmlVragenlijst(slug, sleutel, taal, bank, logo) {
 /* -------------------------------------------------------------------- test */
 function htmlTest(taal, banken, logo) {
   const d = DOC[taal];
-  const naam = { nl: "cognitieve capaciteitentest", en: "cognitive ability test", de: "kognitiver Fähigkeitstest", fr: "test d'aptitude cognitive", es: "test de aptitud cognitiva", ro: "test de aptitudini cognitive" }[taal];
+  const naam = tl(DOC_TESTNAAM, taal);
   const volgorde = ["numeriek", "verbaal", "calculation", "ruimtelijk", "abstract"];
   const secties = [];
   const sleutel = [];
@@ -181,11 +207,11 @@ function htmlTest(taal, banken, logo) {
         ${opties}
       </div>`;
     }).join("");
-    secties.push(`<h2>${esc(o.naam[taal])}</h2><p style="font-size:9.6pt;color:#56636f;margin-bottom:2px">${esc(o.lead[taal])}</p>${blokken}`);
+    secties.push(`<h2>${esc(tl(o.naam, taal))}</h2><p style="font-size:9.6pt;color:#56636f;margin-bottom:2px">${esc(tl(o.lead, taal))}</p>${blokken}`);
   }
   const sleutelRijen = sleutel.map((s) =>
     `<tr><td class="j">${s.nr}</td><td class="j">${s.f ? esc(s.j).replace(/<[^>]*>/g, "") : esc(s.j)}</td><td class="t">${esc(s.u)}</td></tr>`).join("");
-  const dimKaarten = volgorde.map((k) => `<div><b>${esc(ONDERDELEN[k].naam[taal])}</b><span>${esc(ONDERDELEN[k].lead[taal])}</span></div>`).join("");
+  const dimKaarten = volgorde.map((k) => `<div><b>${esc(tl(ONDERDELEN[k].naam, taal))}</b><span>${esc(tl(ONDERDELEN[k].lead, taal))}</span></div>`).join("");
 
   return pagina(`
   <h1>${esc(d.onderTest(naam))}</h1>
@@ -222,7 +248,10 @@ const svg = await readFile("public/media/wp-content/uploads/2022/03/HRM-LOGO.svg
 const logo = "data:image/svg+xml;base64," + Buffer.from(svg, "utf8").toString("base64");
 await mkdir(UIT, { recursive: true });
 
-const browser = await pw.chromium.launch({ executablePath: process.env.CHROMIUM_PAD || "/opt/pw-browsers/chromium" });
+// CHROMIUM_PAD wijst naar een eigen Chromium; zonder die variabele de Chromium
+// van Playwright zelf (npx playwright install chromium).
+const pad = process.env.CHROMIUM_PAD || (existsSync("/opt/pw-browsers/chromium") ? "/opt/pw-browsers/chromium" : undefined);
+const browser = await pw.chromium.launch(pad ? { executablePath: pad } : {});
 let n = 0;
 for (const taal of TALEN) {
   const testBanken = {};
@@ -230,6 +259,8 @@ for (const taal of TALEN) {
     testBanken[k] = JSON.parse(await readFile(`${BANK}/${k}.${taal}.json`, "utf8"));
   }
   for (const [slug, cfg] of Object.entries(DOCUMENTEN)) {
+    // De pdf's van de brontalen bestaan al; opnieuw maken alleen met HSF_ALLE=1.
+    if (BRON.has(taal) && !process.env.HSF_ALLE && existsSync(`${UIT}/${slug}-${taal}.pdf`)) continue;
     let html;
     if (cfg.soort === "vl") {
       const bank = JSON.parse(await readFile(`${BANK}/vl-${cfg.sleutel}.${taal}.json`, "utf8"));
@@ -240,8 +271,8 @@ for (const taal of TALEN) {
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: "load" });
     const titel = cfg.soort === "vl"
-      ? DOC[taal].onderVl(VRAGENLIJSTEN[cfg.sleutel].naam[taal])
-      : DOC[taal].onderTest({ nl: "cognitieve capaciteitentest", en: "cognitive ability test", de: "kognitiver Fähigkeitstest", fr: "test d'aptitude cognitive", es: "test de aptitud cognitiva", ro: "test de aptitudini cognitive" }[taal]);
+      ? DOC[taal].onderVl(tl(VRAGENLIJSTEN[cfg.sleutel].naam, taal))
+      : DOC[taal].onderTest(tl(DOC_TESTNAAM, taal));
     const kop = `<div style="width:100%;font-family:Arial,sans-serif;padding:0 15mm;">
       <div style="display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2.5px solid ${BLAUW};padding-bottom:5px;">
         <img src="${logo}" style="height:26px">

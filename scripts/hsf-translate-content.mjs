@@ -146,6 +146,9 @@ function verzamel(x, uit, sleutel = '', diep = 0) {
     if (GEEN_TEKST.has(sleutel)) return uit;
     if (!/[a-zA-ZÀ-ɏ]/.test(x)) return uit;
     if (/^[\/#]|^https?:|^mailto:|^tel:/.test(x)) return uit;
+    // Taalcodes (en, nb, nl-BE) zijn waarden in keuzelijsten, geen woorden: DeepL
+    // maakte van "en" in het Zweeds "och" en van "nb" in het Tsjechisch "pozn.".
+    if (/^[a-z]{2}(-[A-Z]{2})?$/.test(x)) return uit;
     uit.add(x);
     return uit;
   }
@@ -208,11 +211,20 @@ for (const taal of TARGETS) {
   console.log(`[${taal}] ${todo.length} teksten, ${todo.reduce((n, s) => n + s.length, 0).toLocaleString('nl-NL')} tekens`);
 
   const uit = { ...bestaand };
-  for (let i = 0; i < todo.length; i += 40) {
-    const groep = todo.slice(i, i + 40);
+  // Groepen van hoogstens 40 teksten en 20.000 tekens: DeepL weigert een
+  // verzoek boven 128 KB, en de Sanity-pagina's zijn lange HTML-teksten.
+  const groepen = [];
+  for (const t of todo) {
+    const g = groepen[groepen.length - 1];
+    if (!g || g.length >= 40 || g.reduce((n, x) => n + x.length, 0) + t.length > 20000) groepen.push([t]);
+    else g.push(t);
+  }
+  let klaar = 0;
+  for (const groep of groepen) {
     const terug = await deepl(groep.map((t) => bescherm(bronklaar(t))), taal);
     groep.forEach((bron, j) => { uit[bron] = herstelSpatie(ontentiteit(ontquote(ontdoe(terug[j])))); });
-    process.stdout.write(`  ${Math.min(i + 40, todo.length)}/${todo.length}\r`);
+    klaar += groep.length;
+    process.stdout.write(`  ${klaar}/${todo.length}\r`);
   }
   // Teksten waarin een merknaam verdween, blijven Nederlands staan: beter geen
   // vertaling dan een pagina waarin hrmforce ineens anders heet.

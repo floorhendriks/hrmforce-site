@@ -38,6 +38,10 @@ try {
 // LOCALIZED_PAGES in src/i18n/utils.js, hier herhaald om een importkring te
 // vermijden. Een pad dat hier niet staat, houdt de Nederlandse link.
 const LOKALISEERBAAR = new Set([
+  // Sanity-pagina's die sinds patch 127 in elke taal bestaan.
+  "/advies/overzicht/", "/hrm-oplossingen/career/", "/hrmforce/over-ons/", "/hrmforce/referenties/", "/hrmforce/voordelen/",
+  "/partners/", "/partners/aanvraag/", "/partners/partner-worden/", "/demo/", "/gratis-kleurentest/",
+  "/sectoren/zorg-specialisten-ifms/", "/support/algemene-voorwaarden/", "/support/privacy-statement/",
   "/", "/online-assessments/", "/hrm-oplossingen/", "/advies/", "/over-ons/",
   "/contact/", "/shop/", "/assessment-overzicht/", "/tarieven/", "/roi-rekentool/",
   "/klantcases/", "/kenniscentrum/", "/trust/", "/integraties/", "/voorbereiding/",
