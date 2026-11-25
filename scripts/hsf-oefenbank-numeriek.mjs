@@ -4,7 +4,7 @@
 // stap één te ver of te kort nemen, de bewerkingen omdraaien.
 import { rng, tussen, kies } from "./hsf-oefenbank-lib.mjs";
 
-const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt", "tr", "fi"];
+const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu"];
 
 const VRAAG = {
   nl: "Selecteer het getal dat logischerwijs volgt op de reeks.",
@@ -17,6 +17,11 @@ const VRAAG = {
   pt: "Selecione o número que continua logicamente a série.",
   tr: "Diziyi mantıklı biçimde sürdüren sayıyı seçin.",
   fi: "Valitse luku, joka jatkaa sarjaa loogisesti.",
+  nb: "Velg tallet som fortsetter rekken logisk.",
+  el: "Επιλέξτε τον αριθμό που συνεχίζει λογικά τη σειρά.",
+  cs: "Vyberte číslo, které logicky pokračuje v řadě.",
+  uk: "Виберіть число, яке логічно продовжує ряд.",
+  hu: "Válassza ki azt a számot, amely logikusan folytatja a sort.",
 };
 
 // Bouwstenen voor de toelichting, per taal. De cijfers komen uit het item.
@@ -150,6 +155,71 @@ const T = {
     afwisselend: (a, b, u) => `Laskutoimitukset vuorottelevat: ${a} ja ${b}. Nyt on vuorossa ${a}, joten seuraavaksi tulee ${u}.`,
     kwadraat: (u) => `Sarja koostuu neliöluvuista. Seuraava neliö on ${u}.`,
     deelMaal: (a, b, u) => `${a} ja ${b} vuorottelevat. Nyt on vuorossa ${b}, eli ${u}.`,
+  },
+  nb: {
+    verschilToe: (d, r, u) => `Forskjellen mellom to tall på rad øker med ${d} hver gang: ${r}. Etter det siste tallet kommer ${u}.`,
+    verschilAf: (d, r, u) => `Forskjellen mellom to tall på rad minker med ${d} hver gang: ${r}. Etter det siste tallet kommer ${u}.`,
+    verschilMaal: (k, r, u) => `Forskjellen ganges med ${k} hver gang: ${r}. Neste steg er ${u}.`,
+    maal: (k, u) => `Hvert tall er det forrige ganget med ${k}, så neste er ${u}.`,
+    plus: (k, u) => `Hvert tall er ${k} mer enn det forrige, så neste er ${u}.`,
+    som: (a, b, u) => `Hvert tall er summen av de to forrige: ${a} + ${b} = ${u}.`,
+    maalPlus: (k, b, u) => `Hvert tall er det forrige ganget med ${k} pluss ${b}, så neste er ${u}.`,
+    twee: (a, b, u) => `To rekker går om hverandre. Oddetallsplassene øker med ${a}, partallsplassene med ${b}. Tallet du leter etter hører til rekken som øker med ${u}.`,
+    afwisselend: (a, b, u) => `Regneoperasjonene veksler: ${a} og ${b}. Nå er det ${a} sin tur, så neste er ${u}.`,
+    kwadraat: (u) => `Rekken består av kvadrattall. Neste kvadrat er ${u}.`,
+    deelMaal: (a, b, u) => `${a} og ${b} brukes annenhver gang. Nå er det ${b} sin tur, altså ${u}.`,
+  },
+  el: {
+    verschilToe: (d, r, u) => `Η διαφορά μεταξύ δύο διαδοχικών αριθμών αυξάνεται κάθε φορά κατά ${d}: ${r}. Μετά τον τελευταίο αριθμό ακολουθεί το ${u}.`,
+    verschilAf: (d, r, u) => `Η διαφορά μεταξύ δύο διαδοχικών αριθμών μειώνεται κάθε φορά κατά ${d}: ${r}. Μετά τον τελευταίο αριθμό ακολουθεί το ${u}.`,
+    verschilMaal: (k, r, u) => `Η διαφορά πολλαπλασιάζεται κάθε φορά επί ${k}: ${r}. Το επόμενο βήμα είναι ${u}.`,
+    maal: (k, u) => `Κάθε αριθμός είναι ο προηγούμενος επί ${k}, άρα ακολουθεί το ${u}.`,
+    plus: (k, u) => `Κάθε αριθμός είναι κατά ${k} μεγαλύτερος από τον προηγούμενο, άρα ακολουθεί το ${u}.`,
+    som: (a, b, u) => `Κάθε αριθμός είναι το άθροισμα των δύο προηγούμενων: ${a} + ${b} = ${u}.`,
+    maalPlus: (k, b, u) => `Κάθε αριθμός είναι ο προηγούμενος επί ${k} συν ${b}, άρα ακολουθεί το ${u}.`,
+    twee: (a, b, u) => `Δύο σειρές εναλλάσσονται. Οι μονές θέσεις αυξάνονται κατά ${a}, οι ζυγές κατά ${b}. Ο ζητούμενος αριθμός ανήκει στη σειρά που αυξάνεται κατά ${u}.`,
+    afwisselend: (a, b, u) => `Οι πράξεις εναλλάσσονται: ${a} και ${b}. Τώρα είναι η σειρά της ${a}, άρα ακολουθεί το ${u}.`,
+    kwadraat: (u) => `Η σειρά αποτελείται από τετράγωνα. Το επόμενο τετράγωνο είναι ${u}.`,
+    deelMaal: (a, b, u) => `Οι πράξεις ${a} και ${b} εφαρμόζονται εναλλάξ. Τώρα ακολουθεί η ${b}, δηλαδή ${u}.`,
+  },
+  cs: {
+    verschilToe: (d, r, u) => `Rozdíl mezi dvěma po sobě jdoucími čísly se pokaždé zvětší o ${d}: ${r}. Po posledním čísle následuje ${u}.`,
+    verschilAf: (d, r, u) => `Rozdíl mezi dvěma po sobě jdoucími čísly se pokaždé zmenší o ${d}: ${r}. Po posledním čísle následuje ${u}.`,
+    verschilMaal: (k, r, u) => `Rozdíl se pokaždé násobí ${k}: ${r}. Další krok je ${u}.`,
+    maal: (k, u) => `Každé číslo je předchozí vynásobené ${k}, takže následuje ${u}.`,
+    plus: (k, u) => `Každé číslo je o ${k} větší než předchozí, takže následuje ${u}.`,
+    som: (a, b, u) => `Každé číslo je součtem dvou předchozích: ${a} + ${b} = ${u}.`,
+    maalPlus: (k, b, u) => `Každé číslo je předchozí vynásobené ${k} plus ${b}, takže následuje ${u}.`,
+    twee: (a, b, u) => `Střídají se dvě řady. Lichá místa rostou o ${a}, sudá o ${b}. Hledané číslo patří do řady, která roste o ${u}.`,
+    afwisselend: (a, b, u) => `Operace se střídají: ${a} a ${b}. Teď je na řadě ${a}, takže následuje ${u}.`,
+    kwadraat: (u) => `Řada se skládá z druhých mocnin. Další mocnina je ${u}.`,
+    deelMaal: (a, b, u) => `${a} a ${b} se uplatňují střídavě. Teď je na řadě ${b}, tedy ${u}.`,
+  },
+  uk: {
+    verschilToe: (d, r, u) => `Різниця між двома сусідніми числами щоразу збільшується на ${d}: ${r}. Після останнього числа йде ${u}.`,
+    verschilAf: (d, r, u) => `Різниця між двома сусідніми числами щоразу зменшується на ${d}: ${r}. Після останнього числа йде ${u}.`,
+    verschilMaal: (k, r, u) => `Різниця щоразу множиться на ${k}: ${r}. Наступний крок ${u}.`,
+    maal: (k, u) => `Кожне число дорівнює попередньому, помноженому на ${k}, тож далі йде ${u}.`,
+    plus: (k, u) => `Кожне число на ${k} більше за попереднє, тож далі йде ${u}.`,
+    som: (a, b, u) => `Кожне число є сумою двох попередніх: ${a} + ${b} = ${u}.`,
+    maalPlus: (k, b, u) => `Кожне число дорівнює попередньому, помноженому на ${k}, плюс ${b}, тож далі йде ${u}.`,
+    twee: (a, b, u) => `Чергуються два ряди. Непарні позиції зростають на ${a}, парні на ${b}. Шукане число належить до ряду, що зростає на ${u}.`,
+    afwisselend: (a, b, u) => `Дії чергуються: ${a} і ${b}. Зараз черга ${a}, тож далі йде ${u}.`,
+    kwadraat: (u) => `Ряд складається з квадратів чисел. Наступний квадрат ${u}.`,
+    deelMaal: (a, b, u) => `${a} і ${b} застосовуються по черзі. Зараз черга ${b}, тобто ${u}.`,
+  },
+  hu: {
+    verschilToe: (d, r, u) => `Két egymást követő szám különbsége minden lépésben ${d}-val nő: ${r}. Az utolsó szám után ${u} következik.`,
+    verschilAf: (d, r, u) => `Két egymást követő szám különbsége minden lépésben ${d}-val csökken: ${r}. Az utolsó szám után ${u} következik.`,
+    verschilMaal: (k, r, u) => `A különbséget minden lépésben ${k}-val szorozzuk: ${r}. A következő lépés ${u}.`,
+    maal: (k, u) => `Minden szám az előző ${k}-szorosa, így ${u} következik.`,
+    plus: (k, u) => `Minden szám ${k}-val nagyobb az előzőnél, így ${u} következik.`,
+    som: (a, b, u) => `Minden szám az előző kettő összege: ${a} + ${b} = ${u}.`,
+    maalPlus: (k, b, u) => `Minden szám az előző ${k}-szorosa plusz ${b}, így ${u} következik.`,
+    twee: (a, b, u) => `Két sor váltakozik. A páratlan helyek ${a}-val, a párosak ${b}-val nőnek. A keresett szám abba a sorba tartozik, amely ${u}-val nő.`,
+    afwisselend: (a, b, u) => `A műveletek váltakoznak: ${a} és ${b}. Most a(z) ${a} jön, így ${u} következik.`,
+    kwadraat: (u) => `A sor négyzetszámokból áll. A következő négyzet ${u}.`,
+    deelMaal: (a, b, u) => `A(z) ${a} és a(z) ${b} felváltva következik. Most a(z) ${b} jön, vagyis ${u}.`,
   },
 };
 

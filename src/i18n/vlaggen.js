@@ -33,6 +33,14 @@ export const VLAGGEN = {
   // Turkije: rood met witte halve maan en ster.
   tr: `<rect width="24" height="16" fill="#E30A17"/><circle cx="9" cy="8" r="4" fill="#fff"/><circle cx="10" cy="8" r="3.2" fill="#E30A17"/><polygon points="12.70,8.00 13.85,7.60 13.87,6.38 14.61,7.35 15.78,7.00 15.08,8.00 15.78,9.00 14.61,8.65 13.87,9.62 13.85,8.40" fill="#fff"/>`,
   fi: kruis("#FFFFFF", "#002F6C"),
+  // Noorwegen: rood met wit-omrand blauw kruis.
+  nb: `<rect width="24" height="16" fill="#BA0C2F"/><rect x="6" width="4" height="16" fill="#fff"/><rect y="6" width="24" height="4" fill="#fff"/><rect x="7" width="2" height="16" fill="#00205B"/><rect y="7" width="24" height="2" fill="#00205B"/>`,
+  // Griekenland: blauw-witte banen met kruis in het kanton.
+  el: `<rect width="24" height="16" fill="#0D5EAF"/>${[1,3,5,7].map((i) => `<rect y="${(i * 16) / 9}" width="24" height="${16 / 9}" fill="#fff"/>`).join("")}<rect width="${(16 / 9) * 5}" height="${(16 / 9) * 5}" fill="#0D5EAF"/><rect x="${16 / 9 * 2}" width="${16 / 9}" height="${(16 / 9) * 5}" fill="#fff"/><rect y="${16 / 9 * 2}" width="${(16 / 9) * 5}" height="${16 / 9}" fill="#fff"/>`,
+  // Tsjechië: wit boven, rood onder, blauwe driehoek.
+  cs: `<rect width="24" height="16" fill="#D7141A"/><rect width="24" height="8" fill="#fff"/><polygon points="0,0 12,8 0,16" fill="#11457E"/>`,
+  uk: b(["#0057B7", "#FFD700"]),
+  hu: b(["#CD2A3E", "#FFFFFF", "#436F4D"]),
   // Portugal: groen-rood in de verhouding 2:3, zonder wapen.
   pt: `<rect width="24" height="16" fill="#DA291C"/><rect width="9.6" height="16" fill="#046A38"/>`,
   // Spanje: rood-geel-rood in de verhouding 1:2:1.

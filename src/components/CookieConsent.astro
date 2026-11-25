@@ -143,7 +143,7 @@ const mkt = cat.marketing ?? {};
     }
     // Paginatype voor de filters in Clarity, afgeleid uit het pad zonder taal.
     function paginaType() {
-      var p = location.pathname.replace(/^\/(en|de|fr|es|ro|pl|da|sv|it|pt|tr|fi)(?=\/)/, "");
+      var p = location.pathname.replace(/^\/(en|de|fr|es|ro|pl|da|sv|it|pt|tr|fi|nb|el|cs|uk|hu)(?=\/)/, "");
       if (p === "/" || p === "") return "home";
       var m = p.match(/^\/([^/]+)/);
       var s = m ? m[1] : "overig";

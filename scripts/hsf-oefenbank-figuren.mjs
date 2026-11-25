@@ -5,7 +5,7 @@
 import { rng, tussen, schud } from "./hsf-oefenbank-lib.mjs";
 
 
-const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt", "tr", "fi"];
+const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu"];
 const NAVY = "#0E468C";
 const GOUD = "#fcc11b";
 const LIJN = "#c9d4e4";
@@ -23,6 +23,11 @@ const VRAAG_A = {
   pt: "Que figura é igual à de cima, apenas rodada?",
   tr: "Hangi şekil üstteki şekille aynı, yalnızca döndürülmüş?",
   fi: "Mikä kuvio on sama kuin ylempi, vain käännettynä?",
+  nb: "Hvilken figur er den samme som den øverste, bare rotert?",
+  el: "Ποιο σχήμα είναι ίδιο με το επάνω, απλώς περιστραμμένο;",
+  cs: "Který obrazec je stejný jako ten nahoře, jen otočený?",
+  uk: "Яка фігура така сама, як верхня, лише повернута?",
+  hu: "Melyik alakzat ugyanaz, mint a felső, csak elforgatva?",
 };
 
 const UITLEG_A = {
@@ -36,6 +41,11 @@ const UITLEG_A = {
   pt: (g) => `Só esta figura é a original rodada ${g} graus. As outras quatro são imagens espelhadas ou têm um bloco noutra posição.`,
   tr: (g) => `Yalnızca bu şekil, ${g} derece döndürülmüş orijinal şekildir. Diğer dördü ayna görüntüsüdür ya da bir bloğu başka yerdedir.`,
   fi: (g) => `Vain tämä kuvio on alkuperäinen ${g} astetta käännettynä. Muut neljä ovat peilikuvia tai niissä yksi palikka on eri paikassa.`,
+  nb: (g) => `Bare denne figuren er originalen rotert ${g} grader. De fire andre er speilbilder eller har en blokk et annet sted.`,
+  el: (g) => `Μόνο αυτό το σχήμα είναι το αρχικό περιστραμμένο κατά ${g} μοίρες. Τα άλλα τέσσερα είναι κατοπτρικά ή έχουν ένα κομμάτι σε άλλη θέση.`,
+  cs: (g) => `Jen tento obrazec je původní, otočený o ${g} stupňů. Ostatní čtyři jsou zrcadlové nebo mají jeden blok jinde.`,
+  uk: (g) => `Лише ця фігура є оригіналом, повернутим на ${g} градусів. Інші чотири дзеркальні або мають блок в іншому місці.`,
+  hu: (g) => `Csak ez az alakzat az eredeti, ${g} fokkal elforgatva. A másik négy tükörkép, vagy egy blokkja máshol van.`,
 };
 
 const N = 4;
@@ -147,6 +157,11 @@ const VRAAG_R = {
   pt: "Que cubo se pode dobrar a partir desta planificação?",
   tr: "Bu açınımdan hangi küp katlanabilir?",
   fi: "Minkä kuution voi taittaa tästä levityksestä?",
+  nb: "Hvilken kube kan brettes av denne utbrettingen?",
+  el: "Ποιος κύβος μπορεί να διπλωθεί από αυτό το ανάπτυγμα;",
+  cs: "Kterou krychli lze složit z této sítě?",
+  uk: "Який куб можна скласти з цієї розгортки?",
+  hu: "Melyik kocka hajtható össze ebből a kiterített hálóból?",
 };
 
 const TEKENS = {
@@ -160,6 +175,11 @@ const TEKENS = {
   pt: ["círculo", "triângulo", "quadrado", "cruz", "estrela", "barra"],
   tr: ["daire", "üçgen", "kare", "artı", "yıldız", "çubuk"],
   fi: ["ympyrä", "kolmio", "neliö", "risti", "tähti", "palkki"],
+  nb: ["sirkel", "trekant", "firkant", "kryss", "stjerne", "strek"],
+  el: ["κύκλος", "τρίγωνο", "τετράγωνο", "σταυρός", "αστέρι", "μπάρα"],
+  cs: ["kruh", "trojúhelník", "čtverec", "kříž", "hvězda", "pruh"],
+  uk: ["коло", "трикутник", "квадрат", "хрест", "зірка", "смуга"],
+  hu: ["kör", "háromszög", "négyzet", "kereszt", "csillag", "csík"],
 };
 
 const UITLEG_R = {
@@ -173,6 +193,11 @@ const UITLEG_R = {
   pt: (f, r2, u) => `Ao dobrar a planificação, ${f}, ${r2} e ${u} encontram-se no mesmo vértice, por esta ordem. Nos outros quatro cubos aparecem lado a lado faces que no cubo são opostas, ou a ordem de rotação está invertida.`,
   tr: (f, r2, u) => `Açınım katlandığında ${f}, ${r2} ve ${u} bu sırayla aynı köşede birleşir. Diğer dört küpte, küpte karşılıklı olan yüzler yan yana görünür ya da dönüş sırası terstir.`,
   fi: (f, r2, u) => `Kun levitys taitetaan, ${f}, ${r2} ja ${u} kohtaavat samassa kulmassa tässä järjestyksessä. Muissa neljässä kuutiossa vierekkäin on tahkoja, jotka kuutiossa ovat vastakkain, tai kiertojärjestys on väärä.`,
+  nb: (f, r2, u) => `Når utbrettingen brettes, møtes ${f}, ${r2} og ${u} i samme hjørne, i denne rekkefølgen. På de fire andre kubene står sider ved siden av hverandre som er motsatte på kuben, eller rotasjonsrekkefølgen er feil.`,
+  el: (f, r2, u) => `Όταν διπλωθεί το ανάπτυγμα, τα ${f}, ${r2} και ${u} συναντώνται στην ίδια γωνία με αυτή τη σειρά. Στους άλλους τέσσερις κύβους εμφανίζονται δίπλα δίπλα έδρες που στον κύβο είναι απέναντι, ή η σειρά περιστροφής είναι λάθος.`,
+  cs: (f, r2, u) => `Po složení sítě se ${f}, ${r2} a ${u} setkají v jednom rohu v tomto pořadí. U ostatních čtyř krychlí jsou vedle sebe stěny, které jsou na krychli protilehlé, nebo je pořadí otáčení obrácené.`,
+  uk: (f, r2, u) => `Якщо скласти розгортку, ${f}, ${r2} і ${u} сходяться в одному куті саме в такому порядку. На інших чотирьох кубах поруч стоять грані, які на кубі протилежні, або порядок обертання неправильний.`,
+  hu: (f, r2, u) => `A háló összehajtásakor a(z) ${f}, ${r2} és ${u} ebben a sorrendben egy csúcsban találkozik. A másik négy kockán olyan lapok kerülnek egymás mellé, amelyek a kockán szemben vannak, vagy fordított a forgási sorrend.`,
 };
 
 // De 24 standen van een kubus, opgebouwd uit drie basisdraaiingen.

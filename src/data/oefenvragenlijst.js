@@ -349,6 +349,31 @@ export const VL_META = {
     omschrijving: (n) =>
       `Tee verkkotesti ${n} ilmaiseksi. 25 väittämää, ei oikeita tai vääriä vastauksia ja profiililuonnos näytölle heti, kun olet valmis.`,
   },
+  nb: {
+    titel: (n) => `${n}: gratis nettest | hrmforce`,
+    omschrijving: (n) =>
+      `Ta nettesten ${n} gratis. 25 påstander, ingen riktige eller gale svar og en profilskisse på skjermen så snart du er ferdig.`,
+  },
+  el: {
+    titel: (n) => `${n}: δωρεάν διαδικτυακό τεστ | hrmforce`,
+    omschrijving: (n) =>
+      `Κάντε δωρεάν το διαδικτυακό τεστ ${n}. 25 δηλώσεις, χωρίς σωστές ή λάθος απαντήσεις, και ένα σκιαγράφημα προφίλ στην οθόνη μόλις τελειώσετε.`,
+  },
+  cs: {
+    titel: (n) => `${n}: online test zdarma | hrmforce`,
+    omschrijving: (n) =>
+      `Udělejte si zdarma online test ${n}. 25 tvrzení, žádné správné ani špatné odpovědi a po dokončení hned náčrt profilu na obrazovce.`,
+  },
+  uk: {
+    titel: (n) => `${n}: безкоштовний онлайн-тест | hrmforce`,
+    omschrijving: (n) =>
+      `Пройдіть безкоштовно онлайн-тест ${n}. 25 тверджень, без правильних чи неправильних відповідей, а одразу після завершення з’явиться нарис профілю на екрані.`,
+  },
+  hu: {
+    titel: (n) => `${n}: ingyenes online teszt | hrmforce`,
+    omschrijving: (n) =>
+      `Töltse ki ingyen a(z) ${n} online tesztet. 25 állítás, nincs jó vagy rossz válasz, a végén pedig azonnal profilvázlat a képernyőn.`,
+  },
 };
 
 /* Na de profielschets wil een deel van de bezoekers verder. Per vragenlijst

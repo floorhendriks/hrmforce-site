@@ -3,7 +3,7 @@ import { vulAan } from "../data/vertaal-inhoud.js";
 export const defaultLang = "nl";
 // De enige plek waar de talen van de site staan. Alles leidt hiervan af: de
 // routes, de taalwisselaar, de hreflang-regels en de lijst met geldige paden.
-export const languages = { nl: "NL", en: "EN", de: "DE", fr: "FR", es: "ES", ro: "RO", pl: "PL", da: "DA", sv: "SV", it: "IT", pt: "PT", tr: "TR", fi: "FI" };
+export const languages = { nl: "NL", en: "EN", de: "DE", fr: "FR", es: "ES", ro: "RO", pl: "PL", da: "DA", sv: "SV", it: "IT", pt: "PT", tr: "TR", fi: "FI", nb: "NO", el: "EL", cs: "CS", uk: "UK", hu: "HU" };
 
 // Talen waarvan de teksten met de hand in de bronbestanden staan. De overige
 // talen komen uit de vertaalbestanden, zie src/data/vertaal-inhoud.js.
@@ -30,6 +30,11 @@ export const taalInfo = {
   pt: { naam: "Portugu\u00eas" },
   tr: { naam: "T\u00fcrk\u00e7e" },
   fi: { naam: "Suomi" },
+  nb: { naam: "Norsk" },
+  el: { naam: "\u0395\u03bb\u03bb\u03b7\u03bd\u03b9\u03ba\u03ac" },
+  cs: { naam: "\u010ce\u0161tina" },
+  uk: { naam: "\u0423\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0430" },
+  hu: { naam: "Magyar" },
 };
 
 export const routes = {

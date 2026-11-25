@@ -207,6 +207,31 @@ export const OT_META = {
     omschrijving: (n) =>
       `Harjoittele ilmaiseksi: ${n.toLowerCase()}. Saat 25 kysymystä 250 kysymyksen pankista ja lopuksi jokaiseen oikean vastauksen selityksineen.`,
   },
+  nb: {
+    titel: (n) => `${n}: gratis øvingstest | hrmforce`,
+    omschrijving: (n) =>
+      `Øv gratis på ${n.toLowerCase()}. Du får 25 spørsmål fra en bank på 250 og til slutt riktig svar med forklaring på hvert spørsmål.`,
+  },
+  el: {
+    titel: (n) => `${n}: δωρεάν τεστ εξάσκησης | hrmforce`,
+    omschrijving: (n) =>
+      `Εξασκηθείτε δωρεάν: ${n.toLowerCase()}. Λαμβάνετε 25 ερωτήσεις από μια τράπεζα 250 και στο τέλος τη σωστή απάντηση με εξήγηση για κάθε ερώτηση.`,
+  },
+  cs: {
+    titel: (n) => `${n}: cvičný test zdarma | hrmforce`,
+    omschrijving: (n) =>
+      `Procvičte si zdarma: ${n.toLowerCase()}. Dostanete 25 otázek z banky 250 a na konci u každé správnou odpověď s vysvětlením.`,
+  },
+  uk: {
+    titel: (n) => `${n}: безкоштовний пробний тест | hrmforce`,
+    omschrijving: (n) =>
+      `Потренуйтеся безкоштовно: ${n.toLowerCase()}. Ви отримаєте 25 запитань із банку на 250 і наприкінці правильну відповідь із поясненням до кожного.`,
+  },
+  hu: {
+    titel: (n) => `${n}: ingyenes gyakorló teszt | hrmforce`,
+    omschrijving: (n) =>
+      `Gyakoroljon ingyen: ${n.toLowerCase()}. 25 kérdést kap egy 250 kérdéses bankból, a végén pedig minden kérdéshez a helyes választ magyarázattal.`,
+  },
 };
 
 /* Na de uitslag wil een deel van de bezoekers weten wat er beroepsmatig
