@@ -1,0 +1,11 @@
+---
+// Retourbeleid voor webshopbestellingen. Merchant Center en de productgegevens
+// op de assessmentpagina's verwijzen hiernaar.
+import Base from "../layouts/Base.astro";
+import Retourbeleid from "../components/Retourbeleid.astro";
+import { retourContent } from "../data/retourbeleid-content.js";
+const t = retourContent.nl;
+---
+<Base title={t.meta.title} description={t.meta.description} titelExact={true}>
+  <Retourbeleid t={t} lang="nl" />
+</Base>

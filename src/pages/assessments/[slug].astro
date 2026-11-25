@@ -129,8 +129,11 @@ const _levering = {
 const _retour = {
   "@type": "MerchantReturnPolicy",
   applicableCountry: _euLanden,
-  returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
-  merchantReturnLink: "https://hrmforce.com/support/algemene-voorwaarden/",
+  returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+  merchantReturnDays: 14,
+  returnMethod: "https://schema.org/ReturnByMail",
+  returnFees: "https://schema.org/FreeReturn",
+  merchantReturnLink: "https://hrmforce.com/retourbeleid/",
 };
 // Google wil in het Product-blok een volledige URL en geen SVG. De tekening bij
 // het assessment is vaak een SVG; dan pakken we de foto die er al bij staat.

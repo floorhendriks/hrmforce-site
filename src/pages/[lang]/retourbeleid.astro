@@ -1,0 +1,14 @@
+---
+// Retourbeleid in elke taal. Een taal zonder eigen tekst valt terug op het
+// Engels, nooit op het Nederlands.
+import Base from "../../layouts/Base.astro";
+import Retourbeleid from "../../components/Retourbeleid.astro";
+import { retourContent } from "../../data/retourbeleid-content.js";
+import { perTaal } from "../../i18n/paden.js";
+export function getStaticPaths() { return perTaal(); }
+const { lang } = Astro.params;
+const t = retourContent[lang] ?? retourContent.en;
+---
+<Base title={t.meta.title} description={t.meta.description} titelExact={true}>
+  <Retourbeleid t={t} lang={lang} />
+</Base>

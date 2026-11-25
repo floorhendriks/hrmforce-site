@@ -130,8 +130,11 @@ const _levering = {
 const _retour = {
   "@type": "MerchantReturnPolicy",
   applicableCountry: _euLanden,
-  returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
-  merchantReturnLink: "https://hrmforce.com/support/algemene-voorwaarden/",
+  returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+  merchantReturnDays: 14,
+  returnMethod: "https://schema.org/ReturnByMail",
+  returnFees: "https://schema.org/FreeReturn",
+  merchantReturnLink: `https://hrmforce.com/${Astro.params.lang}/retourbeleid/`,
 };
 const _offerLd = (shop && shop.price)
   ? { "@context": "https://schema.org", "@type": "Product", name: a.title, description: a.goal, brand: { "@type": "Brand", name: "hrmforce" }, ...(a.image ? { image: a.image } : {}), offers: { "@type": "Offer", price: String(shop.price), priceCurrency: "EUR", availability: "https://schema.org/InStock", validFrom: _aanbodVanaf, priceValidUntil: _prijsTot, url: _canon, shippingDetails: _levering, hasMerchantReturnPolicy: _retour } }

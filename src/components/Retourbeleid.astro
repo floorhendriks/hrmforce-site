@@ -1,0 +1,47 @@
+---
+// Retourbeleid voor webshopbestellingen (/retourbeleid/ en /<taal>/retourbeleid/).
+// Tekst: src/data/retourbeleid-content.js. Telefoonnummer uit FACTUURGEGEVENS.
+import { localizePath } from "../i18n/utils.js";
+import { RETOUR_MAIL } from "../data/retourbeleid-content.js";
+import { FACTUURGEGEVENS as G } from "../data/facturen-content.js";
+const { t, lang } = Astro.props;
+
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const tel = lang === "nl" ? G.telNl : G.telInt;
+const avUrl = localizePath("/support/algemene-voorwaarden/", lang);
+const vul = (s) => esc(s)
+  .replace(/\{mail\}/g, `<a href="mailto:${RETOUR_MAIL}">${RETOUR_MAIL}</a>`)
+  .replace(/\{tel\}/g, `<a href="tel:${G.telHref}" class="rb-nowrap">${tel}</a>`)
+  .replace(/\{av\}/g, `<a href="${avUrl}">${esc(t.av)}</a>`);
+---
+<div class="crumb"><div class="wrap"><a href={localizePath("/", lang)}>Home</a> › <span>{t.crumb}</span></div></div>
+
+<section class="ahero"><div class="wrap">
+  <div>
+    <div class="eyebrow">{t.hero.eyebrow}</div>
+    <h1>{t.hero.title}</h1>
+    <p class="rb-intro">{t.hero.intro}</p>
+  </div>
+</div></section>
+
+<section class="rb"><div class="wrap rb-inhoud">
+  {t.secties.map((s, i) => (
+    <section class="rb-blok">
+      <h2><span class="rb-nr">{String(i + 1).padStart(2, "0")}</span>{s.titel}</h2>
+      <p set:html={vul(s.tekst)} />
+    </section>
+  ))}
+</div></section>
+
+<style>
+  .rb-intro { color: rgba(255,255,255,.85); font-size: 17px; max-width: 620px; }
+  .rb { padding: clamp(40px, 5vw, 64px) 0; }
+  .rb-inhoud { max-width: 760px; }
+  .rb-blok { padding: 24px 0; border-top: 1px solid var(--line); }
+  .rb-blok:first-child { border-top: 0; padding-top: 0; }
+  .rb-blok h2 { font-size: clamp(1.2rem, 1rem + .8vw, 1.5rem); margin-bottom: 10px; display: flex; gap: 12px; align-items: baseline; }
+  .rb-nr { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+  .rb-blok p { font-size: 16.5px; line-height: 1.65; }
+  .rb-blok :global(a) { color: var(--blue); }
+  .rb-nowrap { white-space: nowrap; }
+</style>
