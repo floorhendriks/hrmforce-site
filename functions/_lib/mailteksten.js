@@ -3,6 +3,17 @@
 // De mailteksten in de talen buiten de zes brontalen. Een Pages Function kan de
 // vertaalbestanden niet zelf uitlezen, zie het script voor de uitleg.
 export const PARTICULIER_EXTRA = {
+  "bg": {
+    "onderwerp": "Вашето запитване към hrmforce",
+    "aanhefNaam": "Здравейте, {naam},",
+    "aanhef": "Здравейте,",
+    "dank": "Благодарим Ви за заявката, подадена чрез hrmforce.com.",
+    "shop": "Посочихте, че искате да направите тест за себе си. Отделни тестове можете да поръчате директно от нашия онлайн магазин. Ще получите въпросника по имейл, а докладът ви – веднага щом приключите.",
+    "kleuren": "Искате ли първо да се запознаете безплатно? Тогава направете безплатния тест за цветове:",
+    "oefen": "Можете също така да се упражнявате. На тази страница са публикувани примерни въпроси по всеки раздел, като в края им са посочени верният отговор и обяснение:",
+    "zakelijk": "Заявката ви все пак се отнася за екип или организация? В такъв случай отговорете на този имейл или се обадете на Флор Хендрикс на {tel}. Тогава заедно ще преценим какво е подходящо.",
+    "groet": "С уважение,"
+  },
   "cs": {
     "onderwerp": "Vaše žádost u hrmforce",
     "aanhefNaam": "Dobrý den, {naam},",
@@ -36,6 +47,17 @@ export const PARTICULIER_EXTRA = {
     "zakelijk": "Μήπως η αίτησή σας αφορά τελικά μια ομάδα ή έναν οργανισμό; Σε αυτή την περίπτωση, απαντήστε σε αυτό το μήνυμα ή καλέστε την Floor Hendriks στο {tel}. Θα εξετάσουμε μαζί τι ταιριάζει καλύτερα.",
     "groet": "Με εκτίμηση,"
   },
+  "et": {
+    "onderwerp": "Teie päring hrmforce'ile",
+    "aanhefNaam": "Lugupeetud {naam}",
+    "aanhef": "Tere",
+    "dank": "Täname teid päringu eest veebilehel hrmforce.com.",
+    "shop": "Te märkisite, et soovite teha testi enda jaoks. Üksikuid teste saate tellida otse meie veebipoest. Küsimustiku saate e-postiga ja aruande kohe, kui olete valmis.",
+    "kleuren": "Kas soovid esmalt tasuta tutvuda? Siis tee tasuta värvitest:",
+    "oefen": "Harjutada saab ka. Sellel lehel on harjutusküsimused iga osa kohta, millele järgnevad õige vastus ja selgitus:",
+    "zakelijk": "Kas teie päring puudutab siiski meeskonda või organisatsiooni? Siis vastake sellele e-kirjale või helistage Floor Hendriksile numbril {tel}. Siis vaatame koos, mis sobiks.",
+    "groet": "Lugupidamisega"
+  },
   "fi": {
     "onderwerp": "Pyyntösi hrmforcelle",
     "aanhefNaam": "Hei {naam},",
@@ -46,6 +68,17 @@ export const PARTICULIER_EXTRA = {
     "oefen": "Voit myös harjoitella. Tällä sivulla on harjoituskysymyksiä kunkin osion kohdalla, ja niiden jälkeen on oikea vastaus ja selitys:",
     "zakelijk": "Koskeeko pyyntösi kuitenkin tiimiä tai organisaatiota? Vastaa tällöin tähän sähköpostiin tai soita Floor Hendriksille numeroon {tel}. Katsotaan sitten yhdessä, mikä sopii parhaiten.",
     "groet": "Ystävällisin terveisin,"
+  },
+  "hr": {
+    "onderwerp": "Vaš upit za hrmforce",
+    "aanhefNaam": "Poštovani/a {naam},",
+    "aanhef": "Poštovani,",
+    "dank": "Hvala vam na upitu putem hrmforce.com.",
+    "shop": "Naveli ste da želite riješiti test za sebe. Pojedinačne testove možete naručiti izravno iz naše internetske trgovine. Upitnik ćete primiti e-poštom, a izvješće čim završite.",
+    "kleuren": "Želite li prvo besplatno isprobati? Onda riješite besplatni test boja:",
+    "oefen": "Možete i vježbati. Ova stranica sadrži vježbovna pitanja za svaki odjeljak, nakon kojih slijedi ispravan odgovor i objašnjenje:",
+    "zakelijk": "Radi li se vaš upit zapravo o timu ili o organizaciji? Ako je tako, molimo vas da odgovorite na ovu e-poruku ili nazovete Floora Hendriks na {tel}. Zatim ćemo zajedno razgovarati o tome što bi bilo najprikladnije.",
+    "groet": "Srdačan pozdrav,"
   },
   "hu": {
     "onderwerp": "Az Ön kérése a hrmforce-nál",
@@ -68,6 +101,28 @@ export const PARTICULIER_EXTRA = {
     "oefen": "È possibile anche esercitarsi. In questa pagina sono riportate domande di esercitazione per ciascuna sezione, seguite dalla risposta corretta e da una spiegazione:",
     "zakelijk": "La Sua richiesta riguarda piuttosto un team o un’organizzazione? In tal caso, La preghiamo di rispondere a questa e-mail oppure di contattare Floor Hendriks al numero {tel}. Valuteremo insieme la soluzione più adatta.",
     "groet": "Cordiali saluti,"
+  },
+  "lt": {
+    "onderwerp": "Jūsų užklausa hrmforce",
+    "aanhefNaam": "Gerb. {naam},",
+    "aanhef": "Laba diena,",
+    "dank": "Dėkojame už jūsų užklausą, pateiktą per hrmforce.com.",
+    "shop": "Jūs nurodėte, kad norite atlikti testą sau. Atskirus testus galite užsisakyti tiesiogiai mūsų internetinėje parduotuvėje. Klausimyną gausite el. paštu, o ataskaitą – kai tik baigsite testą.",
+    "kleuren": "Norite pirmiausia nemokamai susipažinti su mūsų paslaugomis? Tuomet atlikite nemokamą spalvų testą:",
+    "oefen": "Taip pat galima pasitreniruoti. Šiame puslapyje pateikiami praktiniai klausimai pagal skyrius, o po jų – teisingas atsakymas ir paaiškinimas:",
+    "zakelijk": "O gal jūsų užklausa vis dėlto susijusi su komanda ar organizacija? Tuomet atsakykite į šį laišką arba paskambinkite Floor Hendriks numeriu {tel}. Tada kartu pažiūrėsime, kas jums tiktų.",
+    "groet": "Pagarbiai"
+  },
+  "lv": {
+    "onderwerp": "Jūsu pieprasījums hrmforce",
+    "aanhefNaam": "Labdien, {naam}!",
+    "aanhef": "Labdien!",
+    "dank": "Paldies par jūsu pieprasījumu, kas iesniegts caur hrmforce.com.",
+    "shop": "Jūs norādījāt, ka vēlaties veikt testu sev. Atsevišķus testus varat pasūtīt tieši mūsu interneta veikalā. Jūs saņemsiet anketu pa e-pastu, un ziņojumu – tiklīdz būsiet pabeidzis.",
+    "kleuren": "Vēlaties vispirms bez maksas iepazīties ar mūsu pakalpojumiem? Tad izpildiet bezmaksas krāsu testu:",
+    "oefen": "Ir iespējams arī izmēģināt. Šajā lapā ir uzdevumi katrai sadaļai, un pēc to izpildes tiek parādīta pareizā atbilde un paskaidrojums:",
+    "zakelijk": "Vai jūsu pieprasījums tomēr attiecas uz komandu vai organizāciju? Tad atbildiet uz šo e-pastu vai zvaniet Floor Hendriks uz {tel}. Tad kopā izskatīsim, kas jums ir piemērots.",
+    "groet": "Ar cieņu"
   },
   "nb": {
     "onderwerp": "Din forespørsel til hrmforce",
@@ -101,6 +156,50 @@ export const PARTICULIER_EXTRA = {
     "oefen": "Também é possível praticar. Nesta página encontram-se questões de treino por secção, seguidas da resposta correta e de uma explicação:",
     "zakelijk": "A sua solicitação diz respeito, afinal, a uma equipa ou a uma organização? Nesse caso, responda a este e-mail ou contacte Floor Hendriks através do número {tel}. Analisaremos então em conjunto qual a solução mais adequada.",
     "groet": "Com os melhores cumprimentos,"
+  },
+  "ru": {
+    "onderwerp": "Ваш запрос в hrmforce",
+    "aanhefNaam": "Здравствуйте, {naam}!",
+    "aanhef": "Здравствуйте!",
+    "dank": "Благодарим вас за запрос, отправленный через сайт hrmforce.com.",
+    "shop": "Вы указали, что хотите пройти тест самостоятельно. Отдельные тесты можно заказать непосредственно в нашем интернет-магазине. Вы получите анкету по электронной почте, а отчет — сразу после завершения теста.",
+    "kleuren": "Хотите сначала бесплатно познакомиться с нашей компанией? Тогда пройдите бесплатный цветовой тест:",
+    "oefen": "Вы также можете попрактиковаться. На этой странице представлены тренировочные вопросы по каждому разделу, а в конце приведены правильные ответы и пояснения:",
+    "zakelijk": "Если ваш запрос всё же касается команды или организации, пожалуйста, ответьте на это письмо или позвоните Флор Хендрикс по телефону {tel}. Мы вместе подберём подходящий вариант.",
+    "groet": "С уважением,"
+  },
+  "sk": {
+    "onderwerp": "Vaša žiadosť v hrmforce",
+    "aanhefNaam": "Dobrý deň, {naam},",
+    "aanhef": "Dobrý deň,",
+    "dank": "Ďakujeme za vašu žiadosť prostredníctvom stránky hrmforce.com.",
+    "shop": "Uviedli ste, že si chcete urobiť test pre seba. Jednotlivé testy si môžete objednať priamo v našom internetovom obchode. Dotazník dostanete e-mailom a správu hneď, ako test dokončíte.",
+    "kleuren": "Chcete si to najprv bezplatne vyskúšať? Vyplňte si bezplatný farebný test:",
+    "oefen": "Môžete si to aj vyskúšať. Na tejto stránke nájdete cvičné otázky pre každú časť, po ktorých nasleduje správna odpoveď a vysvetlenie:",
+    "zakelijk": "Týka sa vaša žiadosť predsa len tímu alebo organizácie? V tom prípade odpovedzte na tento e-mail alebo zavolajte Floor Hendriks na číslo {tel}. Spoločne zistíme, čo by bolo pre vás vhodné.",
+    "groet": "S pozdravom"
+  },
+  "sl": {
+    "onderwerp": "Vaša zahteva pri hrmforce",
+    "aanhefNaam": "Spoštovani {naam},",
+    "aanhef": "Spoštovani,",
+    "dank": "Hvala za vašo poizvedbo prek spletne strani hrmforce.com.",
+    "shop": "Navedli ste, da želite opraviti test zase. Posamezne teste lahko naročite neposredno v naši spletni trgovini. Vprašalnik boste prejeli po e-pošti, poročilo pa takoj, ko boste končali.",
+    "kleuren": "Želite najprej brezplačno spoznati našo ponudbo? Izpolnite brezplačni barvni test:",
+    "oefen": "Vaje so tudi na voljo. Na tej strani najdete vaje po posameznih sklopih, na koncu pa so navedeni pravilni odgovori in pojasnila:",
+    "zakelijk": "Ali se vaša zahteva vendarle nanaša na ekipo ali organizacijo? V tem primeru odgovorite na to e-pošto ali pokličite Floor Hendriks na številko {tel}. Skupaj bomo poiskali ustrezno rešitev.",
+    "groet": "Lep pozdrav"
+  },
+  "sr": {
+    "onderwerp": "Vaš zahtev upućen hrmforce-u",
+    "aanhefNaam": "Poštovani/a {naam},",
+    "aanhef": "Poštovani,",
+    "dank": "Hvala vam na upitu preko hrmforce.com.",
+    "shop": "Naveli ste da želite da uradite test za sebe. Možete naručiti pojedinačne testove direktno iz naše onlajn prodavnice. Anketar ćete dobiti putem e-pošte, a izveštaj čim završite.",
+    "kleuren": "Da li biste prvo želeli da ga besplatno isprobate? Onda uradite besplatan test boja:",
+    "oefen": "Možete i vi da vežbate. Ova stranica sadrži pitanja za vežbanje za svaki odeljak, praćena tačnim odgovorom i objašnjenjem:",
+    "zakelijk": "Da li se vaš upit zapravo odnosi na tim ili na organizaciju? Ako jeste, molimo vas da odgovorite na ovaj imejl ili pozovete Floor Hendriks na {tel}. Onda ćemo zajedno razgovarati šta bi bilo najprikladnije.",
+    "groet": "Srdačan pozdrav,"
   },
   "sv": {
     "onderwerp": "Din förfrågan till hrmforce",
@@ -138,6 +237,17 @@ export const PARTICULIER_EXTRA = {
 };
 
 export const OEFEN_EXTRA = {
+  "bg": {
+    "onderwerp": "Вашите тренировъчни въпроси",
+    "onderwerpVoor": "Вашите тренировъчни въпроси: {titel}",
+    "halloNaam": "Здравейте, {naam},",
+    "hallo": "Здравейте,",
+    "met": "В приложението ще намерите набор от примерни въпроси. Така ще знаете предварително как изглеждат въпросите и какво да очаквате.",
+    "zonder": "Благодарим Ви за заявката. За тази част все още няма наличен документ, но можете да се упражнявате онлайн.",
+    "online": "Можете да продължите да се упражнявате онлайн на {url}. Там ще получавате нов набор от въпроси при всеки кръг, а след приключването му ще ви бъдат показани правилният отговор и обяснение за всеки въпрос.",
+    "let": "Документът съдържа примерни въпроси. Те не са взети от истинския въпросник и отговорите ви няма да бъдат запазени.",
+    "groet": "С уважение,"
+  },
   "cs": {
     "onderwerp": "Vaše cvičné otázky",
     "onderwerpVoor": "Vaše cvičné otázky: {titel}",
@@ -171,6 +281,17 @@ export const OEFEN_EXTRA = {
     "let": "Το έγγραφο περιέχει δείγματα ερωτήσεων. Δεν προέρχονται από το πραγματικό ερωτηματολόγιο και οι απαντήσεις σας δεν αποθηκεύονται.",
     "groet": "Με εκτίμηση,"
   },
+  "et": {
+    "onderwerp": "Teie harjutusküsimused",
+    "onderwerpVoor": "Teie harjutusküsimused: {titel}",
+    "halloNaam": "Tere, {naam}",
+    "hallo": "Tere",
+    "met": "Lisast leiad harjutusküsimuste kogumiku. Nii saad eelnevalt teada, millised küsimused on ja mis sind ees ootab.",
+    "zonder": "Täname teid päringu eest. Selle osa jaoks pole veel dokumenti saadaval, kuid veebis on võimalik harjutada.",
+    "online": "Veebis saad harjutada edasi aadressil {url}. Iga vooru järel saad seal uue küsimuste komplekti, mille lõpus on iga küsimuse juures õige vastus ja selgitus.",
+    "let": "Dokument sisaldab näidisküsimusi. Need ei pärine tegelikust küsimustikust ja teie vastuseid ei salvestata.",
+    "groet": "Lugupidamisega"
+  },
   "fi": {
     "onderwerp": "Harjoituskysymyksesi",
     "onderwerpVoor": "Harjoituskysymyksesi: {titel}",
@@ -181,6 +302,17 @@ export const OEFEN_EXTRA = {
     "online": "Voit harjoitella lisää verkossa osoitteessa {url}. Siellä saat joka kierroksella uuden kysymyssarjan, jonka jälkeen saat jokaiseen kysymykseen oikean vastauksen ja selityksen.",
     "let": "Asiakirja sisältää esimerkkikysymyksiä. Ne eivät ole peräisin todellisesta kyselylomakkeesta, eikä vastauksiasi tallenneta.",
     "groet": "Ystävällisin terveisin,"
+  },
+  "hr": {
+    "onderwerp": "Vaša pitanja za vježbu",
+    "onderwerpVoor": "Vaša pitanja za vježbu: {titel}",
+    "halloNaam": "Pozdrav, {naam},",
+    "hallo": "Pozdrav,",
+    "met": "U privitku ćete pronaći skup praktičnih pitanja. Na taj način ćete unaprijed znati kako pitanja izgledaju i što možete očekivati.",
+    "zonder": "Hvala na upitu. Trenutno nije dostupan nijedan dokument za ovaj odjeljak, ali možete vježbati online.",
+    "online": "Možete dodatno vježbati online na {url}. U svakom krugu dobit ćete novi set pitanja, nakon čega slijedi ispravan odgovor i objašnjenje za svako pitanje.",
+    "let": "Dokument sadrži primjere pitanja. Nisu preuzeti iz stvarnog upitnika i vaši odgovori neće biti spremljeni.",
+    "groet": "Srdačan pozdrav,"
   },
   "hu": {
     "onderwerp": "Az Ön gyakorlókérdései",
@@ -203,6 +335,28 @@ export const OEFEN_EXTRA = {
     "online": "Potrà continuare a esercitarsi online all’indirizzo {url}. Ad ogni sessione riceverà una nuova serie di domande, al termine della quale le verrà fornita la risposta corretta per ciascuna domanda, accompagnata da una spiegazione.",
     "let": "Il documento contiene domande di esempio. Esse non provengono dal questionario vero e proprio e le Sue risposte non verranno salvate.",
     "groet": "Cordiali saluti,"
+  },
+  "lt": {
+    "onderwerp": "Jūsų pratybų klausimai",
+    "onderwerpVoor": "Jūsų pratybų klausimai: {titel}",
+    "halloNaam": "Sveiki, {naam},",
+    "hallo": "Sveiki,",
+    "met": "Priedėlyje rasite praktinių užduočių rinkinį. Taip iš anksto žinosite, kaip atrodo klausimai ir ko galite tikėtis.",
+    "zonder": "Dėkojame už jūsų užklausą. Šiai daliai dar nėra parengto dokumento, tačiau galite pasitreniruoti internete.",
+    "online": "Toliau galite treniruotis internete adresu {url}. Kiekvieną kartą gausite naują klausimų rinkinį, o baigus atsakysite į kiekvieną klausimą, po kurio bus pateiktas teisingas atsakymas ir paaiškinimas.",
+    "let": "Dokumente pateikiami pavyzdiniai klausimai. Jie nėra paimti iš tikrojo klausimyno, o jūsų atsakymai nebus išsaugoti.",
+    "groet": "Pagarbiai"
+  },
+  "lv": {
+    "onderwerp": "Jūsu prakses jautājumi",
+    "onderwerpVoor": "Jūsu prakses jautājumi: {titel}",
+    "halloNaam": "Sveiki, {naam}!",
+    "hallo": "Sveiki!",
+    "met": "Pielikumā atradīsi virkni paraugjautājumu. Tādējādi jau iepriekš uzzināsi, kā izskatās jautājumi un kas tevi sagaida.",
+    "zonder": "Paldies par jūsu pieprasījumu. Šai sadaļai vēl nav pieejams dokuments, taču ir iespējams praktizēties tiešsaistē.",
+    "online": "Tālāk varat trenēties tiešsaistē vietnē {url}. Tur katrā kārtā saņemsiet jaunu jautājumu kopumu, un pēc tam katram jautājumam tiks norādīta pareizā atbilde un paskaidrojums.",
+    "let": "Dokumentā ir iekļauti paraugjautājumi. Tie nav ņemti no reālās aptaujas, un jūsu atbildes netiek saglabātas.",
+    "groet": "Ar cieņu"
   },
   "nb": {
     "onderwerp": "Øvingsspørsmålene dine",
@@ -236,6 +390,50 @@ export const OEFEN_EXTRA = {
     "online": "Pode continuar a praticar online em {url}. A cada ronda, receberá um novo conjunto de perguntas e, no final, a resposta correta e uma explicação para cada uma delas.",
     "let": "O documento contém perguntas de exemplo. Estas não fazem parte do questionário real e as suas respostas não serão guardadas.",
     "groet": "Com os melhores cumprimentos,"
+  },
+  "ru": {
+    "onderwerp": "Ваши тренировочные вопросы",
+    "onderwerpVoor": "Ваши тренировочные вопросы: {titel}",
+    "halloNaam": "Здравствуйте, {naam}!",
+    "hallo": "Здравствуйте!",
+    "met": "В приложении вы найдёте набор тренировочных вопросов. Так вы заранее узнаете, как выглядят вопросы и что вас ждёт.",
+    "zonder": "Благодарим вас за запрос. Документ по данному разделу пока недоступен, однако вы можете попрактиковаться в режиме онлайн.",
+    "online": "Вы можете продолжить практику онлайн на сайте {url}. В каждом раунде вам будет предложен новый набор вопросов, а по его завершении вы получите правильный ответ на каждый вопрос и разъяснение.",
+    "let": "Данный документ содержит примеры вопросов. Они не взяты из реальной анкеты, и ваши ответы не сохраняются.",
+    "groet": "С уважением,"
+  },
+  "sk": {
+    "onderwerp": "Vaše cvičné otázky",
+    "onderwerpVoor": "Vaše cvičné otázky: {titel}",
+    "halloNaam": "Dobrý deň, {naam},",
+    "hallo": "Dobrý deň,",
+    "met": "V prílohe nájdete súbor cvičných otázok. Tak budete vopred vedieť, ako otázky vyzerajú a čo vás čaká.",
+    "zonder": "Ďakujeme za vašu žiadosť. Pre túto časť zatiaľ nie je k dispozícii žiadny dokument, ale je možné cvičiť online.",
+    "online": "Ďalej si môžete precvičovať online na stránke {url}. V každom kole dostanete novú sadu otázok a po ich vyplnení sa vám k každej otázke zobrazí správna odpoveď a vysvetlenie.",
+    "let": "Tento dokument obsahuje ukážkové otázky. Nie sú prevzaté zo skutočného dotazníka a vaše odpovede sa neukladajú.",
+    "groet": "S pozdravom"
+  },
+  "sl": {
+    "onderwerp": "Vaša vadbena vprašanja",
+    "onderwerpVoor": "Vaša vadbena vprašanja: {titel}",
+    "halloNaam": "Pozdravljeni, {naam},",
+    "hallo": "Pozdravljeni,",
+    "met": "V prilogi najdeš niz vajnih vprašanj. Tako boš vnaprej vedel, kako izgledajo vprašanja in kaj te čaka.",
+    "zonder": "Hvala za vašo zahtevo. Za ta del dokument še ni na voljo, vendar se lahko vadite na spletu.",
+    "online": "Na spletni strani {url} se lahko dodatno vadite. Tam boste v vsakem krogu prejeli nov niz vprašanj, po koncu pa boste za vsako vprašanje dobili pravilni odgovor in pojasnilo.",
+    "let": "Dokument vsebuje vzorčna vprašanja. Ta ne izhajajo iz dejanskega vprašalnika, vaši odgovori pa se ne shranjujejo.",
+    "groet": "Lep pozdrav"
+  },
+  "sr": {
+    "onderwerp": "Vaša pitanja za vežbu",
+    "onderwerpVoor": "Vaša pitanja za vežbu: {titel}",
+    "halloNaam": "Zdravo, {naam},",
+    "hallo": "Zdravo,",
+    "met": "U prilogu ćete pronaći skup probnih pitanja. Na ovaj način ćete unapred znati kako pitanja izgledaju i šta da očekujete.",
+    "zonder": "Hvala vam na upitu. Za ovu sekciju trenutno nije dostupan nijedan dokument, ali možete vežbati onlajn.",
+    "online": "Možete dalje vežbati onlajn na {url}. U svakom krugu dobićete novi skup pitanja, zatim tačan odgovor i objašnjenje za svako pitanje.",
+    "let": "Dokument sadrži primerna pitanja. Ova pitanja nisu preuzeta iz stvarnog upitnika i vaši odgovori neće biti sačuvani.",
+    "groet": "Srdačan pozdrav,"
   },
   "sv": {
     "onderwerp": "Dina övningsfrågor",
