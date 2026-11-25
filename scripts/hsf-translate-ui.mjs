@@ -22,6 +22,7 @@
  *   HSF_UI_FORCE=1 node scripts/hsf-translate-ui.mjs   # ook bestaande waarden opnieuw
  *   HSF_TRANSLATE_MOCK=1 node scripts/hsf-translate-ui.mjs
  */
+import { naarLatijns } from './hsf-srlat.mjs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -116,7 +117,8 @@ async function deepl(texts, lang, { xml = false } = {}) {
   for (const t of texts) body.append('text', t);
   body.append('source_lang', 'EN');
   // DeepL kent Portugees alleen als variant; hrmforce schrijft voor Portugal.
-  body.append('target_lang', { pt: 'PT-PT' }[lang] || lang.toUpperCase());
+  // Servisch: de code komt uit toepassen-125.sh (Latijns schrift als DeepL dat aanbiedt).
+  body.append('target_lang', { pt: 'PT-PT', sr: process.env.HSF_DEEPL_SR || 'SR' }[lang] || lang.toUpperCase());
   body.append('preserve_formatting', '1');
   body.append('context', CONTEXT);
   if (FORMAL.has(lang)) body.append('formality', 'prefer_more');
@@ -135,8 +137,11 @@ async function deepl(texts, lang, { xml = false } = {}) {
       await sleep(Number(res.headers.get('retry-after')) * 1000 || 2000 * (attempt + 1));
       continue;
     }
+    // Kroatisch en Servisch lopen via het nieuwe DeepL-model; kent dat 'context' niet, dan opnieuw zonder.
+    if (res.status === 400 && body.has('context')) { body.delete('context'); continue; }
     if (!res.ok) throw new Error(`DeepL ${res.status}: ${(await res.text()).slice(0, 300)}`);
-    return (await res.json()).translations.map((x) => x.text);
+    const uit = (await res.json()).translations.map((x) => x.text);
+    return lang === 'sr' ? uit.map(naarLatijns) : uit;
   }
   throw new Error('DeepL bleef falen na 8 pogingen.');
 }

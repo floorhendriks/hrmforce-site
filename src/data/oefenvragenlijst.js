@@ -374,6 +374,51 @@ export const VL_META = {
     omschrijving: (n) =>
       `Töltse ki ingyen a(z) ${n} online tesztet. 25 állítás, nincs jó vagy rossz válasz, a végén pedig azonnal profilvázlat a képernyőn.`,
   },
+  lt: {
+    titel: (n) => `${n}: nemokamas internetinis testas | hrmforce`,
+    omschrijving: (n) =>
+      `Nemokamai užpildykite internetinį testą ${n}. 25 teiginiai, nėra teisingų ar neteisingų atsakymų, o pabaigoje iškart ekrane matysite profilio eskizą.`,
+  },
+  bg: {
+    titel: (n) => `${n}: безплатен онлайн тест | hrmforce`,
+    omschrijving: (n) =>
+      `Попълнете безплатно онлайн теста ${n}. 25 твърдения, без верни или грешни отговори, а накрая веднага кратък профил на екрана.`,
+  },
+  sk: {
+    titel: (n) => `${n}: bezplatný online test | hrmforce`,
+    omschrijving: (n) =>
+      `Vyplňte zadarmo online test ${n}. 25 tvrdení, žiadne správne ani nesprávne odpovede a na konci hneď náčrt profilu na obrazovke.`,
+  },
+  sl: {
+    titel: (n) => `${n}: brezplačen spletni test | hrmforce`,
+    omschrijving: (n) =>
+      `Brezplačno izpolnite spletni test ${n}. 25 trditev, brez pravilnih ali napačnih odgovorov, na koncu pa takoj osnutek profila na zaslonu.`,
+  },
+  et: {
+    titel: (n) => `${n}: tasuta veebitest | hrmforce`,
+    omschrijving: (n) =>
+      `Täitke tasuta veebitest ${n}. 25 väidet, õigeid ega valesid vastuseid pole ja lõpus näete kohe ekraanil profiili visandit.`,
+  },
+  lv: {
+    titel: (n) => `${n}: bezmaksas tiešsaistes tests | hrmforce`,
+    omschrijving: (n) =>
+      `Aizpildiet bez maksas tiešsaistes testu ${n}. 25 apgalvojumi, nav pareizu vai nepareizu atbilžu, bet beigās uzreiz ekrānā profila uzmetums.`,
+  },
+  hr: {
+    titel: (n) => `${n}: besplatan online test | hrmforce`,
+    omschrijving: (n) =>
+      `Ispunite besplatno online test ${n}. 25 tvrdnji, bez točnih i netočnih odgovora, a na kraju odmah skica profila na zaslonu.`,
+  },
+  sr: {
+    titel: (n) => `${n}: besplatan onlajn test | hrmforce`,
+    omschrijving: (n) =>
+      `Popunite besplatno onlajn test ${n}. 25 tvrdnji, bez tačnih i netačnih odgovora, a na kraju odmah skica profila na ekranu.`,
+  },
+  ru: {
+    titel: (n) => `${n}: бесплатный онлайн-тест | hrmforce`,
+    omschrijving: (n) =>
+      `Пройдите онлайн-тест ${n} бесплатно. 25 утверждений, без правильных и неправильных ответов, а в конце сразу набросок профиля на экране.`,
+  },
 };
 
 /* Na de profielschets wil een deel van de bezoekers verder. Per vragenlijst

@@ -21,6 +21,7 @@
  * De run is hervatbaar: wat al in het taalbestand staat wordt niet opnieuw
  * vertaald, tenzij HSF_FORCE=1.
  */
+import { naarLatijns } from './hsf-srlat.mjs';
 import { readdir, readFile, writeFile, mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -92,7 +93,8 @@ const SPATIEGAT = new RegExp('([a-z\u00e0-\u00ff])(' + MET_HOOFDLETTER.map(esc).
 // DeepL plakt ook de kleine merknaam soms vast aan het woord ervoor
 // ("Platshrmforce"). Een letter direct voor hrmforce is nooit goed.
 const KLEIN_GAT = /(\p{L})(hrmforce)/gu;
-const herstelSpatie = (s) => s.replace(SPATIEGAT, '$1 $2').replace(KLEIN_GAT, '$1 $2');
+// DeepL laat soms de punt in hrmforce.com weg (gezien in het Noors, Tsjechisch en Oekraiens).
+const herstelSpatie = (s) => s.replace(SPATIEGAT, '$1 $2').replace(KLEIN_GAT, '$1 $2').replace(/hrmforcecom\b/g, 'hrmforce.com');
 
 /** DeepL zet soms aanhalingstekens om een beschermd stuk. Die halen we eraf. */
 function ontquote(s) {
@@ -107,7 +109,8 @@ async function deepl(teksten, taal) {
   for (const t of teksten) body.append('text', t);
   body.append('source_lang', 'NL');
   // DeepL kent Portugees alleen als variant; hrmforce schrijft voor Portugal.
-  body.append('target_lang', { pt: 'PT-PT' }[taal] || taal.toUpperCase());
+  // Servisch: de code komt uit toepassen-125.sh (Latijns schrift als DeepL dat aanbiedt).
+  body.append('target_lang', { pt: 'PT-PT', sr: process.env.HSF_DEEPL_SR || 'SR' }[taal] || taal.toUpperCase());
   body.append('preserve_formatting', '1');
   body.append('context', CONTEXT);
   body.append('tag_handling', 'html');
@@ -127,8 +130,11 @@ async function deepl(teksten, taal) {
       await sleep(Number(res.headers.get('retry-after')) * 1000 || 2000 * (poging + 1));
       continue;
     }
+    // Kroatisch en Servisch lopen via het nieuwe DeepL-model; kent dat 'context' niet, dan opnieuw zonder.
+    if (res.status === 400 && body.has('context')) { body.delete('context'); continue; }
     if (!res.ok) throw new Error(`DeepL ${res.status}: ${(await res.text()).slice(0, 300)}`);
-    return (await res.json()).translations.map((x) => x.text);
+    const uit = (await res.json()).translations.map((x) => x.text);
+    return taal === 'sr' ? uit.map(naarLatijns) : uit;
   }
   throw new Error('DeepL bleef falen na 8 pogingen.');
 }

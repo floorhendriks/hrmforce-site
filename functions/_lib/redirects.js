@@ -20,7 +20,7 @@
 
 import { EXACT, WILD } from "./redirect-tabel.js";
 
-const TALEN = ["en", "de", "fr", "es", "ro", "pl", "da", "sv", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu"];
+const TALEN = ["en", "de", "fr", "es", "ro", "pl", "da", "sv", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu", "lt", "bg", "sk", "sl", "et", "lv", "hr", "sr", "ru"];
 
 const decode = (p) => {
   try {
@@ -154,7 +154,7 @@ export async function terugvalRedirect(pathname, bestaat, diepte = 0) {
 
   // Pools, Deens, Zweeds, Italiaans en Portugees hebben minder pagina's. Bestaat het pad in het Engels,
   // dan daarheen, anders naar de startpagina van die taal.
-  if (["pl", "da", "sv", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu"].includes(taal)) {
+  if (["pl", "da", "sv", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu", "lt", "bg", "sk", "sl", "et", "lv", "hr", "sr", "ru"].includes(taal)) {
     const en = "/en" + p.slice(3);
     const e = exacteRedirect(en);
     if (e) return e;

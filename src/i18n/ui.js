@@ -3,7 +3,7 @@ import { vulAan } from "../data/vertaal-inhoud.js";
 export const defaultLang = "nl";
 // De enige plek waar de talen van de site staan. Alles leidt hiervan af: de
 // routes, de taalwisselaar, de hreflang-regels en de lijst met geldige paden.
-export const languages = { nl: "NL", en: "EN", de: "DE", fr: "FR", es: "ES", ro: "RO", pl: "PL", da: "DA", sv: "SV", it: "IT", pt: "PT", tr: "TR", fi: "FI", nb: "NO", el: "EL", cs: "CS", uk: "UK", hu: "HU" };
+export const languages = { nl: "NL", en: "EN", de: "DE", fr: "FR", es: "ES", ro: "RO", pl: "PL", da: "DA", sv: "SV", it: "IT", pt: "PT", tr: "TR", fi: "FI", nb: "NO", el: "EL", cs: "CS", uk: "UK", hu: "HU", lt: "LT", bg: "BG", sk: "SK", sl: "SL", et: "ET", lv: "LV", hr: "HR", sr: "SR", ru: "RU" };
 
 // Talen waarvan de teksten met de hand in de bronbestanden staan. De overige
 // talen komen uit de vertaalbestanden, zie src/data/vertaal-inhoud.js.
@@ -35,6 +35,15 @@ export const taalInfo = {
   cs: { naam: "\u010ce\u0161tina" },
   uk: { naam: "\u0423\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0430" },
   hu: { naam: "Magyar" },
+  lt: { naam: "Lietuvi\u0173" },
+  bg: { naam: "\u0411\u044a\u043b\u0433\u0430\u0440\u0441\u043a\u0438" },
+  sk: { naam: "Sloven\u010dina" },
+  sl: { naam: "Sloven\u0161\u010dina" },
+  et: { naam: "Eesti" },
+  lv: { naam: "Latvie\u0161u" },
+  hr: { naam: "Hrvatski" },
+  sr: { naam: "Srpski" },
+  ru: { naam: "\u0420\u0443\u0441\u0441\u043a\u0438\u0439" },
 };
 
 export const routes = {

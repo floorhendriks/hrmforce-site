@@ -24,6 +24,15 @@ const SCHEIDING = {
   tr: { dec: ",", dui: "." }, fi: { dec: ",", dui: " " },
   nb: { dec: ",", dui: " " }, el: { dec: ",", dui: "." }, cs: { dec: ",", dui: " " },
   uk: { dec: ",", dui: " " }, hu: { dec: ",", dui: " " },
+  lt: { dec: ",", dui: " " },
+  bg: { dec: ",", dui: " " },
+  sk: { dec: ",", dui: " " },
+  sl: { dec: ",", dui: "." },
+  et: { dec: ",", dui: " " },
+  lv: { dec: ",", dui: " " },
+  hr: { dec: ",", dui: "." },
+  sr: { dec: ",", dui: "." },
+  ru: { dec: ",", dui: " " },
 };
 export function getal(n, taal, decimalen = 0) {
   const s = SCHEIDING[taal] || SCHEIDING.nl;
@@ -33,9 +42,10 @@ export function getal(n, taal, decimalen = 0) {
   return (n < 0 ? "-" : "") + metDui + (deel ? s.dec + deel : "");
 }
 export const euro = (n, taal, d = 0) => "€ " + getal(n, taal, d);
-// Turks zet het procentteken vooraan (%12); Fins, Noors en Tsjechisch met een spatie (12 %).
+// Turks zet het procentteken vooraan (%12); Fins, Noors, Tsjechisch, Litouws, Slowaaks,
+// Sloveens, Kroatisch en Russisch met een spatie (12 %).
 export const procent = (n, taal, d = 0) =>
-  taal === "tr" ? "%" + getal(n, taal, d) : ["fi", "nb", "cs"].includes(taal) ? getal(n, taal, d) + "\u00a0%" : getal(n, taal, d) + "%";
+  taal === "tr" ? "%" + getal(n, taal, d) : ["fi", "nb", "cs", "lt", "sk", "sl", "hr", "ru"].includes(taal) ? getal(n, taal, d) + "\u00a0%" : getal(n, taal, d) + "%";
 
 /** Unieke, gesorteerde antwoordopties; het juiste antwoord komt op een vaste
  *  plek te staan afhankelijk van de itemsleutel, niet steeds op dezelfde. */
@@ -47,7 +57,7 @@ export function opties(juist, afleiders, toon) {
 
 /** Bouwt het itemobject in alle talen. `bouw` levert per taal {vraag, uitleg}. */
 export function item(id, soort, bouw, waarden, juistIndex, toon) {
-  const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu"];
+  const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu", "lt", "bg", "sk", "sl", "et", "lv", "hr", "sr", "ru"];
   const tekst = {};
   for (const t of TALEN) tekst[t] = bouw(t);
   return {

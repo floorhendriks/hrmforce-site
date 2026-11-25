@@ -502,10 +502,10 @@ export const ASSESSL_MC_MENS = { nl: "We konden niet vaststellen dat je een mens
 export const ASSESSL_MC_BEZIG = { nl: "Verzenden…", en: "Sending…", de: "Wird gesendet…", fr: "Envoi…", es: "Enviando…", ro: "Se trimite…" };
 // Taalcodes, geen tekst: hier staat elke taal met de hand in. Via de
 // vertaallaag zou een nieuwe taal "nl_NL" krijgen, en dan klopt og:locale niet.
-export const BASE_LOCALE_MAP = { nl: "nl_NL", en: "en_US", de: "de_DE", fr: "fr_FR", es: "es_ES", ro: "ro_RO", pl: "pl_PL", da: "da_DK", sv: "sv_SE", it: "it_IT", pt: "pt_PT", tr: "tr_TR", fi: "fi_FI", nb: "nb_NO", el: "el_GR", cs: "cs_CZ", uk: "uk_UA", hu: "hu_HU" };
+export const BASE_LOCALE_MAP = { nl: "nl_NL", en: "en_US", de: "de_DE", fr: "fr_FR", es: "es_ES", ro: "ro_RO", pl: "pl_PL", da: "da_DK", sv: "sv_SE", it: "it_IT", pt: "pt_PT", tr: "tr_TR", fi: "fi_FI", nb: "nb_NO", el: "el_GR", cs: "cs_CZ", uk: "uk_UA", hu: "hu_HU", lt: "lt_LT", bg: "bg_BG", sk: "sk_SK", sl: "sl_SI", et: "et_EE", lv: "lv_LV", hr: "hr_HR", sr: "sr_RS", ru: "ru_RU" };
 
 // Hetzelfde, in de vorm die toLocaleDateString wil (artikelpagina's).
-export const BASE_DATUM_LOCALE = { nl: "nl-NL", en: "en-GB", de: "de-DE", fr: "fr-FR", es: "es-ES", ro: "ro-RO", pl: "pl-PL", da: "da-DK", sv: "sv-SE", it: "it-IT", pt: "pt-PT", tr: "tr-TR", fi: "fi-FI", nb: "nb-NO", el: "el-GR", cs: "cs-CZ", uk: "uk-UA", hu: "hu-HU" };
+export const BASE_DATUM_LOCALE = { nl: "nl-NL", en: "en-GB", de: "de-DE", fr: "fr-FR", es: "es-ES", ro: "ro-RO", pl: "pl-PL", da: "da-DK", sv: "sv-SE", it: "it-IT", pt: "pt-PT", tr: "tr-TR", fi: "fi-FI", nb: "nb-NO", el: "el-GR", cs: "cs-CZ", uk: "uk-UA", hu: "hu-HU", lt: "lt-LT", bg: "bg-BG", sk: "sk-SK", sl: "sl-SI", et: "et-EE", lv: "lv-LV", hr: "hr-HR", sr: "sr-Latn-RS", ru: "ru-RU" };
 
 // De rubrieken in het kruimelpad. Stonden eerder in src/layouts/Base.astro en
 // waren daardoor onzichtbaar voor het vertaalscript.

@@ -9,7 +9,7 @@ import { OEFEN_EXTRA } from "../_lib/mailteksten.js";
 const schoon = (s, max) => String(s == null ? "" : s).replace(/[\r\n\t]+/g, " ").trim().slice(0, max);
 const mailOk = (s) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s);
 // Alle talen waarin de site staat.
-const TALEN = ["nl", "en", "de", "fr", "es", "ro", "pl", "da", "sv", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu"];
+const TALEN = ["nl", "en", "de", "fr", "es", "ro", "pl", "da", "sv", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu", "lt", "bg", "sk", "sl", "et", "lv", "hr", "sr", "ru"];
 // De oefendocumenten bestaan alleen in de brontalen. Een taal daarbuiten
 // krijgt de Engelse pdf, met de begeleidende mail wel in de eigen taal.
 const DOCTALEN = ["nl", "en", "de", "fr", "es", "ro"];

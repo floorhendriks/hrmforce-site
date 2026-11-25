@@ -232,6 +232,51 @@ export const OT_META = {
     omschrijving: (n) =>
       `Gyakoroljon ingyen: ${n.toLowerCase()}. 25 kérdést kap egy 250 kérdéses bankból, a végén pedig minden kérdéshez a helyes választ magyarázattal.`,
   },
+  lt: {
+    titel: (n) => `${n}: nemokamas bandomasis testas | hrmforce`,
+    omschrijving: (n) =>
+      `Treniruokitės nemokamai: ${n.toLowerCase()}. Gausite 25 klausimus iš 250 klausimų banko, o pabaigoje prie kiekvieno klausimo teisingą atsakymą su paaiškinimu.`,
+  },
+  bg: {
+    titel: (n) => `${n}: безплатен тренировъчен тест | hrmforce`,
+    omschrijving: (n) =>
+      `Тренирайте безплатно: ${n.toLowerCase()}. Получавате 25 въпроса от банка с 250 въпроса, а накрая верния отговор с обяснение към всеки въпрос.`,
+  },
+  sk: {
+    titel: (n) => `${n}: bezplatný cvičný test | hrmforce`,
+    omschrijving: (n) =>
+      `Cvičte zadarmo: ${n.toLowerCase()}. Dostanete 25 otázok z banky 250 otázok a na konci správnu odpoveď s vysvetlením ku každej otázke.`,
+  },
+  sl: {
+    titel: (n) => `${n}: brezplačen vadbeni test | hrmforce`,
+    omschrijving: (n) =>
+      `Vadite brezplačno: ${n.toLowerCase()}. Dobite 25 vprašanj iz zbirke 250 vprašanj, na koncu pa pravilen odgovor z razlago za vsako vprašanje.`,
+  },
+  et: {
+    titel: (n) => `${n}: tasuta harjutustest | hrmforce`,
+    omschrijving: (n) =>
+      `Harjutage tasuta: ${n.toLowerCase()}. Saate 25 küsimust 250 küsimusega pangast ja lõpus iga küsimuse juurde õige vastuse koos selgitusega.`,
+  },
+  lv: {
+    titel: (n) => `${n}: bezmaksas prakses tests | hrmforce`,
+    omschrijving: (n) =>
+      `Trenējieties bez maksas: ${n.toLowerCase()}. Jūs saņemat 25 jautājumus no 250 jautājumu bankas, bet beigās katram jautājumam pareizo atbildi ar skaidrojumu.`,
+  },
+  hr: {
+    titel: (n) => `${n}: besplatan probni test | hrmforce`,
+    omschrijving: (n) =>
+      `Vježbajte besplatno: ${n.toLowerCase()}. Dobivate 25 pitanja iz baze od 250 pitanja, a na kraju točan odgovor s objašnjenjem za svako pitanje.`,
+  },
+  sr: {
+    titel: (n) => `${n}: besplatan probni test | hrmforce`,
+    omschrijving: (n) =>
+      `Vežbajte besplatno: ${n.toLowerCase()}. Dobijate 25 pitanja iz baze od 250 pitanja, a na kraju tačan odgovor sa objašnjenjem za svako pitanje.`,
+  },
+  ru: {
+    titel: (n) => `${n}: бесплатный тренировочный тест | hrmforce`,
+    omschrijving: (n) =>
+      `Тренируйтесь бесплатно: ${n.toLowerCase()}. Вы получите 25 вопросов из банка в 250 вопросов, а в конце правильный ответ с объяснением к каждому вопросу.`,
+  },
 };
 
 /* Na de uitslag wil een deel van de bezoekers weten wat er beroepsmatig

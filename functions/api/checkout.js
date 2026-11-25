@@ -29,7 +29,7 @@ export async function onRequestPost(context) {
 
   const lines = Array.isArray(body.lines) ? body.lines : [];
   const b = body.billing || {};
-  const locale = ["nl", "en", "de", "fr", "es", "ro", "pl", "da", "sv", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu"].indexOf(body.locale) > -1 ? body.locale : "nl";
+  const locale = ["nl", "en", "de", "fr", "es", "ro", "pl", "da", "sv", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu", "lt", "bg", "sk", "sl", "et", "lv", "hr", "sr", "ru"].indexOf(body.locale) > -1 ? body.locale : "nl";
 
   if (!lines.length) return json({ error: "empty_cart" }, 400);
   if (!b.company || !b.contact || !validEmail(b.email) || !b.country || !b.street || !b.city || !b.postal)
@@ -122,7 +122,7 @@ export async function onRequestPost(context) {
     description: description.slice(0, 255),
     redirectUrl,
     webhookUrl,
-    locale: { nl: "nl_NL", en: "en_GB", de: "de_DE", fr: "fr_FR", es: "es_ES", ro: "en_GB", pl: "pl_PL", da: "da_DK", sv: "sv_SE", it: "it_IT", pt: "pt_PT", tr: "en_GB", fi: "fi_FI", nb: "nb_NO", el: "en_GB", cs: "en_GB", uk: "en_GB", hu: "hu_HU" }[locale],
+    locale: { nl: "nl_NL", en: "en_GB", de: "de_DE", fr: "fr_FR", es: "es_ES", ro: "en_GB", pl: "pl_PL", da: "da_DK", sv: "sv_SE", it: "it_IT", pt: "pt_PT", tr: "en_GB", fi: "fi_FI", nb: "nb_NO", el: "en_GB", cs: "en_GB", uk: "en_GB", hu: "hu_HU", lt: "lt_LT", bg: "en_GB", sk: "en_GB", sl: "en_GB", et: "en_GB", lv: "lv_LV", hr: "en_GB", sr: "en_GB", ru: "en_GB" }[locale],
     metadata: { orderId, email: b.email, company: b.company, total: eur(priced.totalCents) },
   };
 

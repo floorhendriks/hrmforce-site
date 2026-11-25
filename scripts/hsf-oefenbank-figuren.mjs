@@ -5,7 +5,7 @@
 import { rng, tussen, schud } from "./hsf-oefenbank-lib.mjs";
 
 
-const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu"];
+const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt", "tr", "fi", "nb", "el", "cs", "uk", "hu", "lt", "bg", "sk", "sl", "et", "lv", "hr", "sr", "ru"];
 const NAVY = "#0E468C";
 const GOUD = "#fcc11b";
 const LIJN = "#c9d4e4";
@@ -28,6 +28,15 @@ const VRAAG_A = {
   cs: "Který obrazec je stejný jako ten nahoře, jen otočený?",
   uk: "Яка фігура така сама, як верхня, лише повернута?",
   hu: "Melyik alakzat ugyanaz, mint a felső, csak elforgatva?",
+  lt: "Kuri figūra yra tokia pati kaip viršutinė, tik pasukta?",
+  bg: "Коя фигура е същата като горната, само завъртяна?",
+  sk: "Ktorý útvar je rovnaký ako ten hore, len otočený?",
+  sl: "Kateri lik je enak zgornjemu, le zasukan?",
+  et: "Milline kujund on sama mis ülemine, ainult pööratud?",
+  lv: "Kura figūra ir tāda pati kā augšējā, tikai pagriezta?",
+  hr: "Koji je lik isti kao gornji, samo zakrenut?",
+  sr: "Koja figura je ista kao gornja, samo zarotirana?",
+  ru: "Какая фигура такая же, как верхняя, только повёрнутая?",
 };
 
 const UITLEG_A = {
@@ -46,6 +55,15 @@ const UITLEG_A = {
   cs: (g) => `Jen tento obrazec je původní, otočený o ${g} stupňů. Ostatní čtyři jsou zrcadlové nebo mají jeden blok jinde.`,
   uk: (g) => `Лише ця фігура є оригіналом, повернутим на ${g} градусів. Інші чотири дзеркальні або мають блок в іншому місці.`,
   hu: (g) => `Csak ez az alakzat az eredeti, ${g} fokkal elforgatva. A másik négy tükörkép, vagy egy blokkja máshol van.`,
+  lt: (g) => `Tik ši figūra yra originalas, pasuktas ${g}°. Kitos keturios yra veidrodinės arba vienas jų blokas yra kitoje vietoje.`,
+  bg: (g) => `Само тази фигура е оригиналът, завъртян на ${g}°. Останалите четири са огледални или имат блок на друго място.`,
+  sk: (g) => `Iba tento útvar je pôvodný, otočený o ${g}°. Ostatné štyri sú zrkadlové alebo majú jeden blok inde.`,
+  sl: (g) => `Samo ta lik je izvirnik, zasukan za ${g}°. Ostali štirje so zrcalni ali imajo en blok drugje.`,
+  et: (g) => `Ainult see kujund on originaal, mida on pööratud ${g}°. Ülejäänud neli on peegelpildid või on neil üks klots teises kohas.`,
+  lv: (g) => `Tikai šī figūra ir oriģināls, pagriezts par ${g}°. Pārējās četras ir spoguļattēli vai tām viens bloks ir citā vietā.`,
+  hr: (g) => `Samo je ovaj lik izvornik zakrenut za ${g}°. Ostala četiri su zrcalna ili imaju jedan blok na drugom mjestu.`,
+  sr: (g) => `Samo je ova figura original zarotiran za ${g}°. Ostale četiri su preslikane ili imaju jedan blok na drugom mestu.`,
+  ru: (g) => `Только эта фигура является оригиналом, повёрнутым на ${g}°. Остальные четыре зеркальные или в них один блок стоит в другом месте.`,
 };
 
 const N = 4;
@@ -162,6 +180,15 @@ const VRAAG_R = {
   cs: "Kterou krychli lze složit z této sítě?",
   uk: "Який куб можна скласти з цієї розгортки?",
   hu: "Melyik kocka hajtható össze ebből a kiterített hálóból?",
+  lt: "Kurį kubą galima sulankstyti iš šios išklotinės?",
+  bg: "Кой куб може да се сгъне от тази развивка?",
+  sk: "Ktorú kocku možno zložiť z tejto siete?",
+  sl: "Katero kocko je mogoče zložiti iz te mreže?",
+  et: "Millise kuubi saab sellest laotusest kokku voltida?",
+  lv: "Kuru kubu var salocīt no šī izklājuma?",
+  hr: "Koja se kocka može složiti od ove mreže?",
+  sr: "Koja kocka može da se složi od ove mreže?",
+  ru: "Какой куб можно сложить из этой развёртки?",
 };
 
 const TEKENS = {
@@ -180,6 +207,15 @@ const TEKENS = {
   cs: ["kruh", "trojúhelník", "čtverec", "kříž", "hvězda", "pruh"],
   uk: ["коло", "трикутник", "квадрат", "хрест", "зірка", "смуга"],
   hu: ["kör", "háromszög", "négyzet", "kereszt", "csillag", "csík"],
+  lt: ["apskritimas", "trikampis", "kvadratas", "kryžius", "žvaigždė", "juosta"],
+  bg: ["кръг", "триъгълник", "квадрат", "кръст", "звезда", "лента"],
+  sk: ["kruh", "trojuholník", "štvorec", "kríž", "hviezda", "pruh"],
+  sl: ["krog", "trikotnik", "kvadrat", "križ", "zvezda", "črta"],
+  et: ["ring", "kolmnurk", "ruut", "rist", "täht", "triip"],
+  lv: ["aplis", "trijstūris", "kvadrāts", "krusts", "zvaigzne", "josla"],
+  hr: ["krug", "trokut", "kvadrat", "križ", "zvijezda", "traka"],
+  sr: ["krug", "trougao", "kvadrat", "krst", "zvezda", "traka"],
+  ru: ["круг", "треугольник", "квадрат", "крест", "звезда", "полоса"],
 };
 
 const UITLEG_R = {
@@ -198,6 +234,15 @@ const UITLEG_R = {
   cs: (f, r2, u) => `Po složení sítě se ${f}, ${r2} a ${u} setkají v jednom rohu v tomto pořadí. U ostatních čtyř krychlí jsou vedle sebe stěny, které jsou na krychli protilehlé, nebo je pořadí otáčení obrácené.`,
   uk: (f, r2, u) => `Якщо скласти розгортку, ${f}, ${r2} і ${u} сходяться в одному куті саме в такому порядку. На інших чотирьох кубах поруч стоять грані, які на кубі протилежні, або порядок обертання неправильний.`,
   hu: (f, r2, u) => `A háló összehajtásakor a(z) ${f}, ${r2} és ${u} ebben a sorrendben egy csúcsban találkozik. A másik négy kockán olyan lapok kerülnek egymás mellé, amelyek a kockán szemben vannak, vagy fordított a forgási sorrend.`,
+  lt: (f, r2, u) => `Sulanksčius išklotinę, ${f}, ${r2} ir ${u} susitinka viename kampe būtent tokia tvarka. Kituose keturiuose kubuose greta yra sienos, kurios kube yra priešingos, arba neteisinga sukimosi tvarka.`,
+  bg: (f, r2, u) => `Когато развивката се сгъне, ${f}, ${r2} и ${u} се срещат в един ъгъл точно в този ред. При другите четири куба един до друг стоят стени, които на куба са срещуположни, или редът на въртене е грешен.`,
+  sk: (f, r2, u) => `Po zložení siete sa ${f}, ${r2} a ${u} stretnú v jednom rohu v tomto poradí. Pri ostatných štyroch kockách sú vedľa seba steny, ktoré sú na kocke protiľahlé, alebo je poradie otáčania nesprávne.`,
+  sl: (f, r2, u) => `Ko mrežo zložimo, se ${f}, ${r2} in ${u} srečajo v istem oglišču v tem vrstnem redu. Na ostalih štirih kockah so druga ob drugi ploskve, ki so na kocki nasprotne, ali pa je vrstni red vrtenja napačen.`,
+  et: (f, r2, u) => `Kui laotus kokku voltida, kohtuvad ${f}, ${r2} ja ${u} ühes nurgas just selles järjekorras. Ülejäänud neljal kuubil on kõrvuti tahud, mis kuubil on vastastikku, või on pöörlemise järjekord vale.`,
+  lv: (f, r2, u) => `Salokot izklājumu, ${f}, ${r2} un ${u} satiekas vienā stūrī tieši šādā secībā. Pārējos četros kubos blakus atrodas skaldnes, kas kubā ir pretējas, vai griešanās secība ir nepareiza.`,
+  hr: (f, r2, u) => `Kada se mreža složi, ${f}, ${r2} i ${u} susreću se u istom kutu upravo ovim redoslijedom. Na ostalim četirima kockama jedna do druge stoje strane koje su na kocki nasuprotne, ili je redoslijed okretanja pogrešan.`,
+  sr: (f, r2, u) => `Kada se mreža složi, ${f}, ${r2} i ${u} sastaju se u istom uglu baš ovim redosledom. Na ostale četiri kocke jedna do druge stoje strane koje su na kocki naspramne, ili je redosled okretanja pogrešan.`,
+  ru: (f, r2, u) => `Если сложить развёртку, ${f}, ${r2} и ${u} сходятся в одном углу именно в таком порядке. На остальных четырёх кубах рядом стоят грани, которые на кубе противоположны, или порядок вращения неверный.`,
 };
 
 // De 24 standen van een kubus, opgebouwd uit drie basisdraaiingen.
