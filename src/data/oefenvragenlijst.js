@@ -339,6 +339,16 @@ export const VL_META = {
     omschrijving: (n) =>
       `Faça gratuitamente o teste online ${n}. 25 afirmações, sem respostas certas ou erradas, e um esboço de perfil no ecrã assim que terminar.`,
   },
+  tr: {
+    titel: (n) => `${n}: ücretsiz online test | hrmforce`,
+    omschrijving: (n) =>
+      `${n} online testini ücretsiz yapın. 25 ifade, doğru ya da yanlış cevap yok ve test biter bitmez ekranda bir profil taslağı.`,
+  },
+  fi: {
+    titel: (n) => `${n}: ilmainen verkkotesti | hrmforce`,
+    omschrijving: (n) =>
+      `Tee verkkotesti ${n} ilmaiseksi. 25 väittämää, ei oikeita tai vääriä vastauksia ja profiililuonnos näytölle heti, kun olet valmis.`,
+  },
 };
 
 /* Na de profielschets wil een deel van de bezoekers verder. Per vragenlijst

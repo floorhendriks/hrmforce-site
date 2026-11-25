@@ -30,6 +30,9 @@ export const VLAGGEN = {
   da: kruis("#C8102E", "#FFFFFF"),
   sv: kruis("#006AA7", "#FECC00"),
   it: v(["#009246", "#FFFFFF", "#CE2B37"]),
+  // Turkije: rood met witte halve maan en ster.
+  tr: `<rect width="24" height="16" fill="#E30A17"/><circle cx="9" cy="8" r="4" fill="#fff"/><circle cx="10" cy="8" r="3.2" fill="#E30A17"/><polygon points="12.70,8.00 13.85,7.60 13.87,6.38 14.61,7.35 15.78,7.00 15.08,8.00 15.78,9.00 14.61,8.65 13.87,9.62 13.85,8.40" fill="#fff"/>`,
+  fi: kruis("#FFFFFF", "#002F6C"),
   // Portugal: groen-rood in de verhouding 2:3, zonder wapen.
   pt: `<rect width="24" height="16" fill="#DA291C"/><rect width="9.6" height="16" fill="#046A38"/>`,
   // Spanje: rood-geel-rood in de verhouding 1:2:1.

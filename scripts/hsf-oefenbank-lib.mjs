@@ -21,6 +21,7 @@ const SCHEIDING = {
   nl: { dec: ",", dui: "." }, de: { dec: ",", dui: "." }, fr: { dec: ",", dui: " " },
   es: { dec: ",", dui: "." }, ro: { dec: ",", dui: "." }, en: { dec: ".", dui: "," },
   it: { dec: ",", dui: "." }, pt: { dec: ",", dui: " " },
+  tr: { dec: ",", dui: "." }, fi: { dec: ",", dui: " " },
 };
 export function getal(n, taal, decimalen = 0) {
   const s = SCHEIDING[taal] || SCHEIDING.nl;
@@ -30,7 +31,9 @@ export function getal(n, taal, decimalen = 0) {
   return (n < 0 ? "-" : "") + metDui + (deel ? s.dec + deel : "");
 }
 export const euro = (n, taal, d = 0) => "€ " + getal(n, taal, d);
-export const procent = (n, taal, d = 0) => getal(n, taal, d) + "%";
+// Turks zet het procentteken vooraan (%12), Fins met een spatie (12 %).
+export const procent = (n, taal, d = 0) =>
+  taal === "tr" ? "%" + getal(n, taal, d) : taal === "fi" ? getal(n, taal, d) + "\u00a0%" : getal(n, taal, d) + "%";
 
 /** Unieke, gesorteerde antwoordopties; het juiste antwoord komt op een vaste
  *  plek te staan afhankelijk van de itemsleutel, niet steeds op dezelfde. */
@@ -42,7 +45,7 @@ export function opties(juist, afleiders, toon) {
 
 /** Bouwt het itemobject in alle talen. `bouw` levert per taal {vraag, uitleg}. */
 export function item(id, soort, bouw, waarden, juistIndex, toon) {
-  const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt"];
+  const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt", "tr", "fi"];
   const tekst = {};
   for (const t of TALEN) tekst[t] = bouw(t);
   return {

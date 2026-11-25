@@ -197,6 +197,16 @@ export const OT_META = {
     omschrijving: (n) =>
       `Pratique gratuitamente ${n.toLowerCase()}. Recebe 25 perguntas de um banco de 250 e, no final, a resposta correta com explicação para cada pergunta.`,
   },
+  tr: {
+    titel: (n) => `${n}: ücretsiz deneme testi | hrmforce`,
+    omschrijving: (n) =>
+      `${n} için ücretsiz alıştırma yapın. 250 soruluk bir bankadan 25 soru alırsınız ve sonunda her sorunun açıklamalı doğru cevabını görürsünüz.`,
+  },
+  fi: {
+    titel: (n) => `${n}: ilmainen harjoitustesti | hrmforce`,
+    omschrijving: (n) =>
+      `Harjoittele ilmaiseksi: ${n.toLowerCase()}. Saat 25 kysymystä 250 kysymyksen pankista ja lopuksi jokaiseen oikean vastauksen selityksineen.`,
+  },
 };
 
 /* Na de uitslag wil een deel van de bezoekers weten wat er beroepsmatig

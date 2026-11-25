@@ -14,6 +14,17 @@ export const PARTICULIER_EXTRA = {
     "zakelijk": "Handler din forespørgsel alligevel om et team eller en organisation? Så svar på denne e-mail eller ring til Floor Hendriks på {tel}. Så finder vi sammen ud af, hvad der passer bedst.",
     "groet": "Med venlig hilsen,"
   },
+  "fi": {
+    "onderwerp": "Pyyntösi hrmforcelle",
+    "aanhefNaam": "Hei {naam},",
+    "aanhef": "Hei,",
+    "dank": "Kiitos, että lähetit kyselysi osoitteeseen hrmforce.com.",
+    "shop": "Ilmoitit haluavasi tehdä testin itsellesi. Yksittäiset testit voit tilata suoraan verkkokaupastamme. Saat kyselylomakkeen sähköpostitse ja raportin heti, kun olet valmis.",
+    "kleuren": "Haluatko ensin tutustua palveluun ilmaiseksi? Tee sitten ilmainen väritesti:",
+    "oefen": "Voit myös harjoitella. Tällä sivulla on harjoituskysymyksiä kunkin osion kohdalla, ja niiden jälkeen on oikea vastaus ja selitys:",
+    "zakelijk": "Koskeeko pyyntösi kuitenkin tiimiä tai organisaatiota? Vastaa tällöin tähän sähköpostiin tai soita Floor Hendriksille numeroon {tel}. Katsotaan sitten yhdessä, mikä sopii parhaiten.",
+    "groet": "Ystävällisin terveisin,"
+  },
   "it": {
     "onderwerp": "La sua richiesta a hrmforce",
     "aanhefNaam": "Gentile {naam},",
@@ -57,6 +68,17 @@ export const PARTICULIER_EXTRA = {
     "oefen": "Det går också att öva. På den här sidan finns övningsfrågor för varje del, med rätt svar och en förklaring efteråt:",
     "zakelijk": "Handlar din förfrågan ändå om ett team eller en organisation? Svara då på detta mejl eller ring Floor Hendriks på {tel}. Då tittar vi tillsammans på vad som passar bäst.",
     "groet": "Med vänliga hälsningar,"
+  },
+  "tr": {
+    "onderwerp": "hrmforce'a yaptığınız başvuru",
+    "aanhefNaam": "Sayın {naam},",
+    "aanhef": "Merhaba,",
+    "dank": "hrmforce.com üzerinden yaptığınız başvuru için teşekkür ederiz.",
+    "shop": "Kendiniz için bir test yapmak istediğinizi belirttiniz. Tek tek testleri doğrudan web mağazamızdan sipariş edebilirsiniz. Anketi e-posta yoluyla alacaksınız ve testi tamamladığınız anda raporunuzu alacaksınız.",
+    "kleuren": "Önce ücretsiz olarak tanışmak ister misiniz? O halde ücretsiz renk testini yapın:",
+    "oefen": "Alıştırma yapmak da mümkündür. Bu sayfada her bölüm için alıştırma soruları yer almaktadır; soruların sonunda doğru cevap ve açıklamalar bulunmaktadır:",
+    "zakelijk": "Talebiniz bir ekip veya kuruluşla mı ilgili? O halde bu e-postaya yanıt verin veya Floor Hendriks'i {tel} numaralı telefondan arayın. Birlikte size en uygun çözümü bulalım.",
+    "groet": "Saygılarımızla,"
   }
 };
 
@@ -71,6 +93,17 @@ export const OEFEN_EXTRA = {
     "online": "Du kan øve dig yderligere online på {url}. Der får du hvert gennemløb et nyt sæt spørgsmål, og bagefter får du det rigtige svar og en forklaring til hvert spørgsmål.",
     "let": "Dokumentet indeholder eksempelspørgsmål. De stammer ikke fra det egentlige spørgeskema, og dine svar gemmes ikke.",
     "groet": "Med venlig hilsen,"
+  },
+  "fi": {
+    "onderwerp": "Harjoituskysymyksesi",
+    "onderwerpVoor": "Harjoituskysymyksesi: {titel}",
+    "halloNaam": "Hei {naam},",
+    "hallo": "Hei,",
+    "met": "Liitteestä löydät joukon harjoituskysymyksiä. Näin tiedät etukäteen, miltä kysymykset näyttävät ja mitä sinua odottaa.",
+    "zonder": "Kiitos pyynnöstäsi. Tälle osalle ei ole vielä saatavilla asiakirjaa, mutta voit harjoitella verkossa.",
+    "online": "Voit harjoitella lisää verkossa osoitteessa {url}. Siellä saat joka kierroksella uuden kysymyssarjan, jonka jälkeen saat jokaiseen kysymykseen oikean vastauksen ja selityksen.",
+    "let": "Asiakirja sisältää esimerkkikysymyksiä. Ne eivät ole peräisin todellisesta kyselylomakkeesta, eikä vastauksiasi tallenneta.",
+    "groet": "Ystävällisin terveisin,"
   },
   "it": {
     "onderwerp": "Le sue domande di esercitazione",
@@ -115,5 +148,16 @@ export const OEFEN_EXTRA = {
     "online": "Du kan öva vidare online på {url}. Där får du en ny uppsättning frågor för varje omgång, och efteråt visas det rätta svaret och en förklaring till varje fråga.",
     "let": "Dokumentet innehåller exempelfrågor. De kommer inte från det riktiga frågeformuläret och dina svar sparas inte.",
     "groet": "Med vänliga hälsningar,"
+  },
+  "tr": {
+    "onderwerp": "Alıştırma sorularınız",
+    "onderwerpVoor": "{titel} için alıştırma sorularınız",
+    "halloNaam": "Merhaba {naam},",
+    "hallo": "Merhaba,",
+    "met": "Ek dosyada bir dizi alıştırma sorusu bulabilirsiniz. Böylece soruların nasıl olduğunu ve sizi nelerin beklediğini önceden öğrenebilirsiniz.",
+    "zonder": "Başvurunuz için teşekkür ederiz. Bu bölüm için henüz bir belge mevcut değildir, ancak çevrimiçi alıştırma yapabilirsiniz.",
+    "online": "{url} adresinde çevrimiçi olarak alıştırmalar yapmaya devam edebilirsiniz. Her turda yeni bir soru seti sunulur ve turun sonunda her soru için doğru cevap ve açıklaması verilir.",
+    "let": "Bu belge örnek sorular içermektedir. Bu sorular gerçek anketten alınmamıştır ve verdiğiniz yanıtlar kaydedilmez.",
+    "groet": "Saygılarımızla,"
   }
 };

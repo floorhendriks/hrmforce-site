@@ -4,7 +4,7 @@
 // stap één te ver of te kort nemen, de bewerkingen omdraaien.
 import { rng, tussen, kies } from "./hsf-oefenbank-lib.mjs";
 
-const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt"];
+const TALEN = ["nl", "en", "de", "fr", "es", "ro", "it", "pt", "tr", "fi"];
 
 const VRAAG = {
   nl: "Selecteer het getal dat logischerwijs volgt op de reeks.",
@@ -15,6 +15,8 @@ const VRAAG = {
   ro: "Selectează numărul care continuă logic șirul.",
   it: "Selezionare il numero che continua logicamente la serie.",
   pt: "Selecione o número que continua logicamente a série.",
+  tr: "Diziyi mantıklı biçimde sürdüren sayıyı seçin.",
+  fi: "Valitse luku, joka jatkaa sarjaa loogisesti.",
 };
 
 // Bouwstenen voor de toelichting, per taal. De cijfers komen uit het item.
@@ -122,6 +124,32 @@ const T = {
     afwisselend: (a, b, u) => `As operações alternam: ${a} e ${b}. Agora é a vez de ${a}, por isso segue-se ${u}.`,
     kwadraat: (u) => `A série é formada por quadrados. O quadrado seguinte é ${u}.`,
     deelMaal: (a, b, u) => `${a} e ${b} aplicam-se à vez. Agora segue-se ${b}, ou seja ${u}.`,
+  },
+  tr: {
+    verschilToe: (d, r, u) => `Ardışık iki sayı arasındaki fark her seferinde ${d} artıyor: ${r}. Son sayıdan sonra ${u} gelir.`,
+    verschilAf: (d, r, u) => `Ardışık iki sayı arasındaki fark her seferinde ${d} azalıyor: ${r}. Son sayıdan sonra ${u} gelir.`,
+    verschilMaal: (k, r, u) => `Fark her seferinde ${k} ile çarpılıyor: ${r}. Bir sonraki adım ${u}.`,
+    maal: (k, u) => `Her sayı bir öncekinin ${k} katı, bu yüzden ${u} gelir.`,
+    plus: (k, u) => `Her sayı bir öncekinden ${k} fazla, bu yüzden ${u} gelir.`,
+    som: (a, b, u) => `Her sayı önceki iki sayının toplamı: ${a} + ${b} = ${u}.`,
+    maalPlus: (k, b, u) => `Her sayı, bir öncekinin ${k} katı artı ${b}, bu yüzden ${u} gelir.`,
+    twee: (a, b, u) => `İki dizi iç içe ilerliyor. Tek sıradakiler ${a}, çift sıradakiler ${b} artıyor. İstenen sayı ${u} artan diziye ait.`,
+    afwisselend: (a, b, u) => `İşlemler sırayla değişiyor: ${a} ve ${b}. Şimdi sıra ${a} işleminde, bu yüzden ${u} gelir.`,
+    kwadraat: (u) => `Dizi kare sayılardan oluşuyor. Bir sonraki kare ${u}.`,
+    deelMaal: (a, b, u) => `${a} ve ${b} sırayla uygulanıyor. Şimdi sıra ${b} işleminde, yani ${u}.`,
+  },
+  fi: {
+    verschilToe: (d, r, u) => `Peräkkäisten lukujen erotus kasvaa joka kerta ${d}: ${r}. Viimeisen luvun jälkeen tulee ${u}.`,
+    verschilAf: (d, r, u) => `Peräkkäisten lukujen erotus pienenee joka kerta ${d}: ${r}. Viimeisen luvun jälkeen tulee ${u}.`,
+    verschilMaal: (k, r, u) => `Erotus kerrotaan joka kerta luvulla ${k}: ${r}. Seuraava askel on ${u}.`,
+    maal: (k, u) => `Jokainen luku on edellinen kerrottuna luvulla ${k}, joten seuraavaksi tulee ${u}.`,
+    plus: (k, u) => `Jokainen luku on ${k} suurempi kuin edellinen, joten seuraavaksi tulee ${u}.`,
+    som: (a, b, u) => `Jokainen luku on kahden edellisen summa: ${a} + ${b} = ${u}.`,
+    maalPlus: (k, b, u) => `Jokainen luku on edellinen kerrottuna luvulla ${k} plus ${b}, joten seuraavaksi tulee ${u}.`,
+    twee: (a, b, u) => `Kaksi sarjaa vuorottelee. Parittomat paikat kasvavat ${a}, parilliset ${b}. Kysytty luku kuuluu sarjaan, joka kasvaa ${u}.`,
+    afwisselend: (a, b, u) => `Laskutoimitukset vuorottelevat: ${a} ja ${b}. Nyt on vuorossa ${a}, joten seuraavaksi tulee ${u}.`,
+    kwadraat: (u) => `Sarja koostuu neliöluvuista. Seuraava neliö on ${u}.`,
+    deelMaal: (a, b, u) => `${a} ja ${b} vuorottelevat. Nyt on vuorossa ${b}, eli ${u}.`,
   },
 };
 
