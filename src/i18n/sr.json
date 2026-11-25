@@ -209,7 +209,7 @@
   "ui.jobs-index-lead": "{n} profila poslova, zasnovanih na klasifikaciji oISCO-08 i na holandskoj statističkoj klasifikaciji zanimanja CBS, izdanje BRC 2014, 2025. Svaki profil navodi kompetencije koje treba meriti i upitnik koji ih meri.",
   "ui.see-all-skills-in-full-profile": "Pogledajte svih {n} veština u punom profilu",
   "seo.home-desc": "Pretražite {jobs} profil posla i {skills} veštine. Svaki posao prikazuje kompetencije koje treba meriti i upitnik hrmforce koji ih meri.",
-  "seo.match-desc": "Izračunajte usklađenost kandidata sa profilom za poslovanje na internetu: {n} veština, usklađenost sa težinom, praznine i isključenja.",
+  "seo.match-desc": "Izračunajte online usklađenost kandidata sa profilom {job}: {n} veština, ponderisana usklađenost, praznine i isključenja.",
   "seo.skills-index-desc": "Cela biblioteka veština hrmforce Skills Framework: {constructs} merljivih konstrukta sa ponašajnim sidrama i {skills} granularne veštine ispod njih.",
   "ui.skills-index-lead": "Okvir ima dva sloja veština. Konstrukcije {constructs} su jedinica mere: ponašajni ankeri, metoda procene i instrument hrmforce su priključeni na njih. Granularne veštine {skills} ispod njih čine sloj pretrage i nasleđuju tu rutu procene.",
   "search.items": "stavke",

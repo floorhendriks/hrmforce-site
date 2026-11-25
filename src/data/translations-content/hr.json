@@ -738,7 +738,7 @@
  "A development assessment focuses on growth and ownership, not on a go/no-go decision.": "Procjena razvoja usredotočuje se na rast i vlasništvo, a ne na odluku o nastavku ili obustavi.",
  "15PF": "15PF",
  "15PF | Personality questionnaire | hrmforce": "15PF | Upitnik osobnosti | hrmforce",
- "The 15PF test from hrmforce gives insight into the way an employee will behave or react in various situations.": "15PFtest tvrtke hrmforcepodupruža uvid u to kako će se zaposlenik vjerojatno ponašati ili reagirati u različitim situacijama.",
+ "The 15PF test from hrmforce gives insight into the way an employee will behave or react in various situations.": "Test 15PF tvrtke hrmforce pruža uvid u to kako će se zaposlenik vjerojatno ponašati ili reagirati u različitim situacijama.",
  "(Pre)selection → development": "(Pre)selekcija → razvoj",
  "Providing insight into the way an employee will behave or react in various situations.": "Pružanje uvida u to kako će se zaposlenik vjerojatno ponašati ili reagirati u različitim situacijama.",
  "25 minutes": "25 minuta",
@@ -4799,5 +4799,8 @@
  "Snel naar": "Brze poveznice na",
  "Meer over ons": "Više o nama",
  "Privacy Statement - Algemene voorwaarden": "Izjava o privatnosti – Uvjeti i odredbe",
- "Reflector Big Five Personality": "Reflector: Big Five osobnosti"
+ "Reflector Big Five Personality": "Reflector: Big Five osobnosti",
+ "{thema} in de sector {sector}, {omvang}": "{thema} u sektoru {sector}, {omvang}",
+ "Brochures, voorbeeldrapporten, handleidingen en veelgestelde vragen bij de instrumenten die hrmforce afneemt bij SHL, GITP en Talogy Cubiks. {aantal} documenten, direct te openen, zonder formulier.": "Brošure, ogledna izvješća, priručnici i česta pitanja za instrumente koje hrmforce koristi od SHL-a, GITP-a i Talogy Cubiksa. Broj dokumenata: {aantal}, odmah dostupni, bez obrasca.",
+ "De Reflector Big Five Personality is het meest uitgebreide instrument en geeft een genuanceerd en volledig beeld van iemands persoonlijkheid in dagelijkse werksituaties. Dat komt onder andere aan de orde bij de keuze voor persoonlijke ontwikkelingsactiviteiten, loopbaankeuzes en beoordeling van potentieel voor doorgroei.": "Reflector Big Five Personality najopsežniji je instrument i daje nijansiranu i potpunu sliku nečije osobnosti u svakodnevnim radnim situacijama. To je važno, među ostalim, pri odabiru aktivnosti osobnog razvoja, odlukama o karijeri i procjeni potencijala za napredovanje."
 }
