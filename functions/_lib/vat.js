@@ -1,8 +1,8 @@
 // Btw-logica (B2B, prijzen excl. btw). Verkoper = hrmforce (NL).
 // - NL-klant: 21% NL-btw.
-// - EU-bedrijf met geldig btw-nummer: 0% (btw verlegd / reverse charge).
-// - EU zonder btw-nummer: 21% NL-btw (veilige default; adviseer btw-nummer).
-// - Buiten de EU: 0% (buiten scope / export).
+// - Ander EU-land: altijd 0% (btw verlegd / reverse charge), ook zonder btw-nummer.
+// - Buiten de EU: altijd 0% (buiten scope / export).
+// Besluit Floor 27-11-2026: een bestelling vanuit het buitenland is altijd 0% btw.
 // LET OP: OSS-nuance (B2C in andere EU-landen) valt hier bewust buiten; dit is
 // een zakelijke (B2B) flow. Laat de definitieve btw-behandeling door de
 // boekhouder bevestigen.
@@ -20,12 +20,8 @@ export function vatNumberLooksValid(vat) {
 export function computeVat(country, vat) {
   country = (country || "").toUpperCase();
   if (country === "NL") return { rate: NL_RATE, mode: "nl" };
-  if (EU.indexOf(country) > -1) {
-    if (vatNumberLooksValid(vat)) return { rate: 0, mode: "reverse" };
-    return { rate: NL_RATE, mode: "nl_default" };
-  }
-  if (country === "XX" || country === "") return { rate: 0, mode: "export" };
-  return { rate: NL_RATE, mode: "nl" }; // onbekend land: veilige default
+  if (EU.indexOf(country) > -1) return { rate: 0, mode: "reverse" };
+  return { rate: 0, mode: "export" };
 }
 
 // Bedragen in centen om afrondingsfouten te vermijden.

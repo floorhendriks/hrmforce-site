@@ -41,7 +41,7 @@ export function invoiceModel(order, env, opts) {
   else if (order.vatMode === "export") vatLabel = "Buiten EU (0%)";
 
   const notes = [];
-  if (order.vatMode === "reverse") notes.push("Btw verlegd naar de afnemer (art. 196 EU-btw-richtlijn). Btw-nummer afnemer: " + (b.vat || "-") + ".");
+  if (order.vatMode === "reverse") notes.push("Btw verlegd naar de afnemer (art. 196 EU-btw-richtlijn)." + (b.vat ? " Btw-nummer afnemer: " + b.vat + "." : ""));
   else if (order.vatMode === "export") notes.push("Levering buiten de EU: 0% btw.");
   if (order.paidAt) notes.push("Voldaan via Mollie op " + order.paidAt.slice(0, 10) + ".");
   const sellerLegal = [seller.vat ? "Btw: " + seller.vat : "", seller.kvk ? "KvK: " + seller.kvk : "", seller.iban ? "IBAN: " + seller.iban : ""].filter(Boolean).join("   ");

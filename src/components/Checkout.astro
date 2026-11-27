@@ -237,11 +237,8 @@ const euList = Object.entries(EU_COUNTRIES).sort((a, b) => a[1].localeCompare(b[
       var vat = vatEl.value;
       var mode, rate, label;
       if (country === "NL") { rate = 0.21; mode = "nl"; label = C.sumVat + " (21%)"; }
-      else if (euCodes.indexOf(country) > -1) {
-        if (vatValidish(vat, country)) { rate = 0; mode = "reverse"; label = C.sumVatReverse; }
-        else { rate = 0.21; mode = "nl_default"; label = C.sumVat + " (21%)"; }
-      } else if (country === "XX") { rate = 0; mode = "export"; label = C.sumVatExport; }
-      else { rate = 0.21; mode = "nl"; label = C.sumVat + " (21%)"; }
+      else if (euCodes.indexOf(country) > -1) { rate = 0; mode = "reverse"; label = C.sumVatReverse; }
+      else { rate = 0; mode = "export"; label = C.sumVatExport; }
       return { rate: rate, mode: mode, label: label };
     }
     // De server bepaalt de korting; hier staat alleen wat hij teruggaf.
